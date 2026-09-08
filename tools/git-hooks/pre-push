@@ -27,6 +27,55 @@ fi
 remote="${1:-origin}"
 version_file="version.md"
 
+# git feeds the refs being pushed on stdin, one line per ref:
+#   <local ref> <local sha> <remote ref> <remote sha>
+#
+# Reading it is what tells a version bump apart from a branch deletion, a tag,
+# or a topic branch. Not reading it is how this hook refused
+# `git push origin --delete main` on 07/09/2026: there was no version in that
+# push at all, and it asked the version question anyway — and a guard that
+# refuses an operation it was never about is a guard that gets bypassed.
+refs_in="$(cat || true)"
+
+default_branch="$(git symbolic-ref --quiet --short "refs/remotes/$remote/HEAD" 2>/dev/null | sed "s|^$remote/||")"
+default_branch="${default_branch:-master}"
+
+if [ -n "$refs_in" ]; then
+  touches_default=0
+  while read -r local_ref local_sha remote_ref remote_sha; do
+    [ -n "${remote_ref:-}" ] || continue
+    [ "$remote_ref" = "refs/heads/$default_branch" ] || continue
+    # An all-zero local sha is a deletion: nothing is being published.
+    case "${local_sha:-}" in *[!0]*) touches_default=1 ;; esac
+  done <<<"$refs_in"
+
+  if [ "$touches_default" -eq 0 ]; then
+    echo "pre-push: nothing here updates $default_branch — version check skipped." >&2
+    exit 0
+  fi
+fi
+
+# The queue's whole recovery story — "it is git-tracked on purpose, so
+# `git checkout HEAD~1 -- .continue/` brings it back" — assumes the file is in
+# git. In a new project it is not: the drafts sit untracked while the first
+# commits are about structure, and a queue emptied at that moment is gone. This
+# was measured on 07/09/2026 in a repository whose 1,338-line brief had never
+# been committed; it survived because the owner had a copy elsewhere.
+#
+# A warning and never a refusal: an untracked draft is a normal state of work in
+# progress, and a guard that fires on normal work is a guard that gets bypassed.
+if [ -d .continue ]; then
+  untracked_queue="$(git ls-files --others --exclude-standard -- .continue 2>/dev/null || true)"
+  if [ -n "$untracked_queue" ]; then
+    echo "" >&2
+    echo "pre-push: WARNING — these queue files are not in git:" >&2
+    printf '%s\n' "$untracked_queue" | sed 's/^/    /' >&2
+    echo "  Recovering a queue item depends on it being versioned. Deleting an" >&2
+    echo "  untracked one does not come back. Commit them, or know that." >&2
+    echo "" >&2
+  fi
+fi
+
 if [ ! -f "$version_file" ]; then
   echo "pre-push: WARNING — no $version_file at repo root; nothing to check." >&2
   exit 0
@@ -54,6 +103,8 @@ if ! git fetch --quiet "$remote" 2>/dev/null; then
   exit 0
 fi
 
+# Recomputed after the fetch: a repository cloned before its default branch was
+# renamed has a stale refs/remotes/<remote>/HEAD until then.
 default_branch="$(git symbolic-ref --quiet --short "refs/remotes/$remote/HEAD" 2>/dev/null | sed "s|^$remote/||")"
 default_branch="${default_branch:-master}"
 ref="refs/remotes/$remote/$default_branch"
