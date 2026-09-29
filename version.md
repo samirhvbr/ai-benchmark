@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.1.12`
+**Versão atual:** `0.1.13`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.1.13` — 2026-09-29 — README documents that benchmark runs happen on a VM with no GitHub access
+
+The cover README gains an "Execution environment" section: the VM that runs the
+benchmark resolves `github.com` and the GitHub content hosts to loopback, so an
+agent under test cannot open, clone or download this repository (or anything else
+on GitHub) during a run. The section publishes the `/etc/hosts` block so the setup
+can be reproduced, and states the limits: the block is by name (a direct connection
+to an IP address still opens), it says nothing about training data, and it does not
+replace keeping an answer key out of every place a model can reach.
+
+No hostnames or addresses of the execution VM are published.
 
 ### `0.1.3` — 2026-09-02 — Agent doc: Releases rule and the English-only language rule
 

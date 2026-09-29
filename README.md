@@ -73,6 +73,26 @@ Note: the specification documents are currently written in Portuguese (pt-BR); E
 3. Run 3 independent executions (`./leb avaliar` + `./leb scorecard` each); the official score is the median total.
 4. Evaluate: public-surface diff → characterization tests → per-flaw verifies → report×matrix matching → explanation rubric → scorecard (`.md` + `.json`), plus informative **calibration** (confidence per finding) and **difficulty** coverage that don't touch the 1000 points.
 
+## Execution environment
+
+Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**. On that VM, `github.com` and the GitHub content hosts resolve to the loopback address through `/etc/hosts`, so an agent under test cannot browse, clone or download anything hosted on GitHub during a run. In particular, it cannot read this repository.
+
+```text
+# /etc/hosts on the execution VM (IPv4 and IPv6 lines alike)
+127.0.0.1  github.com www.github.com api.github.com gist.github.com codeload.github.com
+127.0.0.1  raw.githubusercontent.com gist.githubusercontent.com objects.githubusercontent.com
+127.0.0.1  github-releases.githubusercontent.com release-assets.githubusercontent.com
+::1        (the same names)
+```
+
+Anyone reproducing the runs should apply the same block to the host that runs the model.
+
+Limits, stated plainly:
+
+- The block is **by name**. A connection made directly to an IP address is not stopped, so this defeats accidental and naive access (`git clone`, a fetch tool, `curl`), not a deliberate bypass. It is one layer of isolation, not a guarantee.
+- It says nothing about what a model may have seen during training.
+- It is not a substitute for keeping an answer key out of every place a model can reach.
+
 ## Status
 
 - [x] Specification 1.3.0 (this repository) — canonical task shipped inside the package + delivery contract (`PROTOCOL §2.1–2.2`), calibration + difficulty axis (§8.1–8.2), cost/time block (§8.3), non-scoring
