@@ -76,11 +76,25 @@ Note: the specification documents are currently written in Portuguese (pt-BR); E
 
 ## Execution environment
 
-Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**, so an agent under test cannot browse, clone or download anything hosted there during a run. In particular, it cannot read this repository or the answer key in it. Three layers do this, and all three have been in place since the first scored run:
+Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so that an agent under test cannot read this repository or the answer key in it. The isolation was built in layers. The layers are dated because the runs are dated too. Times are UTC−3, from the VM's own logs.
 
-1. **GitHub's names resolve to loopback.** `github.com` and the GitHub content hosts point at `127.0.0.1` in `/etc/hosts`, so `ping github.com` answers from `127.0.0.1`.
-2. **GitHub's prefixes are blackhole routes.** The prefixes announced for GitHub, Inc. collapse to four in IPv4 (from 26) and three in IPv6 (from 9). The script below installs them, and a connection made straight to an address inside them goes nowhere.
-3. **No IPv6.** The VM has no IPv6 connectivity at all. The IPv6 blackholes are a second lock on a door that is already shut.
+| Layer | In place since | Runs it covers |
+| --- | --- | --- |
+| GitHub's names resolve to loopback (`/etc/hosts`) | 2026-09-29 18:59 | every run; the first began at 19:32 |
+| No IPv6 connectivity: no global address, no IPv6 default route | always; the network provides no IPv6 | every run |
+| GitHub's BGP prefixes are blackhole routes (4 IPv4, 3 IPv6) | 2026-09-30 08:13 | runs from 2026-09-30 on |
+| GitHub's edge addresses from `api.github.com/meta` are blackhole routes (71 IPv4) | 2026-09-30 09:02 | runs from 2026-09-30 09:02 on |
+
+**The first ten runs on LEB-100-A (2026-09-29) had the name block only.** No agent could reach GitHub through a GitHub name. A connection made straight to a GitHub address would still have gone through, so the block stopped accidental and tool-driven access but not a deliberate bypass. Each of those runs says so in its `run.json`.
+
+The VM was checked on 2026-09-30, after the last layer:
+
+- `https://github.com` fails;
+- `140.82.112.3` fails;
+- the São Paulo edge `20.201.28.151`, reached with GitHub's host name, fails;
+- a site outside GitHub answers.
+
+A oneshot systemd unit installs the routes at boot by running [`tools/github-blackhole.sh`](tools/github-blackhole.sh).
 
 ```text
 # /etc/hosts on the execution VM (IPv4 and IPv6 lines alike)
@@ -90,49 +104,11 @@ Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**
 ::1        (the same names)
 ```
 
-```sh
-#!/bin/sh
-# github-blackhole.sh, run on the execution VM:
-# blackhole routes for the prefixes announced by GitHub, Inc.
-# Idempotent: "replace" lets it run any number of times. To remove: github-blackhole.sh del
-
-ACTION="${1:-add}"
-
-V4="
-192.30.252.0/22
-185.199.108.0/22
-143.55.64.0/20
-140.82.112.0/20
-"
-
-V6="
-2a0a:a440::/29
-2620:112:3000::/44
-2606:50c0::/32
-"
-
-for p in $V4; do
-    if [ "$ACTION" = "del" ]; then
-        ip -4 route del blackhole "$p" 2>/dev/null || true
-    else
-        ip -4 route replace blackhole "$p"
-    fi
-done
-
-for p in $V6; do
-    if [ "$ACTION" = "del" ]; then
-        ip -6 route del blackhole "$p" 2>/dev/null || true
-    else
-        ip -6 route replace blackhole "$p"
-    fi
-done
-```
-
-Anyone reproducing the runs should apply the same three layers to the host that runs the model.
+Anyone reproducing the runs should apply the same layers to the host that runs the model: the `/etc/hosts` block above and the script.
 
 Limits, stated plainly:
 
-- **GitHub also answers outside those prefixes.** [`api.github.com/meta`](https://api.github.com/meta) lists regional edge addresses for `web`, `api` and `git`, most of them on Azure (for example `20.201.28.151`), and those are not in the blackhole. A connection straight to one of them, with the right host name, is not stopped. Getting there takes the address in hand, since every GitHub name resolves to loopback, so this stops accidental and tool-driven access, not a deliberate bypass.
+- **The address list ages.** `api.github.com/meta` changes over time, and the VM cannot fetch it once the block is in place. The list in the script is from 2026-09-30; refresh it from another machine.
 - **Copies elsewhere are not blocked.** Mirrors, caches and archives of this repository outside GitHub are out of scope.
 - **Training is a separate question.** The VM says nothing about what a model saw in training. Every run records the training cutoff its provider publishes for that ([MATRIX §4](matrix/MATRIX.md), item 5).
 

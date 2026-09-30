@@ -150,8 +150,10 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   setting — while the other nine ran at `xhigh`.
 - **The answer key is public.** `instances/LEB-100-A/private/` has been in this public repository
   since 2026-07-13, although `matrix/MATRIX.md §4` says an active matrix is published only as its
-  hash. The instance stays current under the exception in `MATRIX §4`, item 5. The execution VM
-  cannot reach GitHub, so no agent can fetch the key during a run. Each run also records the
+  hash. The instance stays current under the exception in `MATRIX §4`, item 5. During these ten
+  runs the execution VM blocked GitHub by name only. No agent could fetch the key through a GitHub
+  name, but a deliberate connection straight to a GitHub address was not blocked. The address
+  blocks came on 2026-09-30 (README, *Execution environment*). Each run also records the
   training cutoff its provider publishes: nine of the ten models have a cutoff before 2026-07-13,
   and MiniMax publishes none for M3, so for that model training on the key cannot be ruled out. It
   is marked † in the leaderboard, and its scorecard says so.

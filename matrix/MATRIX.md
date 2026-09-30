@@ -60,7 +60,9 @@ Exemplo legível:
 5. **Exception — LEB-100-A.** Its `private/` has been in the public repository since 2026-07-13,
    against item 1. It stays a current instance, and three runs of it are official, under two
    conditions:
-   - every run executes on a machine that cannot reach GitHub (README, *Execution environment*);
+   - every run executes on the isolated VM (README, *Execution environment*) and records which of
+     its layers were in place. The first ten runs (2026-09-29) had GitHub's names blocked but not
+     its addresses; runs from 2026-09-30 have both;
    - every run records the model's training cutoff as its provider publishes it (PROTOCOL §3).
 
    A cutoff after 2026-07-13, or none published, does not disqualify a run: its scorecard and the

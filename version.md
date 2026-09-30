@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.14`
+**Versão atual:** `0.2.15`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,37 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.15` — 2026-09-30 — README dates each layer of the VM's isolation, and the first ten runs record that they had GitHub's names blocked but not its addresses
+
+0.2.11 said three layers of isolation had been in place "since the first scored run", and wrote the
+same into the ten `run.json` files. That rested on the owner's recollection. The VM's own logs,
+read on 2026-09-30, contradict it:
+
+- the `/etc/hosts` block went in on 2026-09-29 at 18:59 (UTC−3), before the first run at 19:32;
+- `github-blackhole.sh`, its systemd unit and the first blackhole route were created on
+  2026-09-30 at 08:13, after the ten runs;
+- no route command appears before that in the sudo log or the root shell history, and the VM had
+  not rebooted since 2026-09-25;
+- the VM never had IPv6 connectivity: no global address and no IPv6 default route.
+
+So the first ten runs had the name block only. An agent could not reach GitHub by name, but a
+connection straight to a GitHub address would have gone through.
+
+The same check found that the edge address `20.201.28.151` (São Paulo) answered HTTP 200 from the
+VM. At 09:02 the blackhole script gained 71 edge addresses from `api.github.com/meta` (web, api,
+git, packages). Afterwards `github.com`, `140.82.112.3` and that edge all fail, while a site
+outside GitHub answers.
+
+- `README.md`, *Execution environment*: a table dates each layer and names the runs it covers,
+  and a paragraph says the first ten runs had the name block only. The routes now come from
+  `tools/github-blackhole.sh`, new here: the VM's script, with the same commands and English
+  comments, installed at boot by a oneshot systemd unit. The limit about unblocked edges gives way
+  to one about the address list ageing.
+- The ten `run.json` files: `execution_environment` states the name block and says addresses were
+  not blocked yet.
+- `MATRIX.md §4` item 5 and the results notes say the same.
+- The version 0.2.11 entry above stays as written; this entry corrects it.
 
 ### `0.2.14` — 2026-09-30 — cost_time comes from the client's own usage summary and records the model's working time, never the wall-clock
 
