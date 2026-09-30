@@ -1,0 +1,32 @@
+{
+  "agent": "minimax-m3",
+  "model": {
+    "name": "MiniMax-M3",
+    "id": "minimax-m3",
+    "provider": "MiniMax",
+    "reasoning_effort": "default",
+    "reasoning_effort_note": "not configurable: the MiniMax-M3 client exposes no effort setting",
+    "exact_version": null
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "execution_environment": "dedicated Linux VM with GitHub blocked by name (README, Execution environment)",
+  "cost_time": null,
+  "logs": null,
+  "not_recorded": [
+    "exact_version",
+    "temperature",
+    "cost_time",
+    "logs"
+  ]
+}

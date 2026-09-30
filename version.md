@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.6`
+**Versão atual:** `0.2.7`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,36 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.7` — 2026-09-29 — results/ adds MiniMax-M3 on LEB-100-A, tenth at 460
+
+A tenth agent on the same package, and the first from neither Anthropic nor OpenAI: harness
+(22/22; SEC-001 and BUG-001 fixed, SEC-008 and PERF-001 not), one blind matching judge
+(delivery J), the EXPL judge on the scale it used for A–I (20/50), `score.py`.
+
+MiniMax-M3 has no reasoning-effort setting — its client offers no selector — so it ran at the
+model's default while the other nine ran at `xhigh`; `run.json` records it as
+`reasoning_effort: "default"` with a note, and the notes say the comparison is not at equal
+effort.
+
+| # | Model | Total | Grade |
+| ---: | --- | ---: | --- |
+| 1 | Claude Sonnet 5.5 | 825 | Gold |
+| 2 | Claude Fable 5.1 | 781 | Gold |
+| 3 | Claude Opus 5.5 | 711 | Silver |
+| 4 | GPT-6.1-sol | 666 | Silver |
+| 5 | GPT-6-astra | 661 | Silver |
+| 6 | GPT-5.6-terra | 625 | Silver |
+| 7 | GPT-5.6-sol | 612 | Silver |
+| 8 | GPT-5.5 | 601 | Silver |
+| 9 | GPT-5.6-luna | 599 | Bronze |
+| 10 | MiniMax-M3 | 460 | Bronze |
+
+The consistency review changed J's verdict: J answers `?export=csv` with 403 for every client,
+which the manifest calls hiding tickets from whoever is entitled to see them; every other delivery
+filtered the export instead, and D rejected the 403 for that reason. COMP-003 is added (−30), the
+first review change that lowers a score; with the judge's call J would total 490, still tenth. The
+evaluation notes, the generated leaderboard and the README status are updated for ten agents.
 
 ### `0.2.6` — 2026-09-29 — tools/export-results.py shows a model-default reasoning effort as not configurable
 

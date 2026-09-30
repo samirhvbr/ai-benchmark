@@ -1,0 +1,348 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "MiniMax-M3",
+    "version": "not recorded",
+    "provider": "MiniMax"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-09-30",
+    "runs": [
+      460
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 1,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 80,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 3,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 1,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 4,
+      "points_possible": 6,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 3,
+      "points_possible": 8,
+      "confidence": 80,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 43,
+      "raw_possible": 58,
+      "score": 185,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 12,
+      "raw_possible": 14,
+      "score": 129,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 3,
+      "raw_possible": 8,
+      "score": 56,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 70,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "index.php:54-58 now answers the contracted route index.php?export=csv with HTTP 403 for every non-technician, while the listing still offers clients the 'Exportar CSV' link (index.php:119). A client loses, through that route, the tickets the manifest says they are entitled to see; the manifest's visibility section states that a fix which hides tickets from whoever is entitled to see them alters the business rule. Attributable to extra finding F6 (CSV visibility), not to a planted-flaw fix, so no C5/R4 is affected."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 20,
+      "max": 50,
+      "rubric": {
+        "clareza": 5,
+        "precisao": 3,
+        "causa_raiz": 4,
+        "priorizacao": 4,
+        "trade_offs": 4
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "Visibility rule — the listing shows other clients' tickets to a client (index.php:73; F5). Fixed with a caller-side filter at delivered index.php:99-104.",
+    "Visibility rule — ?export=csv hands the full CSV of all tickets to any logged-in client (index.php:44-46; F6). Fixed by returning 403 to non-technicians at delivered index.php:54-58.",
+    "BUG-010-like — exportarCsv fails silently on fopen/query failure and returns an empty 200 (lib.php:127-129, 133-135; F3, the silent-error part). Now answers 500.",
+    "ARCH-003-like — tecnicoNome builds SQL by concatenating an int-typed id (lib.php:69; F12). Not exploitable; code smell, correctly rated low.",
+    "ARCH-003-like — verChamado builds SQL by concatenating an int-typed id (lib.php:100; F13). Not exploitable; code smell.",
+    "CLN — generic die() on connection failure, with no logging (index.php:11; F16).",
+    "CLN — fputcsv called without an explicit $escape, which emits E_DEPRECATED on PHP 8.4 (lib.php:130/138; F17). Verified on PHP 8.4.",
+    "CLN — the formatarStatus else branch labels any out-of-range status as 'Resolvido' (lib.php:33; F18).",
+    "CLN — loose == comparisons in formatarStatus (lib.php:28; F15). Trivial because the parameter is int-typed."
+  ],
+  "total": 460,
+  "grade": "Bronze",
+  "calibration": {
+    "reported_count": 9,
+    "brier": 0.011,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 7,
+        "mean_confidence": 95.7,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 2,
+        "mean_confidence": 80.0,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 3,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 4,
+        "corrected": 1
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 1
+      }
+    ],
+    "discovery_index": 70.8
+  }
+}

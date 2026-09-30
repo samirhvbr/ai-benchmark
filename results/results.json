@@ -20,7 +20,7 @@
         "date": "2026-09-29",
         "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery, one EXPL judge for all four reports, blind to the answer key and to every other score"
       },
-      "evaluated_on": "2026-09-29",
+      "evaluated_on": "2026-09-30",
       "category_max": {
         "SEC": 250,
         "ARCH": 200,
@@ -1668,6 +1668,178 @@
             }
           ],
           "rank": 9
+        },
+        {
+          "agent": "minimax-m3",
+          "model": {
+            "name": "MiniMax-M3",
+            "id": "minimax-m3",
+            "provider": "MiniMax",
+            "reasoning_effort": "default",
+            "reasoning_effort_note": "not configurable: the MiniMax-M3 client exposes no effort setting",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 460,
+          "discovery_index": 70.8,
+          "brier": 0.011,
+          "runs": [
+            {
+              "run": 1,
+              "total": 460,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 185,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 56,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 20,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 5,
+                "precisao": 3,
+                "causa_raiz": 4,
+                "priorizacao": 4,
+                "trade_offs": 4
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "PERF-001": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 80
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 9,
+              "brier": 0.011,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
+            }
+          ],
+          "rank": 10
         }
       ]
     }

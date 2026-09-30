@@ -6,10 +6,13 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Nine agents, one run each, against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0),
+Ten agents, one run each, against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0),
 mode **A** (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Every
 `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right binding
-(`PROTOCOL §2.2`), so the nine deliveries are comparable.
+(`PROTOCOL §2.2`), so the ten deliveries solved the same task. One thing is not equal: nine
+agents ran at reasoning effort `xhigh`, while MiniMax-M3 has no effort setting at all — its client
+offers no selector — and ran at the model's default. Its result measures the model as it can be
+run, not a like-for-like comparison of effort.
 
 | Agent folder | Model | Reasoning effort |
 | --- | --- | --- |
@@ -22,10 +25,12 @@ mode **A** (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38b
 | `gpt-5.6-terra-xhigh` | GPT-5.6-terra (OpenAI) | xhigh |
 | `gpt-6-astra-xhigh` | GPT-6-astra (OpenAI) | xhigh |
 | `gpt-6.1-sol-xhigh` | GPT-6.1-sol (OpenAI) | xhigh |
+| `minimax-m3` | MiniMax-M3 (MiniMax) | model default (not configurable) |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version, the temperature, token counts and cost, and the full logs (`PROTOCOL §4.2` asks for
-logs; they were not kept). The deliveries were filed and evaluated on 2026-09-29.
+logs; they were not kept). The deliveries were filed and evaluated on 2026-09-29, MiniMax-M3's
+on 2026-09-30.
 
 ## How it was evaluated
 
@@ -33,7 +38,7 @@ logs; they were not kept). The deliveries were filed and evaluated on 2026-09-29
    after (22 checks) and the four fix probes (SEC-001, SEC-008, BUG-001, PERF-001).
 2. **Matching (step 4)** — one judge per delivery, following `scoring/JUDGE.md`, with the matrix,
    the legacy code, the delivery and its mechanical report.
-3. **Explanation (step 5)** — one judge for all nine reports, which read only the reports, the
+3. **Explanation (step 5)** — one judge for all ten reports, which read only the reports, the
    task, the manifest and the legacy code: never the matrix, the findings index, the mechanical
    reports or any verdict.
 4. **Scorecard (step 7)** — `harness/score.py`, then `tools/export-results.py` for the `.md`.
@@ -44,19 +49,19 @@ report, and checked for model names (none of the deliveries names its author). T
 drawn at random and revealed only after all verdicts were in: **A** = Claude Fable 5.1,
 **B** = GPT-5.6-luna, **C** = GPT-5.5, **D** = Claude Opus 5.5, **E** = Claude Sonnet 5.5,
 **F** = GPT-5.6-terra, **G** = GPT-5.6-sol (F and G drawn at random between the two),
-**H** = GPT-6-astra, **I** = GPT-6.1-sol. Deliveries D to I arrived after the first three; the
-EXPL judge scored each on the scale it had already used and changed nothing in the earlier
-scores. The matching judges of E to I were told the rules below, which the earlier judges had
-applied, so that they would apply them the same way; H's and I's judges got them in the
-corrected wording, and I's also got the rule that came out of H's review. GPT-6-astra's delivery
+**H** = GPT-6-astra, **I** = GPT-6.1-sol, **J** = MiniMax-M3. Deliveries D to J arrived after the
+first three; the EXPL judge scored each on the scale it had already used and changed nothing in
+the earlier scores. The matching judges of E to J were told the rules below, which the earlier
+judges had applied, so that they would apply them the same way; H's to J's judges got them in the
+corrected wording, and I's and J's also got the rule that came out of H's review. GPT-6-astra's delivery
 also ships its own test suite (`entrega/.validacao/testes.php`, 119 checks), kept as delivered.
 
-The matching verdicts were then reviewed for consistency across the nine judges. Two rules could
+The matching verdicts were then reviewed for consistency across the ten judges. Two rules could
 have been applied unevenly and were not: C1 at half for a flaw filed under the wrong category
 (BUG-004 filed as `qualidade` by B and as `seguranca` by D, as `bug` by A and C), and COMP-003
 for scoping the SLA average to the client (B, C, G, H and I do it; A, D, E and F keep it global).
 
-Three verdicts were changed, each recorded in its `veredito.json` (`review`) and scorecard.
+Four verdicts were changed, each recorded in its `veredito.json` (`review`) and scorecard.
 
 - **E, PEN-001 removed.** E's judge counted a login timing side channel as a new bug (PEN-001,
 −15): E runs a dummy bcrypt for unknown logins, while a legacy md5 account is rejected in
@@ -70,12 +75,21 @@ the migration the matrix expects; A's did not count it either. One rule for all:
   rounded minutes. The rule as the brief worded it for F and G ("a calculated number such as the
   SLA average") was imprecise and invited that reading; the violation meant is changing *which*
   tickets the average covers. COMP-003 is removed and BUG-001 C5 restored for F. **This one moves
-  the ranking:** with the judge's call F would total 584 (Bronze, last) instead of 625 (Silver, 6th).
+  the ranking:** with the judge's call F would total 584 (Bronze, 9th) instead of 625 (Silver, 6th).
 - **H, CLN-007 identified.** H's judge did not count the report's decision 3 — it left
   `rotuloPrioridade` alone because "simplifying the indentation" did not justify a larger diff —
   as reporting the nested ifs. A's ARCH-002 was credited R1 from an entry of its own not-changed
   list that named the smell at the right place; this entry does the same, so H gets R1 (and
   nothing else: no mechanism, no refactor). With the judge's call H would total 636, still 5th.
+- **J, COMP-003 added.** J answers the contracted route `index.php?export=csv` with HTTP 403 for
+  every client, while the listing still offers them the "Exportar CSV" link. Every other delivery
+  that closed the CSV visibility gap filtered the export to the client's own tickets — ruled
+  enforcement, not a violation — and D explicitly rejected denying the route because it would hide
+  tickets the client is entitled to see. The manifest makes that a business-rule change in both
+  directions (exposing tickets to whoever is not entitled, hiding them from whoever is); J's judge
+  flagged the call for a consistency check. COMP-003 is added, attributed to J's extra finding on
+  CSV visibility, so no planted flaw's C5 changes. With the judge's call J would total 490, still
+  10th — the only change in review that lowers a score.
 
 I's verdict needed no change. Two calls were checked and kept: G's PEN-001 (its CSV sanitizer also rewrites the `-` shown for a
 ticket with no technician into `'-`, a concrete defect nothing asked for), and G's claim of a
@@ -86,7 +100,7 @@ belongs, in the EXPL precision score (5/10).
 ## Two defects in the harness, fixed before scoring
 
 Both were found by these deliveries, fixed in the instance's tooling, and applied identically to
-all nine runs; the legacy code still scores 22/22 with every probe PLANTADA.
+all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 - **SQL loader.** `characterization/_bootstrap.php` split `schema.sql` on every `;` after dropping
   only whole-line comments. The Fable 5.1 delivery wrote `-- password_hash(); …` as a trailing
@@ -111,9 +125,11 @@ all nine runs; the legacy code still scores 22/22 with every probe PLANTADA.
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
   bias; it does not remove it, since a model can recognise its own style — or a sibling's: three of
-  the nine contestants are Claude models, and they hold the top three places. The two calls against delivery D (COMP-003 on
-  `formatarStatus`, R2 none on CLN-007) were kept as the judge made them. The three changes made in
-  review are explained above: E and H move no place; F lifts GPT-5.6-terra from last to 6th. Every verdict carries a rationale per flaw so it can be audited.
+  the ten contestants are Claude models, and they hold the top three places. The two calls against delivery D (COMP-003 on
+  `formatarStatus`, R2 none on CLN-007) were kept as the judge made them. The four changes made in
+  review are explained above: E, H and J move no place; F lifts GPT-5.6-terra from 9th to 6th. Every verdict carries a rationale per flaw so it can be audited.
+- **Not the same effort for everyone.** MiniMax-M3 ran at its model's default — it has no effort
+  setting — while the other nine ran at `xhigh`.
 - **The answer key is public.** `instances/LEB-100-A/private/` has been in this public repository
   since 2026-07-13, although `matrix/MATRIX.md §4` says an active matrix is published only as its
   hash. The execution VM blocks GitHub by name, so the agents could not fetch it during the runs,
@@ -125,23 +141,30 @@ all nine runs; the legacy code still scores 22/22 with every probe PLANTADA.
   each by prefixing `'` to a cell that starts with `= + - @` — the fix the matrix expects. GPT-5.6-sol
   applied it to the technician column too and turned the `-` placeholder into `'-` (its PEN-001).
   Fable 5.1, Opus 5.5, GPT-5.6-luna and GPT-6.1-sol reported it and kept the cells raw for the CSV's
-  consumers; GPT-5.5 and GPT-5.6-terra did not report it. Sonnet 5.5 is the only agent at SEC 250/250.
+  consumers; GPT-5.5, GPT-5.6-terra and MiniMax-M3 did not report it. Sonnet 5.5 is the only agent
+  at SEC 250/250.
 - **Architecture** is the weakest category for everyone: 50, 25 and 50 of 200 for the three
-  Claude models, 25 for GPT-6.1-sol and 0 for the other four GPT models. Nobody refactored the
-  dispatcher (ARCH-002) — Sonnet 5.5, Fable 5.1, Opus 5.5 and GPT-6.1-sol identified it and
-  declined — and nobody named the magic numbers (ARCH-009). Only Sonnet 5.5 and Fable 5.1
-  flattened the nested ifs (CLN-007).
+  Claude models, 25 for GPT-6.1-sol and 0 for the other six. Nobody refactored the dispatcher
+  (ARCH-002) — Sonnet 5.5, Fable 5.1, Opus 5.5 and GPT-6.1-sol identified it and declined — and
+  nobody named the magic numbers (ARCH-009). Only Sonnet 5.5 and Fable 5.1 flattened the nested
+  ifs (CLN-007).
 - Every agent stayed on mysqli, kept all 22 characterization checks green and reported no decoy.
   **Compatibility** is where they separated: Sonnet 5.5, Fable 5.1 and GPT-5.6-terra are at 100;
-  the other six each lost 30 for a changed business value (COMP-003).
+  the other seven each lost 30 for a changed business value (COMP-003).
 - Six agents migrated the MD5 passwords to `password_hash` transparently at login; GPT-5.5,
-  GPT-5.6-luna and GPT-6-astra left MD5 in place on purpose (astra with a written migration
-  plan). Fable 5.1 left the secrets in `config.php` as literal fallbacks (SEC-015 not fixed); the
-  other eight removed them.
+  GPT-5.6-luna, GPT-6-astra and MiniMax-M3 left MD5 in place on purpose. Fable 5.1 left the
+  secrets in `config.php` as literal fallbacks (SEC-015 not fixed), MiniMax-M3 removed the fallback
+  but repeated the production password in a comment (half), and the other eight removed them.
 - **GPT-6.1-sol and GPT-6-astra are the strongest GPT models here** (666 and 661, 4th and 5th):
-  both identified 11 of the 13 planted flaws and fixed 9, have BUG at 150/150 and the best explanations among
-  the GPT models (43 and 42 of 50; the Claude models scored 44–46). 6.1-sol migrated MD5 and
-  left SEC-008 alone; astra did the opposite.
+  both identified 11 of the 13 planted flaws and fixed 9, have BUG at 150/150 and the best
+  explanations among the GPT models (43 and 42 of 50; the Claude models scored 44–46). 6.1-sol
+  migrated MD5 and left SEC-008 alone; astra did the opposite.
+- **MiniMax-M3** (460, 10th — the only model from neither Anthropic nor OpenAI, and the only one at
+  default effort) identified 9 planted flaws and fixed 5. It is the only agent that left the N+1
+  query (PERF-001) in place, on the mistaken ground that a JOIN would change the listing's
+  return shape; it escaped one of the two XSS sinks, and its report has the lowest explanation
+  score (20/50), with several wrong mechanisms — a division by zero described as returning NAN,
+  a search it said could be reached without logging in.
 - **Silent fixes** score the fix but not the finding (`MATRIX §5.4`): Sonnet 5.5, GPT-5.6-sol and
   GPT-5.6-terra fixed the file-handle leak (BUG-004) without reporting it, and GPT-5.6-terra
   fixed the session fixation (SEC-013) the same way. GPT-5.6-terra reported the fewest planted

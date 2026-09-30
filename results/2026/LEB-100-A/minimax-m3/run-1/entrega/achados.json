@@ -1,0 +1,207 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados monta a SQL concatenando $busca cru dentro de aspas simples (\"WHERE titulo LIKE '%\" . $busca . \"%'\"). $busca vem de $_GET['busca'] no index.php. Payload como 'Lentidao\\' OR \\'1\\'=\\'1' quebra a string e injeta OR verdadeiro, fazendo a query retornar TODOS os chamados. Vetor público (rota acessivel pre-login).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": null,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "mediaResposta retorna $soma / $qtd sem guardar $qtd === 0. Cenario real: nenhum chamado tem minutos_resposta IS NOT NULL (banco recem-populado). PHP 8 emite DivisionByZeroError e retorna NAN; round(NAN) imprime 'nan min' no painel (index.php L78).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "arquivo": "code/lib.php",
+      "linha": 128,
+      "linha_fim": 134,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "exportarCsv tem dois 'return;' silenciosos: em fopen === false (permissao/disco) e em query === false. Usuario recebe HTTP 200 com 0 bytes e sem header CSV; nada em error_log para diagnosticar.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "arquivo": "code/index.php",
+      "linha": 53,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A rota ?ver=<id> chama verChamado sem checar visibilidade. verChamado tem assinatura (mysqli,int)->?array e nao tem contexto de sessao, entao retorna o registro para qualquer logado. Manifesto: 'cliente so ve os seus'. Cliente logado pode ler chamado de outro via enumeracao de IDs.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados nao recebe contexto de papel/uid. Cliente (ex.: ana) recebe os 5 chamados do seed, sendo 2 do bruno. Tabela #tabela-chamados exibe titulo, status, prioridade e tecnico de outros clientes. Viola regra de negocio do manifesto.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "arquivo": "code/index.php",
+      "linha": 45,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "?export=csv chama exportarCsv($db) para qualquer logado. A funcao lista TODOS os chamados do banco. Cliente baixa CSV com chamados alheios (incluindo descricao, status, criado_em).",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "autenticar usa md5($senha) sem salt. Schema declara senha CHAR(32). Senhas faceis quebradas em rainbow tables; combinadas com campo de login publico e sem rate limit, atacante com dump do banco vira qualquer usuario. Query em si esta com prepared statement (nao e SQLi).",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Senha real do banco de producao ('N3tX@2013!prod') estava embutida como fallback em config.php. Segredo em codigo-fonte vaza em qualquer clone/git/backup desde 2013.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "SMTP_API_KEY hardcoded ('netx-smtp-9f83e2c1a7b64d05'), sem fallback de env. Quem tiver acesso ao repo consegue enviar e-mail 'de' NetX ISP.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "Apos autenticar bem-sucedido, nao ha session_regenerate_id(true). Vetor classico de session fixation: atacante fixa PHPSESSID na vitima (link, XSS), vitima loga, atacante fica autenticado como a vitima.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "arquivo": "code/index.php",
+      "linha": 82,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "echo '<p>Resultados para: ' . $busca . '</p>' com $busca = $_GET['busca']. Sem htmlspecialchars. Payload '?busca=<script>...</script>' executa JS no contexto da app. Rota acessivel pre-login, entao o XSS atinge qualquer visitante. Combinado com F10, roubo de sessao de tecnico.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": null,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 30,
+      "mecanismo": "tecnicoNome monta 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId. Concat direta. Porem o parametro e ?int, PHP força cast para inteiro antes da query. Injecao pratica e improvavel; mau cheiro para refatoracao futura.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": null,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 40,
+      "mecanismo": "verChamado monta 'SELECT * FROM chamados WHERE id = ' . $id. Mesmo padrao do F12; ?int no parametro blinda contra injecao pratica. Registrado para hardening quando caller for ampliado.",
+      "corrigido": false
+    },
+    {
+      "id": "F14",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": null,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "listarChamados faz tecnicoNome() por linha no while, disparando uma query por chamado (N+1). Em 5 chamados tudo bem; em 5000 degrada visivelmente. Schema tem idx_usuario mas nao cobre esse caminho.",
+      "corrigido": false
+    },
+    {
+      "id": "F15",
+      "arquivo": "code/lib.php",
+      "linha": 28,
+      "linha_fim": null,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 50,
+      "mecanismo": "formatarStatus usa comparacao frouxa (==). Em TINYINT NOT NULL isso e equivalente a ===, mas e flag em lint/PSR. Sem bug atual.",
+      "corrigido": false
+    },
+    {
+      "id": "F16",
+      "arquivo": "code/index.php",
+      "linha": 11,
+      "linha_fim": null,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "die('Falha ao conectar ao banco.') sem log estruturado nem distincao entre causa (credenciais vs. host indisponivel). Dificulta diagnostico em producao.",
+      "corrigido": false
+    },
+    {
+      "id": "F17",
+      "arquivo": "code/lib.php",
+      "linha": 130,
+      "linha_fim": 138,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 70,
+      "mecanismo": "fputcsv() chamado sem parametro $escape. PHP 8.4 emite Deprecated ('the $escape parameter must be provided as its default value will change'); PHP 9 vira erro fatal. Polui logs e quebra upgrade.",
+      "corrigido": false
+    },
+    {
+      "id": "F18",
+      "arquivo": "code/lib.php",
+      "linha": 33,
+      "linha_fim": null,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 50,
+      "mecanismo": "formatarStatus: o else final retorna 'Resolvido' para qualquer status != 1, != 2. Se um dia entra status = 0/4/-1 (insercao direta, integracao), a UI rotula silenciosamente como 'Resolvido'. Schema hoje restringe a 1-3; em producao nao chega outro valor.",
+      "corrigido": false
+    }
+  ]
+}
