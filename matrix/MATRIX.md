@@ -57,6 +57,15 @@ Exemplo legível:
 2. No lançamento da instância, publica-se o **SHA-256 de `matrix.json`** (commit assinado). Quando a instância for aposentada, a matriz é revelada e qualquer terceiro confere o hash — prova de que o gabarito não mudou depois dos resultados.
 3. Instâncias **expiram**: uma vez públicas por tempo suficiente para entrar em corpus de treino, aposenta-se a instância (resultados antigos permanecem válidos, novos runs exigem instância vigente).
 4. Runs oficiais **DEVEM** usar instância vigente e declarar seu hash no scorecard.
+5. **Exception — LEB-100-A.** Its `private/` has been in the public repository since 2026-07-13,
+   against item 1. It stays a current instance, and three runs of it are official, under two
+   conditions:
+   - every run executes on a machine that cannot reach GitHub (README, *Execution environment*);
+   - every run records the model's training cutoff as its provider publishes it (PROTOCOL §3).
+
+   A cutoff after 2026-07-13, or none published, does not disqualify a run: its scorecard and the
+   leaderboard say that the model may have trained on the key. Item 3 still decides when LEB-100-A
+   is retired, and the cutoffs recorded run by run are the evidence for that decision.
 
 ## 5. Correspondência (matching) relatório × matriz
 

@@ -97,6 +97,23 @@ stored XSS that the legacy code does not have — part of the same finding that 
 the reflected XSS (SEC-003), so it counts once as a hit in calibration and is penalized where it
 belongs, in the EXPL precision score (5/10).
 
+### Second and third runs
+
+The ten agents above get up to two more runs each on the same package, so that each has the
+three runs an official score needs (`PROTOCOL §4`). A run is filed in the agent's own folder as the
+next `run-<n>`. The same folder name means the same model at the same effort; a changed model
+version, effort or client is a different agent, with its own folder. Every run is filed and
+published, the bad ones included, because discarding one and running again is the retry §4
+forbids. A run is judged like the first ones:
+
+- its own matching judge, on the anonymized delivery, with a new label that continues the letters
+  (K, L, …) so that a judge cannot tell a second run from a first one;
+- the EXPL judge on the scale it has already used, without changing an earlier score;
+- the consistency review across every delivery of the instance, first runs included.
+
+Until an agent has three runs, its published score is the lower of its totals so far, and every
+detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
+
 ## Two defects in the harness, fixed before scoring
 
 Both were found by these deliveries, fixed in the instance's tooling, and applied identically to
@@ -132,8 +149,11 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   setting — while the other nine ran at `xhigh`.
 - **The answer key is public.** `instances/LEB-100-A/private/` has been in this public repository
   since 2026-07-13, although `matrix/MATRIX.md §4` says an active matrix is published only as its
-  hash. The execution VM blocks GitHub by name, so the agents could not fetch it during the runs,
-  but it may have reached training data. LEB-100-A should be retired for new runs (`MATRIX §4.3`).
+  hash. The instance stays current under the exception in `MATRIX §4`, item 5. The execution VM
+  cannot reach GitHub, so no agent can fetch the key during a run. Each run also records the
+  training cutoff its provider publishes: nine of the ten models have a cutoff before 2026-07-13,
+  and MiniMax publishes none for M3, so for that model training on the key cannot be ruled out. It
+  is marked † in the leaderboard, and its scorecard says so.
 
 ## Reading the results
 

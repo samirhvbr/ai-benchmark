@@ -102,8 +102,8 @@ Limits, stated plainly:
 - [x] Evaluation **harness** ([`harness/`](harness/)) — mechanical pipeline (characterization before/after + probes + difficulty coverage → JSON), stdlib-only, instance-agnostic; validated both ways on LEB-100-A
 - [x] Scorecard **assembler** ([`harness/score.py`](harness/score.py)) + **judge interface** ([`scoring/JUDGE.md`](scoring/JUDGE.md), `judge.schema.json`) — deterministic 1000-pt scorecard from mechanical evidence + judge verdict; validated end-to-end (incl. the mysqli→PDO rewrite scoring 0/Reprovada, and a Gold run at 860)
 - [x] First scored runs — ten agents on LEB-100-A, one run each (not yet official: an official score is the median of 3), published in [results/](results/) with every delivery, verdict and scorecard
-- [ ] Official reference runs — 3 runs per model, on an instance whose answer key has not been published
+- [ ] Official reference runs — 3 runs per model on LEB-100-A, which stays current under [MATRIX §4](matrix/MATRIX.md), item 5: runs on a machine that cannot reach GitHub, and each run records the model's training cutoff
 
 ## License & contributing
 
-Taxonomy IDs are immutable (SPEC §9). Proposals for new failures/levels: open an issue with the real-world case motivating it. Matrices of **active** instances never enter this public repository — only their SHA-256 hashes; matrices are revealed when an instance is retired.
+Taxonomy IDs are immutable (SPEC §9). Proposals for new failures/levels: open an issue with the real-world case motivating it. Matrices of **active** instances never enter this public repository — only their SHA-256 hashes; matrices are revealed when an instance is retired. LEB-100-A is the one exception: its matrix has been public since 2026-07-13, and [MATRIX §4](matrix/MATRIX.md), item 5, says under which conditions it stays current.

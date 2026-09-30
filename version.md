@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.9`
+**Versão atual:** `0.2.10`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,30 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.10` — 2026-09-30 — MATRIX §4 writes down the exception that keeps LEB-100-A current despite its published answer key
+
+LEB-100-A's `private/` has been in this public repository since 2026-07-13, against MATRIX §4
+item 1. The documents disagreed about what that meant. The results notes and the site said the
+instance "should be retired for new runs". The cover README's open item asked for official runs
+"on an instance whose answer key has not been published". Meanwhile, second and third runs of the
+same models are about to be filed.
+
+The owner's decision is now written down as MATRIX §4, item 5. LEB-100-A stays a current instance,
+and three runs of it are official, under two conditions: every run executes on a machine that
+cannot reach GitHub, and every run records the model's training cutoff as its provider publishes
+it (0.2.9). A later or unpublished cutoff does not disqualify a run; it is flagged. Item 3 still
+decides retirement, with the recorded cutoffs as the evidence.
+
+- `README.md`: the open item on official runs and the note on matrices point at the exception.
+- `results/2026/LEB-100-A/README.md`: the public-key caveat is rewritten. The instance stays
+  current, nine of ten cutoffs precede the key, and MiniMax-M3's is unpublished. A new section,
+  "Second and third runs", says how a repeated run is filed and judged: the same folder is the same
+  model and effort, every run is filed, blind labels continue from K, the EXPL judge keeps its
+  scale, and the consistency review covers every delivery.
+
+The *Execution environment* section, which still describes only the block by name, is not changed
+here. It waits for the exact IPv4 ranges the execution VM routes to blackhole.
 
 ### `0.2.9` — 2026-09-30 — run.json records the model's training cutoff, and the scorecard says whether the model could have trained on the answer key
 
