@@ -111,7 +111,7 @@ no `COMO-RODAR.md`).
 Antes, o enunciado era colado à mão no chat — e cada operador colava um pouquinho diferente.
 Agora ele viaja como `TAREFA.md` **dentro** do pacote, gerado de
 [`protocol/TAREFA.md`](protocol/TAREFA.md): mesma tarefa para toda instância, sem retrabalho e
-sem variação entre runs. A mensagem para o modelo pode ser só *"leia TAREFA.md e execute"*.
+sem variação entre runs. The first message to the model is fixed: *"Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json."* ([PROTOCOL §3](protocol/PROTOCOL.md)).
 
 A `TAREFA.md` tem três partes:
 
@@ -195,8 +195,8 @@ Sai em `runs/LEB-100-A/pacote/`, junto de um `COMO-RODAR.md` com a receita deste
 
 ### Passo 3 — Entregar ao modelo e coletar a entrega
 
-Entregue a pasta `pacote/` — a tarefa já está dentro dela, como `TAREFA.md`. A mensagem pode
-ser só *"leia o TAREFA.md e execute"*. Registre os parâmetros obrigatórios do run
+Entregue a pasta `pacote/` — a tarefa já está dentro dela, como `TAREFA.md`. Send exactly the
+fixed first message, with nothing added: *"Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json."* Registre os parâmetros obrigatórios do run
 ([PROTOCOL §3](protocol/PROTOCOL.md)): modelo + versão exata, temperatura (oficial = a default
 do provedor, registrada), modo S/A, orçamento de turnos/tokens, data, instância + versão +
 hash da matriz + `package_sha256` — a tabela do `COMO-RODAR.md` já vem com os três últimos

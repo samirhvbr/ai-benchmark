@@ -64,9 +64,10 @@ Send **the `pacote/` folder**, and nothing else:
 
     {pacote}
 
-It holds `code/`, `manifest.md` and `TAREFA.md`. The message to the agent can be just:
+It holds `code/`, `manifest.md` and `TAREFA.md`. The first message to the agent is exactly this,
+the same for every run, with nothing added (PROTOCOL §3):
 
-> Leia o `TAREFA.md` e execute. Devolva `code/` alterado, `RELATORIO.md` e `achados.json`.
+> Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.
 
 Do not explain the system, do not hint at a category, do not say how many problems there are.
 

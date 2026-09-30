@@ -50,5 +50,5 @@
     "exact_version",
     "temperature"
   ],
-  "run_note": "A first attempt in the same folder, at 08:28, was interrupted by the operator at a tool-permission prompt after six minutes and three tool calls, before any delivery; this run replaced it. Its first message lacks the \"Não saia desta pasta.\" that run 1 received."
+  "run_note": "A first attempt in the same folder, at 08:28, was stopped by the operator after six minutes and three tool calls, before any delivery: it had started before the VM's last isolation layer (GitHub's edge addresses, 09:02) was in place. This run started after it and replaced it. Its first message is the fixed one of PROTOCOL §3, without the \"Não saia desta pasta.\" that run 1 received."
 }

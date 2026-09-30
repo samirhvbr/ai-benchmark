@@ -172,10 +172,12 @@ every verdict was in:
   (rule 5). N's SEC-017 and M's BUG-004, filed under another category, get C1 at half.
 - **Opus 5.5, run 2 (K): 717, six points above run 1 (711).**
   - The published score is the lower, 711.
-  - Its first message lacked the "Não saia desta pasta." that run 1 received.
-  - A first attempt in the same folder, at 08:28, was interrupted by the operator at a
-    tool-permission prompt after six minutes and three tool calls. It had no delivery, and this run
-    replaced it.
+  - Its first message is the fixed one, without the "Não saia desta pasta." that run 1 received
+    (see below).
+  - A first attempt in the same folder, at 08:28, was stopped by the operator after six minutes and
+    three tool calls, before any delivery. It had started before the VM's last isolation layer
+    (GitHub's edge addresses, 09:02) was in place. This run started after that layer and replaced
+    it.
 - **Fable 5.1's second run (L) is void.** Six minutes in, the model's safeguards stopped one of
   its responses, and Claude Code finished the run with Claude Opus 4.8. Opus 4.8 wrote the whole
   report and findings index. The run was voided on the evidence of the session log, before its
@@ -199,6 +201,16 @@ every verdict was in:
   - It kept the contract whole (COMP 100) and fixed seven flaws: SEC-001, SEC-003, SEC-013,
     SEC-015, SEC-017, BUG-001 and BUG-004.
   - It left the N+1 query (PERF-001), the CSV injection (SEC-008) and MD5 (SEC-014) in place.
+- **The first message changed on 2026-09-30.**
+  - Every run of 2026-09-29 began with *"Não saia desta pasta. Agora leia o TAREFA.md e execute.
+    Devolva code/ alterado, RELATORIO.md e achados.json."* The operator had added the first
+    sentence ("don't leave this folder") for fear that something else on the VM could give a
+    hint.
+  - From 2026-09-30 it is dropped, to follow the original prompt. The first message is now fixed
+    as *"Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json."*
+    (`PROTOCOL §3`).
+  - Each run's `first_message` says which one it got. An agent's run 1 and its later runs
+    therefore differ by that one sentence.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

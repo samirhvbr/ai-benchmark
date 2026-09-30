@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.18`
+**Versão atual:** `0.2.19`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,26 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.19` — 2026-09-30 — PROTOCOL fixes the exact first message, and Opus 5.5's second run records why its first attempt was stopped
+
+**First message.** The runs of 2026-09-29 began with *"Não saia desta pasta. Agora leia o TAREFA.md
+e execute. Devolva code/ alterado, RELATORIO.md e achados.json."* The operator had added the first
+sentence for fear that something else on the VM could give a hint. On 2026-09-30 the operator dropped it
+to follow the original prompt. The guides meanwhile said only "leia o TAREFA.md e execute", in three
+slightly different wordings.
+
+- `PROTOCOL.md §3` now fixes the first message as exactly *"Agora leia o TAREFA.md e execute.
+  Devolva code/ alterado, RELATORIO.md e achados.json."*, the text the operator keeps in the VM's
+  `/srv/prompt.md`, with nothing added.
+- The `COMO-RODAR.md` that `./leb pacote` writes and `BENCHMARK.md` (steps 2 and 3) repeat it word
+  for word. `TAREFA.md` and the package do not change.
+- The evaluation notes say that an agent's run 1 of 2026-09-29 and its later runs differ by that
+  sentence. Each run's `first_message` records which one it got.
+
+**Opus 5.5, run 2.** Its run note now gives the operator's reason for stopping the first attempt
+at 08:28: it had started before the VM's last isolation layer (GitHub's edge addresses, 09:02) was
+in place. The run of 09:04 replaced it.
 
 ### `0.2.18` — 2026-09-30 — results/ adds Kimi K3 on LEB-100-A, tenth at 528
 

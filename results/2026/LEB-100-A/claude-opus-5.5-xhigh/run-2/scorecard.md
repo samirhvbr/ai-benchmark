@@ -17,7 +17,7 @@
 | Temperature | not recorded |
 | Delivery filed | 2026-09-30 · evaluated 2026-09-30 |
 | Run | 2 — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |
-| Run note | A first attempt in the same folder, at 08:28, was interrupted by the operator at a tool-permission prompt after six minutes and three tool calls, before any delivery; this run replaced it. Its first message lacks the "Não saia desta pasta." that run 1 received. |
+| Run note | A first attempt in the same folder, at 08:28, was stopped by the operator after six minutes and three tool calls, before any delivery: it had started before the VM's last isolation layer (GitHub's edge addresses, 09:02) was in place. This run started after it and replaced it. Its first message is the fixed one of PROTOCOL §3, without the "Não saia desta pasta." that run 1 received. |
 | LEB spec | 1.1.0 |
 | Judge | LLM `claude-opus-5-5`, blind to the model's identity (anonymized as delivery K) |
 
