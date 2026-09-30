@@ -79,8 +79,8 @@ Note: the specification documents are currently written in Portuguese (pt-BR); E
 Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**, so an agent under test cannot browse, clone or download anything hosted there during a run. In particular, it cannot read this repository or the answer key in it. Three layers do this, and all three have been in place since the first scored run:
 
 1. **GitHub's names resolve to loopback.** `github.com` and the GitHub content hosts point at `127.0.0.1` in `/etc/hosts`, so `ping github.com` answers from `127.0.0.1`.
-2. **GitHub's IPv4 prefixes are blackhole routes.** GitHub's 26 routed IPv4 prefixes collapse to the four below, and a connection made straight to an address inside them goes nowhere.
-3. **No IPv6.** The VM has no IPv6 connectivity, so GitHub's IPv6 prefixes need no route of their own.
+2. **GitHub's prefixes are blackhole routes.** The prefixes announced for GitHub, Inc. collapse to four in IPv4 (from 26) and three in IPv6 (from 9). The script below installs them, and a connection made straight to an address inside them goes nowhere.
+3. **No IPv6.** The VM has no IPv6 connectivity at all. The IPv6 blackholes are a second lock on a door that is already shut.
 
 ```text
 # /etc/hosts on the execution VM (IPv4 and IPv6 lines alike)
@@ -91,11 +91,41 @@ Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**
 ```
 
 ```sh
-# blackhole routes on the execution VM: GitHub's IPv4 prefixes, collapsed
-ip route add blackhole 140.82.112.0/20
-ip route add blackhole 143.55.64.0/20
-ip route add blackhole 185.199.108.0/22
-ip route add blackhole 192.30.252.0/22
+#!/bin/sh
+# github-blackhole.sh, run on the execution VM:
+# blackhole routes for the prefixes announced by GitHub, Inc.
+# Idempotent: "replace" lets it run any number of times. To remove: github-blackhole.sh del
+
+ACTION="${1:-add}"
+
+V4="
+192.30.252.0/22
+185.199.108.0/22
+143.55.64.0/20
+140.82.112.0/20
+"
+
+V6="
+2a0a:a440::/29
+2620:112:3000::/44
+2606:50c0::/32
+"
+
+for p in $V4; do
+    if [ "$ACTION" = "del" ]; then
+        ip -4 route del blackhole "$p" 2>/dev/null || true
+    else
+        ip -4 route replace blackhole "$p"
+    fi
+done
+
+for p in $V6; do
+    if [ "$ACTION" = "del" ]; then
+        ip -6 route del blackhole "$p" 2>/dev/null || true
+    else
+        ip -6 route replace blackhole "$p"
+    fi
+done
 ```
 
 Anyone reproducing the runs should apply the same three layers to the host that runs the model.

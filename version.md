@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.11`
+**Versão atual:** `0.2.12`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.12` — 2026-09-30 — README publishes the execution VM's blackhole script, IPv6 prefixes included
+
+In 0.2.11 the blackhole layer was reconstructed from a list of GitHub's announced prefixes, as four
+`ip route add` lines, and the README said GitHub's IPv6 prefixes needed no route. The owner then
+shared the script the VM actually runs, `github-blackhole.sh`. It installs the same four IPv4
+prefixes and also three IPv6 prefixes (2a0a:a440::/29, 2620:112:3000::/44 and 2606:50c0::/32, the
+nine announced ones collapsed). It uses `ip route replace`, so it can run any number of times, and
+`del` removes the routes.
+
+The README now publishes that script as the recipe to reproduce the setup, with its comments in
+English. Layer 2 counts both families. Layer 3 says the IPv6 blackholes are a second lock, since the
+VM has no IPv6 at all. The limits are unchanged.
 
 ### `0.2.11` — 2026-09-30 — README documents the execution VM's three layers of isolation from GitHub
 
