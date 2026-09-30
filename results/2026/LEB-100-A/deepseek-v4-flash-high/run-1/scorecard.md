@@ -17,7 +17,7 @@
 | Temperature | not recorded |
 | Delivery filed | 2026-09-30 · evaluated 2026-09-30 |
 | Run | 1 — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |
-| Run note | The operator's folder was named deepseek-v4.1-flash, but V4.1 Flash was not offered by the host, and the model that ran is DeepSeek V4 Flash. Before the fixed first message the operator asked "quem eh voce?" to confirm which model was answering; it replied "Sou o opencode ... rodando com o modelo deepseek-v4-flash." The exchange says nothing about the task, so it is recorded and does not void the run (PROTOCOL §3). |
+| Run note | The operator's folder was named deepseek-v4.1-flash, but V4.1 Flash was not offered by the host, and the model that ran is DeepSeek V4 Flash. Before the fixed first message the operator asked "quem eh voce?" to confirm which model was answering; it replied "Sou o opencode ... rodando com o modelo deepseek-v4-flash." The exchange says nothing about the task, so it is recorded and does not void the run (PROTOCOL §3). DeepSeek retired V4 Flash on its own API and has routed the name deepseek-v4-flash to V4.1 Flash since 2026-09-14 (release note of 2026-09-10). This run went through Novita's hosted model of that name; the session cannot show whether Novita serves V4 or V4.1 weights, and the model's own answer does not settle it. |
 | LEB spec | 1.1.0 |
 | Judge | LLM `claude-opus-5-5`, blind to the model's identity (anonymized as delivery U) |
 

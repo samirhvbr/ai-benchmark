@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.26`
+**Versão atual:** `0.2.27`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,29 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.27` — 2026-09-30 — results/ adds DeepSeek V4.1 Flash on LEB-100-A, ninth at 625
+
+Another run of 2026-09-30, evaluated like the rest:
+- harness 22/22, with all four probes fixed, SEC-008 included;
+- one blind matching judge (label V);
+- the EXPL judge on its kept scale (33/50);
+- `score.py`.
+
+**How it ran.** It ran through DeepSeek's own API (`deepseek-flash`), in opencode 1.18.33 at effort
+`high`, with every isolation layer, the fixed first message only, and no request to GitHub. It cost
+US$ 0.04, the cheapest run so far. DeepSeek publishes no training cutoff, so it carries the dagger.
+
+**Result.** DeepSeek V4.1 Flash totals 625 (Silver), ninth, level with GPT-5.6-terra and ahead of
+it on the discovery index. Its sanitizer also rewrites the `-` marker, so the review kept its
+judge's PEN-001 (−15), the same call G got.
+
+**DeepSeek V4 Flash caveat.** DeepSeek's release note says its own API has routed the name
+`deepseek-v4-flash` to V4.1 Flash since 2026-09-14. That run went through Novita's hosted model of
+that name, so it cannot be shown to be V4 weights. Its run note and the evaluation notes now say
+so. The two results differ (612 and 625, and in several calls).
+
+The evaluation notes and the README status count twenty agents.
 
 ### `0.2.26` — 2026-09-30 — results/ adds DeepSeek V4 Flash on LEB-100-A, twelfth at 612
 

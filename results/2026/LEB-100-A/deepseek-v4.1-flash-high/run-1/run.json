@@ -1,0 +1,56 @@
+{
+  "agent": "deepseek-v4.1-flash-high",
+  "model": {
+    "name": "DeepSeek V4.1 Flash",
+    "id": "deepseek-flash",
+    "provider": "DeepSeek",
+    "served_by": "DeepSeek's own API (opencode provider deepseek, model deepseek-flash)",
+    "reasoning_effort": "high",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://api-docs.deepseek.com/news/news260910/",
+    "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4.1-Flash (release note of 2026-09-10, checked on 2026-09-30); it was released after the answer key went public; third-party figures are not used"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-30T12:22:46-03:00",
+    "ended": "2026-09-30T12:31:49-03:00",
+    "log": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d16c61cffeAkDW7enxDlwKMr), not published"
+  },
+  "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed (all in place since 2026-09-30 09:02 UTC-3), and no IPv6 connectivity (README, Execution environment)",
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 30817,
+      "output": 24049,
+      "cache": 2467712,
+      "total": 2543405
+    },
+    "usd_estimate": 0.04,
+    "note": "the total includes 20,827 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0390"
+  },
+  "logs": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d16c61cffeAkDW7enxDlwKMr), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named deepseek-4.1-flash; the API serves DeepSeek V4.1 Flash as deepseek-flash, which is what the session shows."
+}

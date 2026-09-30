@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Nineteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twenty agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code and DeepSeek V4 Flash their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash and DeepSeek V4.1 Flash their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,7 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- the four GLM models, the two Grok models and DeepSeek V4 Flash ran at `high`, the level chosen in their client;
+- the four GLM models, the two Grok models and the two DeepSeek models ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded;
 - Kimi K2.7 Code has no effort setting in its client and ran at the model's default.
 
@@ -46,6 +46,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `grok-4.6` | Grok 4.6 (xAI), in opencode 1.18.33 | high |
 | `kimi-k2.7-code-default` | Kimi K2.7 Code (Moonshot AI), in opencode 1.18.33 | default (not configurable) |
 | `deepseek-v4-flash-high` | DeepSeek V4 Flash (DeepSeek, served by Novita AI), in opencode 1.18.33 | high |
+| `deepseek-v4.1-flash-high` | DeepSeek V4.1 Flash (DeepSeek's own API), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -160,8 +161,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Eleven deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**U** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Twelve deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**V** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -177,6 +178,7 @@ every verdict was in:
 | **S** | Grok 4.6, run 1 | 633 |
 | **T** | Kimi K2.7 Code, run 1 | 415 |
 | **U** | DeepSeek V4 Flash, run 1 | 612 |
+| **V** | DeepSeek V4.1 Flash, run 1 | 625 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -311,6 +313,24 @@ every verdict was in:
   - It fixed eight flaws fully, MD5 and the secrets among them. It lost 30 points to COMP-003: it
     changed `formatarStatus` to return "Desconhecido" for unknown statuses where the legacy code
     returned "Resolvido". D got the same call for the same change. Without it, it would total 642.
+  - DeepSeek retired V4 Flash on its own API on 2026-09-14 and routes the name `deepseek-v4-flash`
+    to V4.1 Flash. This run went through Novita's hosted model of that name. The session cannot
+    show whether Novita serves the V4 or the V4.1 weights, and the model's own answer does not
+    settle it. Its run note says so.
+- **DeepSeek V4.1 Flash (V): 625, Silver.**
+  - It ran through DeepSeek's own API, which serves V4.1 Flash as `deepseek-flash`, in opencode at
+    effort `high`, with every isolation layer. It got the fixed first message and nothing else, and
+    made no request to GitHub.
+  - It cost US$ 0.04, the cheapest run so far.
+  - DeepSeek publishes no cutoff. The model was released on 2026-09-10, after the key went public,
+    so it carries the dagger.
+  - It fixed all four probe-covered flaws, including the CSV injection. Its cell sanitizer also
+    rewrites the `-` shown for a ticket with no technician into `'-`, which is PEN-001 (−15), as for
+    G. It kept the contract whole.
+  - It sits level with GPT-5.6-terra at 625 and ranks ahead on the discovery index.
+  - Its V4 Flash run, through Novita, totals 612. The two runs differ in 13 points and in several
+    calls (V4.1 Flash left MD5, V4 Flash did not), which suggests different weights. The routing
+    caveat above still applies.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.
