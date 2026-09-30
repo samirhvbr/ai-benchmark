@@ -1,0 +1,364 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Claude Opus 5.5",
+    "version": "not recorded",
+    "provider": "Anthropic"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-09-29",
+    "runs": [
+      711
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 2,
+      "points_possible": 6,
+      "confidence": 60,
+      "reported": true
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 80,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 97,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 1,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 5,
+      "points_possible": 6,
+      "confidence": 75,
+      "reported": true
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 2,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 4,
+      "points_possible": 10,
+      "confidence": 70,
+      "reported": true
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 2,
+      "points_possible": 8,
+      "confidence": 30,
+      "reported": true
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 54,
+      "raw_possible": 58,
+      "score": 233,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 4,
+      "raw_possible": 16,
+      "score": 50,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 13,
+      "raw_possible": 14,
+      "score": 139,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 2,
+      "raw_possible": 8,
+      "score": 25,
+      "max": 100
+    },
+    "COMP": {
+      "score": 70,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "formatarStatus() is a public symbol whose labels the manifest declares a 'contrato de valor' matched by the managerial report and used in the CSV Status column. It now returns 'Desconhecido' for any status other than 1/2/3 (delivered lib.php:77-82), where the legacy code returned 'Resolvido' for the same input (pristine lib.php:32-34). The 1/2/3 labels are preserved, but the same input now gives a different business label, and the function can emit a fourth label outside the contracted set. The model itself admits the schema only defines 1..3 and gave it confidence 60; COMP-003 says the old behavior being ugly is no licence. Attributable to extra finding F14, not to any planted-flaw fix, so no C5/R4 is affected."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 44,
+      "max": 50,
+      "rubric": {
+        "clareza": 9,
+        "precisao": 9,
+        "causa_raiz": 10,
+        "priorizacao": 7,
+        "trade_offs": 9
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "Visibility rule broken in the listing: listarChamados() is used unfiltered for clients (pristine index.php:72-73, lib.php:78-93). This is outside SEC-017, which covers only ?ver= (model F3; fixed through the new listarChamadosVisiveis()).",
+    "The CSV export route hands every ticket to any logged-in client (pristine index.php:44-45 -> lib.php:123-151) (model F4; fixed through the new exportarCsvVisivel()).",
+    "The export writes a fixed file EXPORT_DIR/chamados.csv inside the web tree and leaves it on disk, and concurrent exports race on the same path (pristine lib.php:125-150) (model F8 a/b).",
+    "fputcsv without an explicit $escape emits E_DEPRECATED on PHP 8.4, which can leak into the CSV body (pristine lib.php:130, 138) (model F8 d).",
+    "Session cookie without HttpOnly/SameSite, and session.use_strict_mode off (pristine index.php:15) (model F9, beyond the fixation part mapped to SEC-013).",
+    "mediaResposta() fetches every answered row and sums in PHP instead of using SUM/COUNT in SQL (pristine lib.php:109-115) (model F12).",
+    "formatarStatus() maps any out-of-domain status to 'Resolvido' through its final else (pristine lib.php:32-34) (model F14).",
+    "Array-typed request params (login[]=, busca[]=) raise a TypeError in string-typed functions (pristine index.php:22, 72-73) (model F15).",
+    "The connection-failure branch is dead on PHP >= 8.1, because new mysqli throws mysqli_sql_exception (pristine index.php:9-12) (model F16).",
+    "No login rate limiting or lockout (pristine index.php:20-29) (model F17).",
+    "Role is cached in the session and never revalidated, and there is no logout route (pristine index.php:24-25, 38-39) (model F18).",
+    "PERF-002: SELECT * pulls the TEXT descricao, and the listing has no pagination (pristine lib.php:80-85) (model F19).",
+    "SEC-005: no CSRF token on the login POST. Mentioned only in the report's Decisions section, item 11, as not addressed."
+  ],
+  "total": 711,
+  "grade": "Silver",
+  "calibration": {
+    "reported_count": 12,
+    "brier": 0.073,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 7,
+        "mean_confidence": 94.1,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 3,
+        "mean_confidence": 75.0,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "41-60",
+        "count": 1,
+        "mean_confidence": 60.0,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "21-40",
+        "count": 1,
+        "mean_confidence": 30.0,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 4,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 6,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 91.7
+  }
+}

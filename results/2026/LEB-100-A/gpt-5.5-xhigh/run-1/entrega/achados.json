@@ -1,0 +1,157 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes podiam ver e exportar chamados de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 98,
+      "mecanismo": "A rota de CSV chamava exportarCsv($db), o detalhe carregava verChamado($db, id), a listagem exibia listarChamados($db, busca) e a media usava todos os chamados sem comparar usuario_id com o uid da sessao quando o papel era cliente.",
+      "impacto": "Um cliente autenticado conseguia listar, abrir por id direto, exportar ou ver indicador agregado calculado com chamados pertencentes a outros clientes.",
+      "correcao": "Adicionei checagem usuarioPodeVerChamado() na listagem e no detalhe, exportarCsvCliente() para exportacao por cliente e mediaRespostaCliente() para indicador por cliente; tecnicos continuam vendo tudo.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca por titulo aceitava SQL injection",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "listarChamados() concatenava o parametro busca diretamente em WHERE titulo LIKE, permitindo que aspas e operadores SQL alterassem a consulta montada.",
+      "impacto": "Usuario autenticado podia manipular a consulta de listagem e produzir resultados inesperados ou extrair dados acessiveis ao usuario do banco.",
+      "correcao": "Substitui a concatenacao por prepare()/bind_param(), mantendo a semantica de busca por LIKE com o termo recebido.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Busca era refletida no HTML sem escape",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "O valor de busca vindo de GET era escrito diretamente no atributo value do input e no paragrafo de resultados.",
+      "impacto": "Uma URL maliciosa podia injetar HTML ou script no painel de um usuario autenticado.",
+      "correcao": "Criei o helper h() com htmlspecialchars e usei escape em campos dinamicos; parametros GET/POST tambem passaram a ser normalizados para escalares.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Segredos de producao estavam embutidos no codigo",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tinha uma senha literal como fallback e SMTP_API_KEY era uma chave literal no arquivo de configuracao.",
+      "impacto": "Qualquer copia do pacote ou leitura do codigo revelava credenciais reutilizaveis de banco e e-mail transacional.",
+      "correcao": "Mantive as constantes publicadas, mas removi os valores sensiveis embutidos; DB_PASS e SMTP_API_KEY agora dependem do ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "mediaResposta podia dividir por zero",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Quando nao havia linhas com minutos_resposta, qtd continuava 0 e a funcao retornava soma / qtd.",
+      "impacto": "A pagina principal podia gerar erro, warning ou valor nao finito em bases vazias ou sem primeira resposta registrada.",
+      "correcao": "Troquei a agregacao manual por AVG(minutos_resposta) e retorno 0.0 quando nao ha media calculavel ou a consulta falha.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Exportacao CSV dependia de arquivo fixo compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 88,
+      "mecanismo": "exportarCsv() escrevia sempre em EXPORT_DIR/chamados.csv, depois lia esse mesmo arquivo para devolver a resposta.",
+      "impacto": "Exportacoes simultaneas podiam disputar o mesmo arquivo, falhas de permissao derrubavam o download e dados exportados ficavam persistidos no servidor.",
+      "correcao": "Passei a emitir o CSV diretamente em php://output, mantendo cabecalho, ordem por id e rotulos de status.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Login nao regenerava o identificador da sessao",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "Depois de autenticar, o codigo gravava uid e papel na sessao existente sem chamar session_regenerate_id().",
+      "impacto": "Se um atacante conseguisse predefinir ou conhecer o ID de sessao antes do login, esse ID continuaria valido apos a autenticacao.",
+      "correcao": "Adicionei session_regenerate_id(true) imediatamente apos autenticacao bem-sucedida.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Listagem e exportacao faziam consulta N+1 para nomes de tecnicos",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 137,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "Para cada chamado retornado, o codigo chamava tecnicoNome(), que fazia nova consulta na tabela usuarios.",
+      "impacto": "Listagens e exportacoes com muitos chamados geravam uma consulta principal mais uma consulta por linha, aumentando latencia e carga no banco.",
+      "correcao": "Usei LEFT JOIN usuarios nas consultas de listagem e exportacao para retornar tecnico_nome junto com os chamados.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Senhas usam MD5 legado",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar() calcula md5($senha) e compara com uma coluna CHAR(32), sem sal e com custo computacional baixo.",
+      "impacto": "Em caso de vazamento da tabela usuarios, senhas fracas podem ser testadas em massa com baixo custo e reutilizadas contra outros servicos.",
+      "correcao": "Nao alterei nesta entrega; a correcao exige migracao compativel para hashes modernos sem bloquear usuarios existentes.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas publicas, nomes de rotas, parametros GET, cabecalho CSV, rotulos de status e estrutura HTML declarada.",
+      "porque": "Sao superficie publica no manifest.md e consumidores externos dependem desse contrato."
+    },
+    {
+      "o_que": "Camada mysqli e ausencia de dependencias externas.",
+      "porque": "Trocar a stack ou adicionar bibliotecas violaria as restricoes da tarefa."
+    },
+    {
+      "o_que": "Hash MD5 legado de senhas.",
+      "porque": "A mudanca correta exige migracao de schema/dados e estrategia de rehash; alterar diretamente poderia bloquear usuarios existentes."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR em config.php.",
+      "porque": "Ela pode ser usada por scripts legados que incluem a configuracao, embora a exportacao corrigida nao dependa mais dela."
+    },
+    {
+      "o_que": "Conteudo semantico das colunas do CSV.",
+      "porque": "Consumidores externos podem depender dos valores do banco; mantive apenas o escape de formato feito por fputcsv()."
+    }
+  ]
+}

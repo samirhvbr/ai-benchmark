@@ -1,0 +1,826 @@
+{
+  "schema": 1,
+  "generated_by": "tools/export-results.py",
+  "source": "https://github.com/samirhvbr/ai-benchmark/tree/master/results",
+  "instances": [
+    {
+      "edition": "2026",
+      "id": "LEB-100-A",
+      "version": "1.1",
+      "level": 100,
+      "leb_spec": "1.1.0",
+      "language": "php8-mysqli",
+      "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+      "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+      "mode": "A",
+      "turn_budget": 30,
+      "judge": {
+        "type": "LLM",
+        "id": "claude-opus-5-5",
+        "date": "2026-09-29",
+        "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery, one EXPL judge for all four reports, blind to the answer key and to every other score"
+      },
+      "evaluated_on": "2026-09-29",
+      "category_max": {
+        "SEC": 250,
+        "ARCH": 200,
+        "BUG": 150,
+        "PERF": 150,
+        "CLN": 100,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "flaws": [
+        {
+          "id": "SEC-001",
+          "category": "SEC",
+          "severity": "Crítica",
+          "difficulty": "Fácil",
+          "template": "C",
+          "points_possible": 10
+        },
+        {
+          "id": "SEC-003",
+          "category": "SEC",
+          "severity": "Alta",
+          "difficulty": "Fácil",
+          "template": "C",
+          "points_possible": 8
+        },
+        {
+          "id": "SEC-008",
+          "category": "SEC",
+          "severity": "Média",
+          "difficulty": "Difícil",
+          "template": "C",
+          "points_possible": 6
+        },
+        {
+          "id": "SEC-013",
+          "category": "SEC",
+          "severity": "Alta",
+          "difficulty": "Difícil",
+          "template": "C",
+          "points_possible": 8
+        },
+        {
+          "id": "SEC-014",
+          "category": "SEC",
+          "severity": "Alta",
+          "difficulty": "Fácil",
+          "template": "C",
+          "points_possible": 8
+        },
+        {
+          "id": "SEC-015",
+          "category": "SEC",
+          "severity": "Alta",
+          "difficulty": "Fácil",
+          "template": "C",
+          "points_possible": 8
+        },
+        {
+          "id": "SEC-017",
+          "category": "SEC",
+          "severity": "Crítica",
+          "difficulty": "Difícil",
+          "template": "C",
+          "points_possible": 10
+        },
+        {
+          "id": "BUG-001",
+          "category": "BUG",
+          "severity": "Alta",
+          "difficulty": "Moderada",
+          "template": "C",
+          "points_possible": 8
+        },
+        {
+          "id": "BUG-004",
+          "category": "BUG",
+          "severity": "Média",
+          "difficulty": "Difícil",
+          "template": "C",
+          "points_possible": 6
+        },
+        {
+          "id": "PERF-001",
+          "category": "PERF",
+          "severity": "Alta",
+          "difficulty": "Moderada",
+          "template": "C",
+          "points_possible": 8
+        },
+        {
+          "id": "ARCH-002",
+          "category": "ARCH",
+          "severity": "Alta",
+          "difficulty": "Fácil",
+          "template": "R",
+          "points_possible": 10
+        },
+        {
+          "id": "ARCH-009",
+          "category": "ARCH",
+          "severity": "Baixa",
+          "difficulty": "Moderada",
+          "template": "R",
+          "points_possible": 6
+        },
+        {
+          "id": "CLN-007",
+          "category": "CLN",
+          "severity": "Média",
+          "difficulty": "Fácil",
+          "template": "R",
+          "points_possible": 8
+        }
+      ],
+      "decoys": [
+        "SEC-009",
+        "PERF-006"
+      ],
+      "notes_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/README.md",
+      "entries": [
+        {
+          "agent": "claude-fable-5.1-xhigh",
+          "model": {
+            "name": "Claude Fable 5.1",
+            "id": "claude-fable-5-1",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 781,
+          "discovery_index": 91.7,
+          "brier": 0.02,
+          "runs": [
+            {
+              "run": 1,
+              "total": 781,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 211,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 25,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 150,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 45,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 9,
+                "priorizacao": 8,
+                "trade_offs": 10
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 60
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 2,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 10,
+              "brier": 0.02,
+              "discovery_index": 91.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 1
+        },
+        {
+          "agent": "claude-opus-5.5-xhigh",
+          "model": {
+            "name": "Claude Opus 5.5",
+            "id": "claude-opus-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 711,
+          "discovery_index": 91.7,
+          "brier": 0.073,
+          "runs": [
+            {
+              "run": 1,
+              "total": 711,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 233,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 50,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 139,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 25,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 44,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 10,
+                "priorizacao": 7,
+                "trade_offs": 9
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 60
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "BUG-004": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 75
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "ARCH-002": {
+                  "earned": 4,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 70
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 30
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 13,
+              "brier": 0.073,
+              "discovery_index": 91.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 2
+        },
+        {
+          "agent": "gpt-5.5-xhigh",
+          "model": {
+            "name": "GPT-5.5",
+            "id": "gpt-5.5",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 601,
+          "discovery_index": 70.8,
+          "brier": 0.006,
+          "runs": [
+            {
+              "run": 1,
+              "total": 601,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 198,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 150,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 33,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 7,
+                "causa_raiz": 7,
+                "priorizacao": 6,
+                "trade_offs": 6
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "BUG-004": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 88
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 2,
+              "brier": 0.006,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 3
+        },
+        {
+          "agent": "gpt-5.6-luna-xhigh",
+          "model": {
+            "name": "GPT-5.6-luna",
+            "id": "gpt-5.6-luna",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 599,
+          "discovery_index": 83.3,
+          "brier": 0.003,
+          "runs": [
+            {
+              "run": 1,
+              "total": 599,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 207,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 139,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 33,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 7,
+                "priorizacao": 5,
+                "trade_offs": 6
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 85
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 4,
+              "brier": 0.003,
+              "discovery_index": 83.3,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 4
+        }
+      ]
+    }
+  ]
+}

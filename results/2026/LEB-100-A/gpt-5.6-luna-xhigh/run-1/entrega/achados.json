@@ -1,0 +1,177 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Cliente consegue consultar chamados de outro cliente",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A sessão guardava uid e papel, mas as consultas de listagem, detalhe e exportação não aplicavam usuario_id; verChamado buscava apenas pelo ID.",
+      "impacto": "Um cliente autenticado podia listar todos os chamados ou alterar ver para obter títulos, descrições e demais dados de outro cliente.",
+      "correcao": "Aplicado escopo por sessão: técnico vê todos, cliente vê somente seus chamados; o escopo também vale para média e CSV.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL na busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "busca era concatenada diretamente em titulo LIKE '%...%' antes de query.",
+      "impacto": "O parâmetro de busca podia alterar a consulta SQL e permitir extração de registros além do filtro previsto.",
+      "correcao": "Busca migrada para prepare e bind_param, mantendo substring e ordenação.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "busca era emitida sem escape no value do formulário e no texto de resultados.",
+      "impacto": "Conteúdo fornecido na URL podia executar markup ou script no painel autenticado.",
+      "correcao": "Entrada aceita apenas como string e escapada com ENT_QUOTES e ENT_SUBSTITUTE em UTF-8.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Credenciais e chave SMTP embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Senha de banco e chave SMTP apareciam como literais no arquivo de configuração.",
+      "impacto": "Cópias do pacote ou acesso de leitura ao código revelavam credenciais de produção.",
+      "correcao": "DB_PASS e SMTP_API_KEY passaram a ser obtidos exclusivamente do ambiente, sem fallback secreto.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Fixação de sessão e atributos fracos do cookie",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A sessão usava parâmetros padrão e o ID não era regenerado após autenticação.",
+      "impacto": "Um identificador pré-login fixado poderia continuar válido após o usuário autenticar.",
+      "correcao": "Ativados modo estrito, HttpOnly, SameSite=Lax, Secure sob HTTPS e regeneração do ID após login.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Senhas armazenadas e verificadas com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5 da senha e compara com a coluna CHAR(32), permitindo testes offline rápidos após vazamento do banco.",
+      "impacto": "Senhas reutilizadas podem ser recuperadas e usadas para acessar contas.",
+      "correcao": "Não alterado: a migração exige ampliar a coluna, migrar registros e manter verificação dupla durante a transição.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Consultas N+1 para o nome do técnico",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada chamado listado fazia uma consulta adicional em tecnicoNome; a exportação repetia o padrão.",
+      "impacto": "Latência e carga de banco cresciam com uma consulta pequena por chamado.",
+      "correcao": "Listagem e CSV passaram a usar LEFT JOIN e continuam retornando tecnico_nome.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando nenhum chamado tinha minutos_resposta, qtd permanecia zero e soma era dividida por zero.",
+      "impacto": "A página de listagem podia terminar com erro fatal em uma base nova ou sem respostas.",
+      "correcao": "Consultas vazias ou com erro retornam 0.0; a média normal permanece inalterada.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Arquivo compartilhado permite corrida entre exportações",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Todas as requisições escreviam em EXPORT_DIR/chamados.csv com modo w e depois liam o mesmo arquivo.",
+      "impacto": "Requisições concorrentes podiam sobrescrever ou entregar o CSV produzido para outra sessão.",
+      "correcao": "Cada exportação usa tempnam, lê seu arquivo exclusivo e o remove ao final.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Falhas de banco eram usadas sem verificação",
+      "arquivo": "code/lib.php",
+      "linha": 16,
+      "linha_fim": 135,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 98,
+      "mecanismo": "Retornos false de query eram seguidos por fetch_assoc; a exportação também retornava antes de fechar o arquivo.",
+      "impacto": "Falhas de banco podiam virar erro fatal ou deixar recursos abertos.",
+      "correcao": "Resultados são verificados e cada função retorna o valor compatível; recursos de consulta e arquivo são liberados.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Fórmula de planilha possível no CSV",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "fputcsv protege delimitadores, mas um título iniciado por =, +, - ou @ ainda pode ser interpretado como fórmula por uma planilha.",
+      "impacto": "Abertura do CSV pode executar fórmula ou exfiltrar dados no ambiente da planilha.",
+      "correcao": "Não alterado para preservar os títulos e o formato consumido por integrações; a política de sanitização precisa ser definida com os consumidores.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 da coluna de senha",
+      "porque": "schema.sql usa CHAR(32) e seed.sql usa MD5; a troca exige migração de dados e uma estratégia de transição compatível."
+    },
+    {
+      "o_que": "Conteúdo dos campos do CSV que podem iniciar fórmulas",
+      "porque": "Adicionar prefixos mudaria títulos exportados e poderia quebrar consumidores que esperam o texto original."
+    },
+    {
+      "o_que": "Assinaturas públicas, mysqli, schema.sql e seed.sql",
+      "porque": "São parte da superfície ou da camada de dados declarada no manifesto e não podem ser trocados nesta evolução."
+    }
+  ]
+}

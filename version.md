@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.1.16`
+**Versão atual:** `0.2.0`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,30 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.0` — 2026-09-29 — results/ publishes the first scored runs: four agents on LEB-100-A
+
+First results of the benchmark: Claude Fable 5.1, Claude Opus 5.5, GPT-5.5 and GPT-5.6-luna,
+all at reasoning effort xhigh, one run each on LEB-100-A v1.1 in mode A (30 turns), against
+the same package (`34e38bc5…`). Each run folder keeps the delivery exactly as handed back, its
+parameters, the mechanical report, the judge's verdict and the scorecard.
+
+| # | Model | Total | Grade |
+| ---: | --- | ---: | --- |
+| 1 | Claude Fable 5.1 | 781 | Gold |
+| 2 | Claude Opus 5.5 | 711 | Silver |
+| 3 | GPT-5.5 | 601 | Silver |
+| 4 | GPT-5.6-luna | 599 | Bronze |
+
+Not official: an official score is the median of three runs. The judges were Claude Opus 5.5
+subagents working on anonymized deliveries (one matching judge per delivery, one EXPL judge
+blind to the answer key and to every other score) — and Claude Opus 5.5 is also a contestant.
+Exact model versions, temperature, tokens and logs were not recorded and are `null`.
+
+`results/2026/LEB-100-A/README.md` states how the runs were evaluated, the two harness defects
+fixed before scoring (0.1.14, 0.1.15), and that the answer key of LEB-100-A has been in this
+public repository since 2026-07-13, so the instance should be retired for new runs. The README
+status moves the reference runs from pending to a first, unofficial set.
 
 ### `0.1.16` — 2026-09-29 — tools/export-results.py renders the scorecards and the results file from evaluated runs
 
