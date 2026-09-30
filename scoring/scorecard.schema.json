@@ -157,9 +157,10 @@
     },
     "cost_time": {
       "type": "object",
-      "description": "Custo e tempo do RUN DO MODELO (não do harness). INFORMATIVO — não entra no TOTAL. Ver SCORING.md §9.3.",
+      "description": "Cost and time of the MODEL'S RUN (not the harness), copied from the client's own usage summary. INFORMATIVE, not part of the TOTAL. See SCORING.md §9.3.",
       "properties": {
-        "elapsed_seconds": { "type": "number", "minimum": 0, "description": "wall-clock da resolução pelo modelo" },
+        "source": { "type": "string", "description": "the client summary the numbers were copied from, e.g. \"Claude Code /cost\"; kept as printed in custo.txt" },
+        "elapsed_seconds": { "type": ["number", "null"], "minimum": 0, "description": "the model's working time as the client reports it (e.g. Claude Code 'Total duration (API)'); never the wall-clock, which includes the operator's waits; null when the client reports only wall-clock" },
         "phases": {
           "type": "array",
           "items": {

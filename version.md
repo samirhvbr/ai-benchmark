@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.13`
+**Versão atual:** `0.2.14`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,28 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.14` — 2026-09-30 — cost_time comes from the client's own usage summary and records the model's working time, never the wall-clock
+
+SPEC §8.3 and SCORING §9.3 already had an informative `cost_time` block, with its time defined as
+wall-clock. In mode A the wall-clock includes every wait for the operator (0.2.13), so it measures
+the operator as much as the model. It was also never recorded: all ten runs have `cost_time: null`.
+
+- **Source.** The numbers are copied from the client's own usage summary at the end of the
+  session, for example Claude Code's `/cost`. The summary is kept as printed, as `custo.txt` next
+  to `entrega/`, and `cost_time.source` names it. The agent's own account of its time is not used,
+  since no one can check it.
+- **Time.** `elapsed_seconds` is the model's working time as the client reports it, for example
+  "Total duration (API)", and never the wall-clock. It is `null` when a client reports only
+  wall-clock.
+- **Best comparison.** Tokens compare best across providers. Time also depends on the provider's
+  load.
+- **Where it is written.** SPEC §8.3 and SCORING §9.3 (rewritten in English), the `cost_time` block
+  of `scorecard.schema.json` (`source` added, `elapsed_seconds` redefined), `BENCHMARK.md` and the
+  generated `COMO-RODAR.md`, which gains the step and a checklist row. The package is unchanged.
+- **Where it shows.** Each scorecard's informative metrics gain a "Cost and time" line, and
+  `results.json` carries `cost_time` per run. The ten existing runs read "not recorded". The
+  generated `results/README.md` lists `custo.txt` among a run's files.
 
 ### `0.2.13` — 2026-09-30 — PROTOCOL fixes the one reply an operator may send an agent that stops to wait, and run.json counts it
 

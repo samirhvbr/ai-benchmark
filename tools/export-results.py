@@ -169,6 +169,25 @@ def cutoff_label(model, instance):
     return text
 
 
+def cost_label(ct):
+    """From the client's own usage summary (SCORING §9.3); the time is the model's working time,
+    never the wall-clock, which would include every wait for the operator."""
+    if not ct:
+        return "not recorded"
+    parts = []
+    tokens = ct.get("tokens") or {}
+    if tokens:
+        split = " · ".join("%s %s" % (k, "{:,}".format(tokens[k])) for k in ("input", "output", "cache")
+                           if tokens.get(k) is not None)
+        total = "{:,}".format(tokens["total"]) if tokens.get("total") is not None else "?"
+        parts.append("%s tokens%s" % (total, " (%s)" % split if split else ""))
+    if ct.get("elapsed_seconds") is not None:
+        parts.append("model working time %ds" % round(ct["elapsed_seconds"]))
+    if ct.get("usd_estimate") is not None:
+        parts.append("≈ US$ %.2f" % ct["usd_estimate"])
+    return "%s — from %s" % (" · ".join(parts) or "no figures", ct.get("source") or "an unnamed source")
+
+
 def render_scorecard(r):
     meta, card, verdict, mech = r["meta"], r["card"], r["verdict"], r["mech"]
     model = meta["model"]
@@ -311,6 +330,7 @@ def render_scorecard(r):
         if d in levels:
             l = levels[d]
             w("  - %s: %d planted · %d found · %d fixed" % (DIFFICULTY_EN[d], l["planted"], l["detected"], l["corrected"]))
+    w("- Cost and time: %s" % cost_label(meta.get("cost_time")))
     w("")
 
     w("## Mechanical evidence")
@@ -369,6 +389,7 @@ def run_summary(r):
         "discovery_index": card["difficulty_breakdown"]["discovery_index"],
         "characterization": {"passed": ch["passed"], "failed": ch["failed"]},
         "operator_replies": r["meta"].get("operator_replies"),
+        "cost_time": r["meta"].get("cost_time"),
         "scorecard_url": "%s/blob/master/%s" % (REPO_URL, rel(os.path.join(r["dir"], "scorecard.md"))),
     }
 
@@ -486,6 +507,7 @@ def render_readme(data):
     w("| --- | --- |")
     w("| `entrega/` | exactly what the agent handed back: `code/`, `RELATORIO.md`, `achados.json` (and the package it received) |")
     w("| `run.json` | run parameters (PROTOCOL §3); what was not recorded is `null`, never guessed |")
+    w("| `custo.txt` | the client's usage summary as printed, when kept; `run.json`'s `cost_time` is copied from it (SCORING §9.3) |")
     w("| `mecanico.json` | mechanical evidence: characterization before/after and the fix probes |")
     w("| `veredito.json` | the judge's verdict, with a rationale per flaw |")
     w("| `scorecard.json` · `scorecard.md` | the 1000-point scorecard |")

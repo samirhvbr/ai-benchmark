@@ -94,16 +94,25 @@ correction. Approving a tool-permission prompt is not a reply.
 | Matrix (SHA-256) | `{matriz}` |
 | Package (SHA-256) | `{pacote_sha}` |
 | Operator replies | (count at the end) |
+| Usage summary saved as `custo.txt` | (at the end) |
 
-## 4. Keep the delivery
+## 4. When it ends: the usage summary
+
+Before closing the client, open its usage summary (Claude Code: `/cost`; another client: its
+equivalent) and save it **as printed** to `custo.txt`, next to `entrega/`. Its tokens, the model's
+working time and the cost go into `run.json` as `cost_time` (SCORING §9.3). Never use the
+wall-clock you measure yourself: it includes every wait for your reply.
+
+## 5. Keep the delivery
 
 One folder per run (3 runs = an official result, no selective retry):
 
     {base}/<modelo>-1/entrega/     ← code/ + RELATORIO.md + achados.json
+    {base}/<modelo>-1/custo.txt    ← the client's usage summary, as printed
     {base}/<modelo>-2/entrega/
     {base}/<modelo>-3/entrega/
 
-## 5. Evaluate
+## 6. Evaluate
 
     ./leb avaliar {inst} {base_rel}/<modelo>-1/entrega
     # after the judge (scoring/JUDGE.md → veredito.json):

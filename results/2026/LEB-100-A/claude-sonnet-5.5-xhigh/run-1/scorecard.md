@@ -123,6 +123,7 @@ Real findings outside the matrix (0 points, 0 penalty, candidates for the next i
   - Easy: 6 planted · 6 found · 5 fixed
   - Moderate: 3 planted · 2 found · 2 fixed
   - Hard: 4 planted · 3 found · 4 fixed
+- Cost and time: not recorded
 
 ## Mechanical evidence
 

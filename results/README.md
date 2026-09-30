@@ -10,6 +10,7 @@ Every evaluated delivery lives in `<edition>/<instance>/<agent>/run-<n>/`:
 | --- | --- |
 | `entrega/` | exactly what the agent handed back: `code/`, `RELATORIO.md`, `achados.json` (and the package it received) |
 | `run.json` | run parameters (PROTOCOL §3); what was not recorded is `null`, never guessed |
+| `custo.txt` | the client's usage summary as printed, when kept; `run.json`'s `cost_time` is copied from it (SCORING §9.3) |
 | `mecanico.json` | mechanical evidence: characterization before/after and the fix probes |
 | `veredito.json` | the judge's verdict, with a rationale per flaw |
 | `scorecard.json` · `scorecard.md` | the 1000-point scorecard |

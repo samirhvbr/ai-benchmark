@@ -196,7 +196,7 @@ Cada falha plantada tem uma **dificuldade** (§5). O scorecard reporta, por difi
 
 ### 8.3 Custo e tempo — informativo
 
-O scorecard registra o custo de produzir a entrega (`cost_time`: wall-clock, tokens, tok/s e `usd_estimate` derivado). Barato importa tanto quanto correto: mesmo TOTAL com 10× de diferença em custo não é equivalente. **Fora dos 1000 pontos**. Detalhe em `scoring/SCORING.md §9.3`.
+Each run records what producing the delivery cost (`cost_time`): tokens, the model's working time and a derived `usd_estimate`. Cheap matters as much as correct: the same TOTAL at 10× the cost is not equivalent. The time is the model's working time as the client reports it, **never the wall-clock**: in mode A the wall-clock includes every wait for the operator. **Outside the 1000 points.** Detail in `scoring/SCORING.md §9.3`.
 
 ### 8.4 Harness de avaliação
 

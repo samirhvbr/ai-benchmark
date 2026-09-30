@@ -148,8 +148,12 @@ discovery_index = 100 × Σ(peso_d × detectadas_d) / Σ(peso_d × plantadas_d)
 
 Dois modelos com o mesmo TOTAL mas `discovery_index` distintos têm perfis diferentes: um varreu o óbvio, o outro chegou nas armadilhas. Também não pontua.
 
-### 9.3 Custo e tempo (do run do modelo)
+### 9.3 Cost and time (of the model's run)
 
-O scorecard registra o **custo de produzir a entrega** (bloco `cost_time` em `../scoring/scorecard.schema.json`): `elapsed_seconds` (wall-clock da resolução), `phases[]`, `tokens` (input/output/cache/total), `output_tokens_per_second`, `finish_reason`/`status` e um `usd_estimate` **derivado** (tokens × tabela de preços do provedor). Barato importa tanto quanto correto: dois modelos com o mesmo TOTAL mas 10× de diferença em US$/run não são equivalentes na prática.
+Each run records the **cost of producing the delivery** (`cost_time`, shaped by the block in `../scoring/scorecard.schema.json`): `tokens` (input/output/cache/total), `elapsed_seconds`, `output_tokens_per_second`, `finish_reason`/`status`, and a `usd_estimate` **derived** from tokens × the provider's price table. Cheap matters as much as correct: two models with the same TOTAL and 10× apart in US$ per run are not equivalent in practice.
 
-Mede o **run do modelo**, não o harness (o `timing_s` do relatório do harness é o tempo das fases docker da avaliação, coisa diferente). **Não entra no TOTAL** — é informativo e serve de desempate/custo-benefício. Preenchido quando o modelo é de fato executado (o harness mecânico avalia uma entrega já pronta e não mede a inferência).
+- **Where the numbers come from.** They come from the client's own usage summary at the end of the session, for example Claude Code's `/cost`. That summary is saved as printed, as `custo.txt` next to `entrega/`, and `source` names it. The agent's own account of its time is not used, since no one can check it.
+- **Which time.** `elapsed_seconds` is the model's working time as the client reports it, for example Claude Code's "Total duration (API)". It is **never the wall-clock**: in mode A the wall-clock includes every wait for the operator (PROTOCOL §3), which measures the operator, not the model. When a client reports only wall-clock, `elapsed_seconds` is `null`.
+- **Which figure compares best.** Tokens. Time also depends on the provider's load and infrastructure, so across providers it is a rough figure.
+
+It measures the **model's run**, not the harness: the harness report's `timing_s` is the time of the evaluation's docker phases, a different thing. It **does not enter the TOTAL**. It is informative and serves as a tie-breaker and a cost/benefit reading. A run that did not keep the summary records `cost_time: null`, never an estimate.

@@ -208,6 +208,11 @@ preenchidos.
 Anything else voids the run: answering the question, a hint, a correction. Approving a
 tool-permission prompt is not a reply.
 
+**When the session ends**, before closing the client, save its usage summary as printed
+(Claude Code: `/cost`) to `custo.txt` next to `entrega/`. Tokens, the model's working time and
+the cost come from there ([SCORING §9.3](scoring/SCORING.md)), never from a wall-clock you
+measure: that one includes every wait for your reply.
+
 Guarde a **entrega** em `runs/<ID>/<modelo>-<n>/entrega/`, nos nomes que a tarefa pediu:
 - **`RELATORIO.md`** — os achados explicados (mecanismo, severidade, confiança 0–100) e a
   seção de decisões, com o que ele resolveu **não** mudar;
@@ -265,7 +270,8 @@ COMP, penalidades, TOTAL, selo, Brier, eixo de dificuldade):
 
 Saída no formato de [`scoring/scorecard-template.md`](scoring/scorecard-template.md)
 (+ JSON). Inclui os blocos **informativos** que não pontuam: calibração (Brier),
-cobertura por dificuldade e `cost_time` (tokens, tok/s, US$/run, wall-clock).
+cobertura por dificuldade e `cost_time` (tokens, tok/s, US$/run, and the model's working time
+as the client reports it, never the wall-clock).
 
 ### Passo 7 — Mediana de 3 (resultado oficial)
 
