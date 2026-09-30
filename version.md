@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.0`
+**Versão atual:** `0.2.1`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.1` — 2026-09-29 — scorecard.md shows the consistency review that changed a verdict
+
+A verdict can be changed after its judge wrote it, when a review across the deliveries of an
+instance finds one rule applied two ways. The change lives in the verdict's `review` list
+(what changed, by whom, why), and `tools/export-results.py` now renders it as a "Consistency
+review" section at the end of the scorecard — where the score is read, not only in the json.
 
 ### `0.2.0` — 2026-09-29 — results/ publishes the first scored runs: four agents on LEB-100-A
 

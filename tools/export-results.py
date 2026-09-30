@@ -274,6 +274,17 @@ def render_scorecard(r):
         w("")
         w(verdict["notes"].strip())
         w("")
+    # A verdict changed after the fact must say so where the score is read,
+    # not only in the json.
+    if verdict.get("review"):
+        w("## Consistency review")
+        w("")
+        w("Changes made to the matching judge's verdict after it was written, so that one rule")
+        w("applies to every delivery of this instance:")
+        w("")
+        for rv in verdict["review"]:
+            w("- **%s** (%s). %s" % (rv["change"], rv["by"], rv["why"]))
+        w("")
     return "\n".join(out).rstrip() + "\n"
 
 
