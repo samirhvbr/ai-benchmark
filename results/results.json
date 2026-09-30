@@ -10,6 +10,7 @@
       "level": 100,
       "leb_spec": "1.1.0",
       "language": "php8-mysqli",
+      "key_published_on": "2026-07-13",
       "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
       "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
       "mode": "A",
@@ -149,7 +150,9 @@
             "id": "claude-sonnet-5-5",
             "provider": "Anthropic",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-06",
+            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
           },
           "runs_count": 1,
           "official": false,
@@ -158,6 +161,7 @@
             825
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 79.2,
           "brier": 0.022,
           "runs": [
@@ -318,7 +322,9 @@
             "id": "claude-fable-5-1",
             "provider": "Anthropic",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-06",
+            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
           },
           "runs_count": 1,
           "official": false,
@@ -327,6 +333,7 @@
             781
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 91.7,
           "brier": 0.02,
           "runs": [
@@ -487,7 +494,9 @@
             "id": "claude-opus-5-5",
             "provider": "Anthropic",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-06",
+            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
           },
           "runs_count": 1,
           "official": false,
@@ -496,6 +505,7 @@
             711
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 91.7,
           "brier": 0.073,
           "runs": [
@@ -662,7 +672,9 @@
             "id": "gpt-6.1-sol",
             "provider": "OpenAI",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-04-30",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
           },
           "runs_count": 1,
           "official": false,
@@ -671,6 +683,7 @@
             666
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 87.5,
           "brier": 0.001,
           "runs": [
@@ -837,7 +850,9 @@
             "id": "gpt-6-astra",
             "provider": "OpenAI",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-04-30",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
           },
           "runs_count": 1,
           "official": false,
@@ -846,6 +861,7 @@
             661
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 87.5,
           "brier": 0.0,
           "runs": [
@@ -1012,7 +1028,9 @@
             "id": "gpt-5.6-terra",
             "provider": "OpenAI",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-02-16",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.6-terra"
           },
           "runs_count": 1,
           "official": false,
@@ -1021,6 +1039,7 @@
             625
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 45.8,
           "brier": 0.0,
           "runs": [
@@ -1181,7 +1200,9 @@
             "id": "gpt-5.6-sol",
             "provider": "OpenAI",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-02-16",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
           },
           "runs_count": 1,
           "official": false,
@@ -1190,6 +1211,7 @@
             612
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 70.8,
           "brier": 0.001,
           "runs": [
@@ -1362,7 +1384,9 @@
             "id": "gpt-5.5",
             "provider": "OpenAI",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2025-12-01",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.5"
           },
           "runs_count": 1,
           "official": false,
@@ -1371,6 +1395,7 @@
             601
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 70.8,
           "brier": 0.006,
           "runs": [
@@ -1537,7 +1562,9 @@
             "id": "gpt-5.6-luna",
             "provider": "OpenAI",
             "reasoning_effort": "xhigh",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": "2026-02-16",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.6-luna"
           },
           "runs_count": 1,
           "official": false,
@@ -1546,6 +1573,7 @@
             599
           ],
           "representative_run": 1,
+          "key_exposure": "before",
           "discovery_index": 83.3,
           "brier": 0.003,
           "runs": [
@@ -1713,7 +1741,10 @@
             "provider": "MiniMax",
             "reasoning_effort": "default",
             "reasoning_effort_note": "not configurable: the MiniMax-M3 client exposes no effort setting",
-            "exact_version": null
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://www.minimax.io/models/text/m3",
+            "training_cutoff_note": "MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used"
           },
           "runs_count": 1,
           "official": false,
@@ -1722,6 +1753,7 @@
             460
           ],
           "representative_run": 1,
+          "key_exposure": "unknown",
           "discovery_index": 70.8,
           "brier": 0.011,
           "runs": [

@@ -23,6 +23,7 @@ the same inputs produces the same bytes and a diff shows only what really change
 """
 
 import argparse
+import calendar
 import glob
 import hashlib
 import importlib.util
@@ -58,6 +59,10 @@ DIFFICULTY_ORDER = ["Fácil", "Moderada", "Difícil", "Especialista"]
 # PROTOCOL §4: an official result is three independent runs. A fourth would be the
 # retry that §4 item 3 forbids, so it is refused rather than published.
 MAX_RUNS = 3
+
+# The day each instance's answer key became public (MATRIX §4). It lives here and never
+# in matrix.json, whose SHA-256 is the published commitment and must not change.
+KEY_PUBLISHED = {"LEB-100-A": "2026-07-13"}
 
 
 def load(path):
@@ -134,6 +139,36 @@ def effort_label(model):
     return "`%s`" % na(effort)
 
 
+def key_exposure(model, instance):
+    """Could the model have trained on the instance's answer key? `before` when the provider's
+    published cutoff is earlier than the day the key went public, `after` when it is not,
+    `unknown` when the provider publishes no cutoff; None when the key was never published."""
+    published = KEY_PUBLISHED.get(instance)
+    if published is None:
+        return None
+    cutoff = model.get("training_cutoff")
+    if not cutoff:
+        return "unknown"
+    if len(cutoff) == 7:  # YYYY-MM: the data may run to the month's last day
+        year, month = int(cutoff[:4]), int(cutoff[5:])
+        cutoff = "%s-%02d" % (cutoff, calendar.monthrange(year, month)[1])
+    return "before" if cutoff < published else "after"
+
+
+def cutoff_label(model, instance):
+    cutoff = model.get("training_cutoff")
+    source = model.get("training_cutoff_source")
+    text = cutoff or ("not published by the provider" + (": " + model["training_cutoff_note"] if model.get("training_cutoff_note") else ""))
+    if source:
+        text += " ([source](%s))" % source
+    exposure = key_exposure(model, instance)
+    if exposure == "before":
+        text += " — before the answer key was published (%s): by its provider's own cutoff, the model did not train on it" % KEY_PUBLISHED[instance]
+    elif exposure is not None:
+        text += " — the answer key has been public since %s: the model may have trained on it" % KEY_PUBLISHED[instance]
+    return text
+
+
 def render_scorecard(r):
     meta, card, verdict, mech = r["meta"], r["card"], r["verdict"], r["mech"]
     model = meta["model"]
@@ -152,6 +187,7 @@ def render_scorecard(r):
     w("| --- | --- |")
     w("| Model | %s (`%s`, %s) · reasoning effort %s · exact version: %s |" % (
         model["name"], model["id"], model["provider"], effort_label(model), na(model.get("exact_version"))))
+    w("| Training cutoff | %s |" % cutoff_label(model, r["instance"]))
     w("| Instance | %s · level %s |" % (card["instance"], card["instance"].split("-")[1]))
     w("| Matrix (SHA-256) | `%s` |" % card["matrix_sha256"])
     w("| Package (SHA-256) | `%s` |" % meta["package_sha256"])
@@ -385,6 +421,7 @@ def aggregate(runs):
                 "score": score,
                 "totals": totals,
                 "representative_run": representative["run"],
+                "key_exposure": key_exposure(agent_runs[0]["meta"]["model"], instance),
                 "discovery_index": representative["discovery_index"],
                 "brier": representative["brier"],
                 "runs": summaries,
@@ -400,6 +437,7 @@ def aggregate(runs):
             "level": matrix["level"],
             "leb_spec": matrix["leb_spec"],
             "language": matrix.get("language"),
+            "key_published_on": KEY_PUBLISHED.get(instance),
             "matrix_sha256": first["card"]["matrix_sha256"],
             "package_sha256": first["meta"]["package_sha256"],
             "mode": first["meta"]["mode"],
@@ -461,8 +499,9 @@ def render_readme(data):
             c = r["categories"]
             pen = sum(p["deduction"] for p in r["penalties"])
             link = "%s/%s/%s/run-%d/scorecard.md" % (inst["edition"], inst["id"], e["agent"], r["run"])
-            w("| %d | [%s](%s) · %s | **%d** | %s | %s | %d | %s | %s | %s |" % (
-                e["rank"], e["model"]["name"], link, e["model"].get("reasoning_effort", ""), e["score"], r["grade"],
+            mark = " †" if e["key_exposure"] in ("after", "unknown") else ""
+            w("| %d | [%s](%s)%s · %s | **%d** | %s | %s | %d | %s | %s | %s |" % (
+                e["rank"], e["model"]["name"], link, mark, e["model"].get("reasoning_effort", ""), e["score"], r["grade"],
                 " | ".join(str(c[k]["score"]) for k in CATEGORIES), pen,
                 "%.1f" % e["discovery_index"], "—" if e["brier"] is None else "%.3f" % e["brier"],
                 runs_cell(e)))
@@ -472,6 +511,16 @@ def render_readme(data):
         w("always the total of one run, and every other column and the link are that run's (PROTOCOL §4).")
         if not all(e["official"] for e in inst["entries"]):
             w("A score with fewer than %d runs is **not official**." % MAX_RUNS)
+        if inst["key_published_on"]:
+            exposed = [e for e in inst["entries"] if e["key_exposure"] in ("after", "unknown")]
+            w("")
+            w("The answer key of %s has been public since %s (MATRIX §4). Each run records the training" % (inst["id"], inst["key_published_on"]))
+            w("cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.")
+            if exposed:
+                w("† Cutoff after the key went public, or not published: %s." % ", ".join(
+                    "%s (%s)" % (e["model"]["name"], e["model"].get("training_cutoff") or "not published") for e in exposed))
+            else:
+                w("Every agent above has a published cutoff earlier than that.")
         w("")
     return "\n".join(out).rstrip() + "\n"
 

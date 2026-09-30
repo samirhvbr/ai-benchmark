@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.8`
+**Versão atual:** `0.2.9`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,33 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.9` — 2026-09-30 — run.json records the model's training cutoff, and the scorecard says whether the model could have trained on the answer key
+
+LEB-100-A's answer key has been in this public repository since 2026-07-13. The execution VM keeps
+it out of reach during a run; whether a model could have met it in training depends on how far that
+model's training data reaches. That is now recorded instead of left as a blanket caveat.
+
+`run.json` gains `model.training_cutoff` and `model.training_cutoff_source`: the cutoff the provider
+publishes, with the page it comes from, and `null` when the provider publishes none (never a
+third-party estimate; PROTOCOL §3). The ten runs on LEB-100-A are filled from the providers' pages,
+checked on 2026-09-30:
+
+| Model | Published cutoff | Source |
+| --- | --- | --- |
+| Claude Sonnet 5.5 · Fable 5.1 · Opus 5.5 | 2026-06 (training data cutoff) | Anthropic models overview |
+| GPT-6.1-sol · GPT-6-astra | 2026-04-30 (knowledge cutoff) | OpenAI model pages |
+| GPT-5.6-terra · sol · luna | 2026-02-16 (knowledge cutoff) | OpenAI model pages |
+| GPT-5.5 | 2025-12-01 (knowledge cutoff) | OpenAI model page |
+| MiniMax-M3 | not published | MiniMax model page and Hugging Face card |
+
+`tools/export-results.py` holds the day each answer key became public (`KEY_PUBLISHED`; never in
+`matrix.json`, whose hash is the published commitment) and derives `key_exposure` for each entry:
+`before`, `after` (a month-precision cutoff counts to the month's last day) or `unknown`. Each
+scorecard gains a "Training cutoff" row with that verdict; the leaderboard marks `after` and
+`unknown` with † and names them below the table. Today nine are `before` and MiniMax-M3 is
+`unknown`. `results.json` gains `key_exposure` per entry and `key_published_on` per instance; no
+score moves.
 
 ### `0.2.8` — 2026-09-30 — tools/export-results.py publishes repeated runs: the lower median is the score, and the details are that run's
 

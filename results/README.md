@@ -31,9 +31,13 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 7 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
 | 8 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
 | 9 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
-| 10 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
+| 10 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) † · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
 Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is
 always the total of one run, and every other column and the link are that run's (PROTOCOL §4).
 A score with fewer than 3 runs is **not official**.
+
+The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
+cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
+† Cutoff after the key went public, or not published: MiniMax-M3 (not published).

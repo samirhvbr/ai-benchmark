@@ -78,6 +78,8 @@ instância destruiria a comparabilidade entre modelos e entre casos.
 
 Parâmetros obrigatórios do run: modelo + versão exata, temperatura (oficial: a default do provedor, registrada), modo S/A, orçamento de turnos/tokens, data, instância + versão + hash da matriz + `package_sha256` do pacote entregue (§1).
 
+Every run also records the model's training cutoff as its provider publishes it (`model.training_cutoff`, with `training_cutoff_source` pointing at the provider's page). It is `null` when the provider publishes none, never a third-party estimate. Against the day an instance's answer key became public, it says whether the model could have trained on that key (MATRIX §4).
+
 ## 4. Reprodutibilidade
 
 1. Run oficial = **3 execuções independentes**; o scorecard oficial é a **mediana do TOTAL** (registrando as 3).

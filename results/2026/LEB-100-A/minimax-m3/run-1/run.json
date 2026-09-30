@@ -6,7 +6,10 @@
     "provider": "MiniMax",
     "reasoning_effort": "default",
     "reasoning_effort_note": "not configurable: the MiniMax-M3 client exposes no effort setting",
-    "exact_version": null
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://www.minimax.io/models/text/m3",
+    "training_cutoff_note": "MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used"
   },
   "run": 1,
   "instance": "LEB-100-A",

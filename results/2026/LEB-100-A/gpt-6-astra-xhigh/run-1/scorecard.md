@@ -6,6 +6,7 @@
 | Field | Value |
 | --- | --- |
 | Model | GPT-6-astra (`gpt-6-astra`, OpenAI) · reasoning effort `xhigh` · exact version: not recorded |
+| Training cutoff | 2026-04-30 ([source](https://developers.openai.com/api/docs/models/gpt-6-astra)) — before the answer key was published (2026-07-13): by its provider's own cutoff, the model did not train on it |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 | Package (SHA-256) | `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f` |
