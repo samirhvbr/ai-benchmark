@@ -1,0 +1,218 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "GLM-5.3-Flash",
+    "version": "not recorded",
+    "provider": "Z.AI"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-09-30",
+    "runs": [
+      624
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-09-30",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "P",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 98,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "fecha a string e injeta predicados arbitrários",
+      "rationale": "F1 names lib.php:80-84 and explains the quote-breaking injection via $_GET['busca']. C3 comes from the probe (corrigida=true): delivered lib.php:118-135 binds '%'.$busca.'%' to a mysqli prepared LIKE ?. The model deliberately left % and _ unescaped (Decisions item 5); the probe decides C3."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 98,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "fecha o atributo `value` e injeta",
+      "rationale": "F3 names both output points (index.php:79 and :82) and the attribute-breakout mechanism. Delivered index.php:76 computes htmlspecialchars($busca, ENT_QUOTES, 'UTF-8'), which is used at :84 (value=) and :87 (Resultados para). The markup structure is unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": true,
+      "confidence": 70,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "interpretado como fórmula quando o CSV é aberto no Excel/LibreOffice … **O que fiz:** **nada no código**",
+      "rationale": "F12 points at the raw titulo in the export loop (lib.php:136-145) and explains the spreadsheet formula mechanism. It was deliberately not fixed: delivered lib.php:228-234 still writes titulo raw, and the probe exported '=1+1' (corrigida=false)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 80,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o `PHPSESSID` pré-login é mantido após autenticar",
+      "rationale": "F9 names index.php:24 and explains that a fixed pre-login id stays valid and authenticated. Delivered index.php:24 calls session_regenerate_id(true) right after autenticar() succeeds and before $_SESSION is populated."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "MD5 sem salt é quebrável por tabela rainbow/força bruta a custo trivial",
+      "rationale": "F4 names lib.php:15. Delivered autenticar (lib.php:15-46) fetches the stored hash by login, checks legacy 32-char md5 with hash_equals or else uses password_verify, and on a legacy match re-hashes with password_hash (lib.php:38-44). This is the expected transparent migration, and seed logins still work. Widening senha to VARCHAR(255) in schema.sql:7 is not COMP-009 (rule 8)."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "a senha real do banco em produção e a chave da central de e-mail estão … mantive os valores como fallback",
+      "rationale": "F5 names config.php:12 and :15 and explains the exposure. Both literals remain in the delivered code: config.php:12 is unchanged, and config.php:16 now reads getenv('SMTP_API_KEY') ?: 'netx-smtp-9f83e2c1a7b64d05'. That is exactly the planted state (secret in VCS), and the model deliberately chose not to remove it (JSON corrigido=false)."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "(`?ver=` exibe qualquer id) … é chamada com o id do GET sem checagem",
+      "rationale": "F2 names index.php:52-58: verChamado is called with the GET id and no ownership check. Delivered index.php:57 denies unless papel=tecnico or usuario_id === uid, and the verChamado(mysqli,int) signature is preserved (lib.php:154). The client-only filtering it added to the listing and export is enforcement of the manifest rule, not COMP-003 (rules 2 and 6)."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`$qtd` é 0. Em PHP 8, `0/0` lança `DivisionByZeroError` — fatal.",
+      "rationale": "F7 names lib.php:116 with the correct mechanism. C3 comes from the probe (corrigida=true): delivered lib.php:178-180 returns 0.0 when $qtd === 0, which keeps the float return."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. F8 covers lib.php:125-150, but it describes a race on the fixed temp file and the silent fopen-failure return (lib.php:127-128), never the $fp left open by the `$res === false` return at :133. This is a silent fix: delivered exportarCsv runs the query first (lib.php:201-212), opens $fp only afterwards (php://output, lib.php:218), and closes it at lib.php:236. No return path leaves a handle open."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "para N chamados são 1+N queries de ida e volta ao banco a cada listagem.",
+      "rationale": "F10 names lib.php:89 and :137 and explains the 1+N round trips. C3 comes from the probe (corrigida=true): the LEFT JOIN usuarios in listarChamados (lib.php:114-115) and exportarCsv (lib.php:194-195) keeps the tecnico_nome key, the '-' fallback (lib.php:145, :232) and the ordering."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. The dispatcher is still monolithic: delivered index.php mixes routing, authorization (:57, :77) and inline HTML building (:55-102), with no templates or thin controller."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. Decisions item 4 discusses the fallback of formatarStatus, not its magic numbers. Delivered lib.php:54-56 and :69-71 still use the literals 1/2 and 3/4/30, with no named constants."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not refactored. Delivered rotuloPrioridade (lib.php:66-85) is byte-identical to the legacy four-level nested if."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "Visibility rule also unenforced in the listing and the CSV export (lib.php:78-93, lib.php:123-150): any client lists and exports every ticket. Reported inside F2 together with SEC-017 and fixed via optional filters driven by the session.",
+    "Export race / silent failure (F8): every export writes and re-reads one fixed file, EXPORT_DIR/chamados.csv (lib.php:125-126, :150), so concurrent exports can truncate or interleave each other, and a failed fopen returns with no headers and no error (lib.php:127-128).",
+    "CSV header serialization (F6): the legacy fputcsv at lib.php:130 emits ID,Titulo,Status,Tecnico,\"Aberto em\", which differs byte-wise from the manifest's literal header. The fields are identical under CSV parsing.",
+    "Latent concatenated SQL (F11) in tecnicoNome (lib.php:69) and verChamado (lib.php:100). Not exploitable because of the int typing; a hardening item.",
+    "SEC-005 — no CSRF token on the login POST (index.php:20-36). F13 also notes no rate limiting and no logout route."
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "Binding: achados.json.leb (LEB-100-A, 1.1, sha 68088abd…) matches the matrix. Every finding appears in both the JSON and the prose, and no decoy was reported (no command injection, no index suggestion). F2 location: its JSON arquivo/linha points at lib.php:78-93 (listarChamados), but both the prose and the JSON mecanismo name index.php:52-58 (?ver= with no check), so it was matched to SEC-017; the listing/export part is recorded as an extra finding. BUG-004 judgment call: F8 sits in the same function, but it describes a different defect (shared temp file race, silent fopen failure), not the handle leak on the $res===false path, so it was ruled not reported (silent fix: C3/C5 score, C1/C2 do not). F5 inaccuracy: the prose says both constants 'now accept' an env override, but DB_PASS already did in the legacy code (config.php:12). Only SMTP_API_KEY changed (config.php:16), and both literals remain, so SEC-015 C3 is none. Not counted as COMP: (a) the literal header line fwrite at lib.php:225 now matches the manifest text exactly, and the parsed fields are unchanged; (b) exportarCsv streams to php://output and no longer leaves EXPORT_DIR/chamados.csv on disk — the manifest promises the CSV 'na saída' and the characterization explicitly accepts streaming; (c) prepared statements with get_result() in listarChamados and verChamado return integer columns as PHP ints instead of strings — inherent to the matrix's own expected mysqli-prepared SEC-001 fix, applied consistently to verChamado; (d) the client-only filters for the listing and export, via optional trailing params that keep sessionless callers seeing everything, are enforcement per rules 2 and 6; mediaResposta was left global. Deployment caveat, not counted as PEN-001: schema.sql widens senha to VARCHAR(255) (rule 8), but no ALTER TABLE is shipped for existing databases. On an unmigrated CHAR(32) column, the rehash UPDATE in autenticar (lib.php:39-43) would fail in strict mode (mysqli exception under PHP 8.1+ default reporting) or truncate the bcrypt hash and lock the user out in non-strict mode. The contracted bring-up (schema.sql + seed.sql) works, and the report does flag the column change. SEC-001: % and _ were deliberately left unescaped (Decisions item 5); C3 is from the probe.",
+  "expl_rubric": {
+    "clareza": 8,
+    "precisao": 6,
+    "causa_raiz": 7,
+    "priorizacao": 7,
+    "trade_offs": 6
+  },
+  "expl_justification": {
+    "clareza": "It has a clear Resumo, uniform Onde / Categoria-Severidade-Confianca / Mecanismo / Impacto / O que fiz blocks, a numbered Decisoes list and a 'Como verificar' section. It contradicts itself in places: Decisao 7 speaks of 'mesmas assinaturas publicas' and a CSV 'byte-compativel' after F2 added parameters and F6 changed the header bytes, F8 promises the 'mesmo corpo', and Decisao 5 has a garbled example ('20h*-estilo padroes').",
+    "precisao": "Several points are right: fputcsv quoting the header because of the space in 'Aberto em', DivisionByZeroError on PHP 8, fixation needing use_trans_sid or a planted cookie, the ?int/int concatenations being harmless today, and ana seeing bruno's 'Troca de plano' and 'Fatura em duplicidade'. F5's mechanism is wrong: it says the DB_PASS fallback leaves no way to override by environment, but the original already reads getenv('DB_PASS') first, so the 'fix' (env override with the literal kept) changes nothing for DB_PASS. F6 attributes header matching to the management report, which the manifest says matches status labels. F1 asserts, without support, DML privileges and possible anonymous reach, though index.php:20-36 requires login for every route.",
+    "causa_raiz": "Most findings name a concrete path. The three unfiltered surfaces are shown with seed titles. F8 gives the shared file truncated by fopen('w') and the blank 200 when EXPORT_DIR is missing. F6 names the quoting rule, and F9 the ways a pre-login id survives. The F5 mechanism misreads the code, F1 and F4 stay generic, and there is no cross-finding synthesis.",
+    "priorizacao": "The findings run monotonically by severity (1 critica, 4 alta, 5 media, 3 baixa), each with a confidence. Effort and risk appear in the deferrals (secrets fallback, rate limiting), not in the ranking, which is by severity alone, the same pattern as F, H and O.",
+    "trade_offs": "There are real trade-offs on several items: keeping the secrets fallback to avoid breaking the next deploy, declining CSV formula prefixing because billing reads the bytes, a session-only rate limit being 'trivialmente contornavel', and keeping wildcards and the global average. Three consequential changes go unweighed. Optional parameters are added to two manifest signatures with no comparison against new functions. The header is rewritten to a literal although current consumers receive the quoted form (the gap noted for G and I). The bcrypt rehash is written on first login with only schema.sql widened, and nothing is said about production columns still at CHAR(32) or an ALTER step."
+  }
+}

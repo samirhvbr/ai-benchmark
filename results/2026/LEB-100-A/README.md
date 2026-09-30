@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Thirteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Fifteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
-2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3
-and GLM-5.3 their first (see *Runs of 2026-09-30* below).
+2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
+GLM-5.3, GLM-5.3-Flash and GLM-5.3-FlashX their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,7 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- GLM-5.2 and GLM-5.3 ran at `high`, the level chosen in their client;
+- the four GLM models ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
@@ -39,6 +39,8 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `z.ai-glm-5.2-high` | GLM-5.2 (Z.AI), in opencode 1.18.33 | high |
 | `moonshot-kimi-k3-default` | Kimi K3 (Moonshot AI) | default (as filed) |
 | `glm-5.3-high` | GLM-5.3 (Z.AI), in opencode 1.18.33 | high |
+| `glm-5.3-flash-high` | GLM-5.3-Flash (Z.AI), in opencode 1.18.33 | high |
+| `glm-5.3-flashX-high` | GLM-5.3-FlashX (Z.AI), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -153,8 +155,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Five deliveries arrived. The first three were labelled at random **K** to **M**, then **N** and
-**O** as the last two arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Seven deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**Q** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -164,6 +166,8 @@ every verdict was in:
 | **M** | Kimi K3, run 1 | 528 |
 | **N** | GLM-5.2, run 1 | 388 |
 | **O** | GLM-5.3, run 1 | 629 |
+| **P** | GLM-5.3-Flash, run 1 | 624 |
+| **Q** | GLM-5.3-FlashX, run 1 | 597 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -224,6 +228,23 @@ every verdict was in:
     logged-in client's session. Callers without a session, such as the nightly export, still
     receive every ticket, so it enforces the visibility rule and is not COMP-003.
   - Its cost comes from opencode's record: US$ 0.73.
+- **GLM-5.3-Flash (P): 624, eighth, Silver; GLM-5.3-FlashX (Q): 597, twelfth, Bronze.**
+  - Both are smaller variants of GLM-5.3, run the same morning in opencode at effort `high` with
+    every isolation layer. Each got the fixed first message and nothing else.
+  - Their session logs show no request to GitHub. Flash's report quotes
+    `=HYPERLINK("http://evil",…)` as a formula-injection example; that is text, not a request.
+  - Flash lands five points below GLM-5.3 for a tenth of the cost (US$ 0.08 against US$ 0.73).
+    Unlike GLM-5.3, it migrated MD5 and left the secrets in place. FlashX fixed five flaws fully.
+  - Both kept the contract whole (COMP 100). Flash's judge kept three calls the review confirmed
+    against earlier verdicts:
+    - two optional parameters added to manifest functions are not COMP;
+    - the CSV header rewritten as a literal is not COMP either, since its text and order still
+      match the manifest;
+    - a bcrypt re-hash that an unmigrated `CHAR(32)` column would truncate is a deployment caveat,
+      not PEN-001. D, E and F widened the same column, and no earlier judge penalized that risk.
+    The EXPL judge scored that risk under trade-offs.
+  - FlashX's switch to SQL `AVG` is not COMP-003, as for C and F. Its report calls the result
+    identical, which it is not, and that cost it under EXPL precision.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

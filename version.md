@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.20`
+**Versão atual:** `0.2.21`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,26 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.21` — 2026-09-30 — results/ adds GLM-5.3-Flash (eighth at 624) and GLM-5.3-FlashX (twelfth at 597) on LEB-100-A
+
+The two smaller GLM-5.3 variants were run the same morning, each in opencode 1.18.33 at effort
+`high`, with every isolation layer. Each session record shows the fixed first message, no other
+operator message, and no request to GitHub. Z.AI publishes no training cutoff for either, so both
+carry the dagger.
+
+| Model | Harness | Label | EXPL | Total | Grade | Place | Cost |
+| --- | --- | --- | ---: | ---: | --- | ---: | ---: |
+| GLM-5.3-Flash | 22/22; SEC-001, BUG-001, PERF-001 fixed | P | 34 | 624 | Silver | 8th | US$ 0.08 |
+| GLM-5.3-FlashX | 22/22; the same three fixed | Q | 33 | 597 | Bronze | 12th | US$ 0.10 |
+
+Both kept the contract whole. The consistency review kept every call:
+- Flash's optional parameters and literal CSV header are not COMP.
+- Flash's unguarded bcrypt re-hash, which a legacy `CHAR(32)` column would break, is a deployment
+  caveat and not PEN-001, as for D, E and F.
+- FlashX's SQL `AVG` is not COMP-003, as for C and F.
+
+The evaluation notes and the README status count fifteen agents.
 
 ### `0.2.20` — 2026-09-30 — results/ adds GLM-5.3 on LEB-100-A, sixth at 629
 
