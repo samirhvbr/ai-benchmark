@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.21`
+**Versão atual:** `0.2.22`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,27 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.22` — 2026-09-30 — results/ adds Grok 4.7 on LEB-100-A, sixth at 638
+
+Another run of 2026-09-30, evaluated like the rest:
+- harness 22/22, with all four probes fixed, SEC-008 included;
+- one blind matching judge (label R);
+- the EXPL judge on its kept scale (42/50);
+- `score.py`.
+
+It ran in opencode 1.18.33 at effort `high` with every isolation layer. The client counted US$ 2.43.
+xAI publishes a training cutoff of May 2026, before the answer key went public, so it carries no
+dagger.
+
+- **First web request.** It is the first agent to use a web tool: one fetch of the PHP manual page
+  for `fputcsv`. The protocol blocks GitHub, not the web. Its run note records the fetch, and its
+  session shows no request to GitHub.
+- **Result.** Grok 4.7 totals 638 (Silver), sixth, and is the strongest model here from outside
+  Anthropic and OpenAI. It is the fourth agent to fix the CSV formula injection, without G's
+  side-effect on the `-` marker. It kept the contract whole.
+- **Notes.** The evaluation notes count sixteen agents, and their per-run bullets drop the rank
+  ordinals, which went stale with each new run. The README status counts sixteen agents.
 
 ### `0.2.21` — 2026-09-30 — results/ adds GLM-5.3-Flash (eighth at 624) and GLM-5.3-FlashX (twelfth at 597) on LEB-100-A
 

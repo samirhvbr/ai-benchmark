@@ -1,0 +1,54 @@
+{
+  "agent": "grok-4.7",
+  "model": {
+    "name": "Grok 4.7",
+    "id": "grok-4.7",
+    "provider": "xAI",
+    "reasoning_effort": "high",
+    "exact_version": null,
+    "training_cutoff": "2026-05",
+    "training_cutoff_source": "https://docs.x.ai/docs/models"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-30T10:45:19-03:00",
+    "ended": "2026-09-30T11:14:40-03:00",
+    "log": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d6ffb1bffeDp2kpx6UW8wWrQ), not published"
+  },
+  "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed (all in place since 2026-09-30 09:02 UTC-3), and no IPv6 connectivity (README, Execution environment)",
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 375533,
+      "output": 19450,
+      "cache": 2298496,
+      "total": 2761606
+    },
+    "usd_estimate": 2.43,
+    "note": "the total includes 68,127 reasoning tokens; opencode keeps no model time"
+  },
+  "logs": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d6ffb1bffeDp2kpx6UW8wWrQ), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The agent made one web request: at 10:53 it fetched the PHP manual page for fputcsv (https://www.php.net/manual/en/function.fputcsv.php). No other agent so far used a web tool; the protocol blocks GitHub, not the web."
+}

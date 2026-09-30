@@ -1,0 +1,220 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Grok 4.7",
+    "version": "not recorded",
+    "provider": "xAI"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-09-30",
+    "runs": [
+      638
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-09-30",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "R",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`listarChamados` monta `WHERE titulo LIKE '%\" . $busca . \"%'` e `index.php` passa `$_GET['busca']` sem tratamento.",
+      "rationale": "F1 at lib.php:82 explains quote break-out, the `--` comment and a working UNION extraction of usuarios. Fixed in mysqli with a prepared `LIKE ? ESCAPE '\\\\'` and addcslashes of % _ \\ (delivered lib.php:98-113); the probe confirms (legacy 5 rows, fixed 0). The wildcard escaping changes search results by design (not COMP-003), and the tecnico_nome key and criado_em DESC order are preserved."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`$busca` entra cru no atributo `value` e no parágrafo «Resultados para:».",
+      "rationale": "F3 at index.php:79-82 explains the attribute break-out payload. Both echo points now use htmlspecialchars($busca, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') (delivered index.php:138, 143, 146). The markup structure is unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": true,
+      "confidence": 82,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Um título `=cmd|' /C calc'!A1`, ou começando com `+`, `-`, `@`, ou espaço seguido desses, vira fórmula quando o técnico abre o CSV no Excel ou no LibreOffice.",
+      "rationale": "F9 at lib.php:138-144 explains formula execution in the spreadsheet. campoCsv (delivered lib.php:173-182) prefixes ' only to cells matching ^\\s*[=+\\-@], and it explicitly leaves the '-' no-technician marker untouched, so the rule-10 PEN-001 pattern does not arise. The probe confirms the fix, and the header and field order are unchanged."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "No login bem-sucedido o código grava `uid` e `papel` no id de sessão que já veio no cookie e redireciona, sem `session_regenerate_id`.",
+      "rationale": "F6 at index.php:15-26 explains fixation: a planted id survives authentication. session_regenerate_id(true) is called after a successful autenticar and before uid/papel are written (delivered index.php:68), with use_strict_mode and HttpOnly/SameSite cookie params as extra hardening (index.php:43-52)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`autenticar` compara `md5($senha)` com `usuarios.senha CHAR(32)`. Não há sal.",
+      "rationale": "F11 at lib.php:15 correctly explains unsalted, fast MD5 that precomputed tables reverse. The model deliberately left it unchanged: delivered lib.php:15 still uses md5($senha). Its stated reason, that a login re-hash cannot migrate the base and that changing the algorithm locks users out, is wrong, because transparent migration on login is the expected fix. C3 none; C5 none since nothing was fixed."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`DB_PASS` cai em `N3tX@2013!prod` quando a variável de ambiente não existe, e `SMTP_API_KEY` é a literal `netx-smtp-9f83e2c1a7b64d05`.",
+      "rationale": "F12 at config.php:12-15 explains that anyone holding the source holds the production credentials, and it recommends rotation. The model deliberately did not change config.php (byte-identical to the pristine file), so C3 none and C5 none."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 98,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`?ver=<id>` chama `verChamado` só com o id.",
+      "rationale": "F2 (index.php:39-73, which includes :53) explains that uid/papel are never checked and that sequential ids allow enumeration. The dispatcher now checks ownership after loading (podeVerChamado, delivered index.php:15-21, 111-113): a client is denied another client's ticket, a technician sees all, and verChamado(mysqli,int) is preserved. Filtering the listing and the client's CSV to their own tickets (index.php:89-99, 136) is enforcement of the manifest rule, not COMP."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 97,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se nenhum chamado tem primeira resposta, `$qtd` é 0. No PHP 8 isso lança `DivisionByZeroError`",
+      "rationale": "F5 at lib.php:116 explains the empty-set division. The delivered code uses SQL SUM/COUNT and returns 0.0 when the count is 0 (delivered lib.php:155-171); the probe confirms. With the seed the value is still 25.666..., so there is no business change."
+    },
+    {
+      "id": "BUG-004",
+      "reported": true,
+      "confidence": 96,
+      "criteria": {
+        "C1": "half",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se a query falha depois do `fopen`, o handle vaza e os headers nunca saem.",
+      "rationale": "The leak on the query-failure path is named explicitly in F4 (lib.php:125-150, which includes :133), but F4 is filed as `seguranca` and headlined as the fixed-path CSV file, so C1 is half under rule 1; the one-sentence mechanism is correct, so C2 is full. In the delivered code the query runs before any handle is opened (lib.php:215-218), and emitirCsv always fcloses the php://output handle (lib.php:188-202), so no path leaks."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "cada linha de `listarChamados` e de `exportarCsv` chama `tecnicoNome`, que executa `SELECT nome FROM usuarios WHERE id = ...`.",
+      "rationale": "F10 at lib.php:89/137 explains the per-row query. Both listarChamados and exportarCsv now use LEFT JOIN usuarios with COALESCE(u.nome,'-') (delivered lib.php:98-100, 211-214). tecnico_nome and the '-' for ticket 104 are preserved; the probe confirms, and tecnicoNome is kept with the same signature."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The report never names the dispatcher mixing routing, authorization, rules and HTML assembly. 'Não reescrevi o sistema' (and 'Não reescrevi o sistema em camadas' in achados.json nao_alterei) names neither the dispatcher nor the mixed responsibilities. index.php still builds all HTML inline (delivered index.php:114-161); the three new helpers at index.php:9-35 only add authorization, so there is no target structure."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The Decisões paragraph on formatarStatus/rotuloPrioridade discusses the contracted labels and the else->Resolvido fallback, not the unnamed literals 1/2/3 and 3/4/30. The code is unchanged (delivered lib.php:34-67)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The model notes only a truth-table quirk of rotuloPrioridade (null tested before priority); it never flags the four-level nesting. The function is unchanged (delivered lib.php:48-67)."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "Export writes to a fixed, shared file EXPORT_DIR/chamados.csv that concurrent exports race on and that is left on disk after readfile — lib.php:125-150 (F4, beyond the BUG-004 leak it also names)",
+    "Listing and CSV export expose every client's tickets to any logged-in client — index.php:44-47 and 72-73 (part of F2, beyond the planted ?ver IDOR)",
+    "fputcsv quotes the header field with a space, so the first line was ID,Titulo,Status,Tecnico,\"Aberto em\" rather than the manifest literal — lib.php:130 (F7)",
+    "PHP 8.4 deprecation of fputcsv without an explicit $escape; with display_errors on, it prints before header() and the download loses its headers — lib.php:130/138 (F8)",
+    "Array-valued login[]/busca[] parameters raise an uncaught TypeError on the string-typed lib functions (HTTP 500) — index.php:22, 72 (F13)",
+    "Session cookie without HttpOnly/SameSite and session.use_strict_mode off — index.php:15 (part of F6, beyond SEC-013)"
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json leb binding (LEB-100-A, 1.1, sha 68088ab...) matches the package. The JSON and the prose list the same 13 findings (F1-F13), and their locations agree. Mapping: F1->SEC-001, F2->SEC-017, F3->SEC-003, F4->BUG-004 (half: filed as seguranca under a fixed-path-file headline, though it names the leak explicitly), F5->BUG-001, F6->SEC-013, F9->SEC-008, F10->PERF-001, F11->SEC-014, F12->SEC-015; F7, F8 and F13 are real extras. No decoy was reported: the model explicitly declined a FULLTEXT index and said LIKE '%termo%' cannot use an index, though its wording 'não usa o índice de titulo' wrongly implies such an index exists. Bundled false claims recorded here, not as false positives (rule 4): (1) F13 says `(int)` of an array also throws a TypeError for ver[]; in PHP it silently yields 0/1 (confirmed with php -r), so only login[] and busca[] crash; (2) F11 says a login re-hash cannot migrate the base and that changing the algorithm locks every user out. That is wrong: transparent migration on login is the matrix's expected fix, and it is the stated reason SEC-014 was left unfixed. SEC-014 and SEC-015 were deliberately left unfixed with explanations, so C3 is none for both; config.php, schema.sql and seed.sql are byte-identical to the pristine code. COMP review: all 7 public signatures and return shapes are preserved. The status labels, routes/params, HTML table, schema and mysqli are unchanged. exportarCsv still writes every ticket to the output with the same two headers; the header line is rewritten as a literal with the same text and order (rule 9), and dropping the on-disk EXPORT_DIR file is not a declared contract. Clients' CSV export and listing are filtered to their own tickets, while technicians and session-less callers of exportarCsv still get everything (rule 6 enforcement). mediaResposta stays global, so there is no COMP-003. Deployment caveat, not PEN-001: `ESCAPE '\\\\'` assumes the default sql_mode without NO_BACKSLASH_ESCAPES.",
+  "expl_rubric": {
+    "clareza": 9,
+    "precisao": 9,
+    "causa_raiz": 9,
+    "priorizacao": 7,
+    "trade_offs": 8
+  },
+  "expl_justification": {
+    "clareza": "It opens with a Resumo that frames the whole system as two contracts (a batch data API that must see everything versus the product's visibility rule) and uses uniform Onde/Severidade-Confianca/Mecanismo/Impacto/Correcao blocks, followed by a long, well-structured Decisoes section. It is dense but direct and never disorganized; the only thing missing relative to the best is a findings index or count table.",
+    "precisao": "Claims are accurate and unusually deep, several reproduced. The UNION returns 9 rows because SELECT * has 9 columns, and it correctly notes the password column lands in the tecnico_id position. The header is quoted as '\"Aberto em\"' (bytes captured); the 8.4 fputcsv deprecation fires before header() and triggers 'headers already sent'; SUM/COUNT keeps the exact 25.666666666667 that AVG would round, the choice D, E, H and I also make. One loose spot: F1 says the UNION 'basta para levar os hashes MD5' while its own payload puts the hash in tecnico_id, which the listing does not render (it renders titulo, which the payload fills with nome), so surfacing the hash would need a reordered payload. It does not cover the dead connect_errno check.",
+    "causa_raiz": "The cross-finding synthesis is stated up front (the lib is a batch API, the border ignores uid/papel, so F1-F2 follow) and the mechanisms are concrete and reproduced: the LIKE literal closed and ORDER BY neutralized by '--'; $qtd=0 taking down the whole listing; fopen('w') sharing one file plus the warning-before-header chain; and, in Decisoes, the null tested before priority so a priority-4 ticket without a response reads 'Aguardando 1a resposta'. MD5 and secrets stay at a more standard depth.",
+    "priorizacao": "Each finding has a severity and a confidence, and the deferrals are richly justified by effort and risk. The order is not monotonic: the two deferred alta items (F11 MD5, F12 secrets) sit after five media findings, apparently because they were not fixed, but that ordering principle is not stated, so two alta findings read as lower priority than media ones.",
+    "trade_offs": "Alternatives are compared throughout: filtering at the border versus inside the lib, with the accepted cost that a client's rows are read then discarded server-side; keeping the '-' marker unprefixed in the CSV; the global average versus a per-client one; role revalidation per request versus session-cached with fail-closed unless exactly 'tecnico'; a CSRF token breaking a monitor that posts only login/senha; FULLTEXT changing search semantics; ESCAPE '\\\\' to keep the seed's escape bytes. The gap is that F11 and F12 are treated as essentially unfixable ('trocar o algoritmo tranca todos', removing the fallback 'derruba o painel'), without weighing the verify-then-rehash-on-login and empty-fallback-plus-deploy-note paths that other reports took to make real progress on both."
+  }
+}

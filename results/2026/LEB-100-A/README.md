@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Fifteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Sixteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash and GLM-5.3-FlashX their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX and Grok 4.7 their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,7 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- the four GLM models ran at `high`, the level chosen in their client;
+- the four GLM models and Grok 4.7 ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
@@ -41,6 +41,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `glm-5.3-high` | GLM-5.3 (Z.AI), in opencode 1.18.33 | high |
 | `glm-5.3-flash-high` | GLM-5.3-Flash (Z.AI), in opencode 1.18.33 | high |
 | `glm-5.3-flashX-high` | GLM-5.3-FlashX (Z.AI), in opencode 1.18.33 | high |
+| `grok-4.7` | Grok 4.7 (xAI), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -155,8 +156,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Seven deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**Q** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Eight deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**R** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -168,6 +169,7 @@ every verdict was in:
 | **O** | GLM-5.3, run 1 | 629 |
 | **P** | GLM-5.3-Flash, run 1 | 624 |
 | **Q** | GLM-5.3-FlashX, run 1 | 597 |
+| **R** | Grok 4.7, run 1 | 638 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -196,7 +198,7 @@ every verdict was in:
   - It did not fix PERF-001, SEC-008, SEC-013, SEC-014 or BUG-004.
   - It left the three ARCH/CLN flaws alone.
   - It ran in opencode, not in the Claude or OpenAI clients the others used.
-- **Kimi K3 (M): 528, tenth.**
+- **Kimi K3 (M): 528.**
   - It ran on a clone of the execution VM, made to run a second session in parallel and destroyed
     afterwards. Its session log went with it.
   - The clone had at least GitHub's names blocked and no IPv6. Whether it already had the
@@ -217,7 +219,7 @@ every verdict was in:
     (`PROTOCOL §3`).
   - Each run's `first_message` says which one it got. An agent's run 1 and its later runs
     therefore differ by that one sentence.
-- **GLM-5.3 (O): 629, sixth, Silver.**
+- **GLM-5.3 (O): 629, Silver.**
   - It ran later the same morning, in the same client and at the same effort as GLM-5.2, with
     every isolation layer in place. It got the fixed first message and no other operator message.
   - Its session log shows no request to GitHub, only calls to its own local test servers.
@@ -228,7 +230,7 @@ every verdict was in:
     logged-in client's session. Callers without a session, such as the nightly export, still
     receive every ticket, so it enforces the visibility rule and is not COMP-003.
   - Its cost comes from opencode's record: US$ 0.73.
-- **GLM-5.3-Flash (P): 624, eighth, Silver; GLM-5.3-FlashX (Q): 597, twelfth, Bronze.**
+- **GLM-5.3-Flash (P): 624, Silver; GLM-5.3-FlashX (Q): 597, Bronze.**
   - Both are smaller variants of GLM-5.3, run the same morning in opencode at effort `high` with
     every isolation layer. Each got the fixed first message and nothing else.
   - Their session logs show no request to GitHub. Flash's report quotes
@@ -245,6 +247,19 @@ every verdict was in:
     The EXPL judge scored that risk under trade-offs.
   - FlashX's switch to SQL `AVG` is not COMP-003, as for C and F. Its report calls the result
     identical, which it is not, and that cost it under EXPL precision.
+- **Grok 4.7 (R): 638, Silver, the strongest model here from outside Anthropic and OpenAI.**
+  - It ran in opencode at effort `high` with every isolation layer, and got the fixed first
+    message and nothing else. xAI publishes a training cutoff of May 2026, before the answer key
+    went public.
+  - It is the first agent to use the web. At 10:53 it fetched the PHP manual page for `fputcsv`
+    (`www.php.net`). The protocol blocks GitHub, not the web. It made no request to GitHub, and
+    its run note records the fetch.
+  - It is the fourth agent to fix the CSV formula injection (SEC-008). It prefixes only the cells
+    that start with a formula character and leaves the `-` for a ticket with no technician alone,
+    so G's new bug does not recur.
+  - It fixed the other probe-covered flaws and kept the contract whole. It left MD5 and the
+    secrets in place, saying a re-hash on login could not migrate the base, which is false.
+  - It cost US$ 2.43, the most of the opencode runs.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.
