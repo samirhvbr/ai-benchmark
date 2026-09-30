@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.3`
+**Versão atual:** `0.2.4`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,33 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.4` — 2026-09-29 — results/ adds GPT-6-astra on LEB-100-A, fourth at 661
+
+An eighth agent on the same package, evaluated like the others: harness (22/22, all four
+probes fixed), one blind matching judge (delivery H), the EXPL judge on the scale it used for
+A–G (42/50), `score.py`. The delivery also ships the model's own test suite
+(`entrega/.validacao/testes.php`), kept as delivered.
+
+| # | Model | Total | Grade |
+| ---: | --- | ---: | --- |
+| 1 | Claude Sonnet 5.5 | 825 | Gold |
+| 2 | Claude Fable 5.1 | 781 | Gold |
+| 3 | Claude Opus 5.5 | 711 | Silver |
+| 4 | GPT-6-astra | 661 | Silver |
+| 5 | GPT-5.6-terra | 625 | Silver |
+| 6 | GPT-5.6-sol | 612 | Silver |
+| 7 | GPT-5.5 | 601 | Silver |
+| 8 | GPT-5.6-luna | 599 | Bronze |
+
+GPT-6-astra is the third agent to fix SEC-008 and the strongest GPT model here; it left MD5 in
+place on purpose and scoped the SLA average to the session (COMP-003, as B, C and G).
+
+The consistency review changed H's verdict: the report names, in its list of deliberate
+non-changes, the indentation of `rotuloPrioridade` — the nested ifs of CLN-007 — which is how A's
+ARCH-002 was credited R1. H gets R1 for CLN-007 and nothing else; with the judge's call it would
+total 636, still fourth. The evaluation notes, the generated leaderboard and the README status are
+updated for eight agents.
 
 ### `0.2.3` — 2026-09-29 — results/ adds the GPT-5.6-terra and GPT-5.6-sol runs on LEB-100-A
 

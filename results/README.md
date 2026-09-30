@@ -25,10 +25,11 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 1 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-1/scorecard.md) · xhigh | **825** | Gold | 250 | 50 | 129 | 150 | 100 | 100 | 46 | 0 | 79.2 | 0.022 | 1/3 |
 | 2 | [Claude Fable 5.1](2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md) · xhigh | **781** | Gold | 211 | 25 | 150 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.020 | 1/3 |
 | 3 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-xhigh/run-1/scorecard.md) · xhigh | **711** | Silver | 233 | 50 | 139 | 150 | 25 | 70 | 44 | 0 | 91.7 | 0.073 | 1/3 |
-| 4 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 1/3 |
-| 5 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
-| 6 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
-| 7 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
+| 4 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-1/scorecard.md) · xhigh | **661** | Silver | 224 | 0 | 150 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
+| 5 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 1/3 |
+| 6 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
+| 7 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
+| 8 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
 A score with fewer than 3 runs is **not official** (PROTOCOL §4): it is the total of the runs so far.

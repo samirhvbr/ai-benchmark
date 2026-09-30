@@ -644,6 +644,177 @@
           "rank": 3
         },
         {
+          "agent": "gpt-6-astra-xhigh",
+          "model": {
+            "name": "GPT-6-astra",
+            "id": "gpt-6-astra",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 661,
+          "discovery_index": 87.5,
+          "brier": 0.0,
+          "runs": [
+            {
+              "run": 1,
+              "total": 661,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 224,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 150,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 25,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 42,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 9,
+                "priorizacao": 7,
+                "trade_offs": 8
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 5,
+              "brier": 0.0,
+              "discovery_index": 87.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-astra-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 4
+        },
+        {
           "agent": "gpt-5.6-terra-xhigh",
           "model": {
             "name": "GPT-5.6-terra",
@@ -806,7 +977,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 4
+          "rank": 5
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -983,7 +1154,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 5
+          "rank": 6
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -1154,7 +1325,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 6
+          "rank": 7
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -1325,7 +1496,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 7
+          "rank": 8
         }
       ]
     }
