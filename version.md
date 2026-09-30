@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.1`
+**Versão atual:** `0.2.2`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,29 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.2` — 2026-09-29 — results/ adds Claude Sonnet 5.5 on LEB-100-A, first at 825
+
+A fifth agent on the same package, evaluated like the first four: harness, one blind matching
+judge (delivery E), the EXPL judge on the scale it used for A–D, `score.py`.
+
+| # | Model | Total | Grade |
+| ---: | --- | ---: | --- |
+| 1 | Claude Sonnet 5.5 | 825 | Gold |
+| 2 | Claude Fable 5.1 | 781 | Gold |
+| 3 | Claude Opus 5.5 | 711 | Silver |
+| 4 | GPT-5.5 | 601 | Silver |
+| 5 | GPT-5.6-luna | 599 | Bronze |
+
+Sonnet 5.5 is the only agent to fix SEC-008 (formula injection in the CSV) and the only one at
+SEC 250/250; it fixed BUG-004 silently, so that fix scores without the finding.
+
+The consistency review changed one verdict: E's judge counted the login timing side channel of
+the md5 → `password_hash` migration as PEN-001 (−15), while D's judge had ruled the same class of
+channel inherent to the migration the matrix expects, and A's had not counted it either. PEN-001
+is 0 for E, recorded in its `veredito.json` and scorecard; with it E would total 810, still
+first. The evaluation notes, the generated leaderboard and the README status are updated for
+five agents.
 
 ### `0.2.1` — 2026-09-29 — scorecard.md shows the consistency review that changed a verdict
 

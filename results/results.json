@@ -143,6 +143,171 @@
       "notes_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/README.md",
       "entries": [
         {
+          "agent": "claude-sonnet-5.5-xhigh",
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh",
+            "exact_version": null
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 825,
+          "discovery_index": 79.2,
+          "brier": 0.022,
+          "runs": [
+            {
+              "run": 1,
+              "total": 825,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 250,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 50,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 46,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 10,
+                "causa_raiz": 10,
+                "priorizacao": 8,
+                "trade_offs": 9
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-008": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 65
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "ARCH-002": {
+                  "earned": 4,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 70
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 13,
+              "brier": 0.022,
+              "discovery_index": 79.2,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 1
+        },
+        {
           "agent": "claude-fable-5.1-xhigh",
           "model": {
             "name": "Claude Fable 5.1",
@@ -305,7 +470,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 1
+          "rank": 2
         },
         {
           "agent": "claude-opus-5.5-xhigh",
@@ -476,7 +641,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 2
+          "rank": 3
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -647,7 +812,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 3
+          "rank": 4
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -818,7 +983,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 4
+          "rank": 5
         }
       ]
     }
