@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.10`
+**Versão atual:** `0.2.11`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,27 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.11` — 2026-09-30 — README documents the execution VM's three layers of isolation from GitHub
+
+The *Execution environment* section described only the block by name, and said a connection made
+straight to an IP address still went through. That understated the VM. As the owner confirmed,
+three layers have been in place since the first scored run:
+
+1. GitHub's names resolve to loopback in `/etc/hosts`.
+2. GitHub's IPv4 prefixes are blackhole routes. The 26 routed prefixes collapse to 140.82.112.0/20,
+   143.55.64.0/20, 185.199.108.0/22 and 192.30.252.0/22, and the section publishes them as
+   `ip route add blackhole` lines so the setup can be reproduced.
+3. The VM has no IPv6.
+
+The limits are rewritten to what is still true. `api.github.com/meta` lists regional edge
+addresses for `web`, `api` and `git`, mostly on Azure (such as `20.201.28.151`), that fall outside
+those prefixes, so a direct connection to one of them is not stopped. Copies of the repository
+outside GitHub are out of scope. Training exposure is handled by the cutoff each run records.
+
+`execution_environment` in the ten LEB-100-A `run.json` files said "GitHub blocked by name". It now
+states the three layers, which is what those runs actually had. No scorecard or `results.json`
+changes.
 
 ### `0.2.10` — 2026-09-30 — MATRIX §4 writes down the exception that keeps LEB-100-A current despite its published answer key
 

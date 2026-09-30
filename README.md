@@ -76,7 +76,11 @@ Note: the specification documents are currently written in Portuguese (pt-BR); E
 
 ## Execution environment
 
-Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**. On that VM, `github.com` and the GitHub content hosts resolve to the loopback address through `/etc/hosts`, so an agent under test cannot browse, clone or download anything hosted on GitHub during a run. In particular, it cannot read this repository.
+Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**, so an agent under test cannot browse, clone or download anything hosted there during a run. In particular, it cannot read this repository or the answer key in it. Three layers do this, and all three have been in place since the first scored run:
+
+1. **GitHub's names resolve to loopback.** `github.com` and the GitHub content hosts point at `127.0.0.1` in `/etc/hosts`, so `ping github.com` answers from `127.0.0.1`.
+2. **GitHub's IPv4 prefixes are blackhole routes.** GitHub's 26 routed IPv4 prefixes collapse to the four below, and a connection made straight to an address inside them goes nowhere.
+3. **No IPv6.** The VM has no IPv6 connectivity, so GitHub's IPv6 prefixes need no route of their own.
 
 ```text
 # /etc/hosts on the execution VM (IPv4 and IPv6 lines alike)
@@ -86,13 +90,21 @@ Benchmark runs are executed on a dedicated Linux VM that **cannot reach GitHub**
 ::1        (the same names)
 ```
 
-Anyone reproducing the runs should apply the same block to the host that runs the model.
+```sh
+# blackhole routes on the execution VM: GitHub's IPv4 prefixes, collapsed
+ip route add blackhole 140.82.112.0/20
+ip route add blackhole 143.55.64.0/20
+ip route add blackhole 185.199.108.0/22
+ip route add blackhole 192.30.252.0/22
+```
+
+Anyone reproducing the runs should apply the same three layers to the host that runs the model.
 
 Limits, stated plainly:
 
-- The block is **by name**. A connection made directly to an IP address is not stopped, so this defeats accidental and naive access (`git clone`, a fetch tool, `curl`), not a deliberate bypass. It is one layer of isolation, not a guarantee.
-- It says nothing about what a model may have seen during training.
-- It is not a substitute for keeping an answer key out of every place a model can reach.
+- **GitHub also answers outside those prefixes.** [`api.github.com/meta`](https://api.github.com/meta) lists regional edge addresses for `web`, `api` and `git`, most of them on Azure (for example `20.201.28.151`), and those are not in the blackhole. A connection straight to one of them, with the right host name, is not stopped. Getting there takes the address in hand, since every GitHub name resolves to loopback, so this stops accidental and tool-driven access, not a deliberate bypass.
+- **Copies elsewhere are not blocked.** Mirrors, caches and archives of this repository outside GitHub are out of scope.
+- **Training is a separate question.** The VM says nothing about what a model saw in training. Every run records the training cutoff its provider publishes for that ([MATRIX §4](matrix/MATRIX.md), item 5).
 
 ## Status
 
