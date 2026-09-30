@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.15`
+**Versão atual:** `0.2.16`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,33 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.16` — 2026-09-30 — The first ten runs record what their session logs show: client, operator messages, tokens, and no request to GitHub
+
+The execution VM still holds the client session logs of eight of the ten runs of 2026-09-29: the
+three Claude models in Claude Code, and five GPT models in Codex CLI. They were read on 2026-09-30
+with the owner's go-ahead, and each `run.json` records what they show. The logs themselves stay on
+the VM, unpublished.
+
+- **Client.** `client` gives name and version: Claude Code 2.1.285, Codex CLI 0.158.0 for
+  GPT-5.6-luna and 0.159.2 for the other four GPT models. `session` gives start and end, with where
+  the log is kept.
+- **First message.** `first_message` holds *"Não saia desta pasta. Agora leia o TAREFA.md e
+  execute. Devolva code/ alterado, RELATORIO.md e achados.json."* in all eight.
+- **Operator messages.** `operator_replies` counts them, and a note explains any that exist. Opus
+  5.5 and GPT-5.6-luna each received the first message again mid-run, verbatim, so each counts 1.
+  Fable 5.1's first message was interrupted two seconds in and re-sent after the client switched
+  from Sonnet 5.5 to Fable, which is not counted.
+- **Cost.** `cost_time` holds the tokens the client counted. Sonnet 5.5's folder still has Claude
+  Code's own summary, which adds model time (1,058 s) and cost (US$ 3.60). For the other runs no
+  cost or model time survives.
+- **No GitHub access.** None of the eight sessions made a request to GitHub, by name or by address,
+  or used a web search or fetch tool. Their network calls all go to the agents' own local test
+  servers. The results notes say so.
+- **No log.** GPT-5.5's and MiniMax-M3's runs left no log on the VM, so their new fields are `null`
+  and listed in `not_recorded`.
+- **Scorecards.** They gain "Client" and "First message" rows, the "Operator replies" row shows its
+  note, and `results.json` carries `client` per run. No score changes.
 
 ### `0.2.15` — 2026-09-30 — README dates each layer of the VM's isolation, and the first ten runs record that they had GitHub's names blocked but not its addresses
 

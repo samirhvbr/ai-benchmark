@@ -7,6 +7,7 @@
 | --- | --- |
 | Model | MiniMax-M3 (`minimax-m3`, MiniMax) · reasoning effort model default — not configurable: the MiniMax-M3 client exposes no effort setting · exact version: not recorded |
 | Training cutoff | not published by the provider: MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used ([source](https://www.minimax.io/models/text/m3)) — the answer key has been public since 2026-07-13: the model may have trained on it |
+| Client | not recorded |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 | Package (SHA-256) | `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f` |

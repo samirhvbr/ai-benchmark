@@ -18,18 +18,36 @@
   "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
   "mode": "A",
   "turn_budget": 30,
-  "operator_replies": null,
+  "operator_replies": 0,
   "temperature": null,
   "filed_on": "2026-09-29",
   "evaluated_on": "2026-09-29",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-29T21:20:20-03:00",
+    "ended": "2026-09-29T21:39:37-03:00",
+    "log": "kept on the execution VM (~/.claude/projects/-srv-claude-sonnet-5-5-xhigh/d2493de3-6bde-4220-8447-86a2aedf2a8f.jsonl), not published"
+  },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback (/etc/hosts, since 2026-09-29 18:59 UTC-3) and no IPv6 connectivity; GitHub's addresses were not blackholed yet (from 2026-09-30), so a direct connection to one was not blocked (README, Execution environment)",
-  "cost_time": null,
-  "logs": null,
+  "cost_time": {
+    "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (d2493de3), which is this run",
+    "elapsed_seconds": 1058.087,
+    "tokens": {
+      "input": 1533,
+      "output": 138245,
+      "cache": 7176279,
+      "total": 7316057
+    },
+    "usd_estimate": 3.6,
+    "note": "includes a 945-token Claude Haiku 4.5 call the client makes for the session title"
+  },
+  "logs": "kept on the execution VM (~/.claude/projects/-srv-claude-sonnet-5-5-xhigh/d2493de3-6bde-4220-8447-86a2aedf2a8f.jsonl), not published",
   "not_recorded": [
     "exact_version",
-    "temperature",
-    "cost_time",
-    "logs",
-    "operator_replies"
+    "temperature"
   ]
 }

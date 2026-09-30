@@ -7,11 +7,13 @@
 | --- | --- |
 | Model | Claude Fable 5.1 (`claude-fable-5-1`, Anthropic) · reasoning effort `xhigh` · exact version: not recorded |
 | Training cutoff | 2026-06 ([source](https://platform.claude.com/docs/en/about-claude/models/overview)) — before the answer key was published (2026-07-13): by its provider's own cutoff, the model did not train on it |
+| Client | Claude Code 2.1.285 · session 2026-09-29 20:45 → 21:00 |
+| First message | Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 | Package (SHA-256) | `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f` |
 | Mode | A (budget: 30 turns) |
-| Operator replies | not recorded |
+| Operator replies | 0 — The first message was interrupted by the operator two seconds after it was sent, while the client was still on Claude Sonnet 5.5 (one tool call, not executed), and sent again at once after switching to Claude Fable 5.1; every later answer is Fable 5.1's. Not counted as a reply. |
 | Temperature | not recorded |
 | Delivery filed | 2026-09-29 · evaluated 2026-09-29 |
 | Run | 1 — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |
@@ -120,7 +122,7 @@ Real findings outside the matrix (0 points, 0 penalty, candidates for the next i
   - Easy: 6 planted · 6 found · 4 fixed
   - Moderate: 3 planted · 2 found · 2 fixed
   - Hard: 4 planted · 4 found · 3 fixed
-- Cost and time: not recorded
+- Cost and time: 2,623,678 tokens (input 932 · output 71,351 · cache 2,551,395) — from Claude Code 2.1.285 session log, usage summed per API message
 
 ## Mechanical evidence
 

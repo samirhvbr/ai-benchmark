@@ -28,9 +28,32 @@ run, not a like-for-like comparison of effort.
 | `minimax-m3` | MiniMax-M3 (MiniMax) | model default (not configurable) |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
-model version, the temperature, token counts and cost, and the full logs (`PROTOCOL §4.2` asks for
-logs; they were not kept). Nor was how often the operator replied to an agent that stopped to wait,
-or with what: the fixed reply of `PROTOCOL §3` was written after these runs. The deliveries were filed and evaluated on 2026-09-29, MiniMax-M3's
+model version and the temperature.
+
+**What the session logs show.** Eight of the ten runs left their client's session log on the
+execution VM. They were read on 2026-09-30, and each `run.json` now records what they show:
+
+- the client and its version: Claude Code 2.1.285 for the three Claude models, Codex CLI 0.158.0
+  for GPT-5.6-luna and 0.159.2 for the other four GPT models;
+- the session's start and end;
+- the first message the agent received;
+- every later message from the operator;
+- the tokens the client counted, plus model time and cost where the client kept them (only
+  Sonnet 5.5's).
+
+The logs stay on the VM and are not published. GPT-5.5's and MiniMax-M3's runs left no log there,
+so for those two every one of these fields is `null`.
+
+- **No agent tried to reach GitHub.** None of the eight sessions made a request to GitHub, by name
+  or by address, and none used a web search or fetch tool. Their network calls all go to the
+  local test servers the agents started themselves (`127.0.0.1`, the MariaDB socket).
+- **The first message** was *"Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva
+  code/ alterado, RELATORIO.md e achados.json."* in all eight.
+- **Operator messages.** Two agents received that message a second time mid-run, verbatim:
+  Opus 5.5 after 12 minutes and GPT-5.6-luna after 2 minutes. It adds no information, but it is
+  counted as an operator reply. Fable 5.1's first message was interrupted two seconds in, while the
+  client was still on Sonnet 5.5, and sent again after switching to Fable. That is not counted. The
+  fixed reply of `PROTOCOL §3` was written after these runs. The deliveries were filed and evaluated on 2026-09-29, MiniMax-M3's
 on 2026-09-30.
 
 ## How it was evaluated

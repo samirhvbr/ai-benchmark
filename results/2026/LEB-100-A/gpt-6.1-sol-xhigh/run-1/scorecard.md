@@ -7,11 +7,13 @@
 | --- | --- |
 | Model | GPT-6.1-sol (`gpt-6.1-sol`, OpenAI) · reasoning effort `xhigh` · exact version: not recorded |
 | Training cutoff | 2026-04-30 ([source](https://developers.openai.com/api/docs/models/gpt-6.1-sol)) — before the answer key was published (2026-07-13): by its provider's own cutoff, the model did not train on it |
+| Client | Codex CLI 0.159.2 · session 2026-09-29 22:33 → 23:00 |
+| First message | Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 | Package (SHA-256) | `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f` |
 | Mode | A (budget: 30 turns) |
-| Operator replies | not recorded |
+| Operator replies | 0 |
 | Temperature | not recorded |
 | Delivery filed | 2026-09-29 · evaluated 2026-09-29 |
 | Run | 1 — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |
@@ -117,7 +119,7 @@ Real findings outside the matrix (0 points, 0 penalty, candidates for the next i
   - Easy: 6 planted · 5 found · 4 fixed
   - Moderate: 3 planted · 2 found · 2 fixed
   - Hard: 4 planted · 4 found · 3 fixed
-- Cost and time: not recorded
+- Cost and time: 1,351,023 tokens (input 73,937 · output 43,294 · cache 1,233,792) — from Codex CLI 0.159.2 session log, final token_count event
 
 ## Mechanical evidence
 

@@ -310,8 +310,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (d2493de3), which is this run",
+                "elapsed_seconds": 1058.087,
+                "tokens": {
+                  "input": 1533,
+                  "output": 138245,
+                  "cache": 7176279,
+                  "total": 7316057
+                },
+                "usd_estimate": 3.6,
+                "note": "includes a 945-token Claude Haiku 4.5 call the client makes for the session title"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-1/scorecard.md"
             }
           ],
@@ -484,8 +499,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285 session log, usage summed per API message",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 932,
+                  "output": 71351,
+                  "cache": 2551395,
+                  "total": 2623678
+                },
+                "usd_estimate": null,
+                "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md"
             }
           ],
@@ -664,8 +694,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 1,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285 session log, usage summed per API message",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 40,
+                  "output": 80368,
+                  "cache": 1949756,
+                  "total": 2030164
+                },
+                "usd_estimate": null,
+                "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-1/scorecard.md"
             }
           ],
@@ -844,8 +889,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 73937,
+                  "output": 43294,
+                  "cache": 1233792,
+                  "total": 1351023
+                },
+                "usd_estimate": null,
+                "note": "output includes 18217 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1024,8 +1084,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 58947,
+                  "output": 31166,
+                  "cache": 753408,
+                  "total": 843521
+                },
+                "usd_estimate": null,
+                "note": "output includes 9417 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-astra-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1198,8 +1273,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 54590,
+                  "output": 25866,
+                  "cache": 486656,
+                  "total": 567112
+                },
+                "usd_estimate": null,
+                "note": "output includes 10449 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1384,8 +1474,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 52386,
+                  "output": 18315,
+                  "cache": 1163520,
+                  "total": 1234221
+                },
+                "usd_estimate": null,
+                "note": "output includes 8127 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1565,6 +1670,7 @@
                 "failed": 0
               },
               "operator_replies": null,
+              "client": null,
               "cost_time": null,
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
@@ -1744,8 +1850,23 @@
                 "passed": 22,
                 "failed": 0
               },
-              "operator_replies": null,
-              "cost_time": null,
+              "operator_replies": 1,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.158.0"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.158.0 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 74979,
+                  "output": 30975,
+                  "cache": 886784,
+                  "total": 992738
+                },
+                "usd_estimate": null,
+                "note": "output includes 8730 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1927,6 +2048,7 @@
                 "failed": 0
               },
               "operator_replies": null,
+              "client": null,
               "cost_time": null,
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
             }

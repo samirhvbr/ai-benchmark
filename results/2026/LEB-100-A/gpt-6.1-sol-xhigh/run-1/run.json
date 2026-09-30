@@ -18,18 +18,36 @@
   "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
   "mode": "A",
   "turn_budget": 30,
-  "operator_replies": null,
+  "operator_replies": 0,
   "temperature": null,
   "filed_on": "2026-09-29",
   "evaluated_on": "2026-09-29",
+  "client": {
+    "name": "Codex CLI",
+    "version": "0.159.2"
+  },
+  "first_message": "Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-29T22:33:06-03:00",
+    "ended": "2026-09-29T23:00:12-03:00",
+    "log": "kept on the execution VM (~/.codex/sessions/2026/09/29/rollout-2026-09-29T22-32-52-01a0eff1-6e87-7951-8add-2d7f9192ed08.jsonl), not published"
+  },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback (/etc/hosts, since 2026-09-29 18:59 UTC-3) and no IPv6 connectivity; GitHub's addresses were not blackholed yet (from 2026-09-30), so a direct connection to one was not blocked (README, Execution environment)",
-  "cost_time": null,
-  "logs": null,
+  "cost_time": {
+    "source": "Codex CLI 0.159.2 session log, final token_count event",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 73937,
+      "output": 43294,
+      "cache": 1233792,
+      "total": 1351023
+    },
+    "usd_estimate": null,
+    "note": "output includes 18217 reasoning tokens; the log keeps no cost and no model time"
+  },
+  "logs": "kept on the execution VM (~/.codex/sessions/2026/09/29/rollout-2026-09-29T22-32-52-01a0eff1-6e87-7951-8add-2d7f9192ed08.jsonl), not published",
   "not_recorded": [
     "exact_version",
-    "temperature",
-    "cost_time",
-    "logs",
-    "operator_replies"
+    "temperature"
   ]
 }

@@ -18,18 +18,37 @@
   "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
   "mode": "A",
   "turn_budget": 30,
-  "operator_replies": null,
+  "operator_replies": 1,
+  "operator_replies_note": "12 minutes in, the operator sent the first message again, verbatim. It carries no new information, but it is a message the agent received mid-run.",
   "temperature": null,
   "filed_on": "2026-09-29",
   "evaluated_on": "2026-09-29",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-29T21:03:15-03:00",
+    "ended": "2026-09-29T21:19:02-03:00",
+    "log": "kept on the execution VM (~/.claude/projects/-srv-claude-opus-5-5-xhigh/b85ca69a-8caf-455d-855c-7a58d0bcd5be.jsonl), not published"
+  },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback (/etc/hosts, since 2026-09-29 18:59 UTC-3) and no IPv6 connectivity; GitHub's addresses were not blackholed yet (from 2026-09-30), so a direct connection to one was not blocked (README, Execution environment)",
-  "cost_time": null,
-  "logs": null,
+  "cost_time": {
+    "source": "Claude Code 2.1.285 session log, usage summed per API message",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 40,
+      "output": 80368,
+      "cache": 1949756,
+      "total": 2030164
+    },
+    "usd_estimate": null,
+    "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+  },
+  "logs": "kept on the execution VM (~/.claude/projects/-srv-claude-opus-5-5-xhigh/b85ca69a-8caf-455d-855c-7a58d0bcd5be.jsonl), not published",
   "not_recorded": [
     "exact_version",
-    "temperature",
-    "cost_time",
-    "logs",
-    "operator_replies"
+    "temperature"
   ]
 }

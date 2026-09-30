@@ -18,18 +18,37 @@
   "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
   "mode": "A",
   "turn_budget": 30,
-  "operator_replies": null,
+  "operator_replies": 0,
+  "operator_replies_note": "The first message was interrupted by the operator two seconds after it was sent, while the client was still on Claude Sonnet 5.5 (one tool call, not executed), and sent again at once after switching to Claude Fable 5.1; every later answer is Fable 5.1's. Not counted as a reply.",
   "temperature": null,
   "filed_on": "2026-09-29",
   "evaluated_on": "2026-09-29",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Não saia desta pasta. Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-29T20:45:04-03:00",
+    "ended": "2026-09-29T21:00:46-03:00",
+    "log": "kept on the execution VM (~/.claude/projects/-srv-claude-fable-5-1-xhigh/afb0d35d-89f0-4c69-846d-c37611c9037d.jsonl), not published"
+  },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback (/etc/hosts, since 2026-09-29 18:59 UTC-3) and no IPv6 connectivity; GitHub's addresses were not blackholed yet (from 2026-09-30), so a direct connection to one was not blocked (README, Execution environment)",
-  "cost_time": null,
-  "logs": null,
+  "cost_time": {
+    "source": "Claude Code 2.1.285 session log, usage summed per API message",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 932,
+      "output": 71351,
+      "cache": 2551395,
+      "total": 2623678
+    },
+    "usd_estimate": null,
+    "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+  },
+  "logs": "kept on the execution VM (~/.claude/projects/-srv-claude-fable-5-1-xhigh/afb0d35d-89f0-4c69-846d-c37611c9037d.jsonl), not published",
   "not_recorded": [
     "exact_version",
-    "temperature",
-    "cost_time",
-    "logs",
-    "operator_replies"
+    "temperature"
   ]
 }

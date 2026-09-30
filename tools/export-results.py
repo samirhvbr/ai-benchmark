@@ -207,14 +207,21 @@ def render_scorecard(r):
     w("| Model | %s (`%s`, %s) · reasoning effort %s · exact version: %s |" % (
         model["name"], model["id"], model["provider"], effort_label(model), na(model.get("exact_version"))))
     w("| Training cutoff | %s |" % cutoff_label(model, r["instance"]))
+    client, session = meta.get("client"), meta.get("session")
+    w("| Client | %s |" % ("not recorded" if not client else "%s %s%s" % (
+        client["name"], client.get("version") or "", "" if not session else
+        " · session %s → %s" % (session["started"][:16].replace("T", " "), session["ended"][11:16]))))
+    if meta.get("first_message"):
+        w("| First message | %s |" % meta["first_message"])
     w("| Instance | %s · level %s |" % (card["instance"], card["instance"].split("-")[1]))
     w("| Matrix (SHA-256) | `%s` |" % card["matrix_sha256"])
     w("| Package (SHA-256) | `%s` |" % meta["package_sha256"])
     w("| Mode | %s (budget: %s turns) |" % (meta["mode"], na(meta.get("turn_budget"))))
     if meta["mode"] == "A":
         replies = meta.get("operator_replies")
+        note = meta.get("operator_replies_note")
         w("| Operator replies | %s |" % ("not recorded" if replies is None else
-                                         "%d, each the fixed reply of PROTOCOL §3" % replies))
+                                         (str(replies) + (" — " + note if note else ", each the fixed reply of PROTOCOL §3" if replies else ""))))
     w("| Temperature | %s |" % na(meta.get("temperature")))
     w("| Delivery filed | %s · evaluated %s |" % (meta["filed_on"], meta["evaluated_on"]))
     w("| Run | %d — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |" % r["run"])
@@ -389,6 +396,7 @@ def run_summary(r):
         "discovery_index": card["difficulty_breakdown"]["discovery_index"],
         "characterization": {"passed": ch["passed"], "failed": ch["failed"]},
         "operator_replies": r["meta"].get("operator_replies"),
+        "client": r["meta"].get("client"),
         "cost_time": r["meta"].get("cost_time"),
         "scorecard_url": "%s/blob/master/%s" % (REPO_URL, rel(os.path.join(r["dir"], "scorecard.md"))),
     }
