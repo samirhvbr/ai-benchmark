@@ -76,7 +76,7 @@ Note: the specification documents are currently written in Portuguese (pt-BR); E
 
 ## Execution environment
 
-Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so that an agent under test cannot read this repository or the answer key in it. The isolation was built in layers. The layers are dated because the runs are dated too. Times are UTC−3, from the VM's own logs.
+Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so that an agent under test cannot read this repository or the answer key in it. Runs started since 2026-09-30 17:52 use a second VM, `ai-bench2`, a clone of the first with the same layers and more of them. The isolation was built in layers. The layers are dated because the runs are dated too. Times are UTC−3, from the VMs' own logs.
 
 | Layer | In place since | Runs it covers |
 | --- | --- | --- |
@@ -84,6 +84,8 @@ Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so tha
 | No IPv6 connectivity: no global address, no IPv6 default route | always; the network provides no IPv6 | every run |
 | GitHub's BGP prefixes are blackhole routes (4 IPv4, 3 IPv6) | 2026-09-30 08:13 | runs from 2026-09-30 on |
 | GitHub's edge addresses from `api.github.com/meta` are blackhole routes (71 IPv4) | 2026-09-30 09:02 | runs from 2026-09-30 09:02 on |
+| IPv6 is disabled on the LAN interface and router advertisements are ignored, so a stray one cannot open a route around the blackholes (`/etc/sysctl.d/90-leb-no-ipv6.conf`) | 2026-09-30 17:37, `ai-bench2` | runs from 2026-09-30 17:52 on |
+| The agent runs as an unprivileged user (`leb`) with no sudo and no account on the system database, on a machine cleaned of every earlier run's leftovers (`PROTOCOL §3`) | 2026-09-30 17:52, `ai-bench2` | runs from 2026-09-30 17:52 on |
 
 **The first ten runs on LEB-100-A (2026-09-29) had the name block only.** No agent could reach GitHub through a GitHub name. A connection made straight to a GitHub address would still have gone through, so the block stopped accidental and tool-driven access but not a deliberate bypass. Each of those runs says so in its `run.json`.
 
@@ -104,7 +106,7 @@ A oneshot systemd unit installs the routes at boot by running [`tools/github-bla
 ::1        (the same names)
 ```
 
-Anyone reproducing the runs should apply the same layers to the host that runs the model: the `/etc/hosts` block above and the script.
+Anyone reproducing the runs should apply the same layers to the host that runs the model: the `/etc/hosts` block above, the script, IPv6 off, and an unprivileged user on a machine restored to a clean state before each run.
 
 Limits, stated plainly:
 

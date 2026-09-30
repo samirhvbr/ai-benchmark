@@ -69,8 +69,8 @@ execution VM. They were read on 2026-09-30, and each `run.json` now records what
 - the tokens the client counted, plus model time and cost where the client kept them (only
   Sonnet 5.5's).
 
-The logs stay on the VM and are not published. GPT-5.5's and MiniMax-M3's runs left no log there,
-so for those two every one of these fields is `null`.
+The logs were copied off the VM on 2026-09-30 and are not published. GPT-5.5's and MiniMax-M3's
+runs left no log there, so for those two every one of these fields is `null`.
 
 - **No agent tried to reach GitHub.** None of the eight sessions made a request to GitHub, by name
   or by address, and none used a web search or fetch tool. Their network calls all go to the
@@ -83,6 +83,26 @@ so for those two every one of these fields is `null`.
   client was still on Sonnet 5.5, and sent again after switching to Fable. That is not counted. The
   fixed reply of `PROTOCOL §3` was written after these runs. The deliveries were filed and evaluated on 2026-09-29, MiniMax-M3's
 on 2026-09-30.
+
+**Machine state.** Every run on the first VM, up to Claude Sonnet 5.5's multi-agent run that
+began at 13:05 on 2026-09-30, was made as its administrator account, which has passwordless sudo,
+on a machine that kept what earlier runs left behind: the clients' session logs in the same home
+folder, temporary files, and a `suporte` database with a `painel` user in the system MariaDB. Every tool call in the session logs that
+exist was read on 2026-09-30 for any sign that one run used another's leftovers:
+
+- no session read another run's folder, report, findings index or session log;
+- the Claude and Codex runs tested against private databases they started themselves; Fable 5.1's
+  one attempt to reach the system database was refused by its own client;
+- the opencode runs used the system MariaDB through sudo, and the `suporte` database carried over
+  from run to run. The agents that met it read only its rows, which match `seed.sql`, dropped and
+  recreated its tables, or used a database of their own. None inspected the table structure an
+  earlier agent had left. One side effect: GLM-5.3-Flash set the `painel` user's password to the
+  one hardcoded in `config.php`, and GLM-5.3-FlashX and Grok 4.7, which ran after it, connected
+  with it.
+
+From 2026-09-30 17:52 on, runs are made as an unprivileged user, with no sudo and no account
+on the system database, on a second VM cleaned of all of that (`PROTOCOL §3`, README *Execution
+environment*).
 
 ## How it was evaluated
 

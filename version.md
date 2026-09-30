@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.29`
+**Versão atual:** `0.2.30`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.30` — 2026-09-30 — PROTOCOL runs every agent as an unprivileged user on a machine cleaned of earlier runs' leftovers
+
+Until now every run was made as the execution VM's administrator account, with passwordless sudo,
+on a machine that kept what earlier runs left: the clients' session logs, temporary files, and a
+`suporte` database with a `painel` user in the system MariaDB. `PROTOCOL §3` now requires an
+ordinary user with no sudo, on a machine carrying nothing from an earlier run, restored from a
+clean snapshot before every run; the agent tests inside its own account (PHP's built-in server
+and a private MariaDB it starts itself). The README's isolation table adds the two layers of the
+second VM, `ai-bench2`: IPv6 disabled on its LAN interface, and the unprivileged user.
+
+Every tool call in the session logs of the earlier runs was read for signs that one run used
+another's leftovers, and the evaluation notes record what that shows: no session read another
+run's folder, report, findings index or session log; the opencode runs shared the system
+database, read only seed rows from it and inspected no structure an earlier agent had left. The
+logs were copied off the VM before any cleanup; they stay unpublished.
 
 ### `0.2.29` — 2026-09-30 — results/ records the first multi-agent Sonnet 5.5 attempt as void, stopped to resize the machine
 
