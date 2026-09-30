@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.1.14`
+**Versão atual:** `0.1.15`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.1.15` — 2026-09-29 — The CSV checks read the export from the output the manifest promises
+
+The manifest of LEB-100-A says `exportarCsv(mysqli $db): void` "writes the CSV to the output";
+it says nothing about a file on disk. The characterization suite (`run.php`) and the SEC-008
+probe (`private/verify/probes.php`) nevertheless discarded the output and read
+`EXPORT_DIR/chamados.csv` — an implementation detail of the legacy code.
+
+A delivery that streams the CSV to `php://output`, or writes a uniquely named temp file and
+deletes it, put the same bytes on the output and was still charged three broken tests
+(PEN-002, −60), lost C4 on every fix, and failed SEC-008 on an empty cell. Both checks now read
+what `exportarCsv()` wrote to the output buffer. For the legacy code that is the same content
+(it ends in `readfile()`), so the baseline stays 22/22 and SEC-008 stays PLANTADA; a patched
+copy flips it to CORRIGIDA with and without the temp file.
+
+The matrix is untouched (`matrix.json` hash unchanged). Found while scoring the first runs.
 
 ### `0.1.14` — 2026-09-29 — The characterization loader splits SQL the way the mysql client does
 

@@ -40,8 +40,8 @@ function probe_sec008(mysqli $db): array
         . " VALUES (900,1,3,'=1+1','teste',1,1,NULL,'2026-06-10 10:00:00')");
     ob_start();
     @exportarCsv($db);
-    ob_end_clean();
-    $csv = (string) file_get_contents(sys_get_temp_dir() . '/chamados.csv');
+    // Read the output (the manifest's contract), not the legacy temp file.
+    $csv = (string) ob_get_clean();
     $titulo900 = '';
     foreach (explode("\n", trim($csv)) as $ln) {
         $cols = str_getcsv($ln);

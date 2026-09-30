@@ -56,8 +56,9 @@ checa(abs($m - (12 + 40 + 25) / 3) < 0.01, "média dos minutos respondidos ≈ 2
 secao('exportarCsv() — formato do arquivo');
 ob_start();
 @exportarCsv($db); // @ suprime o warning de header() em CLI
-ob_end_clean();
-$csv = (string) file_get_contents(sys_get_temp_dir() . '/chamados.csv');
+// The manifest promises the CSV on the output, not a file on disk: read what was
+// written, so a delivery that streams straight to php://output is not a regression.
+$csv = (string) ob_get_clean();
 $linhas = array_values(array_filter(explode("\n", trim($csv))));
 $header = str_getcsv($linhas[0]); // compara campos, não bytes (quoting é serialização)
 checa($header === ['ID', 'Titulo', 'Status', 'Tecnico', 'Aberto em'], "colunas do CSV: ID,Titulo,Status,Tecnico,Aberto em");
