@@ -1,0 +1,124 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injecao de SQL na busca de chamados (listarChamados)",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "$busca vem direto de $_GET['busca'] (index.php:73) e e concatenado em \"WHERE titulo LIKE '%\" . $busca . \"%'\" sem escape nem placeholder. Entradas como ' OR '1'='1 montam um LIKE que casa com todas as linhas e abrem espaco para UNION SELECT contra outras tabelas, ja que o usuario do banco tem leitura geral.",
+      "impacto": "Vazamento de todos os chamados (incluindo de outros clientes e descricoes) e potencial leitura de tabelas arbitrarias via UNION.",
+      "correcao": "Reescrevi listarChamados com prepare + bind_param('s', $padrao) usando 'titulo LIKE ?' e o padrao '%'.$busca.'%' como valor vinculado. Assinatura e retorno preservados.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "XSS refletido via parametro busca no HTML da listagem",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$busca e impresso sem escape no atributo value do input (value=\"' . $busca . '\") e no corpo ('<p>Resultados para: ' . $busca). No value basta \" para fechar o atributo; no corpo, <script> executa direto. Link malicioso index.php?busca=\"><script>... roda JS no navegador de quem clicar.",
+      "impacto": "Roubo de sessao (cookie sem HttpOnly), execucao de acoes em nome do usuario, defacement; vetor realista via phishing.",
+      "correcao": "Apliquei htmlspecialchars($busca, ENT_QUOTES) em ambos os pontos. Estrutura HTML da listagem (id= tabela-chamados, colunas, link ver=<id>) preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Quebra da regra de visibilidade: cliente ve/exporta todos os chamados",
+      "arquivo": "code/index.php",
+      "linha": 45,
+      "linha_fim": 73,
+      "categoria": "bug",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Apos o login, index.php ignora $_SESSION['papel']/$_SESSION['uid'] ao chamar listarChamados (linha 73), verChamado (linha 53) e exportarCsv (linha 45). Qualquer cliente autenticado recebe a listagem completa, abre index.php?ver=<id_alheio> e baixa o CSV com todos os chamados da base. Viola a regra de negocio do manifest.md (cliente so ve os proprios chamados) e expoe dados de terceiros.",
+      "impacto": "Cliente A le chamados/descricoes de cliente B e todo o historico operacional; vazamento massivo via CSV.",
+      "correcao": "Filtrei na camada web preservando as assinaturas publicas (que continuam retornando todos para a rotina noturna/relatorio gerencial): listagem filtra array por usuario_id===uid quando papel=cliente; detalhe trata chamado alheio como 'nao encontrado'; tecnico continua chamando exportarCsv (todos); cliente recebe CSV no mesmo formato exato do contrato, ordenado por id, apenas com seus chamados, via php://output.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Segredos de producao embutidos no fonte (DB_PASS e SMTP_API_KEY)",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "config.php define DB_PASS com fallback literal 'N3tX@2013!prod' e SMTP_API_KEY com valor fixo 'netx-smtp-9f83e2c1a7b64d05'. Quem tiver o fonte (ou dump de filesystem) obtem credenciais validas de banco e SMTP sem esforco; o SMTP_API_KEY nem e usado pelo painel, mas permanece exposto.",
+      "impacto": "Comprometimento do banco de producao e do servico de e-mail transacional do ISP a partir do vazamento do fonte.",
+      "correcao": "Ambas as constantes passam a vir exclusivamente do ambiente (getenv(...) ?: ''). Removi os literais. Mantive o simbolo SMTP_API_KEY (vazio por padrao) para nao quebrar scripts externos que o leiam.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Divisao por zero no indicador de SLA (mediaResposta)",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Se nenhum chamado tem minutos_resposta preenchido (base recem-instalada ou todos sem 1a resposta), $qtd permanece 0 e 'return $soma / $qtd' lanca DivisionByZeroError fatal no PHP 8. A home (index.php:74) sempre chama mediaResposta, entao a listagem fica indisponivel para todo usuario nesse estado.",
+      "impacto": "Indisponibilidade total da tela de listagem em determinado estado de dados.",
+      "correcao": "Adicionei 'if ($qtd === 0) { return 0.0; }' antes da divisao. Assinatura mediaResposta(mysqli): float e tipo de retorno preservados; 0.0 e coerente para 'sem dados'.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Consultas montadas por concatenacao em tecnicoNome e verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 100,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "tecnicoNome (linha 69) e verChamado (linha 100) montam SQL com '... WHERE id = ' . $id. Os parametros sao tipados (?int/int) e hoje nao sao injetaveis, mas o padrao de concat SQL e fragil: uma chamada futura que relaxe o tipo, ou uma 'correcao' descuidada, abre injecao. Inconsistente com autenticar, que ja usa prepare.",
+      "impacto": "Baixo hoje; eleva risco de regressao futura de injecao de SQL.",
+      "correcao": "Converti ambas para prepare + bind_param('i', ...). Comportamento, assinaturas e retorno identicos.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Senhas armazenadas com hash MD5 (sem sal)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 17,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar computa md5($senha) e compara com a coluna senha CHAR(32) (schema.sql:7, seed com MD5('senha123')). MD5 e criptograficamente quebrado e sem sal: um dump da tabela usuarios permite quebrar todas as senhas em segundos com rainbow tables/GPU. Em producao desde 2013, e o maior risco em caso de vazamento do banco.",
+      "impacto": "Comprometimento de todas as contas (e reuso de senha em outros sistemas) a partir de um vazamento da tabela usuarios.",
+      "correcao": "Nao alterei. Migrar para password_hash exigiria mudar a coluna senha de CHAR(32) para VARCHAR(255) (quebrando schema/seed existentes), um passo de rehash transparente no autenticar e/ou script de migracao offline, atualizar seed.sql, com risco real de indisponibilizar contas legadas. Foge do escopo 'evolua, nao reescreva' e da regra de nao trocar a camada de dados. Recomendado como trabalho separado com janela de manutencao.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash de senha MD5 -> bcrypt/password_hash (F7)",
+      "porque": "Exige migrar coluna senha (CHAR(32)->VARCHAR(255)), rehash transparente em autenticar e/ou script offline, e atualizar seed.sql; risco real de indisponibilizar contas legadas e de quebrar a camada de dados. Foge do escopo 'evolua, nao reescreva'. Reportado com corrigido=false."
+    },
+    {
+      "o_que": "exportarCsv continua gravando em arquivo temporario em EXPORT_DIR (com readfile)",
+      "porque": "A funcao e consumida tambem pela rotina noturna de exportacao; mudar para php://output poderia alterar o comportamento esperado por esse consumidor interno. Risco de corrida no arquivo compartilhado e baixo (uso concorrente raro). Recomendado revisao separada."
+    },
+    {
+      "o_que": "Gerenciamento de sessao (HttpOnly/Secure no cookie, session_regenerate_id pos-login)",
+      "porque": "Sao boas praticas, mas o manifest.md nao menciona cookies e esses ajustes nao sao falhas que quebrem contrato; optei por nao mexer no gerenciamento de sessao para evitar surpresas. Debito tecnico."
+    },
+    {
+      "o_que": "Stack, nomes de arquivos, assinaturas, rotas GET, rotulos de status, formato/ordenacao do CSV e estrutura HTML da listagem",
+      "porque": "Preservar a superficie publica do manifest.md e restricao explicita do LEB. Tudo verificado: formatarStatus devolve Aberto/Em atendimento/Resolvido; tabela mantem id=tabela-chamados e colunas ID/Titulo/Status/Prioridade/Tecnico; parametros busca/ver/export inalterados."
+    }
+  ]
+}

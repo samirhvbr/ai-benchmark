@@ -225,6 +225,8 @@ def render_scorecard(r):
     w("| Temperature | %s |" % na(meta.get("temperature")))
     w("| Delivery filed | %s · evaluated %s |" % (meta["filed_on"], meta["evaluated_on"]))
     w("| Run | %d — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |" % r["run"])
+    if meta.get("run_note"):
+        w("| Run note | %s |" % meta["run_note"])
     w("| LEB spec | %s |" % card["leb_spec"])
     w("| Judge | %s `%s`, blind to the model's identity (anonymized as delivery %s) |" % (
         judge.get("type", "?"), judge.get("id", "?"), verdict.get("blind_label", "?")))

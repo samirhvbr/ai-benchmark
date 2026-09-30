@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.16`
+**Versão atual:** `0.2.17`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,49 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.17` — 2026-09-30 — results/ adds the runs of 2026-09-30 on LEB-100-A: Opus 5.5 run 2 at 717, GLM-5.2 at 388, Fable 5.1 run 2 void
+
+Four deliveries arrived on 2026-09-30. Each went through the procedure of the first ten: harness
+(22/22 for all four), one blind matching judge each (labels K to N), EXPL, `score.py` and a
+consistency review. The EXPL judge is a second instance: it kept the scale of the one that scored
+A–J and changed none of those scores.
+
+| # | Model | Total | Grade | Runs |
+| ---: | --- | ---: | --- | :-: |
+| 1 | Claude Sonnet 5.5 | 825 | Gold | 1/3 |
+| 2 | Claude Fable 5.1 | 781 | Gold | 1/3 |
+| 3 | Claude Opus 5.5 | 711 | Silver | 2/3 (711 · 717) |
+| 4 | GPT-6.1-sol | 666 | Silver | 1/3 |
+| 5 | GPT-6-astra | 661 | Silver | 1/3 |
+| 6 | GPT-5.6-terra | 625 | Silver | 1/3 |
+| 7 | GPT-5.6-sol | 612 | Silver | 1/3 |
+| 8 | GPT-5.5 | 601 | Silver | 1/3 |
+| 9 | GPT-5.6-luna | 599 | Bronze | 1/3 |
+| 10 | MiniMax-M3 | 460 | Bronze | 1/3 |
+| 11 | GLM-5.2 | 388 | Reprovada | 1/3 |
+
+- **Opus 5.5, run 2 (K): 717.** The published score stays 711, the lower of two (PROTOCOL §4).
+  - Its run note records a first attempt the operator interrupted at a tool-permission prompt,
+    before any delivery.
+  - It records a first message without the "Não saia desta pasta." that run 1 received.
+  - Its cost comes from Claude Code's own summary: US$ 3.01, with 923 s of model time.
+- **GLM-5.2 (N): 388, the first result below 400.**
+  - It ran in opencode 1.18.33 at effort `high`.
+  - It kept the contract whole and fixed five flaws.
+  - Z.AI publishes no training cutoff, so it carries the dagger.
+  - Its cost comes from opencode's record: US$ 0.35.
+- **Fable 5.1's second run (L) is void.** Its session log shows the model's safeguards stopping a
+  response and Claude Code finishing the run with Claude Opus 4.8, which wrote the whole report.
+  It was voided on that evidence before its score was assembled or its label matched to the model.
+  It is kept unscored in `claude-fable-5.1-xhigh/void-1/` with a `VOID.md`.
+- **Kimi K3 (M) is judged and held.** No session of it exists on the execution VM. Its delivery
+  and mechanical report are filed in place; its verdict and score wait for the record of where and
+  how it ran.
+- **Two misplaced deliveries move.** The Kimi K3 and Fable 5.1 deliveries were committed
+  unjudged at `results/2026/<agent>/` by 0.2.15, by mistake. They now move to their places.
+- **Exporter and docs.** `tools/export-results.py` shows a `run_note` as a "Run note" row. The
+  evaluation notes gain *Runs of 2026-09-30*, and the README status counts eleven agents.
 
 ### `0.2.16` — 2026-09-30 — The first ten runs record what their session logs show: client, operator messages, tokens, and no request to GitHub
 

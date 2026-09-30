@@ -6,13 +6,22 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Ten agents, one run each, against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0),
-mode **A** (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Every
-`entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right binding
-(`PROTOCOL §2.2`), so the ten deliveries solved the same task. One thing is not equal: nine
-agents ran at reasoning effort `xhigh`, while MiniMax-M3 has no effort setting at all — its client
-offers no selector — and ran at the model's default. Its result measures the model as it can be
-run, not a like-for-like comparison of effort.
+Eleven agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+(agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
+2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run and GLM-5.2 its first
+(see *Runs of 2026-09-30* below).
+
+Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
+binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
+
+Effort is not equal:
+
+- nine agents ran at reasoning effort `xhigh`;
+- MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
+  default;
+- GLM-5.2 ran at `high`, the level chosen in its client.
+
+Those two results measure the model as it was run, not a like-for-like comparison of effort.
 
 | Agent folder | Model | Reasoning effort |
 | --- | --- | --- |
@@ -26,6 +35,7 @@ run, not a like-for-like comparison of effort.
 | `gpt-6-astra-xhigh` | GPT-6-astra (OpenAI) | xhigh |
 | `gpt-6.1-sol-xhigh` | GPT-6.1-sol (OpenAI) | xhigh |
 | `minimax-m3` | MiniMax-M3 (MiniMax) | model default (not configurable) |
+| `z.ai-glm-5.2-high` | GLM-5.2 (Z.AI), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -138,6 +148,51 @@ forbids. A run is judged like the first ones:
 Until an agent has three runs, its published score is the lower of its totals so far, and every
 detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
+### Runs of 2026-09-30
+
+Four deliveries arrived. They were labelled at random **K** to **M**, plus **N** for the one that
+arrived last. Each was judged blind like the first ten, and the labels were revealed only after
+every verdict was in:
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **K** | Claude Opus 5.5, run 2 | 717 |
+| **L** | Claude Fable 5.1 | void, see below |
+| **M** | Kimi K3 | held, see below |
+| **N** | GLM-5.2, run 1 | 388 |
+
+- **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
+  successor read all ten earlier justifications, and the reports at the top, the bottom and the
+  middle of that scale, before scoring K–N. It changed none of the earlier scores. Its one note,
+  on C's CSV-header claim (at most one point), is recorded and changes nothing.
+- **Nothing changed in the consistency review.** L's and M's LIKE-wildcard escaping is not
+  COMP-003 (as ruled for D). N's SEC-013, named only in its list of non-changes, is C1 without C2
+  (rule 5). N's SEC-017 and M's BUG-004, filed under another category, get C1 at half.
+- **Opus 5.5, run 2 (K): 717, six points above run 1 (711).**
+  - The published score is the lower, 711.
+  - Its first message lacked the "Não saia desta pasta." that run 1 received.
+  - A first attempt in the same folder, at 08:28, was interrupted by the operator at a
+    tool-permission prompt after six minutes and three tool calls. It had no delivery, and this run
+    replaced it.
+- **Fable 5.1's second run (L) is void.** Six minutes in, the model's safeguards stopped one of
+  its responses, and Claude Code finished the run with Claude Opus 4.8. Opus 4.8 wrote the whole
+  report and findings index. The run was voided on the evidence of the session log, before its
+  score was assembled or its label matched to the model. It is kept unscored in
+  `claude-fable-5.1-xhigh/void-1/`, with the full account in its `VOID.md`, and Fable's next run is
+  its run 2.
+- **GLM-5.2 (N): 388, the first result below 400 (Reprovada).**
+  - It kept the contract whole (COMP 100) and the 22 characterization checks green.
+  - It fixed SEC-001, SEC-003, SEC-015, SEC-017 and BUG-001.
+  - It did not fix PERF-001, SEC-008, SEC-013, SEC-014 or BUG-004.
+  - It left the three ARCH/CLN flaws alone.
+  - It ran in opencode, not in the Claude or OpenAI clients the others used.
+- **Kimi K3 (M) is judged but not published.** No session of it exists on the execution VM,
+  so where and how it ran, and which isolation applied, is being confirmed. It will be published
+  with that record.
+- **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
+  committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
+  judged. They are now moved to their places, and the history keeps the slip.
+
 ## Two defects in the harness, fixed before scoring
 
 Both were found by these deliveries, fixed in the instance's tooling, and applied identically to
@@ -160,7 +215,8 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each.** An official score is the median of three runs (`PROTOCOL §4`). GPT-6.1-sol
+- **One run each, except Opus 5.5.** An official score is the median of three runs (`PROTOCOL §4`).
+  Opus 5.5's second run moved its total by six points (711 → 717). GPT-6.1-sol
   and GPT-6-astra (666 and 661) are five points apart; places 6 to 9 (625, 612, 601 and 599) sit
   within 26 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
