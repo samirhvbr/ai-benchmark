@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.24`
+**Versão atual:** `0.2.25`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.25` — 2026-09-30 — PROTOCOL says what happens to an identity check sent before the first message
+
+Before the fixed first message of DeepSeek V4 Flash's run, the operator asked "quem eh voce?" to
+confirm which model the host was serving. DeepSeek's own site gives V4.1 Flash a different name,
+and the host offered only V4 Flash. The rule said the first message is exactly the fixed one, with
+nothing added, but it said nothing about a message before it.
+
+`PROTOCOL.md §3` now says it. A check made before the first message that says nothing about the
+task, such as asking which model is answering, belongs in a separate session. If it happens in the
+run's own session, the run's note records the exchange and the run stands. A message that does
+carry task content is still covered by the voiding rule. The decision was taken before that run was
+scored.
 
 ### `0.2.24` — 2026-09-30 — results/ adds Kimi K2.7 Code on LEB-100-A, seventeenth at 415
 
