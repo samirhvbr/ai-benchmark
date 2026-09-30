@@ -33,6 +33,10 @@
     "log": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d6ffb1bffeDp2kpx6UW8wWrQ), not published"
   },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed (all in place since 2026-09-30 09:02 UTC-3), and no IPv6 connectivity (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 4,
+    "ram_gib": 3.8
+  },
   "cost_time": {
     "source": "opencode 1.18.33 session record (opencode.db)",
     "elapsed_seconds": null,

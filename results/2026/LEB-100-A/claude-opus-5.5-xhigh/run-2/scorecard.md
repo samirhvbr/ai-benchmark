@@ -8,6 +8,7 @@
 | Model | Claude Opus 5.5 (`claude-opus-5-5`, Anthropic) · reasoning effort `xhigh` · exact version: not recorded |
 | Training cutoff | 2026-06 ([source](https://platform.claude.com/docs/en/about-claude/models/overview)) — before the answer key was published (2026-07-13): by its provider's own cutoff, the model did not train on it |
 | Client | Claude Code 2.1.285 · session 2026-09-30 09:04 → 09:21 |
+| Execution host | 4 vCPU · 3.8 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |

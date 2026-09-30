@@ -8,6 +8,7 @@
 | Model | Kimi K2.7 Code (`kimi-k2.7-code`, Moonshot AI) · reasoning effort model default — not configurable: opencode offers no effort setting for this model · exact version: not recorded |
 | Training cutoff | not published by the provider: Moonshot AI publishes no training or knowledge cutoff for Kimi K2.7 Code (checked on 2026-09-30). The model was released on 2026-06-12, before the answer key went public, but a release date is not a published cutoff; third-party figures are not used ([source](https://huggingface.co/moonshotai/Kimi-K2.7-Code)) — the answer key has been public since 2026-07-13: the model may have trained on it |
 | Client | opencode 1.18.33 · session 2026-09-30 11:52 → 12:05 |
+| Execution host | 4 vCPU · 3.8 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |

@@ -8,6 +8,7 @@
 | Model | Grok 4.6 (`grok-4.6`, xAI) · reasoning effort `high` · exact version: not recorded |
 | Training cutoff | not published by the provider: xAI publishes a cutoff for Grok 4.7 but none for Grok 4.6 (model page and models overview checked on 2026-09-30); third-party figures are not used ([source](https://docs.x.ai/developers/models/grok-4.6)) — the answer key has been public since 2026-07-13: the model may have trained on it |
 | Client | opencode 1.18.33 · session 2026-09-30 11:25 → 11:32 |
+| Execution host | 4 vCPU · 3.8 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |

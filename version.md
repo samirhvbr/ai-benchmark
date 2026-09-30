@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.27`
+**Versão atual:** `0.2.28`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,23 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.28` — 2026-09-30 — run.json records the size of the machine each run ran on
+
+Claude Sonnet 5.5 in Claude Code's multi-agent mode ("ultracode") told the operator that the VM's
+4 CPUs limited each of its workflows to 2 agents at a time. A multi-agent client sizes its work to
+the machine, so the machine's size changes what is measured. Until now it was recorded nowhere.
+
+- `PROTOCOL.md §3`: every run records `execution_host` (vCPUs and RAM), and all the runs of one
+  agent keep the same size.
+- **The existing runs.** The 20 runs that ran on the execution VM record 4 vCPUs and 3.8 GiB, its
+  size from 2026-09-25 until it was resized on 2026-09-30 at 13:01. Kimi K3's clone records `null`,
+  listed in `not_recorded`.
+- **Scorecards.** They gain an "Execution host" row.
+- **Evaluation notes.** They explain why the size matters little for single-session clients and a
+  lot for multi-agent ones, and that later runs use the new size: 20 vCPUs and 15 GiB.
+
+No score changes.
 
 ### `0.2.27` — 2026-09-30 — results/ adds DeepSeek V4.1 Flash on LEB-100-A, ninth at 625
 

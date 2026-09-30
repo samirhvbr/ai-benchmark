@@ -34,6 +34,10 @@
     "log": "kept on the execution VM (~/.claude/projects/-srv-claude-opus-5-5-xhigh/b85ca69a-8caf-455d-855c-7a58d0bcd5be.jsonl), not published"
   },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback (/etc/hosts, since 2026-09-29 18:59 UTC-3) and no IPv6 connectivity; GitHub's addresses were not blackholed yet (from 2026-09-30), so a direct connection to one was not blocked (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 4,
+    "ram_gib": 3.8
+  },
   "cost_time": {
     "source": "Claude Code 2.1.285 session log, usage summed per API message",
     "elapsed_seconds": null,

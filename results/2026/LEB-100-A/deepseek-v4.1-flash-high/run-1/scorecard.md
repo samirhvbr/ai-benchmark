@@ -8,6 +8,7 @@
 | Model | DeepSeek V4.1 Flash (`deepseek-flash`, DeepSeek) · reasoning effort `high` · exact version: not recorded |
 | Training cutoff | not published by the provider: DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4.1-Flash (release note of 2026-09-10, checked on 2026-09-30); it was released after the answer key went public; third-party figures are not used ([source](https://api-docs.deepseek.com/news/news260910/)) — the answer key has been public since 2026-07-13: the model may have trained on it |
 | Client | opencode 1.18.33 · session 2026-09-30 12:22 → 12:31 |
+| Execution host | 4 vCPU · 3.8 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |

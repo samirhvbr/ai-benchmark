@@ -78,6 +78,8 @@ instância destruiria a comparabilidade entre modelos e entre casos.
 
 Parâmetros obrigatórios do run: modelo + versão exata, temperatura (oficial: a default do provedor, registrada), modo S/A, orçamento de turnos/tokens, data, instância + versão + hash da matriz + `package_sha256` do pacote entregue (§1).
 
+Every run also records the size of the machine it ran on (`execution_host`: vCPUs and RAM). A client that runs several agents in parallel sizes its work to the machine, so the size is part of the run; all the runs of one agent keep the same size.
+
 Every run also records the model's training cutoff as its provider publishes it (`model.training_cutoff`, with `training_cutoff_source` pointing at the provider's page). It is `null` when the provider publishes none, never a third-party estimate. Against the day an instance's answer key became public, it says whether the model could have trained on that key (MATRIX §4).
 
 **Operator replies (mode A).** The operator's first message is exactly *"Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json."*, the same for every run, with nothing added (`COMO-RODAR.md` repeats it). It is turn 1 of the declared budget. A check made before it that says nothing about the task, such as asking which model is answering, belongs in a separate session. If it happens in the run's own session, the run's note records the exchange and the run stands. Sometimes the agent stops and waits for a human before its delivery is complete: a question, a request for confirmation, a progress report that ends in a pause. Every time, the operator sends exactly this reply, the same to every agent:

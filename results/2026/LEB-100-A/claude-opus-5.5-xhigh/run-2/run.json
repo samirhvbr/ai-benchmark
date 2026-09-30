@@ -33,6 +33,10 @@
     "log": "kept on the execution VM (~/.claude/projects/-srv-claude-opus-5-5-xhigh/9a1a224a-3e65-4d60-b03f-a6772b13a6ee.jsonl), not published"
   },
   "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed (all in place since 2026-09-30 09:02 UTC-3), and no IPv6 connectivity (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 4,
+    "ram_gib": 3.8
+  },
   "cost_time": {
     "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (9a1a224a), which is this run",
     "elapsed_seconds": 922.774,

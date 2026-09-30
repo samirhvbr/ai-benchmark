@@ -28,8 +28,7 @@
   "first_message": null,
   "session": null,
   "execution_environment": "a clone of the execution VM, made on 2026-09-30 to run a second session in parallel and destroyed afterwards; it had at least GitHub's names resolved to loopback and no IPv6. Whether it already had the blackhole routes (added on the original VM at 08:13 UTC-3) is not recorded, and GitHub's edge addresses were blocked only at 09:02, after this delivery was filed (README, Execution environment)",
-  "cost_time": null,
-  "logs": null,
+  "execution_host": null,
   "not_recorded": [
     "exact_version",
     "temperature",
@@ -38,7 +37,10 @@
     "session",
     "operator_replies",
     "cost_time",
-    "logs"
+    "logs",
+    "execution_host"
   ],
+  "cost_time": null,
+  "logs": null,
   "run_note": "The clone was destroyed with its session log, so the client, the operator's messages, the tokens and the cost of this run are not recorded."
 }

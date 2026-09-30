@@ -211,6 +211,8 @@ def render_scorecard(r):
     w("| Client | %s |" % ("not recorded" if not client else "%s %s%s" % (
         client["name"], client.get("version") or "", "" if not session else
         " · session %s → %s" % (session["started"][:16].replace("T", " "), session["ended"][11:16]))))
+    host = meta.get("execution_host")
+    w("| Execution host | %s |" % ("not recorded" if not host else "%s vCPU · %s GiB RAM" % (host["vcpus"], host["ram_gib"])))
     if meta.get("first_message"):
         w("| First message | %s |" % meta["first_message"])
     w("| Instance | %s · level %s |" % (card["instance"], card["instance"].split("-")[1]))

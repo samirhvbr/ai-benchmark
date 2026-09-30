@@ -8,6 +8,7 @@
 | Model | Kimi K3 (`kimi-k3`, Moonshot AI) · reasoning effort model default — as filed in the folder name; the client was not recorded, so whether it offered an effort setting is unknown · exact version: not recorded |
 | Training cutoff | not published by the provider: Moonshot AI publishes no training or knowledge cutoff for Kimi K3 (Hugging Face model card checked on 2026-09-30); third-party figures are not used ([source](https://huggingface.co/moonshotai/Kimi-K3)) — the answer key has been public since 2026-07-13: the model may have trained on it |
 | Client | not recorded |
+| Execution host | not recorded |
 | Instance | LEB-100-A v1.1 · level 100 |
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 | Package (SHA-256) | `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f` |

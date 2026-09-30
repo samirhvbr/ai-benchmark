@@ -51,6 +51,13 @@ Those two results measure the model as it was run, not a like-for-like compariso
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
 
+**Machine size.** Every run so far was made on the execution VM at **4 vCPUs and 3.8 GiB of RAM**,
+which it kept from 2026-09-25 until 2026-09-30 13:01. `execution_host` in each `run.json` says so.
+The exception is Kimi K3, whose clone's size was not recorded. Single-session clients spend most
+of a run waiting on the API, so the size weighs little on them. A multi-agent client sizes its
+work to the machine, which is why the size is now a run parameter (`PROTOCOL §3`). The VM was
+resized to 20 vCPUs and 15 GiB after that, and later runs record it.
+
 **What the session logs show.** Eight of the ten runs left their client's session log on the
 execution VM. They were read on 2026-09-30, and each `run.json` now records what they show:
 
