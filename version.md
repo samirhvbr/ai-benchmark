@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.12`
+**Versão atual:** `0.2.13`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,33 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.13` — 2026-09-30 — PROTOCOL fixes the one reply an operator may send an agent that stops to wait, and run.json counts it
+
+In mode A an agent sometimes stops before its delivery is complete to ask a question, ask for
+confirmation, or report progress and pause. Until now the protocol did not say what the operator
+answers. A "go ahead" to one model and a sentence with context to another changes the run, and
+nothing recorded it.
+
+`PROTOCOL.md §3` now defines the reply. The operator's first message is turn 1 of the budget. Every
+pause gets exactly *"Não há ninguém para responder. Decida com o seu próprio critério e continue."*,
+the same for every agent, and each reply is one more turn. `run.json` records the count as
+`operator_replies`.
+
+- **Voiding.** Any other content voids the run: an answer, a hint, a correction. A voided run may be
+  replaced only while its delivery is unscored, so the rule cannot become a selective retry.
+- **Not a reply.** Approving a client's tool-permission prompt carries no content and is not counted.
+- **Budget.** When the budget runs out, the delivery is whatever the agent has written.
+
+The rule reaches the operator in three places: `BENCHMARK.md` step 3, and the `COMO-RODAR.md` that
+`./leb pacote` writes, which gains a section with the reply and an "operator replies" row. The
+generated guide is now in English; the lines sent to the agent stay in Portuguese, like the task.
+`TAREFA.md` does not change, so the package keeps its SHA-256 (`34e38bc5…`, checked by rebuilding
+it) and later runs stay comparable with the first ten.
+
+For the ten existing runs `operator_replies` is `null` and listed in `not_recorded`: the reply was
+written after them. Scorecards of mode-A runs gain an "Operator replies" row, and `results.json`
+carries the field per run.
 
 ### `0.2.12` — 2026-09-30 — README publishes the execution VM's blackhole script, IPv6 prefixes included
 

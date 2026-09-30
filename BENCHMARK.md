@@ -202,6 +202,12 @@ do provedor, registrada), modo S/A, orçamento de turnos/tokens, data, instânci
 hash da matriz + `package_sha256` — a tabela do `COMO-RODAR.md` já vem com os três últimos
 preenchidos.
 
+**If the agent stops and waits for you** (mode A), send only the fixed reply of
+[PROTOCOL §3](protocol/PROTOCOL.md), verbatim, every time, until the delivery is complete:
+*"Não há ninguém para responder. Decida com o seu próprio critério e continue."* Count how many times you sent it; `run.json` records the count as `operator_replies`.
+Anything else voids the run: answering the question, a hint, a correction. Approving a
+tool-permission prompt is not a reply.
+
 Guarde a **entrega** em `runs/<ID>/<modelo>-<n>/entrega/`, nos nomes que a tarefa pediu:
 - **`RELATORIO.md`** — os achados explicados (mecanismo, severidade, confiança 0–100) e a
   seção de decisões, com o que ele resolveu **não** mudar;

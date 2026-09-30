@@ -29,7 +29,8 @@ run, not a like-for-like comparison of effort.
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version, the temperature, token counts and cost, and the full logs (`PROTOCOL §4.2` asks for
-logs; they were not kept). The deliveries were filed and evaluated on 2026-09-29, MiniMax-M3's
+logs; they were not kept). Nor was how often the operator replied to an agent that stopped to wait,
+or with what: the fixed reply of `PROTOCOL §3` was written after these runs. The deliveries were filed and evaluated on 2026-09-29, MiniMax-M3's
 on 2026-09-30.
 
 ## How it was evaluated

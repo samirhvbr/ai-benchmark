@@ -11,6 +11,7 @@
 | Matrix (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 | Package (SHA-256) | `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f` |
 | Mode | A (budget: 30 turns) |
+| Operator replies | not recorded |
 | Temperature | not recorded |
 | Delivery filed | 2026-09-30 · evaluated 2026-09-30 |
 | Run | 1 — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |

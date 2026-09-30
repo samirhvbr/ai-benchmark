@@ -80,6 +80,12 @@ Parâmetros obrigatórios do run: modelo + versão exata, temperatura (oficial: 
 
 Every run also records the model's training cutoff as its provider publishes it (`model.training_cutoff`, with `training_cutoff_source` pointing at the provider's page). It is `null` when the provider publishes none, never a third-party estimate. Against the day an instance's answer key became public, it says whether the model could have trained on that key (MATRIX §4).
 
+**Operator replies (mode A).** The operator's first message is the one in `COMO-RODAR.md`, and it is turn 1 of the declared budget. Sometimes the agent stops and waits for a human before its delivery is complete: a question, a request for confirmation, a progress report that ends in a pause. Every time, the operator sends exactly this reply, the same to every agent:
+
+> Não há ninguém para responder. Decida com o seu próprio critério e continue.
+
+Each reply is one more turn of the budget, and `run.json` records how many were sent (`operator_replies`). Approving a client's tool-permission prompt is not a reply and is not counted, since it carries no content. The client should run with its tools pre-approved inside the VM. A message with any other content voids the run: an answer, a hint, a correction. The evaluation notes record the voided run and why. A voided run may be replaced only while its delivery is unscored; replacing it after scoring is the selective retry §4 item 3 forbids. When the budget runs out, the delivery is whatever the agent has written by then.
+
 ## 4. Reprodutibilidade
 
 1. Run oficial = **3 execuções independentes**; o scorecard oficial é a **mediana do TOTAL** (registrando as 3).

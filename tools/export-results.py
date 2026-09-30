@@ -192,6 +192,10 @@ def render_scorecard(r):
     w("| Matrix (SHA-256) | `%s` |" % card["matrix_sha256"])
     w("| Package (SHA-256) | `%s` |" % meta["package_sha256"])
     w("| Mode | %s (budget: %s turns) |" % (meta["mode"], na(meta.get("turn_budget"))))
+    if meta["mode"] == "A":
+        replies = meta.get("operator_replies")
+        w("| Operator replies | %s |" % ("not recorded" if replies is None else
+                                         "%d, each the fixed reply of PROTOCOL §3" % replies))
     w("| Temperature | %s |" % na(meta.get("temperature")))
     w("| Delivery filed | %s · evaluated %s |" % (meta["filed_on"], meta["evaluated_on"]))
     w("| Run | %d — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |" % r["run"])
@@ -364,6 +368,7 @@ def run_summary(r):
         "brier": (card.get("calibration") or {}).get("brier"),
         "discovery_index": card["difficulty_breakdown"]["discovery_index"],
         "characterization": {"passed": ch["passed"], "failed": ch["failed"]},
+        "operator_replies": r["meta"].get("operator_replies"),
         "scorecard_url": "%s/blob/master/%s" % (REPO_URL, rel(os.path.join(r["dir"], "scorecard.md"))),
     }
 
