@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.5`
+**Versão atual:** `0.2.6`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.6` — 2026-09-29 — tools/export-results.py shows a model-default reasoning effort as not configurable
+
+Some models expose no reasoning-effort setting — the client offers no selector and the model
+always runs at its own default. That is a fact about the model, not a value someone forgot to
+record, so a run's `model.reasoning_effort` may now be `"default"`, with an optional
+`reasoning_effort_note`, and the scorecard prints "reasoning effort model default — <note>"
+instead of the "not recorded" it used for a missing value. A recorded level (`xhigh`) renders as
+before: the nine existing scorecards are byte-identical.
 
 ### `0.2.5` — 2026-09-29 — results/ adds GPT-6.1-sol on LEB-100-A, fourth at 666
 

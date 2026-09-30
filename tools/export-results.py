@@ -120,6 +120,15 @@ def na(value):
     return "not recorded" if value in (None, "") else str(value)
 
 
+def effort_label(model):
+    """`default` means the model has no effort setting at all — a fact about the model, not a
+    value someone forgot to write down, so it must not read as "not recorded"."""
+    effort = model.get("reasoning_effort")
+    if effort == "default":
+        return "model default — %s" % (model.get("reasoning_effort_note") or "not configurable")
+    return "`%s`" % na(effort)
+
+
 def render_scorecard(r):
     meta, card, verdict, mech = r["meta"], r["card"], r["verdict"], r["mech"]
     model = meta["model"]
@@ -136,8 +145,8 @@ def render_scorecard(r):
     w("")
     w("| Field | Value |")
     w("| --- | --- |")
-    w("| Model | %s (`%s`, %s) · reasoning effort `%s` · exact version: %s |" % (
-        model["name"], model["id"], model["provider"], na(model.get("reasoning_effort")), na(model.get("exact_version"))))
+    w("| Model | %s (`%s`, %s) · reasoning effort %s · exact version: %s |" % (
+        model["name"], model["id"], model["provider"], effort_label(model), na(model.get("exact_version"))))
     w("| Instance | %s · level %s |" % (card["instance"], card["instance"].split("-")[1]))
     w("| Matrix (SHA-256) | `%s` |" % card["matrix_sha256"])
     w("| Package (SHA-256) | `%s` |" % meta["package_sha256"])
