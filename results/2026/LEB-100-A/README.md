@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Eighteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Nineteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6 and Kimi K2.7 Code their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code and DeepSeek V4 Flash their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,7 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- the four GLM models and the two Grok models ran at `high`, the level chosen in their client;
+- the four GLM models, the two Grok models and DeepSeek V4 Flash ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded;
 - Kimi K2.7 Code has no effort setting in its client and ran at the model's default.
 
@@ -45,6 +45,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `grok-4.7` | Grok 4.7 (xAI), in opencode 1.18.33 | high |
 | `grok-4.6` | Grok 4.6 (xAI), in opencode 1.18.33 | high |
 | `kimi-k2.7-code-default` | Kimi K2.7 Code (Moonshot AI), in opencode 1.18.33 | default (not configurable) |
+| `deepseek-v4-flash-high` | DeepSeek V4 Flash (DeepSeek, served by Novita AI), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -159,8 +160,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Ten deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**T** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Eleven deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**U** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -175,6 +176,7 @@ every verdict was in:
 | **R** | Grok 4.7, run 1 | 638 |
 | **S** | Grok 4.6, run 1 | 633 |
 | **T** | Kimi K2.7 Code, run 1 | 415 |
+| **U** | DeepSeek V4 Flash, run 1 | 612 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -294,6 +296,21 @@ every verdict was in:
   - Its report says `EXPORT_DIR` now has an empty fallback. The code keeps the original path, so
     there is no compatibility issue, but the EXPL judge, who reads the report, marked the claim
     down.
+- **DeepSeek V4 Flash (U): 612, Silver.**
+  - It ran in opencode at effort `high`, served by Novita AI, with every isolation layer, no web
+    tool and no request to GitHub. It cost US$ 0.07.
+  - The operator's folder was named `deepseek-v4.1-flash`, but the host did not offer V4.1 Flash;
+    the session shows `deepseek/deepseek-v4-flash`, and the agent is filed as
+    `deepseek-v4-flash-high`.
+  - DeepSeek publishes no cutoff. The model was released on 2026-04-24, but that is not a
+    published cutoff, so it carries the dagger.
+  - Before the fixed first message the operator asked "quem eh voce?", to check which model the
+    host was serving. The model answered with its name, and nothing else passed between them. The
+    run stands, its note records the exchange, and `PROTOCOL §3` now says how such a check is
+    handled (0.2.25). The decision was taken before the run was scored.
+  - It fixed eight flaws fully, MD5 and the secrets among them. It lost 30 points to COMP-003: it
+    changed `formatarStatus` to return "Desconhecido" for unknown statuses where the legacy code
+    returned "Resolvido". D got the same call for the same change. Without it, it would total 642.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

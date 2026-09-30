@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.25`
+**Versão atual:** `0.2.26`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,31 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.26` — 2026-09-30 — results/ adds DeepSeek V4 Flash on LEB-100-A, twelfth at 612
+
+Another run of 2026-09-30, evaluated like the rest:
+- harness 22/22, with SEC-001, BUG-001 and PERF-001 fixed and SEC-008 not;
+- one blind matching judge (label U);
+- the EXPL judge on its kept scale (29/50);
+- `score.py`.
+
+**How it ran.** It ran in opencode 1.18.33 at effort `high`, served by Novita AI, with every
+isolation layer and no request to GitHub. It cost US$ 0.07.
+- **Name.** It is filed as `deepseek-v4-flash-high`, the model the session shows. The operator's
+  folder said `v4.1`, which the host did not offer.
+- **Identity check.** Its run note records the "quem eh voce?" the operator sent before the fixed
+  first message. That is the case `PROTOCOL §3` now covers (0.2.25).
+- **Cutoff.** DeepSeek publishes none, so the model carries the dagger.
+
+**Result.** DeepSeek V4 Flash totals 612 (Silver), twelfth. It sits level with GPT-5.6-sol, which
+ranks ahead on Brier. It fixed eight flaws fully, including MD5 and the secrets.
+
+**Consistency review.** The review kept its judge's COMP-003 (−30) for changing `formatarStatus`
+to return "Desconhecido" where the legacy code returned "Resolvido", the same call D got. Without
+it the total would be 642.
+
+The evaluation notes and the README status count nineteen agents.
 
 ### `0.2.25` — 2026-09-30 — PROTOCOL says what happens to an identity check sent before the first message
 

@@ -34,13 +34,14 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 9 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 1/3 |
 | 10 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
 | 11 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
-| 12 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
-| 13 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
-| 14 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
-| 15 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
-| 16 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) † · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
-| 17 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) † · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 1/3 |
-| 18 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) † · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
+| 12 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md) † · high | **612** | Silver | 224 | 0 | 139 | 150 | 0 | 70 | 29 | 0 | 70.8 | 0.006 | 1/3 |
+| 13 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
+| 14 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
+| 15 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
+| 16 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
+| 17 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) † · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
+| 18 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) † · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 1/3 |
+| 19 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) † · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
 Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is
@@ -49,4 +50,4 @@ A score with fewer than 3 runs is **not official**.
 
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
-† Cutoff after the key went public, or not published: Grok 4.6 (not published), GLM-5.3 (not published), GLM-5.3-Flash (not published), GLM-5.3-FlashX (not published), Kimi K3 (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).
+† Cutoff after the key went public, or not published: Grok 4.6 (not published), GLM-5.3 (not published), GLM-5.3-Flash (not published), DeepSeek V4 Flash (not published), GLM-5.3-FlashX (not published), Kimi K3 (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).
