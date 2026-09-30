@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.4`
+**Versão atual:** `0.2.5`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,30 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.5` — 2026-09-29 — results/ adds GPT-6.1-sol on LEB-100-A, fourth at 666
+
+A ninth agent on the same package, evaluated like the others: harness (22/22; SEC-001, BUG-001
+and PERF-001 fixed, SEC-008 not), one blind matching judge (delivery I), the EXPL judge on the
+scale it used for A–H (43/50), `score.py`. The consistency review changed nothing in its verdict.
+
+| # | Model | Total | Grade |
+| ---: | --- | ---: | --- |
+| 1 | Claude Sonnet 5.5 | 825 | Gold |
+| 2 | Claude Fable 5.1 | 781 | Gold |
+| 3 | Claude Opus 5.5 | 711 | Silver |
+| 4 | GPT-6.1-sol | 666 | Silver |
+| 5 | GPT-6-astra | 661 | Silver |
+| 6 | GPT-5.6-terra | 625 | Silver |
+| 7 | GPT-5.6-sol | 612 | Silver |
+| 8 | GPT-5.5 | 601 | Silver |
+| 9 | GPT-5.6-luna | 599 | Bronze |
+
+GPT-6.1-sol migrated MD5 to `password_hash` and identified the dispatcher (ARCH-002) in its list of
+deliberate non-changes; it kept SEC-008 unfixed for the CSV's consumers and scoped the SLA average
+to the session (COMP-003, as B, C, G and H). The evaluation notes — including the places quoted in
+the earlier reviews, which shift by one — the generated leaderboard and the README status are
+updated for nine agents.
 
 ### `0.2.4` — 2026-09-29 — results/ adds GPT-6-astra on LEB-100-A, fourth at 661
 
