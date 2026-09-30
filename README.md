@@ -119,7 +119,7 @@ Limits, stated plainly:
 - [x] First instance: **[LEB-100-A](instances/LEB-100-A/)** v1.1 — PHP legacy code, 13 planted flaws + 2 decoys, private matrix, characterization + verify probes (validated live: characterization 22/22 green on both pristine and fixed code; probes flip PLANTADA→CORRIGIDA)
 - [x] Evaluation **harness** ([`harness/`](harness/)) — mechanical pipeline (characterization before/after + probes + difficulty coverage → JSON), stdlib-only, instance-agnostic; validated both ways on LEB-100-A
 - [x] Scorecard **assembler** ([`harness/score.py`](harness/score.py)) + **judge interface** ([`scoring/JUDGE.md`](scoring/JUDGE.md), `judge.schema.json`) — deterministic 1000-pt scorecard from mechanical evidence + judge verdict; validated end-to-end (incl. the mysqli→PDO rewrite scoring 0/Reprovada, and a Gold run at 860)
-- [x] First scored runs — eleven agents on LEB-100-A, one run each and a second for Claude Opus 5.5 (not yet official: an official score is the median of 3), published in [results/](results/) with every delivery, verdict and scorecard
+- [x] First scored runs — twelve agents on LEB-100-A, one run each and a second for Claude Opus 5.5 (not yet official: an official score is the median of 3), published in [results/](results/) with every delivery, verdict and scorecard
 - [ ] Official reference runs — 3 runs per model on LEB-100-A, which stays current under [MATRIX §4](matrix/MATRIX.md), item 5: runs on a machine that cannot reach GitHub, and each run records the model's training cutoff
 
 ## License & contributing

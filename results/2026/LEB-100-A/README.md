@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Eleven agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twelve agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
-2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run and GLM-5.2 its first
-(see *Runs of 2026-09-30* below).
+2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2 and Kimi
+K3 their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,8 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- GLM-5.2 ran at `high`, the level chosen in its client.
+- GLM-5.2 ran at `high`, the level chosen in its client;
+- Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
 
@@ -36,6 +37,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `gpt-6.1-sol-xhigh` | GPT-6.1-sol (OpenAI) | xhigh |
 | `minimax-m3` | MiniMax-M3 (MiniMax) | model default (not configurable) |
 | `z.ai-glm-5.2-high` | GLM-5.2 (Z.AI), in opencode 1.18.33 | high |
+| `moonshot-kimi-k3-default` | Kimi K3 (Moonshot AI) | default (as filed) |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -158,7 +160,7 @@ every verdict was in:
 | --- | --- | --- |
 | **K** | Claude Opus 5.5, run 2 | 717 |
 | **L** | Claude Fable 5.1 | void, see below |
-| **M** | Kimi K3 | held, see below |
+| **M** | Kimi K3, run 1 | 528 |
 | **N** | GLM-5.2, run 1 | 388 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
@@ -186,9 +188,17 @@ every verdict was in:
   - It did not fix PERF-001, SEC-008, SEC-013, SEC-014 or BUG-004.
   - It left the three ARCH/CLN flaws alone.
   - It ran in opencode, not in the Claude or OpenAI clients the others used.
-- **Kimi K3 (M) is judged but not published.** No session of it exists on the execution VM,
-  so where and how it ran, and which isolation applied, is being confirmed. It will be published
-  with that record.
+- **Kimi K3 (M): 528, tenth.**
+  - It ran on a clone of the execution VM, made to run a second session in parallel and destroyed
+    afterwards. Its session log went with it.
+  - The clone had at least GitHub's names blocked and no IPv6. Whether it already had the
+    blackhole routes is not recorded. GitHub's edge addresses were blocked only after this
+    delivery was filed.
+  - Its client, the operator's messages, its tokens and its cost are not recorded, and `run.json`
+    says so.
+  - It kept the contract whole (COMP 100) and fixed seven flaws: SEC-001, SEC-003, SEC-013,
+    SEC-015, SEC-017, BUG-001 and BUG-004.
+  - It left the N+1 query (PERF-001), the CSV injection (SEC-008) and MD5 (SEC-014) in place.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

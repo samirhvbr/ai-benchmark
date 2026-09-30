@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.17`
+**Versão atual:** `0.2.18`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,26 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.18` — 2026-09-30 — results/ adds Kimi K3 on LEB-100-A, tenth at 528
+
+Kimi K3's delivery was judged with the batch of 2026-09-30 (blind label M) and held, because no
+session of it existed on the execution VM. The owner has since explained why. It ran on a clone of
+the VM, made to run a second session in parallel and destroyed afterwards, and its session log went
+with the clone.
+
+`run.json` records that and nothing it cannot show:
+- **Environment.** A clone with at least GitHub's names blocked and no IPv6. Whether it already had
+  the blackhole routes is not recorded, and GitHub's edge addresses came after the delivery was
+  filed.
+- **Not recorded.** The client, the first message, the operator's messages, the tokens and the
+  cost.
+- **Effort.** It is filed at `default`, from the folder name.
+- **Training cutoff.** Moonshot AI publishes none, so the leaderboard marks it with the dagger.
+
+Kimi K3 totals 528 (Bronze), tenth. It kept the contract whole (COMP 100) and fixed seven flaws,
+with EXPL at 30/50. It left the N+1 query, the CSV injection and MD5 in place. MiniMax-M3 and
+GLM-5.2 move to 11th and 12th. The evaluation notes and the README status count twelve agents.
 
 ### `0.2.17` — 2026-09-30 — results/ adds the runs of 2026-09-30 on LEB-100-A: Opus 5.5 run 2 at 717, GLM-5.2 at 388, Fable 5.1 run 2 void
 
