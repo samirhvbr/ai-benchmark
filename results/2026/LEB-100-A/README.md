@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Sixteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Seventeen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX and Grok 4.7 their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7 and Grok 4.6 their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,7 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- the four GLM models and Grok 4.7 ran at `high`, the level chosen in their client;
+- the four GLM models and the two Grok models ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
@@ -42,6 +42,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `glm-5.3-flash-high` | GLM-5.3-Flash (Z.AI), in opencode 1.18.33 | high |
 | `glm-5.3-flashX-high` | GLM-5.3-FlashX (Z.AI), in opencode 1.18.33 | high |
 | `grok-4.7` | Grok 4.7 (xAI), in opencode 1.18.33 | high |
+| `grok-4.6` | Grok 4.6 (xAI), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -156,8 +157,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Eight deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**R** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Nine deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**S** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -170,6 +171,7 @@ every verdict was in:
 | **P** | GLM-5.3-Flash, run 1 | 624 |
 | **Q** | GLM-5.3-FlashX, run 1 | 597 |
 | **R** | Grok 4.7, run 1 | 638 |
+| **S** | Grok 4.6, run 1 | 633 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -260,6 +262,17 @@ every verdict was in:
   - It fixed the other probe-covered flaws and kept the contract whole. It left MD5 and the
     secrets in place, saying a re-hash on login could not migrate the base, which is false.
   - It cost US$ 2.43, the most of the opencode runs.
+- **Grok 4.6 (S): 633, Silver.**
+  - It ran in opencode at effort `high` with every isolation layer. It got the fixed first message
+    and nothing else, used no web tool and made no request to GitHub.
+  - It finished in six minutes with three shell commands, the shortest session of the day. It
+    lands five points below Grok 4.7 for about an eighth of the cost (US$ 0.31 against 2.43).
+  - xAI publishes a cutoff for Grok 4.7 but none for Grok 4.6, so it carries the dagger.
+  - It fixed the three probe-covered flaws but not SEC-008, and kept the contract whole.
+  - It named the nested ifs of CLN-007 in its list of deliberate non-changes. Under rule 5 that is
+    R1, which gives CLN 25.
+  - For SEC-015 it moved the SMTP key to the environment and kept the database password's literal
+    fallback. That gives C3 at half, as for J; A, P and Q kept both literals and got none.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.22`
+**Versão atual:** `0.2.23`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,28 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.23` — 2026-09-30 — results/ adds Grok 4.6 on LEB-100-A, seventh at 633
+
+Another run of 2026-09-30, evaluated like the rest:
+- harness 22/22, with SEC-001, BUG-001 and PERF-001 fixed and SEC-008 not;
+- one blind matching judge (label S);
+- the EXPL judge on its kept scale (35/50);
+- `score.py`.
+
+It ran in opencode 1.18.33 at effort `high`, with every isolation layer, the fixed first message
+and nothing else, no web tool and no request to GitHub. It took six minutes and cost US$ 0.31.
+xAI publishes no training cutoff for Grok 4.6 (it does for 4.7), so the leaderboard marks it with
+the dagger.
+
+Grok 4.6 totals 633 (Silver), seventh, five points below Grok 4.7 for about an eighth of its cost.
+The consistency review kept its judge's calls:
+- **SEC-015 C3 at half.** Grok 4.6 moved the SMTP key to the environment and kept the database
+  password's literal fallback. J did the same and got the same score; A, P and Q kept both literals
+  and got none.
+- **CLN-007 R1.** It named the nested ifs in its list of non-changes, which rule 5 counts as R1.
+
+The evaluation notes and the README status count seventeen agents.
 
 ### `0.2.22` — 2026-09-30 — results/ adds Grok 4.7 on LEB-100-A, sixth at 638
 

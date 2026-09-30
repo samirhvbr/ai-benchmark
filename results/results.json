@@ -1461,6 +1461,196 @@
           "rank": 6
         },
         {
+          "agent": "grok-4.6",
+          "model": {
+            "name": "Grok 4.6",
+            "id": "grok-4.6",
+            "provider": "xAI",
+            "reasoning_effort": "high",
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://docs.x.ai/developers/models/grok-4.6",
+            "training_cutoff_note": "xAI publishes a cutoff for Grok 4.7 but none for Grok 4.6 (model page and models overview checked on 2026-09-30); third-party figures are not used"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 633,
+          "totals": [
+            633
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 62.5,
+          "brier": 0.007,
+          "runs": [
+            {
+              "run": 1,
+              "total": 633,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 194,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 25,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 35,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 7,
+                "priorizacao": 7,
+                "trade_offs": 6
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 92
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 4,
+              "brier": 0.007,
+              "discovery_index": 62.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 54906,
+                  "output": 8789,
+                  "cache": 158208,
+                  "total": 234078
+                },
+                "usd_estimate": 0.31,
+                "note": "the total includes 12,175 reasoning tokens; opencode keeps no model time"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.6/run-1/scorecard.md"
+            }
+          ],
+          "rank": 7
+        },
+        {
           "agent": "glm-5.3-high",
           "model": {
             "name": "GLM-5.3",
@@ -1648,7 +1838,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-high/run-1/scorecard.md"
             }
           ],
-          "rank": 7
+          "rank": 8
         },
         {
           "agent": "gpt-5.6-terra-xhigh",
@@ -1837,7 +2027,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 8
+          "rank": 9
         },
         {
           "agent": "glm-5.3-flash-high",
@@ -2027,7 +2217,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 9
+          "rank": 10
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -2228,7 +2418,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 10
+          "rank": 11
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -2409,7 +2599,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 11
+          "rank": 12
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -2604,7 +2794,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 12
+          "rank": 13
         },
         {
           "agent": "glm-5.3-flashX-high",
@@ -2794,7 +2984,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md"
             }
           ],
-          "rank": 13
+          "rank": 14
         },
         {
           "agent": "moonshot-kimi-k3-default",
@@ -2971,7 +3161,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md"
             }
           ],
-          "rank": 14
+          "rank": 15
         },
         {
           "agent": "minimax-m3",
@@ -3154,7 +3344,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
             }
           ],
-          "rank": 15
+          "rank": 16
         },
         {
           "agent": "z.ai-glm-5.2-high",
@@ -3344,7 +3534,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
             }
           ],
-          "rank": 16
+          "rank": 17
         }
       ]
     }
