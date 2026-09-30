@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Twelve agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Thirteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
-2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2 and Kimi
-K3 their first (see *Runs of 2026-09-30* below).
+2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3
+and GLM-5.3 their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -19,7 +19,7 @@ Effort is not equal:
 - nine agents ran at reasoning effort `xhigh`;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- GLM-5.2 ran at `high`, the level chosen in its client;
+- GLM-5.2 and GLM-5.3 ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
@@ -38,6 +38,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `minimax-m3` | MiniMax-M3 (MiniMax) | model default (not configurable) |
 | `z.ai-glm-5.2-high` | GLM-5.2 (Z.AI), in opencode 1.18.33 | high |
 | `moonshot-kimi-k3-default` | Kimi K3 (Moonshot AI) | default (as filed) |
+| `glm-5.3-high` | GLM-5.3 (Z.AI), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -152,8 +153,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Four deliveries arrived. They were labelled at random **K** to **M**, plus **N** for the one that
-arrived last. Each was judged blind like the first ten, and the labels were revealed only after
+Five deliveries arrived. The first three were labelled at random **K** to **M**, then **N** and
+**O** as the last two arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -162,6 +163,7 @@ every verdict was in:
 | **L** | Claude Fable 5.1 | void, see below |
 | **M** | Kimi K3, run 1 | 528 |
 | **N** | GLM-5.2, run 1 | 388 |
+| **O** | GLM-5.3, run 1 | 629 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -211,6 +213,17 @@ every verdict was in:
     (`PROTOCOL §3`).
   - Each run's `first_message` says which one it got. An agent's run 1 and its later runs
     therefore differ by that one sentence.
+- **GLM-5.3 (O): 629, sixth, Silver.**
+  - It ran later the same morning, in the same client and at the same effort as GLM-5.2, with
+    every isolation layer in place. It got the fixed first message and no other operator message.
+  - Its session log shows no request to GitHub, only calls to its own local test servers.
+  - It scored 241 points above GLM-5.2. It fixed the N+1 query, SEC-001/003/013/015/017, BUG-001
+    and, silently, BUG-004, and kept the contract whole (COMP 100). SEC-008 and MD5 it reported
+    and chose to leave, and the architecture flaws it did not touch.
+  - The consistency review kept its judge's call on `exportarCsv`, which now filters by the
+    logged-in client's session. Callers without a session, such as the nightly export, still
+    receive every ticket, so it enforces the visibility rule and is not COMP-003.
+  - Its cost comes from opencode's record: US$ 0.73.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

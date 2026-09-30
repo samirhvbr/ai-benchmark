@@ -1,0 +1,54 @@
+{
+  "agent": "glm-5.3-high",
+  "model": {
+    "name": "GLM-5.3",
+    "id": "glm-5.3",
+    "provider": "Z.AI",
+    "reasoning_effort": "high",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://docs.z.ai/guides/llm/glm-5.3",
+    "training_cutoff_note": "Z.AI publishes no training or knowledge cutoff for GLM-5.3 (model page checked on 2026-09-30); third-party figures are not used"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-30T09:43:00-03:00",
+    "ended": "2026-09-30T10:00:18-03:00",
+    "log": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0da90a04ffeKLSidgvteBMsNm), not published"
+  },
+  "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed (all in place since 2026-09-30 09:02 UTC-3), and no IPv6 connectivity (README, Execution environment)",
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 65504,
+      "output": 21730,
+      "cache": 1778176,
+      "total": 1883245
+    },
+    "usd_estimate": 0.73,
+    "note": "the total includes 17,835 reasoning tokens; opencode keeps no model time"
+  },
+  "logs": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0da90a04ffeKLSidgvteBMsNm), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ]
+}

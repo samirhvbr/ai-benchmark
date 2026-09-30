@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.19`
+**Versão atual:** `0.2.20`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,28 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.20` — 2026-09-30 — results/ adds GLM-5.3 on LEB-100-A, sixth at 629
+
+A fifth delivery of 2026-09-30, evaluated like the others:
+- harness 22/22, with SEC-001, BUG-001 and PERF-001 fixed and SEC-008 not;
+- one blind matching judge (label O);
+- the EXPL judge on its kept scale (39/50);
+- `score.py`.
+
+It ran in opencode 1.18.33 at effort `high`, on the execution VM with every isolation layer. Its
+session record shows the fixed first message, no other operator message, and no request to
+GitHub. The client counted US$ 0.73 and 1.88 M tokens. Z.AI publishes no training cutoff, so the
+leaderboard marks it with the dagger.
+
+GLM-5.3 totals 629 (Silver), sixth, 241 points above GLM-5.2 in the same client at the same
+effort. It fixed the N+1 query and seven more flaws, and kept the contract whole.
+
+The consistency review kept its judge's call on `exportarCsv`. The function now filters by the
+logged-in client's session, but callers without a session, such as the nightly export, still
+receive every ticket. That enforces the visibility rule and is not COMP-003.
+
+Places 7 to 13 move down by one. The evaluation notes and the README status count thirteen agents.
 
 ### `0.2.19` — 2026-09-30 — PROTOCOL fixes the exact first message, and Opus 5.5's second run records why its first attempt was stopped
 
