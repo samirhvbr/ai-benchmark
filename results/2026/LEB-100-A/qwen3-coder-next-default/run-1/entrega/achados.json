@@ -1,0 +1,195 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O parâmetro $busca é concatenado diretamente na query SQL sem sanitização; um atacante pode injetar SQL através do parâmetro ?busca=.",
+      "impacto": "Exfiltrar datas de usuários, chamados ou alterar/injetar dados no banco.",
+      "correcao": "Refatorado para usar sentenças preparadas com bind_param; o WHERE agora usa ? com bind_param('s', $buscaParam).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O id de chamado é concatenado diretamente na query sem sanitização; valores como 1 OR 1=1 podem ser explorados.",
+      "impacto": "Acesso não autorizado a chamados de outros usuários ou destruição de dados.",
+      "correcao": "Sentença preparada com bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 72,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "$tecnicoId é concatenado diretamente em SQL；um atacante que controle o id de técnico pode explorar injeção SQL.",
+      "impacto": "Deface do banco ou leitura não autorizada.",
+      "correcao": "Sentença preparada com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "N+1 queries em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A cada chamado retornado, tecnicoNome é chamada executa uma query individual; para 100 chamados, são 101 queries.",
+      "impacto": "Latência na listagem escala linearmente com o número de chamados.",
+      "correcao": "Substituído o loop por JOIN com usuarios na query principal (LEFT JOIN usuarios u ON c.tecnico_id = u.id).",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Falta de controle de acesso em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 97,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função listarChamados não filtra por usuario_id; qualquer cliente logado pode consultar a lista completa de chamados.",
+      "impacto": "Cliente A pode visualizar todos os chamados — incluindo os de Clientes B, C, etc.",
+      "correcao": "Adicionado parâmetro ?int $usuarioId para filtragem condicional; o index.php ainda não o utiliza por compatibilidade com rotinas externas.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Falta de controle de acesso em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 98,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "verChamado devolve qualquer chamado pelo id, sem verificar se o usuário corrente é o dono ou técnico.",
+      "impacto": "Um cliente pode acessar detalhes de chamados de outros clientes simplesmente mudando o parâmetro ?ver=N.",
+      "correcao": "Sentença preparada aplicada; filtro de ownership depende de dados de sessão, que exigiriam alterar assinatura da função.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Hash de senha com MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Senhas são armazenadas com MD5 puro, sem sal; rainbow tables e ataques de força bruta são triviais.",
+      "impacto": "Se o banco for comprometido, todas as senhas podem ser recuperadas rapidamente.",
+      "correcao": "Não alterado: manter a hash existente (MD5) de hashes gravados no banco para não invalidar credenciais ativas.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "XSS em formulário de login",
+      "arquivo": "code/index.php",
+      "linha": 32,
+      "linha_fim": 34,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$_POST['login'] é ecoado diretamente no HTML sem sanitização, podendo renderizar script恶意.",
+      "impacto": "Atacante pode injectar JS que será executado no contexto de outros usuários.",
+      "correcao": "$_POST['login'] ?? '' agora passado por htmlspecialchars.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Erro por divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Se não houver chamados com minutos_resposta preenchido, $qtd é zero e $soma / $qtd gera erro.",
+      "impacto": "A página inicial do painel pode falhar com Erro 500.",
+      "correcao": "Retorno de 0.0 se $qtd === 0.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "I/O duplicada em exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "CSV é escrito em arquivo no disco, então readfile lê o arquivo e o envia ao navegador; I/O de disco é desnecessária.",
+      "impacto": "Latência na exportação; uso desnecessário de disco e i-node.",
+      "correcao": "Escrita direta em php://output, evitando arquivo intermediário.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Sem session_regenerate_id após login",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A sessão não é regenerada após autenticação bem-sucedida; o session_id anterior pode ter sido exposto ou predito.",
+      "impacto": "Risco de session fixation; um atacante pode forçar um session_id válido e esperar o usuário logar.",
+      "correcao": "session_regenerate_id(true) adicionado após session_start().",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Credenciais hard-coded no fallback de config",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Senha provisionada em fallback significa que, se a variável de ambiente não for definida, as credenciais estarão no código-fonte.",
+      "impacto": "Evasão de segredos em ambientes onde variáveis não são configuradas.",
+      "correcao": "Removido fallback; lançamento de Exception se DB_PASS não estiver configurada.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Filtro de visibilidade em listarChamados (index.php ainda não usa $usuarioId)",
+      "porque": "Incluir sessão no lib.php exigiria passar $uid em todas as chamadas, alterando assinaturas públicas declaradas no manifest.md. Preservar contrato de compatibilidade foi priorizado."
+    },
+    {
+      "o_que": "Filtro de ownership em verChamado",
+      "porque": "A lógica de acesso depende de dados de sessão, que exigiriam alterar assinatura da função ou passar contexto adicional — evitado para preservar contrato."
+    },
+    {
+      "o_que": "Hash MD5 em autenticar",
+      "porque": "O banco contém hashes existentes gerados com MD5. Alterar o algoritmo invalidaria todas as senhas ativas, quebrando o contrato de compatibilidade."
+    },
+    {
+      "o_que": "Validação de entrada explícita em index.php",
+      "porque": "O uso de sentenças preparadas já neutraliza injeção SQL; castings (int) já protegem contra wraps para inteiros."
+    }
+  ]
+}

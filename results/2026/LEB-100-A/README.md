@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Twenty agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twenty-one agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash and DeepSeek V4.1 Flash their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash and Qwen3 Coder Next their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -21,7 +21,9 @@ Effort is not equal:
   default;
 - the four GLM models, the two Grok models and the two DeepSeek models ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded;
-- Kimi K2.7 Code has no effort setting in its client and ran at the model's default.
+- Kimi K2.7 Code has no effort setting in its client and ran at the model's default;
+- Qwen3 Coder Next is a non-thinking model with no effort setting in its client, and ran at the
+  model's default.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
 
@@ -47,6 +49,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `kimi-k2.7-code-default` | Kimi K2.7 Code (Moonshot AI), in opencode 1.18.33 | default (not configurable) |
 | `deepseek-v4-flash-high` | DeepSeek V4 Flash (DeepSeek, served by Novita AI), in opencode 1.18.33 | high |
 | `deepseek-v4.1-flash-high` | DeepSeek V4.1 Flash (DeepSeek's own API), in opencode 1.18.33 | high |
+| `qwen3-coder-next-default` | Qwen3 Coder Next (Alibaba, served by Novita AI), in opencode 1.18.33 | default (non-thinking, not configurable) |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -56,7 +59,8 @@ which it kept from 2026-09-25 until 2026-09-30 13:01. `execution_host` in each `
 The exception is Kimi K3, whose clone's size was not recorded. Single-session clients spend most
 of a run waiting on the API, so the size weighs little on them. A multi-agent client sizes its
 work to the machine, which is why the size is now a run parameter (`PROTOCOL §3`). The VM was
-resized to 20 vCPUs and 15 GiB after that, and later runs record it.
+resized to 20 vCPUs and 15 GiB after that, and later runs record it. Qwen3 Coder Next ran on the
+second VM, `ai-bench2`, a clone of the first at the same size (20 vCPUs, 15.6 GiB).
 
 **What the session logs show.** Eight of the ten runs left their client's session log on the
 execution VM. They were read on 2026-09-30, and each `run.json` now records what they show:
@@ -188,8 +192,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Twelve deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**V** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Thirteen deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**W** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -206,6 +210,7 @@ every verdict was in:
 | **T** | Kimi K2.7 Code, run 1 | 415 |
 | **U** | DeepSeek V4 Flash, run 1 | 612 |
 | **V** | DeepSeek V4.1 Flash, run 1 | 625 |
+| **W** | Qwen3 Coder Next, run 1 | 507 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -358,6 +363,31 @@ every verdict was in:
   - Its V4 Flash run, through Novita, totals 612. The two runs differ in 13 points and in several
     calls (V4.1 Flash left MD5, V4 Flash did not), which suggests different weights. The routing
     caveat above still applies.
+- **Qwen3 Coder Next (W): 507, Bronze, 18th.**
+  - It is the first run made under the clean-machine rule of `PROTOCOL §3`: as the unprivileged
+    user `leb`, on the second VM, cleaned of every earlier run's leftovers. It ran in opencode
+    through Novita AI; the model is non-thinking and has no effort setting. It got the fixed first
+    message and nothing else, used no web tool and made no request to GitHub. It cost US$ 1.53 in
+    16 minutes.
+  - The Qwen team publishes no cutoff. The model predates the public key (its card is dated
+    2026-02-03), but a release date is not a published cutoff, so it carries the dagger.
+  - It fixed five flaws: the SQL injection, session fixation, the empty average, the N+1 in the
+    listing, and a file-handle leak it did not report. It moved one of the two secrets out of the
+    code and kept the contract whole. It left MD5 and the ticket IDOR in place on purpose, and
+    reported neither the XSS nor the CSV injection.
+  - Its JOIN drops the `-` shown for a ticket with no technician: ticket 104's cell comes out
+    empty, and PHP 8.1+ prints a deprecation notice into the page. That is PEN-001 (−15), as the
+    rewritten `-` was for G and V.
+  - Its report has the lowest EXPL score so far (18 of 50) and the worst calibration (Brier 0.301).
+    It reported three flaws that cannot exist, each at confidence 100: SQL injection in two
+    functions that take only integers, and an XSS in a login form that never echoes its input. Its
+    summary counts 20 problems and 18 fixes; it lists 12.
+  - It ran no tests. Once its report and findings index were written, at 17:57, it spent ten
+    minutes calling a tool that does not exist (`todo_write`) 147 times, each refused by opencode,
+    before it finished.
+  - An earlier session, at 17:33, never started: the new VM had no outbound internet yet, and the
+    request never reached the host. The operator cancelled it with no model output. It is not a
+    run.
 - **Claude Sonnet 5.5 in multi-agent mode ("ultracode"), first attempt: void.**
   - The run started at 12:34 on the 4-vCPU VM. About 20 minutes in, the agent reported that the
     machine limited each of its workflows to 2 agents.

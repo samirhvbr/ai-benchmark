@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.30`
+**Versão atual:** `0.2.31`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.31` — 2026-09-30 — results/ adds Qwen3 Coder Next on LEB-100-A, eighteenth at 507
+
+Harness 22/22 with SEC-001, BUG-001 and PERF-001 fixed and SEC-008 not; blind label W; EXPL
+18/50, the lowest so far; `score.py`. The first run under the clean-machine rule of 0.2.30: the
+unprivileged user `leb` on the second VM, in opencode through Novita AI, with the fixed first
+message and nothing else, no web tool and no request to GitHub; US$ 1.53 in 16 minutes. The model
+is non-thinking and has no effort setting, so the agent is `qwen3-coder-next-default`; the Qwen team
+publishes no cutoff, so it carries the dagger.
+
+507 (Bronze), eighteenth. PEN-001 (−15): its JOIN drops the `-` shown for a ticket with no
+technician, as the rewritten `-` was for G and V. Three false positives at confidence 100 give it
+the worst calibration so far (Brier 0.301). Its run note records the session at 17:33 that never
+reached the host (no outbound internet yet), the extra `analysis_report.md` it left unscored, and
+147 calls to a tool that does not exist. The session log is archived off the VM, unpublished.
 
 ### `0.2.30` — 2026-09-30 — PROTOCOL runs every agent as an unprivileged user on a machine cleaned of earlier runs' leftovers
 

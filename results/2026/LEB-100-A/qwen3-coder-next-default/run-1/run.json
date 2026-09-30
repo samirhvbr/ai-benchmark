@@ -1,0 +1,61 @@
+{
+  "agent": "qwen3-coder-next-default",
+  "model": {
+    "name": "Qwen3 Coder Next",
+    "id": "qwen/qwen3-coder-next",
+    "provider": "Alibaba (Qwen team)",
+    "served_by": "Novita AI (opencode provider novita-ai, model qwen/qwen3-coder-next)",
+    "reasoning_effort": "default",
+    "reasoning_effort_note": "not configurable: the model card says it supports only non-thinking mode, and opencode offers no effort setting for it",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://huggingface.co/Qwen/Qwen3-Coder-Next",
+    "training_cutoff_note": "The Qwen team publishes no training or knowledge cutoff for Qwen3-Coder-Next (model card checked on 2026-09-30; its citation is dated 2026-02-03). The model predates the public answer key, but a release date is not a published cutoff; third-party figures are not used"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-30T17:52:26-03:00",
+    "ended": "2026-09-30T18:08:43-03:00",
+    "log": "archived off the VM (opencode.db, session ses_f0be8f22dffeKcKYXXD7qifPQ3 and its explore subagent ses_f0be805e7ffe338mf0x1mFCzeD), not published"
+  },
+  "execution_environment": "second dedicated Linux VM (ai-bench2, a clone of the first) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, after the VM was cleaned of every earlier run's traces (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 7393841,
+      "output": 32724,
+      "cache": 0,
+      "total": 7426565
+    },
+    "usd_estimate": 1.53,
+    "note": "includes the explore subagent's session (81,560 input and 9,263 output tokens, US$ 0.0302); the model is non-thinking, so there are no reasoning tokens, and the host recorded no cache reads; opencode keeps no model time; the recorded cost is US$ 1.5279"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_f0be8f22dffeKcKYXXD7qifPQ3), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. An earlier session at 17:33, in another folder, never started: the VM had no outbound internet yet, the request never reached the host, and the operator cancelled it with no model output and no tool call. The run wrote an extra file, analysis_report.md, from its explore subagent; it stays in the delivery and is not scored. From 17:57 to 18:07 it made 147 calls to a tool that does not exist (todo_write), which opencode rejected, before it finished. It ran no tests: no PHP, no database."
+}
