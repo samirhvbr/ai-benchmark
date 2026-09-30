@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.1.15`
+**Versão atual:** `0.1.16`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.1.16` — 2026-09-29 — tools/export-results.py renders the scorecards and the results file from evaluated runs
+
+`harness/score.py` stops at `scorecard.json`; PROTOCOL §7 asks for the scorecard in `.md` and
+`.json`, and a public results page needs one file to read. The new tool walks
+`results/<edition>/<instance>/<agent>/run-<n>/` (each holding `run.json`, `mecanico.json`,
+`veredito.json` and `scorecard.json`) and writes:
+
+- `scorecard.md` next to each `scorecard.json`: parameters, total and categories, criterion by
+  criterion per flaw, the judge's rationale, COMP, EXPL with its justification, penalties,
+  false positives, extra findings, calibration, difficulty and the mechanical evidence;
+- `results/results.json`, the aggregate the site reads;
+- `results/README.md`, the leaderboard, ranked by median total and then by the informative
+  metrics (SCORING §9).
+
+It imports the criterion table from `score.py` instead of copying it, reads a `half` from the
+verdict (half of a 1-point criterion floors to 0 points but is still a half), and is
+deterministic — `--check` exits 1 when an output would change.
 
 ### `0.1.15` — 2026-09-29 — The CSV checks read the export from the output the manifest promises
 
