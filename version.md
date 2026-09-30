@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.1.13`
+**Versão atual:** `0.1.14`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.1.14` — 2026-09-29 — The characterization loader splits SQL the way the mysql client does
+
+`statementsSql()` in `instances/LEB-100-A/characterization/_bootstrap.php` dropped only
+whole-line `--` comments and then split the file on every `;`. A trailing comment that
+contains a semicolon — `senha VARCHAR(255) NOT NULL, -- password_hash(); …`, valid SQL the
+mysql client loads — cut the `CREATE TABLE` in two, and every probe and characterization
+check of that delivery crashed before running.
+
+The loader now walks the file the way the client does: a `;` ends a statement only outside
+quotes and outside `-- `, `#` and block comments. On the legacy `schema.sql`/`seed.sql` and on
+every delivery evaluated so far it yields the same statements as before, except where the old
+split was wrong. The legacy code still scores 22/22 with every probe PLANTADA.
+
+Found while scoring the first runs (see `results/2026/LEB-100-A/README.md`).
 
 ### `0.1.13` — 2026-09-29 — README documents that benchmark runs happen on a VM with no GitHub access
 

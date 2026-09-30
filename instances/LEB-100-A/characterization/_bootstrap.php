@@ -43,13 +43,57 @@ function resetarBanco(mysqli $db): void
     }
 }
 
-/** Lê um .sql, remove comentários de linha e devolve os statements. */
+/**
+ * Splits a .sql file into statements the way the mysql client does: a `;` ends a
+ * statement only outside quotes and comments (`-- `, `#`, block comments). A `;`
+ * inside a trailing comment is valid SQL and must not cut the statement in two.
+ */
 function statementsSql(string $arquivo): array
 {
-    $linhas = preg_split('/\n/', (string) file_get_contents($arquivo));
-    $sem_comentario = array_filter($linhas, fn($l) => !preg_match('/^\s*--/', $l));
-    $sql = implode("\n", $sem_comentario);
-    return array_values(array_filter(array_map('trim', explode(';', $sql))));
+    $sql = (string) file_get_contents($arquivo);
+    $len = strlen($sql);
+    $stmts = [];
+    $buf = '';
+    $quote = null;
+    for ($i = 0; $i < $len; $i++) {
+        $c = $sql[$i];
+        $next = $i + 1 < $len ? $sql[$i + 1] : '';
+        if ($quote !== null) {
+            $buf .= $c;
+            if ($c === '\\' && $quote !== '`') {
+                $buf .= $next;
+                $i++;
+            } elseif ($c === $quote) {
+                $quote = null;
+            }
+            continue;
+        }
+        if ($c === "'" || $c === '"' || $c === '`') {
+            $quote = $c;
+            $buf .= $c;
+            continue;
+        }
+        $dashComment = $c === '-' && $next === '-' && ($i + 2 >= $len || ctype_space($sql[$i + 2]));
+        if ($dashComment || $c === '#') {
+            $eol = strpos($sql, "\n", $i);
+            $i = $eol === false ? $len : $eol - 1;
+            continue;
+        }
+        if ($c === '/' && $next === '*') {
+            $end = strpos($sql, '*/', $i + 2);
+            $i = $end === false ? $len : $end + 1;
+            $buf .= ' ';
+            continue;
+        }
+        if ($c === ';') {
+            $stmts[] = trim($buf);
+            $buf = '';
+            continue;
+        }
+        $buf .= $c;
+    }
+    $stmts[] = trim($buf);
+    return array_values(array_filter($stmts, fn($s) => $s !== ''));
 }
 
 // --- micro-framework de asserção -------------------------------------------
