@@ -1,0 +1,56 @@
+{
+  "agent": "kimi-k2.7-code-default",
+  "model": {
+    "name": "Kimi K2.7 Code",
+    "id": "kimi-k2.7-code",
+    "provider": "Moonshot AI",
+    "reasoning_effort": "default",
+    "reasoning_effort_note": "not configurable: opencode offers no effort setting for this model",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
+    "training_cutoff_note": "Moonshot AI publishes no training or knowledge cutoff for Kimi K2.7 Code (checked on 2026-09-30). The model was released on 2026-06-12, before the answer key went public, but a release date is not a published cutoff; third-party figures are not used"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-30T11:52:18-03:00",
+    "ended": "2026-09-30T12:05:59-03:00",
+    "log": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d32a9cfffe53SsGH1j3UKjiY), not published"
+  },
+  "execution_environment": "dedicated Linux VM with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed (all in place since 2026-09-30 09:02 UTC-3), and no IPv6 connectivity (README, Execution environment)",
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 55678,
+      "output": 20809,
+      "cache": 1616640,
+      "total": 1702051
+    },
+    "usd_estimate": 0.48,
+    "note": "the total includes 8,924 reasoning tokens; opencode keeps no model time"
+  },
+  "logs": "kept on the execution VM (~/.local/share/opencode/opencode.db, session ses_f0d32a9cfffe53SsGH1j3UKjiY), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named kimi-for-coding-high; the model ran at its only effort, the default, so the agent is filed as kimi-k2.7-code-default. An earlier session in /srv, 11:38-11:46, never started: all four requests (model kimi-for-coding, provider kimi-code-plan-cn) failed with HTTP 401 for an invalid API key, with no model output and no tool call."
+}

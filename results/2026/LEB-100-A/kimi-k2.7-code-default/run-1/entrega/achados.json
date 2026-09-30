@@ -1,0 +1,183 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL em listarChamados via parâmetro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O termo de busca é concatenado literalmente na cláusula LIKE sem prepared statement, permitindo que payload como ' OR '1'='1 altere a semântica da query e ignore restrições.",
+      "impacto": "Vazamento em massa de chamados e bypass de qualquer filtro futuro, expondo dados de todos os clientes.",
+      "correcao": "Uso de prepared statement com bind_param para o LIKE; criação de listarChamadosComVisibilidade para aplicar restrição de dono sem alterar a assinatura pública.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL em verChamado via concatenação de id",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A função monta SELECT * FROM chamados WHERE id = ' . $id concatenando o id diretamente, em vez de usar prepared statement.",
+      "impacto": "Acesso arbitrário a chamados e vetor de injeção SQL para consumidores diretos da função pública.",
+      "correcao": "Substituída a query por prepared statement com bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL em tecnicoNome via concatenação de tecnico_id",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O tecnico_id é concatenado em SELECT nome FROM usuarios WHERE id = ' . $tecnicoId; a função é pública e chamada em laços de listagem/exportação.",
+      "impacto": "Vetor adicional de injeção SQL, amplificado pelo número de chamadas repetidas.",
+      "correcao": "Prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Regra de visibilidade cliente/técnico não implementada",
+      "arquivo": "code/index.php",
+      "linha": 53,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A listagem chamava listarChamados sem filtrar usuario_id, e o detalhe chamava verChamado sem verificar se o chamado pertence ao cliente logado.",
+      "impacto": "Cliente autenticado enxerga e acessa chamados abertos por outros clientes, violando privacidade.",
+      "correcao": "Adicionadas funções auxiliares com visibilidade; index.php filtra listagem, detalhe e CSV pelo papel e dono do chamado.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Divisão por zero em mediaResposta quando não há dados de SLA",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "return $soma / $qtd é executado mesmo quando nenhum chamado possui minutos_resposta, fazendo $qtd valer 0.",
+      "impacto": "Warning de divisão por zero e exibição de 'INF min' no painel quando não há histórico de SLA.",
+      "correcao": "Retorno condicional: $qtd > 0 ? $soma / $qtd : 0.0.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "XSS refletido no parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor de $_GET['busca'] era reimpresso no atributo value do input e no parágrafo de resultados sem escaping.",
+      "impacto": "Execução de JavaScript arbitrário no contexto da sessão do usuário, permitindo roubo de sessão.",
+      "correcao": "Aplicação de htmlspecialchars() em todos os pontos de renderização do parâmetro busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Credenciais sensíveis hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Senha do banco de produção e chave de API SMTP estavam literais no código como fallback de getenv.",
+      "impacto": "Vazamento permanente de credenciais no repositório; acesso não autorizado ao banco e API externa.",
+      "correcao": "Removidos fallbacks com valores reais; DB_PASS e SMTP_API_KEY agora dependem exclusivamente de variáveis de ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "exportarCsv grava arquivo temporário em disco com nome fixo",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A função gravava /var/www/painel/tmp/chamados.csv com nome fixo antes de enviar ao navegador, criando condição de corrida e risco de vazamento.",
+      "impacto": "Possível leitura do CSV gerado por outro usuário; falha silenciosa se o diretório não existir.",
+      "correcao": "Stream direto para php://output, sem persistir arquivo em disco; cabeçalho escrito literalmente para corresponder exatamente ao manifesto.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Senhas armazenadas com MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função autenticar usa md5($senha); MD5 é rápido e vulnerável a rainbow tables e força bruta, e o schema usa CHAR(32) para o hash.",
+      "impacto": "Comprometimento em massa de contas caso a tabela usuarios vaze.",
+      "correcao": "Não alterado; requer migração de schema e dados de teste fora do escopo desta manutenção.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Session fixation por falta de regeneração de ID após login",
+      "arquivo": "code/index.php",
+      "linha": 25,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "Após autenticação bem-sucedida, o session ID não era regenerado, permitindo que atacante que conhecesse o SID antes do login assumisse a sessão.",
+      "impacto": "Ataque de session fixation contra usuários do painel.",
+      "correcao": "Adicionado session_regenerate_id(true) logo após autenticação bem-sucedida.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "formatarStatus mapeia valores fora do contrato como Resolvido",
+      "arquivo": "code/lib.php",
+      "linha": 28,
+      "linha_fim": 34,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "A função retorna 'Resolvido' para qualquer valor diferente de 1 e 2, mascarando possíveis dados corrompidos ou novos status.",
+      "impacto": "Relatórios gerenciais podem classificar status inválidos como resolvidos.",
+      "correcao": "Não alterado para preservar o comportamento legado consumido por relatórios externos.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo de hash de senha MD5",
+      "porque": "Migrar para bcrypt/Argon2 exigiria alterar o schema (CHAR(32)), os dados de teste (seed.sql) e invalidar senhas existentes. Deve ser feito em uma migração planejada, não como correção pontual."
+    },
+    {
+      "o_que": "Rate limiting / proteção contra brute force no login",
+      "porque": "Requer mecanismo de armazenamento persistente ou cache e uma política de bloqueio que foge ao escopo de uma manutenção evolutiva do legado."
+    },
+    {
+      "o_que": "Comportamento de formatarStatus para valores fora de 1-3",
+      "porque": "Mudar o retorno para status inválidos poderia quebrar relatórios gerenciais que já esperam a string 'Resolvido' para valores inesperados; mantive compatibilidade."
+    },
+    {
+      "o_que": "Camada de acesso mysqli / stack",
+      "porque": "O manifesto proíbe trocar a tecnologia de acesso a dados. Todas as correções continuam usando mysqli."
+    },
+    {
+      "o_que": "Estrutura HTML e IDs da listagem",
+      "porque": "O manifesto define a estrutura exata da tabela e os links; preservei-a inalterada."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR",
+      "porque": "Embora exportarCsv não a use mais, removê-la poderia quebrar scripts externos que a referenciam. Mantive-a com fallback via ambiente."
+    }
+  ]
+}

@@ -6,10 +6,10 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Seventeen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Eighteen agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7 and Grok 4.6 their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6 and Kimi K2.7 Code their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -20,7 +20,8 @@ Effort is not equal:
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
 - the four GLM models and the two Grok models ran at `high`, the level chosen in their client;
-- Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded.
+- Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded;
+- Kimi K2.7 Code has no effort setting in its client and ran at the model's default.
 
 Those two results measure the model as it was run, not a like-for-like comparison of effort.
 
@@ -43,6 +44,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `glm-5.3-flashX-high` | GLM-5.3-FlashX (Z.AI), in opencode 1.18.33 | high |
 | `grok-4.7` | Grok 4.7 (xAI), in opencode 1.18.33 | high |
 | `grok-4.6` | Grok 4.6 (xAI), in opencode 1.18.33 | high |
+| `kimi-k2.7-code-default` | Kimi K2.7 Code (Moonshot AI), in opencode 1.18.33 | default (not configurable) |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -157,8 +159,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Nine deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**S** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Ten deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**T** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -172,6 +174,7 @@ every verdict was in:
 | **Q** | GLM-5.3-FlashX, run 1 | 597 |
 | **R** | Grok 4.7, run 1 | 638 |
 | **S** | Grok 4.6, run 1 | 633 |
+| **T** | Kimi K2.7 Code, run 1 | 415 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -273,6 +276,24 @@ every verdict was in:
     R1, which gives CLN 25.
   - For SEC-015 it moved the SMTP key to the environment and kept the database password's literal
     fallback. That gives C3 at half, as for J; A, P and Q kept both literals and got none.
+- **Kimi K2.7 Code (T): 415, Bronze.**
+  - It ran in opencode through Moonshot's API. It has no effort setting there, so it ran at the
+    model's default.
+  - The operator's folder was named `kimi-for-coding-high`. The agent is filed as
+    `kimi-k2.7-code-default`, which is what actually ran.
+  - It had every isolation layer, the fixed first message and nothing else, no web tool and no
+    request to GitHub. It cost US$ 0.48.
+  - An earlier session, 11:38–11:46, never started: every request failed with HTTP 401 for an
+    invalid API key.
+  - Moonshot publishes no cutoff. The model was released on 2026-06-12, before the key went
+    public, but a release date is not a published cutoff, so it carries the dagger.
+  - It fixed six flaws and kept the contract whole. It left the N+1 query and the CSV injection in
+    place.
+  - It is the worst calibrated so far (Brier 0.225). It reported SQL injection in `verChamado` and
+    `tecnicoNome` at confidence 100, but both take only integers, so both are false positives.
+  - Its report says `EXPORT_DIR` now has an empty fallback. The code keeps the original path, so
+    there is no compatibility issue, but the EXPL judge, who reads the report, marked the claim
+    down.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.

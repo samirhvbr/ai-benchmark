@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.23`
+**Versão atual:** `0.2.24`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,31 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.24` — 2026-09-30 — results/ adds Kimi K2.7 Code on LEB-100-A, seventeenth at 415
+
+Another run of 2026-09-30, evaluated like the rest:
+- harness 22/22, with SEC-001 and BUG-001 fixed and SEC-008 and PERF-001 not;
+- one blind matching judge (label T);
+- the EXPL judge on its kept scale (26/50);
+- `score.py`.
+
+**How it ran.** It ran in opencode 1.18.33 through Moonshot's API, at the model's only effort (the
+default), with every isolation layer, the fixed first message and nothing else, and no request to
+GitHub. It cost US$ 0.48. The operator's folder was named `kimi-for-coding-high`; the agent is
+filed as `kimi-k2.7-code-default`, and its run note says why. The run note also records an earlier
+session that never started, on invalid-key errors. Moonshot publishes no training cutoff; the
+release date (2026-06-12) goes in the note but is not used as one, so the model carries the dagger.
+
+**Result.** Kimi K2.7 Code totals 415 (Bronze), seventeenth. Its two SQL-injection findings in
+integer-only functions, reported at confidence 100, are false positives, and they give the worst
+Brier so far (0.225).
+
+**Consistency review.** Its report claims an empty fallback for `EXPORT_DIR`, while the code keeps
+the original path. That is no compatibility violation, and the EXPL judge's mark-down of the report
+stands.
+
+The evaluation notes and the README status count eighteen agents.
 
 ### `0.2.23` — 2026-09-30 — results/ adds Grok 4.6 on LEB-100-A, seventh at 633
 
