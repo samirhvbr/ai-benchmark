@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.2`
+**Versão atual:** `0.2.3`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,32 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.3` — 2026-09-29 — results/ adds the GPT-5.6-terra and GPT-5.6-sol runs on LEB-100-A
+
+Two more agents on the same package, evaluated like the first five: harness (22/22 for both),
+one blind matching judge each (deliveries F and G), the EXPL judge on the scale it used for A–E,
+`score.py`.
+
+| # | Model | Total | Grade |
+| ---: | --- | ---: | --- |
+| 1 | Claude Sonnet 5.5 | 825 | Gold |
+| 2 | Claude Fable 5.1 | 781 | Gold |
+| 3 | Claude Opus 5.5 | 711 | Silver |
+| 4 | GPT-5.6-terra | 625 | Silver |
+| 5 | GPT-5.6-sol | 612 | Silver |
+| 6 | GPT-5.5 | 601 | Silver |
+| 7 | GPT-5.6-luna | 599 | Bronze |
+
+GPT-5.6-sol is the second agent to fix SEC-008; its sanitizer also rewrites the `-` placeholder
+of the technician column (PEN-001, kept). GPT-5.6-terra keeps compatibility at 100.
+
+The consistency review changed F's verdict: its judge counted `AVG`'s 4-decimal precision in
+`mediaResposta()` as COMP-003, which C's judge had ruled inside the characterization tolerance;
+the violation meant — and charged to B, C and G — is scoping the average to the client. The rule
+as worded in the brief for F and G was imprecise and is corrected in the notes. This change moves
+the ranking: with the judge's call F would total 584 (Bronze, 7th). The evaluation notes, the
+generated leaderboard and the README status are updated for seven agents.
 
 ### `0.2.2` — 2026-09-29 — results/ adds Claude Sonnet 5.5 on LEB-100-A, first at 825
 

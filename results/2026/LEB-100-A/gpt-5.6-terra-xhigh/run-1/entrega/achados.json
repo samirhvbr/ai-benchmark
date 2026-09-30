@@ -1,0 +1,135 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes podiam listar, detalhar e exportar chamados de terceiros",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "As rotas export, ver e listagem chamavam consultas globais sem comparar usuario_id ao uid da sessao quando o papel era cliente.",
+      "impacto": "Um cliente autenticado podia obter titulos, descricoes e dados de chamados de outros clientes.",
+      "correcao": "A rota usa consultas filtradas por usuario_id para cliente e esconde detalhes de outro dono; tecnico continua com visao global.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca concatenava entrada do usuario em SQL",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "O termo busca era interpolado dentro do literal LIKE, permitindo que uma aspa alterasse o predicado da consulta.",
+      "impacto": "Um atacante podia expandir a leitura de chamados ou compor consultas de leitura de outros dados acessiveis ao usuario do banco.",
+      "correcao": "As buscas global e filtrada passaram a usar mysqli::prepare e bind_param; a consulta por id tambem foi parametrizada.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Termo de busca era refletido sem codificacao HTML",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 98,
+      "mecanismo": "busca era emitida diretamente em um atributo value e em um elemento HTML, permitindo fechar o contexto com uma aspa ou tag.",
+      "impacto": "Uma URL preparada podia executar JavaScript no navegador de uma pessoa autenticada no painel.",
+      "correcao": "A entrada e normalizada para string e a reflexao usa htmlspecialchars com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senha do banco e chave SMTP estavam hardcoded",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Os segredos eram literais no arquivo de configuracao e podiam ser lidos por qualquer pessoa com uma copia do pacote.",
+      "impacto": "O banco e o servico SMTP podiam ser acessados por terceiros com os valores expostos.",
+      "correcao": "Os valores agora vem de DB_PASS e SMTP_API_KEY no ambiente; DB_PASS ausente falha explicitamente. Os segredos expostos precisam ser rotacionados.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senhas usavam MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 19,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticacao calculava MD5 e o esquema reservava 32 caracteres para esse hash rapido e deterministico.",
+      "impacto": "Uma copia da tabela de usuarios permite tentativa offline acelerada e revela reutilizacao de senha.",
+      "correcao": "O esquema e as sementes usam bcrypt/password_hash; password_verify autentica hashes modernos e contas MD5 sao atualizadas no primeiro login quando a coluna foi migrada.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Listagem e exportacao executavam consultas N+1 para tecnicos",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada chamado retornado disparava tecnicoNome e um SELECT adicional, totalizando uma consulta inicial mais uma por linha.",
+      "impacto": "A latencia e a carga do banco cresciam linearmente com o numero de chamados exibidos ou exportados.",
+      "correcao": "Listagem e exportacao passaram a trazer tecnico_nome com LEFT JOIN, mantendo a chave retornada.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Media de resposta dividia por zero em bases sem respostas",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando nenhum minutos_resposta era nao nulo, qtd permanecia zero e soma/qtd gerava erro de divisao por zero.",
+      "impacto": "A pagina principal falhava para uma base nova ou periodo sem primeira resposta registrada.",
+      "correcao": "A media e calculada com COALESCE(AVG(...), 0) e o retorno de ausencia ou erro e 0.0.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "CSV era gravado em arquivo previsivel e compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 96,
+      "mecanismo": "Toda requisicao sobrescrevia EXPORT_DIR/chamados.csv e depois o lia; requisicoes concorrentes podiam interferir e o arquivo permanecia no diretorio web configurado.",
+      "impacto": "Downloads podiam conter dados inconsistentes e o CSV persistente podia ser exposto por acesso ao caminho temporario.",
+      "correcao": "O CSV e gerado diretamente em php://output, sem arquivo persistente, preservando cabecalho e ordenacao contratados.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas, rotas, rotulos de status, estrutura da tabela HTML e formato do CSV",
+      "porque": "Sao superficie publica declarada no manifesto e foram mantidos compativeis."
+    },
+    {
+      "o_que": "Reset forcado de senhas e ALTER TABLE em tempo de requisicao",
+      "porque": "A migracao da coluna precisa de janela operacional do DBA; a aplicacao preserva logins MD5 ate que a coluna suporte bcrypt."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR",
+      "porque": "A exportacao corrigida nao a usa, mas remove-la poderia afetar automacoes fora da superficie conhecida."
+    }
+  ]
+}

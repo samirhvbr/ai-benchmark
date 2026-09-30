@@ -1,0 +1,212 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Ausência de autorização expunha chamados de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Listagem, detalhe, média e CSV eram executados sem filtrar usuario_id; um cliente autenticado podia consultar IDs e exportar chamados de outro cliente.",
+      "impacto": "Exposição de título, descrição, estado, prioridade, técnico e datas de chamados alheios.",
+      "correcao": "A interface passou a usar variantes internas escopadas por uid e papel, mantendo as assinaturas públicas irrestritas para os consumidores legados.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Credenciais de produção estavam embutidas no repositório",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A senha do banco era um fallback literal e a chave SMTP era sempre definida por um valor literal no arquivo versionado.",
+      "impacto": "Uma cópia do código podia permitir acesso ao banco e uso indevido do serviço de e-mail se os segredos continuassem ativos.",
+      "correcao": "DB_PASS e SMTP_API_KEY agora vêm exclusivamente do ambiente; os valores expostos ainda precisam ser rotacionados operacionalmente.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Busca por título permitia injeção SQL",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor de busca era concatenado dentro de LIKE entre aspas, permitindo que aspas e operadores fornecidos pelo cliente mudassem a cláusula WHERE.",
+      "impacto": "Leitura indevida de registros, consultas dispendiosas e erros SQL controlados pelo atacante.",
+      "correcao": "A consulta usa prepare e bind_param para manter o termo exclusivamente como dado.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas eram armazenadas como MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação comparava md5 da senha a CHAR(32), um hash rápido, determinístico e sem sal.",
+      "impacto": "Um vazamento da tabela permite ataques offline baratos e evidencia usuários que compartilham a mesma senha.",
+      "correcao": "Schema e seed usam password_hash; password_verify valida hashes modernos e logins legados MD5 são reprocessados gradualmente quando a coluna comporta o novo valor.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Dados eram renderizados sem escape e permitiam XSS refletido e persistente",
+      "arquivo": "code/index.php",
+      "linha": 61,
+      "linha_fim": 94,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "busca era interpolada sem escape no atributo value e no texto da página; título, descrição e nome do técnico vindos do banco também eram concatenados diretamente no HTML, permitindo XSS refletido ou persistente.",
+      "impacto": "Execução de JavaScript na origem autenticada do painel, acesso aos dados permitidos à vítima e ações em nome dela.",
+      "correcao": "Foi aplicado htmlspecialchars com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8 ao termo de busca e aos campos textuais renderizados.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Login não limita tentativas",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 35,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Cada POST de login realiza uma verificação sem atraso, contador, bloqueio ou limite compartilhado por conta ou origem.",
+      "impacto": "Facilita ataques automatizados de dicionário e reutilização de credenciais vazadas.",
+      "correcao": "Proposto rate limiting no proxy ou armazenamento compartilhado; um contador local de sessão seria facilmente contornável e não foi adicionado.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Sessão de login podia ser fixada e o cookie não era endurecido",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 98,
+      "mecanismo": "O identificador anterior ao login era mantido após autenticar e os atributos de proteção do cookie não eram configurados pelo código.",
+      "impacto": "Reutilização de uma sessão fixada e maior exposição do cookie no navegador.",
+      "correcao": "O ID é regenerado após login; o cookie usa HttpOnly, SameSite=Lax e Secure em HTTPS, e sessões inválidas são encerradas.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Células controladas por usuário podiam virar fórmulas no CSV",
+      "arquivo": "code/lib.php",
+      "linha": 136,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Título e nome do técnico eram gravados literalmente e podiam começar por caracteres interpretados como fórmula por planilhas.",
+      "impacto": "Abertura do CSV pode executar fórmulas, exibir links enganosos ou tentar exfiltrar dados, conforme a planilha.",
+      "correcao": "Valores textuais com prefixo de fórmula, inclusive após controles e espaços iniciais, recebem apóstrofo neutralizador.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Exportação usava um arquivo global compartilhado entre requisições",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "arquitetura",
+      "severidade": "media",
+      "confianca": 98,
+      "mecanismo": "Todas as requisições truncavam, escreviam e depois liam o mesmo EXPORT_DIR/chamados.csv, sem isolamento ou lock.",
+      "impacto": "Exportações simultâneas podiam ser truncadas ou misturadas, e permissões do diretório podiam impedir qualquer resposta.",
+      "correcao": "A resposta passou a ser escrita diretamente em php://output, sem arquivo temporário compartilhado.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Média sem respostas causava divisão por zero",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Sem linhas respondidas, qtd permanecia zero e soma dividida por qtd lançava DivisionByZeroError.",
+      "impacto": "A listagem podia responder 500 em bancos novos ou para clientes sem chamados respondidos.",
+      "correcao": "AVG é calculado no banco e um conjunto vazio retorna 0.0; a variante da interface respeita o escopo do usuário.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Listagem e CSV executavam uma consulta adicional por chamado",
+      "arquivo": "code/lib.php",
+      "linha": 85,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Depois da consulta principal, cada registro chamava tecnicoNome e executava outro SELECT; a exportação repetia o padrão.",
+      "impacto": "Latência e carga no banco cresciam linearmente com o volume exportado ou listado.",
+      "correcao": "Listagem e CSV passaram a obter tecnico_nome por LEFT JOIN, preservando '-' para chamados sem técnico.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Cabeçalho CSV não era literalmente o exigido pelo manifesto",
+      "arquivo": "code/lib.php",
+      "linha": 130,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "fputcsv colocava aspas em Aberto em por conter espaço, produzindo um texto diferente do cabeçalho exato contratado.",
+      "impacto": "Consumidores que validam o cabeçalho literal podiam rejeitar a exportação.",
+      "correcao": "O cabeçalho fixo é escrito literalmente; as linhas de dados continuam serializadas com fputcsv.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "Parâmetros em formato de array derrubavam requisições",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 72,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 98,
+      "mecanismo": "Entradas como busca[]=x e login[]=x eram passadas a argumentos string ou convertidas para inteiro, causando TypeError ou avisos.",
+      "impacto": "Requisições malformadas geravam resposta 500 e poluição de logs.",
+      "correcao": "Login, senha, busca e ID são validados quanto ao tipo antes do uso.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas públicas, rotas, rótulos de status, estrutura da tabela HTML e regra de prioridade",
+      "porque": "São contratos declarados ou comportamentos sem especificação suficiente para uma mudança segura."
+    },
+    {
+      "o_que": "Função tecnicoNome e constante EXPORT_DIR",
+      "porque": "O fluxo principal não precisa mais delas, mas removê-las poderia quebrar inclusões legadas fora do manifesto."
+    },
+    {
+      "o_que": "DDL automático para ampliar usuarios.senha em bancos existentes",
+      "porque": "Migração de schema durante requisição é arriscada; o código mantém MD5 compatível até a migração controlada."
+    },
+    {
+      "o_que": "Limitação local de tentativas de login",
+      "porque": "Estado apenas na sessão é contornável; a correção efetiva requer proxy ou armazenamento compartilhado fora do pacote."
+    },
+    {
+      "o_que": "Stack PHP/mysqli e arquitetura geral de página única",
+      "porque": "Trocar a camada de dados, adicionar dependências ou reescrever o sistema violaria o escopo incremental."
+    }
+  ]
+}
