@@ -24,6 +24,7 @@ the same inputs produces the same bytes and a diff shows only what really change
 
 import argparse
 import glob
+import hashlib
 import importlib.util
 import json
 import os
@@ -53,6 +54,10 @@ EXPL_NAME = {"clareza": "Clarity", "precisao": "Technical precision", "causa_rai
 SEVERITY_EN = {"Crítica": "Critical", "Alta": "High", "Média": "Medium", "Baixa": "Low"}
 DIFFICULTY_EN = {"Fácil": "Easy", "Moderada": "Moderate", "Difícil": "Hard", "Especialista": "Expert"}
 DIFFICULTY_ORDER = ["Fácil", "Moderada", "Difícil", "Especialista"]
+
+# PROTOCOL §4: an official result is three independent runs. A fourth would be the
+# retry that §4 item 3 forbids, so it is refused rather than published.
+MAX_RUNS = 3
 
 
 def load(path):
@@ -327,6 +332,28 @@ def run_summary(r):
     }
 
 
+def check_agent_runs(where, agent_runs):
+    """The runs of one agent, sorted by number, before anything is published from them."""
+    numbers = [x["run"] for x in agent_runs]
+    if numbers != list(range(1, len(numbers) + 1)):
+        sys.exit("[export] %s has %s: runs are numbered run-1 to run-N with no gap"
+                 % (where, ", ".join("run-%d" % n for n in numbers)))
+    if len(numbers) > MAX_RUNS:
+        sys.exit("[export] %s has %d runs; PROTOCOL §4 stops at %d (a further run is a retry)"
+                 % (where, len(numbers), MAX_RUNS))
+    reports = {}
+    for x in agent_runs:
+        if x["meta"].get("run") != x["run"]:
+            sys.exit("[export] %s/run-%d: run.json says run %s" % (where, x["run"], x["meta"].get("run")))
+        # Two runs with the same report are one delivery filed twice, not two runs.
+        with open(os.path.join(x["dir"], "entrega", "RELATORIO.md"), "rb") as f:
+            digest = hashlib.sha256(f.read()).hexdigest()
+        if digest in reports:
+            sys.exit("[export] %s: run-%d has the same RELATORIO.md as run-%d — a resend, not a new run"
+                     % (where, x["run"], reports[digest]))
+        reports[digest] = x["run"]
+
+
 def aggregate(runs):
     by_instance = {}
     for r in runs:
@@ -342,20 +369,27 @@ def aggregate(runs):
             agents.setdefault(r["agent"], []).append(r)
         entries = []
         for agent, agent_runs in agents.items():
+            check_agent_runs("%s/%s/%s" % (edition, instance, agent), agent_runs)
             totals = [x["card"]["total"] for x in agent_runs]
             summaries = [run_summary(x) for x in agent_runs]
-            best = summaries[totals.index(max(totals))]
+            # The lower median is always the total of a run that exists — the only one, the
+            # lower of two, the middle of three (PROTOCOL §4) — so the grade, categories and
+            # flaws published next to the score are that run's, never a mix of runs.
+            score = statistics.median_low(totals)
+            representative = next(x for x in summaries if x["total"] == score)
             entries.append({
                 "agent": agent,
                 "model": agent_runs[0]["meta"]["model"],
                 "runs_count": len(agent_runs),
-                "official": len(agent_runs) >= 3,
-                "score": int(statistics.median(totals)),
-                "discovery_index": best["discovery_index"],
-                "brier": best["brier"],
+                "official": len(agent_runs) >= MAX_RUNS,
+                "score": score,
+                "totals": totals,
+                "representative_run": representative["run"],
+                "discovery_index": representative["discovery_index"],
+                "brier": representative["brier"],
                 "runs": summaries,
             })
-        # Median total first; the informative metrics break ties (SCORING §9).
+        # Score first; the informative metrics break ties (SCORING §9).
         entries.sort(key=lambda e: (-e["score"], -e["discovery_index"], e["brier"] if e["brier"] is not None else 9, e["agent"]))
         for i, e in enumerate(entries, 1):
             e["rank"] = i
@@ -388,6 +422,12 @@ def aggregate(runs):
     }
 
 
+def runs_cell(e):
+    if e["runs_count"] == 1:
+        return "1/%d" % MAX_RUNS
+    return "%d/%d (%s)" % (e["runs_count"], MAX_RUNS, " · ".join(str(t) for t in e["totals"]))
+
+
 def render_readme(data):
     out = []
     w = out.append
@@ -417,7 +457,7 @@ def render_readme(data):
         w("| # | Model | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Pen. | Discovery | Brier | Runs |")
         w("| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |")
         for e in inst["entries"]:
-            r = e["runs"][0] if e["runs_count"] == 1 else max(e["runs"], key=lambda x: x["total"])
+            r = next(x for x in e["runs"] if x["run"] == e["representative_run"])
             c = r["categories"]
             pen = sum(p["deduction"] for p in r["penalties"])
             link = "%s/%s/%s/run-%d/scorecard.md" % (inst["edition"], inst["id"], e["agent"], r["run"])
@@ -425,11 +465,13 @@ def render_readme(data):
                 e["rank"], e["model"]["name"], link, e["model"].get("reasoning_effort", ""), e["score"], r["grade"],
                 " | ".join(str(c[k]["score"]) for k in CATEGORIES), pen,
                 "%.1f" % e["discovery_index"], "—" if e["brier"] is None else "%.3f" % e["brier"],
-                "%d/3" % e["runs_count"]))
+                runs_cell(e)))
         w("")
         w("Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.")
+        w("Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is")
+        w("always the total of one run, and every other column and the link are that run's (PROTOCOL §4).")
         if not all(e["official"] for e in inst["entries"]):
-            w("A score with fewer than 3 runs is **not official** (PROTOCOL §4): it is the total of the runs so far.")
+            w("A score with fewer than %d runs is **not official**." % MAX_RUNS)
         w("")
     return "\n".join(out).rstrip() + "\n"
 

@@ -34,4 +34,6 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 10 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
-A score with fewer than 3 runs is **not official** (PROTOCOL §4): it is the total of the runs so far.
+Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is
+always the total of one run, and every other column and the link are that run's (PROTOCOL §4).
+A score with fewer than 3 runs is **not official**.

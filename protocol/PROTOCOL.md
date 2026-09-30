@@ -83,6 +83,12 @@ Parâmetros obrigatórios do run: modelo + versão exata, temperatura (oficial: 
 1. Run oficial = **3 execuções independentes**; o scorecard oficial é a **mediana do TOTAL** (registrando as 3).
 2. Logs completos (prompts, respostas, chamadas de ferramenta) arquivados junto do resultado.
 3. Nenhum retry seletivo: descartar uma execução ruim e rodar de novo invalida o run.
+4. Runs are published as they are scored, each in its own `run-<n>` folder, and never more than
+   three per agent: a fourth would be the retry item 3 forbids. The published score is the
+   **lower median** of the totals so far (`median_low`: the only total with one run, the lower of
+   two, the median of item 1 with three). It is always the total of a run that exists, so the
+   grade, categories and flaw-by-flaw published next to it are that run's, never a mix of runs.
+   Fewer than three runs is not official.
 
 ## 5. Pipeline de avaliação
 

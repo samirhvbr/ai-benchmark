@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.7`
+**Versão atual:** `0.2.8`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,28 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.8` — 2026-09-30 — tools/export-results.py publishes repeated runs: the lower median is the score, and the details are that run's
+
+Second and third runs of the models already on LEB-100-A are about to arrive. The exporter already
+found `run-<n>` folders on its own, but it published the median total next to the grade, the
+categories, the flaw-by-flaw and the scorecard link of the *best* run — two runs would have put
+numbers from different runs side by side.
+
+The score is now `statistics.median_low` of the totals: the only total with one run, the lower of
+two, the median with three (PROTOCOL §4). It is always the total of a run that exists, and that
+run — `representative_run` in `results.json` — supplies everything shown next to it, including the
+tie-breaking discovery index and Brier. Each entry also carries `totals`, in run order, and the
+leaderboard's Runs column reads `2/3 (711 · 770)`.
+
+The export now stops, before writing anything, when an agent has a gap in its run numbers, more than
+three runs (a fourth is the retry §4 forbids), a `run.json` whose `run` disagrees with its folder,
+or two runs with the same `RELATORIO.md` (one delivery filed twice). `PROTOCOL.md §4` gains item 4
+with the publication rule.
+
+With one run per agent today, `results.json` only gains the two fields; no number moves. Checked on
+a scratch copy with synthetic runs: two runs (711, 770) publish 711 and run-1's details, three
+(711, 770, 740) publish 740 from run-3 as official, and each refusal fires.
 
 ### `0.2.7` — 2026-09-29 — results/ adds MiniMax-M3 on LEB-100-A, tenth at 460
 
