@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.28`
+**Versão atual:** `0.2.29`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.29` — 2026-09-30 — results/ records the first multi-agent Sonnet 5.5 attempt as void, stopped to resize the machine
+
+The first run of Claude Sonnet 5.5 at max effort in Claude Code's multi-agent mode
+(`claude-sonnet-5.5-max-ultracode`) started at 12:34 on the 4-vCPU, 3.8-GiB execution VM. The
+agent reported that the machine limited each of its workflows to 2 agents. The operator stopped it
+at 13:00, before it had written a report or findings index, and resized the VM to 20 vCPUs and
+15 GiB.
+
+The folder is kept as it was, unscored, in `claude-sonnet-5.5-max-ultracode/void-1/`. Its
+`VOID.md` gives the session's timeline, its 5 workflows and 15 subagents, and the US$ 8.43 the
+client recorded. It also explains why the replacement is not a selective retry: the run was stopped
+for the machine, before there was any output to judge. The evaluation notes list it with the runs
+of 2026-09-30.
 
 ### `0.2.28` — 2026-09-30 — run.json records the size of the machine each run ran on
 

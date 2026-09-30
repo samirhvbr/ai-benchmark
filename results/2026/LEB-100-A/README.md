@@ -338,6 +338,13 @@ every verdict was in:
   - Its V4 Flash run, through Novita, totals 612. The two runs differ in 13 points and in several
     calls (V4.1 Flash left MD5, V4 Flash did not), which suggests different weights. The routing
     caveat above still applies.
+- **Claude Sonnet 5.5 in multi-agent mode ("ultracode"), first attempt: void.**
+  - The run started at 12:34 on the 4-vCPU VM. About 20 minutes in, the agent reported that the
+    machine limited each of its workflows to 2 agents.
+  - The operator stopped it at 13:00, before any report or findings index existed, to resize the
+    VM. It had cost US$ 8.43 across 5 workflows and 15 subagents.
+  - It is kept unscored in `claude-sonnet-5.5-max-ultracode/void-1/`, with a `VOID.md`. The
+    agent's run 1 is the one made on the resized machine.
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.
