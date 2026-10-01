@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.56`
+**Versão atual:** `0.2.57`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.57` — 2026-10-01 — results/ adds DeepSeek V4.1 Flash's second and third runs (612 and 597), official at 612
+
+Harness 22/22 for both; blind labels AW and AX, with `mecanico.json`'s submission path anonymized;
+EXPL 30 and 28; `score.py`. Both ran in opencode through OpenRouter, on restored clean VMs as
+`leb`, with the fixed first message and nothing else.
+- **DeepSeek V4.1 Flash at `high`: 612 (run 2) and 597 (run 3).** With three runs its score is
+  official: 612, the median, 18th; its single run (625) had placed it 13th. Neither later run fixed
+  the CSV injection that run 1 fixed, and run 3 left the CSV export serving every client on
+  purpose.
 
 ### `0.2.56` — 2026-10-01 — results/ adds GPT-5.6-terra's second and third runs in Codex (611 and 645), official at 625
 

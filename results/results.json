@@ -4119,203 +4119,6 @@
           "rank": 12
         },
         {
-          "agent": "deepseek-v4.1-flash-high",
-          "model": {
-            "name": "DeepSeek V4.1 Flash",
-            "id": "deepseek-flash",
-            "provider": "DeepSeek",
-            "served_by": "DeepSeek's own API (opencode provider deepseek, model deepseek-flash)",
-            "reasoning_effort": "high",
-            "exact_version": null,
-            "training_cutoff": null,
-            "training_cutoff_source": "https://api-docs.deepseek.com/news/news260910/",
-            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4.1-Flash (release note of 2026-09-10, checked on 2026-09-30); it was released after the answer key went public; third-party figures are not used"
-          },
-          "runs_count": 1,
-          "official": false,
-          "score": 625,
-          "totals": [
-            625
-          ],
-          "representative_run": 1,
-          "key_exposure": "unknown",
-          "discovery_index": 70.8,
-          "brier": 0.01,
-          "runs": [
-            {
-              "run": 1,
-              "total": 625,
-              "grade": "Silver",
-              "categories": {
-                "SEC": {
-                  "score": 228,
-                  "max": 250
-                },
-                "ARCH": {
-                  "score": 0,
-                  "max": 200
-                },
-                "BUG": {
-                  "score": 129,
-                  "max": 150
-                },
-                "PERF": {
-                  "score": 150,
-                  "max": 150
-                },
-                "CLN": {
-                  "score": 0,
-                  "max": 100
-                },
-                "COMP": {
-                  "score": 100,
-                  "max": 100
-                },
-                "EXPL": {
-                  "score": 33,
-                  "max": 50
-                }
-              },
-              "expl_rubric": {
-                "clareza": 9,
-                "precisao": 5,
-                "causa_raiz": 7,
-                "priorizacao": 7,
-                "trade_offs": 5
-              },
-              "penalties": [
-                {
-                  "id": "PEN-001",
-                  "count": 1,
-                  "deduction": -15
-                }
-              ],
-              "comp_violations": [],
-              "flaws": {
-                "SEC-001": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 98
-                },
-                "SEC-003": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 97
-                },
-                "SEC-008": {
-                  "earned": 6,
-                  "possible": 6,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 78
-                },
-                "SEC-013": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 85
-                },
-                "SEC-014": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 90
-                },
-                "SEC-015": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 99
-                },
-                "SEC-017": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 95
-                },
-                "BUG-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 97
-                },
-                "BUG-004": {
-                  "earned": 4,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": true,
-                  "confidence": null
-                },
-                "PERF-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 95
-                },
-                "ARCH-002": {
-                  "earned": 0,
-                  "possible": 10,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "ARCH-009": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "CLN-007": {
-                  "earned": 0,
-                  "possible": 8,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                }
-              },
-              "false_positives": 0,
-              "decoys_reported": 0,
-              "extra_findings": 9,
-              "brier": 0.01,
-              "discovery_index": 70.8,
-              "characterization": {
-                "passed": 22,
-                "failed": 0
-              },
-              "operator_replies": 0,
-              "client": {
-                "name": "opencode",
-                "version": "1.18.33"
-              },
-              "cost_time": {
-                "source": "opencode 1.18.33 session record (opencode.db)",
-                "elapsed_seconds": null,
-                "tokens": {
-                  "input": 30817,
-                  "output": 24049,
-                  "cache": 2467712,
-                  "total": 2543405
-                },
-                "usd_estimate": 0.04,
-                "note": "the total includes 20,827 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0390"
-              },
-              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-1/scorecard.md"
-            }
-          ],
-          "rank": 13
-        },
-        {
           "agent": "gpt-5.6-terra-xhigh",
           "model": {
             "name": "GPT-5.6-terra",
@@ -4850,7 +4653,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 14
+          "rank": 13
         },
         {
           "agent": "glm-5.3-flash-high",
@@ -5040,7 +4843,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 15
+          "rank": 14
         },
         {
           "agent": "glm-5.3-high",
@@ -5395,7 +5198,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md"
             }
           ],
-          "rank": 16
+          "rank": 15
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -5596,7 +5399,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 17
+          "rank": 16
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -5791,6 +5594,533 @@
                 "note": "the total includes 27,615 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0666"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 17
+        },
+        {
+          "agent": "deepseek-v4.1-flash-high",
+          "model": {
+            "name": "DeepSeek V4.1 Flash",
+            "id": "deepseek-flash",
+            "provider": "DeepSeek",
+            "served_by": "DeepSeek's own API (opencode provider deepseek, model deepseek-flash)",
+            "reasoning_effort": "high",
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://api-docs.deepseek.com/news/news260910/",
+            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4.1-Flash (release note of 2026-09-10, checked on 2026-09-30); it was released after the answer key went public; third-party figures are not used"
+          },
+          "runs_count": 3,
+          "official": true,
+          "score": 612,
+          "totals": [
+            625,
+            612,
+            597
+          ],
+          "representative_run": 2,
+          "key_exposure": "unknown",
+          "discovery_index": 58.3,
+          "brier": 0.013,
+          "runs": [
+            {
+              "run": 1,
+              "total": 625,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 228,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 33,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 5,
+                "causa_raiz": 7,
+                "priorizacao": 7,
+                "trade_offs": 5
+              },
+              "penalties": [
+                {
+                  "id": "PEN-001",
+                  "count": 1,
+                  "deduction": -15
+                }
+              ],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "SEC-008": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 78
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 90
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 9,
+              "brier": 0.01,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 30817,
+                  "output": 24049,
+                  "cache": 2467712,
+                  "total": 2543405
+                },
+                "usd_estimate": 0.04,
+                "note": "the total includes 20,827 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0390"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-1/scorecard.md"
+            },
+            {
+              "run": 2,
+              "total": 612,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 203,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 30,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 6,
+                "causa_raiz": 6,
+                "priorizacao": 6,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 75
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 97
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 92
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 6,
+              "brier": 0.013,
+              "discovery_index": 58.3,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 20053,
+                  "output": 12321,
+                  "cache": 357504,
+                  "total": 397812
+                },
+                "usd_estimate": 0.01,
+                "note": "the total includes 7,934 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0143"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md"
+            },
+            {
+              "run": 3,
+              "total": 597,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 190,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 28,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 6,
+                "causa_raiz": 6,
+                "priorizacao": 5,
+                "trade_offs": 4
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 65
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 99
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 7,
+              "brier": 0.019,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 27064,
+                  "output": 13385,
+                  "cache": 535040,
+                  "total": 585035
+                },
+                "usd_estimate": 0.02,
+                "note": "the total includes 9,546 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0176"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-3/scorecard.md"
             }
           ],
           "rank": 18

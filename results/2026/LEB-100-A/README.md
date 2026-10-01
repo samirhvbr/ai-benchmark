@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Twenty-four deliveries were scored, labelled **Y** to **AV** in the order they arrived and judged blind like
+Twenty-six deliveries were scored, labelled **Y** to **AX** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -471,8 +471,10 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AT** | Gemini 3.8 Flash, `medium`, run 1 | 550 |
 | **AU** | GPT-5.6-terra, `xhigh`, run 2 | 611 |
 | **AV** | GPT-5.6-terra, `xhigh`, run 3 | 645 |
+| **AW** | DeepSeek V4.1 Flash, `high`, run 2 | 612 |
+| **AX** | DeepSeek V4.1 Flash, `high`, run 3 | 597 |
 
-All twenty-four ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All twenty-six ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -708,6 +710,16 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     and DeepSeek V4.1 Flash did.
   - Run 2 scoped the SLA average to each client (COMP-003, −30); run 3 kept it global and kept
     compatibility at 100. Both reports scored 31 of 50, against 35 for run 1.
+- **DeepSeek V4.1 Flash at `high`, runs 2 (AW) and 3 (AX): 612 and 597. With three runs its score
+  is official: 612, the median of 625, 612 and 597, 18th; its single run had placed it 13th.**
+  - Both ran in opencode through OpenRouter, where run 1 used DeepSeek's own API, run 2 on
+    `bench3` and run 3 on `bench1`, a minute and a half apart. Each took about 75 seconds and
+    cost under US$ 0.02.
+  - Run 1 fixed 9 flaws, the CSV formula injection among them; run 2 fixed 8 (not the injection)
+    and run 3 fixed 7 (neither the injection nor the secrets, which it left as literals). Neither
+    later run turned the technician's `-` into `'-`, as run 1 did.
+  - Run 3 filtered the listing and the detail page for clients but left `?export=csv` serving
+    every ticket on purpose, on the premise that filtering it would break the library's contract.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -731,9 +743,10 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra, DeepSeek V4 Pro, Grok 4.7 and GPT-5.6-terra.**
-  An official score is the median of three runs (`PROTOCOL §4`). Those six have three (711, 717, 805; 825, 809, 724;
-  661, 596, 628; 604, 496, 432; 638, 663, 607; 625, 611, 645), so their 717, 809, 628, 496, 638 and 625 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
+- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra, DeepSeek V4 Pro, Grok 4.7, GPT-5.6-terra and
+  DeepSeek V4.1 Flash.** An official score is the median of three runs (`PROTOCOL §4`). Those seven have three (711, 717,
+  805; 825, 809, 724; 661, 596, 628; 604, 496, 432; 638, 663, 607; 625, 611, 645; 625, 612, 597), so their 717, 809, 628,
+  496, 638, 625 and 612 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
   third did, and GPT-6-astra's first run sat 33 points above its median. Places 7 to 11 (654, 653,
   638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
