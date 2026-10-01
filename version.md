@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.50`
+**Versão atual:** `0.2.51`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.51` — 2026-10-01 — results/ records Claude Fable 5.1's third attempt as void: its client switched to Opus 4.8 again
+
+Kept unscored in `claude-fable-5.1-xhigh/void-2/`, with its delivery, `mecanico.json` (22/22) and a
+`VOID.md`. No judge saw it and no score was assembled.
+- **What happened.** On `bench1`, 13 minutes in, while Fable 5.1 was checking its SQL injection fix
+  against injection payloads, its safeguards stopped a response. Claude Code then logged
+  `model_refusal_fallback` and switched to Claude Opus 4.8, which edited `lib.php` and wrote all of
+  `achados.json` and `RELATORIO.md`. Under `PROTOCOL §3` (one model per run) the run is void.
+- **The setting did not help.** `switchModelsOnFlag` was `false` in `leb`'s settings, and the
+  switch happened anyway; the evaluation notes say so.
 
 ### `0.2.50` — 2026-10-01 — results/ adds DeepSeek V4 Pro's third run (432), official at 496
 

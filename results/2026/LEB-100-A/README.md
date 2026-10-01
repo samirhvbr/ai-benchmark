@@ -636,6 +636,14 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     of 50.
   - The three runs spread over 172 points, the widest of any agent with three, across two hosts:
     604 and 432 through OpenRouter, 496 through Novita AI.
+- **Claude Fable 5.1 at `xhigh`, third attempt: void, for the same reason as its second (L).**
+  On `bench1`, 13 minutes in, while it was checking its own SQL injection fix against injection
+  payloads, Fable's safeguards stopped a response, and four minutes later Claude Code logged
+  `model_refusal_fallback` and switched to Claude Opus 4.8. Opus 4.8 edited `lib.php` and wrote all
+  of `achados.json` and `RELATORIO.md`; the client billed US$ 5.68 to Fable and US$ 2.34 to Opus.
+  The switch happened although `leb`'s settings had `switchModelsOnFlag` set to `false`, so that
+  setting does not stop this fallback. The run is kept unscored in
+  `claude-fable-5.1-xhigh/void-2/`, with a `VOID.md`; Fable 5.1 still has two runs.
 
 ## Two defects in the harness, fixed before scoring
 
