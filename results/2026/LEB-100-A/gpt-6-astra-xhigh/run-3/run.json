@@ -1,0 +1,58 @@
+{
+  "agent": "gpt-6-astra-xhigh",
+  "model": {
+    "name": "GPT-6-astra",
+    "id": "gpt-6-astra",
+    "provider": "OpenAI",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": "2026-04-30",
+    "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+  },
+  "run": 3,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Codex CLI",
+    "version": "0.159.3"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T12:06:42-03:00",
+    "ended": "2026-10-01T12:20:52-03:00",
+    "log": "archived off the VM (~/.codex/sessions/2026/10/01/rollout-2026-10-01T12-06-31-01a0f800-b740-73a1-9eaf-405edec78ae5.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Codex CLI 0.159.3 session log, final token_count event",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 69459,
+      "output": 26327,
+      "cache": 659328,
+      "total": 755114
+    },
+    "usd_estimate": null,
+    "note": "output includes 7,398 reasoning tokens; the log keeps no cost and no model time"
+  },
+  "logs": "archived off the VM (~/.codex/sessions/2026/10/01/rollout-2026-10-01T12-06-31-01a0f800-b740-73a1-9eaf-405edec78ae5.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "Run 1 was made on the first VM at 4 vCPUs as its administrator, in Codex CLI 0.159.2; this one on bench2 at 20 vCPUs as leb, in Codex CLI 0.159.3. Codex here runs a single agent, so the run is filed as the same agent's run 3 (PROTOCOL §3). Runs 2 and 3 ran at the same time on bench3 and bench2; they are numbered by the time of the operator's first message. bench2's snapshot still held a Claude Code session record from an earlier run in leb's ~/.claude (the first seconds of a Claude Opus 5.5 run, the task prompt and no work); this Codex session never read that folder, and its log does not mention it."
+}

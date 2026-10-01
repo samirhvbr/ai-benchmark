@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.46`
+**Versão atual:** `0.2.47`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.47` — 2026-10-01 — results/ adds GPT-6-astra's second and third xhigh runs (596 and 628), official at 628
+
+Harness 22/22 for both, with SEC-001, BUG-001 and PERF-001 fixed; blind labels AK and AL; EXPL 40
+and 41; `score.py`. Both ran in Codex CLI 0.159.3 on restored clean VMs as `leb`, at the same time
+(bench3 and bench2), with the fixed first message and nothing else.
+- **GPT-6-astra at `xhigh`: 596 (run 2) and 628 (run 3).** With three runs its score is official:
+  628, the median of 661, 596 and 628, 10th; its single run had placed it 5th. Neither later run
+  fixed the CSV formula injection that run 1 fixed; run 3 migrated MD5, run 2 kept it.
+- **Both deliveries were judged twice.** The first matching judges could see the run's folder path
+  (the agent's name) in `mecanico.json`; those verdicts were set aside and both were judged again
+  blind. A second COMP-003 the judges recorded, for a command-line-only global visibility filter,
+  was removed on review to match the verdicts of the same filter in earlier runs.
+- The evaluation notes also correct the "Before quoting a number" spread, which still quoted
+  GPT-6.1-sol's and GPT-6-astra's first runs.
 
 ### `0.2.46` — 2026-10-01 — results/ adds Sonnet 5.5's third xhigh run (official at 809) and second runs of GPT-6.1-sol (653) and GLM-5.3 (621)
 

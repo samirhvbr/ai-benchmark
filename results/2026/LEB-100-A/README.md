@@ -442,8 +442,8 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Twelve deliveries were scored, labelled **Y** to **AJ** in the order they arrived and judged blind like
-the others. The first three came one per VM; after restores, `bench1` and `bench2` ran the rest:
+Fourteen deliveries were scored, labelled **Y** to **AL** in the order they arrived and judged blind like
+the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
 | --- | --- | --- |
@@ -459,8 +459,10 @@ the others. The first three came one per VM; after restores, `bench1` and `bench
 | **AH** | GPT-6.1-sol, `xhigh`, run 2 | 653 |
 | **AI** | Claude Sonnet 5.5, `xhigh`, run 3 | 724 |
 | **AJ** | GLM-5.3, `high`, run 2 | 621 |
+| **AK** | GPT-6-astra, `xhigh`, run 2 | 596 |
+| **AL** | GPT-6-astra, `xhigh`, run 3 | 628 |
 
-All twelve ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All fourteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -571,6 +573,27 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   621.** It ran in opencode on `bench3`, served this time by OpenRouter where run 1 used Z.AI's own
   API; the run's note records the host. It fixed 7 flaws, against 8 in run 1, keeping the database
   password's literal fallback.
+- **GPT-6-astra at `xhigh`, runs 2 (AK) and 3 (AL): 596 and 628. With three runs, GPT-6-astra
+  has the third official score, 628, the median of 661, 596 and 628, 10th; its single run had
+  placed it 5th.**
+  - Both ran in Codex CLI 0.159.3 at the same time, run 2 on `bench3` in 12 minutes and run 3 on
+    `bench2` in 14; they are numbered by the time of the first message. Run 1 had been made in
+    Codex 0.159.2 on the first VM.
+  - Run 1 fixed the CSV formula injection (SEC-008) and kept MD5. Neither later run fixed SEC-008;
+    run 3 migrated MD5 at login, run 2 kept it. Run 2 also fixed the export's file-handle leak
+    without reporting it (silent fix, `MATRIX §5.4`). Neither named the nested ifs (CLN-007),
+    which run 1 did. All three scoped the SLA average to each client (COMP-003).
+  - Both matching judges first saw the run's folder path in `mecanico.json`, which names the
+    agent: the anonymization step had been skipped for these two. Those verdicts were set aside
+    and both deliveries were judged again with the path replaced; only the second verdicts
+    are used. The EXPL judge reads only `RELATORIO.md` and was not affected.
+  - In both, a matching judge recorded a second COMP-003 for a visibility filter that gives every
+    ticket to a command-line caller without a session but none to a web caller without one. It
+    was removed on review: the same filter in GPT-6-astra's and GPT-6.1-sol's first runs was
+    recorded as a design risk, not a violation.
+  - `bench2`'s snapshot still held the first seconds of a Claude Opus 5.5 session (the task prompt,
+    no work) in `leb`'s `~/.claude`. Run 3 ran in Codex, which never read that folder; its log does
+    not mention it.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -594,12 +617,11 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`.** An official score is the median of three
-  runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh` have three (711, 717, 805; 825, 809, 724), so their
-  717 and 809 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
-  third did. GPT-6.1-sol
-  and GPT-6-astra (666 and 661) are five points apart; places 6 to 9 (625, 612, 601 and 599) sit
-  within 26 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
+- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh` and GPT-6-astra.** An official score is the median of three
+  runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh` and GPT-6-astra have three (711, 717, 805; 825, 809, 724;
+  661, 596, 628), so their 717, 809 and 628 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
+  third did, and GPT-6-astra's first run sat 33 points above its median. Places 5 to 9 (654, 653,
+  638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
   bias; it does not remove it, since a model can recognise its own style — or a sibling's: three of
