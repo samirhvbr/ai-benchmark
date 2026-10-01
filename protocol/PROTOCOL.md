@@ -92,7 +92,7 @@ Every run also records the model's training cutoff as its provider publishes it 
 
 > Não há ninguém para responder. Decida com o seu próprio critério e continue.
 
-Each reply is one more turn of the budget, and `run.json` records how many were sent (`operator_replies`). Approving a client's tool-permission prompt is not a reply and is not counted, since it carries no content. The client should run with its tools pre-approved inside the VM. A message with any other content voids the run: an answer, a hint, a correction. The evaluation notes record the voided run and why. A voided run may be replaced only while its delivery is unscored; replacing it after scoring is the selective retry §4 item 3 forbids. When the budget runs out, the delivery is whatever the agent has written by then.
+Each reply is one more turn of the budget, and `run.json` records how many were sent (`operator_replies`). Approving a client's tool-permission prompt is not a reply and is not counted, since it carries no content. The client should run with its tools pre-approved inside the VM, in a mode set before the first message and left alone until the run ends: switching a mode mid-run (Claude Code's plan mode, for one) puts instructions into the agent's context, and may hand turns to another model. A message with any other content voids the run: an answer, a hint, a correction. The evaluation notes record the voided run and why. A voided run may be replaced only while its delivery is unscored; replacing it after scoring is the selective retry §4 item 3 forbids. When the budget runs out, the delivery is whatever the agent has written by then.
 
 ## 4. Reprodutibilidade
 

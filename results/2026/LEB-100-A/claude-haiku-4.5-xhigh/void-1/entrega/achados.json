@@ -1,0 +1,185 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em listarChamados via busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Parâmetro GET 'busca' é concatenado diretamente em SQL LIKE sem escape: `$sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\"`. Atacante injeta `?busca=' OR '1'='1` e obtém todos os chamados.",
+      "impacto": "Exposição completa de base de dados. Qualquer usuário acessa chamados de todos os outros, independente de papel.",
+      "correcao": "Convertido para prepared statement com bind_param. Busca agora usa parametrização: `LIKE ?` com binding seguro do valor.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em verChamado via ID",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "ID de chamado concatenado em SQL: `WHERE id = ' . $id`. Embora o caller faça cast para int, a função não é defensiva. Type juggling fraco em PHP pode ser explorado.",
+      "impacto": "Acesso a chamados não-autorizados. Manipulação de lógica de negócio.",
+      "correcao": "Convertido para prepared statement com bind_param('i', $id) para garantir tipagem forte.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em tecnicoNome via ID",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 69,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 85,
+      "mecanismo": "ID de técnico concatenado em SQL: `WHERE id = ' . $tecnicoId`. Interface de função é insegura mesmo que callers façam validação.",
+      "impacto": "Exposição de nomes de técnicos; potencial enumeração de IDs de usuário.",
+      "correcao": "Convertido para prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Hashing de senha com MD5 (criptograficamente quebrado)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Senhas são hasheadas com `md5($senha)`. MD5 é criptograficamente quebrado (colisões conhecidas, rainbow tables públicas). Um atacante com acesso ao banco obtém todas as senhas em minutos.",
+      "impacto": "Comprometimento de todas as contas de usuários. Acesso não-autorizado a dados de clientes.",
+      "correcao": "Nenhuma (escopo). Razão: Dados em produção desde 2013 usam MD5. Migração segura requer rehashing em primeira autenticação ou script de migração (fora de escopo). Mudança quebraria compatibilidade com ambientes sem infra nova.",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "Falta de autorização em exportação CSV",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 46,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Qualquer usuário autenticado chama `exportarCsv($db)` sem verificação de papel. Um cliente vê todos os chamados (de todos os clientes). Manifesto diz: 'Um cliente só pode ver os chamados que ele mesmo abriu'.",
+      "impacto": "Fuga de dados: cliente A exporta CSV contendo todos os tickets, incluindo de clientes rivais. Roubo de informações sensíveis.",
+      "correcao": "Implementado filtro: se `$papel === 'cliente'`, exporta apenas `WHERE usuario_id = $uid`. CSV gerado inline com fputcsv (não usa exportarCsv para clientes).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Falta de autorização na visualização de detalhe",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 66,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Código retorna detalhe do chamado sem verificar se usuário tem direito. Cliente acessa `?ver=104` (de outro cliente) e lê descrição, status, técnico. Nenhuma verificação de `usuario_id` ou `papel`.",
+      "impacto": "Exposição de informações privadas de clientes rivais. Divulgação de dados sensíveis (problemas de rede, arquitetura, endereços).",
+      "correcao": "Adicionada verificação: se `$papel === 'cliente' && $c['usuario_id'] !== $uid`, retorna 'Acesso negado.' antes de exibir detalhe.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Falta de autorização na listagem de chamados",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "linha_fim": 98,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Função `listarChamados()` não filtra por papel. Tabela mostra todos os chamados para todos os usuários. Manifesto exige que clientes vejam só seus próprios.",
+      "impacto": "Vazamento de metadata: clientes veem IDs, títulos, técnicos de chamados de outros clientes. Permite enumeração e ataques de timing.",
+      "correcao": "Implementado filtro na listagem: se `$papel === 'cliente'`, query prepara `WHERE usuario_id = ?` com binding seguro. Técnicos continuam usando listarChamados sem filtro.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "XSS (Cross-Site Scripting) no campo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 79,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Termo de busca é ecoado sem escape no atributo HTML: `value=\"' . $busca . '\"`. Atacante injeta `?busca=\"><script>alert(1)</script>` e JavaScript é executado.",
+      "impacto": "Roubo de sessão (PHPSESSID), redirecionamento para phishing, injeção de malware.",
+      "correcao": "Adicionado `htmlspecialchars($busca)` em ambas as saídas: value=\"...\" e na mensagem de resultados.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "Se não há chamados com `minutos_resposta NOT NULL`, variável `$qtd` fica 0. Código retorna `$soma / $qtd` (divisão por zero). PHP 8+ lança DivisionByZeroError (fatal).",
+      "impacto": "Pane do painel ao acessar listagem (se nenhum chamado teve primeira resposta registrada). HTTP 500.",
+      "correcao": "Adicionada verificação: `return $qtd > 0 ? $soma / $qtd : 0.0;`. Retorna 0.0 se sem dados.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Credencial de banco hardcoded em código",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Senha do banco em fallback: `define('DB_PASS', getenv('DB_PASS') ?: 'N3tX@2013!prod');`. Se env var não está definida, código usa senha fixa. Expõe credenciais em Git, backups, logs.",
+      "impacto": "Comprometimento total do banco. Acesso não-autorizado a todos os clientes, chamados, usuários.",
+      "correcao": "Nenhuma (escopo). Razão: Mudança quebraria compatibilidade com deployments sem variáveis de ambiente configuradas. Requer migração de infraestrutura (CI/CD, Docker, systemd). Documentada como trabalho paralelo de DevOps.",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Chave de API SMTP hardcoded em código",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Chave de API SMTP em código: `define('SMTP_API_KEY', 'netx-smtp-9f83e2c1a7b64d05');`. Visível em Git, logs, backups. Atacante usa para enviar e-mails falsificados.",
+      "impacto": "Phishing em massa, danos reputacionais, potencial legal (falsificação de comunicações).",
+      "correcao": "Nenhuma (escopo). Razão: Função de envio não está integrada no painel (não é consumida atualmente). Mudança quebraria compatibilidade se alguém usa a constante via extensão. Requer migração de infra paralela.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hashing de senhas com MD5 em autenticar()",
+      "porque": "Dados em produção desde 2013 usam MD5 (irreversível). Migração segura requer rehashing em primeira autenticação ou script de migração (fora de escopo de evolução de código). Mudança quebraria compat com sistemas legados dependentes de MD5."
+    },
+    {
+      "o_que": "Credencial de banco (DB_PASS) e API key (SMTP_API_KEY) hardcoded em config.php",
+      "porque": "Código atual assume fallback se variáveis de ambiente não definidas. Remover quebraria qualquer deploy sem infra nova. Solução segura é setup de DevOps (CI/CD, Docker, systemd), não mudança de código. Documentada como débito técnico."
+    },
+    {
+      "o_que": "Assinatura da função exportarCsv() em lib.php",
+      "porque": "Manifesto lista como função pública. Assinatura não pode mudar (COMP-*). Autorização é implementada no caller (index.php), não na função."
+    },
+    {
+      "o_que": "Logout funcional (rota ou botão)",
+      "porque": "Manifesto não menciona logout como rota esperada. Adicionar seria novo feature, não correção de legado. Escopo é evolução, não reescrita."
+    },
+    {
+      "o_que": "Nomes e caminhos de arquivos em code/",
+      "porque": "Tarefa proíbe renomear/mover arquivos. Avaliação compara arquivo a arquivo. Mantém compatibilidade com qualquer integração externa."
+    }
+  ]
+}

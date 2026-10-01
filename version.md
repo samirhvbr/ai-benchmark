@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.41`
+**Versão atual:** `0.2.42`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.42` — 2026-10-01 — results/ records a Claude Haiku 4.5 attempt as void, and PROTOCOL forbids switching the client's mode mid-run
+
+Claude Haiku 4.5's first attempt at `xhigh`, on `bench2`, had the client's permission mode switched
+from the keyboard while the agent worked, to plan mode and then to auto-accept. Plan mode put an
+instruction into the agent's context ("do not edit"), and one turn came from Claude Sonnet 5.5,
+Claude Code's planning model. The attempt was voided before the harness or any judge ran, and is
+kept unscored in `claude-haiku-4.5-xhigh/void-1/` with a `VOID.md`. `PROTOCOL §3` now says the
+client runs in a mode set before the first message and left alone until the run ends.
+
+The `VOID.md` also records that `bench2`'s snapshot was taken with Opus 5.5's third run just
+started. It held that session's first tool call and nothing more, unread by this attempt. The
+snapshot is retaken with every client closed.
 
 ### `0.2.41` — 2026-10-01 — results/ adds Claude Fable 5.1's second xhigh run (764); its published score becomes 764, third
 
