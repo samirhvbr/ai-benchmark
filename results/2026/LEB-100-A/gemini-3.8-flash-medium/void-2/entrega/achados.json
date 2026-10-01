@@ -1,0 +1,181 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL por concatenação direta do parâmetro busca em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A função listarChamados concatena o parâmetro $busca diretamente na consulta SQL (' WHERE titulo LIKE \'%' . $busca . '%\''). Como o valor vem diretamente de $_GET['busca'] em index.php sem higienização ou prepared statements, um atacante pode injetar comandos SQL arbitrários manipulando a cláusula LIKE.",
+      "impacto": "Execução de consultas arbitrárias no banco de dados, vazamento de hashes de senhas e dados confidenciais, desvio de lógica e potencial comprometimento completo do banco.",
+      "correcao": "Implementação de prepared statement ($db->prepare) com marcador '?' e bind_param('s', $like) na função listarChamados.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra de controle de acesso (IDOR) na visualização de detalhes do chamado",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 67,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A rota index.php?ver=<id> consulta qualquer chamado via verChamado() e exibe seus dados sem validar se o usuário autenticado tem permissão para vê-lo. Conforme a regra de negócio do manifesto, usuários com papel 'cliente' só podem visualizar os chamados que eles próprios abriram (usuario_id correspondente ao id da sessão).",
+      "impacto": "Insecure Direct Object Reference (IDOR). Qualquer cliente autenticado pode acessar descrições, histórico e dados sigilosos dos chamados de outros clientes alterando o parâmetro 'ver' na URL.",
+      "correcao": "Inclusão de validação de autorização em index.php antes de exibir o chamado: se o papel for 'cliente' e o usuario_id do chamado for diferente de $_SESSION['uid'], o acesso é negado exibindo mensagem de chamado não encontrado.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Violação da regra de visibilidade na listagem de chamados para clientes",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 96,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A listagem em index.php invoca listarChamados($db, $busca) e renderiza na tabela todos os chamados retornados pelo banco, sem filtrar pelo usuário logado quando este possui papel 'cliente'. O manifesto exige expressamente que clientes só vejam os chamados abertos por eles mesmos.",
+      "impacto": "Vazamento em massa de dados de chamados de clientes terceiros (título, prioridade, status, técnico) na interface web para usuários do tipo cliente.",
+      "correcao": "Aplicação de filtro na coleção de chamados em index.php quando $_SESSION['papel'] === 'cliente', mantendo na tabela apenas os registros cujo usuario_id corresponda a $_SESSION['uid'].",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Cross-Site Scripting (XSS) refletido no termo de busca em index.php",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro $_GET['busca'] é interpolado sem escape HTML tanto no atributo 'value' do formulário (<input name=\"busca\" value=\"' . $busca . '\">) quanto na mensagem de resultado (<p>Resultados para: ' . $busca . '</p>).",
+      "impacto": "Execução de scripts maliciosos (XSS refletido) no navegador de usuários autenticados via links forjados, possibilitando roubo de sessão ou ações não autorizadas.",
+      "correcao": "Escape completo do valor de $busca com htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') em ambas as renderizações.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Falha na exportação CSV e risco de concorrência por escrita em diretório inexistente",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 151,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv grava os dados em um caminho estático EXPORT_DIR . '/chamados.csv' (/var/www/painel/tmp/chamados.csv). Esse diretório não existe no ambiente padrão, provocando falha silenciosa em fopen() e impedindo a exportação. Além disso, usar um único arquivo estático gera condições de corrida e corrupção em acessos concorrentes.",
+      "impacto": "Indisponibilidade da funcionalidade de exportação de CSV e risco de sobrescrita/corrupção de dados sob requisições simultâneas.",
+      "correcao": "Transmissão do CSV diretamente via fluxo de saída padrão php://output com cabeçalhos HTTP apropriados, eliminando a dependência do sistema de arquivos e os riscos de concorrência.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Exceção fatal de divisão por zero no cálculo de média de tempo de resposta",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "A função mediaResposta() itera sobre chamados com minutos_resposta preenchidos e divide $soma por $qtd. Caso a tabela não contenha nenhum chamado com tempo de resposta registrado (como em bases recém-criadas ou sem chamados respondidos), $qtd é zero, disparando DivisionByZeroError no PHP 8 e derrubando a página inteira com erro fatal 500.",
+      "impacto": "Queda completa da tela principal de listagem (index.php) sempre que a base de dados não possuir chamados respondidos.",
+      "correcao": "Uso de agregação SQL AVG(minutos_resposta) com tratamento para retornar 0.0 caso não existam registros preenchidos.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Gargalo de performance por consultas N+1 na listagem e exportação de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 92,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Tanto listarChamados() quanto exportarCsv() executam uma consulta separada por registro via tecnicoNome() para buscar o nome do técnico associado (SELECT nome FROM usuarios WHERE id = ...), gerando N+1 consultas ao banco de dados para N chamados.",
+      "impacto": "Degradação linear de tempo de resposta e consumo excessivo de conexões e recursos no MariaDB conforme a base de chamados cresce.",
+      "correcao": "Otimização das consultas utilizando LEFT JOIN usuarios u ON c.tecnico_id = u.id e COALESCE(u.nome, '-') AS tecnico_nome, resolvendo os dados em uma única consulta.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Vulnerabilidade de fixação de sessão (Session Fixation) no processo de login",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 29,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Após a validação bem-sucedida das credenciais do usuário na rota de login de index.php, os dados de sessão são preenchidos sem que o identificador da sessão seja regenerado.",
+      "impacto": "Um atacante pode induzir a vítima a autenticar com um session_id previamente conhecido, sequestrando a sessão após o login.",
+      "correcao": "Invocação de session_regenerate_id(true) imediatamente após autenticação bem-sucedida, invalidando o identificador pré-autenticação.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Concatenação direta de parâmetros em consultas SQL de detalhe e técnico",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 100,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "As funções verChamado() e tecnicoNome() concatenavam variáveis diretamente na string de consulta SQL ('WHERE id = ' . $id e 'WHERE id = ' . $tecnicoId), violando o padrão de segurança de prepared statements do projeto.",
+      "impacto": "Fragilidade arquitetural e risco de injeção caso alterações futuras removam a tipagem estrita ou recebam dados não sanitizados.",
+      "correcao": "Substituição por prepared statements parametrizados com bind_param('i', ...).",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Armazenamento e autenticação de senhas com algoritmo criptográfico obsoleto (MD5)",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função autenticar calcula o hash de senha com md5($senha) sem salt. A função hash MD5 é obsoleta e vulnerável a colisões e ataques de dicionário/tabelas arco-íris (rainbow tables).",
+      "impacto": "Em caso de vazamento do banco de dados, as senhas dos clientes e técnicos podem ser recuperadas rapidamente por ataques de força bruta offline.",
+      "correcao": "Planejamento de migração futura para password_hash() com bcrypt/Argon2id. A alteração imediata não foi aplicada no código para não quebrar a autenticação dos usuários já cadastrados na base legada cuja coluna 'senha' é CHAR(32).",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Exposição de senha padrão de banco de dados e chave de API SMTP no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O arquivo config.php possui valor fallback com senha de banco em texto plano ('N3tX@2013!prod') e chave de API de e-mail ('netx-smtp-9f83e2c1a7b64d05') hardcoded no repositório.",
+      "impacto": "Exposição de segredos de infraestrutura e serviço de e-mail a qualquer pessoa com acesso de leitura ao repositório ou por meio de vazamento acidental de código.",
+      "correcao": "Recomendação de injeção exclusiva via variáveis de ambiente/cofre de segredos. O fallback no código foi mantido deliberadamente para garantir compatibilidade com ambientes legados e suítes de teste que não injetam as variáveis.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migração do algoritmo de hash de senhas de MD5 para password_hash (bcrypt ou Argon2id)",
+      "porque": "A coluna 'senha' na tabela usuarios possui tamanho fixo CHAR(32) no schema e os hashes de produção e seed já estão persistidos em MD5. Uma migração imediata exigiria alteração do schema de banco e rotina coordenada de re-hash de senhas, sob risco de bloquear o acesso de todos os usuários existentes e quebrar scripts legados."
+    },
+    {
+      "o_que": "Remoção dos fallbacks de credenciais em config.php (DB_PASS e SMTP_API_KEY)",
+      "porque": "A remoção dos fallbacks hardcoded quebraria rotinas legadas e ambientes de teste/execução que dependem das variáveis padrão sem configuração explícita de ambiente."
+    },
+    {
+      "o_que": "Alteração da assinatura de listarChamados e exportarCsv para inclusão de usuário",
+      "porque": "O manifesto proíbe expressamente a alteração de assinaturas de funções públicas em lib.php, pois scripts externos do ISP (rotinas noturnas, relatórios gerenciais) dependem da assinatura exata sem parâmetros adicionais obrigatórios. O controle de acesso e visibilidade de clientes foi tratado na camada de interface/controlador (index.php)."
+    },
+    {
+      "o_que": "Modificação dos rótulos de rotuloPrioridade para casos não mapeados",
+      "porque": "Embora a função classifique prioridade 4 dentro do SLA como 'Alto - dentro do SLA', alterar os textos existentes arriscaria quebrar testes de caracterização ou relatórios legados dependentes dos literais atuais."
+    }
+  ]
+}

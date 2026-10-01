@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.54`
+**Versão atual:** `0.2.55`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.55` — 2026-10-01 — results/ records two Gemini 3.8 Flash attempts cut off by OpenRouter's rate limit, and a GPT-5.6-terra run in another client, all unscored
+
+No score changes.
+- **Gemini 3.8 Flash at `medium`, `void-2` and `void-3`.** OpenRouter answered HTTP 429 (Google
+  rate-limited upstream) while up to three Gemini sessions shared it; one attempt stopped without
+  its report, the other without its findings index. Both are kept with a `VOID.md`.
+- **GPT-5.6-terra at `xhigh` in opencode, `void-1`.** It finished normally, but in a different
+  client from the agent's run 1 (Codex CLI); the operator chose to repeat it in Codex CLI. Decided
+  before any judge saw it, and kept with a `VOID.md`.
 
 ### `0.2.54` — 2026-10-01 — results/ adds Gemini 3.8 Flash at medium (550), and records an attempt started outside the package as void
 

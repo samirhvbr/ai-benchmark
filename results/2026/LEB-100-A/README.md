@@ -685,6 +685,16 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     The agent spent four minutes locating the task (it ran `sudo -n -l`, refused, and searched the
     disk for harness files, of which the VM has none) before copying the package into `/srv`
     itself. It is kept in `gemini-3.8-flash-medium/void-1/`, with a `VOID.md`.
+  - Two more attempts at `medium` are void: OpenRouter answered HTTP 429 ("google/gemini-3.8-flash
+    is temporarily rate-limited upstream") while up to three Gemini sessions shared it. One, on
+    `bench2`, started with run 1 and stopped after 20 minutes without a report (`void-2`); the
+    other, on `bench1`, stopped after 3 minutes without its findings index (`void-3`). Both are
+    kept with their partial deliveries, mechanical reports and a `VOID.md`.
+- **GPT-5.6-terra at `xhigh` in opencode, not scored.** It ran on `bench3` through OpenRouter and
+  finished normally, but GPT-5.6-terra's run 1 was made in Codex CLI on OpenAI's API, and a client
+  brings its own system prompt and tools. Rather than mix two clients in one score, the operator
+  chose to repeat the run in Codex CLI. The decision was made on the client alone, before any judge
+  saw the delivery; the attempt is kept in `gpt-5.6-terra-xhigh/void-1/` with a `VOID.md`.
 
 ## Two defects in the harness, fixed before scoring
 

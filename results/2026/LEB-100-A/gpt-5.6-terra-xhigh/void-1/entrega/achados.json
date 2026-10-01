@@ -1,0 +1,153 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes autenticados acessavam chamados de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "As rotas de exportacao, detalhe e listagem chamavam funcoes globais sem comparar usuario_id com a sessao. Um cliente podia requisitar o id de outro cliente ou baixar o CSV completo.",
+      "impacto": "Exposicao de titulos, descricoes, responsaveis e indicadores de outros clientes.",
+      "correcao": "O painel agora consulta, mostra e exporta apenas chamados do usuario para clientes; tecnicos continuam com visao global.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca concatenava entrada do usuario em SQL",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "O valor busca era inserido entre aspas na clausula LIKE; aspas no parametro alteravam a consulta SQL em vez de serem tratadas como texto.",
+      "impacto": "Leitura indevida de dados e alteracao da logica da consulta de chamados.",
+      "correcao": "A listagem usa statement preparado para a busca e para o escopo de usuario.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Busca era refletida sem codificacao HTML",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parametro busca era escrito diretamente no atributo value e no paragrafo de resultados, permitindo encerrar o atributo e inserir script.",
+      "impacto": "Execucao de JavaScript no navegador de usuarios autenticados, inclusive com uso indevido de sessao.",
+      "correcao": "As saidas HTML dinamicas usam htmlspecialchars com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Credenciais de producao estavam embutidas no repositorio",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS e SMTP_API_KEY tinham valores secretos literais, distribuidos com o codigo e seus backups.",
+      "impacto": "Quem obtem o pacote de codigo pode tentar acessar o banco ou a central de e-mail.",
+      "correcao": "Os dois valores passaram a ser obtidos somente de variaveis de ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Autenticacao usava hashes MD5 de senha",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha recebida era transformada por md5 e comparada diretamente; MD5 nao tem custo adaptativo nem sal por senha.",
+      "impacto": "Um vazamento da tabela permite ataques de dicionario e tabelas precomputadas contra as contas.",
+      "correcao": "Novos dados usam bcrypt e password_verify; um MD5 antigo e refeito em bcrypt apos login bem-sucedido.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Exportacoes concorrentes compartilhavam um unico arquivo CSV",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 97,
+      "mecanismo": "Toda requisicao truncava, escrevia e relia EXPORT_DIR/chamados.csv, de modo que outra requisicao podia sobrescrever o arquivo antes do readfile.",
+      "impacto": "Resposta CSV parcial, corrompida ou pertencente a outra requisicao, com dados residuais no diretorio temporario.",
+      "correcao": "O CSV agora e transmitido diretamente por php://output, sem arquivo compartilhado.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Metrica de SLA dividia por zero em conjunto vazio",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Sem chamados com minutos_resposta, qtd permanecia zero e soma/qtd lancava DivisionByZeroError.",
+      "impacto": "A listagem deixa de renderizar em bases novas ou sem primeira resposta registrada.",
+      "correcao": "AVG retorna a media no banco e a aplicacao retorna 0.0 quando nao ha valores.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Listagem e CSV executavam consultas N+1 para tecnicos",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 100,
+      "mecanismo": "Cada chamado retornado chamava tecnicoNome e executava outra consulta ao banco, totalizando N+1 consultas para N chamados.",
+      "impacto": "Latencia e carga no banco crescem linearmente com a quantidade de chamados exibidos.",
+      "correcao": "Listagem e exportacao buscam tecnico_nome com LEFT JOIN na mesma consulta.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Login permitia fixacao de sessao e login CSRF",
+      "arquivo": "code/index.php",
+      "linha": 21,
+      "linha_fim": 25,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O login aceitava POST sem token CSRF e gravava uid na mesma sessao iniciada antes da autenticacao, sem renovar o identificador.",
+      "impacto": "Um atacante pode induzir sessao conhecida antes do login ou forcar a vitima a entrar em uma conta controlada por ele.",
+      "correcao": "O formulario valida token CSRF e a sessao e regenerada apos autenticar.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas das funcoes publicas documentadas",
+      "porque": "Integracoes externas dependem delas; funcoes internas separadas implementam o escopo por cliente."
+    },
+    {
+      "o_que": "Migracao DDL automatica para bancos de producao existentes",
+      "porque": "Nao ha infraestrutura de migracao no pacote; a coluna senha deve receber ALTER TABLE controlado antes do deploy."
+    },
+    {
+      "o_que": "Rotulo para status fora de 1, 2 e 3",
+      "porque": "O manifesto fixa somente esses valores e o contrato do relatorio nao deve receber um novo rotulo."
+    },
+    {
+      "o_que": "Neutralizacao de formulas de planilha no CSV",
+      "porque": "Prefixar campos alteraria valores textuais de uma exportacao contratada; a politica deve ser definida com seus consumidores."
+    }
+  ]
+}
