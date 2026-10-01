@@ -538,6 +538,10 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     `===` against an integer, but without a search term mysqli returns the column as a string, so
     a client sees an empty list; with a search term the list is right. Reproduced against the
     delivered code: Ana sees 0 of her 3 tickets on the main page (COMP-003, −30).
+- **GPT-5.6-sol pro at `max`, first attempt: void.** In opencode through the Kilo Code gateway, on
+  `bench3`, it worked for 74 minutes with two review subagents (US$ 16.04), until the gateway
+  stopped serving it for lack of credit, before it had written a report. It is kept unscored in
+  `gpt-5.6-sol-pro-max/void-1/`, with a `VOID.md`.
 - **Claude Haiku 4.5, run 2 (AG): 369, again below the pass line. Its published score stays the
   lower, 317.**
   - It ran on `bench2` in 7 minutes, for US$ 0.40, with auto-accept set before the first message.

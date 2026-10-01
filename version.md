@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.44`
+**Versão atual:** `0.2.45`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.45` — 2026-10-01 — results/ records a GPT-5.6-sol pro attempt as void: the gateway ran out of credit before the report
+
+GPT-5.6-sol pro at `max`, in opencode through the Kilo Code gateway on `bench3`, worked from 10:05 to
+11:19 and started two review subagents. Then the gateway answered `402 – Add credits to continue`,
+and the session stopped. It had changed the code but written no report and no findings index. It
+cost US$ 16.04 in 74 minutes. The stop is external to the run and came before anything could be
+judged, so the attempt is void and kept unscored in `gpt-5.6-sol-pro-max/void-1/`, with a
+`VOID.md`.
 
 ### `0.2.44` — 2026-10-01 — results/ adds Claude Haiku 4.5's second run (369); its published score stays 317
 
