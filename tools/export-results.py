@@ -537,6 +537,8 @@ def render_readme(data):
     w("")
     w("`results.json` aggregates all of them; it is what the public results page reads.")
     w("")
+    w("The same data as spreadsheets: [`runs.csv`](runs.csv) has one row per scored run, and [`flaws.csv`](flaws.csv) one row per run and planted flaw. [`CSV.md`](CSV.md) explains every column.")
+    w("")
     for inst in data["instances"]:
         w("## %s · %s v%s (mode %s, %s turns)" % (inst["edition"], inst["id"], inst["version"], inst["mode"], inst["turn_budget"]))
         w("")
@@ -575,6 +577,87 @@ def render_readme(data):
     return "\n".join(out).rstrip() + "\n"
 
 
+# ------------------------------------------------------------------ CSV downloads
+
+RUN_COLUMNS = [
+    "edition", "instance", "agent", "run", "counts_in_score", "agent_rank", "agent_score", "total", "grade",
+    "model", "model_id", "provider", "served_by", "reasoning_effort", "client_mode", "client", "client_version",
+    "training_cutoff", "key_exposure",
+    "SEC", "ARCH", "BUG", "PERF", "CLN", "COMP", "EXPL", "penalties",
+    "flaws_found", "flaws_fixed", "flaws_planted", "false_positives", "extra_findings", "discovery_index", "brier",
+    "characterization_passed", "operator_replies",
+    "session_started", "session_ended", "wall_minutes", "model_seconds",
+    "tokens_input", "tokens_output", "tokens_cache", "tokens_total", "cost_usd",
+    "vcpus", "ram_gib", "filed_on", "scorecard_url",
+]
+FLAW_COLUMNS = [
+    "edition", "instance", "agent", "run", "counts_in_score", "flaw", "category", "severity", "difficulty",
+    "reported", "found", "explained", "fixed", "compatible", "points_earned", "points_possible", "confidence",
+]
+
+
+def csv_text(columns, rows):
+    """Comma-separated, a header row, every value as text, empty for unknown; `\\n` line ends
+    so the bytes are the same on every machine."""
+    import csv
+    import io
+    buf = io.StringIO()
+    wr = csv.writer(buf, lineterminator="\n")
+    wr.writerow(columns)
+    for row in rows:
+        wr.writerow(["" if row.get(c) is None else (str(row[c]).lower() if isinstance(row[c], bool) else row[c]) for c in columns])
+    return buf.getvalue()
+
+
+def render_csvs(runs, data):
+    """runs.csv: one row per scored run. flaws.csv: one row per run and planted flaw. Both are
+    built from the same inputs as results.json, so they cannot disagree with the leaderboard."""
+    from datetime import datetime
+    entries = {(i["edition"], i["id"], e["agent"]): e for i in data["instances"] for e in i["entries"]}
+    flaw_info = {(i["edition"], i["id"], f["id"]): f for i in data["instances"] for f in i["flaws"]}
+    run_rows, flaw_rows = [], []
+    for r in sorted(runs, key=lambda x: (x["edition"], x["instance"], x["agent"], x["run"])):
+        e = entries[(r["edition"], r["instance"], r["agent"])]
+        s = next(x for x in e["runs"] if x["run"] == r["run"])
+        meta, model = r["meta"], r["meta"]["model"]
+        session, ct = meta.get("session") or {}, meta.get("cost_time") or {}
+        tokens, host = ct.get("tokens") or {}, meta.get("execution_host") or {}
+        wall = None
+        if session.get("started") and session.get("ended"):
+            wall = round((datetime.fromisoformat(session["ended"]) - datetime.fromisoformat(session["started"])).total_seconds() / 60, 1)
+        counts = r["run"] == e["representative_run"]
+        base = {"edition": r["edition"], "instance": r["instance"], "agent": r["agent"], "run": r["run"], "counts_in_score": counts}
+        run_rows.append({**base,
+            "agent_rank": e["rank"], "agent_score": e["score"], "total": s["total"], "grade": s["grade"],
+            "model": model.get("name"), "model_id": model.get("id"), "provider": model.get("provider"),
+            "served_by": model.get("served_by"), "reasoning_effort": model.get("reasoning_effort"),
+            "client_mode": model.get("client_mode"), "client": (meta.get("client") or {}).get("name"),
+            "client_version": (meta.get("client") or {}).get("version"),
+            "training_cutoff": model.get("training_cutoff"), "key_exposure": e["key_exposure"],
+            **{c: s["categories"][c]["score"] for c in CATEGORIES},
+            "penalties": sum(p["deduction"] for p in s["penalties"]),
+            "flaws_found": sum(1 for f in s["flaws"].values() if f["found"]),
+            "flaws_fixed": sum(1 for f in s["flaws"].values() if f["fixed"]),
+            "flaws_planted": len(s["flaws"]), "false_positives": s["false_positives"], "extra_findings": s["extra_findings"],
+            "discovery_index": s["discovery_index"], "brier": s["brier"],
+            "characterization_passed": s["characterization"]["passed"], "operator_replies": meta.get("operator_replies"),
+            "session_started": session.get("started"), "session_ended": session.get("ended"), "wall_minutes": wall,
+            "model_seconds": ct.get("elapsed_seconds"), "tokens_input": tokens.get("input"), "tokens_output": tokens.get("output"),
+            "tokens_cache": tokens.get("cache"), "tokens_total": tokens.get("total"), "cost_usd": ct.get("usd_estimate"),
+            "vcpus": host.get("vcpus"), "ram_gib": host.get("ram_gib"), "filed_on": meta.get("filed_on"),
+            "scorecard_url": s["scorecard_url"]})
+        given = {p["id"]: p for p in r["verdict"].get("planted", [])}
+        for f in r["card"]["findings"]:
+            v, info = given.get(f["id"], {}), flaw_info[(r["edition"], r["instance"], f["id"])]
+            crit = v.get("criteria", {})
+            c = (lambda k: crit.get(k)) if f["template"] == "C" else (lambda k: crit.get({"C1": "R1", "C2": "R2", "C3": "R3", "C5": "R4"}[k]))
+            flaw_rows.append({**base, "flaw": f["id"], "category": info["category"], "severity": info["severity"],
+                "difficulty": info["difficulty"], "reported": v.get("reported"), "found": c("C1"), "explained": c("C2"),
+                "fixed": c("C3"), "compatible": c("C5"), "points_earned": f["points_earned"],
+                "points_possible": f["points_possible"], "confidence": f.get("confidence")})
+    return csv_text(RUN_COLUMNS, run_rows), csv_text(FLAW_COLUMNS, flaw_rows)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Publish the evaluated LEB runs under results/")
     ap.add_argument("--check", action="store_true", help="exit 1 if any output would change")
@@ -588,6 +671,7 @@ def main():
     data = aggregate(runs)
     outputs[os.path.join(RESULTS, "results.json")] = dumps(data)
     outputs[os.path.join(RESULTS, "README.md")] = render_readme(data)
+    outputs[os.path.join(RESULTS, "runs.csv")], outputs[os.path.join(RESULTS, "flaws.csv")] = render_csvs(runs, data)
 
     stale = []
     for path, content in sorted(outputs.items()):

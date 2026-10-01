@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.36`
+**Versão atual:** `0.2.37`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.37` — 2026-10-01 — results/ publishes the results as CSV: one row per run, and one per run and planted flaw
+
+`tools/export-results.py` now also writes two files from the same inputs as `results.json`, so they
+cannot disagree with the leaderboard:
+- **`results/runs.csv`**, one row per scored run. It carries:
+  - the agent's rank and score, and whether this run is the one that counts;
+  - the model, the host that served it, the effort, the client mode, and the client and version;
+  - the training cutoff and the key exposure;
+  - the seven category scores and the penalties;
+  - planted flaws found and fixed, false positives, extra findings, the discovery index and the
+    Brier score;
+  - session times, model time, tokens, cost, the machine size, and the scorecard's link.
+- **`results/flaws.csv`**, one row per run and planted flaw: reported, then found, explained, fixed
+  and compatible as `full`, `half` or `none`, then points and declared confidence.
+
+`results/CSV.md` explains every column, and `results/README.md` links the three files. Void runs
+are left out, as in the leaderboard. The output is deterministic, and `--check` covers the CSVs.
 
 ### `0.2.36` — 2026-10-01 — results/ adds three GPT runs of 2026-10-01 on LEB-100-A: GPT-6.1-sol pro at 654, GPT-6.1-sol ultra at 597, GPT-5.3-Codex at 403
 

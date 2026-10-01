@@ -17,6 +17,8 @@ Every evaluated delivery lives in `<edition>/<instance>/<agent>/run-<n>/`:
 
 `results.json` aggregates all of them; it is what the public results page reads.
 
+The same data as spreadsheets: [`runs.csv`](runs.csv) has one row per scored run, and [`flaws.csv`](flaws.csv) one row per run and planted flaw. [`CSV.md`](CSV.md) explains every column.
+
 ## 2026 · LEB-100-A v1.1 (mode A, 30 turns)
 
 Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md).
