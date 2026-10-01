@@ -42,13 +42,13 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 15 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 2/3 (629 · 621) |
 | 16 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
 | 17 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md) † · high | **612** | Silver | 224 | 0 | 139 | 150 | 0 | 70 | 29 | 0 | 70.8 | 0.006 | 1/3 |
-| 18 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-1/scorecard.md) † · high | **604** | Silver | 198 | 0 | 150 | 150 | 0 | 100 | 21 | -15 | 70.8 | 0.182 | 1/3 |
-| 19 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
-| 20 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
-| 21 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md) · ultra | **597** | Bronze | 207 | 0 | 129 | 150 | 0 | 70 | 41 | 0 | 70.8 | 0.001 | 1/3 |
-| 22 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
-| 23 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
-| 24 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) † · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
+| 18 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
+| 19 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
+| 20 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md) · ultra | **597** | Bronze | 207 | 0 | 129 | 150 | 0 | 70 | 41 | 0 | 70.8 | 0.001 | 1/3 |
+| 21 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
+| 22 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
+| 23 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) † · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
+| 24 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 2/3 (604 · 496) |
 | 25 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) † · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
 | 26 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) † · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 1/3 |
 | 27 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
@@ -62,4 +62,4 @@ A score with fewer than 3 runs is **not official**.
 
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
-† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), GLM-5.3 Prime (not published), Grok 4.6 (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), DeepSeek V4 Pro (not published), GLM-5.3-FlashX (not published), Kimi K3 (not published), Qwen3 Coder Next (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).
+† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), GLM-5.3 Prime (not published), Grok 4.6 (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), GLM-5.3-FlashX (not published), Kimi K3 (not published), Qwen3 Coder Next (not published), DeepSeek V4 Pro (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).

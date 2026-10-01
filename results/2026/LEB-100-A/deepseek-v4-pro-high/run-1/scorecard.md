@@ -18,7 +18,7 @@
 | Temperature | not recorded |
 | Delivery filed | 2026-10-01 · evaluated 2026-10-01 |
 | Run | 1 — an official score is the median of 3 runs (PROTOCOL §4); one run alone is not official |
-| Run note | The operator's folder was named run. The first message was the fixed text followed by a trailing space. 15 model responses in 7.5 minutes, all from deepseek/deepseek-v4-pro at high through OpenRouter. |
+| Run note | The operator's folder was named run. The first message was the fixed text followed by a trailing space. 15 model responses in 7.5 minutes, all from deepseek/deepseek-v4-pro at high through OpenRouter. Runs 1 and 2 ran at the same time on bench3 and bench2 (run 2 served by Novita AI); this run's first message was sent 0.8 seconds earlier. |
 | LEB spec | 1.1.0 |
 | Judge | LLM `claude-opus-5-5`, blind to the model's identity (anonymized as delivery AN) |
 

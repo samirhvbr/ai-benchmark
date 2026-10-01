@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.48`
+**Versão atual:** `0.2.49`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.49` — 2026-10-01 — results/ adds DeepSeek V4 Pro's second run (496), its published score now
+
+Harness 22/22; blind label AO, with `mecanico.json`'s submission path anonymized; EXPL 30;
+`score.py`. It ran on a restored clean VM as `leb`, with the fixed first message and nothing else.
+- **DeepSeek V4 Pro at `high`, run 2 (AO): 496, Bronze.** It ran at the same time as run 1, served
+  by Novita AI where run 1 went through OpenRouter. It fixed 6 flaws against 8, leaving the N+1
+  query, MD5 and both secrets in place. Its published score becomes 496, the lower of its two
+  runs, 24th.
 
 ### `0.2.48` — 2026-10-01 — results/ adds Claude Sonnet 5.5 at max without ultracode (807, 2nd) and DeepSeek V4 Pro (604)
 

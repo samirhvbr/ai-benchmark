@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Sixteen deliveries were scored, labelled **Y** to **AN** in the order they arrived and judged blind like
+Seventeen deliveries were scored, labelled **Y** to **AO** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -463,8 +463,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AL** | GPT-6-astra, `xhigh`, run 3 | 628 |
 | **AM** | Claude Sonnet 5.5, `max`, run 1 | 807 |
 | **AN** | DeepSeek V4 Pro, `high`, run 1 | 604 |
+| **AO** | DeepSeek V4 Pro, `high`, run 2 | 496 |
 
-All sixteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All seventeen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -615,6 +616,16 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     the cell is now empty (PEN-001, −15).
   - It left the CSV export showing every client's tickets on purpose, a decision its report
     defends.
+- **DeepSeek V4 Pro at `high`, run 2 (AO): 496, Bronze, 108 points below run 1. Its published
+  score is now 496, the lower of the two, 24th.**
+  - It ran at the same time as run 1, on `bench2`, served by Novita AI where run 1 was served by
+    OpenRouter; run 1's first message went out 0.8 seconds earlier. It took 23 minutes and 48 model
+    responses, for US$ 0.42, against 8 minutes and 15 responses.
+  - It fixed 6 flaws, against 8. It named the N+1 query and left it in place, kept MD5 and both
+    secrets, and fixed the file-handle leak without reporting it. Unlike run 1 it filtered the CSV
+    export for clients and made no false SQL injection claim; its report scored 30 of 50.
+  - `bench2`'s snapshot still held the first seconds of a Claude Opus 5.5 session in `leb`'s
+    `~/.claude`; opencode never read that folder.
 
 ## Two defects in the harness, fixed before scoring
 

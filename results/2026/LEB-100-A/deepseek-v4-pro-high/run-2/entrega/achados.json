@@ -1,0 +1,172 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Regra de visibilidade nao e aplicada: cliente acessa chamados de outros clientes (IDOR)",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 84,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "index.php usa a sessao apenas para saber se ha login (uid/papel), mas nunca compara chamado.usuario_id com o uid. No detalhe (verChamado) o id vem de $_GET['ver'] e e carregado sem checar dono; na listagem (listarChamados) o SQL 'SELECT * FROM chamados' retorna todos os registros; e a exportacao (exportarCsv) grava 'SELECT * FROM chamados' sem filtro de dono. Logo qualquer cliente autenticado altera ?ver=<id> ou usa a listagem/export para ler tickets de terceiros.",
+      "impacto": "Um cliente (ex.: ana) consegue ler titulo, descricao, status e tecnico de chamados de qualquer outro cliente apenas mudando o id na URL ou abrindo a listagem/CSV. Quebra a regra de negocio do manifesto e vaza dados pessoais/confidenciais.",
+      "correcao": "Adicionei checagem de propriedade no detalhe (cliente so ve o proprio usuario_id), filtro por usuario_id na listagem e passei o usuarioId na rota export=csv; exportarCsv ganhou parametro opcional ?int $usuarioId (compativel: default null mantem comportamento antigo para scripts internos).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL injection em listarChamados via parametro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "listarChamados monta o SQL concatenando o valor de $busca (vindo de $_GET['busca']) diretamente: $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\". Como a string nao passa por bind_param nem escaping, o usuario controla a clausula WHERE e alem dela.",
+      "impacto": "Um atacante autenticado (ou via CSRF) injeta SQL (ex.: busca=%' OR '1'='1) para listar/alterar dados. Embora a porta de entrada exija login, o injection e direto e nao depende de escalonamento.",
+      "correcao": "Reescrevi para prepared statement com placeholder '? ' e bind_param('s', '%busca%'), preservando a assinatura e o comportamento de busca por titulo.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no campo de busca (value e resultados)",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "$busca e impresso sem sanitizacao em dois pontos: dentro do atributo value=\"...\" do formulario e no paragrafo 'Resultados para: ...'. Um valor como <script>alert(1)</script> e refletido na pagina sem escaping.",
+      "impacto": "Reflected XSS: um link malicioso (index.php?busca=<script>...) executa JavaScript no contexto do painel, permitindo roubo de sessao (document.cookie) ou acoes em nome do usuario logado.",
+      "correcao": "Apliquei htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') nos dois pontos de saida.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senha armazenada com MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "autenticar calcula md5($senha) e compara com a coluna usuarios.senha (CHAR(32)), que armazena o MD5 puro (ver schema.sql:7 e seed.sql). MD5 e rapido, sem salt e tem colisoes conhecidas; hashes identicos para senhas identicas permitem ataques de dicionario/rainbow table em caso de vazamento do banco.",
+      "impacto": "Num vazamento do banco, senhas fracas sao recuperadas em segundos/minutos; senhas iguais (todas as contas de cliente usam senha123) compartilham o mesmo hash. Facilita acesso indevido a todas as contas.",
+      "correcao": "Nao corrigido (corrigido=false). Migrar para password_hash()/password_verify() exige migrar a coluna (hoje CHAR(32)) e rehash progressivo no login, e quebraria os hashes ja gravados (seed e producao) sem um plano de migracao. Registrado como acao recomendada com roteiro.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisao por zero em mediaResposta quando nao ha minutos_resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "mediaResposta soma minutos_resposta e incrementa $qtd, depois retorna $soma / $qtd. Se nenhum chamado tiver minutos_resposta nao-nulo (base nova ou sem primeira resposta), $qtd permanece 0 e a divisao lanca DivisionByZeroError no PHP 8.",
+      "impacto": "Fatal error nao tratado derruba a pagina de listagem (que chama mediaResposta) com HTTP 500 sempre que a base nao tiver nenhum tempo de resposta.",
+      "correcao": "Retornei 0.0 quando $qtd == 0 (return $qtd > 0 ? $soma / $qtd : 0.0), preservando o retorno float.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Segredos hardcoded no config.php (senha do banco e chave SMTP)",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "config.php define DB_PASS com fallback embutido ('N3tX@2013!prod') e SMTP_API_KEY fixa ('netx-smtp-9f83e2c1a7b64d05'). Como o arquivo faz parte do codigo versionado, a credencial de producao e a chave SMTP ficam no repositorio.",
+      "impacto": "Qualquer pessoa com acesso ao repo/arquivo obtem credenciais de banco e da API SMTP, permitindo acesso direto aos dados e abuso do servico de e-mail.",
+      "correcao": "Nao corrigido (corrigido=false). O codigo ja suporta getenv(); a remocao dos defaults exige mover os segredos para o ambiente/cofre e e uma mudanca de deploy, nao de codigo. Recomendado como acao imediata de operacao.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "Consulta N+1: tecnicoNome executa um SELECT por chamado",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "listarChamados faz um SELECT * na tabela de chamados e, dentro do while, chama tecnicoNome($db, ...) que executa um novo SELECT por linha. Para N chamados sao N+1 consultas.",
+      "impacto": "Com muitas linhas, o tempo e a carga do banco crescem linearmente (N consultas extras), degradando a listagem e o export CSV que reutilizam tecnicoNome.",
+      "correcao": "Nao corrigido (corrigido=false). A otimizacao (um JOIN ou um IN com map de ids) exigiria reescrever a query de listarChamados; com o volume de teste (5 linhas) o ganho nao justifica o risco de alterar a forma de montagem de tecnico_nome. Registrado como melhoria.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Concatenacao de inteiros em SQL (tecnicoNome e verChamado) sem bind",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "tecnicoNome monta 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId e verChamado 'SELECT * FROM chamados WHERE id = ' . $id. Os parametros sao tipados (int/?int) e nas chamadas atuais vem de cast (int), entao nao ha injection exploravel por estas rotas hoje, mas a concatenacao e fragil: qualquer chamador futuro que passe valor nao sanitizado reabre a falha.",
+      "impacto": "Risco latente de SQL injection se um chamador interno passar um valor nao numerico; hoje e mitigado pelo type hint e pelos casts na fronteira HTTP.",
+      "correcao": "Converti ambos para prepared statements com bind_param('i', ...), como defesa em profundidade.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Session fixation: sem regenerar o id de sessao no login",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "No login bem-sucedido o codigo apenas grava $_SESSION['uid']/['papel'] e redireciona, sem chamar session_regenerate_id(). O id de sessao anterior ao login e reutilizado.",
+      "impacto": "Permite session fixation: um atacante que fixe um id conhecido na vitima e depois a vitima autentique mantem o id, assumindo a sessao.",
+      "correcao": "Adicionei session_regenerate_id(true) antes de gravar as credenciais de sessao.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "CSV exportado em caminho fixo e compartilhado (corrida e possivel exposicao)",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "exportarCsv grava sempre em EXPORT_DIR . '/chamados.csv' (caminho fixo) e depois faz readfile. Requisicoes concorrentes escrevem e leem o mesmo arquivo, e se EXPORT_DIR estiver sob a raiz web o arquivo fica acessivel diretamente.",
+      "impacto": "Dois usuarios exportando ao mesmo tempo podem receber o CSV um do outro (vazamento cruzado) ou um arquivo truncado; se o diretorio for servido, o arquivo fica publico.",
+      "correcao": "Nao corrigido (corrigido=false). Trocar para stream (php://output/temp) ou nome de arquivo unico alteraria o fluxo de escrita/leitura; mantive a mecanica original para nao arriscar o contrato de saida e registrei a recomendacao.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash de senha MD5 (F4)",
+      "porque": "Migrar para password_hash()/password_verify() exige alterar o schema (senha CHAR(32)) e rehash progressivo; sem isso quebraria os hashes ja existentes (seed e producao) e o login de todos os usuarios. Fora do escopo de uma correcao pontual; exige plano de migracao."
+    },
+    {
+      "o_que": "Segredos hardcoded em config.php (F5)",
+      "porque": "O codigo ja le getenv(); remover os fallbacks e uma decisao de deploy (mover para cofre/ambiente), nao de codigo. Remover sem preparar o ambiente derrubaria o painel local."
+    },
+    {
+      "o_que": "N+1 em listarChamados (F8)",
+      "porque": "Otimizar exigiria reescrever a query e a forma de montar a chave tecnico_nome (parte do contrato). Com o volume atual o ganho e marginal frente ao risco de regressao."
+    },
+    {
+      "o_que": "Escrita do CSV em arquivo fixo compartilhado (F10)",
+      "porque": "Trocar por stream ou nome unico mudaria a mecanica de exportacao; baixo custo/beneficio no volume atual. Mantido para preservar o comportamento observado."
+    },
+    {
+      "o_que": "Token CSRF no login e na rota export=csv",
+      "porque": "A rota index.php?export=csv e parte do contrato (links/favoritos externos) e o formulario de login nao esta descrito no manifesto; adicionar token mudaria a superficie publica e quebraria consumidores externos."
+    },
+    {
+      "o_que": "Escopo da media de resposta (mediaResposta global para todos)",
+      "porque": "O manifesto descreve mediaResposta como indicador agregado do topo do painel, sem regra de visibilidade por cliente; escopar por cliente alteraria o contrato da funcao publica."
+    },
+    {
+      "o_que": "Serializacao CSV via fputcsv (aspas em 'Aberto em')",
+      "porque": "Mantive o fputcsv original byte a byte; a forma de citacao e comportamento da funcao na versao do PHP, nao do codigo entregue, e altera-la mudaria o formato consumido."
+    }
+  ]
+}
