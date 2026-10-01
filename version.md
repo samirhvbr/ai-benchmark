@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.37`
+**Versão atual:** `0.2.38`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.38` — 2026-10-01 — PROTOCOL keeps the machine size fixed across an agent's runs only for multi-agent clients
+
+`PROTOCOL §3` required every run of an agent to keep the same machine size, because a multi-agent
+client sizes its work to the machine (0.2.28). A single-agent client spends most of a run waiting
+on the model's API, and the size weighs little on it, so the rule now applies to multi-agent
+clients only. A single-agent client's runs may change machines, and the run's note records what
+changed. The case that prompted it is Claude Sonnet 5.5's second run at `xhigh`, published next.
+Its first run was made on the first VM at 4 vCPUs as administrator; the second on `bench1` at 20
+vCPUs as the unprivileged user `leb`.
 
 ### `0.2.37` — 2026-10-01 — results/ publishes the results as CSV: one row per run, and one per run and planted flaw
 
