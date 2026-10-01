@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Eighteen deliveries were scored, labelled **Y** to **AP** in the order they arrived and judged blind like
+Nineteen deliveries were scored, labelled **Y** to **AQ** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -465,8 +465,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AN** | DeepSeek V4 Pro, `high`, run 1 | 604 |
 | **AO** | DeepSeek V4 Pro, `high`, run 2 | 496 |
 | **AP** | DeepSeek V4 Pro, `high`, run 3 | 432 |
+| **AQ** | Gemini 3.8 Flash, `high`, run 1 | 687 |
 
-All eighteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All nineteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -644,6 +645,19 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   The switch happened although `leb`'s settings had `switchModelsOnFlag` set to `false`, so that
   setting does not stop this fallback. The run is kept unscored in
   `claude-fable-5.1-xhigh/void-2/`, with a `VOID.md`; Fable 5.1 still has two runs.
+- **Gemini 3.8 Flash at `high` (AQ): 687, Silver, 6th, the strongest model here from outside
+  Anthropic, 33 points above the best GPT model.** It is the first Google model in the table.
+  - It ran in opencode through OpenRouter on `bench3`, in 12.5 minutes and 82 model responses, for
+    US$ 1.00.
+  - It fixed 8 of the 13 planted flaws, with performance, clean code and compatibility at the
+    maximum; it flattened the nested ifs (CLN-007), which only Claude models had done. It kept MD5
+    and both secrets as literal fallbacks, and did not report the CSV formula injection.
+  - Its report scored 27 of 50: it says the visibility rule is applied strictly while the CSV
+    export still gives every client the whole table, and it justifies leaving MD5 and the seed in
+    place by the evaluator's test suite rather than by the system.
+  - A second attempt, started four minutes later on `bench2`, stopped after two minutes on an
+    OpenRouter timeout (HTTP 504) before writing anything. It is void, kept in
+    `gemini-3.8-flash-high/void-1/` with a `VOID.md`, like GPT-5.6-sol pro's credit failure.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -670,12 +684,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 - **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra and DeepSeek V4 Pro.** An official score is
   the median of three runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra and DeepSeek V4 Pro have
   three (711, 717, 805; 825, 809, 724; 661, 596, 628; 604, 496, 432), so their 717, 809, 628 and 496 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
-  third did, and GPT-6-astra's first run sat 33 points above its median. Places 5 to 9 (654, 653,
+  third did, and GPT-6-astra's first run sat 33 points above its median. Places 7 to 11 (654, 653,
   638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
   bias; it does not remove it, since a model can recognise its own style — or a sibling's: six of
-  the twenty-nine contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
+  the thirty contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
   `formatarStatus`, R2 none on CLN-007) were kept as the judge made them. The four changes made in
   review are explained above: E, H and J move no place; F lifts GPT-5.6-terra from 9th to 6th. Every verdict carries a rationale per flaw so it can be audited.
 - **Not the same effort for everyone.** MiniMax-M3 ran at its model's default — it has no effort

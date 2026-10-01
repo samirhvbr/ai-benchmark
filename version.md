@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.51`
+**Versão atual:** `0.2.52`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.52` — 2026-10-01 — results/ adds Gemini 3.8 Flash (687, 6th), the first Google model, and records its second attempt as void
+
+Harness 22/22; blind label AQ, with `mecanico.json`'s submission path anonymized; EXPL 27;
+`score.py`. It ran on a restored clean VM as `leb`, with the fixed first message and nothing else.
+- **Gemini 3.8 Flash at `high` (AQ): 687, Silver, 6th.** It ran in opencode through OpenRouter, in
+  12.5 minutes, for US$ 1.00, and is the strongest model here from outside Anthropic. It fixed 8 of
+  the 13 planted flaws, kept MD5 and both secrets, and its report scored 27 of 50.
+- **Its second attempt is void.** On `bench2`, OpenRouter returned a 504 timeout two minutes in,
+  before anything was written. It is kept in `gemini-3.8-flash-high/void-1/` with a `VOID.md`.
+- The notes also correct the rank band in "Before quoting a number" (places 7 to 11, not 5 to 9)
+  and count thirty contestants.
 
 ### `0.2.51` — 2026-10-01 — results/ records Claude Fable 5.1's third attempt as void: its client switched to Opus 4.8 again
 

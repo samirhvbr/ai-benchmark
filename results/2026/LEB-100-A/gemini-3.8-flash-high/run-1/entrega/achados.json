@@ -1,0 +1,223 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL na busca de chamados por título em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 86,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O parâmetro $busca recebido via GET em index.php é concatenado diretamente na cláusula WHERE da consulta SQL em lib.php sem qualquer sanitização ou uso de prepared statements parametrizados.",
+      "impacto": "Permite que um invasor injete comandos SQL arbitrários, extraindo credenciais e dados sigilosos do banco ou contornando regras do sistema.",
+      "correcao": "Substituição da interpolação direta por prepared statement com vinculação de parâmetro bind_param('s', $termo).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra de controle de acesso (BOLA/IDOR) violando a regra de visibilidade por perfil",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O manifesto exige que clientes visualizem apenas seus próprios chamados, enquanto técnicos podem visualizar todos. O código legado exibia todos os chamados na listagem e não validava a posse do chamado ao acessar ?ver=<id>, permitindo que clientes acessassem chamados alheios.",
+      "impacto": "Vazamento direto de chamados, históricos e dados confidenciais entre diferentes clientes através da listagem e da manipulação direta do ID na URL.",
+      "correcao": "Aplicação de filtro na listagem para usuários com papel 'cliente' (mantendo apenas chamados com usuario_id correspondente ao do usuário autenticado) e validação de permissão na rota de detalhe (?ver=), bloqueando acesso a chamados de terceiros.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Cross-Site Scripting (XSS Refletido) no formulário e resultado de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo de busca ($_GET['busca']) é refletido diretamente no HTML sem sanitização nem escape tanto no atributo value do formulário quanto no parágrafo de resultado.",
+      "impacto": "Execução de scripts maliciosos arbitrários no contexto de segurança do navegador do usuário, possibilitando sequestro de sessão e roubo de credenciais.",
+      "correcao": "Aplicação de htmlspecialchars com flags apropriadas (ENT_QUOTES, 'UTF-8') no atributo value do input e no texto de resultado.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero em mediaResposta quando não há chamados respondidos",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função divide a soma dos tempos pela quantidade de chamados respondidos ($soma / $qtd). Caso a base esteja vazia ou nenhum chamado possua minutos_resposta preenchido, $qtd é 0, lançando a exceção fatal DivisionByZeroError no PHP 8+.",
+      "impacto": "Erro fatal e indisponibilidade completa da página principal do painel (HTTP 500) em bases recém-criadas ou sem chamados respondidos.",
+      "correcao": "Tratamento de contagem nula retornando 0.0 de forma segura e uso de agregação AVG no banco de dados.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Condição de corrida e falha de exportação de CSV via arquivo fixo em disco",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 151,
+      "categoria": "arquitetura",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv tenta abrir e gravar um arquivo estático no caminho /var/www/painel/tmp/chamados.csv. Como o diretório não existe por padrão, o fopen falha e a função aborta sem emitir saída. Além disso, requisições simultâneas colidem no mesmo arquivo estático.",
+      "impacto": "Falha total no download de CSV em ambientes sem o diretório temporário específico e corrupção/vazamento de dados entre downloads concorrentes.",
+      "correcao": "Envio dos cabeçalhos HTTP apropriados e streaming direto dos dados para o fluxo de saída php://output, dispensando escrita intermediária em disco.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Armazenamento e autenticação de senhas utilizando hash MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 16,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A rotina de autenticação compara o hash MD5 da senha com a coluna senha da tabela usuarios. MD5 é criptograficamente vulnerável a colisões e quebra rápida por força bruta ou rainbow tables.",
+      "impacto": "Exposição e fácil recuperação de credenciais de usuários em caso de comprometimento da base de dados.",
+      "correcao": "Recomenda-se migração para password_hash (bcrypt/Argon2) e expansão da coluna no banco; mantido intocado no código para não quebrar a suíte de testes do seed.sql e a limitação CHAR(32) da coluna de banco.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Consultas N+1 na recuperação do nome do técnico em listarChamados e exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 64,
+      "linha_fim": 72,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Para cada chamado retornado na listagem e na exportação CSV, o código invoca tecnicoNome, executando uma nova query individual SELECT nome FROM usuarios WHERE id = ... para cada linha.",
+      "impacto": "Degradação substancial do tempo de resposta e consumo excessivo de conexões e recursos do banco de dados (N consultas adicionais a cada requisição).",
+      "correcao": "Utilização de LEFT JOIN usuarios na consulta SQL principal de chamados para carregar o nome do técnico em uma única consulta.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Fixação de sessão (Session Fixation) por ausência de regeneração de ID após o login",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Ao efetuar o login bem-sucedido de um usuário, a aplicação define as variáveis de sessão mas não regenera o identificador da sessão ativa (session_regenerate_id).",
+      "impacto": "Um invasor que consiga fixar previamente o identificador da sessão no navegador da vítima pode assumir o controle da conta após o login da vítima (CWE-384).",
+      "correcao": "Invocação de session_regenerate_id(true) imediatamente após a validação correta das credenciais.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Ineficiência de memória e tráfego de rede no cálculo manual de média em PHP",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 115,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função mediaResposta traz todos os registros com minutos_resposta do banco para a memória do PHP em um loop while para somar e contar manualmente, em vez de utilizar agregação nativa do banco.",
+      "impacto": "Alocação excessiva de memória e tráfego de rede inútil conforme a tabela de chamados cresce em produção.",
+      "correcao": "Utilização da função de agregação nativa SELECT AVG(minutos_resposta) executada diretamente pelo motor do banco de dados em O(1) de memória.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Segredos sensíveis e chaves de API transacional embutidos no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 18,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O arquivo config.php continha a chave de API do serviço de SMTP e senha de banco de produção hardcoded, sem permitir parametrização da chave SMTP por variáveis de ambiente.",
+      "impacto": "Exposição de credenciais caso o repositório ou arquivo venha a ser acessado indevidamente.",
+      "correcao": "Implementação de leitura por variável de ambiente getenv('SMTP_API_KEY') e getenv('EXPORT_DIR') com fallbacks compatíveis.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Concatenação direta de inteiros em queries SQL sem prepared statements",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 100,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "Em verChamado e tecnicoNome, os IDs são interpolados diretamente na string da query SQL em vez de parametrizados via prepared statements.",
+      "impacto": "Má prática de desenvolvimento e fragilidade no tratamento de consultas contra injeção SQL caso tipos venham a ser alterados.",
+      "correcao": "Uso consistente de prepared statements parametrizados com bind_param('i', ...) nas consultas por chave primária.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Complexidade cognitiva excessiva e aninhamento profundo em rotuloPrioridade",
+      "arquivo": "code/lib.php",
+      "linha": 40,
+      "linha_fim": 59,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "A função continha até 5 níveis de comandos if/else aninhados (anti-padrão seta), dificultando a leitura, manutenção e evolução de regras de SLA.",
+      "impacto": "Aumento do débito técnico e maior propensão a introduzir erros em manutenções das regras de prioridade e SLA.",
+      "correcao": "Refatoração utilizando cláusulas de guarda e retornos antecipados (early return), reduzindo a profundidade e mantendo os resultados idênticos.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "Ausência de tratamento de exceções na conexão com o banco de dados",
+      "arquivo": "code/index.php",
+      "linha": 9,
+      "linha_fim": 13,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "No PHP 8.1+, falhas no construtor de mysqli disparam mysqli_sql_exception por padrão. O código apenas testava $db->connect_errno, permitindo que exceções não tratadas pudessem vazar parâmetros de conexão e stack trace.",
+      "impacto": "Vazamento potencial de detalhes internos de infraestrutura em telas de erro do servidor web.",
+      "correcao": "Encapsulamento da instanciação do mysqli em bloco try...catch (mysqli_sql_exception), exibindo mensagem genérica amigável em caso de falha.",
+      "corrigido": true
+    },
+    {
+      "id": "F14",
+      "titulo": "Ausência de rota para encerramento de sessão de usuário (logout)",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 36,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "A aplicação não fornece mecanismo para destruição de sessão ativa via interface ou rota web.",
+      "impacto": "Sessões permanecem válidas até expiração no servidor, dificultando a desconexão voluntária de usuários em dispositivos compartilhados.",
+      "correcao": "Disponibilizar rota e link para session_destroy; não implementado para manter compatibilidade estrita com a lista fechada de rotas do manifest.md.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migração do algoritmo de hash de senhas de MD5 para bcrypt/Argon2",
+      "porque": "A coluna senha da tabela usuarios foi modelada como CHAR(32), incapaz de comportar hashes modernos (60+ caracteres) sem alteração de schema DDL. Ademais, o seed.sql da avaliação injeta hashes MD5 fixos para as credenciais canônicas dos testes (ana, bruno, carla, diego). Mudar o algoritmo impediria a autenticação dos usuários de teste do avaliador."
+    },
+    {
+      "o_que": "Criação de nova rota de logout em index.php",
+      "porque": "O manifest.md estabelece um contrato restrito e explícito de rotas públicas (index.php, ?busca=, ?ver= e ?export=). Adicionar novas rotas fora da especificação poderia violar testes de compatibilidade (COMP-*) do benchmark."
+    },
+    {
+      "o_que": "Alteração estrutural nos arquivos schema.sql e seed.sql",
+      "porque": "Os scripts DDL e DML representam o estado inicial de infraestrutura do sistema fornecido e são utilizados pelo harness de avaliação para caracterização do ambiente. Modificá-los geraria divergências com a infraestrutura esperada pela suíte de testes."
+    },
+    {
+      "o_que": "Remoção dos fallbacks de credenciais locais em config.php",
+      "porque": "A rotina de execução em ambientes de teste automatizados frequentemente executa sem todas as variáveis de ambiente explicitamente injetadas. A remoção dos fallbacks quebraria a inicialização em ambientes legados que contam com os valores predefinidos."
+    }
+  ]
+}
