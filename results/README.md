@@ -30,23 +30,23 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md) · max (ultracode) | **774** | Gold | 250 | 0 | 129 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.008 | 1/3 |
 | 4 | [Claude Fable 5.1](2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md) · xhigh | **764** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 42 | 0 | 87.5 | 0.021 | 2/3 (781 · 764) |
 | 5 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-xhigh/run-2/scorecard.md) · xhigh | **717** | Silver | 233 | 50 | 139 | 150 | 0 | 100 | 45 | 0 | 87.5 | 0.024 | 3/3 (711 · 717 · 805) |
-| 6 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-1/scorecard.md) † · high | **687** | Silver | 181 | 0 | 129 | 150 | 100 | 100 | 27 | 0 | 62.5 | 0.003 | 1/3 |
-| 7 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
-| 8 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-2/scorecard.md) · xhigh | **653** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 41 | 0 | 87.5 | 0.001 | 2/3 (666 · 653) |
-| 9 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
-| 10 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-1/scorecard.md) † · high | **635** | Silver | 228 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 70.8 | 0.107 | 1/3 |
-| 11 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 1/3 |
-| 12 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |
-| 13 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 3/3 (625 · 611 · 645) |
-| 14 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
-| 15 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 2/3 (629 · 621) |
-| 16 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
-| 17 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md) † · high | **612** | Silver | 224 | 0 | 139 | 150 | 0 | 70 | 29 | 0 | 70.8 | 0.006 | 1/3 |
-| 18 | [DeepSeek V4.1 Flash](2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md) † · high | **612** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 30 | 0 | 58.3 | 0.013 | 3/3 (625 · 612 · 597) |
-| 19 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
-| 20 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
-| 21 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md) · ultra | **597** | Bronze | 207 | 0 | 129 | 150 | 0 | 70 | 41 | 0 | 70.8 | 0.001 | 1/3 |
-| 22 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
+| 6 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
+| 7 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-2/scorecard.md) · xhigh | **653** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 41 | 0 | 87.5 | 0.001 | 2/3 (666 · 653) |
+| 8 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
+| 9 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-1/scorecard.md) † · high | **635** | Silver | 228 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 70.8 | 0.107 | 1/3 |
+| 10 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 1/3 |
+| 11 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |
+| 12 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 3/3 (625 · 611 · 645) |
+| 13 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
+| 14 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 2/3 (629 · 621) |
+| 15 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 1/3 |
+| 16 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md) † · high | **612** | Silver | 224 | 0 | 139 | 150 | 0 | 70 | 29 | 0 | 70.8 | 0.006 | 1/3 |
+| 17 | [DeepSeek V4.1 Flash](2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md) † · high | **612** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 30 | 0 | 58.3 | 0.013 | 3/3 (625 · 612 · 597) |
+| 18 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |
+| 19 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 1/3 |
+| 20 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md) · ultra | **597** | Bronze | 207 | 0 | 129 | 150 | 0 | 70 | 41 | 0 | 70.8 | 0.001 | 1/3 |
+| 21 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
+| 22 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 2/3 (687 · 588) |
 | 23 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
 | 24 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
 | 25 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) † · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
@@ -64,4 +64,4 @@ A score with fewer than 3 runs is **not official**.
 
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
-† Cutoff after the key went public, or not published: Gemini 3.8 Flash (not published), GPT-6.1-sol pro (not published), GLM-5.3 Prime (not published), Grok 4.6 (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Kimi K3 (not published), Qwen3 Coder Next (not published), DeepSeek V4 Pro (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).
+† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), GLM-5.3 Prime (not published), Grok 4.6 (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.8 Flash (not published), Kimi K3 (not published), Qwen3 Coder Next (not published), DeepSeek V4 Pro (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).

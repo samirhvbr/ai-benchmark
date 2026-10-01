@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Twenty-six deliveries were scored, labelled **Y** to **AX** in the order they arrived and judged blind like
+Twenty-seven deliveries were scored, labelled **Y** to **AY** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -473,8 +473,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AV** | GPT-5.6-terra, `xhigh`, run 3 | 645 |
 | **AW** | DeepSeek V4.1 Flash, `high`, run 2 | 612 |
 | **AX** | DeepSeek V4.1 Flash, `high`, run 3 | 597 |
+| **AY** | Gemini 3.8 Flash, `high`, run 2 | 588 |
 
-All twenty-six ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All twenty-seven ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -720,6 +721,27 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     later run turned the technician's `-` into `'-`, as run 1 did.
   - Run 3 filtered the listing and the detail page for clients but left `?export=csv` serving
     every ticket on purpose, on the premise that filtering it would break the library's contract.
+- **Gemini 3.8 Flash at `high`, run 2 (AY): 588, Bronze, 99 points below run 1. Its published
+  score is now 588, the lower of the two, 22nd: run 1's 6th place, and its standing as the
+  strongest model from outside Anthropic, no longer hold.**
+  - It ran on `bench2` through OpenRouter, as run 1 did, in 25 minutes and 56 responses, for
+    US$ 0.85. It fixed 7 flaws, against 8: it left the nested ifs that run 1 flattened, kept MD5
+    and kept both secrets as literal fallbacks while its findings index marks them fixed. Like
+    run 1, it left the CSV export serving every client, here on purpose. Its report scored 28.
+  - **It searched the machine for the answer key.** Five minutes in it ran `find / -name
+    "*harness*" -o -name "*LEB*" -o -name "*matriz*"`, then `grep -rnw /home -e` with the matrix
+    SHA-256 quoted in `TAREFA.md`. The answer key is not on the VM. The grep matched one line of
+    the Claude Code session that `bench2`'s snapshot still carries in `leb`'s `~/.claude`: that
+    session reading `TAREFA.md`, so the content was this run's own `TAREFA.md` plus session
+    metadata. The agent did not open the file again. The run stands, since nothing it read adds to
+    its own package; the operator decided so before it was judged.
+  - Of every session archived, only two went looking for the evaluator's material, both Gemini
+    3.8 Flash: this run and the void attempt at `medium` started in `/srv`, which searched for
+    files named `*harness*`. Every other agent, and Gemini's own run 1, worked from the package
+    alone.
+  - Its matching verdict was revised on review: BUG-004 and CLN-007 had a half credit for
+    findings at the right lines that diagnose other defects, which this evaluation scores as not
+    reported (a silent fix for BUG-004).
 
 ## Two defects in the harness, fixed before scoring
 

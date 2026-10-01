@@ -1,0 +1,163 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL via parâmetro de busca em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A função concatena diretamente a variável $busca recebida por GET na string da consulta SQL sem sanitização ou uso de prepared statements ($sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\"\"), permitindo injeção direta de comandos SQL arbitrários.",
+      "impacto": "Qualquer usuário ou adversário autenticado pode extrair dados sigilosos de qualquer tabela do banco, burlar restrições e corromper registros.",
+      "correcao": "Implementação de prepared statement ($db->prepare) parametrizado com bind_param('s', $param) garantindo que o valor seja tratado exclusivamente como literal.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra de controle de acesso (IDOR) e violação da regra de negócio de visibilidade de chamados",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O manifesto exige que um cliente veja apenas os chamados que ele mesmo abriu. No entanto, o código de index.php listava todos os chamados indiscriminadamente para clientes e na rota 'ver' carregava qualquer id sem validar se usuario_id correspondia ao usuário logado.",
+      "impacto": "Clientes conseguem visualizar chamados e detalhes técnicos confidenciais de outros clientes do provedor, tanto na listagem quanto via navegação direta por ID.",
+      "correcao": "Na listagem de index.php, filtrar chamados para clientes mantendo apenas os abertos pelo uid da sessão; na tela de detalhe, validar a propriedade do chamado e responder 'Chamado nao encontrado.' caso pertença a outro usuário.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Cross-Site Scripting refletido (XSS) via parâmetro de busca na interface web",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro GET busca é interpolado diretamente no HTML sem sanitização nem escape tanto no atributo value do campo input quanto no corpo da tag p que exibe os resultados da busca.",
+      "impacto": "Possibilita a injeção e execução de scripts maliciosos no navegador dos operadores e clientes, permitindo captura de cookies, manipulação da interface e ações em nome da vítima.",
+      "correcao": "Aplicação de htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') em todos os pontos de saída do parâmetro na montagem do HTML.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero em mediaResposta quando não há chamados respondidos",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função mediaResposta() efetua a divisão $soma / $qtd. Se a tabela não contiver chamados com minutos_resposta preenchido (instalação nova ou chamados pendentes), $qtd permanece 0, lançando DivisionByZeroError não capturada no PHP 8 e derrubando a página com HTTP 500.",
+      "impacto": "Indisponibilidade da página principal para todos os usuários caso inexista histórico de chamados com tempo de resposta registrado.",
+      "correcao": "Checagem explícita de $qtd com retorno de 0.0 caso seja zero, e agregação eficiente da soma e contagem diretamente no banco de dados.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Falha de exportação de CSV e risco de concorrência por escrita em arquivo estático em disco",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv tentava criar um arquivo fixo em EXPORT_DIR . '/chamados.csv'. Se o diretório não existir ou não possuir permissão de escrita (como /var/www/painel/tmp padrão), fopen falha e a função aborta sem gerar conteúdo. Além disso, requisições concorrentes causam condições de corrida e corrupção no mesmo arquivo.",
+      "impacto": "Falha silenciosa na exportação de relatórios para os consumidores e risco de corrupção ou vazamento de dados em ambiente multiusuário.",
+      "correcao": "Transmissão do CSV diretamente pelo stream php://output após envio dos cabeçalhos HTTP necessários, tornando a operação sem estado e sem dependência do sistema de arquivos.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Problema de desempenho N+1 consultas ao listar chamados e exportar CSV",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 91,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Tanto listarChamados quanto exportarCsv executavam um SELECT individual em usuarios para cada registro retornado da tabela chamados através da chamada auxiliar a tecnicoNome().",
+      "impacto": "Degradação linear de performance e saturação de conexões com o banco de dados conforme o número de chamados aumenta.",
+      "correcao": "Utilização de LEFT JOIN com a tabela usuarios na consulta SQL principal, trazendo o nome do técnico em uma única viagem de rede ao banco.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Fixação de sessão e falta de atributos de segurança em cookies",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 29,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O sistema não executava session_regenerate_id() após autenticar com sucesso as credenciais do usuário e iniciava sessões sem especificar flags seguras para cookies (HttpOnly e SameSite).",
+      "impacto": "Permite ataques de fixação de sessão onde um adversário pré-determina o ID de sessão e sequestra a conta após a autenticação legítima da vítima.",
+      "correcao": "Invocação de session_regenerate_id(true) no login e configuração de cookie_httponly e cookie_samesite no session_start().",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Credenciais e chaves de API sensíveis hardcoded no arquivo de configuração",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O arquivo config.php continha senhas padrão de produção para banco de dados e chave privada de API SMTP grafadas diretamente no código-fonte.",
+      "impacto": "Vazamento de credenciais críticas de infraestrutura em caso de acesso ao repositório ou inspeção de código.",
+      "correcao": "Adequação para priorizar variáveis de ambiente getenv() e fallback seguro para diretórios temporários padrão do sistema.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Armazenamento de senhas com algoritmo de hash fraco e obsoleto (MD5 sem salt)",
+      "arquivo": "code/schema.sql",
+      "linha": 7,
+      "linha_fim": 7,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O esquema armazena senhas em coluna CHAR(32) geradas por hash MD5 sem sal, algoritmo criptograficamente vulnerável a colisões, rainbow tables e força bruta distribuída.",
+      "impacto": "Em caso de extração do banco, todas as senhas dos operadores e clientes podem ser recuperadas quase que instantaneamente.",
+      "correcao": "Migração para password_hash() (Bcrypt/Argon2id) exigindo aumento do tamanho da coluna no banco de dados para VARCHAR(255).",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Rotulação assimétrica e inconsistente de chamados críticos em rotuloPrioridade",
+      "arquivo": "code/lib.php",
+      "linha": 43,
+      "linha_fim": 55,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "Para chamados com prioridade 4 e minutos de resposta <= 30, a função rotuloPrioridade devolve 'Alto - dentro do SLA', omitindo a criticidade máxima do chamado, em contraste com chamados atrasados que recebem 'CRITICO - SLA estourado'.",
+      "impacto": "Classificação imprecisa na interface e em relatórios para chamados críticos atendidos dentro do tempo estipulado.",
+      "correcao": "Tratamento condicional específico para retornar rótulo dedicado a chamado crítico dentro do SLA.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Substituição do algoritmo de hash MD5 por bcrypt/Argon2id em schema.sql e lib.php",
+      "porque": "A alteração imediata invalidaria as credenciais da base existente e dos dados de seed (seed.sql), além de a coluna senha em schema.sql possuir tamanho fixo CHAR(32), insuficiente para hashes seguros modernos (60+ caracteres). Essa alteração exige uma migração planejada de esquema de banco de dados e rehashing gradual em produção."
+    },
+    {
+      "o_que": "Alteração do texto retornado por rotuloPrioridade para prioridade 4 com minutos <= 30 ('Alto - dentro do SLA')",
+      "porque": "Conforme o contrato estabelecido no manifest.md, integrações externas (relatório gerencial e scripts noturnos do ISP) consom essa biblioteca. Modificar as strings literais históricas de retorno representaria risco de quebra de compatibilidade retroativa (COMP-*)."
+    },
+    {
+      "o_que": "Restrição de acesso à rota index.php?export=csv para clientes",
+      "porque": "O manifesto define expressamente o formato do CSV em index.php?export=csv com 'uma linha por chamado, ordenadas por id crescente' e cabeçalho exato para uso por rotinas de exportação e integrações do ISP. Filtrar ou bloquear essa rota pública violaria o contrato funcional documentado."
+    }
+  ]
+}

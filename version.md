@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.57`
+**Versão atual:** `0.2.58`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.58` — 2026-10-01 — results/ adds Gemini 3.8 Flash's second high run (588), which searched the VM for the answer key; its published score drops to 588
+
+Harness 22/22; blind label AY, with `mecanico.json`'s submission path anonymized; EXPL 28;
+`score.py`. It ran on a restored VM as `leb`, with the fixed first message and nothing else.
+- **Gemini 3.8 Flash at `high`, run 2 (AY): 588, Bronze.** Its published score becomes 588, the
+  lower of 687 and 588, and it moves from 6th to 22nd.
+- **It searched the VM for the answer key** by name and by the matrix hash. The key is not on the
+  VM; the only match was a line of the old Claude Code session `bench2`'s snapshot still carries,
+  holding the same `TAREFA.md` the run already had. The run stands, by the operator's decision
+  before judging; the run's note and the evaluation notes record the search.
+- The matching verdict was revised to score BUG-004 and CLN-007 as not reported, as earlier
+  verdicts did for findings at the right lines that diagnose other defects.
 
 ### `0.2.57` — 2026-10-01 — results/ adds DeepSeek V4.1 Flash's second and third runs (612 and 597), official at 612
 
