@@ -26,8 +26,8 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | # | Model | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Pen. | Discovery | Brier | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
 | 1 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-2/scorecard.md) · xhigh | **809** | Gold | 250 | 25 | 139 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.033 | 3/3 (825 · 809 · 724) |
-| 2 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max/run-1/scorecard.md) · max | **807** | Gold | 250 | 12 | 150 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.035 | 1/3 |
-| 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md) · max (ultracode) | **774** | Gold | 250 | 0 | 129 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.008 | 1/3 |
+| 2 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md) · max (ultracode) | **774** | Gold | 250 | 0 | 129 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.008 | 1/3 |
+| 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max/run-2/scorecard.md) · max | **773** | Gold | 228 | 0 | 150 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.027 | 2/3 (807 · 773) |
 | 4 | [Claude Fable 5.1](2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md) · xhigh | **764** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 42 | 0 | 87.5 | 0.021 | 2/3 (781 · 764) |
 | 5 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-xhigh/run-2/scorecard.md) · xhigh | **717** | Silver | 233 | 50 | 139 | 150 | 0 | 100 | 45 | 0 | 87.5 | 0.024 | 3/3 (711 · 717 · 805) |
 | 6 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |

@@ -1,0 +1,58 @@
+{
+  "agent": "claude-sonnet-5.5-max",
+  "model": {
+    "name": "Claude Sonnet 5.5",
+    "id": "claude-sonnet-5-5",
+    "provider": "Anthropic",
+    "reasoning_effort": "max",
+    "exact_version": null,
+    "training_cutoff": "2026-06",
+    "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  "run": 2,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T17:21:08-03:00",
+    "ended": "2026-10-01T17:50:29-03:00",
+    "log": "archived off the VM (~/.claude/projects/-srv-run/a63ee6e1-9858-43b0-858c-84bff90ed85d.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench1 (100.64.100.113) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Claude Code 2.1.285 session log (a63ee6e1), usage per model response; the client's own cost record is written when the session is closed",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 58,
+      "output": 228929,
+      "cache": 6001452,
+      "total": 6230439
+    },
+    "usd_estimate": null,
+    "note": "cost pending: the operator had not yet closed the session"
+  },
+  "logs": "archived off the VM (~/.claude/projects/-srv-run/a63ee6e1-9858-43b0-858c-84bff90ed85d.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. The model, the effort (max) and the permission mode were set before the first message. Claude Code's multi-agent mode (ultracode) was off: the session has no subagent and all 94 responses came from Claude Sonnet 5.5. leb's Claude Code also loaded an MCP server for PDF files (@modelcontextprotocol/server-pdf), synced from the account; the agent did not call it. The VM's /srv also held the operator's prompt.md with the first message; the agent worked in /srv/run. Claude Code here is a single-agent client (PROTOCOL §3)."
+}

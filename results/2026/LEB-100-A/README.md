@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Twenty-seven deliveries were scored, labelled **Y** to **AY** in the order they arrived and judged blind like
+Twenty-eight deliveries were scored, labelled **Y** to **AZ** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -474,8 +474,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AW** | DeepSeek V4.1 Flash, `high`, run 2 | 612 |
 | **AX** | DeepSeek V4.1 Flash, `high`, run 3 | 597 |
 | **AY** | Gemini 3.8 Flash, `high`, run 2 | 588 |
+| **AZ** | Claude Sonnet 5.5, `max`, run 2 | 773 |
 
-All twenty-seven ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All twenty-eight ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -742,6 +743,17 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   - Its matching verdict was revised on review: BUG-004 and CLN-007 had a half credit for
     findings at the right lines that diagnose other defects, which this evaluation scores as not
     reported (a silent fix for BUG-004).
+- **Claude Sonnet 5.5 at `max`, single agent, run 2 (AZ): 773, Gold, 34 points below run 1. Its
+  published score is now 773, the lower of the two, 3rd, one point below the same model at the
+  same effort in multi-agent mode (774).**
+  - It ran on `bench1`, after the VMs were cleaned and their snapshots retaken, in 29 minutes and
+    94 responses, all from Sonnet 5.5, with the effort and permission mode set before the first
+    message.
+  - It fixed 10 of the 13 planted flaws, the same as run 1 except MD5, which it left in place with
+    a migration plan; it reproduced the export race on 20,000 tickets before fixing it. Its report
+    scored 45 of 50 again. Unlike run 1 it did not name the dispatcher, so architecture is 0.
+  - `leb`'s Claude Code loaded an MCP server for PDF files synced from the account; the agent did
+    not call it.
 
 ## Two defects in the harness, fixed before scoring
 

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.58`
+**Versão atual:** `0.2.59`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.59` — 2026-10-01 — results/ adds Claude Sonnet 5.5's second single-agent max run (773); its published score drops to 773, 3rd
+
+Harness 22/22; blind label AZ, with `mecanico.json`'s submission path anonymized; EXPL 45;
+`score.py`. It ran on a VM restored from the snapshots retaken after the clean-up, as `leb`, with
+the fixed first message and nothing else.
+- **Claude Sonnet 5.5 at `max`, run 2 (AZ): 773, Gold.** Its published score becomes 773, the lower
+  of 807 and 773, and it moves from 2nd to 3rd, one point below the same model in multi-agent mode.
+  It left MD5 in place, which run 1 had migrated, and did not name the dispatcher.
+- The run's cost is pending: the client's own cost record is written when the session is closed,
+  and the operator had not closed it yet. The tokens come from the session log.
 
 ### `0.2.58` — 2026-10-01 — results/ adds Gemini 3.8 Flash's second high run (588), which searched the VM for the answer key; its published score drops to 588
 

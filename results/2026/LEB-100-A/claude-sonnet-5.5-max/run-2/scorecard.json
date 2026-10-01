@@ -1,0 +1,349 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Claude Sonnet 5.5",
+    "version": "not recorded",
+    "provider": "Anthropic"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-01",
+    "runs": [
+      773
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 6,
+      "confidence": 60,
+      "reported": true
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 3,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 6,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 1,
+        "R3": 4,
+        "R4": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 65,
+      "reported": true
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 53,
+      "raw_possible": 58,
+      "score": 228,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 14,
+      "raw_possible": 14,
+      "score": 150,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 100,
+      "max": 100
+    },
+    "COMP": {
+      "score": 100,
+      "max": 100,
+      "violations": []
+    },
+    "EXPL": {
+      "score": 45,
+      "max": 50,
+      "rubric": {
+        "clareza": 9,
+        "precisao": 10,
+        "causa_raiz": 9,
+        "priorizacao": 8,
+        "trade_offs": 9
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "SEC (visibility) — listing and search show every client's tickets to any client (index.php:72-73); fixed with listarChamadosVisiveis (F3)",
+    "SEC (visibility) — CSV export returns every ticket to any logged-in user (index.php:44-47); fixed by scoping via exportarCsvVisiveis while exportarCsv still returns all (F4)",
+    "BUG — fixed-name shared export file EXPORT_DIR/chamados.csv truncated by concurrent exports (lib.php:125-126, 150) (F9)",
+    "SEC — exported CSV left on disk at a predictable path, never removed (lib.php:125-126) (F10)",
+    "SEC — no login rate limiting (index.php:21-29), not changed (F15)",
+    "CLN — fputcsv without explicit $escape emits a PHP 8.4 deprecation into the CSV body (lib.php:130, 138) (F16)",
+    "BUG — array inputs login[]/senha[]/busca[] cause an unhandled TypeError (index.php:22, 72-73) (F17)",
+    "BUG — connection die() unreachable on PHP >= 8.1, uncaught mysqli_sql_exception leaks details (index.php:9-13) (F18)",
+    "PERF — mediaResposta fetches one row per answered ticket to sum in PHP (lib.php:109-115) (F19)",
+    "PERF-002 — no pagination and SELECT * including TEXT descricao in lib.php:80 (F20)",
+    "CLN — SQL built by interpolation in verChamado/tecnicoNome, stated as not exploitable today (int-typed) (lib.php:69, 100) (F22, hardening)"
+  ],
+  "total": 773,
+  "grade": "Gold",
+  "calibration": {
+    "reported_count": 11,
+    "brier": 0.027,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 9,
+        "mean_confidence": 96.7,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 1,
+        "mean_confidence": 65.0,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "41-60",
+        "count": 1,
+        "mean_confidence": 60.0,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 4,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 5,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 87.5
+  }
+}
