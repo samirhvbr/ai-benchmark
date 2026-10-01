@@ -6,12 +6,13 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Twenty-five agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twenty-six agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
 GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
 their first (see *Runs of 2026-09-30* below). On 2026-10-01 GPT-6.1-sol at effort `ultra`, GPT-6.1-sol
-pro and GPT-5.3-Codex got theirs (see *Runs of 2026-10-01*).
+pro, GPT-5.3-Codex and GLM-5.3 Prime got theirs, and Claude Sonnet 5.5 at `xhigh` its second
+(see *Runs of 2026-10-01*).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -25,7 +26,7 @@ Effort is not equal:
   mode on;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
-- the four GLM models, the two Grok models and the two DeepSeek models ran at `high`, the level chosen in their client;
+- the five GLM models, the two Grok models and the two DeepSeek models ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded;
 - Kimi K2.7 Code has no effort setting in its client and ran at the model's default;
 - Qwen3 Coder Next is a non-thinking model with no effort setting in its client, and ran at the
@@ -60,6 +61,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `gpt-6.1-sol-ultra` | GPT-6.1-sol (OpenAI), in Codex CLI 0.159.3 | ultra |
 | `gpt-6.1-sol-pro-xhigh` | GPT-6.1-sol pro (OpenAI, served by OpenRouter), in opencode 1.18.33 | xhigh |
 | `gpt-5.3-codex-xhigh` | GPT-5.3-Codex (OpenAI, served by the Kilo Code gateway), in opencode 1.18.33 | xhigh |
+| `glm-5.3-prime-high` | GLM-5.3 Prime (Z.AI, served by the Kilo Code gateway), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -436,16 +438,18 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Three deliveries, one per VM, labelled **Y** to **AA** in the order they arrived and judged blind
-like the others:
+Five deliveries, labelled **Y** to **AC** in the order they arrived and judged blind like the others.
+The first three came one per VM; after a restore, `bench1` and `bench2` ran the last two:
 
 | Label | Run | Outcome |
 | --- | --- | --- |
 | **Y** | GPT-6.1-sol pro, `xhigh`, run 1 | 654 |
 | **Z** | GPT-5.3-Codex, `xhigh`, run 1 | 403 |
 | **AA** | GPT-6.1-sol, `ultra`, run 1 | 597 |
+| **AB** | Claude Sonnet 5.5, `xhigh`, run 2 | 809 |
+| **AC** | GLM-5.3 Prime, `high`, run 1 | 635 |
 
-All three ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All five ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -465,6 +469,29 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   and on the dispatcher, which it did not name. It is the second run on LEB-100-A where more
   effort scored less than the same model's single pass, after Claude Sonnet 5.5's multi-agent
   run (X).
+- **Claude Sonnet 5.5 at `xhigh`, run 2 (AB): 809, 16 points below its run 1 (825). The published
+  score is now the lower of the two, 809, still first.**
+  - It ran in Claude Code 2.1.285 on `bench1` in 23 minutes, for US$ 2.96. Run 1 had been made on
+    the first VM at 4 vCPUs, as its administrator with earlier runs' leftovers present. This one
+    ran at 20 vCPUs as `leb` on a clean machine. A single-agent client spends most of a run waiting
+    on the API, so the run is filed as the same agent's run 2, and its note records the change
+    (`PROTOCOL §3`, 0.2.38).
+  - It found 12 of the 13 planted flaws, against 11 in run 1, and fixed the same 11, with security
+    again at 250 of 250. The 16 points are architecture, where it named the dispatcher only in its
+    list of non-changes (25, against 50), a better bug score (139, against 129) and one point less of
+    explanation (45, against 46).
+  - This is the second agent with two runs, after Opus 5.5 (711 and 717). The two runs differ by
+    16 points, a measure of single-run noise on this instance.
+- **GLM-5.3 Prime (AC): 635, Silver, 9th, the strongest GLM model so far.**
+  - It ran in opencode through the Kilo Code gateway, at effort `high`, on `bench2`, in 15 minutes,
+    for US$ 1.69. Z.AI publishes no page or cutoff for a Prime variant, so it carries the dagger.
+  - It fixed all four probe-covered flaws, the CSV injection among them, and nine planted flaws in
+    all, against eight for GLM-5.3 (629). It kept the contract whole and kept MD5 on purpose.
+  - Its report is weak (EXPL 28). It filed a false positive, reproduced, it says, at confidence
+    100: a login POST without its `login` field cannot reach `autenticar()`, because
+    `index.php:21` checks `isset($_POST['login'])` first. The step-4 judge had filed it as an extra
+    finding, and the consistency review moved it to the false positives. That changes only
+    calibration, not the total.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -488,8 +515,9 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5.** An official score is the median of three runs (`PROTOCOL §4`).
-  Opus 5.5's second run moved its total by six points (711 → 717). GPT-6.1-sol
+- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`.** An official score is the median of three
+  runs (`PROTOCOL §4`). Opus 5.5's second run moved its total by six points (711 → 717), Sonnet 5.5's
+  by sixteen (825 → 809). GPT-6.1-sol
   and GPT-6-astra (666 and 661) are five points apart; places 6 to 9 (625, 612, 601 and 599) sit
   within 26 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.

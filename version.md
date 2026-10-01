@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.38`
+**Versão atual:** `0.2.39`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.39` — 2026-10-01 — results/ adds Claude Sonnet 5.5's second xhigh run (809) and GLM-5.3 Prime on LEB-100-A, ninth at 635
+
+Harness 22/22 for both, with all four probes fixed; blind labels AB and AC; EXPL 45 and 28;
+`score.py`. Both ran on a restored clean VM as `leb`, with the fixed first message and nothing
+else.
+- **Claude Sonnet 5.5 at `xhigh`, run 2 (AB): 809**, 16 points below its run 1. It ran on
+  `bench1` in 23 minutes, for US$ 2.96. It found 12 planted flaws and fixed the same 11, and
+  scored less in architecture and more in bugs. Its published score becomes the lower median,
+  809, still first. Its note records the machine change allowed by 0.2.38.
+- **GLM-5.3 Prime, `high` (AC): 635, Silver, 9th.** It ran in opencode through Kilo on `bench2`,
+  for US$ 1.69. It fixed 9 planted flaws, the CSV injection among them, and carries the dagger
+  (no published cutoff). In consistency review its F12, a TypeError that the `isset` guard at
+  `index.php:21` makes impossible, moved from extra findings to false positives; the total does
+  not change.
 
 ### `0.2.38` — 2026-10-01 — PROTOCOL keeps the machine size fixed across an agent's runs only for multi-agent clients
 

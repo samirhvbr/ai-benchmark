@@ -1,0 +1,58 @@
+{
+  "agent": "claude-sonnet-5.5-xhigh",
+  "model": {
+    "name": "Claude Sonnet 5.5",
+    "id": "claude-sonnet-5-5",
+    "provider": "Anthropic",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": "2026-06",
+    "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  "run": 2,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T10:00:56-03:00",
+    "ended": "2026-10-01T10:23:36-03:00",
+    "log": "archived off the VM (~/.claude/projects/-srv-run/a6dd49d3-4548-48e0-ba50-e2378e7ab4e6.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench1 (100.64.100.113) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (a6dd49d3), which is this run",
+    "elapsed_seconds": 987.645,
+    "tokens": {
+      "input": 1092,
+      "output": 131538,
+      "cache": 4673192,
+      "total": 4805822
+    },
+    "usd_estimate": 2.96,
+    "note": "includes a 938-token Claude Haiku 4.5 call the client makes for the session title"
+  },
+  "logs": "archived off the VM (~/.claude/projects/-srv-run/a6dd49d3-4548-48e0-ba50-e2378e7ab4e6.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. A Claude Code session opened in /srv a minute earlier received no message. This run's machine differs from run 1's: run 1 was made on 2026-09-29 on the first VM at 4 vCPUs and 3.8 GiB, as its administrator with earlier runs' leftovers present, and this one on bench1 at 20 vCPUs, as the unprivileged user leb on a clean machine. Claude Code here is a single-agent client, which spends most of a run waiting on the API, so the run is filed as the same agent's run 2 (PROTOCOL §3)."
+}

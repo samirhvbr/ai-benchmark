@@ -1,0 +1,60 @@
+{
+  "agent": "glm-5.3-prime-high",
+  "model": {
+    "name": "GLM-5.3 Prime",
+    "id": "z-ai/glm-5.3-prime",
+    "provider": "Z.AI",
+    "served_by": "Kilo Code gateway (opencode provider kilo, model z-ai/glm-5.3-prime)",
+    "reasoning_effort": "high",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://docs.z.ai/guides/llm/glm-5.3",
+    "training_cutoff_note": "Z.AI publishes no training or knowledge cutoff for GLM-5.3, and no model page for a Prime variant (checked on 2026-10-01); third-party figures are not used"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T10:04:52-03:00",
+    "ended": "2026-10-01T10:19:24-03:00",
+    "log": "archived off the VM (opencode.db, session ses_f086ea749ffeZUzuIPb8bvqmxN), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 66011,
+      "output": 21625,
+      "cache": 2077696,
+      "total": 2182652
+    },
+    "usd_estimate": 1.69,
+    "note": "the total includes 17,320 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 1.6911"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_f086ea749ffeZUzuIPb8bvqmxN), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run."
+}
