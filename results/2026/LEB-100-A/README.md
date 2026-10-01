@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Nineteen deliveries were scored, labelled **Y** to **AQ** in the order they arrived and judged blind like
+Twenty-one deliveries were scored, labelled **Y** to **AS** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -466,8 +466,10 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AO** | DeepSeek V4 Pro, `high`, run 2 | 496 |
 | **AP** | DeepSeek V4 Pro, `high`, run 3 | 432 |
 | **AQ** | Gemini 3.8 Flash, `high`, run 1 | 687 |
+| **AR** | Grok 4.7, `high`, run 2 | 663 |
+| **AS** | Grok 4.7, `high`, run 3 | 607 |
 
-All nineteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All twenty-one ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -658,6 +660,18 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   - A second attempt, started four minutes later on `bench2`, stopped after two minutes on an
     OpenRouter timeout (HTTP 504) before writing anything. It is void, kept in
     `gemini-3.8-flash-high/void-1/` with a `VOID.md`, like GPT-5.6-sol pro's credit failure.
+- **Grok 4.7 at `high`, runs 2 (AR) and 3 (AS): 663 and 607. With three runs its score is
+  official: 638, the median of 638, 663 and 607, 9th; the published run is still run 1.**
+  - Both ran in opencode on xAI's own API at the same time, run 2 on `bench1` in 24 minutes
+    (US$ 2.88) and run 3 on `bench2` in 26 (US$ 2.57); run 2's first message went out 8 seconds
+    earlier. Neither used a web tool, which run 1 had done once.
+  - Run 2 fixed the same 8 flaws as run 1, the CSV formula injection among them, and named the
+    mixed PHP and HTML of `index.php` among its deliberate non-changes (ARCH-002 identified, as
+    for Fable 5.1, Sonnet 5.5 and GPT-6.1-sol). Its report scored 42 of 50.
+  - Run 3 left the CSV injection in place and removed both secrets instead, and lost 30 points for
+    labelling unknown statuses "Desconhecido" where the contract returns "Resolvido" (COMP-003).
+  - Run 3 listed its home folder once (`ls -la ~`), which shows the name of the `~/.claude` folder
+    `bench2`'s snapshot still carries; it never read into it.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -681,9 +695,10 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra and DeepSeek V4 Pro.** An official score is
-  the median of three runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra and DeepSeek V4 Pro have
-  three (711, 717, 805; 825, 809, 724; 661, 596, 628; 604, 496, 432), so their 717, 809, 628 and 496 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
+- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra, DeepSeek V4 Pro and Grok 4.7.** An official
+  score is the median of three runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra, DeepSeek V4 Pro
+  and Grok 4.7 have three (711, 717, 805; 825, 809, 724; 661, 596, 628; 604, 496, 432; 638, 663, 607), so their 717,
+  809, 628, 496 and 638 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
   third did, and GPT-6-astra's first run sat 33 points above its median. Places 7 to 11 (654, 653,
   638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.

@@ -33,7 +33,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 6 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-1/scorecard.md) † · high | **687** | Silver | 181 | 0 | 129 | 150 | 100 | 100 | 27 | 0 | 62.5 | 0.003 | 1/3 |
 | 7 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
 | 8 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-2/scorecard.md) · xhigh | **653** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 41 | 0 | 87.5 | 0.001 | 2/3 (666 · 653) |
-| 9 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 1/3 |
+| 9 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
 | 10 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-1/scorecard.md) † · high | **635** | Silver | 228 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 70.8 | 0.107 | 1/3 |
 | 11 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 1/3 |
 | 12 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |

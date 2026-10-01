@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.52`
+**Versão atual:** `0.2.53`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.53` — 2026-10-01 — results/ adds Grok 4.7's second and third runs (663 and 607), official at 638
+
+Harness 22/22 for both; blind labels AR and AS, with `mecanico.json`'s submission path anonymized;
+EXPL 42 and 41; `score.py`. Both ran in opencode on xAI's API, at the same time, on restored clean
+VMs as `leb`, with the fixed first message and nothing else.
+- **Grok 4.7 at `high`: 663 (run 2) and 607 (run 3).** With three runs its score is official: 638,
+  the median, unchanged and 9th. Run 3 lost 30 points for relabelling unknown statuses
+  "Desconhecido" (COMP-003) and left the CSV injection in place; run 2 fixed the same 8 flaws as
+  run 1.
 
 ### `0.2.52` — 2026-10-01 — results/ adds Gemini 3.8 Flash (687, 6th), the first Google model, and records its second attempt as void
 

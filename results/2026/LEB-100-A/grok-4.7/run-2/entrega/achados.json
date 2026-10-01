@@ -1,0 +1,212 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection na busca por título em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "listarChamados concatena $_GET['busca'] dentro das aspas de LIKE e executa com mysqli::query. Um cliente autenticado quebra a string com aspas e injeta UNION; filtrar usuario_id só depois, no PHP, não impede a união de repetir o id do atacante e devolver senha MD5 e descrição na listagem.",
+      "impacto": "Qualquer conta de cliente lê chamados alheios e hashes de senha via ?busca=.",
+      "correcao": "Busca passou a prepared statement com LIKE ?. verChamado e tecnicoNome também foram parametrizados, embora o int já impedisse injeção nesses dois.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Cliente autenticado vê e exporta chamado de outro cliente",
+      "arquivo": "code/index.php",
+      "linha": 38,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "$uid e $papel são gravados na sessão e nunca consultados. listarChamados, verChamado e exportarCsv não recebem o dono: a listagem é SELECT sem usuario_id, o detalhe filtra só por id e o CSV emite todos os chamados. ana abre ?ver=104 e lê a fatura do bruno; ?export=csv devolve a base inteira. O GET de export não variava cache.",
+      "impacto": "Quebra da regra de visibilidade: cliente lê descrição e CSV de chamados que não abriu.",
+      "correcao": "Na borda web, papel diferente de tecnico só recebe linhas com usuario_id igual ao uid, na listagem, no detalhe e no CSV da rota. Técnico e as funções públicas sem sessão de cliente continuam vendo tudo. Detalhe alheio usa o mesmo texto de não encontrado. Resposta autenticada e CSV saem com Cache-Control: private, no-store.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no termo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 96,
+      "mecanismo": "$busca entra cru em value=\"...\" e em Resultados para:, enquanto titulo e descricao passam por htmlspecialchars. Um \" fecha o atributo e injeta script. O cookie de sessão não é HttpOnly neste PHP, então o script lê PHPSESSID.",
+      "impacto": "Roubo de sessão de quem abre um link ?busca= malicioso, inclusive sessão de técnico.",
+      "correcao": "htmlspecialchars com ENT_QUOTES e UTF-8 nos dois pontos de eco da busca. O parâmetro continua se chamando busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "CSV em arquivo fixo sob /var/www, com falha silenciosa e corrida",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 92,
+      "mecanismo": "exportarCsv abre /var/www/painel/tmp/chamados.csv. O código não cria o diretório: fopen falha, a função retorna sem header e sem corpo, e index.php dá exit — ?export=csv responde vazio. Se o diretório existe sob o docroot, o CSV de todos os chamados fica em URL estática previsível, e dois downloads compartilham o mesmo path (readfile no meio do fwrite). O return da query falha não fecha o handle.",
+      "impacto": "Exportação contratada fora do ar sem o diretório; com o diretório, PII acessível sem login e arquivo rasgado entre sessões.",
+      "correcao": "CSV gerado em consulta e escrito em php://output só depois da query ter sucesso. exportarCsv continua emitindo todos os chamados na saída. O arquivo compartilhado deixou de ser gravado.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Divisão por zero em mediaResposta derruba a listagem",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 97,
+      "mecanismo": "mediaResposta soma minutos_resposta não nulos e retorna $soma/$qtd com $qtd iniciado em 0, sem guarda. No PHP 8 isso lança DivisionByZeroError. index.php chama a função em toda listagem. Com o seed (12, 40, 25) a página abre; sem nenhuma primeira resposta, o painel cai antes do HTML.",
+      "impacto": "Listagem indisponível quando não há minutos_resposta, que é o estado inicial da operação.",
+      "correcao": "SUM/COUNT numa query. qtd 0 retorna 0.0. Com o seed o float continua 77/3. Falha de query também não fatala.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Senha do MySQL e chave SMTP embutidas no fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "DB_PASS cai no literal N3tX@2013!prod quando getenv('DB_PASS') é falso. SMTP_API_KEY é o literal netx-smtp-9f83e2c1a7b64d05, sem ambiente. Os dois viajam em todo backup do código. A chave SMTP não é lida por index.php, mas a constante é o contrato dos scripts que incluem config.php.",
+      "impacto": "Quem lê o repositório obtém a senha do banco de produção e a credencial de e-mail.",
+      "correcao": "Não alterei. Remover o fallback derruba o painel onde DB_PASS não está no ambiente, e apagar SMTP_API_KEY quebra o consumidor da constante. Rotação exige deploy coordenado, que esta stack não tem.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Senha armazenada como MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "autenticar faz md5($senha) e compara com usuarios.senha CHAR(32), sem sal e sem custo. O seed grava MD5('senha123') e MD5('tecmaster'). Não há limite de tentativas; um dump da tabela cai em rainbow table.",
+      "impacto": "Conta comprometida a partir do banco ou por chute online rápido.",
+      "correcao": "Não troquei o algoritmo. bcrypt não cabe em CHAR(32) e invalidaria o login de todo usuário já gravado, inclusive os do seed. Só evitei fatal se prepare falhar.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "Sessão fixável e cookie sem HttpOnly",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 92,
+      "mecanismo": "session_start usa o default deste PHP: use_strict_mode=0, cookie_httponly vazio, secure=0, SameSite vazio. O login grava uid e papel no id que o cliente já trouxe, sem session_regenerate_id. O atacante fixa PHPSESSID, a vítima entra, e o id continua válido. Com o XSS da busca, o script ainda lê o cookie.",
+      "impacto": "Sequestro de sessão de cliente ou técnico.",
+      "correcao": "strict_mode, cookie HttpOnly e SameSite=Lax, Secure só em HTTPS, e session_regenerate_id(true) antes de gravar uid/papel.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "N+1 queries para resolver o nome do técnico",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 96,
+      "mecanismo": "O loop de listarChamados e o de exportarCsv chamam tecnicoNome por linha, e tecnicoNome executa um SELECT nome FROM usuarios WHERE id = ... cada vez. N chamados geram N+1 idas ao banco.",
+      "impacto": "Listagem e CSV degradam linearmente com o volume de chamados.",
+      "correcao": "LEFT JOIN usuarios na listagem e no CSV. tecnico_nome ausente continua '-'. tecnicoNome permanece, parametrizada, para scripts externos.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Cabeçalho do CSV não é o texto exato do contrato",
+      "arquivo": "code/lib.php",
+      "linha": 130,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 86,
+      "mecanismo": "O cabeçalho sai por fputcsv. No PHP 8.4, campo com espaço é citado e a primeira linha vira ID,Titulo,Status,Tecnico,\"Aberto em\", não o texto exato ID,Titulo,Status,Tecnico,Aberto em exigido pelo manifesto. fgetcsv leria a mesma coluna; a comparação byte a byte da integração de faturamento não.",
+      "impacto": "Consumidor que casa a primeira linha rejeita o arquivo exportado.",
+      "correcao": "Primeira linha escrita com fwrite no texto exato e \\n. Linhas de dados seguem em fputcsv para não deslocar título com vírgula.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Injeção de fórmula nos campos do CSV",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 70,
+      "mecanismo": "fputcsv grava titulo e nome do técnico como vieram do banco. Este painel não cria chamado, mas outros sistemas gravam titulo. Valor que começa com =, +, -, @, tab ou CR vira fórmula no Excel. O placeholder de técnico ausente é exatamente '-', então prefixar todo campo que começa com - mudaria o chamado 104.",
+      "impacto": "Fórmula executada na máquina de quem abre o CSV, se um título malicioso entrar por outro sistema do ISP.",
+      "correcao": "celulaCsv prefixa aspas simples só nesses prefixos e preserva o '-' exato e os títulos do seed.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Parâmetro array provoca TypeError e abre chamado 1",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 72,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "autenticar e listarChamados exigem string. No PHP 8, POST login[]=x ou GET busca[]=x lança TypeError antes do HTML. (int) de ver[] vale 1, então a URL abria o chamado 1.",
+      "impacto": "Queda da tela de login e da listagem com um request forjado; detalhe no id errado.",
+      "correcao": "login, senha e busca só seguem se forem string; ver que não é string vira id 0. ver=101 continua (int), como antes.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo MD5 e a coluna usuarios.senha CHAR(32)",
+      "porque": "bcrypt não cabe em 32 caracteres e trocar o hash faz autenticar devolver null para todos os usuários já gravados, inclusive o seed do manifesto."
+    },
+    {
+      "o_que": "Literais DB_PASS e SMTP_API_KEY em config.php",
+      "porque": "O fallback é a senha com que o legado sobe quando DB_PASS não está no ambiente. Apagar a constante SMTP_API_KEY quebra scripts que incluem config.php. Rotação precisa de deploy coordenado."
+    },
+    {
+      "o_que": "Filtro de visibilidade dentro de listarChamados, verChamado e exportarCsv",
+      "porque": "Relatório gerencial e rotina noturna chamam essas funções e precisam da base inteira. A regra cliente/técnico foi aplicada em index.php e no CSV da rota web, sem esconder chamado de técnico nem o próprio chamado do cliente."
+    },
+    {
+      "o_que": "Assinaturas públicas, rótulos de formatarStatus e textos de rotuloPrioridade",
+      "porque": "São contrato. O else de formatarStatus é o que devolve Resolvido para o status 3; um rótulo novo para código inesperado mudaria o relatório gerencial. rotuloPrioridade não recebe criado_em, então não dá para recalcular espera sem mudar a assinatura."
+    },
+    {
+      "o_que": "mediaResposta global também para cliente, e listagem sem paginação",
+      "porque": "A função é o indicador do sistema, não por usuário. LIMIT esconderia chamado de quem espera a lista completa."
+    },
+    {
+      "o_que": "Curingas % e _ no LIKE da busca",
+      "porque": "O comportamento legado de busca por título com curinga foi preservado. A injeção de SQL não dependia disso."
+    },
+    {
+      "o_que": "CSRF no login, rate limit, logout, BOM do CSV, strict_types e separação MVC",
+      "porque": "Não há ação de escrita além do login, então CSRF e logout não estão no contrato e um token quebraria POST login/senha. sleep de rate limit vira DoS de workers. BOM estragaria o cabeçalho exato. strict_types quebraria chamador que passa id numérico em string. MVC seria reescrita."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR",
+      "porque": "Outro script pode usar a constante. O painel deixou de gravar o CSV nesse path, mas o define permanece."
+    },
+    {
+      "o_que": "schema.sql e seed.sql",
+      "porque": "Estrutura e usuários de teste (ana/bruno/carla/diego) são o contrato operacional. Alargar senha ou trocar o MD5 do seed quebraria o login."
+    }
+  ]
+}

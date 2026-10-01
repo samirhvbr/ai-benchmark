@@ -1,0 +1,58 @@
+{
+  "agent": "grok-4.7",
+  "model": {
+    "name": "Grok 4.7",
+    "id": "grok-4.7",
+    "provider": "xAI",
+    "reasoning_effort": "high",
+    "exact_version": null,
+    "training_cutoff": "2026-05",
+    "training_cutoff_source": "https://docs.x.ai/docs/models"
+  },
+  "run": 3,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T14:35:25-03:00",
+    "ended": "2026-10-01T15:01:13-03:00",
+    "log": "archived off the VM (opencode.db, session ses_f0776f658ffeOaDjDxUK0hTEQ6), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 388897,
+      "output": 16860,
+      "cache": 2347904,
+      "total": 2839851
+    },
+    "usd_estimate": 2.57,
+    "note": "the total includes 86,190 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 2.5700"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_f0776f658ffeOaDjDxUK0hTEQ6), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. The first message was the fixed text followed by a trailing space. 38 model responses in 26 minutes, all from grok-4.7 at high on xAI's own API, as in run 1; no web tool was used this time. Run 1 was made on the first VM at 4 vCPUs as its administrator; this one at 20 vCPUs as leb. Runs 2 and 3 ran at the same time on bench1 and bench2; run 2's first message was sent 8 seconds earlier. bench2's snapshot still held the first seconds of a Claude Opus 5.5 session in leb's ~/.claude; the agent listed its home folder once (ls -la), which shows that folder's name, and never read into it. This is the agent's third run, the last an official score needs."
+}
