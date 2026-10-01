@@ -5790,11 +5790,12 @@
             "training_cutoff": "2025-07",
             "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
           },
-          "runs_count": 1,
+          "runs_count": 2,
           "official": false,
           "score": 317,
           "totals": [
-            317
+            317,
+            369
           ],
           "representative_run": 1,
           "key_exposure": "before",
@@ -5970,6 +5971,170 @@
                 "note": "every answer came from Claude Haiku 4.5"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md"
+            },
+            {
+              "run": 2,
+              "total": 369,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 164,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 86,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 19,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 6,
+                "precisao": 3,
+                "causa_raiz": 3,
+                "priorizacao": 4,
+                "trade_offs": 3
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 1,
+              "brier": 0.215,
+              "discovery_index": 37.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (7aa5fff8), which is this run",
+                "elapsed_seconds": 198.769,
+                "tokens": {
+                  "input": 1198,
+                  "output": 20213,
+                  "cache": 2111822,
+                  "total": 2133233
+                },
+                "usd_estimate": 0.4,
+                "note": "every answer came from Claude Haiku 4.5"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-2/scorecard.md"
             }
           ],
           "rank": 27

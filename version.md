@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.43`
+**Versão atual:** `0.2.44`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.44` — 2026-10-01 — results/ adds Claude Haiku 4.5's second run (369); its published score stays 317
+
+Harness 22/22 with SEC-001 and BUG-001 fixed; blind label AG; EXPL 19; `score.py`. Claude Haiku
+4.5 ran on `bench2` as `leb`, in 7 minutes for US$ 0.40, with auto-accept set before the first
+message and every answer from Haiku 4.5. It scored 369, against 317 for run 1, so its published
+score stays the lower, 317, 27th. This time it moved both secrets out of the code and kept
+compatibility. It again reported the two impossible SQL injections, and its report (19 of 50)
+misstates PHP 8's division by zero. The run's note records that `bench2`'s snapshot still held the
+first seconds of Opus 5.5's third run, unread.
 
 ### `0.2.43` — 2026-10-01 — results/ adds Claude Haiku 4.5 on LEB-100-A, last at 317, and files it at the model's default effort
 

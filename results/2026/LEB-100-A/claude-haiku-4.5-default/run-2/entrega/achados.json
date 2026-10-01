@@ -1,0 +1,193 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection em tecnicoNome via concatenação direta",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 72,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "Função concatena $tecnicoId diretamente em query SQL sem prepared statement. Concatenação: 'SELECT...WHERE id = ' . $tecnicoId sem validação de tipo.",
+      "impacto": "Permite SQL injection se $tecnicoId for manipulado. Acesso não autorizado a dados do banco, modificação ou deleção de registros.",
+      "correcao": "Substituído por prepared statement com bind_param('i', $tecnicoId)",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL injection em listarChamados via LIKE concatenado",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Função concatena $busca diretamente em cláusula LIKE: WHERE titulo LIKE '%' . $busca . '%'. $busca vem de $_GET sem sanitização.",
+      "impacto": "SQL injection completa. Atacante extrai dados de qualquer tabela, modifica registros, ou escala privilégios via UNION-based ou time-based attacks.",
+      "correcao": "Refatorado para prepared statement. $busca agora é bind parameter com bind_param('s', $termo).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL injection em verChamado via concatenação de ID",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 101,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 90,
+      "mecanismo": "Query concatena $id diretamente em WHERE clause. Concatenação direta sem prepared statement. Embora seja int no index.php, sem garantia de tipo.",
+      "impacto": "SQL injection possibilitando acesso a dados confidenciais de chamados.",
+      "correcao": "Convertido para prepared statement com bind_param('i', $id)",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Falta de controle de acesso em listarChamados - cliente vê todos os chamados",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "arquitetura",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Função retorna todos os chamados sem validar papel ou propriedade do usuário. Não filtra por usuario_id para clientes.",
+      "impacto": "Violação direta da regra de negócio (manifest §6): cliente só deve ver seus próprios chamados. Expõe dados confidenciais de outros clientes.",
+      "correcao": "Adicionados parâmetros opcionais $filtrarPorUsuario e $papel. Se papel='cliente', adiciona AND usuario_id=? na query.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Falta de controle de acesso em verChamado - cliente acessa chamados de outros",
+      "arquivo": "code/lib.php",
+      "linha": 98,
+      "linha_fim": 102,
+      "categoria": "arquitetura",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Função não valida propriedade. Um cliente logado consegue chamar index.php?ver=<id_de_outro_cliente> e ver o chamado alheio.",
+      "impacto": "Acesso não autorizado a detalhes de chamados de outros clientes. Quebra isolamento de dados.",
+      "correcao": "Adicionados parâmetros $filtrarPorUsuario e $papel. Se cliente, AND usuario_id=? na cláusula WHERE.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisão por zero em mediaResposta quando sem dados",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Se nenhum chamado tem minutos_resposta definido, $qtd=0. Expressão $soma/$qtd causa divisão por zero.",
+      "impacto": "PHP warning/error. Página pode falhar ou exibir INF/NaN no indicador de tempo médio.",
+      "correcao": "Alterado retorno para: return $qtd > 0 ? $soma / $qtd : 0.0;",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Hashing de senha com MD5 (quebrado criptograficamente)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Função usa MD5($senha) para hash. MD5 possui colisões conhecidas e pode ser invertido via rainbow tables.",
+      "impacto": "Se banco vazar, senhas são recuperáveis via força bruta ou tabelas pré-computadas. Comprometimento de contas de usuário.",
+      "correcao": "Não alterado (requer migração incremental como dual-hash). Recomenda-se usar password_hash(PASSWORD_ARGON2ID) em produção nova.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "Credencial de banco de dados hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Fallback define('DB_PASS', ... ?: 'N3tX@2013!prod'). Senha em texto limpo no código-fonte.",
+      "impacto": "Vazamento de código-fonte expõe credencial de produção. Acesso não autorizado ao banco de dados.",
+      "correcao": "Removido fallback hardcoded. Agora exige getenv('DB_PASS') obrigatória, com erro se não configurada.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Chave de API SMTP hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "define('SMTP_API_KEY', 'netx-smtp-9f83e2c1a7b64d05'). Chave em texto limpo no código.",
+      "impacto": "Atacante com acesso ao código pode usar chave para enviar e-mails fraudulentos ou esgotar quota.",
+      "correcao": "Convertido para variável de ambiente obrigatória com getenv('SMTP_API_KEY').",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Cross-Site Scripting (XSS) em exibição de termo de busca",
+      "arquivo": "code/index.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Echo reflete $busca sem escaping em tag P. Entrada vem de $_GET['busca'].",
+      "impacto": "XSS refletido permite injeção de JavaScript. Roubo de sessão, redirecionamento, phishing.",
+      "correcao": "Adicionado htmlspecialchars($busca) em ambos os locais (exibição e atributo value do input).",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Cross-Site Scripting (XSS) em atributo value do input de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 79,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Input value não escapado no atributo HTML. Se $busca contém aspas, quebra atributo e injeta HTML/JS.",
+      "impacto": "XSS via atributo HTML. Execução de JavaScript malicioso no navegador.",
+      "correcao": "Adicionado htmlspecialchars($busca) no atributo value.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo MD5 para hash de senhas (F7)",
+      "porque": "Migração de hash é operação crítica em produção. Requer estratégia de dual-hashing ou rehash on login. Fora do escopo de evolução simples. Recomenda-se usar password_hash(PASSWORD_ARGON2ID) e migrar incrementalmente."
+    },
+    {
+      "o_que": "Stack (MySQLi continua MySQLi, não migrar para PDO ou ORM)",
+      "porque": "Manifest.md proíbe troca de camada de acesso a dados. Altera assinaturas públicas que outros scripts dependem. MySQLi funciona corretamente com prepared statements."
+    },
+    {
+      "o_que": "Schema do banco de dados (schema.sql e seed.sql)",
+      "porque": "Outras rotinas internas dependem da estrutura atual. Qualquer mudança quebraria integração."
+    },
+    {
+      "o_que": "Refatoração HTML/CSS",
+      "porque": "Não era solicitado. Foco em correção de falhas funcionais críticas. HTML estrutural mantido conforme manifest (id='tabela-chamados', ordem de colunas)."
+    },
+    {
+      "o_que": "Implementação de auditoria/logs de acesso",
+      "porque": "Seria projeto separado. Recomenda-se adicionar logging de: acesso a chamados, tentativas não autorizadas, operações de modificação."
+    },
+    {
+      "o_que": "Configuração HTTPS/TLS",
+      "porque": "Fora do escopo do código PHP. Deve ser configurado no servidor web (nginx/Apache)."
+    },
+    {
+      "o_que": "Rate limiting contra ataques de força bruta",
+      "porque": "Deveria ser implementado no nível de servidor/WAF, não em PHP. Alternativa: adicionar contador de tentativas falhas na sessão."
+    }
+  ]
+}
