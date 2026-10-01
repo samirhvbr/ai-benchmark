@@ -1,0 +1,164 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes autenticados acessavam chamados e exportações de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "As rotas de exportação, detalhe e listagem usavam apenas o fato de existir uma sessão; não verificavam papel nem comparavam usuario_id do chamado com uid.",
+      "impacto": "Um cliente podia enumerar detalhes de chamados alheios, vê-los na listagem e baixar a exportação completa.",
+      "correcao": "A rota mantém acesso integral para tecnico e usa consultas filtradas por usuario_id para os demais papéis; detalhe alheio retorna 403 sem campos.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca concatenava entrada do usuário em SQL",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "O valor busca era concatenado entre aspas na expressão titulo LIKE, tornando aspas e operadores SQL parte da consulta.",
+      "impacto": "Um termo de busca podia alterar o predicado SQL e contornar o filtro pretendido.",
+      "correcao": "A consulta usa prepared statement e bind_param, com os curingas LIKE adicionados ao valor ligado.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Busca era refletida em HTML sem escape",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 97,
+      "mecanismo": "O parâmetro busca era inserido diretamente em um atributo value e em texto HTML, permitindo fechar o contexto e introduzir marcação executável.",
+      "impacto": "Uma URL maliciosa podia executar JavaScript no navegador de usuário autenticado que a abrisse.",
+      "correcao": "A entrada é normalizada para string e codificada com htmlspecialchars e flags ENT_QUOTES, ENT_SUBSTITUTE e UTF-8.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senha de banco e chave SMTP estavam embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Valores literais de credencial eram usados como fallback de banco e chave de API SMTP no arquivo versionado.",
+      "impacto": "A leitura do repositório ou de um backup expunha credenciais que poderiam ser usadas fora da infraestrutura autorizada.",
+      "correcao": "Os dois valores são obtidos apenas por variáveis de ambiente; a credencial exposta deve ser rotacionada na infraestrutura.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Autenticação dependia de hashes MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "A função calculava md5 da senha e o comparava com uma coluna CHAR(32), formato rápido e determinístico para credenciais.",
+      "impacto": "Um vazamento da tabela de usuários permite ataque offline eficiente e revela igualdade de senhas.",
+      "correcao": "password_verify valida hashes modernos e um login MD5 válido atualiza a linha para password_hash; schema e migração ampliam a coluna para VARCHAR(255).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Login não renovava o identificador da sessão",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 88,
+      "mecanismo": "Após autenticar, uid e papel eram escritos no mesmo ID de sessão que existia antes da autenticação.",
+      "impacto": "Um atacante que conseguisse fixar um ID de sessão antes do login poderia tentar reutilizá-lo autenticado.",
+      "correcao": "session_regenerate_id(true) é chamado antes de gravar a identidade autenticada.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "CSV permitia fórmulas provenientes de dados de chamado",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 143,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Titulo e técnico eram passados diretamente a fputcsv, sem neutralizar prefixos que planilhas tratam como fórmulas.",
+      "impacto": "Ao abrir o arquivo, uma planilha poderia avaliar fórmula ou link controlado por conteúdo do chamado.",
+      "correcao": "Texto iniciado por =, +, -, @, tabulação ou retorno de carro recebe apóstrofo antes de ser emitido.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Exportações concorrentes compartilhavam o mesmo arquivo temporário",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 93,
+      "mecanismo": "Todas as requisições gravavam e liam EXPORT_DIR/chamados.csv, sem nome exclusivo nem bloqueio.",
+      "impacto": "Requisições simultâneas podiam receber CSV misturado ou de outra requisição, e o arquivo persistia no diretório temporário.",
+      "correcao": "A resposta CSV é gerada diretamente em php://output, removendo arquivo temporário compartilhado.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Média de resposta quebrava quando não havia respostas",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "O laço podia terminar com qtd igual a zero e a função calculava soma dividido por qtd.",
+      "impacto": "A listagem falhava com DivisionByZeroError em uma base sem minutos_resposta preenchido.",
+      "correcao": "A consulta calcula COALESCE(AVG(minutos_resposta), 0) e a função retorna 0.0 para conjunto vazio.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Listagem fazia uma consulta adicional por chamado para o técnico",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 98,
+      "mecanismo": "Após buscar chamados, o laço chamava tecnicoNome e executava SELECT separado para cada registro retornado.",
+      "impacto": "A tela executava N+1 consultas e sua latência e carga no banco cresciam linearmente com a quantidade de chamados.",
+      "correcao": "Listagem e CSV usam LEFT JOIN usuarios para trazer tecnico_nome em uma única consulta.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas e escopo completo das funções públicas listarChamados e exportarCsv",
+      "porque": "Rotinas internas declaradas no manifesto dependem delas; a restrição por cliente fica na rota web por meio de auxiliares internos."
+    },
+    {
+      "o_que": "Rótulos de formatarStatus, tabela HTML e ordenação do CSV",
+      "porque": "São partes explícitas do contrato público e continuam com os valores e a estrutura exigidos."
+    },
+    {
+      "o_que": "Paginação e índice novo para a busca por substring",
+      "porque": "Paginação muda a listagem entregue e um índice B-tree comum não otimiza LIKE com curinga inicial; a otimização N+1 cobre o custo evitável sem ampliar o escopo."
+    },
+    {
+      "o_que": "DDL automático durante o login",
+      "porque": "A ampliação de senha deve ocorrer de forma controlada via migrate_password_hashes.sql, sem conceder ALTER TABLE à conta da aplicação."
+    }
+  ]
+}

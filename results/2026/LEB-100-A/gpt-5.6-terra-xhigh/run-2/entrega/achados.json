@@ -1,0 +1,167 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Credenciais de produção embutidas no repositório",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "DB_PASS e SMTP_API_KEY continham valores literais no arquivo distribuído; a leitura do código ou de seu histórico entregava uma senha de banco e uma chave de serviço utilizáveis.",
+      "impacto": "Quem obtivesse o pacote poderia conectar-se como o usuário de banco configurado e usar o serviço de notificações.",
+      "correcao": "Os valores literais foram removidos e as constantes preservadas passam a ler DB_PASS e SMTP_API_KEY do ambiente; os segredos expostos devem ser rotacionados.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Clientes conseguiam acessar chamados e métricas de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 45,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "As rotas de CSV, detalhe e listagem executavam consultas globais após o login sem comparar usuario_id com a sessão do cliente; a média também era global.",
+      "impacto": "Um cliente autenticado podia enumerar detalhes de outros clientes, exportar todos os chamados e observar métrica agregada da operação.",
+      "correcao": "A rota web limita listagem, detalhe, CSV e média ao dono quando o papel é cliente; técnicos mantêm acesso a todos os chamados.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL no termo de busca",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados concatenava busca na string titulo LIKE '%...%', permitindo que aspas e comentários do parâmetro GET alterassem o predicado SQL.",
+      "impacto": "Um usuário autenticado podia mudar a condição executada pelo banco e obter linhas fora da busca pretendida.",
+      "correcao": "A consulta passou a usar mysqli::prepare e bind_param, mantendo o padrão LIKE como dado ligado ao placeholder.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas eram verificadas somente com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação comparava md5($senha) com uma coluna CHAR(32), produzindo hashes rápidos e sem salt que podem ser atacados offline após vazamento do banco.",
+      "impacto": "Credenciais de clientes e técnicos ficam vulneráveis a cracking em massa e reutilização para acesso ao painel.",
+      "correcao": "A autenticação aceita MD5 só na transição, grava password_hash após o primeiro login válido e verifica hashes modernos com password_verify; a coluna foi ampliada para VARCHAR(255).",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido na busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "busca era inserida diretamente no atributo value e no HTML de resultados, permitindo fechar o atributo e injetar marcação com um parâmetro GET.",
+      "impacto": "Um link preparado podia executar JavaScript no navegador de um usuário autenticado que o abrisse.",
+      "correcao": "O parâmetro é normalizado para string e escapado com htmlspecialchars usando ENT_QUOTES, ENT_SUBSTITUTE e UTF-8 em todos os contextos HTML.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "CSV era produzido em arquivo compartilhado no diretório web",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Toda exportação escrevia EXPORT_DIR/chamados.csv antes de lê-lo; requisições concorrentes compartilhavam o mesmo arquivo e podiam intercalar escrita e leitura.",
+      "impacto": "Uma resposta podia conter o CSV de outra requisição ou dados parciais, e o arquivo permanecia em um diretório da aplicação.",
+      "correcao": "O CSV é gerado diretamente para php://output, sem arquivo temporário compartilhado, mantendo cabeçalho, colunas e ordenação contratados.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Valores do CSV podiam executar fórmulas em planilhas",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 143,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Título e técnico eram enviados a fputcsv sem neutralizar células iniciadas por =, +, - ou @; programas de planilha interpretam esses valores como fórmulas ao abrir o arquivo.",
+      "impacto": "Dados inseridos por outra integração poderiam executar fórmulas no computador do operador que exporta o CSV.",
+      "correcao": "Campos textuais com prefixo de fórmula, tabulação ou retorno de carro recebem apóstrofo antes da serialização CSV.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "A sessão autenticada mantinha o identificador anterior ao login",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A sessão era iniciada antes da autenticação e uid/papel eram gravados no mesmo ID sem session_regenerate_id, permitindo fixação caso um ID pré-login conhecido fosse imposto à vítima.",
+      "impacto": "Um atacante que conheça o ID pré-login pode reutilizá-lo depois que a vítima se autenticar.",
+      "correcao": "O login válido regenera o ID antes de gravar a identidade e a aplicação configura HttpOnly, SameSite=Lax e Secure sob HTTPS.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "A média de resposta gerava divisão por zero",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando nenhum chamado possuía minutos_resposta, qtd ficava em zero e soma/qtd lançava DivisionByZeroError no PHP atual.",
+      "impacto": "A listagem principal falha em uma instalação nova ou período sem primeira resposta registrada.",
+      "correcao": "COALESCE(AVG(...), 0) retorna 0.0 para o conjunto vazio e mantém a média float para os demais casos.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Listagem e exportação sofriam consultas N+1 para técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Após a consulta de chamados, cada linha chamava tecnicoNome e executava outro SELECT, inclusive para técnicos repetidos.",
+      "impacto": "A listagem e a exportação fazem N+1 consultas e degradam com a quantidade de chamados.",
+      "correcao": "As consultas agora usam LEFT JOIN para trazer tecnico_nome na mesma operação, preservando a chave e o valor - sem técnico.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Fallback de formatarStatus para status fora de 1 a 3",
+      "porque": "O manifesto só define os três estados válidos e consumidores podem depender do fallback legado para dados históricos; não há regra para escolher novo rótulo."
+    },
+    {
+      "o_que": "Limitação de tentativas de login",
+      "porque": "A stack não oferece armazenamento nem política de expiração e recuperação; um contador local seria contornável ou bloquearia clientes legítimos."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR",
+      "porque": "A exportação não a utiliza mais, mas a constante foi mantida para compatibilidade com scripts internos que possam consultá-la."
+    },
+    {
+      "o_que": "Novas dependências e uma página de migração",
+      "porque": "A migração de coluna está no schema existente e a de hash ocorre no login, sem alterar a stack nem exigir dependências externas."
+    }
+  ]
+}

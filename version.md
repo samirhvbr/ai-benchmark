@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.55`
+**Versão atual:** `0.2.56`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.56` — 2026-10-01 — results/ adds GPT-5.6-terra's second and third runs in Codex (611 and 645), official at 625
+
+Harness 22/22 for both; blind labels AU and AV, with `mecanico.json`'s submission path anonymized;
+EXPL 31 and 31; `score.py`. Both ran in Codex CLI 0.159.3, at the same time, on restored clean VMs
+as `leb`, with the fixed first message and nothing else.
+- **GPT-5.6-terra at `xhigh`: 611 (run 2) and 645 (run 3).** With three runs its score is official:
+  625, the median, run 1's total, still 14th. Both fixed the CSV injection run 1 left alone and
+  both turned the technician column's `-` into `'-` (PEN-001); run 2 also scoped the SLA average
+  to each client (COMP-003).
 
 ### `0.2.55` — 2026-10-01 — results/ records two Gemini 3.8 Flash attempts cut off by OpenRouter's rate limit, and a GPT-5.6-terra run in another client, all unscored
 

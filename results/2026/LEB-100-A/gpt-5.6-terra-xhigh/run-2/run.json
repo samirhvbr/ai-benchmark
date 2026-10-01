@@ -1,0 +1,58 @@
+{
+  "agent": "gpt-5.6-terra-xhigh",
+  "model": {
+    "name": "GPT-5.6-terra",
+    "id": "gpt-5.6-terra",
+    "provider": "OpenAI",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": "2026-02-16",
+    "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.6-terra"
+  },
+  "run": 2,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Codex CLI",
+    "version": "0.159.3"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T15:58:03-03:00",
+    "ended": "2026-10-01T16:06:17-03:00",
+    "log": "archived off the VM (~/.codex/sessions/2026/10/01/rollout-2026-10-01T15-55-50-01a0f8d2-a8b6-7320-a2bf-11cb3a34f71a.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Codex CLI 0.159.3 session log, final token_count event",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 63042,
+      "output": 25647,
+      "cache": 822016,
+      "total": 910705
+    },
+    "usd_estimate": null,
+    "note": "output includes 11,623 reasoning tokens; the log keeps no cost and no model time"
+  },
+  "logs": "archived off the VM (~/.codex/sessions/2026/10/01/rollout-2026-10-01T15-55-50-01a0f8d2-a8b6-7320-a2bf-11cb3a34f71a.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. Run 1 was made on the first VM at 4 vCPUs as its administrator, in Codex CLI 0.159.2; this one at 20 vCPUs as leb, in Codex CLI 0.159.3. Codex here runs a single agent, so the run is filed as the same agent's run 2 (PROTOCOL §3). An earlier attempt in opencode through OpenRouter is kept unscored (void-1): a different client. Runs 2 and 3 ran at the same time on bench2 and bench1; this run's first message was sent 11 seconds earlier."
+}
