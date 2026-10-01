@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.31`
+**Versão atual:** `0.2.32`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.32` — 2026-09-30 — PROTOCOL voids a run when another model wrote any part of the delivery, and records a fallback confined to subagents
+
+Claude Fable 5.1's second run was voided because its client switched to another model, which wrote
+the report; until now that rule lived only in that run's `VOID.md`. `PROTOCOL §3` now states it for
+every run: a client that can switch models on its own runs with the switch off, and a run is void
+when any part of the delivery (code, report or findings index) was written by another model. A
+switch that stays inside auxiliary agents of a multi-agent client, with none of the delivery
+written by them, leaves the run standing, and its note records which agents switched, to which
+model, and their share of the run's output tokens and cost. The case that prompted it is Claude
+Sonnet 5.5's multi-agent run, published next.
 
 ### `0.2.31` — 2026-09-30 — results/ adds Qwen3 Coder Next on LEB-100-A, eighteenth at 507
 
