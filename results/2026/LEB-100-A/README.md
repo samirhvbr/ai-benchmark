@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fourteen deliveries were scored, labelled **Y** to **AL** in the order they arrived and judged blind like
+Sixteen deliveries were scored, labelled **Y** to **AN** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -461,8 +461,10 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AJ** | GLM-5.3, `high`, run 2 | 621 |
 | **AK** | GPT-6-astra, `xhigh`, run 2 | 596 |
 | **AL** | GPT-6-astra, `xhigh`, run 3 | 628 |
+| **AM** | Claude Sonnet 5.5, `max`, run 1 | 807 |
+| **AN** | DeepSeek V4 Pro, `high`, run 1 | 604 |
 
-All fourteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All sixteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -594,6 +596,25 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   - `bench2`'s snapshot still held the first seconds of a Claude Opus 5.5 session (the task prompt,
     no work) in `leb`'s `~/.claude`. Run 3 ran in Codex, which never read that folder; its log does
     not mention it.
+- **Claude Sonnet 5.5 at `max`, without the multi-agent mode (AM): 807, Gold, 2nd, two points
+  below the same model's official 809 at `xhigh` and 33 above it at `max` in ultracode (774).**
+  - It ran on `bench1` in 27 minutes, for US$ 3.86, as a single agent; the ultracode run of the
+    same model at the same effort took about 8 hours. The model, the effort and the permission
+    mode were set before the first message.
+  - It fixed 11 of the 13 planted flaws, missing only the two architecture ones, with security,
+    bugs, performance, clean code and compatibility all at the maximum and an explanation score
+    of 45 of 50. It is a new agent with one run, so its 807 is not official.
+  - `bench1`'s snapshot held an empty Claude Code session record (0 bytes) from before the
+    snapshot; it carries nothing.
+- **DeepSeek V4 Pro at `high` (AN): 604, Silver, 18th, below both DeepSeek Flash models (625
+  and 612).** It ran in opencode through OpenRouter in 8 minutes, for US$ 0.03.
+  - It fixed 8 flaws and kept compatibility at 100, but its report scored 21 of 50: it rates SQL
+    injection at confidence 100 in two functions whose parameter is typed `int` (two false
+    positives), and says the search is reachable before login, which it is not.
+  - Its JOIN for the N+1 query dropped the `-` the listing shows for a ticket with no technician:
+    the cell is now empty (PEN-001, −15).
+  - It left the CSV export showing every client's tickets on purpose, a decision its report
+    defends.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -624,8 +645,8 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
-  bias; it does not remove it, since a model can recognise its own style — or a sibling's: three of
-  the ten contestants are Claude models, and they hold the top three places. The two calls against delivery D (COMP-003 on
+  bias; it does not remove it, since a model can recognise its own style — or a sibling's: six of
+  the twenty-nine contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
   `formatarStatus`, R2 none on CLN-007) were kept as the judge made them. The four changes made in
   review are explained above: E, H and J move no place; F lifts GPT-5.6-terra from 9th to 6th. Every verdict carries a rationale per flaw so it can be audited.
 - **Not the same effort for everyone.** MiniMax-M3 ran at its model's default — it has no effort

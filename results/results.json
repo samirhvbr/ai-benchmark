@@ -663,6 +663,195 @@
           "rank": 1
         },
         {
+          "agent": "claude-sonnet-5.5-max",
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "max",
+            "exact_version": null,
+            "training_cutoff": "2026-06",
+            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 807,
+          "totals": [
+            807
+          ],
+          "representative_run": 1,
+          "key_exposure": "before",
+          "discovery_index": 91.7,
+          "brier": 0.035,
+          "runs": [
+            {
+              "run": 1,
+              "total": 807,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 250,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 12,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 150,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 45,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 10,
+                "causa_raiz": 10,
+                "priorizacao": 7,
+                "trade_offs": 9
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "SEC-008": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 55
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 88
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 75
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "ARCH-002": {
+                  "earned": 1,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 80
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 70
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 11,
+              "brier": 0.035,
+              "discovery_index": 91.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (e52c4049), which is this run",
+                "elapsed_seconds": 1532.73,
+                "tokens": {
+                  "input": 966,
+                  "output": 214201,
+                  "cache": 3527234,
+                  "total": 3742401
+                },
+                "usd_estimate": 3.86,
+                "note": "output includes 159,223 thinking tokens; includes a session-title call to Claude Haiku 4.5 (US$ 0.001)"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max/run-1/scorecard.md"
+            }
+          ],
+          "rank": 2
+        },
+        {
           "agent": "claude-sonnet-5.5-max-ultracode",
           "model": {
             "name": "Claude Sonnet 5.5",
@@ -851,7 +1040,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md"
             }
           ],
-          "rank": 2
+          "rank": 3
         },
         {
           "agent": "claude-fable-5.1-xhigh",
@@ -1205,7 +1394,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md"
             }
           ],
-          "rank": 3
+          "rank": 4
         },
         {
           "agent": "claude-opus-5.5-xhigh",
@@ -1730,7 +1919,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 4
+          "rank": 5
         },
         {
           "agent": "gpt-6.1-sol-pro-xhigh",
@@ -1927,7 +2116,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 5
+          "rank": 6
         },
         {
           "agent": "gpt-6.1-sol-xhigh",
@@ -2293,7 +2482,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-xhigh/run-2/scorecard.md"
             }
           ],
-          "rank": 6
+          "rank": 7
         },
         {
           "agent": "grok-4.7",
@@ -2482,7 +2671,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.7/run-1/scorecard.md"
             }
           ],
-          "rank": 7
+          "rank": 8
         },
         {
           "agent": "glm-5.3-prime-high",
@@ -2673,7 +2862,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-prime-high/run-1/scorecard.md"
             }
           ],
-          "rank": 8
+          "rank": 9
         },
         {
           "agent": "grok-4.6",
@@ -2863,7 +3052,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.6/run-1/scorecard.md"
             }
           ],
-          "rank": 9
+          "rank": 10
         },
         {
           "agent": "gpt-6-astra-xhigh",
@@ -3400,7 +3589,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 10
+          "rank": 11
         },
         {
           "agent": "deepseek-v4.1-flash-high",
@@ -3597,7 +3786,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 11
+          "rank": 12
         },
         {
           "agent": "gpt-5.6-terra-xhigh",
@@ -3786,7 +3975,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 12
+          "rank": 13
         },
         {
           "agent": "glm-5.3-flash-high",
@@ -3976,7 +4165,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 13
+          "rank": 14
         },
         {
           "agent": "glm-5.3-high",
@@ -4331,7 +4520,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md"
             }
           ],
-          "rank": 14
+          "rank": 15
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -4532,7 +4721,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 15
+          "rank": 16
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -4729,7 +4918,204 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 16
+          "rank": 17
+        },
+        {
+          "agent": "deepseek-v4-pro-high",
+          "model": {
+            "name": "DeepSeek V4 Pro",
+            "id": "deepseek-v4-pro",
+            "provider": "DeepSeek",
+            "served_by": "OpenRouter (opencode provider openrouter, model deepseek/deepseek-v4-pro)",
+            "reasoning_effort": "high",
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://api-docs.deepseek.com/news/news260424/",
+            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Pro (release note of 2026-04-24, checked on 2026-10-01). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 604,
+          "totals": [
+            604
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 70.8,
+          "brier": 0.182,
+          "runs": [
+            {
+              "run": 1,
+              "total": 604,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 198,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 150,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 21,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 3,
+                "causa_raiz": 3,
+                "priorizacao": 4,
+                "trade_offs": 4
+              },
+              "penalties": [
+                {
+                  "id": "PEN-001",
+                  "count": 1,
+                  "deduction": -15
+                }
+              ],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 3,
+              "brier": 0.182,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 68936,
+                  "output": 13219,
+                  "cache": 322560,
+                  "total": 412383
+                },
+                "usd_estimate": 0.03,
+                "note": "the total includes 7,668 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.0287"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-pro-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 18
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -4910,7 +5296,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 17
+          "rank": 19
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -5105,7 +5491,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 18
+          "rank": 20
         },
         {
           "agent": "gpt-6.1-sol-ultra",
@@ -5300,7 +5686,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md"
             }
           ],
-          "rank": 19
+          "rank": 21
         },
         {
           "agent": "glm-5.3-flashX-high",
@@ -5490,7 +5876,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md"
             }
           ],
-          "rank": 20
+          "rank": 22
         },
         {
           "agent": "moonshot-kimi-k3-default",
@@ -5667,7 +6053,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md"
             }
           ],
-          "rank": 21
+          "rank": 23
         },
         {
           "agent": "qwen3-coder-next-default",
@@ -5865,7 +6251,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md"
             }
           ],
-          "rank": 22
+          "rank": 24
         },
         {
           "agent": "minimax-m3",
@@ -6048,7 +6434,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
             }
           ],
-          "rank": 23
+          "rank": 25
         },
         {
           "agent": "kimi-k2.7-code-default",
@@ -6239,7 +6625,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md"
             }
           ],
-          "rank": 24
+          "rank": 26
         },
         {
           "agent": "gpt-5.3-codex-xhigh",
@@ -6429,7 +6815,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 25
+          "rank": 27
         },
         {
           "agent": "z.ai-glm-5.2-high",
@@ -6619,7 +7005,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
             }
           ],
-          "rank": 26
+          "rank": 28
         },
         {
           "agent": "claude-haiku-4.5-default",
@@ -6980,7 +7366,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-2/scorecard.md"
             }
           ],
-          "rank": 27
+          "rank": 29
         }
       ]
     }

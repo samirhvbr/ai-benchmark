@@ -1,0 +1,229 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "DeepSeek V4 Pro",
+    "version": "not recorded",
+    "provider": "DeepSeek"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-01",
+    "runs": [
+      604
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-01",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "AN",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "A query \" WHERE titulo LIKE '%\" . $busca . \"%'\" concatena o parâmetro $busca — que vem diretamente de $_GET['busca'] no index.php — sem qualquer escape.",
+      "rationale": "F2 points at lib.php:82 and explains the concatenation of user input into the LIKE literal. Fixed with a mysqli prepared statement binding '%'.$busca.'%' (delivered lib.php:89,105-110); the probe confirms (C3 from mecanico.json). LIKE wildcards are not escaped, but the probe rules C3; ordering and return shape preserved."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "O valor de $_GET['busca'], atribuído a $busca, é ecoado diretamente no HTML sem escape em dois pontos: no atributo value do input de busca ... e no texto \"Resultados para: $busca\".",
+      "rationale": "F8 names both output points (index.php:79,82). Both are now escaped with htmlspecialchars (delivered index.php:80,83); without explicit ENT_QUOTES, but the attribute is double-quoted and PHP 8.1+ defaults to ENT_QUOTES, so the XSS is eliminated. Markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV/formula injection is not mentioned anywhere in the report. The titulo cell is still written raw (delivered lib.php:195); the probe confirms '=1+1' is exported unchanged."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Após autenticação bem-sucedida, o ID de sessão não é regenerado. Um atacante que consiga fixar um ID de sessão conhecido no navegador da vítima ... poderá usar essa mesma sessão após o login da vítima",
+      "rationale": "F10 at index.php:26 (planted :24) explains session fixation correctly. session_regenerate_id(true) is called right after authenticating (delivered index.php:26)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "md5($senha) é usado como hash de senha. MD5 é criptograficamente quebrado: colisões são triviais e rainbow tables permitem recuperar a senha original em segundos.",
+      "rationale": "F7 at lib.php:15 identifies unsalted md5 and the real mechanism (fast, precomputable hash recoverable via rainbow tables; collisions are irrelevant but do not void it). Deliberately not fixed: autenticar still uses md5 (delivered lib.php:15)."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "A senha do banco de dados (N3tX@2013!prod) e a chave da API SMTP (netx-smtp-9f83e2c1a7b64d05) estão hardcoded como fallback no código-fonte.",
+      "rationale": "F6 covers config.php:12 and :15. Both literals removed; DB_PASS and SMTP_API_KEY now come only from env with an empty fallback (delivered config.php:12,15) — C3 full per rule 11. No rotation recommendation was made."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "half",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "verChamado() busca o chamado apenas por id, sem verificar usuario_id. Um cliente pode acessar ?ver=<id> de qualquer chamado, inclusive de outros clientes.",
+      "rationale": "F5 points at lib.php:98-102 and index.php:52-53 with the right IDOR mechanism, but is filed as category 'bug' instead of 'seguranca' (C1 half per rule 1). Fixed by an optional-parameter query filter (AND usuario_id = ? for clients, delivered lib.php:131-147) driven by the session from the dispatcher (index.php:54); technicians still see every ticket and verChamado(mysqli,int) calls still work — an accepted alternative."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Quando nenhum chamado possui minutos_resposta preenchido ..., $qtd é 0 e a divisão $soma / $qtd produz divisão por zero.",
+      "rationale": "F9 at lib.php:116 states the empty-set mechanism correctly (its PHP-version detail is imprecise: PHP 8 throws DivisionByZeroError for int/0, not INF). Guard returns 0.0 (delivered lib.php:168-170); probe confirms."
+    },
+    {
+      "id": "BUG-004",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se $db->query(...) retornar false, a função faz return sem executar fclose($fp), deixando o file handle aberto (vazamento de recurso).",
+      "rationale": "F12 at lib.php:134 (planted :133). fclose($fp) added on the error path (delivered lib.php:188-191); the other early return happens only when fopen failed."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Para cada chamado retornado, tecnicoNome() executa uma query separada ... Com N chamados, são N+1 queries ... O mesmo ocorre em exportarCsv().",
+      "rationale": "F11 covers lib.php:88-90 and :137. Both queries now LEFT JOIN usuarios (delivered lib.php:85,187); probe confirms. The JOIN without COALESCE leaves tecnico_nome NULL in the listing (the '-' is lost) — charged as PEN-001 per rule 10, not as COMP, so C5 stays full; the CSV keeps '-' via ?? (lib.php:197)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The dispatcher mixing routing, authorization and HTML is not reported and index.php keeps the same structure."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic status/priority numbers not reported; formatarStatus/rotuloPrioridade untouched (delivered lib.php:26-59)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Nested ifs in rotuloPrioridade not reported and not refactored (delivered lib.php:40-59)."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F1 — SQL injection in tecnicoNome() (lib.php:69)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "The parameter is typed ?int, so the concatenated value can only be an integer or the function returns before the query; the report nonetheless claims an attacker 'consegue executar SQL arbitrário'. Not exploitable — a claimed flaw that cannot exist (rule 4)."
+    },
+    {
+      "reported_as": "F3 — SQL injection in verChamado() (lib.php:100)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "verChamado(mysqli $db, int $id) is int-typed, so concatenating $id cannot inject SQL; the report claims SQL injection 'se a função for chamada com valor não sanitizado', which the type declaration prevents. Distinct from F5 (the IDOR), which is credited to SEC-017."
+    }
+  ],
+  "extra_findings": [
+    "Visibility rule — listarChamados (lib.php:78-93) returns every ticket to clients, contrary to the manifest's 'cliente sees only own tickets' rule (report F4); fixed via optional params + session filter",
+    "Export visibility — index.php?export=csv exports every ticket to any logged-in client (reported as a deliberate non-change, not fixed)",
+    "Exported CSV persisted under EXPORT_DIR and never removed (reported as a deliberate non-change)"
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 1,
+    "PEN-003": 0
+  },
+  "notes": "achados.json leb binding matches (LEB-100-A v1.1, sha 68088ab...). JSON and prose are consistent (12 findings F1-F12). SEC-017 (F5) and the listing-visibility finding (F4) are both filed under category 'bug', so SEC-017 gets C1 half. F1 and F3 are separate SQL-injection claims on int-typed parameters and are recorded as non-isca false positives. PEN-001 (1): the PERF-001 LEFT JOIN without COALESCE makes tecnico_nome NULL for tickets without a technician (seed ticket 104), so the listing cell (index.php:95, htmlspecialchars(null) — also a deprecation notice on PHP 8.1+) is empty instead of the legacy '-'; ruled PEN-001 per rule 10, CSV unaffected. Optional parameters added to listarChamados/verChamado are not COMP (rule 9); client-scoped listing/detail is enforcement of the manifest rule, not COMP-003; CSV export left unfiltered for all callers (no COMP-003). DB_PASS empty fallback is a deployment caveat, not a bug. MD5 deliberately left in place (SEC-014 C3 none). The report's summary claims '10 das 13 vulnerabilidades' were fixed, which is inconsistent with its own list of 12 findings.",
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 3,
+    "causa_raiz": 3,
+    "priorizacao": 4,
+    "trade_offs": 4
+  },
+  "expl_justification": {
+    "clareza": "It has a short Resumo, uniform Local/Categoria/Severidade/Confianca/Mecanismo/Impacto/Correcao/Corrigido blocks and a Decisoes section with headed items. It is easy to read, though the Resumo's 'tres pontos de SQL injection expostos a parametros GET' frames two non-injectable functions as exposed.",
+    "precisao": "Several central claims are false. F1 and F3 rate tecnicoNome and verChamado as critica SQL injection at confidence 100. F1 even argues that tecnico_id values read from the database 'poderiam ter sido injetados', but both parameters are int/?int, so only integers reach the SQL. F2 says an unauthenticated attacker can inject because 'o formulario de busca aparece antes do login'; index.php:20-36 exits with the login form for any request without a session (the error that cost J). F9 says PHP 8 throws DivisionByZeroError only with intdiv and otherwise yields 'INF'/'NAN', but float division by zero also throws in PHP 8. F8 quotes the sink as value=\"<?= $busca ?>\", which is not the code.",
+    "causa_raiz": "Only the ownership gap ('ignora completamente o $papel e $uid da sessao') and the zero divisor are traced to real causes, and the latter's runtime behaviour is wrong. The F1/F3 mechanisms are invented. The shared export file is reduced to a file-handle leak, missing the race and the silent fopen failure.",
+    "priorizacao": "Two non-exploitable concatenations are ranked critica ahead of the real ownership breaches (alta) and the XSS (media), and N+1 is baixa. The calibration rests on the mistaken analysis, and effort and risk are not used.",
+    "trade_offs": "MD5 and the persisted export file are deferred with consumer-impact reasons, though the MD5 deferral ignores a gated rehash-on-login. The most consequential decision leaves ?export=csv returning every client's tickets on the premise that filtering would change the signature or 'o comportamento do endpoint'. That premise is false (other reports filtered at the web route), and the choice is never weighed against the manifest rule that exposing tickets to the wrong client changes the business rule. Optional parameters are added to two manifest signatures and declared compatible without comparison, and the DB_PASS fallback is removed with no deployment note."
+  }
+}

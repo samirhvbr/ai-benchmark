@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.47`
+**Versão atual:** `0.2.48`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.48` — 2026-10-01 — results/ adds Claude Sonnet 5.5 at max without ultracode (807, 2nd) and DeepSeek V4 Pro (604)
+
+Harness 22/22 for both; blind labels AM and AN, with `mecanico.json`'s submission path anonymized;
+EXPL 45 and 21; `score.py`. Both ran on restored clean VMs as `leb`, with the fixed first message
+and nothing else.
+- **Claude Sonnet 5.5 at `max`, single agent (AM): 807, Gold, 2nd.** It took 27 minutes and
+  US$ 3.86. It fixed 11 of the 13 planted flaws, and scored 33 points above the same model at the
+  same effort in ultracode, which took about 8 hours.
+- **DeepSeek V4 Pro at `high` (AN): 604, Silver, 18th, below both DeepSeek Flash models.** It ran
+  in opencode through OpenRouter. Its report claims SQL injection in two int-typed functions (two
+  false positives), and its JOIN drops the listing's `-` for a ticket with no technician (PEN-001).
+- The "judge is also a contestant" note now counts six Claude models among twenty-nine agents.
 
 ### `0.2.47` — 2026-10-01 — results/ adds GPT-6-astra's second and third xhigh runs (596 and 628), official at 628
 
