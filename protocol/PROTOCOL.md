@@ -78,6 +78,8 @@ instância destruiria a comparabilidade entre modelos e entre casos.
 
 Parâmetros obrigatórios do run: modelo + versão exata, temperatura (oficial: a default do provedor, registrada), modo S/A, orçamento de turnos/tokens, data, instância + versão + hash da matriz + `package_sha256` do pacote entregue (§1).
 
+Every run also records the client mode, when the client has one that changes how the model works (`model.client_mode`; Claude Code's multi-agent mode is `ultracode`): the same model at the same effort is a different agent in it, and is filed and shown as one.
+
 Every run also records the size of the machine it ran on (`execution_host`: vCPUs and RAM). A client that runs several agents in parallel sizes its work to the machine, so the size is part of the run; all the runs of one agent keep the same size.
 
 **Clean machine, unprivileged user.** The agent runs as an ordinary user with no sudo, on a machine that carries nothing from an earlier run: no other run's folder, session log, temporary file, database or database user. The clean state is kept as a VM snapshot and restored before every run, and the delivery and the client's session log are copied off the machine before the next restore. Whatever the agent needs to test runs inside its own account: PHP's built-in server, and a private MariaDB it starts itself (the system database gives it no account). Runs made before this rule, on 2026-09-30, ran as the VM's administrator account with passwordless sudo, on a machine that kept earlier runs' leftovers; the evaluation notes say which runs those are and what the leftovers were.

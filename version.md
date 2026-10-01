@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.34`
+**Versão atual:** `0.2.35`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.35` — 2026-09-30 — The client mode is model.client_mode, and PROTOCOL §3 says why a run records it
+
+`model.mode` (0.2.34) reused a word that already means the execution mode, S or A, which the
+scorecard prints one row below the model. The field is now `model.client_mode`, and `PROTOCOL §3`
+documents it: a client mode that changes how the model works, such as Claude Code's multi-agent
+`ultracode`, makes the same model at the same effort a different agent, filed and shown as one.
+`tools/export-results.py` now also names the mode next to a `default` effort, and no longer prints
+a stray mode or `None` when the effort is missing. The generated scorecards and results table are
+unchanged; `results.json` renames the key.
 
 ### `0.2.34` — 2026-09-30 — run.json records a client mode, and the leaderboard shows Sonnet 5.5's as max (ultracode)
 

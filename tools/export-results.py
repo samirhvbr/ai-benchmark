@@ -133,19 +133,21 @@ def na(value):
 def effort_label(model):
     """`default` means the model has no effort setting at all — a fact about the model, not a
     value someone forgot to write down, so it must not read as "not recorded". A client mode
-    that changes how the model works (`mode`, e.g. Claude Code's multi-agent `ultracode`) is
-    named next to the effort, since the same model at the same effort runs differently with it."""
+    that changes how the model works (`client_mode`, e.g. Claude Code's multi-agent `ultracode`)
+    is named next to the effort, since the same model at the same effort runs differently in it."""
     effort = model.get("reasoning_effort")
+    mode = model.get("client_mode")
     if effort == "default":
-        return "model default — %s" % (model.get("reasoning_effort_note") or "not configurable")
-    mode = " (%s)" % model["mode"] if model.get("mode") else ""
-    return "`%s`%s" % (na(effort), mode)
+        label = "model default — %s" % (model.get("reasoning_effort_note") or "not configurable")
+        return "%s (%s)" % (label, mode) if mode else label
+    return "`%s`%s" % (na(effort), " (%s)" % mode if mode and effort else "")
 
 
 def effort_short(model):
     """The effort as the leaderboard prints it: `xhigh`, or `max (ultracode)` with a client mode."""
-    effort = model.get("reasoning_effort", "")
-    return "%s (%s)" % (effort, model["mode"]) if model.get("mode") else effort
+    effort = model.get("reasoning_effort") or ""
+    mode = model.get("client_mode")
+    return "%s (%s)" % (effort, mode) if mode and effort else effort
 
 
 def key_exposure(model, instance):
