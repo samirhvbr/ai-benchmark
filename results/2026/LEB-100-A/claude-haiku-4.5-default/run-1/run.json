@@ -1,0 +1,59 @@
+{
+  "agent": "claude-haiku-4.5-default",
+  "model": {
+    "name": "Claude Haiku 4.5",
+    "id": "claude-haiku-4-5-20251001",
+    "provider": "Anthropic",
+    "reasoning_effort": "default",
+    "reasoning_effort_note": "not configurable: Anthropic's model overview lists effort as not supported for Haiku 4.5; the client accepted /effort xhigh but applies it only on supported models",
+    "exact_version": null,
+    "training_cutoff": "2025-07",
+    "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T11:02:17-03:00",
+    "ended": "2026-10-01T11:04:45-03:00",
+    "log": "archived off the VM (~/.claude/projects/-srv-run/c36db6f7-cf57-4604-841f-efc33aface18.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench1 (100.64.100.113) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (c36db6f7), which is this run",
+    "elapsed_seconds": 135.0,
+    "tokens": {
+      "input": 1062,
+      "output": 13699,
+      "cache": 819787,
+      "total": 834548
+    },
+    "usd_estimate": 0.21,
+    "note": "every answer came from Claude Haiku 4.5"
+  },
+  "logs": "archived off the VM (~/.claude/projects/-srv-run/c36db6f7-cf57-4604-841f-efc33aface18.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. The model was set with /model before the first message; /effort xhigh was also set, which Haiku 4.5 does not support. One second after the first message, before the agent's first answer, the client's permission mode was switched to auto-accept edits; that mode adds no instruction to the agent's context and switches no model, so the run stands, and PROTOCOL §3 asks for it to be set before the first message. The first attempt at this agent, on bench2, is void (void-1)."
+}

@@ -5777,6 +5777,202 @@
             }
           ],
           "rank": 26
+        },
+        {
+          "agent": "claude-haiku-4.5-default",
+          "model": {
+            "name": "Claude Haiku 4.5",
+            "id": "claude-haiku-4-5-20251001",
+            "provider": "Anthropic",
+            "reasoning_effort": "default",
+            "reasoning_effort_note": "not configurable: Anthropic's model overview lists effort as not supported for Haiku 4.5; the client accepted /effort xhigh but applies it only on supported models",
+            "exact_version": null,
+            "training_cutoff": "2025-07",
+            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 317,
+          "totals": [
+            317
+          ],
+          "representative_run": 1,
+          "key_exposure": "before",
+          "discovery_index": 37.5,
+          "brier": 0.215,
+          "runs": [
+            {
+              "run": 1,
+              "total": 317,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 138,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 86,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 23,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 4,
+                "causa_raiz": 4,
+                "priorizacao": 4,
+                "trade_offs": 4
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 8,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 0,
+              "brier": 0.215,
+              "discovery_index": 37.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (c36db6f7), which is this run",
+                "elapsed_seconds": 135.0,
+                "tokens": {
+                  "input": 1062,
+                  "output": 13699,
+                  "cache": 819787,
+                  "total": 834548
+                },
+                "usd_estimate": 0.21,
+                "note": "every answer came from Claude Haiku 4.5"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md"
+            }
+          ],
+          "rank": 27
         }
       ]
     }

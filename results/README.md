@@ -51,6 +51,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 24 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) † · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 1/3 |
 | 25 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
 | 26 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) † · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
+| 27 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 1/3 |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
 Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is

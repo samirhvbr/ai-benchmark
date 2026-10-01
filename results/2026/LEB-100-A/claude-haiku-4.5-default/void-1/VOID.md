@@ -1,6 +1,6 @@
-# Void run: Claude Haiku 4.5, `xhigh`, 2026-10-01 10:56–11:02 (UTC−3)
+# Void run: Claude Haiku 4.5, 2026-10-01 10:56–11:02 (UTC−3)
 
-This was meant to be the first run of Claude Haiku 4.5 at effort `xhigh`. It is **void**, because
+This was meant to be the first run of Claude Haiku 4.5, at the model's default effort (the client accepted `/effort xhigh`, but Haiku 4.5 does not support the setting). It is **void**, because
 the operator changed the client's mode while the agent was working.
 
 ## What the session log shows

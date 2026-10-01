@@ -6,14 +6,13 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Twenty-six agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twenty-seven agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
 GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
 their first (see *Runs of 2026-09-30* below). On 2026-10-01 GPT-6.1-sol at effort `ultra`, GPT-6.1-sol
 pro, GPT-5.3-Codex and GLM-5.3 Prime got theirs, Claude Sonnet 5.5 at `xhigh` its second, and
-Claude Opus 5.5 its third, the first official result, and Claude Fable 5.1 its second (see
-*Runs of 2026-10-01*).
+Claude Opus 5.5 its third, the first official result, Claude Fable 5.1 its second, and Claude Haiku 4.5 its first (see *Runs of 2026-10-01*).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -30,6 +29,8 @@ Effort is not equal:
 - the five GLM models, the two Grok models and the two DeepSeek models ran at `high`, the level chosen in their client;
 - Kimi K3 is filed at `default`, and whether its client offered a setting was not recorded;
 - Kimi K2.7 Code has no effort setting in its client and ran at the model's default;
+- Claude Haiku 4.5 does not support the effort setting, so it ran at the model's default although
+  the client accepted `/effort xhigh`;
 - Qwen3 Coder Next is a non-thinking model with no effort setting in its client, and ran at the
   model's default.
 
@@ -62,6 +63,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `gpt-6.1-sol-ultra` | GPT-6.1-sol (OpenAI), in Codex CLI 0.159.3 | ultra |
 | `gpt-6.1-sol-pro-xhigh` | GPT-6.1-sol pro (OpenAI, served by OpenRouter), in opencode 1.18.33 | xhigh |
 | `gpt-5.3-codex-xhigh` | GPT-5.3-Codex (OpenAI, served by the Kilo Code gateway), in opencode 1.18.33 | xhigh |
+| `claude-haiku-4.5-default` | Claude Haiku 4.5 (Anthropic), in Claude Code 2.1.285 | default (not supported) |
 | `glm-5.3-prime-high` | GLM-5.3 Prime (Z.AI, served by the Kilo Code gateway), in opencode 1.18.33 | high |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
@@ -439,8 +441,8 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Seven deliveries, labelled **Y** to **AE** in the order they arrived and judged blind like the others.
-The first three came one per VM; after restores, `bench1` and `bench2` ran the next four:
+Eight deliveries were scored, labelled **Y** to **AF** in the order they arrived and judged blind like
+the others. The first three came one per VM; after restores, `bench1` and `bench2` ran the rest:
 
 | Label | Run | Outcome |
 | --- | --- | --- |
@@ -451,8 +453,9 @@ The first three came one per VM; after restores, `bench1` and `bench2` ran the n
 | **AC** | GLM-5.3 Prime, `high`, run 1 | 635 |
 | **AD** | Claude Opus 5.5, `xhigh`, run 3 | 805 |
 | **AE** | Claude Fable 5.1, `xhigh`, run 2 | 764 |
+| **AF** | Claude Haiku 4.5, default effort, run 1 | 317 |
 
-All seven ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All eight ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -518,6 +521,22 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     of the code. It lost the architecture points of run 1, where it had named the dispatcher, and
     the full bug score, reporting the file-handle leak only inside another finding. Like run 1, it
     left the CSV injection in place for the file's consumers.
+- **Claude Haiku 4.5's first attempt is void**, kept in `claude-haiku-4.5-default/void-1/`: the
+  client was switched to plan mode mid-run, which put an instruction into the agent's context and
+  handed one turn to Claude Sonnet 5.5 (0.2.42).
+- **Claude Haiku 4.5, run 1 (AF): 317, below the pass line, last of 27.**
+  - It ran in Claude Code 2.1.285 on `bench1` in 2.5 minutes, for US$ 0.21. Haiku 4.5 does not
+    support the effort setting, so the client's `/effort xhigh` did not apply, and the agent is
+    filed at the model's default. One second after the first message, before any answer, the
+    client was switched to auto-accept edits, a mode that adds no instruction and switches no
+    model; the run stands, and its note records it.
+  - It found 6 of the 13 planted flaws and fixed 4. It reported SQL injection, at confidence 90 and
+    95, in two functions that only take integers (false positives), and left MD5, the secrets, the
+    N+1 query and the CSV injection in place.
+  - Its visibility fix hides a client's own tickets. The listing filter compares `usuario_id` with
+    `===` against an integer, but without a search term mysqli returns the column as a string, so
+    a client sees an empty list; with a search term the list is right. Reproduced against the
+    delivered code: Ana sees 0 of her 3 tickets on the main page (COMP-003, −30).
 
 ## Two defects in the harness, fixed before scoring
 

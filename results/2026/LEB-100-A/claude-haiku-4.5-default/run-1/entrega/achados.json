@@ -1,0 +1,153 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em tecnicoNome()",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 69,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "Concatenação direta de $tecnicoId em consulta SQL sem prepared statement: 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId. Um atacante que controle o parâmetro pode injetar SQL arbitrário.",
+      "impacto": "Injeção de SQL arbitrária, permitindo alteração, deleção ou extração de dados do banco.",
+      "correcao": "Convertido para prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em listarChamados() via LIKE",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "Concatenação direta de $busca (vindo de GET) em LIKE: WHERE titulo LIKE '%\" . $busca . \"%'. Um atacante pode injetar via URL: ?busca=x' OR '1'='1.",
+      "impacto": "Injeção SQL arbitrária, exposição de todos os dados, alteração ou deleção de registros.",
+      "correcao": "Refatorado para usar prepared statement com LIKE ? quando há busca, com bind_param('s', '%' . $busca . '%').",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em verChamado()",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 90,
+      "mecanismo": "Concatenação direta de $id em consulta SQL: SELECT * FROM chamados WHERE id = ' . $id. Embora haja cast para int no caller, concatenação em SQL é perigosa.",
+      "impacto": "Potencial injeção SQL permitindo exposição ou alteração de chamados.",
+      "correcao": "Convertido para prepared statement com bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Violação de Regra de Negócio — Sem Controle de Acesso",
+      "arquivo": "code/index.php",
+      "linha": 49,
+      "linha_fim": 96,
+      "categoria": "arquitetura",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "As funções listarChamados() e verChamado() retornam todos os dados sem filtro. No index.php, esses dados são exibidos diretamente sem verificar se o cliente (papel='cliente') é o dono do chamado. Um cliente pode acessar qualquer chamado via ?ver=<id>.",
+      "impacto": "Violação da regra de negócio declarada no manifest.md. Exposição de dados privados de outros clientes (títulos, descrições, status), violando confidencialidade.",
+      "correcao": "Adicionado filtro de acesso: (1) Na tela de detalhe (linha ~61): if ($papel === 'cliente' && $c['usuario_id'] !== $uid) { echo '<p>Acesso negado.</p>'; exit; }. (2) Na listagem (linhas 76-80): if ($papel === 'cliente') { $chamados = array_filter(...) } mantendo apenas chamados onde usuario_id === $uid.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS (Cross-Site Scripting) no Campo de Busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Variável $busca (vindo de $_GET['busca']) é ecoada sem escaping em dois locais: no atributo value do input (linha 79) e na mensagem de resultados (linha 82). Um atacante pode injetar JavaScript: ?busca=<script>alert(document.cookie)</script>.",
+      "impacto": "Roubo de sessão (cookies), phishing, malware, comprometimento de contas de usuários.",
+      "correcao": "Aplicado htmlspecialchars($busca) nos dois pontos de output.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisão por Zero em mediaResposta()",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando não há chamados com minutos_resposta não nulo, $qtd permanece 0. A linha 'return $soma / $qtd;' causa divisão por zero.",
+      "impacto": "Falha na renderização da página, erro 500 ou warning fatal, degradação de experiência do usuário.",
+      "correcao": "Adicionada proteção: if ($qtd === 0) { return 0.0; } antes do cálculo de média.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Credenciais de Banco em Código Fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Senha do usuário MySQL de produção está hardcoded como fallback: getenv('DB_PASS') ?: 'N3tX@2013!prod'. Se variável de ambiente não for definida, fallback é usado. Se código-fonte vazar, credenciais são expostas.",
+      "impacto": "Exposição de credenciais de banco em produção, permitindo acesso não autorizado.",
+      "correcao": "Deixado como está. Motivo: Sistema legado em produção há 13 anos (desde 2013). Deployments podem depender do fallback. Remover quebraria compatibilidade de configuração e poderia falhar em produção.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "Chave de API SMTP Exposta em Código Fonte",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "Chave de API do serviço SMTP transacional está hardcoded: define('SMTP_API_KEY', 'netx-smtp-9f83e2c1a7b64d05'). Constante é acessível globalmente.",
+      "impacto": "Um atacante com acesso ao código-fonte pode usar a chave para enviar e-mails em nome do sistema (spam, phishing, abuso).",
+      "correcao": "Deixado como está. Motivo: Chave não é usada no código analisado, mas pode ser consumida por scripts internos do ISP não analisados. Remover causaria falha em funcionalidades externas.",
+      "corrigido": false
+    },
+    {
+      "id": "F9",
+      "titulo": "Hash de Senha Inseguro (MD5)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Senhas são armazenadas com MD5 (hash = md5($senha)). MD5 não possui salt e é rápido demais para resistir a ataques de força bruta ou rainbow tables.",
+      "impacto": "Se o banco for comprometido, senhas podem ser quebradas rapidamente.",
+      "correcao": "Deixado como está. Motivo: Migração segura exigiria re-hash em autenticação e fase de transição. Banco legado já possui senhas em MD5. Trocar quebraria compatibilidade com usuários e scripts de autenticação externos.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 para senhas de usuários",
+      "porque": "Banco de dados legado já possui todas as senhas em MD5. Trocar o algoritmo quebraria compatibilidade com usuários existentes e scripts de autenticação externos que usam o mesmo mecanismo. Uma migração segura exigiria fase de transição com re-hash na próxima autenticação."
+    },
+    {
+      "o_que": "Credenciais hardcoded em config.php (DB_PASS)",
+      "porque": "Sistema em produção há 13 anos. Deployments legados podem depender do fallback para variável de ambiente. Remover a credencial hardcoded poderia quebrar produção se variáveis de ambiente não estiverem configuradas. A solução correta é garantir que variáveis de ambiente estão sempre definidas, mas isso está fora do escopo desta análise."
+    },
+    {
+      "o_que": "Chave SMTP_API_KEY hardcoded em config.php",
+      "porque": "Constante não é usada no código analisado (index.php e lib.php), mas pode ser consumida por scripts internos do ISP não analisados aqui (rotina noturna de exportação, relatório gerencial, integração de faturamento). Remover causaria falha em funcionalidades externas."
+    },
+    {
+      "o_que": "Assinatura de funções públicas (listarChamados, verChamado)",
+      "porque": "Manifest.md declara que estas funções são consumidas por scripts externos (rotina noturna, relatório gerencial). Não posso adicionar parâmetros obrigatórios sem quebrar compatibilidade. Por isso, o controle de acesso foi implementado no nível de index.php, não nas funções de data access."
+    }
+  ]
+}

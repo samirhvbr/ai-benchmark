@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.42`
+**Versão atual:** `0.2.43`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.43` — 2026-10-01 — results/ adds Claude Haiku 4.5 on LEB-100-A, last at 317, and files it at the model's default effort
+
+Harness 22/22 with SEC-001 and BUG-001 fixed; blind label AF; EXPL 23; `score.py`. Claude Haiku 4.5
+ran in Claude Code on `bench1` as `leb`, in 2.5 minutes for US$ 0.21. Anthropic's model overview
+lists the effort setting as not supported for Haiku 4.5, so the client's `/effort xhigh` did not
+apply. The agent, and its void attempt of 0.2.42, move from `claude-haiku-4.5-xhigh` to
+`claude-haiku-4.5-default`. Its training cutoff is 2025-07.
+
+317, below the pass line, 27th of 27. It found 6 of the 13 planted flaws, fixed 4, and reported two
+SQL injections that cannot exist. Its visibility fix hides a client's own tickets on the main page:
+a strict comparison between an integer and the string mysqli returns without a search term. That
+was reproduced against the delivered code (COMP-003). The run's note records a switch to auto-accept
+edits one second after the first message, which adds no instruction and switches no model.
 
 ### `0.2.42` — 2026-10-01 — results/ records a Claude Haiku 4.5 attempt as void, and PROTOCOL forbids switching the client's mode mid-run
 
