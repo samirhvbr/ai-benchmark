@@ -6,10 +6,11 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Twenty-one agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twenty-two agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
-GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash and Qwen3 Coder Next their first (see *Runs of 2026-09-30* below).
+GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
+their first (see *Runs of 2026-09-30* below).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -17,6 +18,8 @@ binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
 Effort is not equal:
 
 - nine agents ran at reasoning effort `xhigh`;
+- Claude Sonnet 5.5 in multi-agent mode ("ultracode") ran at `max`, the setting that turns that
+  mode on;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
   default;
 - the four GLM models, the two Grok models and the two DeepSeek models ran at `high`, the level chosen in their client;
@@ -50,6 +53,7 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `deepseek-v4-flash-high` | DeepSeek V4 Flash (DeepSeek, served by Novita AI), in opencode 1.18.33 | high |
 | `deepseek-v4.1-flash-high` | DeepSeek V4.1 Flash (DeepSeek's own API), in opencode 1.18.33 | high |
 | `qwen3-coder-next-default` | Qwen3 Coder Next (Alibaba, served by Novita AI), in opencode 1.18.33 | default (non-thinking, not configurable) |
+| `claude-sonnet-5.5-max-ultracode` | Claude Sonnet 5.5 (Anthropic), Claude Code's multi-agent mode | max |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -59,8 +63,8 @@ which it kept from 2026-09-25 until 2026-09-30 13:01. `execution_host` in each `
 The exception is Kimi K3, whose clone's size was not recorded. Single-session clients spend most
 of a run waiting on the API, so the size weighs little on them. A multi-agent client sizes its
 work to the machine, which is why the size is now a run parameter (`PROTOCOL §3`). The VM was
-resized to 20 vCPUs and 15 GiB after that, and later runs record it. Qwen3 Coder Next ran on the
-second VM, `ai-bench2`, a clone of the first at the same size (20 vCPUs, 15.6 GiB).
+resized to 20 vCPUs and 15.6 GiB after that, and Sonnet 5.5's multi-agent run was made on it at
+that size. Qwen3 Coder Next ran on the second VM, `ai-bench2`, a clone of the first at the same size (20 vCPUs, 15.6 GiB).
 
 **What the session logs show.** Eight of the ten runs left their client's session log on the
 execution VM. They were read on 2026-09-30, and each `run.json` now records what they show:
@@ -192,8 +196,8 @@ detail shown with it comes from that same run (`PROTOCOL §4`, item 4).
 
 ### Runs of 2026-09-30
 
-Thirteen deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
-**W** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
+Fourteen deliveries arrived. The first three were labelled at random **K** to **M**, and **N** to
+**X** in the order the others arrived. Each was judged blind like the first ten, and the labels were revealed only after
 every verdict was in:
 
 | Label | Run | Outcome |
@@ -211,6 +215,7 @@ every verdict was in:
 | **U** | DeepSeek V4 Flash, run 1 | 612 |
 | **V** | DeepSeek V4.1 Flash, run 1 | 625 |
 | **W** | Qwen3 Coder Next, run 1 | 507 |
+| **X** | Claude Sonnet 5.5, multi-agent mode, run 1 | 774 |
 
 - **The EXPL judge is a second instance.** The one that scored A–J could not be resumed. Its
   successor read all ten earlier justifications, and the reports at the top, the bottom and the
@@ -395,6 +400,28 @@ every verdict was in:
     VM. It had cost US$ 8.43 across 5 workflows and 15 subagents.
   - It is kept unscored in `claude-sonnet-5.5-max-ultracode/void-1/`, with a `VOID.md`. The
     agent's run 1 is the one made on the resized machine.
+- **Claude Sonnet 5.5 in multi-agent mode (X), run 1: 774, Gold, 3rd, 51 points below the same
+  model at `xhigh`.**
+  - It ran in Claude Code 2.1.285 at effort `max`, which turns on the multi-agent mode, from 13:05
+    to 21:00 on the first VM resized to 20 vCPUs. It got the fixed first message and nothing else,
+    used no web tool and made no request to GitHub. It began before the clean-machine rule, so it
+    ran as the VM's administrator with earlier runs' leftovers present.
+  - It ran 7 workflows with 68 subagents: 8.1 hours of wall-clock and 16.4 hours of model time.
+    The client's record puts the cost at US$ 233.08, about 65 times the US$ 3.60 of its `xhigh`
+    run, which took 19 minutes.
+  - It scores the same as the `xhigh` run in every other category: security at 250 of 250, all
+    four probes fixed, the contract kept whole. It reported 29 findings with no false positive and
+    is better calibrated (Brier 0.008 against 0.022). Its report scores 45 of 50, one point below,
+    with precision and root cause at 10.
+  - The other 50 points are architecture: 0 of 200 against 50. It neither took the dispatcher apart
+    nor named it, where the `xhigh` run named it and explained why it left it, and it named no
+    constant.
+  - Nine of its 68 subagents had a response stopped by the safety classifier while they built
+    attack tests. The client then switched each of them to `claude-sonnet-5`, because the admin
+    account had its model fallback on. Those turns produced 541,148 of the run's 6,819,101 output
+    tokens and US$ 15.34 of its cost, all of it analysis in the scratch area. The delivery itself
+    was written entirely by Sonnet 5.5 in the main session, which never switched, so the run
+    stands under the rule `PROTOCOL §3` now states (0.2.32).
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.
@@ -449,8 +476,8 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   each by prefixing `'` to a cell that starts with `= + - @` — the fix the matrix expects. GPT-5.6-sol
   applied it to the technician column too and turned the `-` placeholder into `'-` (its PEN-001).
   Fable 5.1, Opus 5.5, GPT-5.6-luna and GPT-6.1-sol reported it and kept the cells raw for the CSV's
-  consumers; GPT-5.5, GPT-5.6-terra and MiniMax-M3 did not report it. Sonnet 5.5 is the only agent
-  at SEC 250/250.
+  consumers; GPT-5.5, GPT-5.6-terra and MiniMax-M3 did not report it. Sonnet 5.5 is the only model
+  at SEC 250/250, in both of its modes.
 - **Architecture** is the weakest category for everyone: 50, 25 and 50 of 200 for the three
   Claude models, 25 for GPT-6.1-sol and 0 for the other six. Nobody refactored the dispatcher
   (ARCH-002) — Sonnet 5.5, Fable 5.1, Opus 5.5 and GPT-6.1-sol identified it and declined — and

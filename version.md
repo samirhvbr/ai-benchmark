@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.32`
+**Versão atual:** `0.2.33`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.33` — 2026-09-30 — results/ adds Claude Sonnet 5.5 in multi-agent mode on LEB-100-A, third at 774
+
+Harness 22/22 with all four probes fixed; blind label X; EXPL 45/50; `score.py`. Claude Sonnet 5.5
+at effort `max` in Claude Code's multi-agent mode ran 7 workflows with 68 subagents from 13:05 to
+21:00 on the first VM, resized to 20 vCPUs, with the fixed first message and nothing else, no web
+tool and no request to GitHub. The client's record: US$ 233.08 and 16.4 hours of model time in 8.1
+hours, against US$ 3.60 and 19 minutes for the same model at `xhigh`.
+
+774 (Gold), third, 51 points below the `xhigh` run's 825. It scores the same in security (250),
+bugs, performance, clean code and compatibility, finds 29 findings with no false positive and is
+better calibrated, but scores 0 in architecture against 50 and one point less in explanation.
+Nine subagents fell back to `claude-sonnet-5` after the safety classifier stopped them (US$ 15.34,
+541,148 output tokens, all analysis); none of the delivery came from them, so the run stands under
+the rule of 0.2.32. It began before the clean-machine rule, as the VM's administrator. The session
+log is archived off the VM, unpublished; `void-1` stays as filed.
 
 ### `0.2.32` — 2026-09-30 — PROTOCOL voids a run when another model wrote any part of the delivery, and records a fallback confined to subagents
 

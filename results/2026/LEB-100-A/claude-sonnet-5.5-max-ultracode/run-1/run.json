@@ -1,0 +1,59 @@
+{
+  "agent": "claude-sonnet-5.5-max-ultracode",
+  "model": {
+    "name": "Claude Sonnet 5.5",
+    "id": "claude-sonnet-5-5",
+    "provider": "Anthropic",
+    "reasoning_effort": "max",
+    "reasoning_effort_note": "set with /effort at the start of the session, which turned on Claude Code's multi-agent mode (\"Ultracode on\"): the agent ran 7 workflows with 68 subagents",
+    "exact_version": null,
+    "training_cutoff": "2026-06",
+    "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-09-30",
+  "evaluated_on": "2026-09-30",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-09-30T13:05:22-03:00",
+    "ended": "2026-09-30T21:00:49-03:00",
+    "log": "archived off the VM (~/.claude/projects/-srv-sonnet/6ee6316f-8921-419c-afe2-29eac9d891e7.jsonl and its subagents), not published"
+  },
+  "execution_environment": "the first dedicated Linux VM, with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and no IPv6 connectivity; run as the VM's administrator account, with passwordless sudo, on a machine that kept earlier runs' leftovers (README, Execution environment; this run began before the clean-machine rule of PROTOCOL §3)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (6ee6316f), which is this run, written when the session was closed",
+    "elapsed_seconds": 59041.085,
+    "tokens": {
+      "input": 8703,
+      "output": 6819101,
+      "cache": 627624423,
+      "total": 634452227
+    },
+    "usd_estimate": 233.08,
+    "note": "model time summed across the parallel agents (16.4 h) in 8.1 h of wall-clock; Claude Sonnet 5.5 accounts for US$ 217.74, the claude-sonnet-5 fallback of nine subagents for US$ 15.34 (541,148 output tokens), and the session title call to Claude Haiku 4.5 for US$ 0.001"
+  },
+  "logs": "archived off the VM (~/.claude/projects/-srv-sonnet/6ee6316f-8921-419c-afe2-29eac9d891e7.jsonl and its subagents), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named sonnet. It replaces the void first attempt (void-1), stopped to resize the VM. The client compacted the main session's context once, at 17:30, on its own; the operator sent nothing after the fixed first message. Nine of the 68 subagents had a response stopped by the safety classifier while they built attack tests, and the client then switched each of them to claude-sonnet-5 (the admin account had switchModelsOnFlag on); those turns produced 541,148 of the run's 6,819,101 output tokens and US$ 15.34 of its US$ 233.08, all of it analysis in the scratch area. The delivery itself, code, report and findings index, was written entirely by Claude Sonnet 5.5 in the main session, which never switched, so the run stands (PROTOCOL §3)."
+}
