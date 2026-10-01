@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.45`
+**Versão atual:** `0.2.46`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.46` — 2026-10-01 — results/ adds Sonnet 5.5's third xhigh run (official at 809) and second runs of GPT-6.1-sol (653) and GLM-5.3 (621)
+
+Harness 22/22 for all three, with SEC-001, BUG-001 and PERF-001 fixed; blind labels AH, AI and AJ;
+EXPL 41, 45 and 39; `score.py`. All three ran on restored clean VMs as `leb`, with the fixed first
+message and nothing else.
+- **Claude Sonnet 5.5 at `xhigh`, run 3 (AI): 724.** With three runs its score is official: 809,
+  the median, still first. It fixed 8 of the 13 planted flaws, against 11 in each earlier run,
+  leaving MD5, both secrets and the CSV injection in place. Its lead in fixing holds in the median
+  run, not in every run.
+- **GPT-6.1-sol at `xhigh`, run 2 (AH): 653**, in Codex CLI 0.159.3. Its published score becomes the
+  lower, 653, 7th.
+- **GLM-5.3 at `high`, run 2 (AJ): 621**, served by OpenRouter where run 1 used Z.AI's API. Its
+  published score becomes 621.
 
 ### `0.2.45` — 2026-10-01 — results/ records a GPT-5.6-sol pro attempt as void: the gateway ran out of credit before the report
 

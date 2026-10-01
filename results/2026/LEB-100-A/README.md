@@ -12,7 +12,8 @@ Twenty-seven agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1
 GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
 their first (see *Runs of 2026-09-30* below). On 2026-10-01 GPT-6.1-sol at effort `ultra`, GPT-6.1-sol
 pro, GPT-5.3-Codex and GLM-5.3 Prime got theirs, Claude Sonnet 5.5 at `xhigh` its second, and
-Claude Opus 5.5 its third, the first official result, Claude Fable 5.1 its second, and Claude Haiku 4.5 its first two (see *Runs of 2026-10-01*).
+Claude Opus 5.5 its third, the first official result, Claude Fable 5.1 its second, Claude Haiku 4.5 its first two, Claude Sonnet 5.5 its third (the second
+official result), and GPT-6.1-sol and GLM-5.3 their second (see *Runs of 2026-10-01*).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -441,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Nine deliveries were scored, labelled **Y** to **AG** in the order they arrived and judged blind like
+Twelve deliveries were scored, labelled **Y** to **AJ** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, `bench1` and `bench2` ran the rest:
 
 | Label | Run | Outcome |
@@ -455,8 +456,11 @@ the others. The first three came one per VM; after restores, `bench1` and `bench
 | **AE** | Claude Fable 5.1, `xhigh`, run 2 | 764 |
 | **AF** | Claude Haiku 4.5, default effort, run 1 | 317 |
 | **AG** | Claude Haiku 4.5, default effort, run 2 | 369 |
+| **AH** | GPT-6.1-sol, `xhigh`, run 2 | 653 |
+| **AI** | Claude Sonnet 5.5, `xhigh`, run 3 | 724 |
+| **AJ** | GLM-5.3, `high`, run 2 | 621 |
 
-All nine ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All twelve ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -551,6 +555,22 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     again reported the two impossible SQL injections and left MD5, the N+1 query and the CSV
     injection in place. Its report scored 19 of 50, second lowest: on top of the false injections
     it says the zero divisor shows INF or NaN, where PHP 8 throws.
+- **Claude Sonnet 5.5 at `xhigh`, run 3 (AI): 724. With three runs, Sonnet 5.5 has the second
+  official score, 809, the median of 825, 809 and 724, still first.**
+  - It ran on `bench2` in 23 minutes, for US$ 2.91, with the model, effort and mode set before the
+    first message.
+  - It fixed 8 of the 13 planted flaws, against 11 in each of its first two runs. This time it left
+    MD5, both secrets and the CSV injection in place, by choice, with reasons in its report (45 of
+    50). So Sonnet's lead in fixing holds in its median run, not in every run: its third fixed fewer
+    than any of Opus 5.5's three (9 each).
+- **GPT-6.1-sol at `xhigh`, run 2 (AH): 653, 13 points below run 1 (666); its published score is
+  now 653, 7th.** It ran in Codex CLI 0.159.3 on `bench1` in 26 minutes; run 1 had been made in
+  Codex 0.159.2 on the first VM. It fixed the same 9 flaws as run 1 and again scoped the SLA average
+  to each client (COMP-003).
+- **GLM-5.3 at `high`, run 2 (AJ): 621, 8 points below run 1 (629); its published score is now
+  621.** It ran in opencode on `bench3`, served this time by OpenRouter where run 1 used Z.AI's own
+  API; the run's note records the host. It fixed 7 flaws, against 8 in run 1, keeping the database
+  password's literal fallback.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -575,8 +595,8 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 ## Before quoting a number
 
 - **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`.** An official score is the median of three
-  runs (`PROTOCOL §4`). Opus 5.5 has three (711, 717, 805), so its 717 is the first official score;
-  Sonnet 5.5, Fable 5.1 and Haiku 4.5 have two (825 and 809; 781 and 764; 317 and 369). A single run can sit 90 points from the agent's median, as Opus's
+  runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh` have three (711, 717, 805; 825, 809, 724), so their
+  717 and 809 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
   third did. GPT-6.1-sol
   and GPT-6-astra (666 and 661) are five points apart; places 6 to 9 (625, 612, 601 and 599) sit
   within 26 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,

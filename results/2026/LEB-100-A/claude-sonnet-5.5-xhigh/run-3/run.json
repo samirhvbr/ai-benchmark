@@ -1,0 +1,58 @@
+{
+  "agent": "claude-sonnet-5.5-xhigh",
+  "model": {
+    "name": "Claude Sonnet 5.5",
+    "id": "claude-sonnet-5-5",
+    "provider": "Anthropic",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": "2026-06",
+    "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  "run": 3,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.285"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T11:20:10-03:00",
+    "ended": "2026-10-01T11:42:59-03:00",
+    "log": "archived off the VM (~/.claude/projects/-srv-run/22e925ba-29b9-44be-9352-0d84efbff731.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (22e925ba), which is this run",
+    "elapsed_seconds": 959.54,
+    "tokens": {
+      "input": 1090,
+      "output": 127242,
+      "cache": 4686490,
+      "total": 4814822
+    },
+    "usd_estimate": 2.91,
+    "note": "includes a session-title call to Claude Haiku 4.5 (US$ 0.001)"
+  },
+  "logs": "archived off the VM (~/.claude/projects/-srv-run/22e925ba-29b9-44be-9352-0d84efbff731.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. The model, effort and permission mode were set before the first message. bench2's snapshot still held the first seconds of Claude Opus 5.5's third run (one tool call reading TAREFA.md), which this run never read. Run 1 was made on the first VM at 4 vCPUs as its administrator, runs 2 and 3 on clean VMs at 20 vCPUs as leb; Claude Code here is a single-agent client (PROTOCOL §3). This is the agent's third run, the last an official score needs."
+}
