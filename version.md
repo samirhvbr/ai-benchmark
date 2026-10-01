@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.33`
+**Versão atual:** `0.2.34`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.34` — 2026-09-30 — run.json records a client mode, and the leaderboard shows Sonnet 5.5's as max (ultracode)
+
+The same model at the same effort runs differently in Claude Code's multi-agent mode, so the mode
+is now part of the model block: `model.mode` in `run.json`, set to `ultracode` for Claude Sonnet
+5.5's multi-agent run. `tools/export-results.py` prints it next to the effort, as `max (ultracode)`
+in the results table and as `` `max` (ultracode) `` in the scorecard's Model row, and
+`results.json` carries it to the site. No score changes.
 
 ### `0.2.33` — 2026-09-30 — results/ adds Claude Sonnet 5.5 in multi-agent mode on LEB-100-A, third at 774
 

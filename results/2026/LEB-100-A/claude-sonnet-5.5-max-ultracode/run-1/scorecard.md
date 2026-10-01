@@ -5,7 +5,7 @@
 
 | Field | Value |
 | --- | --- |
-| Model | Claude Sonnet 5.5 (`claude-sonnet-5-5`, Anthropic) · reasoning effort `max` · exact version: not recorded |
+| Model | Claude Sonnet 5.5 (`claude-sonnet-5-5`, Anthropic) · reasoning effort `max` (ultracode) · exact version: not recorded |
 | Training cutoff | 2026-06 ([source](https://platform.claude.com/docs/en/about-claude/models/overview)) — before the answer key was published (2026-07-13): by its provider's own cutoff, the model did not train on it |
 | Client | Claude Code 2.1.285 · session 2026-09-30 13:05 → 21:00 |
 | Execution host | 20 vCPU · 15.6 GiB RAM |

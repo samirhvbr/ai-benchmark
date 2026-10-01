@@ -132,11 +132,20 @@ def na(value):
 
 def effort_label(model):
     """`default` means the model has no effort setting at all — a fact about the model, not a
-    value someone forgot to write down, so it must not read as "not recorded"."""
+    value someone forgot to write down, so it must not read as "not recorded". A client mode
+    that changes how the model works (`mode`, e.g. Claude Code's multi-agent `ultracode`) is
+    named next to the effort, since the same model at the same effort runs differently with it."""
     effort = model.get("reasoning_effort")
     if effort == "default":
         return "model default — %s" % (model.get("reasoning_effort_note") or "not configurable")
-    return "`%s`" % na(effort)
+    mode = " (%s)" % model["mode"] if model.get("mode") else ""
+    return "`%s`%s" % (na(effort), mode)
+
+
+def effort_short(model):
+    """The effort as the leaderboard prints it: `xhigh`, or `max (ultracode)` with a client mode."""
+    effort = model.get("reasoning_effort", "")
+    return "%s (%s)" % (effort, model["mode"]) if model.get("mode") else effort
 
 
 def key_exposure(model, instance):
@@ -540,7 +549,7 @@ def render_readme(data):
             link = "%s/%s/%s/run-%d/scorecard.md" % (inst["edition"], inst["id"], e["agent"], r["run"])
             mark = " †" if e["key_exposure"] in ("after", "unknown") else ""
             w("| %d | [%s](%s)%s · %s | **%d** | %s | %s | %d | %s | %s | %s |" % (
-                e["rank"], e["model"]["name"], link, mark, e["model"].get("reasoning_effort", ""), e["score"], r["grade"],
+                e["rank"], e["model"]["name"], link, mark, effort_short(e["model"]), e["score"], r["grade"],
                 " | ".join(str(c[k]["score"]) for k in CATEGORIES), pen,
                 "%.1f" % e["discovery_index"], "—" if e["brier"] is None else "%.3f" % e["brier"],
                 runs_cell(e)))
