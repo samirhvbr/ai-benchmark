@@ -1,0 +1,60 @@
+{
+  "agent": "gpt-6.1-sol-pro-xhigh",
+  "model": {
+    "name": "GPT-6.1-sol pro",
+    "id": "openai/gpt-6.1-sol-pro",
+    "provider": "OpenAI",
+    "served_by": "OpenRouter (opencode provider openrouter, model openai/gpt-6.1-sol-pro)",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "training_cutoff_note": "OpenAI publishes no model page or cutoff for a pro variant of GPT-6.1-sol (checked on 2026-10-01; the gpt-6.1-sol page names no pro variant, and the OpenRouter listing gives no cutoff). The base model's cutoff, 2026-04-30, is not assumed for it"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T09:31:00-03:00",
+    "ended": "2026-10-01T09:46:56-03:00",
+    "log": "archived off the VM (opencode.db, session ses_f088da92bffeJ052vIJ2O32VqQ), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine prepared clean that morning (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 126508,
+      "output": 41237,
+      "cache": 810414,
+      "total": 1000316
+    },
+    "usd_estimate": 1.01,
+    "note": "the total includes 22,157 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 1.0130"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_f088da92bffeJ052vIJ2O32VqQ), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. Codex was also opened as leb in that folder before the run, and recorded no session there; the run itself was made in opencode."
+}

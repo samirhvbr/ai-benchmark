@@ -6,18 +6,21 @@ in mind before quoting them.
 
 ## What was evaluated
 
-Twenty-two agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
+Twenty-five agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0.0), mode **A**
 (agentic, 30-turn budget), matrix `68088abd…c8625`, package `34e38bc5…a15f`. Ten ran on
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
 GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
-their first (see *Runs of 2026-09-30* below).
+their first (see *Runs of 2026-09-30* below). On 2026-10-01 GPT-6.1-sol at effort `ultra`, GPT-6.1-sol
+pro and GPT-5.3-Codex got theirs (see *Runs of 2026-10-01*).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
 
 Effort is not equal:
 
-- nine agents ran at reasoning effort `xhigh`;
+- nine agents ran at reasoning effort `xhigh` on 2026-09-29 and 30, and GPT-6.1-sol pro and
+  GPT-5.3-Codex at `xhigh` on 2026-10-01;
+- GPT-6.1-sol ran a second configuration at `ultra`, the level above `xhigh` in Codex;
 - Claude Sonnet 5.5 in multi-agent mode ("ultracode") ran at `max`, the setting that turns that
   mode on;
 - MiniMax-M3 has no effort setting at all (its client offers no selector) and ran at the model's
@@ -54,6 +57,9 @@ Those two results measure the model as it was run, not a like-for-like compariso
 | `deepseek-v4.1-flash-high` | DeepSeek V4.1 Flash (DeepSeek's own API), in opencode 1.18.33 | high |
 | `qwen3-coder-next-default` | Qwen3 Coder Next (Alibaba, served by Novita AI), in opencode 1.18.33 | default (non-thinking, not configurable) |
 | `claude-sonnet-5.5-max-ultracode` | Claude Sonnet 5.5 (Anthropic), Claude Code's multi-agent mode | max |
+| `gpt-6.1-sol-ultra` | GPT-6.1-sol (OpenAI), in Codex CLI 0.159.3 | ultra |
+| `gpt-6.1-sol-pro-xhigh` | GPT-6.1-sol pro (OpenAI, served by OpenRouter), in opencode 1.18.33 | xhigh |
+| `gpt-5.3-codex-xhigh` | GPT-5.3-Codex (OpenAI, served by the Kilo Code gateway), in opencode 1.18.33 | xhigh |
 
 Not recorded for these runs, and marked `null` in each `run.json` rather than guessed: the exact
 model version and the temperature.
@@ -65,6 +71,8 @@ of a run waiting on the API, so the size weighs little on them. A multi-agent cl
 work to the machine, which is why the size is now a run parameter (`PROTOCOL §3`). The VM was
 resized to 20 vCPUs and 15.6 GiB after that, and Sonnet 5.5's multi-agent run was made on it at
 that size. Qwen3 Coder Next ran on the second VM, `ai-bench2`, a clone of the first at the same size (20 vCPUs, 15.6 GiB).
+The runs of 2026-10-01 ran on three VMs of that size, `bench1`, `bench2` (the former `ai-bench2`)
+and `bench3`, each prepared clean that morning under the rule of `PROTOCOL §3`.
 
 **What the session logs show.** Eight of the ten runs left their client's session log on the
 execution VM. They were read on 2026-09-30, and each `run.json` now records what they show:
@@ -425,6 +433,38 @@ every verdict was in:
 - **Two raw deliveries were published by mistake.** The Kimi K3 and Fable 5.1 deliveries were
   committed as filed, at `results/2026/<agent>/`, by an unrelated commit (0.2.15) before they were
   judged. They are now moved to their places, and the history keeps the slip.
+
+### Runs of 2026-10-01
+
+Three deliveries, one per VM, labelled **Y** to **AA** in the order they arrived and judged blind
+like the others:
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **Y** | GPT-6.1-sol pro, `xhigh`, run 1 | 654 |
+| **Z** | GPT-5.3-Codex, `xhigh`, run 1 | 403 |
+| **AA** | GPT-6.1-sol, `ultra`, run 1 | 597 |
+
+All three ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+fixed first message and nothing else, used no web tool and made no request to GitHub.
+
+- **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
+  for US$ 1.01. OpenAI publishes no page or cutoff for a pro variant, so it carries the dagger. It
+  found 11 of the 13 planted flaws and fixed 9: the same count as GPT-6.1-sol at `xhigh`, 12
+  points below it. Like five GPT runs before it, it scoped the SLA average to each client
+  (COMP-003, −30), and it left the CSV injection in place for the file's consumers.
+- **GPT-5.3-Codex (Z): 403, Bronze, 24th, three points above the fail line.** It ran in opencode
+  through the Kilo Code gateway, in 7 minutes, for US$ 0.54. It found 6 of the 13 and fixed 5;
+  it left the N+1 query, MD5, the secrets and the session fixation in place, and scored 0 in
+  performance, clean code and architecture. Its report says that dividing by zero gives a
+  warning, where PHP 8 throws (EXPL 27).
+- **GPT-6.1-sol at `ultra` (AA): 597, Bronze, 18th, 69 points below the same model at `xhigh`
+  (666).** It ran in Codex CLI 0.159.3 for 24 minutes and spawned three subagents, all on
+  GPT-6.1-sol at `ultra`. It found 9 of the 13 against 11, and lost points on MD5, which it kept
+  (the `xhigh` run migrated it), on the CSV file-handle leak, which it fixed without reporting,
+  and on the dispatcher, which it did not name. It is the second run on LEB-100-A where more
+  effort scored less than the same model's single pass, after Claude Sonnet 5.5's multi-agent
+  run (X).
 
 ## Two defects in the harness, fixed before scoring
 

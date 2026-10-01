@@ -1,0 +1,58 @@
+{
+  "agent": "gpt-6.1-sol-ultra",
+  "model": {
+    "name": "GPT-6.1-sol",
+    "id": "gpt-6.1-sol",
+    "provider": "OpenAI",
+    "reasoning_effort": "ultra",
+    "exact_version": null,
+    "training_cutoff": "2026-04-30",
+    "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-01",
+  "evaluated_on": "2026-10-01",
+  "client": {
+    "name": "Codex CLI",
+    "version": "0.159.3"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-01T09:28:14-03:00",
+    "ended": "2026-10-01T09:52:07-03:00",
+    "log": "archived off the VM (~/.codex/sessions: the main rollout rollout-2026-10-01T09-27-05-01a0f76e-bfeb-71d1-aad2-6e8d10350789.jsonl and three subagent rollouts), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench1 (100.64.100.113) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine prepared clean that morning (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Codex CLI 0.159.3 session logs, final token_count event of each rollout, summed",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 215626,
+      "output": 39255,
+      "cache": 3416064,
+      "total": 3670945
+    },
+    "usd_estimate": null,
+    "note": "summed over the main session and its three subagents (the subagents start from a copy of the parent's context, so cached input repeats); output includes 12,647 reasoning tokens; the logs keep no cost and no model time"
+  },
+  "logs": "archived off the VM (~/.codex/sessions, four rollouts), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run. At effort ultra the agent spawned three subagents (spawn_agent), all on gpt-6.1-sol at ultra; it got the fixed first message and nothing else, and made no web search."
+}

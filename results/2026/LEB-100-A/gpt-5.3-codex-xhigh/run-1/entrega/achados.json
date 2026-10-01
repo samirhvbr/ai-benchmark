@@ -1,0 +1,107 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Controle de acesso ausente expunha chamados de outros clientes",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 132,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 98,
+      "mecanismo": "As consultas de listagem, detalhe e exportacao nao filtravam por usuario_id quando o papel logado era cliente; qualquer cliente autenticado conseguia acessar chamados de terceiros.",
+      "impacto": "Exposicao indevida de dados entre clientes e violacao da regra de negocio de visibilidade.",
+      "correcao": "Adicionado filtro por usuario_id para sessao de cliente em listarChamados, verChamado e exportarCsv, preservando visao ampla para tecnico.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca por titulo permitia SQL Injection",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 96,
+      "mecanismo": "O termo de busca era concatenado diretamente no LIKE sem bind de parametros, permitindo injetar operadores SQL na clausula WHERE.",
+      "impacto": "Manipulacao da consulta e bypass de filtros, ampliando exposicao de dados.",
+      "correcao": "Consulta reescrita com prepared statements e bind_param para todos os cenarios de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no valor e no resumo da busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "O conteudo de $_GET['busca'] era impresso no atributo value e no texto da pagina sem escaping HTML.",
+      "impacto": "Execucao de JavaScript no navegador do usuario autenticado.",
+      "correcao": "Aplicado htmlspecialchars com ENT_QUOTES e UTF-8 antes da renderizacao do termo de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisao por zero na media de tempo de resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 97,
+      "mecanismo": "Quando nao havia linhas com minutos_resposta, qtd permanecia zero e a funcao fazia soma/qtd sem guarda.",
+      "impacto": "Warnings de runtime e exibicao inconsistente do indicador de SLA.",
+      "correcao": "Incluida validacao de falha de consulta e retorno 0.0 quando qtd for zero.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Credenciais e chave de servico hardcoded em configuracao",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 72,
+      "mecanismo": "Senha de banco fallback e API key SMTP estao fixas no codigo-fonte e podem ser extraidas em caso de acesso ao repositorio.",
+      "impacto": "Risco de acesso indevido ao banco e abuso do canal de e-mail transacional.",
+      "correcao": "Nao alterado nesta entrega; recomendado migrar para segredo externo e rotacionar credenciais em mudanca controlada.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Autenticacao baseada em MD5 legado",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 93,
+      "mecanismo": "A senha recebida e convertida com md5 para comparar com o banco, sem algoritmo de hash adaptativo moderno.",
+      "impacto": "Com vazamento da base, aumenta a viabilidade de quebra de senhas por brute force/rainbow table.",
+      "correcao": "Nao alterado nesta entrega; recomendado plano de migracao progressiva para password_hash/password_verify com rehash no login.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Remocao imediata de segredos hardcoded em code/config.php",
+      "porque": "Mudanca direta pode quebrar ambientes que ainda dependem do fallback local; precisa de rollout com segredo externo e rotacao coordenada."
+    },
+    {
+      "o_que": "Substituicao direta de MD5 por password_hash em toda autenticacao",
+      "porque": "Exige estrategia de compatibilidade com hashes existentes para evitar lockout de usuarios e scripts integrados."
+    },
+    {
+      "o_que": "Troca de stack/camada mysqli e alteracao de assinaturas publicas",
+      "porque": "Restringido pelo manifesto e pelas regras da tarefa; mudanca quebraria contrato externo."
+    }
+  ]
+}

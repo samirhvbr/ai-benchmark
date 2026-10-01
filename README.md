@@ -76,7 +76,7 @@ Note: the specification documents are currently written in Portuguese (pt-BR); E
 
 ## Execution environment
 
-Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so that an agent under test cannot read this repository or the answer key in it. Runs started since 2026-09-30 17:52 use a second VM, `ai-bench2`, a clone of the first with the same layers and more of them. The isolation was built in layers. The layers are dated because the runs are dated too. Times are UTC−3, from the VMs' own logs.
+Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so that an agent under test cannot read this repository or the answer key in it. Runs started since 2026-09-30 17:52 use a second VM, `ai-bench2`, a clone of the first with the same layers and more of them. Since 2026-10-01 there are three such VMs, named `bench1`, `bench2` (the former `ai-bench2`) and `bench3`, all at 20 vCPUs and 15.6 GiB, all with every layer below, each restored to its own clean snapshot before a run. The isolation was built in layers. The layers are dated because the runs are dated too. Times are UTC−3, from the VMs' own logs.
 
 | Layer | In place since | Runs it covers |
 | --- | --- | --- |
@@ -84,8 +84,8 @@ Benchmark runs are executed on a dedicated Linux VM isolated from GitHub, so tha
 | No IPv6 connectivity: no global address, no IPv6 default route | always; the network provides no IPv6 | every run |
 | GitHub's BGP prefixes are blackhole routes (4 IPv4, 3 IPv6) | 2026-09-30 08:13 | runs from 2026-09-30 on |
 | GitHub's edge addresses from `api.github.com/meta` are blackhole routes (71 IPv4) | 2026-09-30 09:02 | runs from 2026-09-30 09:02 on |
-| IPv6 is disabled on the LAN interface and router advertisements are ignored, so a stray one cannot open a route around the blackholes (`/etc/sysctl.d/90-leb-no-ipv6.conf`) | 2026-09-30 17:37, `ai-bench2` | runs from 2026-09-30 17:52 on |
-| The agent runs as an unprivileged user (`leb`) with no sudo and no account on the system database, on a machine cleaned of every earlier run's leftovers (`PROTOCOL §3`) | 2026-09-30 17:52, `ai-bench2` | runs from 2026-09-30 17:52 on |
+| IPv6 is disabled on the LAN interface and router advertisements are ignored, so a stray one cannot open a route around the blackholes (`/etc/sysctl.d/90-leb-no-ipv6.conf`) | 2026-09-30 17:37 on `ai-bench2`; 2026-10-01 on `bench1` to `bench3` | runs from 2026-09-30 17:52 on |
+| The agent runs as an unprivileged user (`leb`) with no sudo and no account on the system database, on a machine cleaned of every earlier run's leftovers (`PROTOCOL §3`) | 2026-09-30 17:52 on `ai-bench2`; 2026-10-01 on `bench1` to `bench3` | runs from 2026-09-30 17:52 on |
 
 **The first ten runs on LEB-100-A (2026-09-29) had the name block only.** No agent could reach GitHub through a GitHub name. A connection made straight to a GitHub address would still have gone through, so the block stopped accidental and tool-driven access but not a deliberate bypass. Each of those runs says so in its `run.json`.
 
@@ -121,7 +121,7 @@ Limits, stated plainly:
 - [x] First instance: **[LEB-100-A](instances/LEB-100-A/)** v1.1 — PHP legacy code, 13 planted flaws + 2 decoys, private matrix, characterization + verify probes (validated live: characterization 22/22 green on both pristine and fixed code; probes flip PLANTADA→CORRIGIDA)
 - [x] Evaluation **harness** ([`harness/`](harness/)) — mechanical pipeline (characterization before/after + probes + difficulty coverage → JSON), stdlib-only, instance-agnostic; validated both ways on LEB-100-A
 - [x] Scorecard **assembler** ([`harness/score.py`](harness/score.py)) + **judge interface** ([`scoring/JUDGE.md`](scoring/JUDGE.md), `judge.schema.json`) — deterministic 1000-pt scorecard from mechanical evidence + judge verdict; validated end-to-end (incl. the mysqli→PDO rewrite scoring 0/Reprovada, and a Gold run at 860)
-- [x] First scored runs — twenty-two agents on LEB-100-A, one run each and a second for Claude Opus 5.5 (not yet official: an official score is the median of 3), published in [results/](results/) with every delivery, verdict and scorecard
+- [x] First scored runs — twenty-five agents on LEB-100-A, one run each and a second for Claude Opus 5.5 (not yet official: an official score is the median of 3), published in [results/](results/) with every delivery, verdict and scorecard
 - [ ] Official reference runs — 3 runs per model on LEB-100-A, which stays current under [MATRIX §4](matrix/MATRIX.md), item 5: runs on a machine that cannot reach GitHub, and each run records the model's training cutoff
 
 ## License & contributing

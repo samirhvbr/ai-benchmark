@@ -21,7 +21,7 @@
         "date": "2026-09-29",
         "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery, one EXPL judge for all four reports, blind to the answer key and to every other score"
       },
-      "evaluated_on": "2026-09-30",
+      "evaluated_on": "2026-10-01",
       "category_max": {
         "SEC": 250,
         "ARCH": 200,
@@ -1463,6 +1463,203 @@
           "rank": 6
         },
         {
+          "agent": "gpt-6.1-sol-pro-xhigh",
+          "model": {
+            "name": "GPT-6.1-sol pro",
+            "id": "openai/gpt-6.1-sol-pro",
+            "provider": "OpenAI",
+            "served_by": "OpenRouter (opencode provider openrouter, model openai/gpt-6.1-sol-pro)",
+            "reasoning_effort": "xhigh",
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+            "training_cutoff_note": "OpenAI publishes no model page or cutoff for a pro variant of GPT-6.1-sol (checked on 2026-10-01; the gpt-6.1-sol page names no pro variant, and the OpenRouter listing gives no cutoff). The base model's cutoff, 2026-04-30, is not assumed for it"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 654,
+          "totals": [
+            654
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 87.5,
+          "brier": 0.0,
+          "runs": [
+            {
+              "run": 1,
+              "total": 654,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 228,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 139,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 25,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 42,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 9,
+                "priorizacao": 7,
+                "trade_offs": 8
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 6,
+              "brier": 0.0,
+              "discovery_index": 87.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 126508,
+                  "output": 41237,
+                  "cache": 810414,
+                  "total": 1000316
+                },
+                "usd_estimate": 1.01,
+                "note": "the total includes 22,157 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 1.0130"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 7
+        },
+        {
           "agent": "grok-4.7",
           "model": {
             "name": "Grok 4.7",
@@ -1649,7 +1846,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.7/run-1/scorecard.md"
             }
           ],
-          "rank": 7
+          "rank": 8
         },
         {
           "agent": "grok-4.6",
@@ -1839,7 +2036,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.6/run-1/scorecard.md"
             }
           ],
-          "rank": 8
+          "rank": 9
         },
         {
           "agent": "glm-5.3-high",
@@ -2029,7 +2226,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-high/run-1/scorecard.md"
             }
           ],
-          "rank": 9
+          "rank": 10
         },
         {
           "agent": "deepseek-v4.1-flash-high",
@@ -2226,7 +2423,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 10
+          "rank": 11
         },
         {
           "agent": "gpt-5.6-terra-xhigh",
@@ -2415,7 +2612,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 11
+          "rank": 12
         },
         {
           "agent": "glm-5.3-flash-high",
@@ -2605,7 +2802,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 12
+          "rank": 13
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -2806,7 +3003,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 13
+          "rank": 14
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -3003,7 +3200,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 14
+          "rank": 15
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -3184,7 +3381,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 15
+          "rank": 16
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -3379,7 +3576,202 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 16
+          "rank": 17
+        },
+        {
+          "agent": "gpt-6.1-sol-ultra",
+          "model": {
+            "name": "GPT-6.1-sol",
+            "id": "gpt-6.1-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "ultra",
+            "exact_version": null,
+            "training_cutoff": "2026-04-30",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 597,
+          "totals": [
+            597
+          ],
+          "representative_run": 1,
+          "key_exposure": "before",
+          "discovery_index": 70.8,
+          "brier": 0.001,
+          "runs": [
+            {
+              "run": 1,
+              "total": 597,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 207,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 41,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 9,
+                "causa_raiz": 9,
+                "priorizacao": 7,
+                "trade_offs": 8
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 5,
+              "brier": 0.001,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.3"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.3 session logs, final token_count event of each rollout, summed",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 215626,
+                  "output": 39255,
+                  "cache": 3416064,
+                  "total": 3670945
+                },
+                "usd_estimate": null,
+                "note": "summed over the main session and its three subagents (the subagents start from a copy of the parent's context, so cached input repeats); output includes 12,647 reasoning tokens; the logs keep no cost and no model time"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md"
+            }
+          ],
+          "rank": 18
         },
         {
           "agent": "glm-5.3-flashX-high",
@@ -3569,7 +3961,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md"
             }
           ],
-          "rank": 17
+          "rank": 19
         },
         {
           "agent": "moonshot-kimi-k3-default",
@@ -3746,7 +4138,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md"
             }
           ],
-          "rank": 18
+          "rank": 20
         },
         {
           "agent": "qwen3-coder-next-default",
@@ -3944,7 +4336,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md"
             }
           ],
-          "rank": 19
+          "rank": 21
         },
         {
           "agent": "minimax-m3",
@@ -4127,7 +4519,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
             }
           ],
-          "rank": 20
+          "rank": 22
         },
         {
           "agent": "kimi-k2.7-code-default",
@@ -4318,7 +4710,197 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md"
             }
           ],
-          "rank": 21
+          "rank": 23
+        },
+        {
+          "agent": "gpt-5.3-codex-xhigh",
+          "model": {
+            "name": "GPT-5.3-Codex",
+            "id": "openai/gpt-5.3-codex",
+            "provider": "OpenAI",
+            "served_by": "Kilo Code gateway (opencode provider kilo, model openai/gpt-5.3-codex)",
+            "reasoning_effort": "xhigh",
+            "exact_version": null,
+            "training_cutoff": "2025-08-31",
+            "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.3-codex"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 403,
+          "totals": [
+            403
+          ],
+          "representative_run": 1,
+          "key_exposure": "before",
+          "discovery_index": 37.5,
+          "brier": 0.015,
+          "runs": [
+            {
+              "run": 1,
+              "total": 403,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 147,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 27,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 5,
+                "causa_raiz": 5,
+                "priorizacao": 5,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 93
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 72
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 1,
+              "brier": 0.015,
+              "discovery_index": 37.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 42455,
+                  "output": 7374,
+                  "cache": 351744,
+                  "total": 422872
+                },
+                "usd_estimate": 0.54,
+                "note": "the total includes 21,299 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.5373"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md"
+            }
+          ],
+          "rank": 24
         },
         {
           "agent": "z.ai-glm-5.2-high",
@@ -4508,7 +5090,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
             }
           ],
-          "rank": 22
+          "rank": 25
         }
       ]
     }

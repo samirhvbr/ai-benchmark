@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.35`
+**Versão atual:** `0.2.36`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,23 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.36` — 2026-10-01 — results/ adds three GPT runs of 2026-10-01 on LEB-100-A: GPT-6.1-sol pro at 654, GPT-6.1-sol ultra at 597, GPT-5.3-Codex at 403
+
+Each ran on one of three clean execution VMs, `bench1` to `bench3`, as the unprivileged user
+`leb`, with the fixed first message and nothing else, no web tool and no request to GitHub.
+Harness 22/22 for all three; blind labels Y, Z and AA; EXPL 42, 27 and 41; `score.py`.
+
+- **GPT-6.1-sol pro, `xhigh` (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter and
+  carries the dagger, because OpenAI publishes no cutoff for a pro variant. Its COMP-003 is the
+  per-client SLA average, as for five earlier GPT runs.
+- **GPT-6.1-sol, `ultra` (AA): 597, Bronze.** It ran in Codex CLI 0.159.3 with three subagents,
+  and scored 69 points below the same model at `xhigh`: it kept MD5, did not report the
+  file-handle leak and did not name the dispatcher.
+- **GPT-5.3-Codex, `xhigh` (Z): 403, Bronze.** It ran in opencode through the Kilo Code gateway. It
+  found 6 of the 13 planted flaws, and scored 0 in performance, clean code and architecture.
+
+The README names the three VMs. The session logs are archived off the VMs and unpublished.
 
 ### `0.2.35` — 2026-09-30 — The client mode is model.client_mode, and PROTOCOL §3 says why a run records it
 
