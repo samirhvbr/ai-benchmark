@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.39`
+**Versão atual:** `0.2.40`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.40` — 2026-10-01 — results/ adds Claude Opus 5.5's third xhigh run (805): its 717 is the first official score on LEB-100-A
+
+Harness 22/22 with SEC-001, BUG-001 and PERF-001 fixed; blind label AD; EXPL 44; `score.py`.
+Opus 5.5 at `xhigh` ran on `bench2` as `leb` on a restored clean VM, with the fixed first message
+and nothing else, in 15 minutes for US$ 2.71. It scored 805, against 711 and 717 for its first two
+runs.
+
+With three runs the agent is official (`PROTOCOL §4`): its published score is the median, 717, 4th.
+Each of the three runs fixed 9 of the 13 planted flaws. The 94-point spread comes from judgement
+calls: a business value changed in run 1, the nested conditionals flattened only in run 3, and MD5
+migrated only in runs 1 and 2. The notes say so, and do not credit the clean machine for the
+higher total.
 
 ### `0.2.39` — 2026-10-01 — results/ adds Claude Sonnet 5.5's second xhigh run (809) and GLM-5.3 Prime on LEB-100-A, ninth at 635
 

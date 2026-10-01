@@ -11,8 +11,8 @@ Twenty-six agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0
 2026-09-29, one run each. On 2026-09-30 Claude Opus 5.5 got its second run, and GLM-5.2, Kimi K3,
 GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
 their first (see *Runs of 2026-09-30* below). On 2026-10-01 GPT-6.1-sol at effort `ultra`, GPT-6.1-sol
-pro, GPT-5.3-Codex and GLM-5.3 Prime got theirs, and Claude Sonnet 5.5 at `xhigh` its second
-(see *Runs of 2026-10-01*).
+pro, GPT-5.3-Codex and GLM-5.3 Prime got theirs, Claude Sonnet 5.5 at `xhigh` its second, and
+Claude Opus 5.5 its third, the first official result (see *Runs of 2026-10-01*).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -438,8 +438,8 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Five deliveries, labelled **Y** to **AC** in the order they arrived and judged blind like the others.
-The first three came one per VM; after a restore, `bench1` and `bench2` ran the last two:
+Six deliveries, labelled **Y** to **AD** in the order they arrived and judged blind like the others.
+The first three came one per VM; after restores, `bench1` and `bench2` ran the next three:
 
 | Label | Run | Outcome |
 | --- | --- | --- |
@@ -448,8 +448,9 @@ The first three came one per VM; after a restore, `bench1` and `bench2` ran the 
 | **AA** | GPT-6.1-sol, `ultra`, run 1 | 597 |
 | **AB** | Claude Sonnet 5.5, `xhigh`, run 2 | 809 |
 | **AC** | GLM-5.3 Prime, `high`, run 1 | 635 |
+| **AD** | Claude Opus 5.5, `xhigh`, run 3 | 805 |
 
-All five ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All six ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -492,6 +493,19 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     `index.php:21` checks `isset($_POST['login'])` first. The step-4 judge had filed it as an extra
     finding, and the consistency review moved it to the false positives. That changes only
     calibration, not the total.
+- **Claude Opus 5.5 at `xhigh`, run 3 (AD): 805. With three runs, Opus 5.5 has the first official
+  score on LEB-100-A: 717, the median of 711, 717 and 805, 4th.**
+  - It ran in Claude Code 2.1.285 on `bench2` in 15 minutes, for US$ 2.71. Its first two runs had
+    been made on the first VM at 4 vCPUs as its administrator; the note records the change
+    (`PROTOCOL §3`, 0.2.38).
+  - The 94-point spread comes from judgement calls, not from what it could fix: each of the three
+    runs fixed 9 of the 13 planted flaws. Run 1 changed a business value (COMP-003, −30) and left
+    the nested conditionals; run 2 kept compatibility but again left the conditionals; run 3
+    flattened them and kept compatibility, and left MD5 in place, which the first two had migrated.
+    All three left the CSV injection unfixed on purpose, for the file's consumers.
+  - Nothing in the evidence ties the higher score to the clean machine: the run fixed the same
+    number of flaws, and the choices that moved the total are the kind the first two runs had
+    already split on.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -516,8 +530,9 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 ## Before quoting a number
 
 - **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`.** An official score is the median of three
-  runs (`PROTOCOL §4`). Opus 5.5's second run moved its total by six points (711 → 717), Sonnet 5.5's
-  by sixteen (825 → 809). GPT-6.1-sol
+  runs (`PROTOCOL §4`). Opus 5.5 has three (711, 717, 805), so its 717 is the first official score;
+  Sonnet 5.5 has two (825, 809). A single run can sit 90 points from the agent's median, as Opus's
+  third did. GPT-6.1-sol
   and GPT-6-astra (666 and 661) are five points apart; places 6 to 9 (625, 612, 601 and 599) sit
   within 26 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
