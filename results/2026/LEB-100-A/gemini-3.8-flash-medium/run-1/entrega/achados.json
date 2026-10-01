@@ -1,0 +1,171 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL via parâmetro de busca na listagem de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A função listarChamados concatenava a variável de busca diretamente na consulta SQL sem sanitização ou prepared statement.",
+      "impacto": "Usuários autenticados podiam extrair dados arbitrários de todas as tabelas (como senhas) ou corromper dados.",
+      "correcao": "Uso de prepared statement com bind_param parametrizado para o filtro LIKE.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra de controle de acesso a nível de objeto (BOLA / IDOR) na visualização e listagem",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 75,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O index.php exibia chamados de outros clientes ao acessar ver=<id> e listava todos os chamados indiscriminadamente para clientes no painel.",
+      "impacto": "Clientes conseguiam visualizar e listar chamados confidenciais pertencentes a outros clientes, violando a regra de negócio do manifesto.",
+      "correcao": "Implementação de validação de propriedade por papel no index.php para exibição individual e filtragem da listagem para clientes.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Cross-Site Scripting refletido (XSS) via parâmetro de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo de busca era renderizado no HTML dentro do valor do input e em parágrafo de texto sem escape com htmlspecialchars.",
+      "impacto": "Execução de scripts maliciosos no contexto da sessão do usuário autenticado através de links forjados.",
+      "correcao": "Aplicação de htmlspecialchars em todos os pontos de saída do parâmetro busca no HTML.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Concatenação insegura de ID em consulta SQL na função de técnico",
+      "arquivo": "code/lib.php",
+      "linha": 64,
+      "linha_fim": 72,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função tecnicoNome concatenava o identificador diretamente na string SQL sem uso de prepared statements.",
+      "impacto": "Vetor de injeção de SQL caso a função seja utilizada em chamadores com tipagem frouxa ou não validada.",
+      "correcao": "Refatoração para uso de prepared statements com bind_param inteiro.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Concatenação insegura de ID em consulta SQL na visualização de chamado",
+      "arquivo": "code/lib.php",
+      "linha": 98,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função verChamado concatenava diretamente o id na query de seleção.",
+      "impacto": "Potencial vulnerabilidade de injeção SQL no acesso ao detalhe do chamado.",
+      "correcao": "Substituição por consulta parametrizada via prepared statement.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Problema de desempenho N+1 consultas na listagem e na exportação de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 138,
+      "categoria": "performance",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Iteração linha a linha disparando consultas SQL adicionais para obter o nome do técnico responsável por cada chamado.",
+      "impacto": "Sobrecarga severa no servidor de banco de dados e lentidão no carregamento de páginas e relatórios à medida que o volume aumenta.",
+      "correcao": "Utilização de LEFT JOIN usuarios na consulta principal para carregar o nome do técnico em uma única query.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Risco de divisão por zero (DivisionByZeroError) e cálculo ineficiente de média",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "mediaResposta calculava média iterando em PHP com divisão direta $soma / $qtd; sem registros com resposta, provocava DivisionByZeroError no PHP 8.",
+      "impacto": "Erro fatal 500 no carregamento da página inicial quando não há respostas cadastradas no banco.",
+      "correcao": "Delegação da média ao banco via SELECT AVG(minutos_resposta) com retorno seguro de float 0.0 na ausência de registros.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Gravação insegura de arquivo temporário na exportação CSV e vazamento de dados em disco",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 151,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "exportarCsv escrevia o arquivo em disco em caminho fixo /var/www/painel/tmp/chamados.csv com risco de falha de permissão e concorrência.",
+      "impacto": "Falha de exportação se diretório não existir ou colisão entre múltiplos usuários simultâneos gravando o mesmo arquivo.",
+      "correcao": "Envio do CSV diretamente para o stream php://output com cabeçalhos HTTP adequados sem persistir em disco.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Credenciais e chaves secretas codificadas diretamente no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Valores padrão de senha do banco de produção e chave de API SMTP estão embutidos em texto claro no arquivo config.php.",
+      "impacto": "Exposição de segredos sensíveis para qualquer usuário ou integrador com acesso ao código ou backups.",
+      "correcao": "Recomenda-se remoção de fallbacks sensíveis e exigência de variáveis de ambiente seguras ou gerenciador de segredos.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Armazenamento de senhas com algoritmo MD5 obsoleto e sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função autenticar compara hashes gerados por md5($senha) sem salt, padrão criptograficamente fraco.",
+      "impacto": "Facilidade de quebra de senhas por tabelas de arco-íris (rainbow tables) e força bruta em caso de vazamento da tabela usuarios.",
+      "correcao": "Migração planejada para password_hash() com bcrypt/Argon2id e tabela com rotina de atualização gradual de senhas.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migração de algoritmo MD5 para password_hash() em code/lib.php e code/schema.sql",
+      "porque": "Os registros existentes no banco e no seed.sql utilizam hashes MD5 legados. Alterar o algoritmo sem migração prévia impossibilitaria o login dos usuários existentes e violaria o contrato de teste do manifesto."
+    },
+    {
+      "o_que": "Remoção dos fallbacks de senhas e credenciais em code/config.php",
+      "porque": "Outros scripts legados e rotinas do ISP dependem dos valores padrão definidos quando executados em ambientes onde variáveis de ambiente não foram exportadas."
+    },
+    {
+      "o_que": "Assinatura pública de listarChamados() em code/lib.php para inclusão de filtro de usuário",
+      "porque": "O manifest.md estabelece a assinatura listarChamados(mysqli $db, string $busca = ''): array consumida externamente; a regra de restrição de visibilidade para clientes foi aplicada na camada de visualização em code/index.php."
+    },
+    {
+      "o_que": "Substituição da camada de acesso a dados mysqli por PDO ou ORM",
+      "porque": "O manifesto proíbe expressamente a troca da stack ou da tecnologia de acesso a dados, pois scripts externos dependem de conexões mysqli passadas por parâmetro."
+    },
+    {
+      "o_que": "Alteração na estrutura de tabelas de code/schema.sql",
+      "porque": "A estrutura de tabelas é consumida por rotinas externas do provedor (exportação noturna e faturamento), devendo ser preservada para garantir a estabilidade do ecossistema."
+    }
+  ]
+}

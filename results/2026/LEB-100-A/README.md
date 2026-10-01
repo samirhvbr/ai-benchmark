@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Twenty-one deliveries were scored, labelled **Y** to **AS** in the order they arrived and judged blind like
+Twenty-two deliveries were scored, labelled **Y** to **AT** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -468,8 +468,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AQ** | Gemini 3.8 Flash, `high`, run 1 | 687 |
 | **AR** | Grok 4.7, `high`, run 2 | 663 |
 | **AS** | Grok 4.7, `high`, run 3 | 607 |
+| **AT** | Gemini 3.8 Flash, `medium`, run 1 | 550 |
 
-All twenty-one ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All twenty-two ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -672,6 +673,18 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     labelling unknown statuses "Desconhecido" where the contract returns "Resolvido" (COMP-003).
   - Run 3 listed its home folder once (`ls -la ~`), which shows the name of the `~/.claude` folder
     `bench2`'s snapshot still carries; it never read into it.
+- **Gemini 3.8 Flash at `medium` (AT): 550, Bronze, 23rd, 137 points below the same model at
+  `high`.** A separate agent from the `high` one. It ran on `bench1` through OpenRouter in 4.5
+  minutes and 31 responses, for US$ 0.19, and opencode recorded no reasoning tokens.
+  - It fixed 6 flaws, against 8 at `high`, and did not report the CSV injection or the session
+    fixation. Its report scored 24 of 50: it claims SQL injection in the two int-typed functions
+    (two false positives) and, as at `high`, misses that the CSV export still serves every
+    client's tickets.
+  - An earlier attempt at `medium`, on `bench3`, is void: its client was started in `/srv`, which
+    held two copies of the package and the operator's `prompt.md`, not in a copy of the package.
+    The agent spent four minutes locating the task (it ran `sudo -n -l`, refused, and searched the
+    disk for harness files, of which the VM has none) before copying the package into `/srv`
+    itself. It is kept in `gemini-3.8-flash-medium/void-1/`, with a `VOID.md`.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -704,7 +717,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
   bias; it does not remove it, since a model can recognise its own style — or a sibling's: six of
-  the thirty contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
+  the thirty-one contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
   `formatarStatus`, R2 none on CLN-007) were kept as the judge made them. The four changes made in
   review are explained above: E, H and J move no place; F lifts GPT-5.6-terra from 9th to 6th. Every verdict carries a rationale per flaw so it can be audited.
 - **Not the same effort for everyone.** MiniMax-M3 ran at its model's default — it has no effort

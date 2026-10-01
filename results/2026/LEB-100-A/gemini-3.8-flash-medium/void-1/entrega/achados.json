@@ -1,0 +1,163 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL na busca de chamados por título",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O parâmetro $busca recebido via GET é concatenado diretamente na cláusula WHERE LIKE da query SQL sem uso de prepared statements ou escaping, permitindo injeção de comandos SQL arbitrários.",
+      "impacto": "Invasores podem extrair dados confidenciais de todas as tabelas (incluindo usuários e hashes de senhas via UNION SELECT), burlar restrições e corromper o banco de dados.",
+      "correcao": "Substituição da interpolação direta por prepared statement ($db->prepare) com bind de parâmetro seguro ($stmt->bind_param('s', $termo)).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra de controle de acesso (BOLA/IDOR) na visualização e listagem de chamados",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 58,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O index.php armazena o id e papel do usuário na sessão, mas nunca valida a propriedade do chamado na rota ?ver=<id> nem filtra a listagem geral, permitindo que clientes acessem chamados de outros clientes.",
+      "impacto": "Violação da regra de negócio de visibilidade do sistema: clientes autenticados conseguem visualizar chamados confidenciais pertencentes a outros clientes do ISP.",
+      "correcao": "Aplicação de verificação de papel e propriedade em index.php: clientes só visualizam detalhes de chamados criados por eles mesmos (retornando não encontrado caso contrário) e a listagem filtra exclusivamente os chamados do cliente autenticado.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Cross-Site Scripting (XSS) refletido no parâmetro de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo de busca $busca obtido via $_GET['busca'] é emitido diretamente no HTML sem sanitização, tanto no atributo value do campo de formulário quanto no parágrafo informativo de resultados.",
+      "impacto": "Execução de scripts maliciosos (JavaScript) no contexto do navegador do usuário, possibilitando sequestro de sessão, defacement e phishing.",
+      "correcao": "Aplicação de htmlspecialchars com as flags ENT_QUOTES e codificação UTF-8 em todas as saídas do termo de busca no HTML.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero em mediaResposta quando não há tempos de resposta registrados",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função mediaResposta calcula a média iterando sobre os registros com minutos_resposta preenchidos. Se não houver chamados com tempo de resposta, o contador $qtd permanece 0, gerando a divisão $soma / $qtd, que no PHP 8 dispara a exceção fatal DivisionByZeroError.",
+      "impacto": "Falha geral com erro 500 ao acessar o painel em instâncias recém-instaladas ou períodos sem chamados respondidos.",
+      "correcao": "Delegação da média ao banco via query agregada SELECT AVG(minutos_resposta) com tratamento de retorno nulo retornando 0.0 de forma segura.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Problema de consulta N+1 na obtenção do nome de técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 91,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Para cada chamado retornado na listagem ou exportação CSV, o código invoca tecnicoNome, disparando uma consulta SELECT independente por linha para buscar o nome do usuário.",
+      "impacto": "Degradação acentuada de latência e sobrecarga de requisições ao banco de dados com crescimento linear O(N) no número de chamados.",
+      "correcao": "Utilização de LEFT JOIN usuarios u ON c.tecnico_id = u.id nas consultas de listarChamados e exportarCsv, eliminando as N consultas adicionais.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Condição de corrida e dependência de diretório inexistente na exportação CSV",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv grava os dados em um caminho estático de disco definido por EXPORT_DIR (/var/www/painel/tmp/chamados.csv). Se o diretório não existir ou não for gravável, a função falha silenciosamente. Usuários concorrentes sobrescrevem o mesmo arquivo simultaneamente.",
+      "impacto": "Impossibilidade de download do CSV em ambientes sem o diretório temporário configurado e corrupção de dados entre downloads simultâneos.",
+      "correcao": "Escrita direta do CSV no stream de saída php://output com envio prévio dos cabeçalhos HTTP adequados, eliminando a dependência do arquivo temporário em disco.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Fixação de sessão após autenticação de usuário",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O processo de login valida as credenciais e grava uid e papel na sessão sem renovar o identificador de sessão através de session_regenerate_id(true).",
+      "impacto": "Um atacante que consiga induzir o usuário a usar um session ID pré-determinado pode sequestrar a sessão autenticada do usuário após o login.",
+      "correcao": "Chamada a session_regenerate_id(true) imediatamente após validar as credenciais do usuário.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Segredos e configurações sensíveis fixadas no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 18,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O arquivo config.php possui senha de banco de dados embutida em fallback e chave estática de API SMTP (SMTP_API_KEY) sem opção de leitura por variável de ambiente.",
+      "impacto": "Risco de vazamento de credenciais e chaves de serviços externos através do controle de versão ou exposição acidental do arquivo.",
+      "correcao": "Permitir a configuração de SMTP_API_KEY e EXPORT_DIR através de getenv(), mantendo compatibilidade retroativa com fallbacks.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Armazenamento e validação de senhas com algoritmo criptográfico obsoleto (MD5 sem sal)",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função autenticar calcula md5($senha) para validar com a coluna senha da tabela usuarios. MD5 é uma função vulnerável a ataques de colisão e inversão rápida por tabelas rainbow.",
+      "impacto": "Em caso de vazamento do banco de dados, as senhas dos usuários podem ser descobertas facilmente por invasores.",
+      "correcao": "Migração para password_hash() e password_verify() com bcrypt ou argon2id, e ampliação da coluna senha de CHAR(32) para VARCHAR(255).",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Cálculo manual de média em memória PHP com consumo excessivo de recursos",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 115,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "A função mediaResposta busca todas as linhas da tabela chamados e itera em PHP somando os valores em vez de utilizar funções de agregação nativas do SGBD.",
+      "impacto": "Consumo desnecessário de tráfego de rede e memória do processo PHP proporcional ao volume da tabela chamados.",
+      "correcao": "Uso da função agregada nativa AVG(minutos_resposta) na consulta SQL.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo MD5 na autenticação de senhas (achado F9)",
+      "porque": "O schema existente em produção (schema.sql) define a coluna senha como CHAR(32) NOT NULL, impossibilitando armazenar hashes modernos (bcrypt/argon2) sem alteração estrutural no banco. Além disso, rotinas externas e integrações do ISP utilizam os dados pré-existentes de seed baseados em MD5, tornando a alteração arriscada para a compatibilidade sem uma migração planejada de dados."
+    },
+    {
+      "o_que": "Camada de acesso a dados mysqli",
+      "porque": "O manifesto de superfície pública estipula expressamente que as funções de lib.php recebem instâncias de mysqli como contrato de integração utilizado por outros componentes do ISP. A troca da camada de banco violaria as assinaturas públicas estabelecidas."
+    },
+    {
+      "o_que": "Assinaturas públicas de listarChamados, verChamado e exportarCsv em lib.php",
+      "porque": "Essas funções são consumidas diretamente por scripts de relatórios e exportação noturna sem contexto de sessão HTTP. Inserir restrições de permissão ou novos parâmetros obrigatórios nas funções de biblioteca quebraria esses scripts. A regra de visibilidade de clientes foi implementada adequadamente na camada de apresentação (index.php)."
+    }
+  ]
+}

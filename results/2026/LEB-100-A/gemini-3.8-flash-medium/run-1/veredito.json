@@ -1,0 +1,226 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Gemini 3.8 Flash",
+    "version": "not recorded",
+    "provider": "Google"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-01",
+    "runs": [
+      550
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-01",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "AT",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "A função `listarChamados(mysqli $db, string $busca = '')` concatenava a variável `$busca` diretamente na consulta SQL (`$sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\";`) sem qualquer sanitização",
+      "rationale": "F1 points at lib.php:78-93 and explains the concatenation. C3 from the probe (corrigida=true): mysqli prepared statement with bind_param at delivered lib.php:91-100. The LIKE wildcards % and _ are not escaped (incomplete per the matrix note), but C3 is mechanical."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "O valor da variável `$busca` (`$_GET['busca']`) era interpolado diretamente no atributo `value` do formulário (`value=\"' . $busca . '\"`) e no parágrafo de confirmação ... sem escape para contexto HTML.",
+      "rationale": "Both output points escaped with htmlspecialchars at delivered index.php:86 and :89. No explicit ENT_QUOTES, but on PHP 8.4 (the evaluation image) the default flags include ENT_QUOTES, so the attribute context is covered. Markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV/formula injection never mentioned; probe corrigida=false (title '=1+1' exported raw at delivered lib.php:176-182)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Session fixation not reported; login at delivered index.php:24 still sets $_SESSION['uid'] without session_regenerate_id."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "A função `autenticar()` calcula `$hash = md5($senha)` e compara com o banco. O algoritmo MD5 é criptograficamente quebrado ... além de não utilizar salt por usuário.",
+      "rationale": "F10 at lib.php:15 with the right mechanism (unsalted fast md5, rainbow tables). Deliberately not fixed: autenticar() unchanged at delivered lib.php:15; the stated reason (would break existing logins without a migration) ignores the transparent re-hash-on-login migration the matrix expects."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "A senha padrão do banco de produção (`N3tX@2013!prod`) e a chave estática `SMTP_API_KEY` (`netx-smtp-9f83e2c1a7b64d05`) estão hardcoded no arquivo de configuração do repositório.",
+      "rationale": "F9 at config.php:12/15. config.php is byte-identical to the legacy file, so both literals remain (C3 none per rule 11). The report also re-prints both secrets verbatim."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o `index.php` passava o `$_GET['ver']` diretamente para `verChamado()` e exibia o chamado retornado sem checar se o usuário logado era técnico ou o proprietário (`usuario_id === $uid`).",
+      "rationale": "Ownership check after load at delivered index.php:55 (deny when papel=cliente and usuario_id != uid; technicians unrestricted); verChamado(mysqli,int) signature preserved. The listing is also filtered to the client's own tickets (index.php:73-80), which enforces the manifest visibility rule and is not COMP-003."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se não existisse nenhum chamado respondido (`$qtd == 0`), o PHP 8 disparava um erro fatal `DivisionByZeroError`, travando o painel inteiro.",
+      "rationale": "Probe corrigida=true: SQL AVG with 0.0 fallback at delivered lib.php:142-149. AVG precision differs from the integer-sum division only inside the characterization tolerance and rounds to the same value on the page (rule 2), so this is not COMP-003."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. F8 covers the same function but reports a different issue (a shared static temp file path, concurrency, data at rest), never the handle leaked on the `$res === false` early return, so it is not matched to BUG-004. In the delivered code the early return after the query is gone and fclose($fp) runs on every path after a successful fopen (lib.php:170-184)."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Para cada linha recuperada na tabela `chamados`, o código executava uma consulta individual ao banco (`tecnicoNome()` ...). Com $N$ chamados, eram disparadas $1 + N$ queries consecutivas",
+      "rationale": "Probe corrigida=true. LEFT JOIN usuarios in listarChamados (lib.php:87-89) and exportarCsv (lib.php:166-170); a NULL name maps to '-' in both places, so the tecnico_nome key and the CSV Tecnico column are unchanged."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. The dispatcher still mixes routing, authorization and HTML building; the delivery even adds more authorization logic inline in index.php."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; status and priority literals unchanged at delivered lib.php:28-49."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; rotuloPrioridade nesting unchanged."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F4 — SQL injection via ID concatenation in tecnicoNome (lib.php:64-72)",
+      "is_isca": false,
+      "confidence": 95,
+      "detail": "The parameter is typed ?int, so the concatenated value can only be an integer or null (null returns early). The finding claims this 'permitia brechas de injeção direta de SQL' (allowed direct SQL injection openings); no injection is possible. It is not framed as hardening."
+    },
+    {
+      "reported_as": "F5 — SQL injection via ID concatenation in verChamado (lib.php:98-102)",
+      "is_isca": false,
+      "confidence": 95,
+      "detail": "verChamado takes int $id, and the caller casts it with (int), so an unsanitized value cannot reach the SQL. The finding claims a 'potencial vulnerabilidade de injeção SQL' (potential SQL injection vulnerability) if a caller passes unsanitized values, which the type makes impossible."
+    }
+  ],
+  "extra_findings": [
+    "Shared static export file — exportarCsv wrote every export to the fixed EXPORT_DIR/chamados.csv (lib.php:125), which risks concurrent-download collisions and leaves ticket data at rest on disk (F8, fixed by streaming to php://output)",
+    "Listing exposure — index.php:73 listed every ticket to clients, not only their own (reported inside F2 and fixed by filtering in index.php)"
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "The achados.json binding (LEB-100-A 1.1, sha 68088ab...) matches. The JSON and the prose are consistent. F8 (category 'qualidade', lib.php:123-151) spans the BUG-004 location, but its content is a different issue (shared temp file), so it was not matched to BUG-004; the fd leak was fixed silently by the restructure. SEC-014 and SEC-015 were reported, then deliberately left unfixed; the SEC-014 rationale wrongly says a migration is impossible without breaking logins. The RELATORIO re-prints both production secrets verbatim. The SEC-001 fix does not escape the LIKE wildcards % and _; C3 still comes from the probe. exportarCsv stays unfiltered for every caller, which is not a violation. The client listing is filtered in memory in index.php (enforcement, not COMP-003). Pages and CSV were checked against the manifest: signatures, return keys, labels, routes, CSV header and order, table markup and schema are all unchanged.",
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 4,
+    "causa_raiz": 5,
+    "priorizacao": 4,
+    "trade_offs": 4
+  },
+  "expl_justification": {
+    "clareza": "It has a Resumo, uniform Onde/Mecanismo/Impacto e Severidade/Confianca/O que foi feito blocks and a numbered Decisoes list. It is readable. The Resumo's claim that every active security failure and the visibility rule were corrected is not supported by the findings.",
+    "precisao": "The core findings are right: the concatenated LIKE, the two unescaped sinks, DivisionByZeroError on PHP 8, and the fixed export path that fails silently and races. Several claims are wrong. F4 says that 'em chamadas internas ou legadas sem coercao estrita' the ?int parameter 'permitia brechas de injecao direta', but the type declaration coerces or throws, so no text reaches the SQL (F5 repeats the idea at confidence 95). The visibility fix covers only listing and detail, so ?export=csv still gives every client the whole table, and this is never identified. F7 switches to AVG without noting that the returned float changes. php://output is called 'stream em memoria'.",
+    "causa_raiz": "The real causes are named for SQLi, XSS, the ownership gap in two routes, the zero divisor and the shared export file, mostly at the category level. The F4/F5 mechanisms are wrong, the export route's ownership gap and the session fixation are missed, and there is no cross-finding synthesis.",
+    "priorizacao": "The order follows neither severity nor exploitability. Two non-exploitable concatenations (F4, F5 media) come before N+1 and the division by zero (alta), and the secrets and MD5 (alta) come last after a media finding. Effort and risk are not used.",
+    "trade_offs": "The deferrals are thin. The secrets fallback is kept because other environments 'podem nao ter as variaveis', with no rotation or environment plan. MD5 is kept because a change 'violaria o contrato de teste', with no gated rehash-on-login considered. The schema is treated as an external contract the manifest does not declare. Filtering at the web layer is reasoned, but its omission from the export route undercuts it, and the AVG change to a public function's return value goes unweighed."
+  }
+}

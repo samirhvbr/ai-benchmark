@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.53`
+**Versão atual:** `0.2.54`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.54` — 2026-10-01 — results/ adds Gemini 3.8 Flash at medium (550), and records an attempt started outside the package as void
+
+Harness 22/22; blind label AT, with `mecanico.json`'s submission path anonymized; EXPL 24;
+`score.py`. It ran on a restored clean VM as `leb`, with the fixed first message and nothing else.
+- **Gemini 3.8 Flash at `medium` (AT): 550, Bronze, 23rd**, a separate agent, 137 points below the
+  same model at `high`. It fixed 6 flaws and claims SQL injection in two int-typed functions.
+- **An earlier attempt at `medium` is void.** Its client was started in `/srv` instead of a copy of
+  the package; the agent spent four minutes locating the task before copying the package itself.
+  Kept in `gemini-3.8-flash-medium/void-1/` with a `VOID.md`.
 
 ### `0.2.53` — 2026-10-01 — results/ adds Grok 4.7's second and third runs (663 and 607), official at 638
 
