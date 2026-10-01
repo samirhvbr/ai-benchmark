@@ -12,7 +12,8 @@ Twenty-six agents against the same package: LEB-100-A v1.1 (spec 1.1.0, task 1.0
 GLM-5.3, GLM-5.3-Flash, GLM-5.3-FlashX, Grok 4.7, Grok 4.6, Kimi K2.7 Code, DeepSeek V4 Flash, DeepSeek V4.1 Flash, Qwen3 Coder Next and Claude Sonnet 5.5 in Claude Code's multi-agent mode
 their first (see *Runs of 2026-09-30* below). On 2026-10-01 GPT-6.1-sol at effort `ultra`, GPT-6.1-sol
 pro, GPT-5.3-Codex and GLM-5.3 Prime got theirs, Claude Sonnet 5.5 at `xhigh` its second, and
-Claude Opus 5.5 its third, the first official result (see *Runs of 2026-10-01*).
+Claude Opus 5.5 its third, the first official result, and Claude Fable 5.1 its second (see
+*Runs of 2026-10-01*).
 
 Every `entrega/.leb-pacote.sha256` is byte-identical, and every `achados.json` carries the right
 binding (`PROTOCOL §2.2`), so all the deliveries solved the same task.
@@ -438,8 +439,8 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Six deliveries, labelled **Y** to **AD** in the order they arrived and judged blind like the others.
-The first three came one per VM; after restores, `bench1` and `bench2` ran the next three:
+Seven deliveries, labelled **Y** to **AE** in the order they arrived and judged blind like the others.
+The first three came one per VM; after restores, `bench1` and `bench2` ran the next four:
 
 | Label | Run | Outcome |
 | --- | --- | --- |
@@ -449,8 +450,9 @@ The first three came one per VM; after restores, `bench1` and `bench2` ran the n
 | **AB** | Claude Sonnet 5.5, `xhigh`, run 2 | 809 |
 | **AC** | GLM-5.3 Prime, `high`, run 1 | 635 |
 | **AD** | Claude Opus 5.5, `xhigh`, run 3 | 805 |
+| **AE** | Claude Fable 5.1, `xhigh`, run 2 | 764 |
 
-All six ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All seven ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -506,6 +508,16 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   - Nothing in the evidence ties the higher score to the clean machine: the run fixed the same
     number of flaws, and the choices that moved the total are the kind the first two runs had
     already split on.
+- **Claude Fable 5.1 at `xhigh`, run 2 (AE): 764, 17 points below its run 1 (781). Its published
+  score is now the lower, 764, 3rd.**
+  - It ran in Claude Code 2.1.285 on `bench1` in 22 minutes, for US$ 8.04. Every answer came from
+    Fable 5.1: no safety stop, and the client's model fallback was off, the switch that voided its
+    earlier second attempt (`void-1`). Run 1 was made on the first VM at 4 vCPUs as its
+    administrator; the note records the change.
+  - It fixed 10 of the 13 planted flaws, one more than run 1: this time it moved both secrets out
+    of the code. It lost the architecture points of run 1, where it had named the dispatcher, and
+    the full bug score, reporting the file-handle leak only inside another finding. Like run 1, it
+    left the CSV injection in place for the file's consumers.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -531,7 +543,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 - **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`.** An official score is the median of three
   runs (`PROTOCOL §4`). Opus 5.5 has three (711, 717, 805), so its 717 is the first official score;
-  Sonnet 5.5 has two (825, 809). A single run can sit 90 points from the agent's median, as Opus's
+  Sonnet 5.5 and Fable 5.1 have two (825 and 809; 781 and 764). A single run can sit 90 points from the agent's median, as Opus's
   third did. GPT-6.1-sol
   and GPT-6-astra (666 and 661) are five points apart; places 6 to 9 (625, 612, 601 and 599) sit
   within 26 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,

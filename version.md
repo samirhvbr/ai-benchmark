@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.40`
+**Versão atual:** `0.2.41`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.41` — 2026-10-01 — results/ adds Claude Fable 5.1's second xhigh run (764); its published score becomes 764, third
+
+Harness 22/22 with SEC-001, BUG-001 and PERF-001 fixed; blind label AE; EXPL 42; `score.py`. Fable
+5.1 at `xhigh` ran on `bench1` as `leb` on a restored clean VM, with the fixed first message and
+nothing else, in 22 minutes for US$ 8.04. Every answer came from Fable 5.1, with no safety stop and
+no model switch, the failure that voided its earlier second attempt.
+
+It scored 764, against 781 for run 1, so its published score is the lower median, 764, and it
+moves from second to third, behind Sonnet 5.5's multi-agent run (774). It fixed 10 of the 13
+planted flaws, one more than run 1, because it moved both secrets out of the code. It lost run 1's
+architecture points and part of the bug score.
 
 ### `0.2.40` — 2026-10-01 — results/ adds Claude Opus 5.5's third xhigh run (805): its 717 is the first official score on LEB-100-A
 

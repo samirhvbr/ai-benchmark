@@ -498,195 +498,6 @@
           "rank": 1
         },
         {
-          "agent": "claude-fable-5.1-xhigh",
-          "model": {
-            "name": "Claude Fable 5.1",
-            "id": "claude-fable-5-1",
-            "provider": "Anthropic",
-            "reasoning_effort": "xhigh",
-            "exact_version": null,
-            "training_cutoff": "2026-06",
-            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
-          },
-          "runs_count": 1,
-          "official": false,
-          "score": 781,
-          "totals": [
-            781
-          ],
-          "representative_run": 1,
-          "key_exposure": "before",
-          "discovery_index": 91.7,
-          "brier": 0.02,
-          "runs": [
-            {
-              "run": 1,
-              "total": 781,
-              "grade": "Gold",
-              "categories": {
-                "SEC": {
-                  "score": 211,
-                  "max": 250
-                },
-                "ARCH": {
-                  "score": 25,
-                  "max": 200
-                },
-                "BUG": {
-                  "score": 150,
-                  "max": 150
-                },
-                "PERF": {
-                  "score": 150,
-                  "max": 150
-                },
-                "CLN": {
-                  "score": 100,
-                  "max": 100
-                },
-                "COMP": {
-                  "score": 100,
-                  "max": 100
-                },
-                "EXPL": {
-                  "score": 45,
-                  "max": 50
-                }
-              },
-              "expl_rubric": {
-                "clareza": 9,
-                "precisao": 9,
-                "causa_raiz": 9,
-                "priorizacao": 8,
-                "trade_offs": 10
-              },
-              "penalties": [],
-              "comp_violations": [],
-              "flaws": {
-                "SEC-001": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-003": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-008": {
-                  "earned": 2,
-                  "possible": 6,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 60
-                },
-                "SEC-013": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 85
-                },
-                "SEC-014": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 95
-                },
-                "SEC-015": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 95
-                },
-                "SEC-017": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 98
-                },
-                "BUG-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "BUG-004": {
-                  "earned": 6,
-                  "possible": 6,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 90
-                },
-                "PERF-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "ARCH-002": {
-                  "earned": 2,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "ARCH-009": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "CLN-007": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 85
-                }
-              },
-              "false_positives": 0,
-              "decoys_reported": 0,
-              "extra_findings": 10,
-              "brier": 0.02,
-              "discovery_index": 91.7,
-              "characterization": {
-                "passed": 22,
-                "failed": 0
-              },
-              "operator_replies": 0,
-              "client": {
-                "name": "Claude Code",
-                "version": "2.1.285"
-              },
-              "cost_time": {
-                "source": "Claude Code 2.1.285 session log, usage summed per API message",
-                "elapsed_seconds": null,
-                "tokens": {
-                  "input": 932,
-                  "output": 71351,
-                  "cache": 2551395,
-                  "total": 2623678
-                },
-                "usd_estimate": null,
-                "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
-              },
-              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md"
-            }
-          ],
-          "rank": 2
-        },
-        {
           "agent": "claude-sonnet-5.5-max-ultracode",
           "model": {
             "name": "Claude Sonnet 5.5",
@@ -873,6 +684,360 @@
                 "note": "model time summed across the parallel agents (16.4 h) in 8.1 h of wall-clock; Claude Sonnet 5.5 accounts for US$ 217.74, the claude-sonnet-5 fallback of nine subagents for US$ 15.34 (541,148 output tokens), and the session title call to Claude Haiku 4.5 for US$ 0.001"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md"
+            }
+          ],
+          "rank": 2
+        },
+        {
+          "agent": "claude-fable-5.1-xhigh",
+          "model": {
+            "name": "Claude Fable 5.1",
+            "id": "claude-fable-5-1",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh",
+            "exact_version": null,
+            "training_cutoff": "2026-06",
+            "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+          },
+          "runs_count": 2,
+          "official": false,
+          "score": 764,
+          "totals": [
+            781,
+            764
+          ],
+          "representative_run": 2,
+          "key_exposure": "before",
+          "discovery_index": 87.5,
+          "brier": 0.021,
+          "runs": [
+            {
+              "run": 1,
+              "total": 781,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 211,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 25,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 150,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 45,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 9,
+                "priorizacao": 8,
+                "trade_offs": 10
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 60
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 2,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 10,
+              "brier": 0.02,
+              "discovery_index": 91.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285 session log, usage summed per API message",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 932,
+                  "output": 71351,
+                  "cache": 2551395,
+                  "total": 2623678
+                },
+                "usd_estimate": null,
+                "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md"
+            },
+            {
+              "run": 2,
+              "total": 764,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 233,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 139,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 42,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 8,
+                "causa_raiz": 9,
+                "priorizacao": 7,
+                "trade_offs": 9
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 60
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 7,
+              "brier": 0.021,
+              "discovery_index": 87.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (aefa766d), which is this run",
+                "elapsed_seconds": 1283.061,
+                "tokens": {
+                  "input": 1630,
+                  "output": 93132,
+                  "cache": 2502648,
+                  "total": 2597410
+                },
+                "usd_estimate": 8.04,
+                "note": "includes a session-title call to Claude Haiku 4.5 (US$ 0.001); every answer came from Claude Fable 5.1, with no safety stop and no model switch"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md"
             }
           ],
           "rank": 3

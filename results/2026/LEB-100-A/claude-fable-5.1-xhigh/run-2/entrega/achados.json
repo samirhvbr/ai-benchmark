@@ -1,0 +1,309 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL na busca por título (listarChamados concatena $busca no LIKE)",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados() monta \"WHERE titulo LIKE '%\" . $busca . \"%'\" com o valor de $_GET['busca'] sem escape nem prepared statement. Confirmado no banco de teste: busca=x' UNION SELECT id,login,senha,nome,papel,1,1,1,NOW() FROM usuarios -- renderiza a tabela usuarios (login, hash md5, papel) como chamados; busca=' derruba a página com mysqli_sql_exception e stack trace expondo SQL e caminhos.",
+      "impacto": "Qualquer cliente autenticado lê o banco inteiro (inclusive hashes de senha, md5 sem sal), ignora qualquer regra de visibilidade e provoca negação de serviço trivial.",
+      "correcao": "Consulta montada com prepared statement (c.titulo LIKE ? com '%busca%' como parâmetro) em consultarChamados(); mesma cláusula, ordenação e semântica de curingas. Payloads de injeção passam a devolver lista vazia.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Regra de visibilidade do manifesto não aplicada: cliente lista, abre e exporta chamados de outros (IDOR)",
+      "arquivo": "code/index.php",
+      "linha": 38,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "index.php obtém $uid e $papel da sessão (linhas 38-39) e nunca os usa: a listagem chama listarChamados() (todos), o detalhe chama verChamado((int)$_GET['ver']) para qualquer id e o export chama exportarCsv() (todos). Nenhuma função de lib.php filtra por usuario_id. Confirmado: logada como ana (cliente), a listagem traz 103 e 104 (de bruno) e ?ver=103 mostra título e descrição do chamado de bruno.",
+      "impacto": "Vazamento de dados entre clientes (descrição do problema, cobrança, bairro) por simples enumeração de ids sequenciais; violação direta da regra de negócio do manifesto.",
+      "correcao": "Novas funções em lib.php (listarChamadosDoUsuario, exportarCsvDoUsuario, podeVerChamado) e index.php passa a usar as versões filtradas para qualquer papel diferente de 'tecnico'; detalhe de chamado alheio responde 404 'Chamado nao encontrado.' igual a inexistente. Funções do manifesto mantidas globais para a exportação noturna e o relatório gerencial. Técnico continua vendo tudo (verificado).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no parâmetro busca (value do input e parágrafo de resultados)",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$busca = $_GET['busca'] é impresso sem escape dentro de value=\"...\" (linha 79) e em <p>Resultados para: ...</p> (linha 82). Confirmado: ?busca=\"><script>alert(1)</script> fecha o atributo e injeta o script; o cookie de sessão não tinha HttpOnly (F8), logo era legível pelo script.",
+      "impacto": "Roubo de sessão de técnico (que vê todos os chamados) por link malicioso; execução de ações no contexto da vítima.",
+      "correcao": "htmlspecialchars($busca, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') nos dois pontos; HTML idêntico para buscas legítimas.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senha do banco de produção e chave de API SMTP embutidas em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "DB_PASS tem fallback literal 'N3tX@2013!prod' (comentado como senha do usuário de produção) e SMTP_API_KEY é uma constante literal. O arquivo é versionado e acompanha o pacote; quem tem acesso ao repositório, a backups ou a este pacote tem os dois segredos.",
+      "impacto": "Acesso direto ao banco de produção por fora da aplicação (sem rastro de aplicação) e envio de e-mail em nome do ISP. Confiança 95 porque não posso confirmar daqui que o valor ainda é o vigente.",
+      "correcao": "Literais removidos; DB_PASS vem apenas do ambiente e a ausência da variável interrompe o boot com mensagem clara; SMTP_API_KEY vem do ambiente. Exige rotacionar os dois segredos e definir as variáveis no deploy (RELATORIO §4).",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senhas de usuários armazenadas e comparadas como md5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 17,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar() compara md5($senha) com a coluna senha CHAR(32) (schema.sql:7). md5 sem sal é quebrado offline a bilhões de tentativas/s e hashes iguais revelam senhas repetidas (ana e bruno têm o mesmo hash no seed). Com F1 qualquer cliente extrai os hashes.",
+      "impacto": "Tomada das contas técnicas (acesso a todos os chamados) a partir de qualquer vazamento da tabela usuarios.",
+      "correcao": "autenticar() aceita md5 legado (hash_equals, caixa-insensível como o MySQL fazia) e password_hash(); em login bem-sucedido com md5 regrava em bcrypt somente se a coluna comporta (information_schema) e o UPDATE é permitido, falhando em silêncio caso contrário. schema.sql passa a VARCHAR(255) com o ALTER de migração comentado. Hash fictício iguala o tempo de resposta quando o login não existe. Assinatura e retorno inalterados; verificado com coluna CHAR(32) e VARCHAR(255).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Exportação CSV grava arquivo fixo em disco compartilhado entre requisições (corrida, exposição, falha silenciosa)",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 85,
+      "mecanismo": "exportarCsv() escreve EXPORT_DIR/chamados.csv (mesmo caminho para todas as requisições) e depois faz readfile. Exportações concorrentes sobrescrevem o mesmo arquivo (um usuário recebe conteúdo truncado/misturado do outro; com F2 isso seria vazamento cruzado); /var/www/painel/tmp fica sob /var/www/painel e, se este for o docroot, o CSV completo é servido por URL sem login; se fopen falha a função retorna sem cabeçalho nem corpo (confirmado: página em branco HTTP 200); se a consulta falha, $fp fica aberto e o arquivo parcial permanece.",
+      "impacto": "Exposição de todos os chamados a quem acessar o arquivo e condição de corrida entre usuários; confiança 85 porque a exposição via URL depende do docroot real, mas a corrida e a falha silenciosa são certas.",
+      "correcao": "emitirCsvChamados() escreve direto em php://output com cabeçalhos HTTP enviados antes; nada toca o disco. Cabeçalho, ordem por id, rótulos e escape do fputcsv (explícito, igual ao anterior) produzem bytes idênticos ao original (comparado). EXPORT_DIR mantido para scripts internos.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Divisão por zero em mediaResposta derruba a listagem para todos os usuários",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "mediaResposta() devolve $soma / $qtd sem checar $qtd; sem nenhum chamado com minutos_resposta (banco novo, expurgo), PHP 8 lança DivisionByZeroError. index.php:74 chama a função em toda listagem, então a página principal cai para todos. Confirmado zerando a coluna no banco de teste.",
+      "impacto": "Indisponibilidade total do painel em ambientes/períodos sem primeira resposta registrada; o relatório gerencial que chama a função também quebra.",
+      "correcao": "Agregação em SQL (SUM/COUNT) e retorno 0.0 quando não há dados; para dados existentes o valor é idêntico (25.666666666666668 antes e depois).",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Fixação de sessão (id não regenerado no login) e cookie sem HttpOnly/SameSite/strict mode",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 25,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "session_start() com padrões e, após autenticar com sucesso (linhas 24-25), não há session_regenerate_id: confirmado que o PHPSESSID antes e depois do login é o mesmo. use_strict_mode desligado faz o servidor aceitar ids fornecidos pelo cliente, e o cookie sai sem HttpOnly nem SameSite (legível pelo XSS de F3).",
+      "impacto": "Quem fixar um id de sessão na vítima (link, subdomínio, XSS) herda a sessão autenticada; cookie exposto a scripts e a requisições cross-site.",
+      "correcao": "session_regenerate_id(true) após o login; ini cookie_httponly, cookie_samesite=Lax, use_strict_mode e cookie_secure quando a requisição veio por HTTPS. Confirmado: id muda no login e cookie sai com HttpOnly; SameSite=Lax.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "N+1 consultas: uma SELECT em usuarios por chamado na listagem e no CSV",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "listarChamados() (linha 89) e exportarCsv() (linha 137) chamam tecnicoNome() dentro do laço, uma consulta por chamado: N+1 round-trips a cada carga da listagem e a cada exportação (a noturna percorre a tabela inteira).",
+      "impacto": "Latência e carga no banco proporcionais ao número de chamados; degrada com o crescimento natural da tabela.",
+      "correcao": "LEFT JOIN usuarios com COALESCE(u.nome,'-') AS tecnico_nome em uma única consulta nas duas funções; chave tecnico_nome, valor '-', ordem das chaves e tipos preservados. tecnicoNome() mantida para relatórios internos.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Parâmetros GET/POST em formato de array geram TypeError e página 500",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 73,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "$_GET['busca'] (linhas 72-73) e $_POST['login'] (linha 22) vão direto a funções com parâmetro string; index.php?busca[]=1 ou login[]=x produzem TypeError não tratado (confirmado: fatal com stack trace).",
+      "impacto": "Erro 500 gratuito; com display_errors ligado revela caminhos do servidor.",
+      "correcao": "parametroTexto() em index.php devolve '' para parâmetro ausente ou não-string; comportamento idêntico para strings.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Login sem limite de tentativas nem registro de falhas",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 29,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O formulário de login aceita tentativas ilimitadas, sem atraso, bloqueio ou log; com senhas fracas como as do seed (senha123, tecmaster) um ataque de dicionário online é viável contra qualquer login conhecido.",
+      "impacto": "Tomada de contas por força bruta, inclusive de técnicos.",
+      "correcao": "Apenas registro: cada falha vai para error_log ('painel: falha de login para X de IP', sanitizado) para bloqueio externo (fail2ban/WAF). Bloqueio na aplicação não implementado: exige armazenamento compartilhado e política acordada; contador por sessão seria inútil.",
+      "corrigido": false
+    },
+    {
+      "id": "F12",
+      "titulo": "formatarStatus rotula qualquer valor fora de 1-3 como 'Resolvido'",
+      "arquivo": "code/lib.php",
+      "linha": 32,
+      "linha_fim": 34,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "O else final devolve 'Resolvido' para 3 e também para 0, 4, 99 e negativos; a coluna status é TINYINT sem CHECK, então um status novo gravado por outro sistema (ex.: 4 = cancelado) seria contado como resolvido pelo painel e pelo relatório gerencial, que casa por texto.",
+      "impacto": "Classificação errada em telas e relatórios caso surjam valores fora de 1-3; latente com os dados atuais.",
+      "correcao": "Não alterado: o manifesto fixa só 1/2/3 e mudar o fallback pode reclassificar dados que o relatório gerencial hoje trata como resolvidos. Proposta: confirmar com o dono do relatório e devolver rótulo distinto fora de 1-3.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "rotuloPrioridade com quatro níveis de aninhamento esconde a tabela de decisão",
+      "arquivo": "code/lib.php",
+      "linha": 40,
+      "linha_fim": 59,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "Cinco saídas em if/else aninhado em quatro níveis; a estrutura esconde que prioridade 4 sem primeira resposta recebe o mesmo 'Aguardando 1a resposta' de uma prioridade 1 (chamado 104 do seed) e que crítica dentro do SLA vira 'Alto - dentro do SLA'.",
+      "impacto": "Manutenção arriscada e assimetria de produto não evidente para quem lê o código.",
+      "correcao": "Linearizada em guard clauses com exatamente as mesmas saídas (tabela-verdade de 50 combinações idêntica). Semântica não alterada: tratar 'crítica sem resposta' é decisão de produto.",
+      "corrigido": true
+    },
+    {
+      "id": "F14",
+      "titulo": "Consultas por concatenação em verChamado e tecnicoNome (padrão inseguro, hoje não explorável)",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 100,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 100,
+      "mecanismo": "verChamado() (linha 100) e tecnicoNome() (linha 69) concatenam o id na string SQL; só não é injeção porque os parâmetros são tipados int e index.php faz (int). É o mesmo padrão que gerou F1 e basta relaxar o tipo ou chamar com string de outro script para virar vulnerabilidade.",
+      "impacto": "Risco de regressão para injeção de SQL em manutenção futura.",
+      "correcao": "Prepared statements nas duas funções; normalizarLinha() devolve os valores como string, mantendo o formato de retorno anterior.",
+      "corrigido": true
+    },
+    {
+      "id": "F15",
+      "titulo": "Falha de conexão não é tratada em PHP >= 8.1 (exceção antes de connect_errno)",
+      "arquivo": "code/index.php",
+      "linha": 9,
+      "linha_fim": 12,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "Desde o PHP 8.1 o mysqli lança mysqli_sql_exception por padrão; com o banco fora do ar new mysqli() lança antes do teste de connect_errno, a mensagem 'Falha ao conectar ao banco.' nunca aparece e, com display_errors ligado, sai um fatal com host, usuário e caminhos. Depende da versão do PHP e da configuração de erros em produção.",
+      "impacto": "Exposição de detalhes de infraestrutura e resposta sem código HTTP adequado quando o banco está indisponível.",
+      "correcao": "try/catch em torno da conexão e http_response_code(500) com a mesma mensagem; modo global de reporte do mysqli não alterado. display_errors=Off em produção continua obrigatório.",
+      "corrigido": true
+    },
+    {
+      "id": "F16",
+      "titulo": "Injeção de fórmula (CSV injection) via título do chamado no CSV exportado",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "titulo é controlado por quem abre o chamado e vai para o CSV sem tratamento; um título iniciado por =, +, - ou @ é interpretado como fórmula por Excel/LibreOffice ao abrir o arquivo exportado pela técnica (ex.: =HYPERLINK(...), DDE em versões antigas).",
+      "impacto": "Execução de fórmula/link malicioso na estação de quem abre o CSV; depende do cliente de planilha e de sua configuração.",
+      "correcao": "Não alterado: prefixar células com ' ou tab muda o conteúdo do CSV consumido pela integração de faturamento (contrato). Recomendação: tratar no consumidor ou acordar o escape com a integração.",
+      "corrigido": false
+    },
+    {
+      "id": "F17",
+      "titulo": "Listagem sem paginação e LIKE '%termo%' sem possibilidade de índice",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 84,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "A listagem carrega todos os chamados a cada acesso (todos os clientes, para técnico) e o LIKE com curinga à esquerda força varredura completa de chamados (o índice em criado_em só serve à ordenação). Em produção desde 2013, a tabela tende a dezenas de milhares de linhas.",
+      "impacto": "Tempo de resposta e carga crescentes com o volume de chamados.",
+      "correcao": "Não alterado além da redução de custo por linha (F9): paginação acrescenta parâmetro à rota e muda o HTML; FULLTEXT muda a semântica da busca. Ambos pedem acordo com consumidores.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas, nomes e tipos de retorno das sete funções do manifesto (inclusive strings em listarChamados/verChamado e id inteiro em autenticar)",
+      "porque": "Contrato do manifest.md. A visibilidade entrou por funções novas (listarChamadosDoUsuario, exportarCsvDoUsuario, podeVerChamado); normalizarLinha() preserva o formato texto que os consumidores recebem hoje."
+    },
+    {
+      "o_que": "Funções do manifesto continuam globais (listarChamados, exportarCsv devolvem todos os chamados)",
+      "porque": "A exportação noturna e o relatório gerencial precisam do conjunto completo; a regra de visibilidade é aplicada na camada web (index.php), onde a identidade existe."
+    },
+    {
+      "o_que": "mediaResposta continua global também para cliente",
+      "porque": "É um agregado, não um chamado; a regra do manifesto fala de ver chamados, e filtrar mudaria o indicador e a assinatura."
+    },
+    {
+      "o_que": "Fallback 'Resolvido' de formatarStatus para valores fora de 1-3 (F12)",
+      "porque": "O manifesto só define 1/2/3; o relatório gerencial casa por texto e mudar o fallback pode reclassificar dados sem acordo."
+    },
+    {
+      "o_que": "Semântica/textos de rotuloPrioridade (F13)",
+      "porque": "Só linearizei a forma; tratar 'crítica sem resposta' com rótulo próprio é decisão de produto que altera textos consumidos."
+    },
+    {
+      "o_que": "Curingas % e _ na busca por título",
+      "porque": "Já funcionavam assim; escapá-los mudaria resultados de buscas legítimas que contenham esses caracteres."
+    },
+    {
+      "o_que": "Escape de fórmulas no CSV (F16) e caractere de escape '\\' do fputcsv",
+      "porque": "Alterariam bytes do CSV consumido pela integração de faturamento."
+    },
+    {
+      "o_que": "Paginação e índice FULLTEXT (F17)",
+      "porque": "Mudam rota, HTML ou semântica da busca; precisam de acordo com consumidores."
+    },
+    {
+      "o_que": "Bloqueio de tentativas de login (F11)",
+      "porque": "Exige armazenamento compartilhado e política; entreguei só o registro em error_log para bloqueio externo."
+    },
+    {
+      "o_que": "Rota de logout, expiração de sessão, cabeçalhos CSP/X-Frame-Options",
+      "porque": "Rota nova está fora do manifesto; expiração e cabeçalhos de endurecimento pertencem à configuração do PHP/servidor web, que não conheço."
+    },
+    {
+      "o_que": "Modo global de reporte de erros do mysqli",
+      "porque": "Forçá-lo mudaria como todas as consultas falham; tratei apenas a conexão (F15)."
+    },
+    {
+      "o_que": "Critério de desempate em ORDER BY criado_em DESC",
+      "porque": "Ordem de empates é indefinida hoje; acrescentar critério secundário poderia reordenar o que consumidores veem."
+    },
+    {
+      "o_que": "seed.sql",
+      "porque": "Continua com MD5(): os usuários de teste entram pelo caminho legado e migram para bcrypt no primeiro login quando a coluna estiver alargada."
+    },
+    {
+      "o_que": "tecnicoNome() mantida",
+      "porque": "Não está no manifesto, mas o comentário original diz que relatórios internos a usam; só passou a usar prepared statement."
+    },
+    {
+      "o_que": "Gravação do arquivo EXPORT_DIR/chamados.csv (removida em F6, constante mantida)",
+      "porque": "O manifesto define exportarCsv como 'escreve o CSV na saída'; o arquivo era efeito colateral não contratado e inseguro. Se a rotina noturna lia o arquivo, deve passar a capturar a saída (RELATORIO §4)."
+    }
+  ]
+}
