@@ -1,0 +1,225 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em listarChamados via parametro busca concatenado na clausula LIKE",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O parametro $busca (vindo de $_GET['busca']) e concatenado diretamente na query SQL: \"WHERE titulo LIKE '%\" . $busca . \"%'\" sem prepared statement ou escape. Ataque classico de UNION injection.",
+      "impacto": "Vazamento completo dos dados do banco (usuarios, senhas, chamados). Possivel escalada para o sistema de arquivos via INTO OUTFILE.",
+      "correcao": "Substituida concatenacao por prepared statement com CONCAT('%', ?, '%') no bind_param. A funcao mantem a mesma semantica de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em tecnicoNome via concatenacao de $tecnicoId",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 70,
+      "mecanismo": "Concatenacao direta de $tecnicoId na query: 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId. Embora o parametro seja tipado ?int e os callers internos facam cast, a protecao depende de disciplina externa. Alem disso, o valor vem da coluna tecnico_id do banco, abrindo vetor de segunda ordem se os dados forem corrompidos.",
+      "impacto": "Vazamento condicional se a tabela chamados contiver dados injetados por outro vetor.",
+      "correcao": "Substituida por prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em verChamado via concatenacao de $id",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "Concatenacao de $id em 'SELECT * FROM chamados WHERE id = ' . $id. O parametro e tipado int e o caller em index.php faz (int) $_GET['ver'], o que bloqueia a injecao pela rota web atual. Porem, o padrao e fragil contra chamadas futuras sem cast.",
+      "impacto": "Nenhum pela rota atual. Risco futuro se novos callers nao fizerem cast.",
+      "correcao": "Substituida por prepared statement com bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "XSS Refletido — parametro busca ecoado sem escape HTML",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor de $_GET['busca'] e ecoado diretamente no atributo value do input e no paragrafo 'Resultados para:', sem htmlspecialchars. Um atacante injeta <script> via URL e executa no navegador da vitima autenticada.",
+      "impacto": "Roubo de sessao (cookie sem HttpOnly/Secure), defacement do painel, phishing no contexto do ISP.",
+      "correcao": "Ambos os pontos usam htmlspecialchars($busca, ENT_QUOTES, 'UTF-8').",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Quebra de autorizacao — clientes veem todos os chamados na listagem",
+      "arquivo": "code/index.php",
+      "linha": 76,
+      "linha_fim": 77,
+      "categoria": "bug",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados retorna todos os chamados sem filtrar por usuario_id. index.php exibe a tabela completa independentemente do papel do usuario logado. A regra de negocio (manifest.md) diz que cliente so pode ver chamados que ele mesmo abriu.",
+      "impacto": "Cliente autenticado ve titulos, status, prioridades e tecnico de chamados de qualquer outro cliente, violando confidencialidade.",
+      "correcao": "Adicionado array_filter em index.php apos a chamada de listarChamados: se papel === 'cliente', filtra chamados onde usuario_id === $uid. listarChamados preservado sem filtro para compatibilidade com scripts externos (rotina noturna, relatorio gerencial).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Quebra de autorizacao — clientes acessam detalhe de qualquer chamado via ?ver=",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 58,
+      "categoria": "bug",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "index.php?ver=<id> chama verChamado e exibe o resultado sem verificar se o chamado pertence ao cliente logado. Basta enumerar IDs para acessar descricoes, status e prioridades de chamados alheios.",
+      "impacto": "Cliente le descricao completa de chamados de terceiros, expondo dados confidenciais de negocio.",
+      "correcao": "Adicionada verificacao: se papel === 'cliente' e $c['usuario_id'] !== $uid, exibe 'Chamado nao encontrado.' (mesma mensagem de ID inexistente, para nao vazar existencia).",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Quebra de autorizacao — exportacao CSV exporta todos os chamados sem filtro",
+      "arquivo": "code/lib.php",
+      "linha": 132,
+      "linha_fim": 132,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "exportarCsv faz SELECT * FROM chamados sem qualquer filtro por usuario_id. Acessivel via index.php?export=csv por qualquer usuario autenticado. Cliente baixa CSV com todos os chamados do sistema.",
+      "impacto": "Violacao de confidencialidade em lote — cliente obtem arquivo estruturado com todos os chamados.",
+      "correcao": "Adicionados parametros opcionais ?int $usuarioId = null, ?string $papel = null. Quando papel === 'cliente', adiciona WHERE usuario_id = ? a query. Caller em index.php passa $uid e $papel. Scripts externos que chamam exportarCsv($db) mantem comportamento original (visao completa).",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Divisao por zero em mediaResposta quando nao ha chamados com minutos_resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "O loop incrementa $qtd para cada linha com minutos_resposta IS NOT NULL. Se nenhuma linha existir, $qtd permanece 0 e $soma / $qtd produz DivisionByZeroError em PHP 8 ou warning + INF em PHP 7.",
+      "impacto": "Pagina quebra (PHP 8) ou exibe INF no topo do painel, degradando a experiencia do usuario.",
+      "correcao": "Adicionada guarda: return $qtd > 0 ? $soma / $qtd : 0.0;",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Segredos hardcoded no codigo-fonte (senha do banco e chave SMTP)",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tem fallback 'N3tX@2013!prod' e SMTP_API_KEY e literal 'netx-smtp-9f83e2c1a7b64d05'. Qualquer pessoa com acesso ao repositorio ou a um backup do codigo obtem credenciais de producao.",
+      "impacto": "Acesso total ao banco de producao. Capacidade de enviar e-mails transacionais como o sistema.",
+      "correcao": "DB_PASS agora exige getenv('DB_PASS') e aborta se nao definida. SMTP_API_KEY lida de getenv('SMTP_API_KEY') com fallback para string vazia.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Senhas armazenadas com hash MD5 (sem salt, quebrado criptograficamente)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar computa md5($senha) e compara com coluna senha CHAR(32) (schema.sql:7). MD5 e quebrado, deterministico e extremamente rapido — bilhoes de hashes por segundo em GPU. Um vazamento do banco expoe todas as senhas via rainbow tables ou brute-force trivial.",
+      "impacto": "Comprometimento de todas as contas em caso de vazamento da tabela usuarios.",
+      "correcao": "Nao corrigida. Migrar para password_hash/password_verify exige alterar schema (CHAR(32) -> VARCHAR(255)), recalcular seed.sql e reescrever autenticar. Viola a restricao de nao alterar a camada de dados. Recomenda-se migracao faseada com coluna nova.",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Sessao nao regenerada apos login (session fixation)",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Apos autenticar retornar sucesso, o ID de sessao nao e regenerado. Um atacante que fixar o cookie de sessao antes do login herda a sessao autenticada da vitima.",
+      "impacto": "Tomada de conta pos-login se o atacante conseguir plantar um cookie de sessao.",
+      "correcao": "Nao corrigida. Resolver completamente requer session_regenerate_id(true) + flags HttpOnly, Secure e SameSite, que dependem de configuracao do php.ini e HTTPS no proxy reverso — fora do escopo de code/.",
+      "corrigido": false
+    },
+    {
+      "id": "F12",
+      "titulo": "Falta de protecao CSRF no formulario de login",
+      "arquivo": "code/index.php",
+      "linha": 32,
+      "linha_fim": 34,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "O formulario de login nao inclui token CSRF. Um atacante pode forjar POST cross-origin que autentica a vitima como um usuario controlado pelo atacante (login CSRF), levando a vitima a operar sob a conta do atacante sem perceber.",
+      "impacto": "Engenharia social — vitima usa o painel logada como o atacante e pode expor dados sem querer.",
+      "correcao": "Nao corrigida. Requer infraestrutura de token vinculado a sessao que o sistema nao possui. Risco baixo comparado aos demais achados.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "formatarStatus retorna 'Resolvido' para qualquer valor diferente de 1 ou 2",
+      "arquivo": "code/lib.php",
+      "linha": 32,
+      "linha_fim": 33,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "O else catch-all retorna 'Resolvido' para status 0, 4, negativos ou qualquer valor nao previsto. Se um bug ou corrupcao no banco produzir status invalido, o painel e o relatorio gerencial exibem informacao incorreta.",
+      "impacto": "Exibicao incorreta de status no painel e no CSV de exportacao.",
+      "correcao": "Nao corrigida. O contrato do manifesto define exatamente 1->Aberto, 2->Em atendimento, 3->Resolvido. Alterar o else quebraria consumidores que dependem do comportamento atual. A correcao correta esta na validacao de entrada/camada de banco, nao no renderizador.",
+      "corrigido": false
+    },
+    {
+      "id": "F14",
+      "titulo": "exportarCsv escreve arquivo em disco fixo sem limpeza e com risco de condicao de corrida",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 126,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "A funcao escrevia em EXPORT_DIR . '/chamados.csv' (caminho fixo) e chamava readfile em seguida. Multiplos workers PHP concorrentes (php-fpm) podem sobrescrever o arquivo simultaneamente, e o arquivo nunca e removido.",
+      "impacto": "Arquivos acumulados em disco. Condicao de corrida entre workers — um usuario pode baixar CSV parcialmente sobrescrito por outra requisicao.",
+      "correcao": "Substituido por fopen('php://temp', 'w+') e fpassthru, eliminando I/O de disco, condicao de corrida e deixando o cleanup para o garbage collector do PHP.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "MD5 para hash de senhas (lib.php:15, schema.sql:7, seed.sql)",
+      "porque": "Migrar para password_hash/password_verify exige alterar o schema (CHAR(32) -> VARCHAR(255)), recalcular hashes no seed.sql e reescrever autenticar. Viola a restricao de nao alterar a camada de dados. Recomenda-se migracao faseada com coluna nova e periodo de coexistencia."
+    },
+    {
+      "o_que": "Regeneracao de sessao apos login (session fixation)",
+      "porque": "Correcao completa requer session_regenerate_id(true) + flags HttpOnly/Secure/SameSite, que dependem de configuracao do php.ini e HTTPS no proxy reverso do ISP. Resolver parcialmente teria beneficio limitado."
+    },
+    {
+      "o_que": "Protecao CSRF no formulario de login",
+      "porque": "Requer infraestrutura de token anti-CSRF vinculado a sessao, que o sistema nao possui. Risco baixo (login CSRF nao vaza dados existentes, apenas associa sessao a conta do atacante)."
+    },
+    {
+      "o_que": "Fallthrough do else em formatarStatus (retorna 'Resolvido' para valores invalidos)",
+      "porque": "O manifesto define exatamente os tres rotulos (1->Aberto, 2->Em atendimento, 3->Resolvido). Alterar o else quebraria o contrato com o relatorio gerencial. A correcao adequada esta na validacao de entrada e constraints do banco, nao no renderizador."
+    },
+    {
+      "o_que": "Uso de $_GET sem validacao explicita de tipo em index.php",
+      "porque": "O codigo ja usa coercao (int) e operador ?? para seguranca basica. Trocar por validacao explicita seria refatoracao sem corrigir vulnerabilidade real — os vetores criticos (SQLi, XSS, autorizacao) ja foram enderecados."
+    },
+    {
+      "o_que": "Assinatura original de exportarCsv (exportarCsv(mysqli $db): void)",
+      "porque": "Parametros opcionais adicionados (?int $usuarioId = null, ?string $papel = null) preservam compatibilidade: chamadas existentes como exportarCsv($db) continuam funcionando sem filtro, que e o comportamento esperado por scripts de exportacao noturna."
+    }
+  ]
+}

@@ -48,7 +48,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 21 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
 | 22 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
 | 23 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) † · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
-| 24 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 2/3 (604 · 496) |
+| 24 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 3/3 (604 · 496 · 432) |
 | 25 | [MiniMax-M3](2026/LEB-100-A/minimax-m3/run-1/scorecard.md) † · default | **460** | Bronze | 185 | 0 | 129 | 56 | 0 | 70 | 20 | 0 | 70.8 | 0.011 | 1/3 |
 | 26 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) † · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 1/3 |
 | 27 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |

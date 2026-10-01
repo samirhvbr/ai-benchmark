@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Seventeen deliveries were scored, labelled **Y** to **AO** in the order they arrived and judged blind like
+Eighteen deliveries were scored, labelled **Y** to **AP** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -464,8 +464,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AM** | Claude Sonnet 5.5, `max`, run 1 | 807 |
 | **AN** | DeepSeek V4 Pro, `high`, run 1 | 604 |
 | **AO** | DeepSeek V4 Pro, `high`, run 2 | 496 |
+| **AP** | DeepSeek V4 Pro, `high`, run 3 | 432 |
 
-All seventeen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All eighteen ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -626,6 +627,15 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     export for clients and made no false SQL injection claim; its report scored 30 of 50.
   - `bench2`'s snapshot still held the first seconds of a Claude Opus 5.5 session in `leb`'s
     `~/.claude`; opencode never read that folder.
+- **DeepSeek V4 Pro at `high`, run 3 (AP): 432, Bronze. With three runs its score is official:
+  496, the median of 604, 496 and 432, 24th.**
+  - It ran on `bench3` through OpenRouter, the host of run 1, in 12 minutes, for US$ 0.04.
+  - It fixed 5 flaws, the fewest of its three runs. It did not report the N+1 query, reported the
+    session fixation and MD5 and left both in place, and claims SQL injection in an int-typed
+    function (one false positive), saying PHP would accept a string there. Its report scored 26
+    of 50.
+  - The three runs spread over 172 points, the widest of any agent with three, across two hosts:
+    604 and 432 through OpenRouter, 496 through Novita AI.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -649,9 +659,9 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh` and GPT-6-astra.** An official score is the median of three
-  runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh` and GPT-6-astra have three (711, 717, 805; 825, 809, 724;
-  661, 596, 628), so their 717, 809 and 628 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
+- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra and DeepSeek V4 Pro.** An official score is
+  the median of three runs (`PROTOCOL §4`). Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra and DeepSeek V4 Pro have
+  three (711, 717, 805; 825, 809, 724; 661, 596, 628; 604, 496, 432), so their 717, 809, 628 and 496 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
   third did, and GPT-6-astra's first run sat 33 points above its median. Places 5 to 9 (654, 653,
   638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
