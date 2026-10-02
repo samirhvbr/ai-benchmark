@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.68`
+**Versão atual:** `0.2.69`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.69` — 2026-10-02 — results/ adds the third runs of Claude Haiku 4.5 (232) and GLM-5.3 Prime (541), both now official, and MiniMax-M3 with the thinking variant (462)
+
+Harness 19/22, 22/22 and 22/22; blind labels BL, BM and BN, with `mecanico.json`'s submission path
+anonymized; EXPL 22, 27 and 33; `score.py`. All ran on restored clean VMs as `leb`, with the fixed
+first message and nothing else.
+- **Claude Haiku 4.5, run 3 (BL): 232.** Official at 317, the median, last.
+- **GLM-5.3 Prime at `high`, run 3 (BN): 541.** Official at 628, the median, 11th.
+- **MiniMax-M3 · thinking, run 1 (BM): 462**, a new agent: opencode with a selectable variant,
+  where MiniMax-M3's first run had no client recorded and no effort setting. BM's verdict was revised
+  to file two findings about contracted behaviours as extra findings, not false positives.
+- Fifteen scores are official.
 
 ### `0.2.68` — 2026-10-02 — results/ keeps a fourth and a fifth GPT-6.1-sol ultra run unscored
 

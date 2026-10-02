@@ -1,0 +1,137 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F4",
+      "titulo": "Credenciais hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Senha do banco de dados e chave SMTP estão embutidas no código fonte (linhas 12 e 15), expostas a qualquer desenvolvedor ou atacante com acesso ao repositório. Ficam no histórico Git permanentemente.",
+      "impacto": "Acesso direto ao banco de dados de produção, acesso ao serviço de e-mail transacional. Um atacante pode ler/modificar dados de clientes, enviar e-mails fraudulentos.",
+      "correcao": "Removidas credenciais hardcoded. Agora usam apenas getenv() com fallback para string vazia, forçando configuração via variáveis de ambiente em produção.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em listarChamados()",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A busca por título é concatenada diretamente na query SQL. Um usuário envia ?busca=' OR '1'='1 e a query se torna SELECT * FROM chamados WHERE titulo LIKE '%' OR '1'='1%', retornando todos os chamados sem filtro.",
+      "impacto": "Leitura não autorizada de chamados de outros usuários. Agravado pelo fato de a função já não respeitar a regra de visibilidade.",
+      "correcao": "Refatorado para usar prepared statement com parametrização. A busca é agora bind_param('s', $busca_param) onde $busca_param contém o padrão LIKE.",
+      "corrigido": true
+    },
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em tecnicoNome()",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O ID do técnico é concatenado diretamente na query SQL (SELECT nome FROM usuarios WHERE id = ' . $tecnicoId). Embora internamente receba um int, o padrão é perigoso e convida erros na evolução do código.",
+      "impacto": "Potencial leitura de dados não autorizados. Via UNION SELECT, um atacante conseguiria acessar outras tabelas.",
+      "correcao": "Convertido para prepared statement com bind_param('i', $tecnicoId). Assinatura e comportamento preservados.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em verChamado()",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O ID do chamado é concatenado diretamente na query (SELECT * FROM chamados WHERE id = ' . $id). Embora index.php faça cast para int antes de chamar, consumidores externos mencionados no manifesto (rotina noturna, relatório gerencial) poderiam ficar vulneráveis.",
+      "impacto": "Leitura de dados fora do escopo. Em combinação com UNION SELECT, acesso a outras tabelas.",
+      "correcao": "Convertido para prepare() + bind_param('i', $id). Assinatura preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS na listagem",
+      "arquivo": "code/index.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor de $busca é echoed diretamente no HTML sem escape (linha 82: echo '<p>Resultados para: ' . $busca . '</p>'). Um usuário envia ?busca=<img src=x onerror=\"alert('xss')\"> e o JavaScript é executado.",
+      "impacto": "Execução de código JavaScript no contexto do painel. Roubo de sessão, modificação de DOM, redirecionamento malicioso.",
+      "correcao": "Aplicado htmlspecialchars() em todos os pontos onde $busca é exibido no HTML. Tanto no input do formulário quanto na mensagem de resultado.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Violação da regra de negócio: falta controle de acesso",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "linha_fim": 96,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O manifesto especifica: 'Um cliente só pode ver os chamados que ele mesmo abriu. Um técnico pode ver qualquer chamado.' Atualmente, listarChamados() retorna todos os chamados sem verificar se pertencem ao cliente. O mesmo ocorre em exportarCsv().",
+      "impacto": "Exposição de dados confidenciais. Um cliente vê prioridades, datas, descrições e dados sensíveis de outros clientes. Quebra completamente a privacidade.",
+      "correcao": "Adicionado filtro em index.php (listagem) que aplica array_filter() para clientes verem apenas seus chamados. Também modificado exportarCsv() para respeitar a mesma regra via prepared statements filtrados por usuario_id. Adicionada verificação de acesso em verChamado().",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Division by zero em mediaResposta()",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Se não houver nenhum chamado com minutos_resposta IS NOT NULL, a variável $qtd será 0 e a divisão return $soma / $qtd gera um aviso (em PHP 8+, erro fatal).",
+      "impacto": "Erro fatal exibido ao usuário quando o banco está vazio ou não há chamados com tempo de resposta. Painel fica inacessível.",
+      "correcao": "Alterado para return $qtd > 0 ? $soma / $qtd : 0.0;",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Hashing fraco de senha (MD5)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "Autenticação usa MD5 para hash de senhas. MD5 é criptograficamente quebrado, não é salted, não possui stretching/iterations, e há tabelas rainbow pré-computadas. Uma senha comum é descoberta em segundos.",
+      "impacto": "Se um atacante conseguir acesso ao banco de dados, consegue descobrir senhas de usuários em pouco tempo.",
+      "correcao": "Não foi corrigido. Uma migração para bcrypt/Argon2 exigiria: (1) alterar schema de CHAR(32) para VARCHAR(60+), (2) refatorar autenticar() para password_verify(), (3) migrar hashes em produção. Isso quebra o contrato de consumidores externos mencionados no manifesto e está fora do escopo desta tarefa.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hashing de senha com MD5",
+      "porque": "Uma migração para bcrypt exigiria alterar o schema (CHAR(32) → VARCHAR(60+)), refatorar autenticar(), e migrar hashes existentes. Isso quebra o contrato de consumidores externos (manifesto menciona rotina noturna, relatório gerencial) que dependem da estrutura atual. É um projeto de refatoração separado."
+    },
+    {
+      "o_que": "Arquitetura de autenticação (separação de concerns)",
+      "porque": "O código atual mistura autenticação em index.php com lógica de banco em lib.php. Não foi refatorado em classes porque não há recompensa proporcional ao risco de quebrar consumidores externos."
+    },
+    {
+      "o_que": "Estrutura legada ENUM('tecnico','cliente')",
+      "porque": "Normalizar papéis em uma tabela separada exigiria ALTER TABLE em produção e quebra do schema. Deixa-se como está."
+    },
+    {
+      "o_que": "Funcionalidade de logout",
+      "porque": "O manifesto não menciona logout como requisito. A sessão é mantida até que o navegador seja fechado ou timeout do servidor."
+    },
+    {
+      "o_que": "CSRF tokens",
+      "porque": "Para manter compatibilidade com consumidores externos que podem fazer POST simples, CSRF não foi adicionado. É uma fragilidade conhecida, mas aceita para preservar compatibilidade."
+    }
+  ]
+}

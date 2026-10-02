@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Thirty-nine deliveries were scored, labelled **Y** to **BK** in the order they arrived and judged blind like
+Forty-two deliveries were scored, labelled **Y** to **BN** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -486,8 +486,11 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BI** | GPT-5.5, `xhigh`, run 3 | 568 |
 | **BJ** | GPT-6.1-sol, `ultra`, run 2 | 656 |
 | **BK** | GPT-6.1-sol, `ultra`, run 3 | 616 |
+| **BL** | Claude Haiku 4.5, default effort, run 3 | 232 |
+| **BM** | MiniMax-M3, `thinking`, run 1 | 462 |
+| **BN** | GLM-5.3 Prime, `high`, run 3 | 541 |
 
-All thirty-nine ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All forty-two ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -838,6 +841,24 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   `void-2/`. They were started on `bench3` and `bench1` at 18:45 and 18:46, after run 3 had started
   on `bench2` at 18:27, and would be the agent's fourth and fifth runs, which `PROTOCOL §4` forbids.
   They were set aside on that count before any judge saw them.
+- **Claude Haiku 4.5, run 3 (BL): 232, below the pass line. With three runs its score is official:
+  317, the median of 317, 369 and 232, last.** It ran on `bench3` in 10 minutes for US$ 0.27, with
+  the permission mode switched to acceptEdits as the first message was sent and never again. Its
+  `exportarCsv` now writes nothing for a caller without a session, which breaks three of the 22
+  characterization checks (PEN-002, −60) and hides tickets from the nightly export (COMP-003). It
+  reports SQL injection in `verChamado`, whose parameter is an int, and its report scored 22 of 50.
+- **MiniMax-M3 with opencode's thinking variant (BM): 462, Bronze, 27th, a separate agent from
+  MiniMax-M3 at its default (460).** MiniMax-M3's first run recorded no client and offered no effort
+  setting; this one ran in opencode on MiniMax's own API with a selectable variant, so by the
+  operator's decision it is filed as a new agent. It fixed 7 flaws, left the N+1 query, and lost 60
+  points of compatibility: unknown statuses now read "Desconhecido" and a priority-4 ticket within
+  SLA gets a new label (COMP-003 twice). Two findings that called those contracted behaviours bugs
+  were moved on review from false positives to extra findings, as earlier verdicts record them.
+- **GLM-5.3 Prime at `high`, run 3 (BN): 541. With three runs its score is official: 628, the median
+  of 635, 628 and 541, 11th.** It ran in opencode through OpenRouter on `bench1` in 17 minutes for
+  US$ 1.77. It answers HTTP 403 to every client on `?export=csv` (COMP-003) and `listarChamados`
+  now returns `null` instead of `'-'` for a ticket with no technician (COMP-002), and it kept the
+  database password's literal fallback.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -861,14 +882,14 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **Thirteen agents have three runs; the rest are not official.** An official score is the median of three
+- **Fifteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
   DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496,
   GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568, and GPT-6.1-sol at `ultra`
-  (597, 656, 616) at 616. Fable 5.1, Haiku 4.5,
-  GLM-5.3, GLM-5.3 Prime and Gemini 3.8 Flash at `high` have two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
+  (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628 and Claude Haiku 4.5 (317, 369, 232)
+  at 317. Fable 5.1, GLM-5.3 and Gemini 3.8 Flash at `high` have two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
   GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
   within the noise of a single run.

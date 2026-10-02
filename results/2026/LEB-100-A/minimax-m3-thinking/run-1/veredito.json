@@ -1,0 +1,227 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "MiniMax-M3",
+    "version": "not recorded",
+    "provider": "MiniMax"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-02",
+    "runs": [
+      462
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-02",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "BM",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "a string `$busca` (vinda de `$_GET['busca']` em `index.php:72`) é concatenada dentro de uma cláusula `LIKE` ... envia `?busca=' OR 1=1 -- `",
+      "rationale": "F1 at lib.php:82 explains the concatenation and an OR 1=1 payload. C3 from probe (corrigida=true): prepared LIKE ? with bind in mysqli (delivered lib.php:119-125). LIKE wildcards % and _ are deliberately not escaped (F10, decision #12), which per the matrix note makes the fix incomplete, but C3 is set by the probe."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "(1) dentro do atributo `value=\"...\"` do input — quebra de atributo com `\"><script>...</script>`; (2) dentro do parágrafo \"Resultados para: ...\"",
+      "rationale": "F5 names both output points. Delivered index.php:128 computes htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') and uses it at :144 (value attribute) and :147 (Resultados para); markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "No finding mentions CSV/formula injection (F11/F17/F18 concern the handle, the export directory and a race). Probe corrigida=false: titles are still written raw by fputcsv both in exportarCsv and in the new inline export in index.php:59-96."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 80,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o login \"promove\" esse id a uma sessão autenticada, sem trocar o identificador.",
+      "rationale": "F8 at index.php:24 explains session fixation. Delivered index.php:33 calls session_regenerate_id(true) right after successful autenticar, before writing $_SESSION."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "MD5 é rápida, sem salt e quebrada para senhas curtas (rainbow tables cobrem todo o espaço de 6 caracteres",
+      "rationale": "F4 at lib.php:15. Delivered lib.php:20-56 selects the stored hash, uses password_verify for $2y$/$2a$/$argon2, otherwise hash_equals against md5 and re-hashes with password_hash (transparent migration). Column widened CHAR(32)->VARCHAR(255) in schema.sql:7, not COMP-009 per rule 8; seed remains md5 and works."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`define('DB_PASS', getenv('DB_PASS') ?: 'N3tX@2013!prod');`. O fallback literal é a senha de produção.",
+      "rationale": "F2 (config.php:12) and F3 (config.php:15) both map to this row. Delivered config.php:11 and :14 read both secrets from getenv with empty fallback; rotation recommended (decision #7). Rule 11: both removed = C3 full."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "half",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "no detalhe (`index.php:53`), a função recebe `(int) $_GET['ver']` ... sem nenhuma checagem de `$c['usuario_id'] !== $uid` ... (`index.php?ver=102` mostra o chamado da Ana para o Bruno)",
+      "rationale": "F6 points at index.php:53 with the correct IDOR mechanism but is filed under 'arquitetura' instead of security, so C1 half (rule 1). Delivered index.php:107 denies when papel=cliente and usuario_id != uid after loading; technicians still see all; verChamado(mysqli,int) signature preserved. Listing/CSV filtering for clients is enforcement of the manifest rule, not COMP."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 85,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o `return $soma / $qtd;` assume `$qtd > 0`. Em PHP 8.0+, divisão por zero lança `DivisionByZeroError`",
+      "rationale": "F7 at lib.php:116. C3 from probe (corrigida=true); delivered lib.php:177 returns 0.0 for an empty set; average still over all tickets."
+    },
+    {
+      "id": "BUG-004",
+      "reported": true,
+      "confidence": 70,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "se o `SELECT * FROM chamados` falha (`$res === false`), o código apenas `return`s sem `fclose($fp)`",
+      "rationale": "F11 at lib.php:134 (pristine :133, within tolerance). Delivered lib.php:195 adds fclose($fp) before the early return; happy path still closes."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "No finding about the N+1 tecnicoNome() call. Probe corrigida=false (~5 queries); delivered lib.php:140 still calls tecnicoNome per row (now prepared), and the new inline export in index.php repeats the same N+1."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "F6 is filed as 'arquitetura' with range index.php:45-96, but its content is the missing visibility check and it is mapped to SEC-017 (one matrix row per finding). Nothing describes the dispatcher mixing routing/authorization/HTML; index.php grew more inline logic (CSV generation inlined at :59-96) rather than being split."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic numbers for status/priority not reported; delivered lib.php:67-70 and :85-87 still use literal 1/2/3, 3/4 and 30, no named constants."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "half",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "F13 points at rotuloPrioridade but reports a claimed label defect, not the nested-if structure, so it is not a report of CLN-007 (silent refactor: R1/R2 none). Delivered lib.php:79-88 uses a guard clause and early returns (target structure), but the truth table changed: priority 4 within SLA now returns 'CRITICO - dentro do SLA' instead of 'Alto - dentro do SLA', so R3 half and R4 none (COMP-003)."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "SEC (hardening) — session cookie without HttpOnly/Secure/SameSite, index.php:15 (F14); fixed with session_set_cookie_params",
+    "SEC — exported CSV written under /var/www/painel/tmp, possibly web-served (F17, lib.php:125); not fixed, infra recommendation",
+    "BUG — concurrent exports truncate the shared EXPORT_DIR/chamados.csv (race, F18, lib.php:126); not fixed",
+    "CLN — unchecked query results / silent failures in lib.php (F16); === false checks added",
+    "SEC-014 enabler — senha CHAR(32) cannot hold bcrypt hashes (F9, schema.sql:7); widened to VARCHAR(255)",
+    "UX — login failure shows no message (F15, index.php:30); message added",
+    "SEC-001 completeness — LIKE wildcards % and _ not escaped (F10, lib.php:82); reported but deliberately not fixed",
+    "F12 — formatarStatus returns 'Resolvido' for any status outside 1/2 — reported as a bug; the behaviour is contracted, so no fix is owed",
+    "F13 — rotuloPrioridade treats priority 4 within SLA as 'Alto' — reported as a bug; the behaviour is contracted, so no fix is owed"
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 2,
+      "detail": "(1) formatarStatus (delivered lib.php:65-71) now returns 'Desconhecido' for statuses outside 1/2/3 where the legacy contract returned 'Resolvido' (rule 2). (2) rotuloPrioridade (delivered lib.php:86) now returns the new label 'CRITICO - dentro do SLA' for priority 4 within SLA where the contracted function returned 'Alto - dentro do SLA' — a contracted label change on the listing/detail; attributable to the CLN-007 refactor (R4 none)."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json.leb binding matches (LEB-100-A 1.1, sha 68088ab...). JSON and prose list the same 18 findings. Inconsistency: RELATORIO F6/decision #2 and nao_alterei claim the technician export 'segue pelo caminho antigo' via exportarCsv($db), but delivered index.php:58-98 no longer calls exportarCsv at all — both technicians and clients get an inline php://output CSV (same header, order and labels for technicians, so not COMP; client filtering is enforcement per rule 6). Consequence: the BUG-004 fix in exportarCsv is not on the web route path, and the route no longer writes EXPORT_DIR/chamados.csv. F2 and F3 both map to SEC-015. F6 (category 'arquitetura', range index.php:45-96) mapped to SEC-017 with C1 half; not counted for ARCH-002. F13 lies in rotuloPrioridade but describes a label semantics change, not nesting, so CLN-007 was treated as a silent refactor. RELATORIO F18 has a garbled 'Confiança: mundial' token before the real value 50. No new demonstrable bug found (tecnicoNome '-' preserved; SLA average unchanged; md5 login still works on the contracted schema+seed). Review: F12 (the formatarStatus 'Resolvido' fallback) and F13 (the priority-4 label) were moved from false positives to extra findings: both describe real, contracted behaviours, and earlier verdicts of this evaluation (AS, AY, BC) record such findings as extra findings.",
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 5,
+    "causa_raiz": 6,
+    "priorizacao": 5,
+    "trade_offs": 4
+  },
+  "expl_justification": {
+    "clareza": "It has a Resumo, uniform Arquivo/Categoria-Severidade-Confianca/Mecanismo/Impacto/O que fiz blocks for 18 findings, numbered Decisoes and a checklist. It is readable, with slips such as 'Confianca: mundial · Confianca: 50' in F18 and a stray '**' in Decisao 2.",
+    "precisao": "Some claims are wrong. F1 says an 'atacante nao autenticado' can force the full listing 'sem necessidade de login', but index.php:20-36 exits with the login form for every request without a session (the error that cost J and AN). F13 claims 'nenhum dos rotulos antigos foi renomeado', yet priority 4 within SLA now returns a new label, so existing output changes. F9 correctly explains that a bcrypt UPDATE into CHAR(32) truncates the hash and locks the user out, but the report only widens schema.sql, declines to provide an ALTER for existing databases, and does not say the rehash checks the column, which leaves the failure it describes open in production. Other findings (IDOR via ?ver=102, the zero divisor, the shared export file, cookie defaults) are right.",
+    "causa_raiz": "The real causes are named for the main items: the role read and never used, raw concatenation, $qtd at zero, the fixed export path raced by concurrent requests, and the CHAR(32) width that would truncate bcrypt. They are concrete in places but mostly brief, with no cross-finding synthesis.",
+    "priorizacao": "The order does not follow severity: the critica visibility breach is sixth behind four alta items, MD5's enabling schema change (F9, alta) comes after media items, and no principle is stated. Effort and risk appear only in deferrals.",
+    "trade_offs": "Several consequential changes go unweighed or are argued on false premises. formatarStatus now returns 'Desconhecido' for unknown values (the gap noted for D, U and AS). rotuloPrioridade's output changes for critical tickets within SLA, presented as not renaming anything. A visible login error message is added. The export race and web exposure are left unfixed because 'a rotina noturna depende do arquivo', an assumption the manifest does not support. The MD5 migration ships without the ALTER or a width guard. Keeping the wildcards and exportarCsv for internal callers are the reasoned choices."
+  }
+}
