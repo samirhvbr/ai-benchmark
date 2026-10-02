@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.66`
+**Versão atual:** `0.2.67`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.67` — 2026-10-02 — results/ adds GPT-6.1-sol's third run at ultra (616), official at 616; every Codex agent now has three runs
+
+Harness 22/22; blind label BK, with `mecanico.json`'s submission path anonymized; EXPL 39;
+`score.py`. It ran in Codex CLI 0.159.3 at `ultra` with three subagents, on a restored clean VM the
+size of runs 1 and 2, as `leb`, with the fixed first message and nothing else.
+- **GPT-6.1-sol at `ultra`, run 3 (BK): 616.** With three runs its score is official: 616, the
+  median, 15th. Every agent run in Codex CLI now has its three runs; thirteen scores are official.
 
 ### `0.2.66` — 2026-10-02 — results/ adds GPT-6.1-sol's second run at ultra (656); its published score stays 597
 

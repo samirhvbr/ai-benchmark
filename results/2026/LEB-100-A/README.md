@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Thirty-eight deliveries were scored, labelled **Y** to **BJ** in the order they arrived and judged blind like
+Thirty-nine deliveries were scored, labelled **Y** to **BK** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -485,8 +485,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BH** | GPT-5.6-luna, `xhigh`, run 3 | 624 |
 | **BI** | GPT-5.5, `xhigh`, run 3 | 568 |
 | **BJ** | GPT-6.1-sol, `ultra`, run 2 | 656 |
+| **BK** | GPT-6.1-sol, `ultra`, run 3 | 616 |
 
-All thirty-eight ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All thirty-nine ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -828,6 +829,11 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   them, and its report scored 40 of 50. A second COMP-003 the matching judge recorded, for a
   visibility filter that serves sessionless callers only from the command line, was removed on
   review, as in AK and AL; the SLA average scoped to each client stands (COMP-003).
+- **GPT-6.1-sol at `ultra`, run 3 (BK): 616. With three runs its score is official: 616, the
+  median of 597, 656 and 616, 15th, 45 points below the same model at `xhigh`.** It ran in Codex CLI
+  on `bench2` in 11 minutes with three subagents, all at `ultra`. It fixed 9 flaws, MD5 among them,
+  and declined the CSV formula prefix for the billing integration; it scoped the SLA average to
+  each client (COMP-003). With it, every agent run in Codex CLI has its three runs.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -851,14 +857,14 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **Twelve agents have three runs; the rest are not official.** An official score is the median of three
+- **Thirteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
   DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496,
-  and GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568. Fable 5.1, Haiku 4.5,
-  GLM-5.3, GLM-5.3 Prime, Gemini 3.8 Flash at `high` and GPT-6.1-sol at `ultra` have two, and publish the
-  lower. A single run can sit more than 100 points from the agent's median, as
+  GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568, and GPT-6.1-sol at `ultra`
+  (597, 656, 616) at 616. Fable 5.1, Haiku 4.5,
+  GLM-5.3, GLM-5.3 Prime and Gemini 3.8 Flash at `high` have two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
   GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
   within the noise of a single run.
