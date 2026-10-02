@@ -1,0 +1,185 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Segredos de produção embutidos no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "DB_PASS usa uma senha literal como fallback quando a variável de ambiente não existe, e SMTP_API_KEY é uma chave literal no arquivo.",
+      "impacto": "Quem obtiver o pacote pode reutilizar a senha do banco e a chave SMTP, comprometendo dados e notificações.",
+      "correcao": "Removi os valores literais e deixei as credenciais dependentes do ambiente, com fallback vazio que falha de forma explícita.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Senhas armazenadas com MD5 rápido e sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação original calculava md5 da senha e comparava o digest diretamente com a coluna senha; o schema original também limitava a coluna a CHAR(32).",
+      "impacto": "Um vazamento da tabela permite quebra offline rápida das senhas, especialmente as credenciais fracas do seed.",
+      "correcao": "O schema e o seed usam hashes bcrypt, a autenticação verifica password_hash e hashes MD5 antigos são promovidos após login correto quando a coluna já aceita 255 caracteres.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Clientes conseguem consultar chamados de outros clientes",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Listagem, detalhe e exportação consultavam chamados sem predicado baseado no uid e papel armazenados na sessão.",
+      "impacto": "Um cliente podia listar, abrir por ID e exportar títulos, descrições e dados de chamados pertencentes a outros clientes.",
+      "correcao": "Adicionei filtros por usuario_id para clientes nas consultas de listagem, detalhe, média e CSV; técnicos permanecem com acesso amplo.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Busca concatenada diretamente no SQL",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "busca era concatenada dentro de LIKE '%...%' antes de enviar a string ao banco.",
+      "impacto": "Aspas e outros caracteres de uma busca podem alterar a expressão SQL e permitir leitura ou alteração indevida conforme as permissões do banco.",
+      "correcao": "Substituí a concatenação por uma consulta preparada com o termo de busca como parâmetro.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no parâmetro de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "O valor bruto de busca era inserido no atributo value e no parágrafo de resultados.",
+      "impacto": "Um link preparado com HTML ou JavaScript podia executar código no navegador da vítima.",
+      "correcao": "Validei o tipo de entrada e apliquei escape HTML explícito para o valor de busca e para campos exibidos do chamado.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Média de resposta divide por zero sem respostas",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando não havia linhas com minutos_resposta preenchido, qtd permanecia zero e soma era dividida por zero.",
+      "impacto": "A listagem falhava com erro fatal em uma base nova ou em um período sem respostas registradas.",
+      "correcao": "Passei a usar AVG e retornar 0.0 quando o resultado é nulo, mantendo o retorno float.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Exportação usa arquivo temporário previsível e compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Toda requisição escrevia e lia o mesmo caminho fixo chamados.csv em EXPORT_DIR.",
+      "impacto": "Exportações concorrentes podiam misturar respostas e um arquivo servido pelo web server poderia expor a base fora do fluxo de autorização.",
+      "correcao": "A exportação agora escreve diretamente em php://output e não cria arquivo compartilhado no diretório temporário.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Listagem e exportação fazem consultas N+1 para técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada chamado retornado acionava tecnicoNome, que fazia uma nova consulta a usuarios.",
+      "impacto": "A latência e a carga no banco cresciam com uma consulta adicional por chamado em cada listagem ou exportação.",
+      "correcao": "Usei LEFT JOIN nas duas consultas e preservei a chave tecnico_nome no retorno da listagem.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Campos do CSV podem ser interpretados como fórmulas",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Título e nome do técnico eram enviados ao fputcsv sem proteção contra valores iniciados por =, +, - ou @.",
+      "impacto": "Uma planilha poderia interpretar um título controlado como fórmula ao abrir o CSV.",
+      "correcao": "Prefixei valores potencialmente interpretáveis como fórmula com apóstrofo antes da serialização.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Sessão não era regenerada no login e não tinha atributos de proteção",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "O login reutilizava o ID de sessão existente e session_start não configurava HttpOnly, Secure ou SameSite.",
+      "impacto": "Um ID de sessão fixado poderia ser promovido a sessão autenticada, e cookies poderiam ficar mais expostos a JavaScript ou requisições cross-site.",
+      "correcao": "Configurei atributos do cookie e chamei session_regenerate_id(true) depois da autenticação bem-sucedida.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Falhas de banco e arquivo podiam virar erro fatal",
+      "arquivo": "code/lib.php",
+      "linha": 16,
+      "linha_fim": 20,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Resultados false de prepare, execute e query eram usados como statements ou result sets sem teste prévio.",
+      "impacto": "Indisponibilidade ou uma falha transitória do banco produzia erro fatal e podia interromper listagem, detalhe ou exportação.",
+      "correcao": "Adicionei verificações de erro, fechamento de resources e retornos seguros compatíveis com cada assinatura pública.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Fallback de formatarStatus para valores fora de 1–3",
+      "porque": "O manifesto só define 1, 2 e 3, e manter Resolvido para valores inválidos preserva o comportamento consumido pelo relatório gerencial."
+    },
+    {
+      "o_que": "Regras e textos de rotuloPrioridade",
+      "porque": "Não havia defeito demonstrado nessas regras, e mudar os rótulos alteraria uma regra de negócio pública."
+    },
+    {
+      "o_que": "A constante EXPORT_DIR",
+      "porque": "Ela foi mantida para não quebrar consumidores ou configurações externas, embora a exportação HTTP não use mais o caminho compartilhado."
+    },
+    {
+      "o_que": "A semântica de busca LIKE '%termo%'",
+      "porque": "Full-text poderia alterar resultados de substrings e acentos; o ganho de performance seguro veio da remoção do N+1."
+    },
+    {
+      "o_que": "Assinaturas sem um novo parâmetro de identidade",
+      "porque": "O manifesto exige as assinaturas existentes; a visibilidade da sessão web foi aplicada internamente e consumidores internos fora de sessão continuam com acesso de serviço."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.64`
+**Versão atual:** `0.2.65`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.65` — 2026-10-02 — results/ adds the third runs of GPT-5.6-luna (624, official at 601) and GPT-5.5 (568, official at 568), and keeps a fifth GPT-6.1-sol run unscored
+
+Harness 22/22 for all three; blind labels BH and BI, with `mecanico.json`'s submission path
+anonymized; EXPL 29 and 29; `score.py`. All ran in Codex CLI 0.159.3 on restored clean VMs as
+`leb`, with the fixed first message and nothing else.
+- **GPT-5.6-luna at `xhigh`, run 3 (BH): 624.** Official at 601, the median, 18th. BH's verdict was
+  revised to score BUG-004 as a silent fix, as earlier verdicts did.
+- **GPT-5.5 at `xhigh`, run 3 (BI): 568.** Official at 568, the median, 22nd. It ran in Codex's
+  workspace-write sandbox without network; the run's note records it.
+- **A fifth GPT-6.1-sol run is kept unscored** (`void-2`): meant for the `ultra` agent, its log
+  records `xhigh`, an agent that already has three runs.
 
 ### `0.2.64` — 2026-10-02 — results/ adds Claude Sonnet 5.5's third max run (820, official at 807) and second runs of GPT-5.5 (558) and GPT-5.6-luna (601)
 

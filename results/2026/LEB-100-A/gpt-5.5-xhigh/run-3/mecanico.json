@@ -1,0 +1,99 @@
+{
+  "leb_spec": "1.1.0",
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "submission": "/home/samir/x/AI-BENCHMARK/results/2026/LEB-100-A/gpt-5.5-xhigh/run-3/entrega/code",
+  "generated_by": "leb_harness.py — pipeline mecânico (PROTOCOL §5 passos 1-3,6)",
+  "timing_s": {
+    "characterization_baseline": 18.8,
+    "characterization_submission": 9.2,
+    "probes": 10.9,
+    "total": 38.9
+  },
+  "characterization": {
+    "baseline": {
+      "passed": 22,
+      "failed": 0,
+      "ok": true,
+      "elapsed_s": 18.8,
+      "_stderr": ""
+    },
+    "submission": {
+      "passed": 22,
+      "failed": 0,
+      "ok": true,
+      "elapsed_s": 9.2,
+      "_stderr": ""
+    },
+    "regression": false
+  },
+  "probes": [
+    {
+      "id": "SEC-001",
+      "difficulty": "Fácil",
+      "corrigida": true,
+      "msg": "payload de injeção retornou 0 linhas (legado=5, corrigido=0)"
+    },
+    {
+      "id": "SEC-008",
+      "difficulty": "Difícil",
+      "corrigida": false,
+      "msg": "célula de título exportada: '=1+1' (não deve começar com '=')"
+    },
+    {
+      "id": "BUG-001",
+      "difficulty": "Moderada",
+      "corrigida": true,
+      "msg": "média com conjunto vazio retornou 0 sem erro"
+    },
+    {
+      "id": "PERF-001",
+      "difficulty": "Moderada",
+      "corrigida": true,
+      "msg": "listarChamados executou ~1 queries (corrigido: ≤2)"
+    }
+  ],
+  "difficulty_corrected": {
+    "Fácil": {
+      "probed": 1,
+      "corrected": 1
+    },
+    "Difícil": {
+      "probed": 1,
+      "corrected": 0
+    },
+    "Moderada": {
+      "probed": 2,
+      "corrected": 2
+    }
+  },
+  "mechanical_criteria": [
+    {
+      "id": "SEC-001",
+      "C3_corrigiu": true,
+      "C4_sem_regressao": true
+    },
+    {
+      "id": "SEC-008",
+      "C3_corrigiu": false,
+      "C4_sem_regressao": true
+    },
+    {
+      "id": "BUG-001",
+      "C3_corrigiu": true,
+      "C4_sem_regressao": true
+    },
+    {
+      "id": "PERF-001",
+      "C3_corrigiu": true,
+      "C4_sem_regressao": true
+    }
+  ],
+  "pending_judge": [
+    "passo 4: matching relatório×matriz (C1/C2 achou/explicou, iscas→PEN-004)",
+    "passo 5: rubrica EXPL às cegas",
+    "COMP: atribuição fina de violação de superfície (hoje surge como regressão na caracterização)",
+    "calibração (Brier) — depende dos achados reportados (passo 4)",
+    "normalização final e TOTAL/1000 (SCORING §4/§7)"
+  ]
+}

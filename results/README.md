@@ -42,11 +42,11 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 15 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 3/3 (612 · 612 · 608) |
 | 16 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md) † · high | **612** | Silver | 224 | 0 | 139 | 150 | 0 | 70 | 29 | 0 | 70.8 | 0.006 | 1/3 |
 | 17 | [DeepSeek V4.1 Flash](2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md) † · high | **612** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 30 | 0 | 58.3 | 0.013 | 3/3 (625 · 612 · 597) |
-| 18 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md) · xhigh | **599** | Bronze | 207 | 0 | 139 | 150 | 0 | 70 | 33 | 0 | 83.3 | 0.003 | 2/3 (599 · 601) |
+| 18 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-2/scorecard.md) · xhigh | **601** | Silver | 220 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.000 | 3/3 (599 · 601 · 624) |
 | 19 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-1/scorecard.md) · ultra | **597** | Bronze | 207 | 0 | 129 | 150 | 0 | 70 | 41 | 0 | 70.8 | 0.001 | 1/3 |
 | 20 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
 | 21 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 2/3 (687 · 588) |
-| 22 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 2/3 (601 · 558) |
+| 22 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-3/scorecard.md) · xhigh | **568** | Bronze | 203 | 0 | 86 | 150 | 0 | 100 | 29 | 0 | 58.3 | 0.001 | 3/3 (601 · 558 · 568) |
 | 23 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
 | 24 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md) † · default | **528** | Bronze | 203 | 0 | 139 | 56 | 0 | 100 | 30 | 0 | 70.8 | 0.007 | 1/3 |
 | 25 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) † · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |

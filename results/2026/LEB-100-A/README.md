@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Thirty-five deliveries were scored, labelled **Y** to **BG** in the order they arrived and judged blind like
+Thirty-seven deliveries were scored, labelled **Y** to **BI** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -482,8 +482,10 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BE** | GPT-5.5, `xhigh`, run 2 | 558 |
 | **BF** | Claude Sonnet 5.5, `max`, run 3 | 820 |
 | **BG** | GPT-5.6-luna, `xhigh`, run 2 | 601 |
+| **BH** | GPT-5.6-luna, `xhigh`, run 3 | 624 |
+| **BI** | GPT-5.5, `xhigh`, run 3 | 568 |
 
-All thirty-five ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All thirty-seven ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -805,6 +807,19 @@ fixed first message and nothing else, used no web tool and made no request to Gi
 - **GPT-5.6-luna at `xhigh`, run 2 (BG): 601, 2 points above run 1; its published score stays 599,
   18th.** It ran in Codex CLI on `bench3` in 10 minutes. It fixed 9 flaws, migrating MD5 this time,
   and scoped the SLA average to each client (COMP-003), as run 1 did.
+- **GPT-5.6-luna at `xhigh`, run 3 (BH): 624. With three runs its score is official: 601, the
+  median of 599, 601 and 624, 18th.** It ran in Codex CLI on `bench1` in 14 minutes. It fixed 10
+  flaws, the CSV formula injection and MD5 among them, but scoped the SLA average to each client
+  again (COMP-003); its report scored 29 of 50.
+- **GPT-5.5 at `xhigh`, run 3 (BI): 568. With three runs its score is official: 568, the median of
+  601, 558 and 568, 22nd.** It ran in Codex CLI on `bench3` in 5 minutes, in Codex's workspace-write
+  sandbox with network access off and approval on request, where every other Codex run had full
+  access; no approval was requested and no command was blocked. It kept compatibility at 100, but
+  left the export's file handle open on two new early returns (BUG-004 not fixed) and kept MD5.
+- **A fifth GPT-6.1-sol run is kept unscored** in `gpt-6.1-sol-xhigh/void-2/`. The operator meant to
+  run GPT-6.1-sol at `ultra`, which needs two more runs, but the session's log records `effort:
+  xhigh` on every turn, and that agent already has its three. It was set aside on that record before
+  any judge saw it.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -828,13 +843,13 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **Ten agents have three runs; the rest are not official.** An official score is the median of three
+- **Twelve agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
-  DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496.
-  Fable 5.1, Haiku 4.5, GLM-5.3, GLM-5.3 Prime, Gemini 3.8 Flash at `high`, GPT-5.5 and GPT-5.6-luna have
-  two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
+  DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496,
+  and GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568. Fable 5.1, Haiku 4.5,
+  GLM-5.3, GLM-5.3 Prime and Gemini 3.8 Flash at `high` have two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
   GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
   within the noise of a single run.

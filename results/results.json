@@ -6953,17 +6953,18 @@
             "training_cutoff": "2026-02-16",
             "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.6-luna"
           },
-          "runs_count": 2,
-          "official": false,
-          "score": 599,
+          "runs_count": 3,
+          "official": true,
+          "score": 601,
           "totals": [
             599,
-            601
+            601,
+            624
           ],
-          "representative_run": 1,
+          "representative_run": 2,
           "key_exposure": "before",
-          "discovery_index": 83.3,
-          "brier": 0.003,
+          "discovery_index": 58.3,
+          "brier": 0.0,
           "runs": [
             {
               "run": 1,
@@ -7304,6 +7305,176 @@
                 "note": "output includes 11,884 reasoning tokens; the log keeps no cost and no model time"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-2/scorecard.md"
+            },
+            {
+              "run": 3,
+              "total": 624,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 246,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 29,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 6,
+                "causa_raiz": 6,
+                "priorizacao": 5,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 6,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 4,
+              "brier": 0.001,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.3"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.3 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 146803,
+                  "output": 42381,
+                  "cache": 1674752,
+                  "total": 1863936
+                },
+                "usd_estimate": null,
+                "note": "output includes 17,438 reasoning tokens; the log keeps no cost and no model time"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-3/scorecard.md"
             }
           ],
           "rank": 18
@@ -8060,17 +8231,18 @@
             "training_cutoff": "2025-12-01",
             "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.5"
           },
-          "runs_count": 2,
-          "official": false,
-          "score": 558,
+          "runs_count": 3,
+          "official": true,
+          "score": 568,
           "totals": [
             601,
-            558
+            558,
+            568
           ],
-          "representative_run": 2,
+          "representative_run": 3,
           "key_exposure": "before",
           "discovery_index": 58.3,
-          "brier": 0.006,
+          "brier": 0.001,
           "runs": [
             {
               "run": 1,
@@ -8397,6 +8569,170 @@
                 "note": "output includes 8,712 reasoning tokens; the log keeps no cost and no model time"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md"
+            },
+            {
+              "run": 3,
+              "total": 568,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 203,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 86,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 29,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 6,
+                "causa_raiz": 6,
+                "priorizacao": 5,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 2,
+              "brier": 0.001,
+              "discovery_index": 58.3,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.3"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.3 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 47993,
+                  "output": 16748,
+                  "cache": 387584,
+                  "total": 452325
+                },
+                "usd_estimate": null,
+                "note": "output includes 7,296 reasoning tokens; the log keeps no cost and no model time"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-3/scorecard.md"
             }
           ],
           "rank": 22
