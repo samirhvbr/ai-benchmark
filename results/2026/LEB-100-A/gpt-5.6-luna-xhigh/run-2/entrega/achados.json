@@ -1,0 +1,157 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Cliente conseguia acessar chamados de outros clientes",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 101,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados e verChamado consultavam chamados sem relacionar usuario_id ao usuário autenticado, e a exportação também retornava a tabela inteira; um cliente podia usar ver=id ou exportar=csv para obter dados alheios.",
+      "impacto": "Exposição de títulos, descrições, status e dados operacionais de outros clientes.",
+      "correcao": "Aplicado filtro parametrizado por usuario_id para papéis não técnicos em listagem, detalhe, média e CSV; técnicos continuam vendo todos.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL na busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "O valor de busca era concatenado em LIKE '%...%', permitindo que aspas e operadores controlados pelo usuário alterassem o WHERE.",
+      "impacto": "Leitura indevida de chamados e bypass do filtro de busca.",
+      "correcao": "Substituído por instrução preparada com o termo LIKE como parâmetro.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Credenciais e chave de API estavam embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tinha uma senha de produção como fallback e SMTP_API_KEY continha uma chave literal no arquivo entregue.",
+      "impacto": "Cópias, backups ou leitores do código poderiam obter acesso ao banco e usar a integração transacional.",
+      "correcao": "Removidos os valores literais; as configurações agora são fornecidas por DB_PASS e SMTP_API_KEY no ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas eram verificadas somente com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha recebida era transformada em MD5 rápido e sem salt e comparada ao valor armazenado, tornando ataques offline baratos após vazamento da tabela.",
+      "impacto": "Recuperação de senhas fracas e possível comprometimento de contas com reutilização de senha.",
+      "correcao": "Aceitos hashes modernos e MD5 apenas durante a transição; logins legados são regravados com password_hash(), e a coluna foi ampliada para VARCHAR(255).",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "busca era inserido sem escape no atributo value e no texto de resultados.",
+      "impacto": "Um link preparado poderia executar JavaScript na origem do painel no navegador de um usuário autenticado.",
+      "correcao": "Normalizada a entrada para string e aplicado htmlspecialchars com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Sessão não era renovada após login",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "O mesmo identificador de sessão recebia uid e papel após autenticação, sem modo estrito nem regeneração, permitindo cenário de session fixation.",
+      "impacto": "Possível sequestro da sessão autenticada quando um identificador previamente fixado é reutilizado.",
+      "correcao": "Habilitados modo estrito, atributos de cookie e regeneração do id após login válido.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "CSV era gravado em arquivo compartilhado e previsível",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Toda exportação truncava o mesmo EXPORT_DIR/chamados.csv e depois o lia, deixando estado persistente e sujeito a corrida entre requisições.",
+      "impacto": "Exposição ou corrupção do resultado e possível acesso a dados da última exportação se o diretório fosse servido pelo web server.",
+      "correcao": "Consulta e escrita passaram a ocorrer diretamente em php://output, sem arquivo compartilhado.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Média de respostas causava divisão por zero",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Sem linhas com minutos_resposta, qtd permanecia zero e mediaResposta executava soma / qtd.",
+      "impacto": "Erro fatal ao abrir a listagem em uma base sem respostas registradas.",
+      "correcao": "Usado AVG() com retorno 0.0 quando o resultado é NULL.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Consultas N+1 para obter o nome do técnico",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 143,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "Cada chamado listado ou exportado chamava tecnicoNome, que abria uma nova consulta para buscar o mesmo conjunto de técnicos.",
+      "impacto": "Latência e carga no banco cresciam proporcionalmente ao número de chamados.",
+      "correcao": "Listagem e exportação usam LEFT JOIN em uma única consulta; tecnicoNome foi mantida preparada para consumidores legados.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "As expressões MD5 do code/seed.sql",
+      "porque": "São os dados de teste fornecidos e continuam necessários para validar o login legado; o primeiro login migra o registro para password_hash()."
+    },
+    {
+      "o_que": "As assinaturas públicas, rotas, nomes dos parâmetros, estrutura HTML e formato do CSV",
+      "porque": "Fazem parte do manifesto de superfície pública e consumidores externos dependem deles."
+    },
+    {
+      "o_que": "A constante EXPORT_DIR",
+      "porque": "Foi mantida por compatibilidade com possíveis consumidores de configuração, embora a exportação não grave mais nesse caminho."
+    },
+    {
+      "o_que": "Limitação de tentativas de login",
+      "porque": "O contrato não fornece armazenamento nem política operacional para rate limiting; isso deve ser definido na camada de aplicação ou infraestrutura responsável."
+    },
+    {
+      "o_que": "O fallback de formatarStatus para valores fora de 1, 2 e 3",
+      "porque": "O manifesto só define esses três valores e a alteração poderia quebrar consumidores do relatório sem mudar o contrato válido."
+    }
+  ]
+}

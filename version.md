@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.63`
+**Versão atual:** `0.2.64`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.64` — 2026-10-02 — results/ adds Claude Sonnet 5.5's third max run (820, official at 807) and second runs of GPT-5.5 (558) and GPT-5.6-luna (601)
+
+Harness 22/22 for all three; blind labels BE, BF and BG, with `mecanico.json`'s submission path
+anonymized; EXPL 32, 45 and 32; `score.py`. All ran on restored clean VMs as `leb`, with the fixed
+first message and nothing else.
+- **Claude Sonnet 5.5 at `max`, run 3 (BF): 820.** With three runs its score is official: 807, the
+  median, 2nd, above the same model in multi-agent mode (774). It used one read-only subagent that
+  ran on Sonnet 5.5 itself.
+- **GPT-5.5 at `xhigh`, run 2 (BE): 558.** Its published score becomes 558, 22nd. BE's verdict was
+  revised to charge its COMP-003 to the visibility fix, as the other verdicts do.
+- **GPT-5.6-luna at `xhigh`, run 2 (BG): 601.** Its published score stays 599, the lower of the two.
+- "Before quoting a number" is rewritten from the current table: ten official scores, seven agents
+  with two runs, and the band of close scores.
 
 ### `0.2.63` — 2026-10-02 — results/ adds GLM-5.3 Prime's second run (628); its published score drops to 628
 

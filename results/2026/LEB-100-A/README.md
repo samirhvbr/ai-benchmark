@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Thirty-two deliveries were scored, labelled **Y** to **BD** in the order they arrived and judged blind like
+Thirty-five deliveries were scored, labelled **Y** to **BG** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -479,8 +479,11 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BB** | GPT-5.6-sol, `xhigh`, run 2 | 612 |
 | **BC** | GPT-5.6-sol, `xhigh`, run 3 | 608 |
 | **BD** | GLM-5.3 Prime, `high`, run 2 | 628 |
+| **BE** | GPT-5.5, `xhigh`, run 2 | 558 |
+| **BF** | Claude Sonnet 5.5, `max`, run 3 | 820 |
+| **BG** | GPT-5.6-luna, `xhigh`, run 2 | 601 |
 
-All thirty-two ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All thirty-five ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -785,6 +788,23 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   formula injection, which it reported and left alone. It kept compatibility at 100, keeping the
   SLA average global, and its report scored 38 of 50, with a reproduced UNION that puts the
   password hashes in the title column.
+- **Claude Sonnet 5.5 at `max`, single agent, run 3 (BF): 820, Gold, the second highest run here.
+  With three runs its score is official: 807, the median of 807, 773 and 820, 2nd, two points below
+  the same model at `xhigh` and 33 above it in multi-agent mode (774).**
+  - It ran on `bench2` in 41 minutes for US$ 6.65. Before the first message the operator selected
+    Fable 5.1, then Sonnet 5.5, then the effort; every response came from Sonnet 5.5.
+  - It launched one subagent through Claude Code's Agent tool, a read-only blind audit of the original
+    code, which the client resolved to Sonnet 5.5: the run is one model, and multi-agent mode was off.
+  - It fixed 11 of the 13 planted flaws, missing only the two architecture ones, and kept
+    compatibility at 100; its report scored 45 of 50, naming the root cause of the three visibility
+    flaws as a data API that carries no identity.
+- **GPT-5.5 at `xhigh`, run 2 (BE): 558, Bronze, 43 points below run 1. Its published score is now
+  558, 22nd.** It ran in Codex CLI on `bench1` in 6 minutes. It fixed 7 flaws, one fewer than run 1:
+  it also left both secrets in the code, and it scoped the SLA average to each client again
+  (COMP-003). The verdict charges that violation to the visibility fix, as the other verdicts here do.
+- **GPT-5.6-luna at `xhigh`, run 2 (BG): 601, 2 points above run 1; its published score stays 599,
+  18th.** It ran in Codex CLI on `bench3` in 10 minutes. It fixed 9 flaws, migrating MD5 this time,
+  and scoped the SLA average to each client (COMP-003), as run 1 did.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -808,13 +828,16 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6.1-sol, GPT-6-astra, DeepSeek V4 Pro, Grok 4.7,
-  GPT-5.6-terra, DeepSeek V4.1 Flash and GPT-5.6-sol.** An official score is the median of three runs (`PROTOCOL §4`).
-  Those nine have three (711, 717, 805; 825, 809, 724; 666, 653, 661; 661, 596, 628; 604, 496, 432; 638, 663, 607;
-  625, 611, 645; 625, 612, 597; 612, 612, 608), so their 717, 809, 661, 628, 496, 638, 625, 612 and 612 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
-  third did, and GPT-6-astra's first run sat 33 points above its median. Places 7 to 11 (654, 653,
-  638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
-  Bronze) are two points apart across a grade line: that is within the noise of a single run.
+- **Ten agents have three runs; the rest are not official.** An official score is the median of three
+  runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
+  `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
+  628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
+  DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496.
+  Fable 5.1, Haiku 4.5, GLM-5.3, GLM-5.3 Prime, Gemini 3.8 Flash at `high`, GPT-5.5 and GPT-5.6-luna have
+  two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
+  DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
+  GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
+  within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
   bias; it does not remove it, since a model can recognise its own style — or a sibling's: six of
   the thirty-one contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on

@@ -1,0 +1,171 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes conseguiam listar chamados de outros clientes",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "index.php chamava listarChamados sem aplicar uid ou papel; a funcao fazia SELECT em chamados sem usuario_id, entao um cliente autenticado recebia chamados de outros clientes na listagem.",
+      "impacto": "Exposicao de titulos, status, prioridade e tecnico de chamados pertencentes a outros clientes.",
+      "correcao": "Adicionado filtro por usuario_id quando a sessao ativa tem papel cliente, mantendo tecnicos e chamadas sem sessao com visao global.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Clientes conseguiam abrir detalhes de chamados alheios por ID",
+      "arquivo": "code/lib.php",
+      "linha": 98,
+      "linha_fim": 101,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "verChamado buscava apenas por id; a rota index.php?ver=<id> permitia que um cliente informasse um id previsivel e recebesse titulo e descricao de chamado de outro dono.",
+      "impacto": "Exposicao integral da descricao e metadados de chamados de outros clientes.",
+      "correcao": "verChamado agora usa prepared statement e inclui AND usuario_id = ? para sessoes de cliente.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Exportacao CSV vazava chamados de outros clientes",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 132,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 97,
+      "mecanismo": "exportarCsv executava SELECT * FROM chamados ORDER BY id para qualquer usuario autenticado que acessasse index.php?export=csv, sem restringir pelo dono quando o papel era cliente.",
+      "impacto": "Download em massa de chamados de outros clientes em formato CSV.",
+      "correcao": "A exportacao agora filtra por usuario_id para cliente logado e preserva cabecalho e ordenacao por id.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Injecao SQL na busca por titulo",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 96,
+      "mecanismo": "O parametro busca era concatenado dentro de WHERE titulo LIKE '%...%', permitindo que aspas e operadores SQL alterassem a condicao da consulta.",
+      "impacto": "Um usuario podia manipular a consulta, remover o filtro de titulo ou provocar erro SQL controlado.",
+      "correcao": "Substituida a concatenacao por prepare/bind_param, mantendo busca por substring com LIKE.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no termo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 96,
+      "mecanismo": "O valor de busca era impresso cru no atributo value do input e no texto de resultados, permitindo refletir HTML ou JavaScript enviado na URL.",
+      "impacto": "Execucao de script no navegador de um usuario autenticado que abrisse um link malicioso.",
+      "correcao": "Criado helper de escape com htmlspecialchars usando ENT_QUOTES, ENT_SUBSTITUTE e UTF-8; busca agora e normalizada para string antes de renderizar.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Segredos operacionais hardcoded",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O arquivo de configuracao contem fallback de senha de banco e chave de SMTP diretamente no codigo fonte.",
+      "impacto": "Vazamento do pacote ou repositorio pode comprometer banco, email transacional ou ambientes que reutilizem esses segredos.",
+      "correcao": "Nao corrigido neste pacote; a correcao segura requer rotacao dos segredos e provisionamento por ambiente antes de remover fallbacks.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Senhas usam MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 16,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5($senha) e consulta uma coluna CHAR(32), esquema rapido e sem sal que e barato de quebrar se a tabela usuarios vazar.",
+      "impacto": "Recuperacao de senhas fracas a partir de hashes vazados e risco de reutilizacao de credenciais.",
+      "correcao": "Nao corrigido neste pacote para preservar a base existente; recomendado migrar para password_hash/password_verify com rehash gradual.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "Sessao nao era regenerada apos login",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 25,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 86,
+      "mecanismo": "Apos autenticar, o codigo gravava uid e papel na sessao existente sem trocar o ID; um ID fixado antes do login continuaria valido depois da autenticacao.",
+      "impacto": "Sequestro de sessao em cenario de session fixation.",
+      "correcao": "Adicionado session_regenerate_id(true) imediatamente apos autenticacao bem-sucedida.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Media de resposta falhava quando nao havia respostas",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 92,
+      "mecanismo": "mediaResposta dividia soma por qtd mesmo quando nao existia nenhuma linha com minutos_resposta, deixando qtd igual a zero.",
+      "impacto": "A pagina inicial podia quebrar em bases novas ou recortes sem chamados respondidos.",
+      "correcao": "Substituido por AVG no banco e retorno 0.0 quando nao ha media; cliente logado recebe media dos proprios chamados.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Listagem e exportacao faziam consulta N+1 para tecnico",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 88,
+      "mecanismo": "Para cada chamado retornado, listarChamados chamava tecnicoNome e executava outra consulta; exportarCsv repetia o mesmo padrao durante o download.",
+      "impacto": "Quantidade de queries cresce linearmente com o numero de chamados, aumentando latencia e carga no banco.",
+      "correcao": "Listagem e CSV passaram a usar LEFT JOIN usuarios para trazer tecnico_nome em uma unica consulta por rota.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas publicas das funcoes de lib.php",
+      "porque": "O manifesto informa consumidores externos dessas funcoes; a compatibilidade de nomes, parametros, tipos e retornos foi preservada."
+    },
+    {
+      "o_que": "Rotas, nomes de parametros, estrutura HTML declarada e formato do CSV",
+      "porque": "Esses itens fazem parte da superficie publica e sao consumidos por links, favoritos e rotinas externas."
+    },
+    {
+      "o_que": "Segredos hardcoded em config.php",
+      "porque": "Remover os fallbacks sem rotacao e provisionamento operacional poderia derrubar ambientes que ainda dependem deles."
+    },
+    {
+      "o_que": "Esquema de senha MD5 em schema.sql e dados de seed",
+      "porque": "A migracao segura exige coluna compativel com password_hash, atualizacao gradual dos usuarios e coordenacao com a base existente."
+    },
+    {
+      "o_que": "Visao global para scripts internos sem sessao",
+      "porque": "O manifesto menciona rotina noturna e relatorio gerencial; por isso o filtro por cliente foi condicionado a sessao web autenticada."
+    }
+  ]
+}
