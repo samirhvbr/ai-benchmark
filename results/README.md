@@ -33,9 +33,9 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 6 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-3/scorecard.md) · xhigh | **661** | Silver | 246 | 25 | 129 | 150 | 0 | 70 | 41 | 0 | 75.0 | 0.000 | 3/3 (666 · 653 · 661) |
 | 7 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
 | 8 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
-| 9 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-1/scorecard.md) † · high | **635** | Silver | 228 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 70.8 | 0.107 | 1/3 |
-| 10 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 1/3 |
-| 11 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |
+| 9 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 1/3 |
+| 10 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |
+| 11 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-2/scorecard.md) † · high | **628** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 38 | 0 | 70.8 | 0.029 | 2/3 (635 · 628) |
 | 12 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 3/3 (625 · 611 · 645) |
 | 13 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
 | 14 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 2/3 (629 · 621) |
@@ -64,4 +64,4 @@ A score with fewer than 3 runs is **not official**.
 
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
-† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), GLM-5.3 Prime (not published), Grok 4.6 (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.8 Flash (not published), Kimi K3 (not published), Qwen3 Coder Next (not published), DeepSeek V4 Pro (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).
+† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), Grok 4.6 (not published), GLM-5.3 Prime (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.8 Flash (not published), Kimi K3 (not published), Qwen3 Coder Next (not published), DeepSeek V4 Pro (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published).

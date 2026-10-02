@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.62`
+**Versão atual:** `0.2.63`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.63` — 2026-10-02 — results/ adds GLM-5.3 Prime's second run (628); its published score drops to 628
+
+Harness 22/22; blind label BD, with `mecanico.json`'s submission path anonymized; EXPL 38;
+`score.py`. It ran in opencode through OpenRouter on a restored clean VM as `leb`, with the fixed
+first message and nothing else.
+- **GLM-5.3 Prime at `high`, run 2 (BD): 628.** Its published score becomes 628, the lower of 635
+  and 628, and it moves from 9th to 11th. Unlike run 1 it left the CSV formula injection unfixed.
 
 ### `0.2.62` — 2026-10-02 — results/ adds GPT-5.6-sol's third run (608), official at 612
 

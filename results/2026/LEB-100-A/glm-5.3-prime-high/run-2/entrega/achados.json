@@ -1,0 +1,228 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injecao de SQL no parametro busca de listarChamados permite ler dados arbitrarios, inclusive hashes de senha",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "O valor de $_GET['busca'] e concatenado direto na string SQL (\" WHERE titulo LIKE '%' . $busca . '%'\"), executada via $db->query(). Umaspas fecha o literal do LIKE e o resto vira SQL: validado em execucao, 'zzz' OR 1=1 -- ' retorna todos os chamados e '%' UNION SELECT 1,2,3,senha,5,6,7,8,9 FROM usuarios -- ' exibe os hashes MD5 de senha na propria tabela de listagem (coluna titulo casa com usuarios.senha via UNION de 9 colunas).",
+      "impacto": "Leitura arbitratia do banco pela rota publica de busca: exfiltracao dos hashes de senha de todos os usuarios (com MD5, quebraveis em segundos), enumeration e bypass de filtros.",
+      "correcao": "listarChamados agora usa prepared statement com WHERE c.titulo LIKE CONCAT('%', ?, '%') e bind_param('s', $busca). Re-testado: payloads retornam 0 linhas; busca legitima continua filtrando.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Regra de visibilidade ignorada: cliente lista, abre e exporta chamados de outros usuarios",
+      "arquivo": "code/index.php",
+      "linha": 38,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "index.php carrega $uid/$papel da sessao (linhas 38-39) e nunca os usa: listarChamados nao filtra por usuario_id, verChamado nao checa dono e ?export=csv exporta todos os chamados a quem estiver logado. Validado: logado como ana (cliente), a listagem exibe os 5 chamados incluindo 103/104 abertos por bruno, ?ver=103 abre o detalhe e o CSV contem tudo.",
+      "impacto": "Vazamento sistematico de dados entre clientes do ISP (titulos, descricoes, prioridades) sem nenhuma sofisticacao: basta logar com conta de cliente. Viola a regra de negocio declarada no manifesto.",
+      "correcao": "Em index.php: listagem filtrada por usuario_id === uid para clientes (array_filter, ja que a assinatura de listarChamados nao aceita dono); detalhe de chamado alheio responde 'Chamado nao encontrado.' (idem id inexistente, sem vazar existencia); exportacao via nova funcao exportarCsvFiltrado($db, $uid) para clientes, mantendo exportarCsv($db) integral para tecnicos e para a rotina noturna.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no campo de busca (atributo value e texto 'Resultados para')",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 97,
+      "mecanismo": "$busca e ecoada sem escape no atributo value do input (linha 79) e no texto 'Resultados para' (linha 82). Payload '>\"><script>alert(1)</script>' fecha o atributo e injeta script executavel — validado: o <script> chega cru no HTML em ambos os pontos.",
+      "impacto": "Execucao de script no contexto da aplicacao para qualquer usuario logado que clique em link forjado index.php?busca=...: roubo de sessao e phishing.",
+      "correcao": "Variavel unica $buscaHtml = htmlspecialchars($busca, ENT_QUOTES) usada nos dois ecos. Verificado: payload aparece escapado (&quot;&gt;&lt;script...).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Segredos de producao hardcoded: senha do banco como fallback e chave SMTP literal",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tem fallback embutido com a senha real do banco de producao ('N3tX@2013!prod') e SMTP_API_KEY e literal fixa ('netx-smtp-9f83e2c1a7b64d05'). O fonte circula em versionamento/backup/pacotes: qualquer acesso ao codigo entrega credenciais validas. A chave SMTP nem e consumida pelo app — so serve a quem a roubar.",
+      "correcao": "Fallback embutido removido: as constantes agora vem exclusivamente de ambiente (getenv('DB_PASS') ?: '' e getenv('SMTP_API_KEY') ?: ''), mantendo os nomes para nao quebrar quem as referencia; sem a variavel, a conexao falha de forma audivel em vez de usar a senha vazada. Rotacao das credenciais vazadas fica como acao operacional. Validado: app funciona com DB_PASS no ambiente.",
+      "impacto": "Acesso direto ao banco de producao e envio de e-mails transacionais em nome do ISP (phishing), sem nenhuma exploracao de codigo.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senhas armazenadas e verificadas em MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "autenticar() calcula md5($senha) e compara com a coluna CHAR(32) definida em schema.sql (linha 7) e semeada com MD5('senha123')/MD5('tecmaster'). MD5 e rapido e sem salt: rainbow table quebra os hashes em segundos. Combina com F1 (exfiltracao dos hashes via SQLi) e F4 (vazamento de fonte): cadeia completa de comprometimento de contas.",
+      "impacto": "Qualquer posse da tabela usuarios resulta em senhas recuperadas; contas de clientes e tecnicos comprometiveis em massa.",
+      "correcao": "Nao alterada por decisao (ver nao_alterei): a migracao para password_hash exige mudar a coluna senha, migrar/re-semebrar todos os usuarios e coordenar com consumidores externos que tocam o formato — risco de quebrar o contrato de dados e a verificacao de login documentada no manifesto. Caminho proposto: migracao versionada com dupla leitura (MD5 legado + bcrypt novo, re-hash no primeiro login com sucesso).",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisao por zero em mediaResposta derruba o painel inteiro quando nao ha respostas medidas",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A funcao retorna $soma / $qtd sem checar $qtd. Se nenhum chamado tem minutos_resposta preenchido (base nova ou todos aguardando 1a resposta — estado legitimo de operacao), $qtd = 0 e em PHP 8 a divisao lanca DivisionByZeroError. Como mediaResposta roda no topo da listagem, a tela principal responde 500 para todos. Validado: original = 500; corrigido = 200 com '0 min'.",
+      "impacto": "Indisponibilidade total da listagem do painel por um estado de dados perfeitamente valido.",
+      "correcao": "Guarda if ($qtd === 0) return 0.0; (mais guarda de erro de query). Assinatura e retorno float preservados.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "N+1 na listagem e no export: uma query de tecnico por linha de chamado",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 92,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "listarChamados() (linha 89) e exportarCsv() (linha 137) chamam tecnicoNome() — uma query SELECT nome FROM usuarios — para cada chamado retornado. Uma pagina com N chamados executa N+1 queries; a carga cresce linearmente com o volume de chamados do ISP e saturar o banco na rota mais usada do sistema.",
+      "impacto": "Degradacao progressiva de latencia da listagem e carga desnecessaria no banco compartilhado com outros sistemas do ISP.",
+      "correcao": "As duas consultas passaram a resolver o nome via LEFT JOIN usuarios t ON t.id = c.tecnico_id com COALESCE(t.nome, '-') AS tecnico_nome — mesma chave e mesmo valor que tecnicoNome() produzia. tecnicoNome() mantida (com prepared statement) para relatorios internos que a usam. Saida byte-a-byte identica verificada.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Exportacao CSV via arquivo de caminho fixo: corrida entre usuarios, falha silenciosa e risco de vazar CSV filtrado de outro usuario",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "exportarCsv() grava o CSV inteiro em EXPORT_DIR/chamados.csv (caminho unico e compartilhado) e depois le de volta. (i) Duas exportacoes simultaneas escrevem no mesmo arquivo: quem le no meio recebe CSV truncado/misturado. (ii) Se o diretorio nao existe, fopen falha e a funcao retorna em silencio — validado: a rota ?export=csv do original devolve 200 vazio. (iii) Apos a correcao da visibilidade (F2), o arquivo unico guardaria o CSV filtrado do ultimo usuario e o servira ao proximo — vazamento entre contas, exatamente o que F2 elimina.",
+      "impacto": "Exportacao quebrada e intermitente (comportamento atual) e risco de servir dados de um usuario para outro (pos-correcao de visibilidade, se mantido o arquivo).",
+      "correcao": "O CSV e transmitido direto para a saida (fopen('php://output') + fputcsv), sem arquivo intermediario. Mesmos headers (Content-Type: text/csv; charset=utf-8; Content-Disposition: attachment; filename=\"chamados.csv\"), mesmas linhas e mesma ordem (ORDER BY id ASC). EXPORT_DIR permanece definida em config.php por compatibilidade. Validado: rota devolve o CSV completo.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Sessao sem endurecimento: fixacao de sessao no login e cookie sem HttpOnly/SameSite",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "O login nao chama session_regenerate_id(): um id de sessao fixado antes (link forjado, subdominio, header injetado) continua valido apos a autenticacao da vitima, permitindo sequestro. O cookie de sessao sai sem HttpOnly (legivel por JS — combina com o XSS F3) e sem SameSite (enviado em requisicoes cross-site).",
+      "impacto": "Sequestro de sessao via fixacao; vetor potencializado pelo XSS refletido corrigido em F3.",
+      "correcao": "session_regenerate_id(true) no login bem-sucedido antes de gravar uid, e session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']) antes de session_start(). Login re-validado (302 + listagem). Flag secure nao ativada por decisao (ver nao_alterei).",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Interpolacao de id direto no SQL em tecnicoNome e verChamado (mitigada por tipo, mas latente)",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 101,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "tecnicoNome (linha 69) e verChamado (linha 100) concatenam o id no SQL (' WHERE id = ' . $tecnicoId / . $id). Hoje nao e exploravel: as assinaturas tipam ?int/int e os chamadores fazem (int). E, porem, a mesma familia do F1 num ponto em que um refactor descuidado (afrouxar o tipo ou remover o cast) reabre a injecao — o valor chega concatenado, nao parametrizado.",
+      "impacto": "Nenhum hoje; risco latente de regressao de seguranca.",
+      "correcao": "Ambas convertidas para prepared statement (bind_param('i', ...)). Comportamento identico verificado na caracterizacao pos-correcao.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Entradas superglobais sem normalizacao (busca/login como array) provocam TypeError e 500",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 75,
+      "mecanismo": "autenticar($db, $_POST['login'], ...) e $busca = $_GET['busca'] ?? '' assumem string. Um request ?busca[]=x entrega array: a tipagem string de listarChamados lanca TypeError e derruba o PHP (500); idem login[] no POST. Nao vaza dados, mas e queda de servico trivial de provocar.",
+      "impacto": "Erro 500 reproduzivel por qualquer visitante, inclusive antes do login via POST.",
+      "correcao": "Casts (string) em $_POST['login'], $_POST['senha'] e $_GET['busca']. Entradas normais insensiveis: saida byte-a-byte identica.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Injecao de formula no CSV exportado (cells com =, +, -, @ iniciais)",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 55,
+      "mecanismo": "fputcsv escreve titulo e nome de tecnico sem neutralizar conteudo que Excel/Sheets interpretam como formula: um chamado criado com titulo '=WEBSERVICE(...)' vira formula executavel na planilha de quem abrir o export.",
+      "impacto": "Exfiltracao limitada via planilha do atendente/consumidor do relatorio.",
+      "correcao": "Nao alterada por decisao: prefixar/escapar as celulas mudaria os bytes do CSV, cujo formato (cabecalho exato, rotulos textuais) e contrato explicito do manifesto. Mitigacao cabe ao consumidor (importar como texto/formulas desabilitadas) ou por politica de criacao de chamado.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "Form de login sem protecao CSRF",
+      "arquivo": "code/index.php",
+      "linha": 32,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "O POST de login nao carrega token anti-CSRF: um site de terceiro pode submeter credenciais em nome do usuario (login CSRF, inclusive para logar a vitima numa conta do atacante). Impacto limitado porque nao ha outras acoes POST no sistema.",
+      "impacto": "Login cross-site forjado; sem outras acoes de estado, o dano potencial e baixo.",
+      "correcao": "Nao alterada por decisao: exigir token quebraria qualquer POST automatizado de integracao existente (nao documentaveis a partir do pacote) sem como testa-los; combinada com F9 (corrigido), o risco residual e pequeno.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Esquema MD5 de senhas (F5)",
+      "porque": "A migracao para password_hash exige mudar a coluna senha (CHAR(32)), migrar/re-semebrar todos os usuarios e coordenar com consumidores externos que tocam o formato — risco de quebrar o contrato de dados e o login documentado no manifesto (ana/senha123). Caminho recomendado: migracao versionada com dupla leitura (MD5 legado + bcrypt, re-hash no primeiro login)."
+    },
+    {
+      "o_que": "Escape de formula nas celulas do CSV (F12)",
+      "porque": "Mudaria os bytes do arquivo exportado, cujo formato e contrato explicito (cabecalho exato ID,Titulo,Status,Tecnico,Aberto em; rotulos de formatarStatus). Mitigacao deve ocorrer no consumidor ou por politica de entrada."
+    },
+    {
+      "o_que": "Token CSRF no login (F13)",
+      "porque": "Risco de quebrar POSTs automatizados de integracoes nao documentadas no pacote; o beneficio e baixo num sistema sem outras acoes POST, e parte do risco ja foi mitigada com session_regenerate_id e cookie HttpOnly/SameSite (F9)."
+    },
+    {
+      "o_que": "Stack de acesso a dados (mysqli)",
+      "porque": "Proibido pelo manifesto: as assinaturas publicas recebem mysqli e trocar a camada muda o contrato."
+    },
+    {
+      "o_que": "Flag secure no cookie de sessao",
+      "porque": "Ativar quebraria instalacoes HTTP/localhost (inclusive o fluxo de teste documentado); httponly + samesite=Lax cobrem os vetores realistas. A ativar quando houver TLS."
+    },
+    {
+      "o_que": "Indicador 'Tempo medio de 1a resposta' global (nao filtrado por dono)",
+      "porque": "O manifesto nao restringe o indicador por usuario; filtrar para clientes mudaria comportamento alem da regra de visibilidade explicita."
+    },
+    {
+      "o_que": "SELECT * nas consultas e conjunto de chaves retornadas",
+      "porque": "Consumidores dependem das chaves completas do registro; a chave extra tecnico_nome foi mantida com mesmo nome e valor. Restringir colunas e risco de contrato sem ganho real."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR em config.php",
+      "porque": "Mantida por compatibilidade para quem a referencia; o export nao depende mais dela (transmite direto para a saida)."
+    },
+    {
+      "o_que": "Mensagem die('Falha ao conectar ao banco.')",
+      "porque": "Generica, nao vaza detalhes; nao ha ganho de seguranca ou contrato em altera-la."
+    },
+    {
+      "o_que": "Estrutura do HTML da listagem (id da tabela, ordem das colunas) e rotas/parametros",
+      "porque": "Contrato explicito do manifesto; verificado byte-a-byte identico para tecnico entre original e corrigido."
+    }
+  ]
+}

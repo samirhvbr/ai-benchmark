@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Thirty-one deliveries were scored, labelled **Y** to **BC** in the order they arrived and judged blind like
+Thirty-two deliveries were scored, labelled **Y** to **BD** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -478,8 +478,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BA** | GPT-6.1-sol, `xhigh`, run 3 | 661 |
 | **BB** | GPT-5.6-sol, `xhigh`, run 2 | 612 |
 | **BC** | GPT-5.6-sol, `xhigh`, run 3 | 608 |
+| **BD** | GLM-5.3 Prime, `high`, run 2 | 628 |
 
-All thirty-one ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All thirty-two ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -778,6 +779,12 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   alone, by choice; it lost 60 points of compatibility, relabelling unknown statuses
   "Desconhecido" and scoping the SLA average to each client (COMP-003 twice). Its list of
   deliberate non-changes names `rotuloPrioridade` as not simplified, which identifies CLN-007.
+- **GLM-5.3 Prime at `high`, run 2 (BD): 628, 7 points below run 1 (635); its published score is
+  now 628, 11th.** It ran in opencode through OpenRouter on `bench3`, where run 1 used the Kilo
+  Code gateway, in 26 minutes for US$ 2.13. It fixed 8 flaws: the same as run 1 except the CSV
+  formula injection, which it reported and left alone. It kept compatibility at 100, keeping the
+  SLA average global, and its report scored 38 of 50, with a reproduced UNION that puts the
+  password hashes in the title column.
 
 ## Two defects in the harness, fixed before scoring
 
