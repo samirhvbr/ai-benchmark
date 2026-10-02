@@ -39,7 +39,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 12 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 3/3 (625 · 611 · 645) |
 | 13 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
 | 14 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 2/3 (629 · 621) |
-| 15 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 2/3 (612 · 612) |
+| 15 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 3/3 (612 · 612 · 608) |
 | 16 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-1/scorecard.md) † · high | **612** | Silver | 224 | 0 | 139 | 150 | 0 | 70 | 29 | 0 | 70.8 | 0.006 | 1/3 |
 | 17 | [DeepSeek V4.1 Flash](2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md) † · high | **612** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 30 | 0 | 58.3 | 0.013 | 3/3 (625 · 612 · 597) |
 | 18 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md) · xhigh | **601** | Silver | 198 | 0 | 150 | 150 | 0 | 70 | 33 | 0 | 70.8 | 0.006 | 1/3 |

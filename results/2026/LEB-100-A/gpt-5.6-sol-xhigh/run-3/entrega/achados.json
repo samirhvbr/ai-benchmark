@@ -1,0 +1,226 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Regra de visibilidade não era aplicada",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Listagem, detalhe, média e exportação eram executados sem filtrar usuario_id; qualquer sessão autenticada alcançava chamados de outros clientes por enumeração de ID ou exportação completa.",
+      "impacto": "Um cliente conseguia ler e exportar títulos, descrições, responsáveis, estados e datas pertencentes a outros clientes.",
+      "correcao": "A interface web passou a usar consultas parametrizadas com usuário e papel, filtrando clientes pelo proprietário e mantendo a visão completa dos técnicos; o papel é relido do banco.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Segredos de produção estavam embutidos no código",
+      "arquivo": "code/config.php",
+      "linha": 8,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A senha do banco tinha fallback literal identificado como produção e a chave SMTP também era literal, expondo-as em toda cópia do código.",
+      "impacto": "Leitores do repositório ou de seus artefatos poderiam acessar o banco ou abusar do serviço de e-mail, conforme os privilégios das credenciais.",
+      "correcao": "DB_PASS e SMTP_API_KEY agora vêm somente do ambiente; os valores já expostos ainda precisam ser rotacionados na infraestrutura.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL na busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo GET era concatenado entre aspas na expressão LIKE, permitindo que aspas e operadores fornecidos pelo usuário alterassem a cláusula WHERE.",
+      "impacto": "Um usuário autenticado podia desviar o filtro e tentar extrair dados adicionais com uma consulta UNION compatível.",
+      "correcao": "Busca e filtro de proprietário usam placeholders e bind_param.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "XSS refletido pelo termo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo de busca era inserido sem escape em um atributo value e em um parágrafo, permitindo fechar o contexto HTML e inserir conteúdo executável.",
+      "impacto": "Uma URL preparada podia executar JavaScript no painel sob a sessão da vítima.",
+      "correcao": "Saídas variáveis usam htmlspecialchars com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8; IDs são convertidos para inteiro.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senhas eram armazenadas com MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação comparava md5 da senha com uma coluna CHAR(32), um formato rápido e determinístico que facilita ataques offline.",
+      "impacto": "Um vazamento da tabela permite recuperar senhas fracas e identificar usuários que compartilham a mesma senha.",
+      "correcao": "O schema e o seed usam hashes password_hash; password_verify autentica os novos valores e logins MD5 legados são rehashados oportunisticamente.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Exportação usava um arquivo global previsível",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Toda exportação truncava e relia EXPORT_DIR/chamados.csv, permitindo colisão entre requisições e desvio por link simbólico se o diretório fosse manipulável.",
+      "impacto": "Respostas concorrentes podiam misturar ou trocar dados, e as permissões do diretório poderiam permitir sobrescrita de outro alvo.",
+      "correcao": "O CSV é transmitido diretamente por php://output e não cria arquivo compartilhado.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Sessão não era renovada após autenticação",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A sessão pré-login recebia uid e papel sem troca de identificador, preservando um ID que um atacante poderia ter fixado ou conhecido.",
+      "impacto": "Quem conhecesse o ID anterior poderia reutilizar a sessão já autenticada da vítima.",
+      "correcao": "O login regenera o ID; cookies usam HttpOnly, SameSite=Lax e Secure sob HTTPS, e páginas autenticadas não devem ser armazenadas em cache.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Login não tem limitação compartilhada de tentativas",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 29,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 70,
+      "mecanismo": "Cada POST dispara autenticação sem contador, atraso ou bloqueio no código fornecido; não há evidência no pacote de um limite externo.",
+      "impacto": "Atacantes podem automatizar adivinhação e preenchimento de credenciais.",
+      "correcao": "Proposta: aplicar limite por conta e origem em proxy ou armazenamento compartilhado; uma trava local por sessão seria facilmente contornada.",
+      "corrigido": false
+    },
+    {
+      "id": "F9",
+      "titulo": "Valores do CSV podem ser interpretados como fórmulas",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 75,
+      "mecanismo": "Título e nome do técnico são exportados literalmente; valores iniciados por =, +, - ou @ podem ser executados como fórmulas por planilhas.",
+      "impacto": "Ao abrir o CSV, uma planilha pode executar fórmulas capazes de fazer requisições externas ou manipular o documento.",
+      "correcao": "Proposta: criar modo de exportação para planilhas com neutralização explícita ou exigir tratamento no consumidor; o valor bruto não foi alterado por fazer parte dos dados usados por integrações.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Cabeçalho CSV divergia do valor exato contratado",
+      "arquivo": "code/lib.php",
+      "linha": 130,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "fputcsv cercava o campo com espaço como \"Aberto em\", mas o manifesto exige a linha literal ID,Titulo,Status,Tecnico,Aberto em.",
+      "impacto": "Consumidores que comparam o cabeçalho exato podiam rejeitar a exportação.",
+      "correcao": "O cabeçalho fixo é escrito literalmente; as linhas de dados continuam com codificação CSV.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Média sem respostas causava divisão por zero",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Sem valores minutos_resposta, o contador ficava zero e o retorno executava soma dividida por zero.",
+      "impacto": "A listagem falhava em base nova ou para cliente sem chamados respondidos.",
+      "correcao": "A consulta usa AVG e converte resultado NULL em 0.0, inclusive na visão por cliente.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Listagem e CSV executavam consultas N+1",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada chamado disparava tecnicoNome, somando uma consulta de usuários por linha à consulta principal; o mesmo padrão existia na exportação.",
+      "impacto": "Latência e carga no banco cresciam linearmente com o número de chamados.",
+      "correcao": "Listagem e exportação passaram a obter tecnico_nome com um único LEFT JOIN.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "Estados inválidos eram aceitos e exibidos como resolvidos",
+      "arquivo": "code/lib.php",
+      "linha": 28,
+      "linha_fim": 34,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Todo status diferente de 1 e 2 caía no rótulo Resolvido, enquanto o schema aceitava status e prioridade fora do domínio e minutos negativos.",
+      "impacto": "Dados corrompidos podiam aparecer como chamados legitimamente resolvidos e contaminar relatórios.",
+      "correcao": "Status desconhecido recebe rótulo explícito e o schema restringe status, prioridade e minutos aos domínios válidos.",
+      "corrigido": true
+    },
+    {
+      "id": "F14",
+      "titulo": "Parâmetros estruturados podiam derrubar a requisição",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 72,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 100,
+      "mecanismo": "Valores GET ou POST enviados como arrays eram repassados a parâmetros string tipados ou convertidos para inteiro, gerando TypeError ou avisos.",
+      "impacto": "Requisições malformadas podiam causar erro HTTP e ruído de logs.",
+      "correcao": "Login, senha e busca exigem string; o ID exige inteiro positivo válido e entradas inválidas recebem resposta controlada.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas e comportamento sem contexto das funções públicas listarChamados e exportarCsv",
+      "porque": "Consumidores CLI declarados no manifesto não fornecem identidade; a autorização foi aplicada na interface por auxiliares explícitos, sem introduzir dependência oculta de sessão."
+    },
+    {
+      "o_que": "Textos e ramificações de rotuloPrioridade",
+      "porque": "O manifesto não define essa classificação, e mudar seus valores poderia quebrar relatórios sem uma regra de negócio que justificasse a alteração."
+    },
+    {
+      "o_que": "Neutralização automática de fórmulas nos valores do CSV",
+      "porque": "Prefixar células mudaria títulos e nomes observados pelas integrações; a mudança precisa de um formato acordado ou tratamento no consumidor."
+    },
+    {
+      "o_que": "Limitação local de tentativas de login",
+      "porque": "Um contador por sessão é contornável; o controle eficaz exige estado compartilhado ou configuração do proxy e uma política operacional."
+    },
+    {
+      "o_que": "Constantes EXPORT_DIR e SMTP_API_KEY",
+      "porque": "Os nomes podem ser consumidos por outros arquivos legados; EXPORT_DIR foi mantida mesmo sem uso atual e SMTP_API_KEY foi preservada com valor vindo do ambiente."
+    }
+  ]
+}
