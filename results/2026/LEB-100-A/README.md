@@ -834,6 +834,10 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   on `bench2` in 11 minutes with three subagents, all at `ultra`. It fixed 9 flaws, MD5 among them,
   and declined the CSV formula prefix for the billing integration; it scoped the SLA average to
   each client (COMP-003). With it, every agent run in Codex CLI has its three runs.
+- **Two more GPT-6.1-sol runs at `ultra` are kept unscored** in `gpt-6.1-sol-ultra/void-1/` and
+  `void-2/`. They were started on `bench3` and `bench1` at 18:45 and 18:46, after run 3 had started
+  on `bench2` at 18:27, and would be the agent's fourth and fifth runs, which `PROTOCOL §4` forbids.
+  They were set aside on that count before any judge saw them.
 
 ## Two defects in the harness, fixed before scoring
 

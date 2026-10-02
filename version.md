@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.67`
+**Versão atual:** `0.2.68`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.68` — 2026-10-02 — results/ keeps a fourth and a fifth GPT-6.1-sol ultra run unscored
+
+Both completed normally in Codex CLI at `ultra` on `bench3` and `bench1`, started after run 3, which
+already made the agent's score official. `PROTOCOL §4` allows three runs per agent, so they are kept
+in `gpt-6.1-sol-ultra/void-1/` and `void-2/` with their deliveries, mechanical reports and a
+`VOID.md`, and nobody judged them. No score changes.
 
 ### `0.2.67` — 2026-10-02 — results/ adds GPT-6.1-sol's third run at ultra (616), official at 616; every Codex agent now has three runs
 
