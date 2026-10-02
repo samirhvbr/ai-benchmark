@@ -1191,16 +1191,16 @@
                 "version": "2.1.285"
               },
               "cost_time": {
-                "source": "Claude Code 2.1.285 session log (a63ee6e1), usage per model response; the client's own cost record is written when the session is closed",
-                "elapsed_seconds": null,
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (a63ee6e1), which is this run",
+                "elapsed_seconds": 1657.97,
                 "tokens": {
-                  "input": 58,
-                  "output": 228929,
-                  "cache": 6001452,
-                  "total": 6230439
+                  "input": 1078,
+                  "output": 229079,
+                  "cache": 6339029,
+                  "total": 6569186
                 },
-                "usd_estimate": null,
-                "note": "cost pending: the operator had not yet closed the session"
+                "usd_estimate": 4.75,
+                "note": "output includes 175,958 thinking tokens; includes a session-title call to Claude Haiku 4.5 (US$ 0.001)"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max/run-2/scorecard.md"
             }

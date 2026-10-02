@@ -125,7 +125,7 @@ Real findings outside the matrix (0 points, 0 penalty, candidates for the next i
   - Easy: 6 planted · 5 found · 4 fixed
   - Moderate: 3 planted · 2 found · 2 fixed
   - Hard: 4 planted · 4 found · 4 fixed
-- Cost and time: 6,230,439 tokens (input 58 · output 228,929 · cache 6,001,452) — from Claude Code 2.1.285 session log (a63ee6e1), usage per model response; the client's own cost record is written when the session is closed
+- Cost and time: 6,569,186 tokens (input 1,078 · output 229,079 · cache 6,339,029) · model working time 1658s · ≈ US$ 4.75 — from Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (a63ee6e1), which is this run
 
 ## Mechanical evidence
 

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.59`
+**Versão atual:** `0.2.60`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.60` — 2026-10-02 — results/ records the cost of Claude Sonnet 5.5's second max run, US$ 4.75, from the client's own record
+
+0.2.59 published the run with its cost pending. The operator has since closed the session, and
+Claude Code wrote its usage record: US$ 4.75 and 1,658 seconds of model time, 175,958 of the
+229,079 output tokens being thinking. `run.json` now takes cost and tokens from that record, as
+every other Claude Code run does; `runs.csv` and the notes follow. No score changes.
 
 ### `0.2.59` — 2026-10-01 — results/ adds Claude Sonnet 5.5's second single-agent max run (773); its published score drops to 773, 3rd
 

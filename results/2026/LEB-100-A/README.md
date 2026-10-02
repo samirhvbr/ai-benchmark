@@ -747,7 +747,7 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   published score is now 773, the lower of the two, 3rd, one point below the same model at the
   same effort in multi-agent mode (774).**
   - It ran on `bench1`, after the VMs were cleaned and their snapshots retaken, in 29 minutes and
-    94 responses, all from Sonnet 5.5, with the effort and permission mode set before the first
+    94 responses for US$ 4.75, all from Sonnet 5.5, with the effort and permission mode set before the first
     message.
   - It fixed 10 of the 13 planted flaws, the same as run 1 except MD5, which it left in place with
     a migration plan; it reproduced the export race on 20,000 tickets before fixing it. Its report
