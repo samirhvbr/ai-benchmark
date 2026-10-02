@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.60`
+**Versão atual:** `0.2.61`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.61` — 2026-10-02 — results/ adds GPT-6.1-sol's third run (661, official at 661) and GPT-5.6-sol's second (612), and keeps a fourth GPT-6.1-sol run unscored
+
+Harness 22/22 for all three; blind labels BA and BB, with `mecanico.json`'s submission path
+anonymized; EXPL 41 and 35; `score.py`. All ran in Codex CLI 0.159.3 on VMs restored from the
+snapshots retaken after the clean-up, as `leb`, with the fixed first message and nothing else.
+- **GPT-6.1-sol at `xhigh`, run 3 (BA): 661.** With three runs its score is official: 661, the
+  median, 6th, the strongest GPT model here.
+- **GPT-5.6-sol at `xhigh`, run 2 (BB): 612**, the same total as run 1; its published score stays
+  612. BB's matching verdict was revised to score BUG-004 as a silent fix, as earlier verdicts did.
+- **A fourth GPT-6.1-sol run is kept unscored** in `gpt-6.1-sol-xhigh/void-1/`: started 48 seconds
+  after run 3, it would exceed the three runs `PROTOCOL §4` allows.
 
 ### `0.2.60` — 2026-10-02 — results/ records the cost of Claude Sonnet 5.5's second max run, US$ 4.75, from the client's own record
 

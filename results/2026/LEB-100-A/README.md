@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Twenty-eight deliveries were scored, labelled **Y** to **AZ** in the order they arrived and judged blind like
+Thirty deliveries were scored, labelled **Y** to **BB** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -475,8 +475,10 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **AX** | DeepSeek V4.1 Flash, `high`, run 3 | 597 |
 | **AY** | Gemini 3.8 Flash, `high`, run 2 | 588 |
 | **AZ** | Claude Sonnet 5.5, `max`, run 2 | 773 |
+| **BA** | GPT-6.1-sol, `xhigh`, run 3 | 661 |
+| **BB** | GPT-5.6-sol, `xhigh`, run 2 | 612 |
 
-All twenty-eight ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All thirty ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -754,6 +756,21 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     scored 45 of 50 again. Unlike run 1 it did not name the dispatcher, so architecture is 0.
   - `leb`'s Claude Code loaded an MCP server for PDF files synced from the account; the agent did
     not call it.
+- **GPT-6.1-sol at `xhigh`, run 3 (BA): 661. With three runs its score is official: 661, the
+  median of 666, 653 and 661, 6th, the strongest GPT model here.** It ran in Codex CLI 0.159.3 on
+  `bench1` on 2026-10-02, in 24 minutes, on VMs whose snapshots were retaken after the clean-up.
+  It fixed 10 flaws, the 9 its first two runs fixed plus the CSV formula injection, which they left
+  alone. It named the dispatcher among its deliberate non-changes (ARCH-002 identified), and
+  scoped the SLA average to each client again (COMP-003).
+  - **A fourth run of the same agent is kept unscored.** GPT-6.1-sol was started on `bench1` and on
+    `bench2` within 48 seconds; `PROTOCOL §4` allows three runs per agent, so the session whose
+    first message went out first is run 3 and the other is kept in `gpt-6.1-sol-xhigh/void-1/`
+    with a `VOID.md`, set aside on that ordering before any judge saw either delivery.
+- **GPT-5.6-sol at `xhigh`, run 2 (BB): 612, the same total as run 1; its published score stays
+  612.** It ran in Codex CLI 0.159.3 on `bench3` in 15 minutes. It fixed 9 flaws, migrating MD5
+  and removing both secrets, but left the CSV injection that run 1 fixed, and scoped the SLA average
+  to each client (COMP-003). `bench3`'s snapshot carries a one-line Codex session record from the
+  operator's login, with no message; this run did not read it.
 
 ## Two defects in the harness, fixed before scoring
 
@@ -777,10 +794,10 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6-astra, DeepSeek V4 Pro, Grok 4.7, GPT-5.6-terra and
-  DeepSeek V4.1 Flash.** An official score is the median of three runs (`PROTOCOL §4`). Those seven have three (711, 717,
-  805; 825, 809, 724; 661, 596, 628; 604, 496, 432; 638, 663, 607; 625, 611, 645; 625, 612, 597), so their 717, 809, 628,
-  496, 638, 625 and 612 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
+- **One run each, except Opus 5.5 and Sonnet 5.5 at `xhigh`, GPT-6.1-sol, GPT-6-astra, DeepSeek V4 Pro, Grok 4.7,
+  GPT-5.6-terra and DeepSeek V4.1 Flash.** An official score is the median of three runs (`PROTOCOL §4`). Those eight have
+  three (711, 717, 805; 825, 809, 724; 666, 653, 661; 661, 596, 628; 604, 496, 432; 638, 663, 607; 625, 611, 645; 625,
+  612, 597), so their 717, 809, 661, 628, 496, 638, 625 and 612 are official; Fable 5.1, Haiku 4.5, GPT-6.1-sol and GLM-5.3 have two. A single run can sit 90 points from the agent's median, as Opus's
   third did, and GPT-6-astra's first run sat 33 points above its median. Places 7 to 11 (654, 653,
   638, 635 and 633) sit within 21 points, and GPT-5.5 (601, Silver) and GPT-5.6-luna (599,
   Bronze) are two points apart across a grade line: that is within the noise of a single run.
