@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.69`
+**Versão atual:** `0.2.70`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.70` — 2026-10-03 — The characterization and probe runners go on when a delivery throws, instead of stopping uncounted
+
+`instances/LEB-100-A/characterization/run.php` (with `_bootstrap.php`) and
+`instances/LEB-100-A/private/verify/probes.php` now catch an exception from the delivery's code: the
+check or probe that called it fails, with the error in its message, and the rest still run. Before,
+the exception ended the run: the characterization printed no summary, so the harness counted no
+broken check (no PEN-002) for a delivery that breaks login, and an unreadable probe report stopped
+the harness. Two new deliveries do exactly that (a login that throws, a search that throws).
+
+The same 22 checks and 4 probes are run; only the handling of an exception changed. The legacy code
+still scores 22/22 with every probe planted, and all 77 deliveries filed so far were re-run through
+the new characterization with identical counts and probe verdicts. The evaluation notes list it
+under the harness defects.
 
 ### `0.2.69` — 2026-10-02 — results/ adds the third runs of Claude Haiku 4.5 (232) and GLM-5.3 Prime (541), both now official, and MiniMax-M3 with the thinking variant (462)
 

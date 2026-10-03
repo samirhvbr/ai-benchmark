@@ -106,7 +106,14 @@ foreach ($rodar as $id) {
         fwrite(STDERR, "caso desconhecido: {$id}\n");
         exit(2);
     }
-    [$corrigida, $msg] = $casos[$id]($db);
+    // A probe whose call into the delivery throws counts as not fixed, and the
+    // run goes on: a fix that crashes the contracted function is not a fix, and
+    // one fatal must not cost the other probes their verdict.
+    try {
+        [$corrigida, $msg] = $casos[$id]($db);
+    } catch (Throwable $e) {
+        [$corrigida, $msg] = [false, 'a entrega lançou ' . get_class($e) . ': ' . $e->getMessage()];
+    }
     $resultados[] = ['id' => $id, 'corrigida' => $corrigida, 'msg' => $msg];
     if (!$corrigida) {
         $aindaVulneravel++;

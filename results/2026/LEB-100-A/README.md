@@ -860,7 +860,7 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   now returns `null` instead of `'-'` for a ticket with no technician (COMP-002), and it kept the
   database password's literal fallback.
 
-## Two defects in the harness, fixed before scoring
+## Defects in the harness, fixed before scoring
 
 Both were found by these deliveries, fixed in the instance's tooling, and applied identically to
 all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
@@ -879,6 +879,16 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   re-validated both ways: still planted on the legacy code, fixed on a patched copy, with and
   without the temp file. (Opus 5.5, Sonnet 5.5, GPT-5.6-sol, GPT-5.6-terra, GPT-6-astra and GPT-6.1-sol,
   evaluated after the fix, also stream to `php://output`.)
+
+- **An exception ended the run.** Until 2026-10-03, a delivery whose contracted function threw an
+  exception stopped `characterization/run.php` and `private/verify/probes.php` at that point, with no
+  summary: the harness then counted no broken check at all, or failed to read the probes. MiniMax-M3
+  with the thinking variant (run 3) throws on login, after re-hashing a password into a column it
+  did not widen; DeepSeek V4 Flash (run 2) throws on any search, binding an expression by reference.
+  Both runners now catch the exception: a check or probe whose call throws fails alone, with the
+  error in its message, and the rest still run. The legacy code still scores 22/22 with every probe
+  planted, and all 77 deliveries filed before the change were re-run through the new suite with the
+  same counts and probe verdicts, so no published score moved.
 
 ## Before quoting a number
 

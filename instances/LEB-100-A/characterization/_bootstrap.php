@@ -100,14 +100,41 @@ function statementsSql(string $arquivo): array
 $GLOBALS['__ok'] = 0;
 $GLOBALS['__falhas'] = 0;
 
-function checa(bool $cond, string $desc): void
+/**
+ * A check is a boolean or a closure that returns one. A closure that throws
+ * fails that check alone and the suite goes on: a delivery whose contracted
+ * function throws breaks the checks that call it, not the count of every
+ * other check (a fatal used to end the run with no summary at all).
+ */
+function checa(bool|Closure $cond, string $desc): void
 {
+    if ($cond instanceof Closure) {
+        try {
+            $cond = (bool) $cond();
+        } catch (Throwable $e) {
+            $GLOBALS['__falhas']++;
+            echo "  \033[31m✘\033[0m {$desc} — " . get_class($e) . ': ' . $e->getMessage() . "\n";
+            return;
+        }
+    }
     if ($cond) {
         $GLOBALS['__ok']++;
         echo "  \033[32m✔\033[0m {$desc}\n";
     } else {
         $GLOBALS['__falhas']++;
         echo "  \033[31m✘\033[0m {$desc}\n";
+    }
+}
+
+/** Run a setup call; on an exception, report it and return null, so the checks
+    that depend on the value fail and the others still run. */
+function tenta(Closure $f): mixed
+{
+    try {
+        return $f();
+    } catch (Throwable $e) {
+        echo "  \033[33m!\033[0m " . get_class($e) . ': ' . $e->getMessage() . "\n";
+        return null;
     }
 }
 
