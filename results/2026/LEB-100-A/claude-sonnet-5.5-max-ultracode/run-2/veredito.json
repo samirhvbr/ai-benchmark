@@ -1,0 +1,227 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Claude Sonnet 5.5",
+    "version": "not recorded",
+    "provider": "Anthropic"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-03",
+    "runs": [
+      820
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-03",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "BS",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "listarChamados() monta `WHERE titulo LIKE '%<busca>%'` concatenando $busca ... entre aspas simples; uma aspa fecha o literal e o resto vira SQL.",
+      "rationale": "F1 at lib.php:82-85 names the injection and its mechanism. C3 from the probe (corrigida=true): bound `c.titulo LIKE ?` in mysqli at lib.php:209-226. The delivery deliberately does NOT escape % and _ (lib.php:210), which the matrix note treats as part of a complete fix; the probe passed so C3 stays full per the brief, recorded in notes."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 97,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "index.php:79 concatena $busca dentro de value=\"...\" e index.php:82 dentro de <p>...</p>, sem htmlspecialchars",
+      "rationale": "F5 names both output points. Delivered index.php:116 escapes once with htmlspecialchars(ENT_QUOTES|ENT_SUBSTITUTE) and uses it at :121 and :124; markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": true,
+      "confidence": 68,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Um título como =HYPERLINK(...) ou @SUM(...) é gravado literalmente e uma planilha que abra o arquivo o interpreta como fórmula.",
+      "rationale": "F16 at lib.php:138-144. C3 from the probe (corrigida=true): neutralizarFormula() at lib.php:355-358 prefixes ' only to cells starting with = + - @ TAB CR; the '-' no-technician marker is explicitly preserved (lib.php:343), so no rule-10 PEN-001."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o bloco de login (linhas 23-28) grava uid/papel na sessão sem session_regenerate_id(). O id que o atacante plantou passa a ser a sessão autenticada da vítima.",
+      "rationale": "F9 explains fixation with use_strict_mode=0. session_regenerate_id(true) after authenticating at index.php:60, plus strict mode/HttpOnly/SameSite at index.php:41-48."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 93,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "md5 é rápido e sem sal: o hash de 'senha123' é o mesmo para ana e bruno ... tabelas de arco-íris ou força bruta recuperam senhas fracas em segundos.",
+      "rationale": "F7. autenticar() (lib.php:32-56) accepts legacy md5 via hash_equals and password_verify otherwise; migrarHashDeSenha() (lib.php:95-123) re-hashes with password_hash on successful login when the column is wide enough. schema.sql widens senha to VARCHAR(255) (lossless, not COMP-009 per rule 8); seed logins keep working (characterization green)."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 97,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Ação obrigatória fora do código: definir DB_PASS no ambiente do PHP e ROTACIONAR a senha do usuário do banco, porque ela já vazou para o histórico.",
+      "rationale": "F6 (config.php:11-12) mapped here; F8 (config.php:15, conf. 90) reports the second planted point of the same flaw. Both literals removed: DB_PASS at config.php:13 and SMTP_API_KEY at config.php:16 come only from getenv with an empty fallback (rule 11: C3 full); rotation recommended."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 98,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "index.php:53 chama verChamado($db, (int) $_GET['ver']) ... e imprime título, status, prioridade e descrição. $papel é lido da sessão na linha 39 e nunca mais usado",
+      "rationale": "F2. Ownership checked in the dispatcher after loading: index.php:93 `!chamadoVisivel($c, $uid, $papel)` (lib.php:184-188: technician sees all, client only usuario_id==uid); verChamado(mysqli,int) unchanged. Listing/export are filtered for clients only (enforcement), mediaResposta stays global, so no COMP-003."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 97,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`return $soma / $qtd;` com $qtd = 0 quando nenhuma linha tem minutos_resposta ... Em PHP 8 isso lança DivisionByZeroError",
+      "rationale": "F12. C3 from the probe (corrigida=true): lib.php:301-304 returns 0.0 when COUNT is 0; same average otherwise (COUNT/SUM aggregate, division still in PHP)."
+    },
+    {
+      "id": "BUG-004",
+      "reported": true,
+      "confidence": 85,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "no ramo `$res === false` (linha 133) o `return` deixa $fp aberto e o arquivo reduzido ao cabeçalho",
+      "rationale": "F18 (lib.php:126-135, category bug) explicitly states the handle stays open on the early return, so rule 12 does not apply (F10, the temp-file race, is a separate extra). Fixed: the CSV now streams to php://output in escreverCsv() (lib.php:331-349) with no early return between fopen and fclose (lib.php:347); the query runs before fopen."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Para cada linha de `SELECT * FROM chamados`, listarChamados() chama tecnicoNome() ... mais uma ida ao banco por chamado com técnico.",
+      "rationale": "F13 (listing) mapped here; F14 (export, conf. 99) is the overlapping second point, attributed once. C3 from the probe (corrigida=true): single LEFT JOIN with COALESCE(t.nome,'-') at lib.php:199-200 for both listing and CSV."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "No finding about the dispatcher mixing routing, authorization, business rules and HTML. index.php:53-139 still routes, authorizes and echoes HTML inline; only small visibility helpers moved to lib.php. No template/controller separation."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "half",
+        "R4": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "The only mention of magic numbers is inside F23 (rotuloPrioridade, lib.php:40-59), which maps to CLN-007 (one row per finding). Silently and partially fixed: priority/SLA constants at lib.php:11-13, but status values 1/2 remain literal keys in formatarStatus (lib.php:133) with no named status constants, so R3 half."
+    },
+    {
+      "id": "CLN-007",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "R1": "full",
+        "R2": "full",
+        "R3": "full",
+        "R4": "full"
+      },
+      "report_excerpt": "Cinco returns espalhados em quatro níveis de if/else ... Difícil de ler e de alterar sem erro (a diferença entre `> 30` e `>= 30` fica enterrada no meio).",
+      "rationale": "F23. rotuloPrioridade rewritten with guard clauses at lib.php:141-153; truth table checked identical (null → Aguardando, prio<3 → Normal, min<=30 → dentro do SLA, prio==4 → CRITICO else atrasado)."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "F3 — listing/search ignores the visibility rule for clients (index.php:72-74); fixed via listarChamadosVisiveis()",
+    "F4 — CSV export returns every ticket to any logged-in client (index.php:44-47); fixed via exportarCsvVisivel()",
+    "F10 — concurrent exports race on the fixed EXPORT_DIR/chamados.csv path (lib.php:125-150)",
+    "F11 — residual full-data CSV copy left on disk at a predictable path (lib.php:125-126)",
+    "F15 — fputcsv default backslash escape lets a title with \\\" forge CSV columns/records (lib.php:130-144)",
+    "F17 — new mysqli() throws on PHP >= 8.1 so the connect_errno branch is dead; unhandled exception leaks details (index.php:9-12)",
+    "F19 — login[]/senha[] arrays cause an unhandled TypeError on the login page (index.php:22)",
+    "F20 — busca[] array causes an unhandled TypeError on the listing (index.php:72-73)",
+    "F21 — mediaResposta() fetches every row to compute an average in PHP (lib.php:109-115)",
+    "F22 — fputcsv without $escape emits a deprecation on PHP 8.4 that can pollute the CSV (lib.php:130-144)",
+    "F24 — formatarStatus maps any status other than 1/2 to 'Resolvido' (lib.php:26-35); contracted behaviour kept, rule 14",
+    "F25 — no login rate limiting and no logout route (index.php:20-29); not fixed"
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json leb binding (LEB-100-A, 1.1, sha 68088ab…) matches the delivered package. JSON and prose are consistent (25 findings F1-F25). Duplicates mapped to an already-matched row: F8 (SMTP_API_KEY, second point of SEC-015) and F14 (export N+1, overlap of PERF-001); neither is a false positive. SEC-001: the delivery deliberately keeps % and _ as LIKE wildcards (lib.php:210, explained in Decisões); the matrix note counts wildcard escaping as part of a complete fix, but C3 of SEC-001 is probe-driven (corrigida=true) so it stays full. ARCH-009: magic numbers 3/4/30 are named inside F23, which maps to CLN-007 under the one-row-per-finding rule; hard call, scored as a silent partial fix (R3 half). COMP review: the seven signatures and return shapes are preserved (listarChamados normalizes values to string/null as before), status labels, routes, HTML table and CSV header/order unchanged; client-scoped listing/export/detail is visibility enforcement while exportarCsv()/listarChamados() stay unfiltered for sessionless callers; mediaResposta remains global with the same value; the senha column widening is lossless (rule 8). exportarCsv() no longer writes EXPORT_DIR/chamados.csv (output-only, as the manifest describes) and CSV escape becomes '' (RFC 4180) — neither touches the contracted header/order/labels, not COMP. Login timing equalization (recusarLogin) is inherent to the SEC-014 migration (rule 3), not PEN-001. The re-hash only activates after the documented ALTER on an existing CHAR(32) database — a deployment caveat, not a bug.",
+  "expl_rubric": {
+    "clareza": 9,
+    "precisao": 10,
+    "causa_raiz": 9,
+    "priorizacao": 8,
+    "trade_offs": 9
+  },
+  "expl_justification": {
+    "clareza": "The Resumo states the two worst defects and three pre-deploy actions, then 25 findings follow in uniform Onde/Categoria-severidade-confianca/Mecanismo/Impacto/O que fiz/Evidencia/Corrigido blocks. Decisoes split deliberate behaviour changes from what was left as is, and the deployment steps are numbered with the irreversible step marked. Dense but direct.",
+    "precisao": "Every claim checked holds, many measured: the 9-column CONCAT UNION and mysqli::query ruling out stacked statements; the export race reproducing only across distinct sessions (12/12 and 719/720 corrupted on the original); the bcrypt rehash checking the column width, skipping NUL or 72+ byte passwords and equalizing failure timing; the backslash escape in the CSV; SUM/COUNT keeping the exact value; verChamado/tecnicoNome correctly kept as non-injectable.",
+    "causa_raiz": "Every finding traces a concrete, reproduced path; the three access paths are tied to one missing visibility rule, and the N+1 is linked to the race window. The structural cost is weighed in Decisoes but not developed as a dedicated synthesis finding.",
+    "priorizacao": "Findings run by severity (1 critica, 7 alta, 8 media, 8 baixa) with calibrated confidence (e.g. 55 for an unverifiable docroot exposure); the unfixed F25 is placed last. The deployment steps sequence operational risk precisely, with the ALTER as the point of no return, a backup and a rollback query.",
+    "trade_offs": "Alternatives are compared throughout: new *Visivel functions against optional parameters, wildcards and tie order kept, HTTP 200 kept for not-found, the global average kept with its side channel acknowledged, bcrypt cost against CPU amplification, the dropped EXPORT_DIR file named as the main compatibility risk. As in E, AB, AM and AZ, declining the formula prefix for billing is not weighed."
+  }
+}

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.72`
+**Versão atual:** `0.2.73`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.73` — 2026-10-03 — results/ adds Claude Sonnet 5.5's second multi-agent max run (820); its published score stays 774
+
+- `claude-sonnet-5.5-max-ultracode/run-2` (BS): 820, Gold, in 2.0 h and US$ 171.18 (run 1: 8.1 h,
+  US$ 233.08). SEC 250/250, compatibility 100, no penalty, explanation 45/50. Eight subagents fell back
+  to `claude-sonnet-5`; none of the delivery came from them.
+- Instance notes: table row BS and one bullet.
 
 ### `0.2.72` — 2026-10-03 — results/ keeps a sixth GPT-6.1-sol ultra run unscored and a void ultracode attempt that never reached the model
 

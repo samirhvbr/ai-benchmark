@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Forty-six deliveries were scored, labelled **Y** to **BR** in the order they arrived and judged blind like
+Forty-seven deliveries were scored, labelled **Y** to **BS** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -493,8 +493,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BP** | MiniMax-M3, `thinking`, run 3 | 434 |
 | **BQ** | Grok 4.6, `high`, run 2 | 640 |
 | **BR** | DeepSeek V4 Flash, `high`, run 2 | 282 |
+| **BS** | Claude Sonnet 5.5, `max`, multi-agent, run 2 | 820 |
 
-All forty-six ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All forty-seven ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -902,6 +903,27 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   `claude-sonnet-5.5-max-ultracode/void-2/`, with a `VOID.md` and no delivery. On `bench1` at 09:14 on
   2026-10-03 the client's login had expired: it answered the first message locally, the model never
   received it, and the session was closed to log in again.
+- **Claude Sonnet 5.5 at `max` in multi-agent mode, run 2 (BS): 820, Gold, 46 points above run 1
+  (774); its published score stays 774, the lower, 3rd.**
+  - It ran in Claude Code 2.1.285 on `bench1` for 2.0 hours, against 8.1 for run 1, with 2 workflows and
+    105 subagents (run 1: 7 workflows, 68 subagents), for US$ 171.18 against 233.08. Model time summed
+    across the parallel agents was 15.9 hours.
+  - As in run 1, the safety classifier stopped a response in some subagents (eight of 105) and the
+    client switched each of them to `claude-sonnet-5`, for US$ 4.43 of the cost. Their one file edit
+    went to a scratch copy. The delivery was written by Sonnet 5.5 in the main session, which never
+    switched, so the run stands (`PROTOCOL §3`).
+  - It identified 11 of the 13 planted flaws and fixed all 11, flattening the nested ifs (CLN-007)
+    among them. It did not report the dispatcher (ARCH-002) or the magic numbers (ARCH-009), though it
+    named some of those constants without saying so. It is one of six runs on LEB-100-A, all of
+    Sonnet 5.5, at SEC 250/250 with compatibility 100 and no penalty. It filters every access path by the visibility rule with
+    new functions, leaving the contracted ones open to sessionless callers. It also migrated MD5
+    transparently, prefixing only the CSV cells that start a formula, and replaced the N+1 query with
+    one join.
+  - Its report has 25 findings and scored 45 of 50, with measured evidence for most claims (e.g. the
+    export race reproduced 719 times in 720 on the original) and a deployment order that marks the
+    column change as the point of no return.
+  - The matching judge kept SEC-001's fix as full on its probe while the LIKE wildcards stay
+    unescaped, as in BO and BQ.
 
 ## Defects in the harness, fixed before scoring
 
