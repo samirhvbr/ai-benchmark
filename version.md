@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.71`
+**Versão atual:** `0.2.72`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.72` — 2026-10-03 — results/ keeps a sixth GPT-6.1-sol ultra run unscored and a void ultracode attempt that never reached the model
+
+- `gpt-6.1-sol-ultra/void-3/`: a run started after the agent had its three runs; set aside under
+  `PROTOCOL §4` before judging, kept with its delivery and mechanical report.
+- `claude-sonnet-5.5-max-ultracode/void-2/`: the client's login had expired, so the first message was
+  answered locally and the session was closed to log in again. Only a `VOID.md`; nothing was delivered.
 
 ### `0.2.71` — 2026-10-03 — results/ adds MiniMax-M3 thinking runs 2 and 3 (616, 434; official at 462), Grok 4.6 run 2 (640) and DeepSeek V4 Flash run 2 (282)
 

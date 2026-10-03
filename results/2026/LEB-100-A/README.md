@@ -895,6 +895,13 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     secrets, the session fixation and the file-handle leak in place. It scored 0 in performance,
     clean code and architecture. Its report claims SQL injection in an int-typed function and
     scored 22 of 50.
+- **A sixth GPT-6.1-sol run at `ultra` is kept unscored** in `gpt-6.1-sol-ultra/void-3/`. It ran on
+  `bench1` at 19:49 on 2026-10-02, after the agent had its three runs and two unscored attempts. It
+  was set aside on that count (`PROTOCOL §4`) before any judge saw it.
+- **A second attempt at Claude Sonnet 5.5 in multi-agent mode is void** and kept in
+  `claude-sonnet-5.5-max-ultracode/void-2/`, with a `VOID.md` and no delivery. On `bench1` at 09:14 on
+  2026-10-03 the client's login had expired: it answered the first message locally, the model never
+  received it, and the session was closed to log in again.
 
 ## Defects in the harness, fixed before scoring
 
