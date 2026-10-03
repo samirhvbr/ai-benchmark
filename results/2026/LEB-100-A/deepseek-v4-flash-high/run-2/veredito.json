@@ -1,0 +1,219 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "DeepSeek V4 Flash",
+    "version": "not recorded",
+    "provider": "DeepSeek"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-03",
+    "runs": [
+      282
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-03",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "BR",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "O parâmetro `busca` vindo de `$_GET['busca']` é concatenado diretamente na string SQL sem qualquer sanitização ... Um atacante pode injetar operadores SQL como `' OR 1=1 --`",
+      "rationale": "F1 points at lib.php:83 (planted :82) with the right class and mechanism. The fix binds an expression to a by-reference parameter (delivered lib.php:89 `$stmt->bind_param('s', '%' . $busca . '%')`), which throws Error on every non-empty search; the probe marks it not fixed (C3 none from mecanico.json). The resulting search crash is the characterization regression, handled by C4/harness, not counted again as COMP."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "O valor de `$_GET['busca']` é refletido no HTML em dois pontos sem sanitização: no `value` do campo de busca e na mensagem de resultados.",
+      "rationale": "F5 at index.php:79,82, both output points. Delivered index.php:106 and :109 wrap $busca in htmlspecialchars() (PHP 8.1+ default flags include ENT_QUOTES; attribute is double-quoted anyway), markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. exportarCsv still writes titulo raw (delivered lib.php:152); probe confirms '=1+1' exported as is. The new client CSV branch (index.php:55) also writes titles raw."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported: the non-change about session security concerns cookie flags (HttpOnly/Secure/SameSite), not session fixation. Login still sets $_SESSION['uid'] without session_regenerate_id (delivered index.php:24)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "criteria": {
+        "C1": "full",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "MD5 para hash de senhas | O esquema do banco (`CHAR(32)`) e os dados de seed usam MD5. Migrar para bcrypt ou SHA-256 exigiria alteração de schema, migração de senhas",
+      "rationale": "Named in the deliberate non-changes (autenticar()/md5), which counts as identified per the rule for non-change lists; no explanation of why unsalted md5 is weak and no fix (delivered lib.php:15 still md5). No confidence declared."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "A senha do banco (`DB_PASS`) e a chave da API de e-mail (`SMTP_API_KEY`) estão hardcoded como fallback no código ... qualquer pessoa com acesso ao repositório tem as credenciais de produção.",
+      "rationale": "F4 at config.php:12,15 with the right mechanism. Deliberately not changed: both literals remain (delivered config.php:12 and :15), so C3 none."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "half",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Um cliente autenticado pode ver chamados de outros clientes navegando pela listagem, acessando IDs diretamente via `?ver=<id>` ou exportando o CSV.",
+      "rationale": "F2 points at the right spot (the ver route in index.php) and explains the missing ownership check, but achados.json files it as 'arquitetura' instead of security, so C1 half per the wrong-category rule. Delivered index.php:73 denies a cliente whose usuario_id != uid after verChamado loads; tecnico still sees all; verChamado(mysqli,int) signature preserved."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se nenhum chamado tiver `minutos_resposta` preenchido (ou se a tabela estiver vazia), `$qtd` permanece 0. A divisão `$soma / $qtd` produz `NAN` ou um aviso",
+      "rationale": "F6 at lib.php:116 with the correct trigger (empty set leaves $qtd at 0). The stated consequence is inaccurate (PHP 8 throws DivisionByZeroError, not NaN), but the mechanism is right, so C2 full. Delivered lib.php:125-127 returns 0.0; probe confirms."
+    },
+    {
+      "id": "BUG-004",
+      "reported": true,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "Se a query após `fopen` falhar, o arquivo não é fechado. É um leak pequeno em um caminho de erro raro (banco offline).",
+      "rationale": "Named in the non-change list at exportarCsv with the actual mechanism (early return on query failure skips fclose), so C1 and C2 score. Not fixed: delivered lib.php:145-147 still returns without fclose. No confidence declared."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported as N+1; tecnicoNome is only converted to a prepared statement and still runs once per row (delivered lib.php:96 and :149). Probe: ~5 queries."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported (F2 is about visibility and maps to SEC-017). The dispatcher grew: authorization, an inline SQL query and hand-built CSV now sit in index.php:44-100."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; magic numbers untouched (delivered lib.php:28-58)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; rotuloPrioridade nesting unchanged (delivered lib.php:40-59)."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F3 — SQL Injection in tecnicoNome and verChamado (lib.php:69,100)",
+      "is_isca": false,
+      "confidence": 85,
+      "detail": "Claims, at severity 'alta', that int type protection is not enough to prevent SQL injection when a future caller passes untrusted data. Both parameters are int-typed (?int $tecnicoId, int $id), so no caller can inject through them. This is a flaw that cannot exist, not a hardening note that admits it is unexploitable."
+    }
+  ],
+  "extra_findings": [
+    "SEC-005 — no CSRF token on the login POST form (index.php:32), listed in the report's non-changes",
+    "Session cookie flags (HttpOnly/Secure/SameSite) not configured before session_start (index.php:15), listed in the report's non-changes",
+    "Visibility rule not enforced in the listing and CSV export for clients (index.php listing/export), reported in F2 beyond the matrix's ?ver= IDOR"
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 1,
+    "PEN-003": 0
+  },
+  "notes": "achados.json leb binding matches the instance (LEB-100-A 1.1, sha 68088ab...). PEN-001 (1): the new client branch of the CSV export (delivered index.php:45-56) builds the CSV by hand with single-quoted '\\n', which emits a literal backslash-n instead of a line break. A client's CSV therefore comes out as one line: the header is followed by the literal text \\n and every row, with no fputcsv quoting. Filtering the export to the client's own tickets is itself enforcement, not COMP. I counted the malformed output once, as a new bug in new code, rather than also as a CSV-format COMP. A reviewer could instead treat it as a contracted-format violation. The SEC-001 fix (lib.php:89, bind_param on an expression) throws Error on every non-empty search, so index.php?busca= is now fatal. That is the characterization regression (21/22) and the SEC-001 probe failure. It is left to C4/harness and not counted again as COMP or PEN-001, since it is a regression localized in the SEC-001 fix. As a side effect, the SEC-003 escaping is currently unreachable on searches, but the escaping itself is correct. JSON/prose inconsistency: F2 is categorized 'arquitetura' in achados.json, while the prose treats it as a business-rule/security flaw. SEC-014 and BUG-004 appear only in the non-change lists (JSON nao_alterei and the prose Decisões table), with no declared confidence. The report claims three of six findings were fixed, but the code changes cover F1, F2, F3, F5 and F6. BUG-001 prose mis-states the PHP 8 consequence (NaN instead of DivisionByZeroError). I judged the trigger mechanism correct and kept C2 full. Review: SEC-001 C5 was changed from full to none. The attempted fix is the change that makes every non-empty search throw (the one failing characterization check), so it neither fixes the flaw (C3 none, from the probe) nor keeps the contracted search working.",
+  "expl_rubric": {
+    "clareza": 6,
+    "precisao": 4,
+    "causa_raiz": 4,
+    "priorizacao": 5,
+    "trade_offs": 3
+  },
+  "expl_justification": {
+    "clareza": "It has a Resumo, uniform Onde/Mecanismo/Impacto/Severidade/Confianca/Correcao blocks and a decisions table. The Resumo contradicts the body: it says three of six findings were corrected, while the blocks report corrections for five (F1, F2, F3, F5, F6).",
+    "precisao": "Several claims are false. F6 says the zero divisor 'produz NAN ou um aviso' and shows 'NaN min', but PHP 8 throws DivisionByZeroError and the listing dies (the error that cost J and T). F3 rates verChamado and tecnicoNome alta at confidence 85, arguing that 'a protecao por tipo nao e suficiente', although the int/?int declarations coerce or throw. The decisions say 'O framework nao expoe hooks para configurar cookies de sessao', but session_set_cookie_params and ini_set exist in plain PHP. F1's impact includes 'modificacao ou exclusao arbitraria', which mysqli::query cannot do with one statement.",
+    "causa_raiz": "Only the visibility gap and the LIKE concatenation are traced to real causes, briefly. The F3 and F6 mechanisms are wrong, and session fixation and the shared export file are not analysed as findings.",
+    "priorizacao": "Severities are assigned, but the non-exploitable concatenation (F3, alta) outranks the XSS (media), and the secrets (alta) are placed between them, with no ordering principle stated.",
+    "trade_offs": "The deferrals rest on weak or false premises. Cookie flags are skipped because 'o framework nao expoe hooks', which is not true. The DB_PASS fallback and the SMTP literal are kept in the code, with secrets management left to deployment. MD5 is not migrated, with no gated rehash weighed. The file-descriptor leak is left because fixing it 'exigiria reestruturar o fluxo'. None of these weighs the cost of the alternative."
+  }
+}

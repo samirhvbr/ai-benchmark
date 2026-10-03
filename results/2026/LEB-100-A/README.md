@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Forty-two deliveries were scored, labelled **Y** to **BN** in the order they arrived and judged blind like
+Forty-six deliveries were scored, labelled **Y** to **BR** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -489,8 +489,12 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BL** | Claude Haiku 4.5, default effort, run 3 | 232 |
 | **BM** | MiniMax-M3, `thinking`, run 1 | 462 |
 | **BN** | GLM-5.3 Prime, `high`, run 3 | 541 |
+| **BO** | MiniMax-M3, `thinking`, run 2 | 616 |
+| **BP** | MiniMax-M3, `thinking`, run 3 | 434 |
+| **BQ** | Grok 4.6, `high`, run 2 | 640 |
+| **BR** | DeepSeek V4 Flash, `high`, run 2 | 282 |
 
-All forty-two ran as the unprivileged user `leb` on a machine prepared clean that morning, got the
+All forty-six ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -859,6 +863,38 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   US$ 1.77. It answers HTTP 403 to every client on `?export=csv` (COMP-003) and `listarChamados`
   now returns `null` instead of `'-'` for a ticket with no technician (COMP-002), and it kept the
   database password's literal fallback.
+- **MiniMax-M3 with the thinking variant, runs 2 (BO) and 3 (BP): 616 and 434. With three runs its
+  score is official: 462, the median of 462, 616 and 434, 26th.** Both ran in opencode 1.18.33 on
+  MiniMax's own API at the same time, run 2 on `bench2` in 6 minutes and run 3 on `bench3` in 5; run
+  2's first message went out 9 seconds earlier. Each cost about US$ 0.13 or less.
+  - Run 2 fixed 7 flaws and kept compatibility at 70: it scoped the SLA average to each client
+    (COMP-003, charged to SEC-017). On review, its BUG-004 identification was lowered from half to
+    none: the finding at the export's lines describes a temp-file race, not the file-handle leak.
+  - Run 3 fixed 9, MD5 among them, but re-hashes the password at login into the `CHAR(32)` column it
+    did not widen. On the contracted schema the `UPDATE` fails, so every valid login throws: four
+    of the 22 characterization checks break (PEN-002, −80) and the login contract is broken
+    (COMP-003). Its report names the column problem and ships the code anyway. This is the delivery
+    that stopped the characterization suite, as the next section explains.
+- **Grok 4.6 at `high`, run 2 (BQ): 640, Silver, 7 points above run 1 (633); its published score
+  stays 633, the lower, 9th.** It ran in opencode on xAI's own API on `bench2` in 5 minutes, for
+  US$ 0.31. It fixed the same 8 flaws as run 1, left MD5 and the CSV formula injection, kept
+  compatibility at 100, and its report scored 33 of 50, against 35. The file-handle leak (BUG-004)
+  was fixed without being reported: the finding at those lines describes another defect, so it
+  scores as a silent fix.
+- **DeepSeek V4 Flash at `high`, run 2 (BR): 282, below the pass line, 330 points below run 1 (612).
+  Its published score is now the lower, 282, last of 32.**
+  - It ran in opencode through OpenRouter on `bench3` in 7 minutes, for less than one US cent. Run 1
+    went through Novita AI. The model, effort and client are the same, so it is the same agent, and
+    the host is recorded because a different host may serve different weights or settings.
+  - Its SQL-injection fix binds an expression by reference, which PHP rejects, so every non-empty
+    search throws: the fix fails its probe, and one characterization check breaks (PEN-002, −20).
+    Because SEC-001's fix is the change that breaks the contracted search, its compatibility
+    criterion was lowered from full to none on review.
+  - A client's CSV is now built by hand with a single-quoted `'\n'`, so it comes out as one line
+    with literal `\n` separators (PEN-001, −15). It fixed 3 flaws and left the N+1 query, MD5, the
+    secrets, the session fixation and the file-handle leak in place. It scored 0 in performance,
+    clean code and architecture. Its report claims SQL injection in an int-typed function and
+    scored 22 of 50.
 
 ## Defects in the harness, fixed before scoring
 
@@ -892,14 +928,16 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **Fifteen agents have three runs; the rest are not official.** An official score is the median of three
+- **Sixteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
   DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496,
   GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568, and GPT-6.1-sol at `ultra`
-  (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628 and Claude Haiku 4.5 (317, 369, 232)
-  at 317. Fable 5.1, GLM-5.3 and Gemini 3.8 Flash at `high` have two, and publish the lower. A single run can sit more than 100 points from the agent's median, as
+  (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462
+  and Claude Haiku 4.5 (317, 369, 232) at 317. Fable 5.1, GLM-5.3, Gemini 3.8 Flash at `high`, Grok 4.6
+  and DeepSeek V4 Flash have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
+  second run. A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
   GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
   within the noise of a single run.

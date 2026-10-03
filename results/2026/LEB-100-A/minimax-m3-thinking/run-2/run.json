@@ -1,0 +1,60 @@
+{
+  "agent": "minimax-m3-thinking",
+  "model": {
+    "name": "MiniMax-M3",
+    "id": "minimax-m3",
+    "provider": "MiniMax",
+    "reasoning_effort": "thinking",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://www.minimax.io/models/text/m3",
+    "training_cutoff_note": "MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used",
+    "served_by": "MiniMax's own API (opencode provider minimax, model MiniMax-M3, variant thinking)"
+  },
+  "run": 2,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-02",
+  "evaluated_on": "2026-10-02",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-02T19:48:23-03:00",
+    "ended": "2026-10-02T19:54:49-03:00",
+    "log": "archived off the VM (opencode.db, session ses_f013214feffeeNxhUuKEplC5rp), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 69677,
+      "output": 14753,
+      "cache": 601806,
+      "total": 707582
+    },
+    "usd_estimate": 0.1,
+    "note": "the total includes 21,346 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 0.1003"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_f013214feffeeNxhUuKEplC5rp), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run, copied into the snapshot ahead of the run and identical to the package. 21 model responses in 6 minutes, all from MiniMax-M3 with opencode's thinking variant on MiniMax's own API. Runs 2 and 3 ran at the same time on bench2 and bench3; run 2's first message was sent 9 seconds earlier."
+}

@@ -1,0 +1,115 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection no parametro busca em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 83,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O parametro $busca vindo de $_GET['busca'] e concatenado diretamente na string SQL sem sanitizacao: WHERE titulo LIKE '%' . $busca . '%'",
+      "impacto": "Atacante pode ler, modificar ou excluir dados arbitrarios do banco via injecao SQL",
+      "correcao": "Substituida concatenacao por prepared statement com bind_param",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Ausencia de enforce da regra de visibilidade de chamados",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 100,
+      "categoria": "arquitetura",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Nenhuma das tres rotas (listagem, detalhe, export CSV) filtra chamados por usuario_id quando o usuario logado e cliente",
+      "impacto": "Cliente autenticado pode ver chamados de outros clientes pela listagem, detalhe ou exportacao CSV",
+      "correcao": "Adicionada filtragem por usuario_id nas tres rotas quando papel = cliente",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em tecnicoNome e verChamado por concatenacao direta",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 100,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 85,
+      "mecanismo": "As funcoes tecnicoNome e verChamado concatenam parametros diretamente na SQL: WHERE id = ' . $tecnicoId / WHERE id = ' . $id",
+      "impacto": "Potencial injecao SQL se parametros forem contaminados por dados externos em chamadas futuras",
+      "correcao": "Ambas alteradas para usar prepared statements com bind_param",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Credenciais de producao em texto puro no codigo-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS e SMTP_API_KEY estao hardcoded como fallback no codigo; qualquer pessoa com acesso ao repositorio tem as credenciais de producao",
+      "impacto": "Exposicao de segredos de producao via controle de versao; invasor com acesso ao codigo pode conectar-se ao banco ou enviar e-mails",
+      "correcao": "Nao alterado — remover fallbacks quebraria ambientes que dependem do comportamento atual",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no parametro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O valor de busca e refletido no HTML sem sanitizacao em dois pontos: value do input field e mensagem de resultados",
+      "impacto": "Atacante pode executar JavaScript arbitrario no navegador da vitima (roubo de sessao, phishing)",
+      "correcao": "Adicionado htmlspecialchars() nos dois pontos de reflexao",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisao por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Se nenhum chamado tiver minutos_resposta preenchido, $qtd = 0, resultando em divisao $soma / $qtd",
+      "impacto": "Exibicao de NaN no topo do painel (Tempo medio de 1a resposta: NaN min)",
+      "correcao": "Adicionada guarda if ($qtd === 0) { return 0.0; } antes da divisao",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "MD5 para hash de senhas em autenticar() e schema.sql",
+      "porque": "O esquema do banco (CHAR(32)) e os dados de seed usam MD5. Migrar para bcrypt ou SHA-256 exigiria alteracao de schema e migracao de senhas, extrapolando o escopo de evolucao pontual."
+    },
+    {
+      "o_que": "Fallback de credenciais em config.php (DB_PASS, SMTP_API_KEY)",
+      "porque": "Remover os fallbacks quebraria ambientes que nao configuraram as variaveis de ambiente e dependem do comportamento legado."
+    },
+    {
+      "o_que": "Seguranca de sessao (HttpOnly, Secure, SameSite)",
+      "porque": "O framework nao expoe hooks para configurar cookies de sessao; adicionar isso exigiria mexer na camada de sessao, fora do escopo."
+    },
+    {
+      "o_que": "CSRF no formulario de login",
+      "porque": "O sistema nao possui mecanismo de token CSRF; introduzi-lo agora exigiria criar um endpoint de token e modificar o form. A superficie de ataque e baixa."
+    },
+    {
+      "o_que": "Vazamento de file descriptor em exportarCsv quando query falha",
+      "porque": "Se a query apo's fopen falhar, o arquivo nao e fechado. E um leak pequeno em caminho de erro raro (banco offline); correcao considerada de baixo risco."
+    }
+  ]
+}

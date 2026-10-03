@@ -1,0 +1,229 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL em listarChamados via parâmetro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "$busca (vindo de $_GET['busca']) é concatenado em $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\"; sem parametrização nem escape. Um payload como ?busca=' UNION SELECT id,login,senha,nome,papel,1,1,1,1 FROM usuarios --  reescreve a query e devolve logins e hashes MD5 em colunas que o index.php depois ecoa em HTML, expondo credenciais a qualquer sessão autenticada.",
+      "impacto": "Leitura arbitrária do banco (usuarios, chamados, hashes), potencial escrita/stacked queries dependendo do driver, pivô para comprometimento total do esquema.",
+      "correcao": "listarChamados agora usa prepare() com placeholder '?' para o termo de busca; o '%' do LIKE é concatenado antes de passar ao bind_param. Adicionalmente o filtro é montado como array de condições para tipagem correta.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "XSS refletido via parâmetro busca no index.php",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "$busca é interpolado em duas posições da resposta HTML sem htmlspecialchars: <input value=\"$busca\"> e <p>Resultados para: $busca</p>. Em value, '\" autofocus onfocus=alert(1)' quebra o atributo e executa JS; em <p>, '<script>document.location=...+document.cookie</script>' sequestra a sessão do usuário logado.",
+      "impacto": "Sequestro de sessão (cliente ou técnico), phishing no contexto do painel, CSRF por script, exfiltração via fetch.",
+      "correcao": "$buscaAttr = htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') calculado uma vez e usado nas duas posições. ENT_QUOTES é exigido porque uma das posições é atributo entre aspas duplas. Aplicado htmlspecialchars também nas saídas de formatarStatus/rotuloPrioridade por defesa em profundidade.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Regra de visibilidade do manifesto não é aplicada",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 151,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "O manifest.md declara: 'Um cliente só pode ver os chamados que ele mesmo abriu. Um técnico pode ver qualquer chamado.' O index.php lê $uid e $papel da sessão mas nunca os passa adiante; listarChamados, verChamado, exportarCsv recebem só $db e retornam a base inteira. Resultado: cliente logado vê, detalha e exporta os 5 chamados do seed (incluindo os de outros clientes), com descrição e tudo.",
+      "impacto": "Vazamento de chamados (com descrições que podem ter PII/comentários internos), quebra de contrato declarado, vetor para XSS via DB (descrições e títulos refletidos em várias telas).",
+      "correcao": "Adicionados dois parâmetros opcionais ao final das funções: ?int $usuarioId = null, ?string $papel = null. Quando $papel === 'cliente' e $usuarioId é informado, é acrescentado 'AND c.usuario_id = ?' (ou equivalente) à WHERE. Para 'tecnico', nenhum filtro. O index.php passa ($uid, $papel) em todas as chamadas. Scripts legados do ISP continuam chamando sem os novos args e recebem o comportamento antigo.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Credenciais de produção embutidas em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "DB_PASS tem fallback ?: 'N3tX@2013!prod' e SMTP_API_KEY é literal 'netx-smtp-9f83e2c1a7b64d05'. Toda vez que o código é clonado (CI, mirror, dev) a credencial real de produção do MySQL e a chave de SMTP vão junto. O próprio comentário 'legado' reconhece.",
+      "impacto": "Credencial persistente em repositórios e backups; em ambiente sem env setado, é a credencial real em uso.",
+      "correcao": "Não removi os fallbacks: a remoção quebraria o deploy em qualquer ambiente sem env configurada, violando 'Não reescreva o sistema'. A precedência por env já existe. A correção correta é de gestão de secrets/deployment, não desta camada. Decisão registrada em RELATORIO.md §3.",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "Hashing de senha com MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "autenticar faz $hash = md5($senha) e compara com coluna CHAR(32) que guarda MD5 puro (schema.sql). MD5 é rápido e sem sal: wordlists quebram a maior parte das senhas em horas. Combinado com F1 (antes do fix), o vazamento da tabela lib permitia extrair logins+hashes diretamente.",
+      "impacto": "Quebra massiva de credenciais em caso de leitura do banco (qualquer vetor, não só F1).",
+      "correcao": "Não migrei: exige nova coluna, re-hash no próximo login, atualização do schema.sql e do seed.sql, e coexistência dos dois esquemas durante a transição. É projeto de migração de banco, não patch de autenticação. Decisão registrada em RELATORIO.md §3.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Concatenação de SQL em tecnicoNome, verChamado e na query do exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 132,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "As três queries usam concatenação: '... WHERE id = ' . $id. Hoje $id e $tecnicoId são int por assinatura e não há input externo, então não há injeção ativa. O risco é latente: tipo pode ser afrouxado por refactor e a função pode ser reusada em outro script.",
+      "impacto": "Nenhum imediato; risco de regressão futura.",
+      "correcao": "Convertidas para prepare() + bind_param em todas as três. Como bônus, aproveitei para eliminar o N+1 do listarChamados original.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "N+1 em listarChamados (e exportarCsv) por causa de tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O loop 'while ($c = $res->fetch_assoc())' chama tecnicoNome($db, $c['tecnico_id']) para cada chamado, gerando uma query adicional por linha. No seed são 6 queries; em produção com centenas de chamados são centenas de round-trips por carregamento da listagem e do CSV.",
+      "impacto": "Latência crescendo linearmente com o volume, pressão desnecessária no banco.",
+      "correcao": "Trocado por LEFT JOIN usuarios t ON t.id = c.tecnico_id com COALESCE(t.nome, '-') AS tecnico_nome em listarChamados, verChamado e exportarCsv. tecnicoNome continua existindo (outros scripts podem usar), mas não é mais chamado por essas três.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Session fixation: id de sessão não regenerado após login",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "Ao autenticar com sucesso o app só grava $_SESSION['uid']/['papel']. PHPSESSID permanece o mesmo do momento pré-login. Atacante que fixa o cookie da vítima (rede hostil, XSS, fixação explícita) consegue logar a vítima e manter o mesmo id, sequestrando a sessão autenticada.",
+      "impacto": "Takeover de conta no momento exato do login.",
+      "correcao": "session_regenerate_id(true) chamado antes do panic setar $_SESSION, e true apaga a sessão antiga no servidor.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Cookie de sessão sem httponly e samesite",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "session_start() sem session_set_cookie_params prévio: cookie sem flag httponly (JS lê document.cookie) e sem samesite (envia em cross-site). F2 antes do fix permitia ler document.cookie; sem samesite, qualquer site dispara CSRF básico.",
+      "impacto": "Amplia F2 (roubo de sessão via XSS) e abre porta a CSRF.",
+      "correcao": "session_set_cookie_params(['lifetime'=>0,'path'=>'/','httponly'=>true,'samesite'=>'Lax']) antes de session_start(). Secure fica fora do default para não quebrar o dev em HTTP; pode ser ligado por env em produção.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "exportarCsv grava em arquivo temporário de caminho fixo",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "arquitetura",
+      "severidade": "media",
+      "confianca": 75,
+      "mecanismo": "fopen('/var/www/painel/tmp/chamados.csv', 'w') cria/sobrescreve arquivo em caminho conhecido e fixo, sem flock, e depois faz readfile dele. Duas requisições simultâneas corrompem (fputcsv de uma thread pode intercalar com readfile da outra). O arquivo fica no disco após o envio e acumula. Falha de fopen é silenciada parcialmente (return; em um caso, prossegue em outro).",
+      "impacto": "Race entre requisições, vazamento do CSV no disco, acúmulo de arquivos, falha silenciosa.",
+      "correcao": "Abandonei o arquivo temporário. exportarCsv envia Content-Type/Content-Disposition e escreve direto em php://output com fputcsv, fechando ao final. Sem I/O de disco, sem race, sem resíduo.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "Se nenhum chamado tiver minutos_resposta IS NOT NULL, $qtd permanece 0 e o return $soma / $qtd dispara DivisionByZeroError / NaN, derrubando a home.",
+      "impacto": "Tela em branco na home quando o banco está sem repostas registradas (estado inicial ou após manutenção).",
+      "correcao": "Troquei a média em PHP pela média em SQL (SELECT AVG(minutos_resposta)). Conjunto vazio devolve NULL e a função retorna 0.0 nesse caso.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Saída inconsistente: formatarStatus e rotuloPrioridade não escapadas",
+      "arquivo": "code/index.php",
+      "linha": 61,
+      "linha_fim": 93,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "htmlspecialchars era aplicado em titulo/descricao/tecnico_nome, mas não em formatarStatus(...) e rotuloPrioridade(...). Hoje só retornam literais ASCII, então risco é zero. Se vierem a ser internacionalizadas ou vierem a conter entidades HTML, vira regressão de XSS latente.",
+      "impacto": "Nenhum hoje; defesa em profundidade.",
+      "correcao": "Padronizado: todo dado dinâmico ecoado em HTML passa por htmlspecialchars, inclusive saída de formatarStatus e rotuloPrioridade.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "formatarStatus retorna 'Resolvido' para qualquer status desconhecido",
+      "arquivo": "code/lib.php",
+      "linha": 26,
+      "linha_fim": 35,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "O ramo else final retorna 'Resolvido' para qualquer status que não seja 1 ou 2 — inclusive 0, 4, 5+. O schema não tem CHECK constraint sobre a coluna status TINYINT, então o banco aceita qualquer valor. Se um registro entrar com status=0 por bug em outro script, o painel mostra 'Resolvido' silenciosamente.",
+      "impacto": "Classificação errada de status em casos anômalos (quebra silenciosa de indicador).",
+      "correcao": "Reescrito como if/if/return explícito (mantém mesmo retorno para 1/2/3 e 'Resolvido' como fallback). Comportamento observável para valores válidos é igual. Decidi não retornar null nem lançar exceção para valores fora de {1,2,3} porque o contrato do manifesto não define e o relatório gerencial pode depender do string atual.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hashing de senha (MD5) em lib.php:15, schema.sql:7 e seed.sql",
+      "porque": "Migrar para password_hash/password_verify exige nova coluna, re-hash no próximo login dos N usuários existentes, atualização do schema.sql e do seed.sql, e coexistência dos dois esquemas durante a transição. É projeto de migração de banco, não patch — viola 'evolua, não reescreva'. Fica em F5."
+    },
+    {
+      "o_que": "Fallbacks hardcoded em config.php (DB_PASS, SMTP_API_KEY)",
+      "porque": "Remover os fallbacks quebraria o deploy em qualquer ambiente onde as envs não estejam setadas — comportamento que viola 'Não reescreva o sistema'. A precedência por env já existe. Correção correta é de secrets-management/deploy, não desta camada. Fica em F4."
+    },
+    {
+      "o_que": "Adicionar CSRF no formulário de login",
+      "porque": "Impacto baixo (única ação é revelar dados do próprio usuário autenticado) e soma um token por sessão, alterando mais fluxo. Pode entrar num pacote focado em auth."
+    },
+    {
+      "o_que": "Tornar $usuarioId e $papel obrigatórios nas funções públicas de lib.php",
+      "porque": "Outros scripts do ISP (rotina noturna, relatório gerencial) consomem essas funções com a assinatura original. Obrigar os novos parâmetros quebraria esses consumidores. Como opcionais, legado continua funcionando e só o index.php opta pelo modo seguro. É extensão, não quebra."
+    },
+    {
+      "o_que": "Stack e camada de dados (PHP + mysqli)",
+      "porque": "Trocar a tecnologia de acesso a dados muda as assinaturas públicas (lib.php recebe mysqli). Todas as funções continuam recebendo mysqli como primeiro parâmetro."
+    },
+    {
+      "o_que": "Nomes e caminhos dos arquivos em code/",
+      "porque": "A avaliação compara arquivo a arquivo. Nenhum foi renomeado nem movido."
+    },
+    {
+      "o_que": "Estrutura HTML da listagem (id='tabela-chamados', ordem ID/Titulo/Status/Prioridade/Tecnico, links por ID), formato CSV (cabeçalho exato, ordenação por id, ordem das colunas) e rótulos de status",
+      "porque": "São o contrato público declarado no manifest.md. Toda correção preservou bit a bit."
+    },
+    {
+      "o_que": "Cabeçalhos de segurança adicionais (CSP, X-Frame-Options, X-Content-Type-Options)",
+      "porque": "Não estavam no contrato e podem quebrar consumidores que incluem a página em frame. Se forem desejados, é pacote separado."
+    },
+    {
+      "o_que": "Comportamento de formatarStatus para status fora de {1,2,3}",
+      "porque": "O manifesto não define o que fazer nesses casos e o relatório gerencial pode depender do string atual ('Resolvido' como fallback). Manter evita surpresas; o achado F13 documenta a fragilidade."
+    }
+  ]
+}

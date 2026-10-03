@@ -1,0 +1,356 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "MiniMax-M3",
+    "version": "not recorded",
+    "provider": "MiniMax"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-02",
+    "runs": [
+      434
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 10,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 75,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 1,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 4,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 10,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 3,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 80,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 41,
+      "raw_possible": 58,
+      "score": 177,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 10,
+      "raw_possible": 14,
+      "score": 107,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 7,
+      "raw_possible": 8,
+      "score": 131,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 70,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "Login contract broken by the SEC-014 migration: the delivery keeps schema.sql usuarios.senha as CHAR(32) but autenticar (lib.php:36-41) writes a 60-char password_hash on the first successful login. On the contracted schema.sql+seed.sql with MySQL 8 (strict) and PHP 8.4 mysqli (throws by default), the UPDATE raises 'Data too long', so autenticar throws for every valid credential instead of returning ['id','nome','papel']. Valid users can no longer log in. This matches the matrix note that invalidating everyone's password is COMP-003, and it accounts for the 4 failed characterization checks (ana x3, carla x1). On a non-strict server the hash would be truncated instead, and the user's next login would fail. COMP-005 (now throws where it returned) was considered; COMP-003 was applied once as the business-level effect."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 29,
+      "max": 50,
+      "rubric": {
+        "clareza": 8,
+        "precisao": 5,
+        "causa_raiz": 6,
+        "priorizacao": 6,
+        "trade_offs": 4
+      }
+    }
+  },
+  "penalties": [
+    {
+      "id": "PEN-002",
+      "count": 4,
+      "deduction": -80,
+      "detail": "4 teste(s) de caracterização quebrado(s)"
+    }
+  ],
+  "extra_findings": [
+    "SQL concatenation hardening in tecnicoNome (lib.php:69): the report itself says the ?int type makes it not exploitable today (F8). Converted to a prepared statement.",
+    "SQL concatenation hardening in verChamado (lib.php:100): the report says the int type makes it not exploitable today (F12). Converted to a prepared statement.",
+    "exportarCsv writes to a fixed, shared file EXPORT_DIR/chamados.csv (lib.php:125-150): concurrent exports truncate each other and the file persists on disk (F11). Replaced with php://output.",
+    "SEC-005 — no CSRF token on the login form (index.php:30-35), reported as F13 and not fixed"
+  ],
+  "total": 434,
+  "grade": "Bronze",
+  "calibration": {
+    "reported_count": 9,
+    "brier": 0.042,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 6,
+        "mean_confidence": 94.7,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 2,
+        "mean_confidence": 77.5,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "41-60",
+        "count": 1,
+        "mean_confidence": 50.0,
+        "hit_rate": 0.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 2,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 4,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 58.3
+  }
+}

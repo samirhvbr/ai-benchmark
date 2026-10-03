@@ -1,0 +1,229 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "MiniMax-M3",
+    "version": "not recorded",
+    "provider": "MiniMax"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-02",
+    "runs": [
+      434
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-02",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "BP",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "a string de busca vinda de `$_GET['busca']` é concatenada em SQL sem parametrização: `$sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\";`",
+      "rationale": "F1 at lib.php:82 explains the quote break-out and UNION exfiltration. C3 from the probe (corrigida=true): lib.php:137-156 binds the term with a mysqli prepared statement; LIKE wildcards % and _ are not escaped, but the probe decides C3."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`$busca` é interpolado em HTML em dois lugares sem escape: no atributo `value=\"...\"` do formulário e no parágrafo `<p>Resultados para: ...</p>`.",
+      "rationale": "F6 names both output points (index.php:79 and :82) and the attribute break-out mechanism. Delivered index.php:86 and :89 apply htmlspecialchars($busca); no flags are passed (the report claims ENT_QUOTES), but the PHP 8.1+ default is ENT_QUOTES|ENT_SUBSTITUTE, so both quotes are escaped on the PHP 8.4 runtime. Table structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV formula injection is not mentioned anywhere in the report. The probe returned corrigida=false (the title '=1+1' is exported raw, lib.php:249-255)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 75,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "após `autenticar` validar, o código grava `$_SESSION['uid']` e `$_SESSION['papel']` no mesmo id de sessão que estava aberto.",
+      "rationale": "F10 explains the fixation attack (attacker-planted PHPSESSID promoted in place). Delivered index.php:25 calls session_regenerate_id(true) right after successful authentication and before writing the session."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "half",
+        "C5": "none"
+      },
+      "report_excerpt": "`$hash = md5($senha);` seguido de comparação com o valor armazenado na coluna `senha CHAR(32)` ... MD5 é uma função rápida e não-keyed",
+      "rationale": "F4 explains fast unsalted MD5. lib.php:16-61 implements the expected password_verify + transparent re-hash, but the delivery left schema.sql at CHAR(32) (D5, R1). On the contracted schema.sql+seed.sql, the re-hash UPDATE at lib.php:37-41 writes a 60-char bcrypt hash into CHAR(32): MySQL 8 strict mode rejects it and PHP 8.4 mysqli throws mysqli_sql_exception, so every valid login now errors (4 characterization login checks fail) and no stored hash ever leaves MD5. C3 half (the right mechanism, not functional on the delivered schema). C5 none because of the COMP-003 below."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`define('DB_PASS', getenv('DB_PASS') ?: 'N3tX@2013!prod');` — fallback literal de senha que parece ser de produção.",
+      "rationale": "F2 (config.php:12, confidence 99) and F3 (config.php:15, confidence 95) both map to this row. Both literals are gone: config.php:12-17 reads DB_PASS from env only and aborts if missing; config.php:21-22 reads SMTP_API_KEY from env with an empty fallback. Rule 11: both removed = full."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`verChamado` carrega por `id` puro ... O cliente autenticado recebe todas as linhas, vê `?ver=104` (que é de outro cliente segundo o `seed.sql`)",
+      "rationale": "F5 is anchored at lib.php:78 but explicitly covers verChamado (lib.php:98-102) and the ?ver dispatcher, with the IDOR mechanism. Delivered index.php:62-65 denies a client whose usuario_id differs from uid after loading; technicians still see everything; verChamado(mysqli,int) is preserved. Session-driven filters in listarChamados/exportarCsv enforce the manifest rule and return everything to callers without a session (rules 2 and 6)."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Em uma base recém-seedada ou enquanto todos os chamados estiverem sem resposta, o `while` não roda e `$qtd` permanece em 0. PHP 8 emite `DivisionByZeroError`",
+      "rationale": "F7, category bug, correct mechanism. C3 from the probe (corrigida=true): lib.php:202-204 returns 0.0 when $qtd is 0."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "F11 sits in the same function but reports a different issue (race and exposure of the shared temp file), not the handle leaked on the $res === false path, so it is recorded as an extra finding. Silent fix: exportarCsv now streams to php://output and closes $fp on the prepare-failure path (lib.php:238-240) and on the normal path (lib.php:257); the leaking early return is gone."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 80,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "para cada chamado retornado, o código chama `tecnicoNome`, que dispara `SELECT nome FROM usuarios WHERE id = ?`. N linhas = 1 + N queries.",
+      "rationale": "F9 covers both loops (listing and export). C3 from the probe (corrigida=true): a LEFT JOIN in lib.php:129-131 and :225-227, with the '-' for a ticket without a technician kept via null checks at lib.php:163 and :253 (no rule-10 issue)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. index.php is still the monolithic dispatcher (routing + authorization + HTML) with only inline escaping and an authorization check added."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. Magic numbers for status/priority remain (lib.php:68-75, :83-85); no named constants were introduced."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. rotuloPrioridade (lib.php:80-99) is byte-identical to the legacy nested-if version."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F14 — mysqli in silent error mode (index.php:9)",
+      "is_isca": false,
+      "confidence": 50,
+      "detail": "Claims that new mysqli() 'uses the default mode, which neither throws nor warns on failure'. On the stated PHP 8 stack (8.1+, the harness runs 8.4), the default mysqli_report is MYSQLI_REPORT_ERROR|MYSQLI_REPORT_STRICT, so failures already throw mysqli_sql_exception. The flaw described does not exist on the target runtime, and this mistaken belief is what made the delivery's re-hash UPDATE fatal instead of silently failing."
+    }
+  ],
+  "extra_findings": [
+    "SQL concatenation hardening in tecnicoNome (lib.php:69): the report itself says the ?int type makes it not exploitable today (F8). Converted to a prepared statement.",
+    "SQL concatenation hardening in verChamado (lib.php:100): the report says the int type makes it not exploitable today (F12). Converted to a prepared statement.",
+    "exportarCsv writes to a fixed, shared file EXPORT_DIR/chamados.csv (lib.php:125-150): concurrent exports truncate each other and the file persists on disk (F11). Replaced with php://output.",
+    "SEC-005 — no CSRF token on the login form (index.php:30-35), reported as F13 and not fixed"
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 1,
+      "detail": "Login contract broken by the SEC-014 migration: the delivery keeps schema.sql usuarios.senha as CHAR(32) but autenticar (lib.php:36-41) writes a 60-char password_hash on the first successful login. On the contracted schema.sql+seed.sql with MySQL 8 (strict) and PHP 8.4 mysqli (throws by default), the UPDATE raises 'Data too long', so autenticar throws for every valid credential instead of returning ['id','nome','papel']. Valid users can no longer log in. This matches the matrix note that invalidating everyone's password is COMP-003, and it accounts for the 4 failed characterization checks (ana x3, carla x1). On a non-strict server the hash would be truncated instead, and the user's next login would fail. COMP-005 (now throws where it returned) was considered; COMP-003 was applied once as the business-level effect."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json leb binding (LEB-100-A, 1.1, sha 68088ab...) matches the delivered package. The JSON and the prose are consistent: 14 findings in both. Two findings (F2, F3) map to SEC-015; the confidence recorded is F2's 99 (F3 was 95). The login breakage is counted once, as COMP-003 plus SEC-014's C5 none and C3 half. The characterization failure already produces PEN-002 and C4 none mechanically, so no PEN-001 was added for it. The report itself flags the CHAR(32) problem (D5/R1), but rule 8 excuses a re-hash failure only when the contracted schema.sql+seed.sql still works, and here it does not. Minor discrepancies: the report says htmlspecialchars is called with ENT_QUOTES, 'utf-8', but the code passes no flags; this is harmless on PHP 8.1+. config.php:14 uses fwrite(STDERR, ...), and STDERR is undefined under a web SAPI, so a missing DB_PASS ends in a fatal 'undefined constant' error instead of the intended message. Either way it is a failing fallback, so SEC-015 is still full under rule 11. SEC-008 (CSV injection) was neither reported nor fixed.",
+  "expl_rubric": {
+    "clareza": 8,
+    "precisao": 5,
+    "causa_raiz": 6,
+    "priorizacao": 6,
+    "trade_offs": 4
+  },
+  "expl_justification": {
+    "clareza": "It has a Resumo with counts (14 findings, 12 fixed), uniform Onde/O que e/Mecanismo/Impacto-severidade/Confianca/O que eu fiz blocks, Decisoes, Recomendacoes and a manifest checklist. It is organized and readable.",
+    "precisao": "Several claims are wrong. F14 says new mysqli 'usa o modo padrao, que nao lanca excecao nem emite warning', but since PHP 8.1 the default mode throws mysqli_sql_exception, so the finding inverts reality. F1's UNION row selects id,login,senha,4,..., which puts login and senha in usuario_id/tecnico_id rather than a displayed column. F7 hedges that some versions return INF/NaN. Most seriously, F4 rewrites legacy MD5 hashes with password_hash on login while D5 admits the column stays CHAR(32), so in strict mode the UPDATE fails and in non-strict mode it truncates the hash and locks the user out. The report calls the ALTER a 'pre-requisito' yet ships the migration without it or a width check.",
+    "causa_raiz": "The real causes are named for the visibility gap (no usuario_id clause for clients), the concatenated LIKE, the shared export path that may be web-readable, $qtd at zero, and the '?:' operator also catching empty strings. The F14 mechanism is inverted, and there is no cross-finding synthesis.",
+    "priorizacao": "Severity decreases monotonically (4 critica, 2 alta, 5 media, 3 baixa) with a confidence on each. The calibration is generous, though: the SMTP key and MD5 are rated critica above the alta visibility breach, and effort and risk are not used.",
+    "trade_offs": "D4 weighs reading $_SESSION inside the library against changing signatures but not against new functions. Keeping EXPORT_DIR and deferring CSRF and the mysqli report mode are reasoned. Consequential risks go unweighed. The MD5 rehash ships without the column change it calls a prerequisite. The missing DB_PASS now calls exit(1), which in a web request yields an empty response, without a deployment note. The SMTP fallback is removed with no consumer check."
+  }
+}

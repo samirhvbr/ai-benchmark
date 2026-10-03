@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.70`
+**Versão atual:** `0.2.71`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.71` — 2026-10-03 — results/ adds MiniMax-M3 thinking runs 2 and 3 (616, 434; official at 462), Grok 4.6 run 2 (640) and DeepSeek V4 Flash run 2 (282)
+
+- `minimax-m3-thinking/run-2` (BO) and `run-3` (BP): with three runs the agent is official at 462,
+  the median of 462, 616 and 434. Run 3 breaks the login on the contracted schema (PEN-002, −80;
+  COMP-003). It was scored through the runners hardened in 0.2.70.
+- `grok-4.6/run-2` (BQ): 640; the published score stays 633, the lower of two.
+- `deepseek-v4-flash-high/run-2` (BR): 282, below the pass line. Its SQL-injection fix throws on every
+  search, and the client CSV is written on one line. The published score drops from 612 to 282.
+- Review changes: BO's BUG-004 C1 went from half to none, and BR's SEC-001 C5 from full to none.
+  Both are recorded in the verdicts' notes.
+- Instance notes: table rows BO–BR, one bullet per run, and the official count is now sixteen.
 
 ### `0.2.70` — 2026-10-03 — The characterization and probe runners go on when a delivery throws, instead of stopping uncounted
 

@@ -1,0 +1,159 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL em listarChamados pela concatenação de busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O termo de $_GET['busca'] é interpolado em WHERE titulo LIKE '%...%' sem placeholder. Um valor como ' OR 1=1 -- altera o predicado e permite UNION/leitura de usuarios.",
+      "impacto": "Qualquer usuário autenticado controla o SQL da listagem e pode extrair hashes e dados de outros clientes.",
+      "correcao": "Passei a usar prepared statement com LIKE ? e bind_param, sem mudar a assinatura.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Cliente lista, abre e exporta chamados de outros usuários",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "index.php chama listarChamados/verChamado/exportarCsv sem filtrar por uid/papel. Ana autenticada vê os chamados 103/104 de Bruno na tabela, em ?ver=103 e no CSV completo.",
+      "impacto": "Viola a regra de visibilidade do manifesto e vaza título, descrição e técnico entre clientes.",
+      "correcao": "Filtro na camada web: não-técnico só usuario_id=uid; detalhe alheio vira não encontrado; CSV web do cliente só as linhas dele (técnico e lib.php continuam com a base inteira).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$_GET['busca'] é escrito cru no value do input e em 'Resultados para:'. Payload que fecha aspas do atributo executa script no navegador da vítima.",
+      "impacto": "Roubo da sessão do painel via link com busca=.",
+      "correcao": "htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') nos dois pontos.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senha de produção e SMTP_API_KEY hardcoded",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS usa ?: 'N3tX@2013!prod' quando o ambiente não define a variável; SMTP_API_KEY é literal netx-smtp-9f83e2c1a7b64d05 no fonte.",
+      "impacto": "Quem lê o repositório obtém credencial MySQL de produção e chave da central de e-mail.",
+      "correcao": "Ambos passam a vir só de getenv, com fallback vazio.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senhas em MD5 sem salt, coluna CHAR(32)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar faz md5($senha) e compara no SQL. CHAR(32) no schema cabe só MD5; hashes do seed (senha123, tecmaster) caem em rainbow table.",
+      "impacto": "Comprometida a tabela usuarios, as senhas dos clientes e técnicos são recuperáveis.",
+      "correcao": "Não alterei: migrar quebra autenticar e os logins documentados no manifesto.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "exportarCsv falha em silêncio fora de /var/www/painel/tmp",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 128,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "fopen(EXPORT_DIR.'/chamados.csv') no path de produção; se o diretório não existe, return sem header nem corpo. Arquivo único compartilhado ainda sofre corrida entre downloads.",
+      "impacto": "A rota export=csv devolve vazio em qualquer host que não tenha esse tmp; CSV truncado sob concorrência.",
+      "correcao": "Headers e escrita em php://output, que é a saída exigida pelo contrato.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "mediaResposta divide por zero sem primeira resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "return $soma / $qtd com $qtd incrementado só quando minutos_resposta não é NULL. Tabela sem esses valores (ou após limpeza) faz 0/0. O seed esconde o caso.",
+      "impacto": "A listagem, que sempre chama mediaResposta, quebra com DivisionByZeroError (PHP 8) ou INF.",
+      "correcao": "AVG() no SQL e retorno 0.0 quando o agregado é NULL.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "N+1 queries para resolver o nome do técnico",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "O loop de listarChamados chama tecnicoNome por linha, cada uma com SELECT nome FROM usuarios WHERE id = ... (concatenado).",
+      "impacto": "Número de queries cresce com a fila de chamados; listagem e export ficam lentos.",
+      "correcao": "LEFT JOIN usuarios na listagem e no CSV; tecnicoNome permanece e usa prepared statement.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Login reutiliza o id de sessão pré-autenticação",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "Após autenticar, uid e papel são gravados na sessão já existente, sem session_regenerate_id. Um PHPSESSID plantado antes do POST é promovido a sessão autenticada.",
+      "impacto": "Fixação de sessão: o atacante herda o painel da vítima após o login.",
+      "correcao": "session_regenerate_id(true) imediatamente antes de setar uid e papel.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 e coluna usuarios.senha CHAR(32)",
+      "porque": "autenticar e os usuários do manifesto (ana/senha123, carla/tecmaster) dependem do MD5 atual; bcrypt não cabe em 32 caracteres."
+    },
+    {
+      "o_que": "Assinaturas de listarChamados, verChamado e exportarCsv sem uid/papel",
+      "porque": "Relatório gerencial e rotina noturna consomem essas funções sem sessão HTTP e precisam da base completa; o filtro de visibilidade ficou em index.php."
+    },
+    {
+      "o_que": "formatarStatus devolve Resolvido para qualquer status diferente de 1 e 2",
+      "porque": "O contrato só fixa os rótulos 1/2/3; mudar o else poderia quebrar o relatório gerencial que casa por texto."
+    },
+    {
+      "o_que": "rotuloPrioridade, markup HTML mínimo, stack mysqli e arquivos de schema/seed",
+      "porque": "Não violam o manifesto; reescrever seria cosmética ou troca de camada de dados."
+    },
+    {
+      "o_que": "CSRF, rate limit e flags de cookie no login",
+      "porque": "Não há token legado; introduzir CSRF alteraria o POST que automações de login possam usar."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR em config.php",
+      "porque": "Pode ser referenciada por outros scripts do ISP; só exportarCsv deixou de depender dela."
+    }
+  ]
+}

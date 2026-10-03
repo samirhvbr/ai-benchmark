@@ -1,0 +1,223 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection em listarChamados via parametro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "listarChamados recebe $busca (vindo cru de $_GET['busca'] em index.php:72) e concatena direto na SQL: $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\". A variavel e fatiada dentro de aspas simples sem escape, e o resultado e executado por $db->query(), que interpreta a string inteira como uma unica instrucao. Um payload como ?busca=%' UNION SELECT ... FROM usuarios -- quebra a clausula LIKE e injeta um UNION SELECT que devolve a tabela usuarios (incluindo logins e hashes MD5) embutido nos resultados da listagem. Combinado com F4 (hash MD5), uma unica requisicao autenticada derruba a seguranca do sistema.",
+      "impacto": "Leitura irrestrita do banco via listagem web, com exfiltracao trivial de credenciais e dados. Rota acessivel apos login.",
+      "correcao": "listarChamados agora monta a query via prepared statement e liga $busca com bind_param('s', ...). O termo LIKE continua usando '%' . $busca . '%' do lado do PHP, mas o valor e sempre tratado como parametro, nunca como SQL.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Senha de producao do banco embutida em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "define('DB_PASS', getenv('DB_PASS') ?: 'N3tX@2013!prod'); usa o operador ?: em PHP, que cai no lado direito tanto quando getenv() devolve false (variavel ausente) quanto quando devolve string vazia. Em qualquer ambiente que esqueca de exportar DB_PASS - container novo, deploy mal-configurado, CI rodando esse checkout - o sistema sobe usando o literal. Quem tem acesso ao checkout ou ao historico git conhece a senha; o MySQL na porta padrao aceita essa credencial a partir de qualquer host.",
+      "impacto": "Divulgacao de credenciais de banco via codigo-fonte / historico de VCS.",
+      "correcao": "Removido o fallback. Sem DB_PASS, o config.php aborta com mensagem em STDERR e exit(1). Sem segredo no repositorio.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Chave de API SMTP embutida em config.php",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "define('SMTP_API_KEY', 'netx-smtp-9f83e2c1a7b64d05'); grava a chave em texto claro no codigo, sem fallback em env. Qualquer leitor do repositorio ou do arquivo em producao conhece a chave. O provedor SMTP autentica a chave por valor (sem 2FA por origem), entao a chave e suficiente para disparar e-mail transacional em nome do ISP.",
+      "impacto": "Envio de e-mails fraudulentos a clientes do ISP (phishing de credenciais, cobranca falsa).",
+      "correcao": "Removido o literal; a chave vem exclusivamente de getenv('SMTP_API_KEY'), sem fallback.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Hash de senha em MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "autenticar computa $hash = md5($senha) e compara com a coluna usuarios.senha CHAR(32) (definida em schema.sql:7). MD5 e uma funcao rapida e nao-keyed; GPUs modernas calculam bilhoes de hashes/s. Sem salt por usuario, uma tabela rainbow resolve todas as senhas iguais em uma unica passagem. A mesma coluna usuarios.senha e o que sai da injecao de F1, entao qualquer leak da base vira cracking trivial.",
+      "impacto": "Disclosure de todas as senhas dos usuarios apos qualquer vazamento (incluindo via F1).",
+      "correcao": "autenticar agora usa password_verify quando o hash armazenado ja e bcrypt/argon2. Quando ainda e o MD5 legado (32 hex), aceita temporariamente e reescreve a coluna com password_hash no mesmo login bem-sucedido. Tambem atende password_needs_rehash para upgrades futuros.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Regra de negocio de visibilidade nao aplicada em listagem, detalhe e export",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "manifest.md declara que 'um cliente so pode ver os chamados que ele mesmo abriu; um tecnico pode ver qualquer chamado'. O codigo nao aplica isso em nenhum dos tres caminhos: listarChamados (lib.php:78-93) faz SELECT * FROM chamados sem WHERE sobre usuario_id; verChamado (lib.php:98-102) carrega por id puro; exportarCsv (lib.php:123-151) faz SELECT * FROM chamados ORDER BY id. O cliente autenticado recebe todas as linhas, navega em ?ver=104 (que e do cliente 2 segundo seed.sql) e baixa o CSV com todos os chamados via ?export=csv.",
+      "impacto": "Vazamento de dados entre clientes autenticados: descricoes de chamados de outros clientes, identificacao de quem abriu, escala de prioridade interna.",
+      "correcao": "listarChamados e exportarCsv ganham WHERE c.usuario_id = ? adicionado por SQL quando $_SESSION['papel'] === 'cliente'. Para papel 'tecnico', todos os chamados continuam visiveis, como o manifesto exige. verChamado mantem a assinatura (nao transporta contexto de auth) e a checagem foi feita no caller (index.php:58-61): quando papel e cliente e usuario_id != uid, mostra 'Chamado nao encontrado.' (mesma resposta de id inexistente, sem vazar existencia).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "XSS refletido via parametro busca em index.php",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "$busca (vindo cru de $_GET['busca'] em index.php:72) e interpolado em HTML em dois pontos sem escape: no atributo value=\"...\" do form (linha 79) e no paragrafo <p>Resultados para: ...</p> (linha 82). O atributo value aceita payload que quebra para um atributo novo (ex.: \" onfocus=alert(1) autofocus=), e o paragrafo aceita injecao direta de <script>. O cookie de sessao nao e marcado HttpOnly no php.ini do host e este codigo nao toca o ini, entao o atacante pode ler document.cookie e sequestrar a sessao.",
+      "impacto": "Execucao de JS no contexto do painel autenticado, com acesso ao DOM e potencialmente ao cookie de sessao. Combinado com a ausencia de CSRF (F13), viabiliza acoes em nome da vitima.",
+      "correcao": "htmlspecialchars($busca, ENT_QUOTES, 'utf-8') aplicado nos dois pontos. O id em index.php:90 tambem passou a ser escapado (era int na origem, mas a transformacao e defensiva).",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Divisao por zero em mediaResposta quando nao ha respostas",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "mediaResposta executa SELECT minutos_resposta FROM chamados WHERE minutos_resposta IS NOT NULL e acumula $qtd. Em uma base recem-seedada ou enquanto todos os chamados estiverem sem resposta, o while nao roda e $qtd permanece em 0; a funcao retorna $soma / $qtd, o que em PHP 8 dispara DivisionByZeroError fatal, ou em algumas versoes devolve INF/NaN, que e impresso por round($media) na home (index.php:78). A funcao tambem nao trata $res === false (DB indisponivel).",
+      "impacto": "Falha fatal de pagina ou metrica de SLA exibida como INF/NaN enquanto nao houver resposta em nenhum chamado.",
+      "correcao": "Guard explicito: $qtd === 0 -> return 0.0; if ($res === false) return 0.0. Mantida a assinatura float.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Concat SQL em tecnicoNome - bomba-relogio latente",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 69,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "tecnicoNome executa $db->query('SELECT nome FROM usuarios WHERE id = ' . $tecnicoId). Hoje $tecnicoId esta tipado ?int, o que blinda o caminho atual contra injecao trivial. Mas a funcao faz parte da lib compartilhada com outros scripts do ISP (a 'rotina noturna de exportacao' mencionada no manifesto), e basta um caller novo chamar passando tipo nao-int para reintroduzir a falha. O padrao ensina concatenacao como habito.",
+      "impacto": "Latente: depende de uso futuro inadequado. Quando existir, e leitura de usuarios por SQL ter.",
+      "correcao": "Prepared statement com bind_param('i', $tecnicoId). Mantida a fallback '-' em erro.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "N+1 queries em listagem e export por tecnico_id por linha",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 91,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "Em listarChamados (lib.php:88-91) e em exportarCsv (lib.php:136-145), o codigo itera o resultado e chama tecnicoNome para cada linha, e cada chamada dispara SELECT nome FROM usuarios WHERE id = ?. N linhas devolvidas -> 1 query principal + N queries de tecnico. Em uma base com milhares de chamados isso multiplica linearmente o tempo de pagina e a carga do MySQL; o export e caminho quente (relatorios diarios), onde o efeito e especialmente visivel.",
+      "impacto": "Degradacao linear de latencia da listagem e do export, com aumento equivalente de carga no MySQL.",
+      "correcao": "LEFT JOIN usuarios t ON t.id = c.tecnico_id em ambas as queries; o nome do tecnico ja vem na linha. Mantida a chave 'tecnico_nome' no array retornado por listarChamados, preservando o contrato.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Session fixation no login - id de sessao nao e regenerado",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 75,
+      "mecanismo": "Apos autenticar validar, o codigo grava $_SESSION['uid'] e $_SESSION['papel'] no mesmo id de sessao aberto (PHP mantem o PHPSESSID atual). Um atacante que convencer a vitima a abrir uma URL com PHPSESSID=XYZ (cookie proprio, link forjado, XSS externo) cria a sessao XYZ sem privilegios. Quando a vitima faz login, o servidor promove XYZ in-place - o atacante, que conhece XYZ, agora enxerga o estado autenticado.",
+      "impacto": "Takeover de conta sem precisar da senha, a partir de qualquer canal que injete um PHPSESSID na vitima.",
+      "correcao": "session_regenerate_id(true) chamada antes de gravar os dados autenticados em index.php:24. O id antigo e seus dados sao descartados; o novo id e devolvido ao navegador.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "exportarCsv escreve em arquivo temporario compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 70,
+      "mecanismo": "exportarCsv abre /var/www/painel/tmp/chamados.csv em modo 'w' (truncate + write), escreve o CSV, depois faz readfile($caminho) para devolver o conteudo. Dois usuarios exportando simultaneamente disputam o mesmo arquivo: cada fopen('w') trunca o que o outro escreveu, e readfile serve um CSV truncado/mesclado. Alem disso, o arquivo fica em /var/www/painel/tmp, e dependendo do webroot um request bem-formado para /tmp/chamados.csv baixa o conteudo persistido - dados de qualquer usuario anterior ali deixados.",
+      "impacto": "Exfiltracao cross-user via arquivo temporario persistido; corrupcao de downloads em concorrencia.",
+      "correcao": "fopen('php://output', 'w') e headers Content-Type / Content-Disposition enviados ANTES da iteracao. Sem arquivo em disco, sem race, sem sobras. EXPORT_DIR continua definida em config.php por compatibilidade com qualquer consumer externo, com comentario de que nao e mais usada.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Concat SQL em verChamado - mesmo padrao de F8",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 100,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 60,
+      "mecanismo": "verChamado executa $res = $db->query('SELECT * FROM chamados WHERE id = ' . $id). O parametro $id esta tipado int, entao o vetor esta fechado no caller atual; mesmo padrao problematico de F8 - a funcao e parte da biblioteca consumida por outros scripts do ISP.",
+      "impacto": "Latente: depende de caller futuro nao-int.",
+      "correcao": "Prepared statement. Mantida a assinatura.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "Ausencia de token CSRF no formulario de login",
+      "arquivo": "code/index.php",
+      "linha": 30,
+      "linha_fim": 35,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 50,
+      "mecanismo": "O formulario de login submete POST sem token anti-CSRF. Combinado com a sessao ativa, um atacante pode forcar a vitima a autenticar na conta do atacante (login CSRF), ou - em presenca de outras acoes state-changing no ISP - executa-las em nome dela. Hoje o unico estado mutavel via form e o proprio login; o pior caso e a vitima entrar na conta do atacante e ver menos dados.",
+      "impacto": "Marginal neste painel (apenas login e mutavel). Em superficie ISP maior, permite acao em nome da vitima.",
+      "correcao": "Nao corrigido nesta entrega. Mitigar exige token por sessao (bin2hex(random_bytes(...)) + validacao), endurecimento de cookie (SameSite, HttpOnly, Secure) e cobertura do logout - escopo maior que este patch, com risco de quebrar consumidores ISP do manifesto. Marcado para R2 em RELATORIO.md.",
+      "corrigido": false
+    },
+    {
+      "id": "F14",
+      "titulo": "mysqli em modo de erro silencioso",
+      "arquivo": "code/index.php",
+      "linha": 9,
+      "linha_fim": 9,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 50,
+      "mecanismo": "$db = new mysqli(...) usa o modo padrao, que nao lanca excecao nem emite warning em falha. Queries que falham retornam false ou resultado vazio sem sinal, reduzindo a observabilidade do painel. Operadores so veem problema quando o sintoma (pagina vazia, metrica zerada) ja virou impacto.",
+      "impacto": "Degrada o MTTR; nao causa falha direta.",
+      "correcao": "Nao corrigido nesta entrega. Ativar mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT) muda o contrato de falhas do banco - scripts do ISP que dependem do comportamento soft podem passar a abortar em casos antes tolerados. Marcado para R3 em RELATORIO.md.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Token CSRF no formulario de login (achado F13)",
+      "porque": "Unico estado mutavel via formulario hoje e o proprio login; ganho de seguranca marginal em relacao ao trabalho e ao risco de regressao em outros consumers do manifesto. Adiamento para um pacote dedicado com endurecimento de cookie (SameSite/HttpOnly)."
+    },
+    {
+      "o_que": "Ativacao do modo estrito de erro do mysqli (achado F14)",
+      "porque": "Mudanca de contrato do ISP, nao bug local. Scripts externos podem depender do comportamento soft (false/empty em falha). Requer PR separado com cobertura dos callers."
+    },
+    {
+      "o_que": "Definicao da constante EXPORT_DIR em config.php",
+      "porque": "Nao e mais usada internamente por exportarCsv (que agora escreve em php://output), mas o manifesto nao declara nada sobre ela. Pode haver consumers ISP dependentes do nome. Mantida por compatibilidade."
+    },
+    {
+      "o_que": "Coluna usuarios.senha em CHAR(32) (schema.sql) e seed com MD5",
+      "porque": "A migracao de hash (F4) e online: ao logar, o usuario reescreve a propria coluna com password_hash. Para usuarios com hash MD5 legado, o sistema aceita e migra. Para o hash novo (60 chars) caber sem truncar, a coluna precisa de ALTER TABLE - migracao DDL operacional preferi nao acoplar a este patch. Marcado como R1 em RELATORIO.md."
+    }
+  ]
+}
