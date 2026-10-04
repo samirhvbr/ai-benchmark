@@ -1018,6 +1018,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   average to each client (COMP-003, charged to SEC-017), and it declined the CSV formula prefix for the
   billing integrations. Its report scored 45 of 50: it is the only one so far to catch that `fputcsv` quotes
   the `Aberto em` header and to restore the literal.
+- **Grok 4.7 at `xhigh`, a new agent, first attempt: void.** It ran in opencode through OpenRouter on
+  `bench3` from 09:35 to 09:58 on 2026-10-04. It made 40 responses and finished normally with a full
+  delivery, at a cost of US$ 3.00. The VM was then restored to its snapshot before the delivery was copied
+  off it, so nothing was kept or judged. It is in `grok-4.7-xhigh/void-1/`, with a `VOID.md` recording what
+  a read-only check had seen. The cause does not depend on the result, which was never known, so the agent
+  runs again from run 1.
 
 ## Runs withdrawn for an incomplete record
 

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.81`
+**Versão atual:** `0.2.82`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.82` — 2026-10-04 — results/ keeps a void Grok 4.7 xhigh attempt whose VM was restored before its delivery was copied
+
+- `grok-4.7-xhigh/void-1/VOID.md`: a finished run (40 responses, US$ 3.00) lost when `bench3` was restored
+  mid-copy. Nothing was judged, so the new agent runs again from run 1.
 
 ### `0.2.81` — 2026-10-04 — results/ adds GPT-6-astra at ultra as a new agent: run 1 scores 668, the highest GPT run
 
