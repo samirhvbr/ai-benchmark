@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.80`
+**Versão atual:** `0.2.81`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.81` — 2026-10-04 — results/ adds GPT-6-astra at ultra as a new agent: run 1 scores 668, the highest GPT run
+
+- `gpt-6-astra-ultra/run-1` (BX): 668, Silver, 6th, in 11 minutes in Codex CLI with three subagents.
+  SEC 228, BUG 150, PERF 150, compatibility 70 (the SLA average scoped to each client), explanation 45/50.
+- Filed as a new agent, as GPT-6.1-sol at ultra was; GPT-6-astra at xhigh stays official at 628.
+- Instance notes: table row BX and one bullet.
 
 ### `0.2.80` — 2026-10-04 — results/ adds Grok 4.6's third run (620); the agent is official at 633
 

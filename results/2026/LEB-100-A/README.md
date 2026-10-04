@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fifty-one deliveries were scored, labelled **Y** to **BW** in the order they arrived and judged blind like
+Fifty-two deliveries were scored, labelled **Y** to **BX** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -498,8 +498,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BU** | GLM-5.3, `high`, run 3 | 604 |
 | **BV** | Gemini 3.8 Flash, `high`, run 3 | 100 |
 | **BW** | Grok 4.6, `high`, run 3 | 620 |
+| **BX** | GPT-6-astra, `ultra`, run 1 | 668 |
 
-All fifty-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All fifty-two ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1009,6 +1010,14 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   and kept compatibility at 100. It left MD5, both secrets and the CSV formula injection in place, and
   its report scored 35 of 50. As in run 2, the nested ifs (CLN-007) count as identified only through
   the non-changes list.
+- **GPT-6-astra at `ultra` (BX): 668, Silver, 6th, a new agent, and the highest GPT run on LEB-100-A.**
+  GPT-6-astra at `xhigh` is official at 628; as with GPT-6.1-sol, the `ultra` effort is filed as a separate
+  agent. It ran in Codex CLI 0.159.3 on `bench1` in 11 minutes and spawned three subagents, all on
+  `gpt-6-astra` at `ultra`. The logs keep tokens but no cost. It fixed 9 flaws, migrating MD5 transparently,
+  taking both secrets out of the code and closing the file-handle leak on every path. It scoped the SLA
+  average to each client (COMP-003, charged to SEC-017), and it declined the CSV formula prefix for the
+  billing integrations. Its report scored 45 of 50: it is the only one so far to catch that `fputcsv` quotes
+  the `Aberto em` header and to restore the literal.
 
 ## Runs withdrawn for an incomplete record
 
