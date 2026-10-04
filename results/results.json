@@ -21,7 +21,7 @@
         "date": "2026-09-29",
         "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery, one EXPL judge for all four reports, blind to the answer key and to every other score"
       },
-      "evaluated_on": "2026-10-03",
+      "evaluated_on": "2026-10-04",
       "category_max": {
         "SEC": 250,
         "ARCH": 200,
@@ -1194,12 +1194,13 @@
             "training_cutoff": "2026-06",
             "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
           },
-          "runs_count": 2,
-          "official": false,
+          "runs_count": 3,
+          "official": true,
           "score": 774,
           "totals": [
             774,
-            820
+            820,
+            759
           ],
           "representative_run": 1,
           "key_exposure": "before",
@@ -1533,6 +1534,170 @@
                 "note": "model time summed across the parallel agents (15.9 h) in 2.0 h of wall-clock; Claude Sonnet 5.5 accounts for US$ 166.66, the claude-sonnet-5 fallback of eight subagents for US$ 4.43 (203,558 output tokens), and the client's small calls to Claude Haiku 4.5 for US$ 0.10"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-2/scorecard.md"
+            },
+            {
+              "run": 3,
+              "total": 759,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 233,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 47,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 10,
+                "causa_raiz": 10,
+                "priorizacao": 8,
+                "trade_offs": 10
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 45
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 17,
+              "brier": 0.034,
+              "discovery_index": 75.0,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the session's cost record (cost-state) in its log, written when the session was closed",
+                "elapsed_seconds": 30480.508,
+                "tokens": {
+                  "input": 4150,
+                  "output": 3825335,
+                  "cache": 270341344,
+                  "total": 274170829
+                },
+                "usd_estimate": 119.07,
+                "note": "model time summed across the parallel agents (8.5 h) in 3.6 h of wall-clock; Claude Sonnet 5.5 accounts for US$ 112.27, the claude-sonnet-5 fallback of seven subagents for US$ 6.80 (307,988 output tokens), and the client's small calls to Claude Haiku 4.5 for under US$ 0.01"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-3/scorecard.md"
             }
           ],
           "rank": 3

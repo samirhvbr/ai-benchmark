@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Forty-nine deliveries were scored, labelled **Y** to **BS**, **BU** and **BV** in the order they arrived and judged blind like
+Fifty deliveries were scored, labelled **Y** to **BV** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -494,10 +494,11 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BQ** | Grok 4.6, `high`, run 2 | 640 |
 | **BR** | DeepSeek V4 Flash, `high`, run 2 | 282 |
 | **BS** | Claude Sonnet 5.5, `max`, multi-agent, run 2 | 820 |
+| **BT** | Claude Sonnet 5.5, `max`, multi-agent, run 3 | 759 |
 | **BU** | GLM-5.3, `high`, run 3 | 604 |
 | **BV** | Gemini 3.8 Flash, `high`, run 3 | 100 |
 
-All forty-nine ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All fifty ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -926,6 +927,28 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     column change as the point of no return.
   - The matching judge kept SEC-001's fix as full on its probe while the LIKE wildcards stay
     unescaped, as in BO and BQ.
+- **Claude Sonnet 5.5 at `max` in multi-agent mode, run 3 (BT): 759, Gold. With three runs its score is
+  official: 774, the median of 774, 820 and 759, 3rd.**
+  - It ran in Claude Code 2.1.285 on `bench1` from 13:31 to 17:05 (3.6 hours), with 3 workflows and 145
+    subagents, for US$ 119.07. Model time summed across the parallel agents was 8.5 hours. The three runs
+    took 8.1, 2.0 and 3.6 hours and cost US$ 233, 171 and 119, and they scored 774, 820 and 759.
+  - The VM was restored to the snapshot taken before run 2. It still held the session file of the
+    logged-out attempt (`void-2`, the first message and the client's "Login expired") and an empty memory
+    folder. The agent never opened either, and nothing from run 2 was on the machine.
+  - Seven subagents fell back to `claude-sonnet-5` after the safety classifier stopped them, for US$ 6.80.
+    Their file edits went to scratch copies; the delivery was written by Sonnet 5.5 in the main session,
+    which never switched, so the run stands (`PROTOCOL §3`).
+  - It fixed 10 of the 13 and kept SEC 233, compatibility 100 and no penalty. It neutralised the CSV
+    formula cells only in a new web export, keeping the contracted `exportarCsv()` byte-identical for its
+    machine consumers. The SEC-008 probe calls `exportarCsv()`, so that fix scores as not made. It fixed
+    the file-handle leak without reporting it (BUG-004, a silent fix under the same rule as BS's judge
+    applied), and neither the dispatcher nor the magic numbers were touched.
+  - Its report, 26 findings with a structural synthesis and measured evidence, scored 47 of 50, the
+    highest explanation score on LEB-100-A.
+  - The delivery was ready at 17:05, but the client stayed open until the next morning, and its cost is
+    written only when it closes. It was copied and blind-judged that evening as **BT**, between BS and BU,
+    and merged once the session was closed and its cost could be read. A second matching judge started by
+    mistake the next morning was stopped before it wrote anything; the first verdict stands.
 - **GLM-5.3 at `high`, run 3 (BU): 604. With three runs its score is official: 621, the median of 629,
   621 and 604, 14th.** It ran in opencode through OpenRouter on `bench3` and wrote its delivery in 9
   minutes, for US$ 0.47. It fixed 7 flaws, the file-handle leak (BUG-004) without reporting it, and kept
@@ -982,7 +1005,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **Eighteen agents have three runs; the rest are not official.** An official score is the median of three
+- **Nineteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
@@ -990,8 +1013,8 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568, and GPT-6.1-sol at `ultra`
   (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462,
   GLM-5.3 (629, 621, 604) at 621, Gemini 3.8 Flash at `high` (687, 588, 100) at 588 and Claude Haiku 4.5
-  (317, 369, 232) at 317. Sonnet 5.5 in multi-agent mode, Fable 5.1, Grok 4.6 and DeepSeek V4 Flash have
-  two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
+  (317, 369, 232) at 317, and Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774. Fable 5.1, Grok 4.6 and
+  DeepSeek V4 Flash have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
   second run. A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
   GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is

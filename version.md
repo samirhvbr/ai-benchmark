@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.75`
+**Versão atual:** `0.2.76`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.76` — 2026-10-04 — results/ adds Claude Sonnet 5.5's third multi-agent max run (759); the agent is official at 774
+
+- `claude-sonnet-5.5-max-ultracode/run-3` (BT): 759, Gold, in 3.6 h and US$ 119.07. SEC 233, compatibility
+  100, no penalty. Explanation 47/50 is the highest on LEB-100-A. SEC-008 was neutralised only in a new
+  web export, so its probe on `exportarCsv()` counts it as not fixed. Seven subagents fell back to
+  `claude-sonnet-5`; none of the delivery came from them.
+- With three runs (774, 820, 759) the agent is official at 774, 3rd; nineteen agents are now official.
+- BT was copied and judged on 2026-10-03, while the client was still open, and merged once it closed and
+  its cost could be read. A duplicate matching judge started on 2026-10-04 was stopped before it wrote,
+  and the first verdict stands.
+- Instance notes: table row BT, one bullet, the official count and list.
 
 ### `0.2.75` — 2026-10-03 — results/ adds the third runs of GLM-5.3 (604) and Gemini 3.8 Flash at high (100); both now official, at 621 and 588
 
