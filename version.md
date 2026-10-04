@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.77`
+**Versão atual:** `0.2.78`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.78` — 2026-10-04 — results/ withdraws the three runs with no recorded client: GPT-5.5 run 1, MiniMax-M3 and Kimi K3
+
+- `gpt-5.5-xhigh/run-1` (601), `minimax-m3/run-1` (460) and `moonshot-kimi-k3-default/run-1` (528) move to
+  `withdrawn-1/`, each with a `WITHDRAWN.md`. They are the only runs that fail `PROTOCOL §4` item 5, all
+  filed in the first batch before session logs were archived.
+- MiniMax-M3 at its default and Kimi K3 leave the leaderboard. GPT-5.5 keeps runs 2 and 3, publishes 558
+  and is no longer official.
+- The leaderboard has thirty agents and eighteen official scores.
+- Instance notes: a section on the withdrawal, and the "Before quoting" caveats updated.
 
 ### `0.2.77` — 2026-10-04 — PROTOCOL §4 withdraws a run whose client, first message, session log or cost was not recorded
 

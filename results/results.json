@@ -9377,175 +9377,18 @@
             "training_cutoff": "2025-12-01",
             "training_cutoff_source": "https://developers.openai.com/api/docs/models/gpt-5.5"
           },
-          "runs_count": 3,
-          "official": true,
-          "score": 568,
+          "runs_count": 2,
+          "official": false,
+          "score": 558,
           "totals": [
-            601,
             558,
             568
           ],
-          "representative_run": 3,
+          "representative_run": 2,
           "key_exposure": "before",
           "discovery_index": 58.3,
-          "brier": 0.001,
+          "brier": 0.006,
           "runs": [
-            {
-              "run": 1,
-              "total": 601,
-              "grade": "Silver",
-              "categories": {
-                "SEC": {
-                  "score": 198,
-                  "max": 250
-                },
-                "ARCH": {
-                  "score": 0,
-                  "max": 200
-                },
-                "BUG": {
-                  "score": 150,
-                  "max": 150
-                },
-                "PERF": {
-                  "score": 150,
-                  "max": 150
-                },
-                "CLN": {
-                  "score": 0,
-                  "max": 100
-                },
-                "COMP": {
-                  "score": 70,
-                  "max": 100
-                },
-                "EXPL": {
-                  "score": 33,
-                  "max": 50
-                }
-              },
-              "expl_rubric": {
-                "clareza": 7,
-                "precisao": 7,
-                "causa_raiz": 7,
-                "priorizacao": 6,
-                "trade_offs": 6
-              },
-              "penalties": [],
-              "comp_violations": [
-                {
-                  "id": "COMP-003",
-                  "count": 1,
-                  "deduction": -30
-                }
-              ],
-              "flaws": {
-                "SEC-001": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 95
-                },
-                "SEC-003": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 99
-                },
-                "SEC-008": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "SEC-013": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 85
-                },
-                "SEC-014": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 100
-                },
-                "SEC-015": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-017": {
-                  "earned": 9,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 98
-                },
-                "BUG-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 90
-                },
-                "BUG-004": {
-                  "earned": 6,
-                  "possible": 6,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 88
-                },
-                "PERF-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 95
-                },
-                "ARCH-002": {
-                  "earned": 0,
-                  "possible": 10,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "ARCH-009": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "CLN-007": {
-                  "earned": 0,
-                  "possible": 8,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                }
-              },
-              "false_positives": 0,
-              "decoys_reported": 0,
-              "extra_findings": 2,
-              "brier": 0.006,
-              "discovery_index": 70.8,
-              "characterization": {
-                "passed": 22,
-                "failed": 0
-              },
-              "operator_replies": null,
-              "client": null,
-              "cost_time": null,
-              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
-            },
             {
               "run": 2,
               "total": 558,
@@ -10075,183 +9918,6 @@
           "rank": 22
         },
         {
-          "agent": "moonshot-kimi-k3-default",
-          "model": {
-            "name": "Kimi K3",
-            "id": "kimi-k3",
-            "provider": "Moonshot AI",
-            "reasoning_effort": "default",
-            "reasoning_effort_note": "as filed in the folder name; the client was not recorded, so whether it offered an effort setting is unknown",
-            "exact_version": null,
-            "training_cutoff": null,
-            "training_cutoff_source": "https://huggingface.co/moonshotai/Kimi-K3",
-            "training_cutoff_note": "Moonshot AI publishes no training or knowledge cutoff for Kimi K3 (Hugging Face model card checked on 2026-09-30); third-party figures are not used"
-          },
-          "runs_count": 1,
-          "official": false,
-          "score": 528,
-          "totals": [
-            528
-          ],
-          "representative_run": 1,
-          "key_exposure": "unknown",
-          "discovery_index": 70.8,
-          "brier": 0.007,
-          "runs": [
-            {
-              "run": 1,
-              "total": 528,
-              "grade": "Bronze",
-              "categories": {
-                "SEC": {
-                  "score": 203,
-                  "max": 250
-                },
-                "ARCH": {
-                  "score": 0,
-                  "max": 200
-                },
-                "BUG": {
-                  "score": 139,
-                  "max": 150
-                },
-                "PERF": {
-                  "score": 56,
-                  "max": 150
-                },
-                "CLN": {
-                  "score": 0,
-                  "max": 100
-                },
-                "COMP": {
-                  "score": 100,
-                  "max": 100
-                },
-                "EXPL": {
-                  "score": 30,
-                  "max": 50
-                }
-              },
-              "expl_rubric": {
-                "clareza": 7,
-                "precisao": 5,
-                "causa_raiz": 7,
-                "priorizacao": 6,
-                "trade_offs": 5
-              },
-              "penalties": [],
-              "comp_violations": [],
-              "flaws": {
-                "SEC-001": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-003": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-008": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "SEC-013": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 85
-                },
-                "SEC-014": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 100
-                },
-                "SEC-015": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-017": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "BUG-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "BUG-004": {
-                  "earned": 5,
-                  "possible": 6,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 80
-                },
-                "PERF-001": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 100
-                },
-                "ARCH-002": {
-                  "earned": 0,
-                  "possible": 10,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "ARCH-009": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "CLN-007": {
-                  "earned": 0,
-                  "possible": 8,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                }
-              },
-              "false_positives": 0,
-              "decoys_reported": 0,
-              "extra_findings": 4,
-              "brier": 0.007,
-              "discovery_index": 70.8,
-              "characterization": {
-                "passed": 22,
-                "failed": 0
-              },
-              "operator_replies": null,
-              "client": null,
-              "cost_time": null,
-              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-default/run-1/scorecard.md"
-            }
-          ],
-          "rank": 23
-        },
-        {
           "agent": "qwen3-coder-next-default",
           "model": {
             "name": "Qwen3 Coder Next",
@@ -10447,7 +10113,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md"
             }
           ],
-          "rank": 24
+          "rank": 23
         },
         {
           "agent": "deepseek-v4-pro-high",
@@ -10974,7 +10640,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-pro-high/run-3/scorecard.md"
             }
           ],
-          "rank": 25
+          "rank": 24
         },
         {
           "agent": "minimax-m3-thinking",
@@ -11519,190 +11185,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3-thinking/run-3/scorecard.md"
             }
           ],
-          "rank": 26
-        },
-        {
-          "agent": "minimax-m3",
-          "model": {
-            "name": "MiniMax-M3",
-            "id": "minimax-m3",
-            "provider": "MiniMax",
-            "reasoning_effort": "default",
-            "reasoning_effort_note": "not configurable: the MiniMax-M3 client exposes no effort setting",
-            "exact_version": null,
-            "training_cutoff": null,
-            "training_cutoff_source": "https://www.minimax.io/models/text/m3",
-            "training_cutoff_note": "MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used"
-          },
-          "runs_count": 1,
-          "official": false,
-          "score": 460,
-          "totals": [
-            460
-          ],
-          "representative_run": 1,
-          "key_exposure": "unknown",
-          "discovery_index": 70.8,
-          "brier": 0.011,
-          "runs": [
-            {
-              "run": 1,
-              "total": 460,
-              "grade": "Bronze",
-              "categories": {
-                "SEC": {
-                  "score": 185,
-                  "max": 250
-                },
-                "ARCH": {
-                  "score": 0,
-                  "max": 200
-                },
-                "BUG": {
-                  "score": 129,
-                  "max": 150
-                },
-                "PERF": {
-                  "score": 56,
-                  "max": 150
-                },
-                "CLN": {
-                  "score": 0,
-                  "max": 100
-                },
-                "COMP": {
-                  "score": 70,
-                  "max": 100
-                },
-                "EXPL": {
-                  "score": 20,
-                  "max": 50
-                }
-              },
-              "expl_rubric": {
-                "clareza": 5,
-                "precisao": 3,
-                "causa_raiz": 4,
-                "priorizacao": 4,
-                "trade_offs": 4
-              },
-              "penalties": [],
-              "comp_violations": [
-                {
-                  "id": "COMP-003",
-                  "count": 1,
-                  "deduction": -30
-                }
-              ],
-              "flaws": {
-                "SEC-001": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "SEC-003": {
-                  "earned": 6,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 95
-                },
-                "SEC-008": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "SEC-013": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 80
-                },
-                "SEC-014": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 95
-                },
-                "SEC-015": {
-                  "earned": 6,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 95
-                },
-                "SEC-017": {
-                  "earned": 10,
-                  "possible": 10,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 100
-                },
-                "BUG-001": {
-                  "earned": 8,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 95
-                },
-                "BUG-004": {
-                  "earned": 4,
-                  "possible": 6,
-                  "found": true,
-                  "fixed": true,
-                  "confidence": 90
-                },
-                "PERF-001": {
-                  "earned": 3,
-                  "possible": 8,
-                  "found": true,
-                  "fixed": false,
-                  "confidence": 80
-                },
-                "ARCH-002": {
-                  "earned": 0,
-                  "possible": 10,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "ARCH-009": {
-                  "earned": 0,
-                  "possible": 6,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                },
-                "CLN-007": {
-                  "earned": 0,
-                  "possible": 8,
-                  "found": false,
-                  "fixed": false,
-                  "confidence": null
-                }
-              },
-              "false_positives": 0,
-              "decoys_reported": 0,
-              "extra_findings": 9,
-              "brier": 0.011,
-              "discovery_index": 70.8,
-              "characterization": {
-                "passed": 22,
-                "failed": 0
-              },
-              "operator_replies": null,
-              "client": null,
-              "cost_time": null,
-              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
-            }
-          ],
-          "rank": 27
+          "rank": 25
         },
         {
           "agent": "kimi-k2.7-code-default",
@@ -11893,7 +11376,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md"
             }
           ],
-          "rank": 28
+          "rank": 26
         },
         {
           "agent": "gpt-5.3-codex-xhigh",
@@ -12083,7 +11566,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 29
+          "rank": 27
         },
         {
           "agent": "z.ai-glm-5.2-high",
@@ -12273,7 +11756,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
             }
           ],
-          "rank": 30
+          "rank": 28
         },
         {
           "agent": "claude-haiku-4.5-default",
@@ -12811,7 +12294,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-3/scorecard.md"
             }
           ],
-          "rank": 31
+          "rank": 29
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -13184,7 +12667,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md"
             }
           ],
-          "rank": 32
+          "rank": 30
         }
       ]
     }

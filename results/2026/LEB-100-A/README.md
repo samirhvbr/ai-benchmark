@@ -1003,29 +1003,50 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   planted, and all 77 deliveries filed before the change were re-run through the new suite with the
   same counts and probe verdicts, so no published score moved.
 
+## Runs withdrawn for an incomplete record
+
+On 2026-10-04 the operator decided that a run counts only with its record complete: the client and
+its version, the first message, the session log and the cost. That is now `PROTOCOL §4` item 5. Three
+runs fail it, all from the first batch, filed on the first VM (or a clone of it) before session logs
+were archived. Each is moved to `withdrawn-1/` with a `WITHDRAWN.md` and kept for audit, unpublished:
+
+| Run | Total | Effect |
+| --- | --- | --- |
+| GPT-5.5 at `xhigh`, run 1 (C) | 601 | Runs 2 and 3 (558, 568) stay; the agent publishes 558 and is no longer official |
+| MiniMax-M3 at its default, run 1 (J) | 460 | Its only run: the agent leaves the leaderboard |
+| Kimi K3 at its default, run 1 (M) | 528 | Its only run: the agent leaves the leaderboard |
+
+The criterion is the record, not the result, and it was applied to every run that fails it at once.
+GPT-5.5's was its best run. MiniMax-M3 with the thinking variant is a separate agent with three
+recorded runs and is unaffected. The leaderboard goes from thirty-two agents to thirty, and from
+nineteen official scores to eighteen. The notes above describe these runs as they were scored at the
+time and are left as written.
+
 ## Before quoting a number
 
-- **Nineteen agents have three runs; the rest are not official.** An official score is the median of three
+- **Eighteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
   DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496,
-  GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568, and GPT-6.1-sol at `ultra`
+  GPT-5.6-luna (599, 601, 624) at 601, GPT-6.1-sol at `ultra`
   (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462,
   GLM-5.3 (629, 621, 604) at 621, Gemini 3.8 Flash at `high` (687, 588, 100) at 588 and Claude Haiku 4.5
-  (317, 369, 232) at 317, and Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774. Fable 5.1, Grok 4.6 and
-  DeepSeek V4 Flash have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
-  second run. A single run can sit more than 100 points from the agent's median, as
+  (317, 369, 232) at 317, and Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774. Fable 5.1, Grok 4.6,
+  DeepSeek V4 Flash and GPT-5.5 have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
+  second run, and GPT-5.5 keeps runs 2 and 3 (558, 568) after its run 1 was withdrawn (below). A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
-  GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
+  Gemini 3.8 Flash's 687 and 588 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
   within the noise of a single run.
 - **The judge is also a contestant.** Claude Opus 5.5 judged and was judged. Anonymity limits the
   bias; it does not remove it, since a model can recognise its own style — or a sibling's: six of
-  the thirty-one contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
+  the thirty contestants are Claude models, and five of them hold the top five places. The two calls against delivery D (COMP-003 on
   `formatarStatus`, R2 none on CLN-007) were kept as the judge made them. The four changes made in
   review are explained above: E, H and J move no place; F lifts GPT-5.6-terra from 9th to 6th. Every verdict carries a rationale per flaw so it can be audited.
-- **Not the same effort for everyone.** MiniMax-M3 ran at its model's default — it has no effort
-  setting — while the other nine ran at `xhigh`.
+- **Not the same effort for everyone.** Each agent is a model at one effort, and the agent's name
+  records it. Kimi K2.7 Code, Qwen3 Coder Next and Claude Haiku 4.5 have no effort setting and ran at
+  their default, MiniMax-M3 ran with opencode's thinking variant, and the rest ran at `high`, `xhigh`,
+  `max` or `ultra`.
 - **The answer key is public.** `instances/LEB-100-A/private/` has been in this public repository
   since 2026-07-13, although `matrix/MATRIX.md §4` says an active matrix is published only as its
   hash. The instance stays current under the exception in `MATRIX §4`, item 5. During these ten
