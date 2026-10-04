@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.73`
+**Versão atual:** `0.2.74`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.74` — 2026-10-03 — tools/export-results.py accepts a delivery without a RELATORIO.md
+
+- The check that rejects two runs filed with the same report read every delivery's RELATORIO.md and
+  stopped when one was missing. A delivery can lack it: Gemini 3.8 Flash's run 3 stopped before writing
+  it, and scores as delivered. The check now skips a delivery with no report, which cannot be a resend
+  of another run's report.
 
 ### `0.2.73` — 2026-10-03 — results/ adds Claude Sonnet 5.5's second multi-agent max run (820); its published score stays 774
 

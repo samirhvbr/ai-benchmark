@@ -431,7 +431,12 @@ def check_agent_runs(where, agent_runs):
         if x["meta"].get("run") != x["run"]:
             sys.exit("[export] %s/run-%d: run.json says run %s" % (where, x["run"], x["meta"].get("run")))
         # Two runs with the same report are one delivery filed twice, not two runs.
-        with open(os.path.join(x["dir"], "entrega", "RELATORIO.md"), "rb") as f:
+        # A delivery can lack the report (an agent that stopped before writing it);
+        # it scores as delivered, and there is no report to compare.
+        report = os.path.join(x["dir"], "entrega", "RELATORIO.md")
+        if not os.path.exists(report):
+            continue
+        with open(report, "rb") as f:
             digest = hashlib.sha256(f.read()).hexdigest()
         if digest in reports:
             sys.exit("[export] %s: run-%d has the same RELATORIO.md as run-%d — a resend, not a new run"
