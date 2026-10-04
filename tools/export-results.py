@@ -29,6 +29,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 import statistics
 import sys
 
@@ -418,10 +419,19 @@ def run_summary(r):
 
 
 def check_agent_runs(where, agent_runs):
-    """The runs of one agent, sorted by number, before anything is published from them."""
+    """The runs of one agent, sorted by number, before anything is published from them.
+
+    A number may be missing only where a withdrawn-<n> folder holds it (PROTOCOL §4 item 5):
+    the run keeps its number, so the published runs keep theirs, and it does not count
+    toward the limit.
+    """
     numbers = [x["run"] for x in agent_runs]
-    if numbers != list(range(1, len(numbers) + 1)):
-        sys.exit("[export] %s has %s: runs are numbered run-1 to run-N with no gap"
+    withdrawn = {int(m.group(1)) for m in (re.fullmatch(r"withdrawn-(\d+)", d)
+                                           for d in os.listdir(os.path.join(RESULTS, where))) if m}
+    expected = [n for n in range(1, len(numbers) + len(withdrawn) + 1) if n not in withdrawn]
+    if numbers != expected:
+        sys.exit("[export] %s has %s: runs are numbered run-1 to run-N with no gap, "
+                 "except where a withdrawn-<n> folder holds the number"
                  % (where, ", ".join("run-%d" % n for n in numbers)))
     if len(numbers) > MAX_RUNS:
         sys.exit("[export] %s has %d runs; PROTOCOL §4 stops at %d (a further run is a retry)"

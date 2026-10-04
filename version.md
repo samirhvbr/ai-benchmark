@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.76`
+**Versão atual:** `0.2.77`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.77` — 2026-10-04 — PROTOCOL §4 withdraws a run whose client, first message, session log or cost was not recorded
+
+- `protocol/PROTOCOL.md` §4 item 5: a run counts only with its record complete. A run filed without it is
+  withdrawn into `withdrawn-<n>/` with a `WITHDRAWN.md`, kept for audit, not published and not counted
+  toward the three. The criterion is the record, never the result, and it applies to every failing run
+  at once.
+- `tools/export-results.py`: run numbers may skip a number that a `withdrawn-<n>` folder holds, so the
+  published runs keep their numbers.
 
 ### `0.2.76` — 2026-10-04 — results/ adds Claude Sonnet 5.5's third multi-agent max run (759); the agent is official at 774
 

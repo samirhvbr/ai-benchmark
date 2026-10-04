@@ -105,6 +105,14 @@ Each reply is one more turn of the budget, and `run.json` records how many were 
    two, the median of item 1 with three). It is always the total of a run that exists, so the
    grade, categories and flaw-by-flaw published next to it are that run's, never a mix of runs.
    Fewer than three runs is not official.
+5. A run counts only with its record complete: the client and its version, the first message,
+   the session log and the cost (item 2). A run filed without them is **withdrawn**: its folder
+   becomes `withdrawn-<n>`, with a `WITHDRAWN.md` that says what is missing, and it is kept for
+   audit but neither published nor counted toward the three of item 4, so its agent may run again.
+   The criterion is the record, never the result, and it applies to every run that fails it at
+   once. A withdrawn run that held an agent's best total is withdrawn all the same, so this is not
+   the selective retry of item 3. The three runs of LEB-100-A's first batch that were filed before
+   session logs were kept are the case (2026-10-04).
 
 ## 5. Pipeline de avaliação
 
