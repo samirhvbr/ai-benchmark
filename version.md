@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.79`
+**Versão atual:** `0.2.80`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.80` — 2026-10-04 — results/ adds Grok 4.6's third run (620); the agent is official at 633
+
+- `grok-4.6/run-3` (BW): 620, Silver, in 5 minutes for US$ 0.28 on xAI's API. 7 flaws fixed,
+  compatibility 100, explanation 35/50.
+- With three runs (633, 640, 620) Grok 4.6 is official at 633, 9th; nineteen agents are official.
+- Instance notes: table row BW, one bullet, the official count and list.
 
 ### `0.2.79` — 2026-10-04 — .continue/ queues the next steps from the comparison with Akita's v4 and LiveBench
 

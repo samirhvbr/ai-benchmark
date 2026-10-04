@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fifty deliveries were scored, labelled **Y** to **BV** in the order they arrived and judged blind like
+Fifty-one deliveries were scored, labelled **Y** to **BW** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -497,8 +497,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BT** | Claude Sonnet 5.5, `max`, multi-agent, run 3 | 759 |
 | **BU** | GLM-5.3, `high`, run 3 | 604 |
 | **BV** | Gemini 3.8 Flash, `high`, run 3 | 100 |
+| **BW** | Grok 4.6, `high`, run 3 | 620 |
 
-All fifty ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All fifty-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1002,6 +1003,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   error in its message, and the rest still run. The legacy code still scores 22/22 with every probe
   planted, and all 77 deliveries filed before the change were re-run through the new suite with the
   same counts and probe verdicts, so no published score moved.
+- **Grok 4.6 at `high`, run 3 (BW): 620, Silver. With three runs its score is official: 633, the
+  median of 633, 640 and 620, 9th.** It ran in opencode on xAI's own API on `bench2` in 5 minutes, for
+  US$ 0.28, as runs 1 and 2 did. It fixed 7 flaws, the file-handle leak (BUG-004) without reporting it,
+  and kept compatibility at 100. It left MD5, both secrets and the CSV formula injection in place, and
+  its report scored 35 of 50. As in run 2, the nested ifs (CLN-007) count as identified only through
+  the non-changes list.
 
 ## Runs withdrawn for an incomplete record
 
@@ -1024,7 +1031,7 @@ time and are left as written.
 
 ## Before quoting a number
 
-- **Eighteen agents have three runs; the rest are not official.** An official score is the median of three
+- **Nineteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
@@ -1032,7 +1039,7 @@ time and are left as written.
   GPT-5.6-luna (599, 601, 624) at 601, GPT-6.1-sol at `ultra`
   (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462,
   GLM-5.3 (629, 621, 604) at 621, Gemini 3.8 Flash at `high` (687, 588, 100) at 588 and Claude Haiku 4.5
-  (317, 369, 232) at 317, and Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774. Fable 5.1, Grok 4.6,
+  (317, 369, 232) at 317, Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774, and Grok 4.6 (633, 640, 620) at 633. Fable 5.1,
   DeepSeek V4 Flash and GPT-5.5 have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
   second run, and GPT-5.5 keeps runs 2 and 3 (558, 568) after its run 1 was withdrawn (below). A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as

@@ -1,0 +1,183 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection em listarChamados via concatenação de busca",
+      "arquivo": "code/lib.php",
+      "linha": 81,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "O termo $busca é interpolado em WHERE titulo LIKE '%...%' e executado com mysqli::query. Aspas ou OR 1=1 alteram o predicado; a listagem deixa de filtrar ou passa a expor outras linhas.",
+      "impacto": "Usuário autenticado lê ou manipula a listagem de chamados; combinado com F2, cliente amplia acesso a tickets alheios.",
+      "correcao": "Prepared statement com LIKE ?, bind de string e escape de %, _ e barra invertida no termo.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Painel não aplica visibilidade: cliente lista, abre e exporta chamados de outros",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "$uid e $papel são lidos da sessão e ignorados. listarChamados faz SELECT * FROM chamados; verChamado carrega qualquer id; exportarCsv despeja a tabela. index.php?ver=103 como ana mostra o chamado de bruno.",
+      "impacto": "Quebra do isolamento entre clientes: títulos, descrições, status e técnico de terceiros na UI e no CSV.",
+      "correcao": "Filtro no painel: não-técnico só vê usuario_id == uid na listagem, no detalhe (404 genérico) e no CSV web. Funções públicas de lib.php continuam devolvendo o conjunto completo para rotinas internas.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no termo de busca (atributo value e texto)",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "$_GET['busca'] é concatenado cru em value='...' e em 'Resultados para:'. Aspas fecham o atributo; tags no parágrafo executam no origin do painel.",
+      "impacto": "Script no navegador da vítima autenticada (sessão do painel).",
+      "correcao": "htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') nos dois pontos.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas armazenadas e comparadas com MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 17,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar faz md5($senha) e compara com usuarios.senha CHAR(32). Hash rápido e sem salt: dump da tabela permite cracking em massa.",
+      "impacto": "Comprometimento das contas a partir de um dump ou injeção.",
+      "correcao": "Não migrado: CHAR(32) e hashes existentes quebrariam. Dívida: password_hash + coluna maior com dual-read.",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "Senha de produção e API key SMTP hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tem fallback N3tX@2013!prod; SMTP_API_KEY é literal no fonte. Quem lê o pacote obtém credenciais reais.",
+      "impacto": "Acesso ao MySQL de produção e à API de e-mail.",
+      "correcao": "Não alterei config.php: o fallback pode ser o que o processo legado ainda usa; SMTP_API_KEY pode ser lida por outros includes. Rotação é operacional.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "mediaResposta divide por zero quando não há minutos_resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 92,
+      "mecanismo": "$soma / $qtd com $qtd=0 se todos os minutos_resposta são NULL ou a tabela está vazia. PHP 8 lança DivisionByZeroError na listagem.",
+      "impacto": "Painel principal indisponível num estado válido do banco.",
+      "correcao": "AVG() no SQL; NULL vira 0.0. Retorno float preservado.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "N+1: um SELECT em usuarios por linha ao montar tecnico_nome",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "listarChamados e o loop de exportarCsv chamam tecnicoNome por chamado, cada um com SELECT nome FROM usuarios WHERE id = ….",
+      "impacto": "Queries lineares na listagem e no export; degrada com o volume de chamados.",
+      "correcao": "LEFT JOIN usuarios nas consultas de listarChamados e exportarCsv.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "exportarCsv grava arquivo fixo em disco e falha em silêncio",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 88,
+      "mecanismo": "fopen(EXPORT_DIR.'/chamados.csv') em /var/www/painel/tmp. Diretório ausente → return sem saída. Dois exports concorrentes sobrescrevem o mesmo arquivo. Contrato é escrever o CSV na saída.",
+      "impacto": "Download vazio; corrida entre exports; CSV com todos os chamados parado em disco.",
+      "correcao": "Escrita em php://output após os headers; ORDER BY id e cabeçalho inalterados.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "SQL concatenado em verChamado e tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 100,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "id interpolado na string SQL. Type hint int/?int no PHP 8 reduz a exploração, mas a query ainda é montada por concatenação.",
+      "impacto": "Risco residual se as funções forem chamadas sem os tipos; inconsistência com autenticar.",
+      "correcao": "Prepared statements com bind inteiro. Retornos iguais.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Session fixation: login reutiliza o id de sessão pré-existente",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "Após autenticar, uid e papel são gravados na sessão já aberta, sem regenerar o id. Cookie pré-plantado permanece válido depois do login.",
+      "impacto": "Atacante que fixe o cookie da vítima herda a sessão autenticada.",
+      "correcao": "session_regenerate_id(true) imediatamente antes de preencher $_SESSION.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 de senha, schema CHAR(32) e seed.sql",
+      "porque": "Migrar para password_hash exige coluna maior e dual-read; quebraria contas e o seed. Assinatura de autenticar se manteria, mas a base em produção não."
+    },
+    {
+      "o_que": "Fallback DB_PASS e SMTP_API_KEY em config.php",
+      "porque": "O processo legado pode ainda depender do fallback; outros scripts do ISP podem incluir config.php. Rotação de segredo é operacional."
+    },
+    {
+      "o_que": "formatarStatus mapeia qualquer status ≠ 1,2 para Resolvido",
+      "porque": "O relatório gerencial só conhece os três rótulos do contrato. Status 3 já cai no else. Um quarto texto quebraria a correspondência."
+    },
+    {
+      "o_que": "Lógica aninhada de rotuloPrioridade (prioridade 1–2 sempre Normal)",
+      "porque": "Não há contrato de valores; alterar o rótulo mudaria saída de consumidores da função pública."
+    },
+    {
+      "o_que": "mediaResposta como KPI global também para cliente",
+      "porque": "A função pública não recebe usuário; filtrar por dono mudaria o número histórico do painel. Não é lista de chamados alheios."
+    },
+    {
+      "o_que": "listarChamados, verChamado e exportarCsv sem filtro por dono",
+      "porque": "Rotina noturna e relatório gerencial precisam do universo. Visibilidade foi aplicada só no painel (index.php)."
+    },
+    {
+      "o_que": "Stack mysqli, nomes de arquivo, rotas GET, HTML da tabela, cabeçalho CSV",
+      "porque": "Superfície pública do manifesto. Trocar camada de dados ou markup é COMP."
+    },
+    {
+      "o_que": "Ausência de CSRF no login e de logout",
+      "porque": "Fora do contrato; token mudaria o form sem demanda. Não reescrevi o sistema."
+    }
+  ]
+}
