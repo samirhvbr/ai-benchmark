@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.74`
+**Versão atual:** `0.2.75`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.75` — 2026-10-03 — results/ adds the third runs of GLM-5.3 (604) and Gemini 3.8 Flash at high (100); both now official, at 621 and 588
+
+- `glm-5.3-high/run-3` (BU): 604, delivered in 9 minutes. It is official at 621, the median of 629, 621
+  and 604.
+- `gemini-3.8-flash-high/run-3` (BV): 100, with no report and its code untouched. It is official at 588,
+  the median of 687, 588 and 100.
+- Both sessions stopped on a shell command the agent itself started: a server whose output stayed on
+  the tool's pipe. Before any judge saw them, the operator decided to score both as delivered.
+- Instance notes: table rows BU and BV, one bullet per run, and eighteen official agents.
 
 ### `0.2.74` — 2026-10-03 — tools/export-results.py accepts a delivery without a RELATORIO.md
 

@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Forty-seven deliveries were scored, labelled **Y** to **BS** in the order they arrived and judged blind like
+Forty-nine deliveries were scored, labelled **Y** to **BS**, **BU** and **BV** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -494,8 +494,10 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BQ** | Grok 4.6, `high`, run 2 | 640 |
 | **BR** | DeepSeek V4 Flash, `high`, run 2 | 282 |
 | **BS** | Claude Sonnet 5.5, `max`, multi-agent, run 2 | 820 |
+| **BU** | GLM-5.3, `high`, run 3 | 604 |
+| **BV** | Gemini 3.8 Flash, `high`, run 3 | 100 |
 
-All forty-seven ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All forty-nine ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -924,6 +926,29 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     column change as the point of no return.
   - The matching judge kept SEC-001's fix as full on its probe while the LIKE wildcards stay
     unescaped, as in BO and BQ.
+- **GLM-5.3 at `high`, run 3 (BU): 604. With three runs its score is official: 621, the median of 629,
+  621 and 604, 14th.** It ran in opencode through OpenRouter on `bench3` and wrote its delivery in 9
+  minutes, for US$ 0.47. It fixed 7 flaws, the file-handle leak (BUG-004) without reporting it, and kept
+  compatibility at 100. It left MD5, the CSV formula injection and both secrets in place on purpose, and
+  its report scored 35 of 50.
+  - At 09:41, re-checking its fix, it started PHP's built-in server with `2 < /dev/null` where it meant
+    `2> /dev/null`. The server's error output stayed attached to the shell tool's pipe, so opencode
+    never got the command back and the session stopped there. RELATORIO.md and achados.json were
+    already written. The operator found the stall hours later and decided, before any judge saw the
+    delivery, to score it as it stood, since the stall came from the agent's own command.
+- **Gemini 3.8 Flash at `high`, run 3 (BV): 100, below the pass line. With three runs its score is
+  official: 588, the median of 687, 588 and 100, 20th.**
+  - It ran in opencode through OpenRouter on `bench2`. Ten minutes in, at 09:34, it started a MariaDB
+    server for its own tests through `subprocess.Popen` without detaching its output. The server held
+    the shell tool's pipe open, opencode never got the command back, and the session stopped with no
+    report, no findings index and a `code/` byte-identical to the package.
+  - The operator decided, before any judge saw it, to score it as delivered, for the same reason as
+    BU: the stall came from the agent's own command, and voiding it would be a retry after a bad
+    outcome.
+  - The legacy code passes all 22 characterization checks and is compatible by definition, so the run
+    scores the 100 points of compatibility and nothing else.
+  - `tools/export-results.py` used to require a RELATORIO.md in every delivery. It now accepts a
+    delivery without one.
 
 ## Defects in the harness, fixed before scoring
 
@@ -957,15 +982,16 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ## Before quoting a number
 
-- **Sixteen agents have three runs; the rest are not official.** An official score is the median of three
+- **Eighteen agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
   DeepSeek V4 Pro (604, 496, 432) are official at 809, 807, 717, 661, 638, 628, 625, 612, 612 and 496,
   GPT-5.6-luna (599, 601, 624) and GPT-5.5 (601, 558, 568) at 601 and 568, and GPT-6.1-sol at `ultra`
-  (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462
-  and Claude Haiku 4.5 (317, 369, 232) at 317. Fable 5.1, GLM-5.3, Gemini 3.8 Flash at `high`, Grok 4.6
-  and DeepSeek V4 Flash have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
+  (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462,
+  GLM-5.3 (629, 621, 604) at 621, Gemini 3.8 Flash at `high` (687, 588, 100) at 588 and Claude Haiku 4.5
+  (317, 369, 232) at 317. Sonnet 5.5 in multi-agent mode, Fable 5.1, Grok 4.6 and DeepSeek V4 Flash have
+  two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
   second run. A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
   GPT-5.5's 601 and 558 do. Places 7 to 11 (654, 638, 633, 628 and 628) sit within 26 points: that is
