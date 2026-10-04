@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.78`
+**Versão atual:** `0.2.79`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.79` — 2026-10-04 — .continue/ queues the next steps from the comparison with Akita's v4 and LiveBench
+
+- `.continue/proximos-passos-pos-comparacao.md` (new, in the queue's language): what LEB-100-A lacks next
+  to Akita's LLM Benchmark v4 (39 models) and LiveBench Coding (66 models). That is presentation (cost
+  and time per card, a cost × score chart, the flaws never fixed, a client filter, an open-weights mark),
+  six new agents present in both lists, and a second instance. Closing the pending runs comes first and
+  is tracked outside the document.
 
 ### `0.2.78` — 2026-10-04 — results/ withdraws the three runs with no recorded client: GPT-5.5 run 1, MiniMax-M3 and Kimi K3
 
