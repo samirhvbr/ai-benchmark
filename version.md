@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.82`
+**Versão atual:** `0.2.83`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.83` — 2026-10-04 — results/ notes no longer call GPT-6-astra ultra the only report to catch the quoted CSV header
+
+- The BX bullet said it was the only report to catch that `fputcsv` quotes the `Aberto em` header; the EXPL
+  judge said only that most reports missed it. It now says "one of the few".
 
 ### `0.2.82` — 2026-10-04 — results/ keeps a void Grok 4.7 xhigh attempt whose VM was restored before its delivery was copied
 

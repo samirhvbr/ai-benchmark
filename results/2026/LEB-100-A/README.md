@@ -1016,8 +1016,8 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   `gpt-6-astra` at `ultra`. The logs keep tokens but no cost. It fixed 9 flaws, migrating MD5 transparently,
   taking both secrets out of the code and closing the file-handle leak on every path. It scoped the SLA
   average to each client (COMP-003, charged to SEC-017), and it declined the CSV formula prefix for the
-  billing integrations. Its report scored 45 of 50: it is the only one so far to catch that `fputcsv` quotes
-  the `Aberto em` header and to restore the literal.
+  billing integrations. Its report scored 45 of 50: it is one of the few to catch that `fputcsv` quotes the
+  `Aberto em` header, and it restores the literal.
 - **Grok 4.7 at `xhigh`, a new agent, first attempt: void.** It ran in opencode through OpenRouter on
   `bench3` from 09:35 to 09:58 on 2026-10-04. It made 40 responses and finished normally with a full
   delivery, at a cost of US$ 3.00. The VM was then restored to its snapshot before the delivery was copied
