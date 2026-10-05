@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.91`
+**Versão atual:** `0.2.92`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.92` — 2026-10-05 — results/ adds Gemini 3.7 Flash at high as a new agent: run 1 scores 587
+
+- `gemini-3.7-flash-high/run-1` (CG): 587, Bronze, 23rd, in opencode through OpenRouter for US$ 0.72.
+  7 flaws fixed, compatibility 100, explanation 27/50.
+- Review change: SEC-014's C1 went from half to full. The flaw is filed under the wrong category, but it is
+  also named in the non-changes list.
+- Instance notes: table row CG and one bullet.
 
 ### `0.2.91` — 2026-10-05 — results/ adds Kimi K2.7 Code highspeed as a new agent with three runs (402, 363, 402), official at 402
 

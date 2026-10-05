@@ -47,17 +47,18 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 20 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-2/scorecard.md) · xhigh | **601** | Silver | 220 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.000 | 3/3 (599 · 601 · 624) |
 | 21 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
 | 22 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 3/3 (687 · 588 · 100) |
-| 23 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 2/3 (558 · 568) |
-| 24 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
-| 25 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
-| 26 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 3/3 (604 · 496 · 432) |
-| 27 | [MiniMax-M3](2026/LEB-100-A/minimax-m3-thinking/run-1/scorecard.md) · thinking | **462** | Bronze | 220 | 0 | 150 | 0 | 25 | 40 | 27 | 0 | 62.5 | 0.021 | 3/3 (462 · 616 · 434) |
-| 28 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 3/3 (415 · 415 · 512) |
-| 29 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
-| 30 | [Kimi K2.7 Code (highspeed)](2026/LEB-100-A/kimi-k2.7-code-highspeed/run-1/scorecard.md) † · default | **402** | Bronze | 155 | 0 | 129 | 0 | 25 | 70 | 23 | 0 | 54.2 | 0.216 | 3/3 (402 · 363 · 402) |
-| 31 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
-| 32 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 3/3 (317 · 369 · 232) |
-| 33 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md) † · high | **282** | Reprovada | 99 | 0 | 96 | 0 | 0 | 100 | 22 | -35 | 50.0 | 0.122 | 2/3 (612 · 282) |
+| 23 | [Gemini 3.7 Flash](2026/LEB-100-A/gemini-3.7-flash-high/run-1/scorecard.md) † · high | **587** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 27 | 0 | 58.3 | 0.002 | 1/3 |
+| 24 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 2/3 (558 · 568) |
+| 25 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
+| 26 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
+| 27 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 3/3 (604 · 496 · 432) |
+| 28 | [MiniMax-M3](2026/LEB-100-A/minimax-m3-thinking/run-1/scorecard.md) · thinking | **462** | Bronze | 220 | 0 | 150 | 0 | 25 | 40 | 27 | 0 | 62.5 | 0.021 | 3/3 (462 · 616 · 434) |
+| 29 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 3/3 (415 · 415 · 512) |
+| 30 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
+| 31 | [Kimi K2.7 Code (highspeed)](2026/LEB-100-A/kimi-k2.7-code-highspeed/run-1/scorecard.md) † · default | **402** | Bronze | 155 | 0 | 129 | 0 | 25 | 70 | 23 | 0 | 54.2 | 0.216 | 3/3 (402 · 363 · 402) |
+| 32 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
+| 33 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 3/3 (317 · 369 · 232) |
+| 34 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md) † · high | **282** | Reprovada | 99 | 0 | 96 | 0 | 0 | 100 | 22 | -35 | 50.0 | 0.122 | 2/3 (612 · 282) |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
 Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is
@@ -66,4 +67,4 @@ A score with fewer than 3 runs is **not official**.
 
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
-† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), Grok 4.6 (not published), Kimi K3 (not published), GLM-5.3 Prime (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.8 Flash (not published), DeepSeek V4 Pro (not published), Kimi K2.7 Code (highspeed) (not published), DeepSeek V4 Flash (not published).
+† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), Grok 4.6 (not published), Kimi K3 (not published), GLM-5.3 Prime (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.7 Flash (not published), Gemini 3.8 Flash (not published), DeepSeek V4 Pro (not published), Kimi K2.7 Code (highspeed) (not published), DeepSeek V4 Flash (not published).

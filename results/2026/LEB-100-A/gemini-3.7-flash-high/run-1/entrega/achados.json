@@ -1,0 +1,195 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL (SQLi) na busca de chamados por título",
+      "arquivo": "code/lib.php",
+      "linha": 81,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Na função listarChamados, quando o parâmetro $busca é fornecido, ele é concatenado diretamente na query SQL sem uso de Prepared Statements ou escape: $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\". Como o valor provém diretamente de $_GET['busca'] em index.php, um atacante pode injetar comandos SQL arbitrários.",
+      "impacto": "Execução arbitrária de comandos SQL no banco de dados, possibilitando extração completa de dados confidenciais, bypass de autenticação e potencial modificação de registros.",
+      "correcao": "Refatoração de listarChamados para utilizar Prepared Statements com mysqli::prepare e mysqli_stmt::bind_param, parametrizando com segurança a cláusula LIKE ('%' . $busca . '%').",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra de Controle de Acesso (IDOR e violação de visibilidade de chamados entre clientes)",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O index.php obtém o id e papel da sessão ($_SESSION['uid'] e $_SESSION['papel']), porém não aplicava a regra de negócio de visibilidade especificada no manifesto. Na listagem de chamados e na visualização de detalhe (verChamado), qualquer usuário com papel 'cliente' conseguia listar todos os chamados da base e acessar chamados de outros clientes alterando o parâmetro ?ver=<id>.",
+      "impacto": "Quebra de confidencialidade e privacidade (IDOR). Clientes conseguiam visualizar descrições, histórico e detalhes de chamados de outros clientes do provedor.",
+      "correcao": "Na rota de detalhe (index.php?ver=), adicionada validação para verificar se o usuário é cliente e se o usuario_id do chamado coincide com o uid da sessão, bloqueando acesso não autorizado. Na listagem (index.php), adicionado escopo por usuario_id quando o usuário logado possui papel 'cliente', mantendo visão completa para técnicos.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Cross-Site Scripting Refletido (XSS) no campo de formulário e resultado de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor da variável $busca (vindo de $_GET['busca']) era impresso diretamente no atributo value do formulário HTML (<input name=\"busca\" value=\"' . $busca . '\">) e na mensagem de resultado (<p>Resultados para: ' . $busca . '</p>) sem escapar caracteres especiais com htmlspecialchars().",
+      "impacto": "Injeção e execução de scripts maliciosos (JavaScript) no contexto do navegador do usuário autenticado através de links especialmente preparados, possibilitando roubo de sessão ou ações indevidas.",
+      "correcao": "Aplicação de htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') tanto no atributo value do campo input quanto no texto informativo de resultados.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Vulnerabilidade de Fixação de Sessão (Session Fixation) na autenticação",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Após a validação bem-sucedida das credenciais em autenticar(), os dados de sessão (uid e papel) eram gravados na sessão existente sem invocar session_regenerate_id(true).",
+      "impacto": "Um atacante que consiga fixar previamente o identificador de sessão de uma vítima pode sequestrar a sessão do usuário assim que este fizer login legítimo.",
+      "correcao": "Inclusão de chamada a session_regenerate_id(true) imediatamente após o sucesso da autenticação antes de popular as variáveis da sessão.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Condição de corrida, corrupção de dados e falha de I/O em arquivo estático na exportação CSV",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv gravava os dados em um caminho de arquivo estático fixo (/var/www/painel/tmp/chamados.csv) antes de enviá-lo via readfile(). Requisições simultâneas de exportação geravam colisão e sobrescrita concorrente do mesmo arquivo, além de falha total de exportação caso o diretório temporário não existisse ou não tivesse permissão de escrita.",
+      "impacto": "Exportações corrompidas por concorrência e indisponibilidade do recurso de exportação para usuários e rotinas automatizadas externas.",
+      "correcao": "Transmissão direta do fluxo CSV para a saída padrão (php://output) após envio dos cabeçalhos HTTP necessários (caso headers_sent() seja falso), dispensando a escrita em arquivos temporários em disco.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Erro fatal por Divisão por Zero em mediaResposta com tabela vazia ou sem respostas",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "A função mediaResposta calculava a média dividindo $soma por $qtd. Caso nenhum chamado possuísse minutos_resposta preenchido ($qtd === 0), a linha executava 0 / 0. No PHP 8+, a divisão por zero lança uma exceção fatal DivisionByZeroError, quebrando a execução da página.",
+      "impacto": "Exceção não tratada e erro HTTP 500 no carregamento da tela inicial (index.php) do painel sempre que a base não contiver respostas computadas.",
+      "correcao": "Substituição do cálculo manual em PHP pela agregação nativa SQL SELECT AVG(minutos_resposta) AS media FROM chamados WHERE minutos_resposta IS NOT NULL, retornando 0.0 caso não existam registros.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Problema de desempenho N+1 Queries na listagem e na exportação CSV de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 91,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Tanto listarChamados quanto exportarCsv executavam uma query individual SELECT nome FROM usuarios WHERE id = ... para cada linha retornada chamando tecnicoNome() dentro do laço while, gerando N+1 consultas ao banco para N chamados.",
+      "impacto": "Gargalo severo de I/O e tempo de resposta proporcional ao número de chamados, degradando a performance do banco e da aplicação com o crescimento da base.",
+      "correcao": "Inclusão de LEFT JOIN com a tabela usuarios (LEFT JOIN usuarios u ON c.tecnico_id = u.id) diretamente na consulta principal, trazendo tecnico_nome de forma atômica em uma única query.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Ausência de Prepared Statements e tratamento em verChamado e tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 102,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "As funções verChamado e tecnicoNome concatenavam inteiros diretamente na string SQL ($db->query('SELECT ... WHERE id = ' . $id)) e não tratavam adequadamente eventuais falhas na execução de query antes de invocar fetch_assoc().",
+      "impacto": "Inconsistência de padronização arquitetural e risco de falhas não tratadas em caso de erro na conexão ou query.",
+      "correcao": "Refatoração para Prepared Statements com mysqli::prepare e bind de parâmetros inteiros ('i'), incluindo validação de retorno.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Chaves de API e senhas de fallback hardcoded no arquivo de configuração",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O arquivo config.php continha a chave de API SMTP ('netx-smtp-9f83e2c1a7b64d05') e a senha do banco de produção ('N3tX@2013!prod') inseridas diretamente em texto plano no código.",
+      "impacto": "Exposição indevida de credenciais de produção e serviços de terceiros em caso de vazamento do código-fonte ou controle de versão.",
+      "correcao": "Configuração de fallback para SMTP_API_KEY via getenv('SMTP_API_KEY') e tratamento adequado para DB_PASS respeitando variáveis de ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Agregação em memória ineficiente e consumo excessivo de memória em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 115,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "A função mediaResposta carregava todas as linhas com minutos_resposta da tabela chamados para a memória PHP para iterar e acumular a soma linha a linha.",
+      "impacto": "Consumo desnecessário de memória e tráfego de rede entre banco e servidor de aplicação à medida que a tabela de chamados cresce.",
+      "correcao": "Delegação da agregação de média para o motor do banco de dados MySQL via função AVG().",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Uso de algoritmo criptográfico obsoleto (MD5 sem salt) para armazenamento de senhas",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "arquitetura",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O sistema utiliza md5($senha) simples na autenticação e armazenamento de credenciais na tabela usuarios. O algoritmo MD5 é vulnerável a colisões e ataques rápidos de força bruta / rainbow tables.",
+      "impacto": "Risco elevado de quebra de senhas de usuários em caso de vazamento ou acesso não autorizado à tabela de usuários.",
+      "correcao": "Recomendada a migração arquitetural para password_hash() com bcrypt/Argon2id acompanhada de rotina de rehash progressivo no login dos usuários.",
+      "corrigido": false
+    },
+    {
+      "id": "F12",
+      "titulo": "Classificação frágil de status desconhecidos em formatarStatus",
+      "arquivo": "code/lib.php",
+      "linha": 26,
+      "linha_fim": 35,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "A função formatarStatus utilizava uma cadeia if/else em que qualquer valor diferente de 1 e 2 (como 0, valores negativos ou inválidos) caía tacitamente no bloco 'Resolvido'.",
+      "impacto": "Mascaramento silencioso de dados inválidos ou corrompidos na base de dados.",
+      "correcao": "Refatoração para estrutura switch/case com mapeamento explícito dos status (1, 2, 3), mantendo o comportamento de contrato exigido.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migração imediata do algoritmo de hash de senhas no banco (MD5 para bcrypt/Argon2id)",
+      "porque": "Alterar a função de hash de senhas no código ou no banco quebraria a compatibilidade com os dados do seed.sql e usuários legados de teste (ana, bruno, carla, diego) e rotinas externas que autenticam diretamente via banco sem migração prévia."
+    },
+    {
+      "o_que": "Driver e tecnologia de acesso a dados (mysqli mantido, sem troca para PDO ou ORM)",
+      "porque": "O contrato público em manifest.md estabelece que as funções recebem instâncias de mysqli e são consumidas por scripts legados do ISP. Trocar para PDO ou outra abstração violaria a assinatura pública e causaria incompatibilidade (COMP-*)."
+    },
+    {
+      "o_que": "Assinaturas públicas de funções de lib.php e parâmetros GET de rotas de index.php",
+      "porque": "O manifesto estabelece como contrato estrito os nomes, parâmetros e formatos de retorno das funções públicas e das rotas GET (?busca=, ?ver=, ?export=csv). Todas as assinaturas foram preservadas."
+    },
+    {
+      "o_que": "Formato do cabeçalho CSV e estrutura de colunas da tabela HTML de listagem",
+      "porque": "Os scripts externos do ISP (rotina noturna de exportação e relatório gerencial) realizam correspondência exata das colunas 'ID,Titulo,Status,Tecnico,Aberto em' e da tabela com id 'tabela-chamados'."
+    }
+  ]
+}
