@@ -1,0 +1,161 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL no filtro de título de listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "$busca é concatenado diretamente em WHERE titulo LIKE '%$busca%', permitindo SQL injection via parâmetro GET.",
+      "impacto": "Leitura arbitrária do banco, bypass de filtros e exfiltração da tabela usuarios.",
+      "correcao": "Reescrita com prepared statement e LIKE passado como parâmetro.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Quebra da regra de visibilidade cliente/técnico",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados, verChamado e exportarCsv não filtram por usuario_id quando o papel é cliente, expondo chamados de terceiros.",
+      "impacto": "Cliente autenticado lista, visualiza e exporta chamados de outros clientes.",
+      "correcao": "As funções leem $_SESSION['papel'] e $_SESSION['uid'] e adicionam usuario_id = ? para clientes, sem alterar assinaturas.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$busca vindo de $_GET é impresso diretamente no HTML do formulário e na mensagem de resultados.",
+      "impacto": "Execução de JavaScript no contexto do painel, roubo de sessão e ações em nome do usuário.",
+      "correcao": "Aplicação de htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') antes da impressão.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "return $soma / $qtd é executado quando nenhum chamado possui minutos_resposta, fazendo $qtd valer 0.",
+      "impacto": "Warning/fatal na listagem quando não há histórico de respostas.",
+      "correcao": "Retorno condicional: 0.0 quando $qtd === 0.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Injeção SQL em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "ID é concatenado na query; embora index.php faça cast, a função pública não se defende sozinha.",
+      "impacto": "Leitura de qualquer chamado ou bypass de visibilidade dependendo do caller.",
+      "correcao": "Uso de prepared statement com id = ?.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Injeção SQL em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "tecnico_id é concatenado em query simples sem prepared statement.",
+      "impacto": "Risco de SQL injection secundária se a função for reusada de forma não segura.",
+      "correcao": "Uso de prepared statement com id = ?.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "CSV escrito em arquivo temporário no servidor",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "exportarCsv grava /var/www/painel/tmp/chamados.csv em disco antes de enviá-lo ao navegador.",
+      "impacto": "Vazamento de dados sensíveis no filesystem e dependência de permissões de diretório.",
+      "correcao": "Saída direta via php://output, eliminando a gravação em disco.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Segredos hardcoded no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS e SMTP_API_KEY estavam literais no arquivo de configuração.",
+      "impacto": "Exposição de credenciais de produção no versionamento.",
+      "correcao": "Valores lidos de variáveis de ambiente (getenv) com fallback vazio.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Session fixation após login",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Após autenticação, o ID de sessão não é regenerado.",
+      "impacto": "Atacante com ID de sessão pré-login pode assumir sessão autenticada.",
+      "correcao": "Adicionado session_regenerate_id(true) após preencher $_SESSION.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Armazenamento de senhas com MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5($senha) e compara com o campo CHAR(32) do schema.",
+      "impacto": "Em vazamento da tabela usuarios, as senhas são facilmente quebráveis.",
+      "correcao": "Não alterado; exigiria migração de schema e senhas. Deixado como débito técnico documentado.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo de hash MD5 para senhas",
+      "porque": "Mudar para bcrypt/password_hash exigiria alterar o schema (CHAR(32)), migrar senhas dos usuários existentes e invalidar o seed.sql, quebrando compatibilidade. Deve ser tratado em projeto de migração separado."
+    },
+    {
+      "o_que": "Comportamento de formatarStatus para valores diferentes de 1 e 2",
+      "porque": "O manifesto declara esse mapeamento como contrato; o relatório gerencial depende do texto 'Resolvido' para qualquer status não mapeado."
+    },
+    {
+      "o_que": "Stack MySQLi e nomes/caminhos dos arquivos",
+      "porque": "São restrições explícitas do manifesto e da tarefa; não foram adicionadas dependências externas."
+    },
+    {
+      "o_que": "Token anti-CSRF no formulário de login",
+      "porque": "O formulário de login apenas autentica; o risco é baixo comparado ao esforço de manter tokens em integrações simples. Priorizou-se a regeneração de ID de sessão."
+    }
+  ]
+}

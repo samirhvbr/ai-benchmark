@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fifty-four deliveries were scored, labelled **Y** to **BZ** in the order they arrived and judged blind like
+Fifty-five deliveries were scored, labelled **Y** to **CA** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -501,8 +501,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BX** | GPT-6-astra, `ultra`, run 1 | 668 |
 | **BY** | Kimi K3, `high`, run 1 | 629 |
 | **BZ** | Kimi K3, `high`, run 2 | 634 |
+| **CA** | Kimi K2.7 Code, default effort, run 2 | 415 |
 
-All fifty-four ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All fifty-five ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1039,6 +1040,11 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   rejected Kimi Code plan session, in a separate session that got the fixed message once. It fixed 9 flaws,
   migrating MD5 transparently this time, and again answered HTTP 403 to every non-technician on
   `?export=csv` (COMP-003). Its report scored 40 of 50.
+- **Kimi K2.7 Code, run 2 (CA): 415, Bronze, the same total as run 1 (415); its published score stays
+  415, 28th.** It ran in opencode on Moonshot's own API, with no effort variant as in run 1, on `bench2` in
+  4 minutes for US$ 0.25. It fixed 6 flaws and left the N+1 query, MD5, the CSV formula injection and the
+  file-handle leak, and kept compatibility at 100. As in run 1, it reports SQL injection in `verChamado`,
+  whose parameter is an int: a false positive. Its report scored 26 of 50.
 - **Two more void attempts, neither ever judged.**
   - A second Kimi K3 run at `high`, on `bench3` at the same time as BY, finished with a full delivery
     (35 responses, US$ 0.76). It was lost when the VM was restored before the copy, as the Grok 4.7
