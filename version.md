@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.88`
+**Versão atual:** `0.2.89`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.89` — 2026-10-05 — results/ adds the third runs of Kimi K3 at high (574) and Kimi K2.7 Code (512); both are official, at 629 and 415
+
+- `moonshot-kimi-k3-high/run-3` (CB): 574, Bronze. Official at 629, the median of 629, 634 and 574, 11th.
+- `kimi-k2.7-code-default/run-3` (CC): 512, Bronze. Official at 415, the median of 415, 415 and 512, 28th.
+- Twenty-one agents are official. Instance notes: table rows CB and CC, two bullets, the official count
+  and list.
 
 ### `0.2.88` — 2026-10-05 — results/ adds Kimi K2.7 Code's second run (415, the same total as run 1)
 

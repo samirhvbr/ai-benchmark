@@ -1,0 +1,205 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em listarChamados via parametro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A string $busca e concatenada diretamente em WHERE titulo LIKE '%\" . $busca . \"%'. Payloads como %' OR '1'='1 alteram a consulta.",
+      "impacto": "Leitura, alteracao ou destruicao do banco via URL.",
+      "correcao": "Reescrita com prepared statement (titulo LIKE ? + bind_param).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "$id e concatenado em WHERE id = \" . $id. A funcao e publica e pode ser chamada por outros scripts com valores nao confiaveis.",
+      "impacto": "Leitura nao autorizada de qualquer chamado; potencial alteracao/delecao do banco.",
+      "correcao": "Consulta convertida para prepared statement com bind de inteiro.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "$tecnicoId e concatenado em WHERE id = \" . $tecnicoId. A funcao e chamada uma vez por linha na listagem/exportacao.",
+      "impacto": "Leitura/escrita no banco atraves de parametro que deveria ser apenas um id.",
+      "correcao": "Prepared statement com bind de inteiro.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Cliente ve chamados de outros clientes em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A funcao executa SELECT * FROM chamados sem filtro por usuario_id ou papel.",
+      "impacto": "Vazamento de dados de suporte entre clientes.",
+      "correcao": "Adicionado filtro WHERE usuario_id = ? quando a sessao ativa e de cliente.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Cliente acessa detalhe de chamado de outro cliente em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 98,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "SELECT * FROM chamados WHERE id = ... retorna qualquer chamado, sem verificar o dono.",
+      "impacto": "Exposicao de titulo, descricao e metricas de chamados alheios.",
+      "correcao": "Quando a sessao e de cliente, adicionado AND usuario_id = ? e retornado null para chamados nao autorizados.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Cliente exporta todos os chamados em exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 151,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A funcao exporta todos os chamados sem verificar papel ou dono.",
+      "impacto": "Download completo da base de chamados por qualquer cliente logado.",
+      "correcao": "Aplicado filtro WHERE usuario_id = ? quando a sessao e de cliente; formato CSV preservado.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "XSS via reflexao do parametro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$_GET['busca'] e ecoado no atributo value do input e no paragrafo 'Resultados para' sem escaping.",
+      "impacto": "Roubo de sessao e acoes em nome do usuario autenticado.",
+      "correcao": "Aplicado htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') nos dois pontos.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Senha do banco hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS possui fallback 'N3tX@2013!prod' embutido no codigo.",
+      "impacto": "Vazamento de credencial de producao; acesso nao autorizado ao banco.",
+      "correcao": "Removido o fallback; DB_PASS agora exige variavel de ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Chave de API SMTP hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Constante SMTP_API_KEY com valor 'netx-smtp-9f83e2c1a7b64d05' armazenada em codigo; nao e utilizada no sistema.",
+      "impacto": "Vazamento de chave de API se o codigo for exposto.",
+      "correcao": "Removida a constante SMTP_API_KEY.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "CSV escrito em caminho previsivel no disco",
+      "arquivo": "code/lib.php",
+      "linha": 126,
+      "linha_fim": 146,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "exportarCsv grava /var/www/painel/tmp/chamados.csv com nome fixo antes de devolver ao navegador.",
+      "impacto": "Vazamento de dados entre requisicoes/sessoes em caso de erro ou concorrencia.",
+      "correcao": "CSV escrito diretamente em php://output, sem arquivo intermediario.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Divisao por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Se nenhum chamado tiver minutos_resposta, $qtd e 0 e $soma / $qtd gera warning e retorna NAN/INF.",
+      "impacto": "Erro de runtime e interface danificada quando nao ha dados de SLA.",
+      "correcao": "Retorna 0.0 quando $qtd === 0.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Session fixation apos login",
+      "arquivo": "code/index.php",
+      "linha": 25,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Apos autenticacao bem-sucedida, o ID de sessao nao e regenerado.",
+      "impacto": "Atacante que conheca o ID pre-login pode reutiliza-lo apos a autenticacao do usuario.",
+      "correcao": "Adicionado session_regenerate_id(true) apos preencher $_SESSION.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "Uso de MD5 para hashes de senha",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5($senha) e compara com a coluna senha CHAR(32) do schema. MD5 e rapido e quebravel.",
+      "impacto": "Se o banco vazar, as senhas podem ser revertidas em massa.",
+      "correcao": "Nao aplicada. Migrar para password_hash exigiria alterar schema, funcao e redefinir todas as senhas.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash de senha MD5 em autenticar (F13)",
+      "porque": "Migrar para password_hash exigiria alterar o schema CHAR(32), a funcao autenticar, todos os hashes existentes e potencialmente scripts que leem a coluna senha diretamente. Quebraria a superficie publica e os dados de teste."
+    },
+    {
+      "o_que": "N+1 queries causadas por tecnicoNome em listarChamados/exportarCsv",
+      "porque": "Refatorar para JOIN exigiria reescrever a projecao SELECT * e testar todos os consumidores da chave tecnico_nome. O risco de seguranca foi eliminado com prepared statements e a performance e aceitavel para a base atual."
+    },
+    {
+      "o_que": "formatarStatus mapeando status invalidos para 'Resolvido'",
+      "porque": "O relatorio gerencial faz correspondencia por texto e pode depender desse comportamento para dados legados. A correcao correta seria uma CHECK constraint no schema, nao mudar a funcao."
+    },
+    {
+      "o_que": "Tokens CSRF nos formularios",
+      "porque": "A unica acao que altera estado e o login; demais operacoes sao de leitura. Adicionar CSRF aumentaria escopo sem reduzir risco real neste sistema."
+    },
+    {
+      "o_que": "Troca de mysqli por PDO/outra camada",
+      "porque": "O manifesto define mysqli como camada de acesso; trocar quebraria as assinaturas publicas."
+    }
+  ]
+}
