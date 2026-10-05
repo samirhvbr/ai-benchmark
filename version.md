@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.102`
+**Versão atual:** `0.2.103`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.103` — 2026-10-05 — results.json gives each run its wall-clock minutes, from the session's start and end
+
+- `tools/export-results.py`: each run in `results.json` carries `wall_minutes`, the minutes from the
+  session's first message to its end as `run.json` records them (`session.started` / `session.ended`),
+  null when either is missing. All 90 runs have both. `runs.csv` already had the same value; both now
+  come from one function.
+- The results pages show it run by run in each card's sheet.
 
 ### `0.2.102` — 2026-10-05 — results/ adds a written comment for each of the 36 agents, exported into results.json
 

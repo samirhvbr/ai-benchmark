@@ -32,6 +32,7 @@ import os
 import re
 import statistics
 import sys
+from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESULTS = os.path.join(ROOT, "results")
@@ -397,6 +398,14 @@ def render_scorecard(r):
 
 # ------------------------------------------------------------------ aggregate
 
+def wall_minutes(meta):
+    """Minutes from the session's first message to its end, as run.json records them."""
+    session = meta.get("session") or {}
+    if not (session.get("started") and session.get("ended")):
+        return None
+    return round((datetime.fromisoformat(session["ended"]) - datetime.fromisoformat(session["started"])).total_seconds() / 60, 1)
+
+
 def run_summary(r):
     card, verdict, mech = r["card"], r["verdict"], r["mech"]
     cats = card["categories"]
@@ -424,6 +433,7 @@ def run_summary(r):
         "operator_replies": r["meta"].get("operator_replies"),
         "client": r["meta"].get("client"),
         "cost_time": r["meta"].get("cost_time"),
+        "wall_minutes": wall_minutes(r["meta"]),
         "scorecard_url": "%s/blob/master/%s" % (REPO_URL, rel(os.path.join(r["dir"], "scorecard.md"))),
     }
 
@@ -645,7 +655,6 @@ def csv_text(columns, rows):
 def render_csvs(runs, data):
     """runs.csv: one row per scored run. flaws.csv: one row per run and planted flaw. Both are
     built from the same inputs as results.json, so they cannot disagree with the leaderboard."""
-    from datetime import datetime
     entries = {(i["edition"], i["id"], e["agent"]): e for i in data["instances"] for e in i["entries"]}
     flaw_info = {(i["edition"], i["id"], f["id"]): f for i in data["instances"] for f in i["flaws"]}
     run_rows, flaw_rows = [], []
@@ -655,9 +664,7 @@ def render_csvs(runs, data):
         meta, model = r["meta"], r["meta"]["model"]
         session, ct = meta.get("session") or {}, meta.get("cost_time") or {}
         tokens, host = ct.get("tokens") or {}, meta.get("execution_host") or {}
-        wall = None
-        if session.get("started") and session.get("ended"):
-            wall = round((datetime.fromisoformat(session["ended"]) - datetime.fromisoformat(session["started"])).total_seconds() / 60, 1)
+        wall = wall_minutes(meta)
         counts = r["run"] == e["representative_run"]
         base = {"edition": r["edition"], "instance": r["instance"], "agent": r["agent"], "run": r["run"], "counts_in_score": counts}
         run_rows.append({**base,
