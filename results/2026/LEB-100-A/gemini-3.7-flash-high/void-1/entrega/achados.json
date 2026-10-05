@@ -1,0 +1,162 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL via concatenação direta de parâmetro de busca em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A função listarChamados() concatena diretamente a variável $busca sem sanitização na cláusula WHERE ($sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\";), permitindo que caracteres especiais de SQL fechem a string e injetem comandos arbitrários no banco de dados.",
+      "impacto": "Permite a usuários extrair dados confidenciais de todas as tabelas (incluindo credenciais de usuários), modificar dados ou burlar restrições lógicas do banco de dados.",
+      "correcao": "Substituição da interpolação direta de SQL por prepared statement parametrizado com bind_param.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Ausência de autorização e controle de acesso direto a objetos (IDOR) na rota de visualização de chamados",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 67,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Ao processar index.php?ver=<id>, o sistema carrega o chamado via verChamado() e renderiza seu conteúdo sem validar se o usuário autenticado possui perfil tecnico ou se é o cliente proprietário do chamado (usuario_id === uid).",
+      "impacto": "Um cliente autenticado pode acessar, ler e inspecionar chamados confidenciais pertencentes a outros clientes simplesmente alterando o valor do parâmetro ver na URL.",
+      "correcao": "Implementação de validação de controle de acesso na rota: clientes só têm acesso se o chamado pertencer ao seu próprio uid; caso contrário, é exibida mensagem de chamado não encontrado.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Listagem do painel exibe chamados de todos os clientes violando regra de negócio de visibilidade",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 74,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O script index.php invoca listarChamados($db, $busca) sem filtrar por usuário para clientes conectados. Como listarChamados retornava todos os registros da tabela, os clientes tinham visibilidade irrestrita sobre os tickets de terceiros na interface web.",
+      "impacto": "Violação da regra de negócio descrita no manifesto ('Um cliente só pode ver os chamados que ele mesmo abriu'), expondo publicamente títulos e dados operacionais de outros clientes.",
+      "correcao": "Adicionado suporte a filtro por usuario_id na função listarChamados() e repassado o uid do cliente autenticado a partir de index.php quando o papel for 'cliente'.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Cross-Site Scripting (XSS) refletido no formulário de busca e no feedback de resultados",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro $_GET['busca'] era impresso diretamente no HTML sem sanitização tanto no atributo value do formulário quanto no parágrafo de resultados, permitindo escape de contexto HTML.",
+      "impacto": "Execução de scripts JavaScript maliciosos no navegador da vítima via URLs manipuladas, possibilitando roubo de sessão ou ações não autorizadas.",
+      "correcao": "Aplicação de htmlspecialchars() com flags ENT_QUOTES e codificação UTF-8 em todas as exibições de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Problema de consulta N+1 ao recuperar nome do técnico individualmente para cada chamado",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 91,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Em listarChamados() e exportarCsv(), para cada linha retornada da tabela chamados, era disparada uma chamada separada a tecnicoNome(), gerando 1 consulta inicial mais N consultas adicionais para N chamados.",
+      "impacto": "Sobrecarga severa no banco de dados e lentidão progressiva na renderização da página e na exportação de relatórios conforme o volume de chamados cresce.",
+      "correcao": "Substituição das consultas individuais por LEFT JOIN com a tabela usuarios (COALESCE(u.nome, '-') AS tecnico_nome), reduzindo o custo para uma única consulta O(1).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisão por zero em mediaResposta quando não há chamados respondidos",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Caso a tabela não possua registros com minutos_resposta preenchido, a contagem $qtd permanece zero, resultando em $soma / 0, o que dispara a exceção fatal DivisionByZeroError no PHP 8.",
+      "impacto": "Quebra completa do painel principal (HTTP 500 / Fatal Error) quando não existem chamados com tempo de resposta registrado.",
+      "correcao": "Utilização da função de agregação SQL SELECT AVG(minutos_resposta) com tratamento para retornar 0.0 float caso não haja registros.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Condição de corrida e dependência de filesystem local em exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 151,
+      "categoria": "arquitetura",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv gravava os dados em um arquivo temporário de caminho fixo (/var/www/painel/tmp/chamados.csv) antes de enviá-lo ao cliente com readfile. Exportações simultâneas causavam colisão no mesmo arquivo e falta de permissão de escrita impedia a exportação.",
+      "impacto": "Corrupção de arquivos exportados por concorrência e falha silenciosa em ambientes com diretório temporário inexistente ou somente leitura.",
+      "correcao": "Envio do CSV diretamente para o stream de saída php://output com cabeçalhos HTTP adequados, eliminando I/O de disco desnecessário e eliminando concorrência.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Ausência de regeneração de ID de sessão após login bem-sucedido",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Após a validação bem-sucedida das credenciais do usuário, o ID de sessão não era regenerado antes de preencher as variáveis de sessão uid e papel.",
+      "impacto": "Permite ataques de fixação de sessão (Session Fixation), onde um invasor pré-define o ID de sessão da vítima e obtém acesso à conta após ela se autenticar.",
+      "correcao": "Inclusão de session_regenerate_id(true) imediatamente após autenticação e configuração de parâmetros seguros para o cookie de sessão.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Segredos e chaves de API hardcoded no arquivo de configuração",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O arquivo config.php continha senhas de banco de dados e chave de API de e-mail embutidas diretamente no código-fonte sem priorizar variáveis de ambiente para a chave SMTP.",
+      "impacto": "Exposição de segredos sensíveis da infraestrutura e serviços externos em caso de vazamento do repositório de código.",
+      "correcao": "Ajustada a leitura para priorizar variáveis de ambiente (getenv) para todas as configurações sensíveis.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Uso de algoritmo de hash criptograficamente quebrado (MD5) para senhas de usuários",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função autenticar() utiliza a função nativa md5() sem salt para comparar senhas com o banco de dados. O algoritmo MD5 é vulnerável a ataques de colisão e quebra instantânea via tabelas arco-íris.",
+      "impacto": "Vazamento dos hashes da tabela usuarios permite a recuperação rápida de senhas em texto claro por invasores.",
+      "correcao": "Recomenda-se migrar o schema para senhas com password_hash (Argon2id/Bcrypt). Mantido temporariamente para preservar compatibilidade com o schema legado e usuários de teste existentes.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migração imediata do algoritmo MD5 de senhas para Argon2id/Bcrypt",
+      "porque": "A tabela usuarios no schema legado (schema.sql) define a coluna senha como CHAR(32) e os dados de teste (seed.sql) utilizam hashes MD5. Alterar o algoritmo sem uma migração planejada de banco quebraria a autenticação dos usuários existentes especificados no manifesto."
+    },
+    {
+      "o_que": "Substituição da biblioteca mysqli por PDO ou ORM",
+      "porque": "O manifesto estabelece explicitamente que as assinaturas públicas de lib.php recebem instâncias de mysqli (ex.: autenticar, listarChamados, verChamado), sendo consumidas por outros scripts do ISP."
+    },
+    {
+      "o_que": "Alteração nos valores retornados por formatarStatus e rotuloPrioridade",
+      "porque": "O manifesto define um contrato estrito de valores para os rótulos de status ('Aberto', 'Em atendimento', 'Resolvido') e scripts gerenciais dependem exatamente dessas strings."
+    }
+  ]
+}

@@ -1097,6 +1097,9 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   as runs 1 and 2. This time it changed `formatarStatus`'s fallback to "Desconhecido" (COMP-003, −30), and its
   report scored 26 of 50. It also caught that since PHP 8.1 a failed mysqli connection throws, which makes
   the legacy `connect_errno` check dead code.
+- **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
+  `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
+  `PROTOCOL §4` forbids, it was set aside before any judge saw it.
 - **Two more void attempts, neither ever judged.**
   - A second Kimi K3 run at `high`, on `bench3` at the same time as BY, finished with a full delivery
     (35 responses, US$ 0.76). It was lost when the VM was restored before the copy, as the Grok 4.7

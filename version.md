@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.94`
+**Versão atual:** `0.2.95`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.95` — 2026-10-05 — results/ keeps a fourth Gemini 3.7 Flash run unscored
+
+- `gemini-3.7-flash-high/void-1/`: started 13 seconds after run 3 and filed after it. It was set aside under
+  `PROTOCOL §4` before judging, and kept with its delivery and mechanical report.
 
 ### `0.2.94` — 2026-10-05 — results/ adds Gemini 3.7 Flash's third run at high (556); the agent is official at 587
 
