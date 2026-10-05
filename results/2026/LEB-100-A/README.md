@@ -1033,6 +1033,15 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   file-handle leak among them. It kept MD5 with a migration plan, and left the CSV formula injection.
   It answers HTTP 403 to every non-technician on `?export=csv` (COMP-003, charged to SEC-017, as in BN),
   and its report scored 36 of 50.
+- **Two more void attempts, neither ever judged.**
+  - A second Kimi K3 run at `high`, on `bench3` at the same time as BY, finished with a full delivery
+    (35 responses, US$ 0.76). It was lost when the VM was restored before the copy, as the Grok 4.7
+    `xhigh` run was the day before. Its first message had also been sent four times to the Kimi Code plan,
+    which rejected each one, before it reached Moonshot. That would have needed a decision before judging,
+    and the loss made it moot. It is in `moonshot-kimi-k3-high/void-1/`.
+  - Claude Fable 5.1's third run, on `bench1` on 2026-10-04 at 10:12, hit an expired login, as the second
+    multi-agent Sonnet attempt had. The model never received the message. It is in
+    `claude-fable-5.1-xhigh/void-3/`, and Fable still needs its third run.
 
 ## Runs withdrawn for an incomplete record
 

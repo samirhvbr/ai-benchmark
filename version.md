@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.84`
+**Versão atual:** `0.2.85`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.85` — 2026-10-05 — results/ keeps two void attempts: a Kimi K3 run lost to a VM restore and a logged-out Fable 5.1 attempt
+
+- `moonshot-kimi-k3-high/void-1/VOID.md`: a finished run lost when `bench3` was restored mid-copy, with its
+  first message sent five times after Kimi Code plan key errors.
+- `claude-fable-5.1-xhigh/void-3/VOID.md`: an expired login answered the first message locally.
 
 ### `0.2.84` — 2026-10-05 — results/ adds Kimi K3 at high as a new agent: run 1 scores 629
 
