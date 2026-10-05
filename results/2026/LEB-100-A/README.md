@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fifty-two deliveries were scored, labelled **Y** to **BX** in the order they arrived and judged blind like
+Fifty-three deliveries were scored, labelled **Y** to **BY** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -499,8 +499,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BV** | Gemini 3.8 Flash, `high`, run 3 | 100 |
 | **BW** | Grok 4.6, `high`, run 3 | 620 |
 | **BX** | GPT-6-astra, `ultra`, run 1 | 668 |
+| **BY** | Kimi K3, `high`, run 1 | 629 |
 
-All fifty-two ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All fifty-three ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1024,6 +1025,14 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   off it, so nothing was kept or judged. It is in `grok-4.7-xhigh/void-1/`, with a `VOID.md` recording what
   a read-only check had seen. The cause does not depend on the result, which was never known, so the agent
   runs again from run 1.
+- **Kimi K3 at `high` (BY): 629, Silver, 11th, a new agent.** Kimi K3's earlier run, at its default with no
+  recorded client, was withdrawn in 0.2.78. This one ran in opencode with the `high` variant on Moonshot's
+  own API, on `bench1` in 7 minutes, for US$ 0.41. A session started minutes before sent the fixed message
+  to the Kimi Code plan provider, which rejected the key, so no model answered it; the run is a separate
+  session that got the message once. It fixed 9 flaws: the visibility rule, both secrets and the
+  file-handle leak among them. It kept MD5 with a migration plan, and left the CSV formula injection.
+  It answers HTTP 403 to every non-technician on `?export=csv` (COMP-003, charged to SEC-017, as in BN),
+  and its report scored 36 of 50.
 
 ## Runs withdrawn for an incomplete record
 

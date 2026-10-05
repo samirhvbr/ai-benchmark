@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.83`
+**Versão atual:** `0.2.84`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.84` — 2026-10-05 — results/ adds Kimi K3 at high as a new agent: run 1 scores 629
+
+- `moonshot-kimi-k3-high/run-1` (BY): 629, Silver, 11th, in opencode on Moonshot's API. 9 flaws fixed,
+  compatibility 70 (HTTP 403 on the CSV for every non-technician), explanation 36/50.
+- Replaces the withdrawn default-effort Kimi K3 run with a recorded one; a new agent, since the effort
+  differs.
+- Instance notes: table row BY and one bullet.
 
 ### `0.2.83` — 2026-10-04 — results/ notes no longer call GPT-6-astra ultra the only report to catch the quoted CSV header
 
