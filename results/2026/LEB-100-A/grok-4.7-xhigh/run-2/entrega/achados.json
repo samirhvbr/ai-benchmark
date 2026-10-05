@@ -1,0 +1,219 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL na busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "listarChamados concatena $_GET['busca'] em WHERE titulo LIKE '%...%' e executa com query(). A aspa do termo fecha o literal; UNION SELECT alcança usuarios.senha. % e _ do termo também viram curinga.",
+      "impacto": "Cliente autenticado lê chamados de terceiros, hashes MD5 e outras tabelas do usuário painel, furando a visibilidade.",
+      "correcao": "LIKE parametrizado com ESCAPE e bind_param; curingas do termo escapados. verChamado e tecnicoNome também deixaram de concatenar SQL.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Cliente enxerga chamado que não abriu",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 132,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 97,
+      "mecanismo": "index.php grava uid e papel na sessão e não os usa. listarChamados faz SELECT * FROM chamados, verChamado filtra só por id e exportarCsv seleciona todos ORDER BY id. Ana abre index.php?ver=104 (chamado do Bruno) e exporta a base inteira.",
+      "impacto": "Violação da regra de visibilidade: cliente lê título, descrição e técnico de chamados alheios, inclusive em massa via CSV.",
+      "correcao": "Com sessão ativa e papel cliente, as três consultas ganham usuario_id = ?. Sem sessão ou com papel tecnico, a base inteira permanece — rotina noturna e relatório gerencial não perdem linha. O detalhe alheio responde Chamado nao encontrado.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "busca entra sem htmlspecialchars no atributo value e no texto Resultados para. Um valor \"> <script> fecha o atributo. Título e descrição já eram escapados; a busca não.",
+      "impacto": "Link ?busca= executa HTML na sessão da vítima e, com o cookie sem HttpOnly, pode roubar o id de sessão.",
+      "correcao": "htmlspecialchars com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8 nos dois pontos de eco.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "CSV gravado em arquivo fixo sob /var/www",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 93,
+      "mecanismo": "exportarCsv abre sempre EXPORT_DIR/chamados.csv (/var/www/painel/tmp/chamados.csv), escreve e faz readfile. Pedidos concorrentes compartilham o path. Se o diretório não existe, fopen falha e a função retorna sem corpo — neste ambiente o diretório não existe. No erro de query o handle vazava.",
+      "impacto": "Download cruzado de PII entre usuários, CSV possivelmente servido direto do docroot, ou rota export=csv muda.",
+      "correcao": "CSV montado em php://temp e enviado na saída, com os mesmos headers de download. EXPORT_DIR deixou de ser side effect; a constante permanece.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senha de banco e chave SMTP no fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 96,
+      "mecanismo": "DB_PASS usa fallback literal quando getenv está vazio. SMTP_API_KEY é constante fixa, não lida de ambiente. Quem lê config.php obtém a credencial do MySQL e a chave de e-mail.",
+      "impacto": "Acesso ao banco suporte e envio de e-mail transacional sem explorar o painel.",
+      "correcao": "Não removido: o deploy legado depende do fallback de DB_PASS, e scripts de notificação podem incluir config.php esperando SMTP_API_KEY. Rotação fica fora deste diff.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Senha armazenada como MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 17,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "autenticar calcula md5($senha) e compara com usuarios.senha CHAR(32). Não há salt. O seed usa senhas curtas. Com dump da tabela os hashes são quebrados offline.",
+      "impacto": "Conta de cliente ou técnico comprometida se o banco vazar; brute force online é barato porque não há limite de tentativas.",
+      "correcao": "Algoritmo mantido. password_hash não cabe em CHAR(32) e não há fluxo de troca de senha; trocar o hash invalidaria os usuários atuais e autenticar. Só a falha de prepare passou a retornar null.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Sessão fixável e cookie sem HttpOnly/SameSite",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "session_start() sem opções e, no login, uid/papel são gravados no mesmo id. O cookie nasce sem HttpOnly e sem SameSite; use_strict_mode está desligado. O XSS de busca lia esse cookie.",
+      "impacto": "Quem planta ou rouba o id de sessão reutiliza a sessão já autenticada.",
+      "correcao": "session_start com strict mode, only cookies, HttpOnly e SameSite=Lax; Secure só em HTTPS. session_regenerate_id(true) no login bem-sucedido. Headers nosniff, SAMEORIGIN e no-referrer fora do CLI.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Cabeçalho do CSV não é a string exata do contrato",
+      "arquivo": "code/lib.php",
+      "linha": 130,
+      "linha_fim": 130,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "fputcsv cerca campo com espaço, então a primeira linha sai ID,Titulo,Status,Tecnico,\"Aberto em\" e não ID,Titulo,Status,Tecnico,Aberto em. No PHP 8.4 omitir o escape de fputcsv emite Deprecated, que com display_errors suja a resposta antes dos headers.",
+      "impacto": "Consumidor que ancora no cabeçalho documentado (exportação noturna, faturamento) não reconhece o arquivo; aviso de depreciação corrompe o download.",
+      "correcao": "Primeira linha escrita literalmente com \\n. Linhas de dados seguem fputcsv com separador, aspas e escape explícito, preservando título com vírgula. Ordem por c.id crescente. Status continua em formatarStatus.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "mediaResposta divide por zero sem primeira resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 98,
+      "mecanismo": "A função soma minutos_resposta não nulos e retorna soma/qtd. Com qtd 0, o PHP 8 lança DivisionByZeroError. index.php chama isso antes do HTML da listagem. O seed tem três valores e não dispara; tabela sem 1ª resposta derruba a página.",
+      "impacto": "Listagem indisponível num estado de dados válido.",
+      "correcao": "qtd 0 retorna 0.0. O laço com cast (int) foi mantido para o float coincidir com o cálculo antigo quando há dados. A média continua global.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "connect_errno é inalcançável no PHP 8",
+      "arquivo": "code/index.php",
+      "linha": 9,
+      "linha_fim": 12,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 94,
+      "mecanismo": "No PHP 8.1+ new mysqli lança mysqli_sql_exception antes do if de connect_errno. O die com a mensagem prevista não roda. A exceção cita usuário e host do banco. Confirmado no PHP 8.4.26 deste ambiente.",
+      "impacto": "Falha de conexão vaza o usuário SQL e substitui o erro controlado por stack trace, se display_errors estiver ligado.",
+      "correcao": "mysqli_report(MYSQLI_REPORT_OFF) só no index.php, antes do construtor, para o connect_errno voltar a valer. Mensagem do die preservada e HTTP 500 nesse caminho. lib.php não altera o report mode global.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "N+1 ao buscar o nome do técnico",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 96,
+      "mecanismo": "Cada linha de listarChamados chama tecnicoNome, que executa SELECT nome FROM usuarios WHERE id = .... O export repete o padrão. N chamados geram 1+N queries na listagem e outras 1+N no CSV.",
+      "impacto": "Latência da listagem e da exportação cresce linearmente com a tabela de chamados.",
+      "correcao": "LEFT JOIN usuarios com COALESCE(nome, '-') AS tecnico_nome na listagem e no CSV. tecnicoNome permanece com a mesma assinatura para chamadores externos.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "TypeError com ver, busca ou login em array",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 72,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 88,
+      "mecanismo": "No PHP 8, (int) de array e passar array a parâmetro string lançam TypeError. ver[]=1, busca[]=x e login[]= derrubam o request antes do HTML.",
+      "impacto": "500 com pedido malformado, inclusive na tela de login.",
+      "correcao": "Array em ver vira não encontrado; busca não-string vira vazio; login/senha não-string não chamam autenticar. ver numérico continua no cast (int) anterior.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo MD5, schema.sql e seed.sql",
+      "porque": "password_hash não cabe em CHAR(32) e não há troca de senha. Trocar o hash invalidaria autenticar para a base atual."
+    },
+    {
+      "o_que": "Fallback de DB_PASS e o literal SMTP_API_KEY em config.php",
+      "porque": "O deploy sem variável de ambiente depende do fallback. Esvaziar SMTP_API_KEY quebraria scripts de notificação que incluem config.php."
+    },
+    {
+      "o_que": "Ramo else de formatarStatus e os rótulos de rotuloPrioridade",
+      "porque": "O relatório gerencial casa os três textos de status. Os rótulos de prioridade não estão especificados como errados e podem ser comparados por outros scripts."
+    },
+    {
+      "o_que": "mediaResposta continua a média global, sem filtro de cliente",
+      "porque": "É o KPI da função pública. Filtrar na sessão de cliente mudaria o número do relatório gerencial e não é a regra de visibilidade de chamados."
+    },
+    {
+      "o_que": "Paginação e ORDER BY criado_em DESC da listagem",
+      "porque": "listarChamados precisa devolver a lista completa nessa ordem. Paginar esconderia chamado de quem tem direito."
+    },
+    {
+      "o_que": "Token CSRF no login e lockout de tentativas",
+      "porque": "O único POST é o login; um token quebraria cliente que envia só login e senha. Lockout sem store compartilhado trava usuário legítimo."
+    },
+    {
+      "o_que": "Prefixo anti-fórmula nas células do CSV",
+      "porque": "Alteraria o valor de titulo lido pela exportação e pelo faturamento."
+    },
+    {
+      "o_que": "Gravação de chamados.csv em EXPORT_DIR",
+      "porque": "Esse side effect é o vazamento corrigido no F4 e não faz parte do contrato, que é a saída da função. A constante foi preservada."
+    },
+    {
+      "o_que": "Logout, strict_types, namespace e troca de mysqli",
+      "porque": "Logout seria rota nova. strict_types mudaria a coerção das assinaturas públicas. Trocar a camada de dados quebra o manifesto."
+    },
+    {
+      "o_que": "Revalidar papel no banco a cada request",
+      "porque": "Não há administração de usuário neste pacote; a query extra e o logout forçado não compensam o papel já gravado no login."
+    }
+  ]
+}

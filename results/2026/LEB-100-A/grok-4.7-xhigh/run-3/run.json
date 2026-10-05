@@ -1,0 +1,58 @@
+{
+  "agent": "grok-4.7-xhigh",
+  "model": {
+    "name": "Grok 4.7",
+    "id": "grok-4.7",
+    "provider": "xAI",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": "2026-05",
+    "training_cutoff_source": "https://docs.x.ai/docs/models"
+  },
+  "run": 3,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-05",
+  "evaluated_on": "2026-10-05",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-05T11:32:39-03:00",
+    "ended": "2026-10-05T12:05:20-03:00",
+    "log": "archived off the VM (opencode.db, session ses_ef384dae7ffe2Go2HrH41gDu5x), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench1 (100.64.100.113) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 579862,
+      "output": 20500,
+      "cache": 2982528,
+      "total": 3672680
+    },
+    "usd_estimate": 3.31,
+    "note": "the total includes 89,790 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 3.3127"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_ef384dae7ffe2Go2HrH41gDu5x), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run, copied into the snapshot ahead of the run and identical to the package. Grok 4.7 at its xhigh variant in opencode on xAI's own API, as in runs 1 and 2. The snapshot held a session from the morning's Kimi K3 attempts that the Kimi Code plan had rejected with no model output; this run is a separate session that got the fixed message once and nothing else. 48 model responses in 33 minutes. Runs 2 and 3 ran at the same time on bench3 and bench1; this one's first message went out 13 seconds earlier, but it reached the evaluator second and keeps the third number. This is the agent's third run, the last an official score needs."
+}

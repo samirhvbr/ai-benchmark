@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.96`
+**Versão atual:** `0.2.97`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.97` — 2026-10-05 — results/ adds Grok 4.7 at xhigh's second and third runs (617, 631); the agent is official at 631
+
+- `grok-4.7-xhigh/run-2` (CK) 617 and `run-3` (CL) 631, Silver, run at the same time on xAI's API.
+- With three runs (640, 617, 631) Grok 4.7 at xhigh is official at 631, 11th; twenty-four agents are
+  official.
+- Instance notes: table rows CK and CL, one bullet, the official count and list.
 
 ### `0.2.96` — 2026-10-05 — results/ adds Grok 4.7 at xhigh as a new agent: run 1 scores 640, 9th
 
