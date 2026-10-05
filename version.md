@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.100`
+**Versão atual:** `0.2.101`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.101` — 2026-10-05 — results/ adds GPT-5.5's run 4 (536); with three counted runs it is official again at 558
+
+- `gpt-5.5-xhigh/run-4` (CP): 536, Bronze, in Codex CLI. 7 flaws fixed, compatibility 70 (the SLA average
+  scoped to each client), explanation 32/50. Numbered run-4 because the withdrawn run 1 keeps its number.
+- With runs 2 to 4 (558, 568, 536) GPT-5.5 is official at 558, 26th; twenty-six agents are official.
+- Instance notes: table row CP, one bullet, the official count and list.
 
 ### `0.2.100` — 2026-10-05 — results/ adds DeepSeek V4 Flash at xhigh as a new agent: run 1 scores 617, 18th
 
