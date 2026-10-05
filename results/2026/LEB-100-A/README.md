@@ -444,7 +444,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Sixty-seven deliveries were scored, labelled **Y** to **CM** in the order they arrived and judged blind like
+Sixty-eight deliveries were scored, labelled **Y** to **CN** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -516,8 +516,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CK** | Grok 4.7, `xhigh`, run 2 | 617 |
 | **CL** | Grok 4.7, `xhigh`, run 3 | 631 |
 | **CM** | GPT-6-astra, `ultra`, run 2 | 666 |
+| **CN** | GPT-6-astra, `ultra`, run 3 | 651 |
 
-All sixty-seven ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All sixty-eight ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1123,6 +1124,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
     `/model gpt-6-astra`. The client sent that to the model as a message. The model only answered that it
     could not change models, used no tool and never saw the task. The run is a new session that got the
     fixed message once.
+- **GPT-6-astra at `ultra`, run 3 (CN): 651, Silver. With three runs its score is official: 666, the median of
+  668, 666 and 651, 6th, the strongest official GPT agent, 5 points above GPT-6.1-sol at `xhigh` (661).** It ran
+  in Codex CLI on `bench3` in 10 minutes with two subagents. It fixed 8 flaws and declined the CSV formula
+  prefix because the integrations read the cells. It scoped the SLA average to each client (COMP-003), as
+  run 2 had, and its report scored 45 of 50. The client's prompt history lists the fixed message twice, 5
+  seconds apart, but the session log shows the model received it once.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.
@@ -1189,7 +1196,7 @@ No score changes; only the dagger and the scorecards' "Training cutoff" row do.
 
 ## Before quoting a number
 
-- **Twenty-four agents have three runs; the rest are not official.** An official score is the median of three
+- **Twenty-five agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
@@ -1197,7 +1204,7 @@ No score changes; only the dagger and the scorecards' "Training cutoff" row do.
   GPT-5.6-luna (599, 601, 624) at 601, GPT-6.1-sol at `ultra`
   (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462,
   GLM-5.3 (629, 621, 604) at 621, Gemini 3.8 Flash at `high` (687, 588, 100) at 588 and Claude Haiku 4.5
-  (317, 369, 232) at 317, Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774, Grok 4.6 (633, 640, 620) at 633, Kimi K3 at `high` (629, 634, 574) at 629 Kimi K2.7 Code (415, 415, 512) at 415 Kimi K2.7 Code highspeed (402, 363, 402) at 402 Gemini 3.7 Flash at `high` (587, 587, 556) at 587 and Grok 4.7 at `xhigh` (640, 617, 631) at 631. Fable 5.1,
+  (317, 369, 232) at 317, Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774, Grok 4.6 (633, 640, 620) at 633, Kimi K3 at `high` (629, 634, 574) at 629 Kimi K2.7 Code (415, 415, 512) at 415 Kimi K2.7 Code highspeed (402, 363, 402) at 402 Gemini 3.7 Flash at `high` (587, 587, 556) at 587 Grok 4.7 at `xhigh` (640, 617, 631) at 631 and GPT-6-astra at `ultra` (668, 666, 651) at 666. Fable 5.1,
   DeepSeek V4 Flash and GPT-5.5 have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
   second run, and GPT-5.5 keeps runs 2 and 3 (558, 568) after its run 1 was withdrawn (below). A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as

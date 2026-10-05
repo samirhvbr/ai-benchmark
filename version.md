@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.98`
+**Versão atual:** `0.2.99`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.99` — 2026-10-05 — results/ adds GPT-6-astra at ultra's third run (651); the agent is official at 666, the strongest official GPT agent
+
+- `gpt-6-astra-ultra/run-3` (CN): 651, Silver, in Codex CLI with two subagents. 8 flaws fixed,
+  compatibility 70, explanation 45/50.
+- With three runs (668, 666, 651) GPT-6-astra at ultra is official at 666, 6th, above GPT-6.1-sol (661).
+  Twenty-five agents are official.
+- Instance notes: table row CN, one bullet, the official count and list.
 
 ### `0.2.98` — 2026-10-05 — results/ adds GPT-6-astra at ultra's second run (666); it publishes 666, still 6th
 
