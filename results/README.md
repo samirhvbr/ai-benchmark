@@ -47,7 +47,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 20 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-2/scorecard.md) · xhigh | **601** | Silver | 220 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.000 | 3/3 (599 · 601 · 624) |
 | 21 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
 | 22 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 3/3 (687 · 588 · 100) |
-| 23 | [Gemini 3.7 Flash](2026/LEB-100-A/gemini-3.7-flash-high/run-1/scorecard.md) † · high | **587** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 27 | 0 | 58.3 | 0.002 | 1/3 |
+| 23 | [Gemini 3.7 Flash](2026/LEB-100-A/gemini-3.7-flash-high/run-1/scorecard.md) † · high | **587** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 27 | 0 | 58.3 | 0.002 | 2/3 (587 · 587) |
 | 24 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 2/3 (558 · 568) |
 | 25 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
 | 26 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |

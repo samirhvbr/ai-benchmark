@@ -444,7 +444,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Sixty-one deliveries were scored, labelled **Y** to **CG** in the order they arrived and judged blind like
+Sixty-two deliveries were scored, labelled **Y** to **CH** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -510,8 +510,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CE** | Kimi K2.7 Code highspeed, run 2 | 363 |
 | **CF** | Kimi K2.7 Code highspeed, run 3 | 402 |
 | **CG** | Gemini 3.7 Flash, `high`, run 1 | 587 |
+| **CH** | Gemini 3.7 Flash, `high`, run 2 | 587 |
 
-All sixty-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All sixty-two ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1085,6 +1086,11 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   full: it is filed under the wrong category but also named in the non-changes list, and identification
   counts at the higher of the two. Google publishes no cutoff, and the model page gives its latest update
   as August 2026, after the answer key, so it carries the dagger.
+- **Gemini 3.7 Flash at `high`, run 2 (CH): 587, the same total as run 1; it still publishes 587, 23rd.**
+  It ran on `bench1` at the same time as run 1, 12 seconds later, with no rate-limit error, in 16 minutes
+  for US$ 0.60. It fixed the same 7 flaws, and its report scored 27 of 50 again. This time MD5 was filed
+  under the right category, and the run kept both secrets as literal fallbacks while its report marked
+  them fixed.
 - **Two more void attempts, neither ever judged.**
   - A second Kimi K3 run at `high`, on `bench3` at the same time as BY, finished with a full delivery
     (35 responses, US$ 0.76). It was lost when the VM was restored before the copy, as the Grok 4.7
