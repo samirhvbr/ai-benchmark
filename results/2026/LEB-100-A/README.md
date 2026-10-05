@@ -444,7 +444,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Sixty-three deliveries were scored, labelled **Y** to **CI** in the order they arrived and judged blind like
+Sixty-four deliveries were scored, labelled **Y** to **CJ** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -512,8 +512,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CG** | Gemini 3.7 Flash, `high`, run 1 | 587 |
 | **CH** | Gemini 3.7 Flash, `high`, run 2 | 587 |
 | **CI** | Gemini 3.7 Flash, `high`, run 3 | 556 |
+| **CJ** | Grok 4.7, `xhigh`, run 1 | 640 |
 
-All sixty-three ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All sixty-four ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1097,6 +1098,13 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   as runs 1 and 2. This time it changed `formatarStatus`'s fallback to "Desconhecido" (COMP-003, −30), and its
   report scored 26 of 50. It also caught that since PHP 8.1 a failed mysqli connection throws, which makes
   the legacy `connect_errno` check dead code.
+- **Grok 4.7 at `xhigh` (CJ): 640, Silver, 9th, a new agent, 2 points above Grok 4.7 at `high` (official at
+  638).** It ran in opencode on xAI's own API on `bench2` in 37 minutes, for US$ 3.82. Its first attempt, on
+  2026-10-04 through OpenRouter, was lost to a VM restore (`void-1`). It fixed 8 flaws, including the CSV
+  formula injection, prefixing only the cells that start a formula. It kept compatibility at 100, with no
+  penalty, and left MD5 and the secrets on purpose. Its report scored 44 of 50, the highest outside Anthropic
+  and OpenAI: it measured visibility, the header and the average on the seed, and it covers PHP 8.4 and
+  mysqlnd behaviour. xAI publishes a May 2026 cutoff for Grok 4.7, so it carries no dagger.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.
