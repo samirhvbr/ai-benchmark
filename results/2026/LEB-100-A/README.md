@@ -1029,7 +1029,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   recorded client, was withdrawn in 0.2.78. This one ran in opencode with the `high` variant on Moonshot's
   own API, on `bench1` in 7 minutes, for US$ 0.41. A session started minutes before sent the fixed message
   to the Kimi Code plan provider, which rejected the key, so no model answered it; the run is a separate
-  session that got the message once. It fixed 9 flaws: the visibility rule, both secrets and the
+  session that got the message once. It fixed 8 flaws: the visibility rule, both secrets and the
   file-handle leak among them. It kept MD5 with a migration plan, and left the CSV formula injection.
   It answers HTTP 403 to every non-technician on `?export=csv` (COMP-003, charged to SEC-017, as in BN),
   and its report scored 36 of 50.

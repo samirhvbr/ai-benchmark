@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.85`
+**Versão atual:** `0.2.86`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.86` — 2026-10-05 — results/ notes give Kimi K3's run 1 the 8 fixed flaws its scorecard has, not 9
+
+- The BY bullet said 9 flaws were fixed; the scorecard fixes 8 (SEC-001, SEC-003, SEC-013, SEC-015, SEC-017,
+  BUG-001, BUG-004, PERF-001).
 
 ### `0.2.85` — 2026-10-05 — results/ keeps two void attempts: a Kimi K3 run lost to a VM restore and a logged-out Fable 5.1 attempt
 
