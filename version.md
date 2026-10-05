@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.97`
+**Versão atual:** `0.2.98`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.98` — 2026-10-05 — results/ adds GPT-6-astra at ultra's second run (666); it publishes 666, still 6th
+
+- `gpt-6-astra-ultra/run-2` (CM): 666, Silver, in Codex CLI with three subagents. 9 flaws fixed,
+  compatibility 70 (the SLA average scoped to each client), explanation 43/50.
+- Instance notes: table row CM and one bullet, including the separate gpt-6-luna session before the run.
 
 ### `0.2.97` — 2026-10-05 — results/ adds Grok 4.7 at xhigh's second and third runs (617, 631); the agent is official at 631
 

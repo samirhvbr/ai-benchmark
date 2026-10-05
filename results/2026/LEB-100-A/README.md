@@ -444,7 +444,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Sixty-six deliveries were scored, labelled **Y** to **CL** in the order they arrived and judged blind like
+Sixty-seven deliveries were scored, labelled **Y** to **CM** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -515,8 +515,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CJ** | Grok 4.7, `xhigh`, run 1 | 640 |
 | **CK** | Grok 4.7, `xhigh`, run 2 | 617 |
 | **CL** | Grok 4.7, `xhigh`, run 3 | 631 |
+| **CM** | GPT-6-astra, `ultra`, run 2 | 666 |
 
-All sixty-six ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All sixty-seven ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1113,6 +1114,15 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   went out 13 seconds earlier, but it reached the evaluator second. Both fixed 7 flaws and kept compatibility
   at 100, with no penalty. Unlike run 1, both declined the CSV formula prefix because billing reads the cells.
   Their reports scored 43 and 42 of 50.
+- **GPT-6-astra at `ultra`, run 2 (CM): 666, Silver, 2 points below run 1 (668); it publishes 666, still
+  6th.** It ran in Codex CLI on `bench2` in 15 minutes with three subagents, all at `ultra`. It fixed 9 flaws:
+  all four probe-covered ones, the CSV formula injection included, and both secrets out of the code. It kept
+  MD5 with a migration plan. It scoped the SLA average to each client (COMP-003, charged to SEC-017), and its
+  report scored 43 of 50.
+  - Four minutes before the run, the operator opened a separate session on gpt-6-luna and typed
+    `/model gpt-6-astra`. The client sent that to the model as a message. The model only answered that it
+    could not change models, used no tool and never saw the task. The run is a new session that got the
+    fixed message once.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.

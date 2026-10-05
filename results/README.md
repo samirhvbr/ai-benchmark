@@ -30,7 +30,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md) · max (ultracode) | **774** | Gold | 250 | 0 | 129 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.008 | 3/3 (774 · 820 · 759) |
 | 4 | [Claude Fable 5.1](2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md) · xhigh | **764** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 42 | 0 | 87.5 | 0.021 | 2/3 (781 · 764) |
 | 5 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-xhigh/run-2/scorecard.md) · xhigh | **717** | Silver | 233 | 50 | 139 | 150 | 0 | 100 | 45 | 0 | 87.5 | 0.024 | 3/3 (711 · 717 · 805) |
-| 6 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-ultra/run-1/scorecard.md) · ultra | **668** | Silver | 228 | 0 | 150 | 150 | 25 | 70 | 45 | 0 | 87.5 | 0.001 | 1/3 |
+| 6 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-ultra/run-2/scorecard.md) · ultra | **666** | Silver | 224 | 25 | 129 | 150 | 25 | 70 | 43 | 0 | 79.2 | 0.000 | 2/3 (668 · 666) |
 | 7 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-3/scorecard.md) · xhigh | **661** | Silver | 246 | 25 | 129 | 150 | 0 | 70 | 41 | 0 | 75.0 | 0.000 | 3/3 (666 · 653 · 661) |
 | 8 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
 | 9 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
