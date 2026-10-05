@@ -6,7 +6,7 @@
 | Field | Value |
 | --- | --- |
 | Model | MiniMax-M3 (`minimax-m3`, MiniMax) · reasoning effort `thinking` · exact version: not recorded |
-| Training cutoff | not published by the provider: MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used ([source](https://www.minimax.io/models/text/m3)) — the answer key has been public since 2026-07-13: the model may have trained on it |
+| Training cutoff | not published by the provider: MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30). Its release date, 2026-06-01 (MiniMax model release notes), bounds the cutoff; third-party figures are not used ([source](https://www.minimax.io/models/text/m3)) — released on 2026-06-01 ([source](https://platform.minimax.io/docs/release-notes/models)), before the answer key was published (2026-07-13): a model cannot train on data that appeared after its release |
 | Client | opencode 1.18.33 · session 2026-10-02 19:48 → 19:53 |
 | Execution host | 20 vCPU · 15.6 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |

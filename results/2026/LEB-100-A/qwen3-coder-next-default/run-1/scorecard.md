@@ -6,7 +6,7 @@
 | Field | Value |
 | --- | --- |
 | Model | Qwen3 Coder Next (`qwen/qwen3-coder-next`, Alibaba (Qwen team)) · reasoning effort model default — not configurable: the model card says it supports only non-thinking mode, and opencode offers no effort setting for it · exact version: not recorded |
-| Training cutoff | not published by the provider: The Qwen team publishes no training or knowledge cutoff for Qwen3-Coder-Next (model card checked on 2026-09-30; its citation is dated 2026-02-03). The model predates the public answer key, but a release date is not a published cutoff; third-party figures are not used ([source](https://huggingface.co/Qwen/Qwen3-Coder-Next)) — the answer key has been public since 2026-07-13: the model may have trained on it |
+| Training cutoff | not published by the provider: The Qwen team publishes no training or knowledge cutoff for Qwen3-Coder-Next (model card checked on 2026-09-30). Its release date, 2026-02-03 (announcement on the Qwen team's own account), bounds the cutoff; third-party figures are not used ([source](https://huggingface.co/Qwen/Qwen3-Coder-Next)) — released on 2026-02-03 ([source](https://x.com/Alibaba_Qwen/status/2018718453570707465)), before the answer key was published (2026-07-13): a model cannot train on data that appeared after its release |
 | Client | opencode 1.18.33 · session 2026-09-30 17:52 → 18:08 |
 | Execution host | 20 vCPU · 15.6 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |

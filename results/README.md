@@ -49,12 +49,12 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 22 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 3/3 (687 · 588 · 100) |
 | 23 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 2/3 (558 · 568) |
 | 24 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
-| 25 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) † · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
+| 25 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
 | 26 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 3/3 (604 · 496 · 432) |
-| 27 | [MiniMax-M3](2026/LEB-100-A/minimax-m3-thinking/run-1/scorecard.md) † · thinking | **462** | Bronze | 220 | 0 | 150 | 0 | 25 | 40 | 27 | 0 | 62.5 | 0.021 | 3/3 (462 · 616 · 434) |
-| 28 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) † · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 3/3 (415 · 415 · 512) |
+| 27 | [MiniMax-M3](2026/LEB-100-A/minimax-m3-thinking/run-1/scorecard.md) · thinking | **462** | Bronze | 220 | 0 | 150 | 0 | 25 | 40 | 27 | 0 | 62.5 | 0.021 | 3/3 (462 · 616 · 434) |
+| 28 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 3/3 (415 · 415 · 512) |
 | 29 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
-| 30 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) † · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
+| 30 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
 | 31 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 3/3 (317 · 369 · 232) |
 | 32 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md) † · high | **282** | Reprovada | 99 | 0 | 96 | 0 | 0 | 100 | 22 | -35 | 50.0 | 0.122 | 2/3 (612 · 282) |
 
@@ -65,4 +65,4 @@ A score with fewer than 3 runs is **not official**.
 
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
-† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), Grok 4.6 (not published), Kimi K3 (not published), GLM-5.3 Prime (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.8 Flash (not published), Qwen3 Coder Next (not published), DeepSeek V4 Pro (not published), MiniMax-M3 (not published), Kimi K2.7 Code (not published), GLM-5.2 (not published), DeepSeek V4 Flash (not published).
+† Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), Grok 4.6 (not published), Kimi K3 (not published), GLM-5.3 Prime (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.8 Flash (not published), DeepSeek V4 Pro (not published), DeepSeek V4 Flash (not published).

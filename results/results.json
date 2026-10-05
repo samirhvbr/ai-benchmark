@@ -10828,7 +10828,9 @@
             "exact_version": null,
             "training_cutoff": null,
             "training_cutoff_source": "https://huggingface.co/Qwen/Qwen3-Coder-Next",
-            "training_cutoff_note": "The Qwen team publishes no training or knowledge cutoff for Qwen3-Coder-Next (model card checked on 2026-09-30; its citation is dated 2026-02-03). The model predates the public answer key, but a release date is not a published cutoff; third-party figures are not used"
+            "training_cutoff_note": "The Qwen team publishes no training or knowledge cutoff for Qwen3-Coder-Next (model card checked on 2026-09-30). Its release date, 2026-02-03 (announcement on the Qwen team's own account), bounds the cutoff; third-party figures are not used",
+            "release_date": "2026-02-03",
+            "release_date_source": "https://x.com/Alibaba_Qwen/status/2018718453570707465"
           },
           "runs_count": 1,
           "official": false,
@@ -10837,7 +10839,7 @@
             507
           ],
           "representative_run": 1,
-          "key_exposure": "unknown",
+          "key_exposure": "before",
           "discovery_index": 54.2,
           "brier": 0.301,
           "runs": [
@@ -11025,7 +11027,7 @@
             "exact_version": null,
             "training_cutoff": null,
             "training_cutoff_source": "https://api-docs.deepseek.com/news/news260424/",
-            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Pro (release note of 2026-04-24, checked on 2026-10-01). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used"
+            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Pro (release note of 2026-04-24, checked on 2026-10-01). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used. The 2026-04-24 release was a preview; the GA release of 2026-08-13 (DeepSeek-V4-Pro-0813) came after the answer key went public, and the hosts served the model under its generic name, so the release date cannot bound the weights these runs used (PROTOCOL §3)."
           },
           "runs_count": 3,
           "official": true,
@@ -11551,8 +11553,10 @@
             "exact_version": null,
             "training_cutoff": null,
             "training_cutoff_source": "https://www.minimax.io/models/text/m3",
-            "training_cutoff_note": "MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30); third-party figures are not used",
-            "served_by": "MiniMax's own API (opencode provider minimax, model MiniMax-M3, variant thinking)"
+            "training_cutoff_note": "MiniMax publishes no training or knowledge cutoff for M3 (model page and Hugging Face model card checked on 2026-09-30). Its release date, 2026-06-01 (MiniMax model release notes), bounds the cutoff; third-party figures are not used",
+            "served_by": "MiniMax's own API (opencode provider minimax, model MiniMax-M3, variant thinking)",
+            "release_date": "2026-06-01",
+            "release_date_source": "https://platform.minimax.io/docs/release-notes/models"
           },
           "runs_count": 3,
           "official": true,
@@ -11563,7 +11567,7 @@
             434
           ],
           "representative_run": 1,
-          "key_exposure": "unknown",
+          "key_exposure": "before",
           "discovery_index": 62.5,
           "brier": 0.021,
           "runs": [
@@ -12097,7 +12101,9 @@
             "exact_version": null,
             "training_cutoff": null,
             "training_cutoff_source": "https://huggingface.co/moonshotai/Kimi-K2.7-Code",
-            "training_cutoff_note": "Moonshot AI publishes no training or knowledge cutoff for Kimi K2.7 Code (checked on 2026-09-30). The model was released on 2026-06-12, before the answer key went public, but a release date is not a published cutoff; third-party figures are not used"
+            "training_cutoff_note": "Moonshot AI publishes no training or knowledge cutoff for Kimi K2.7 Code (checked on 2026-09-30). Its release date, 2026-06-12 (Kimi Code release notes), bounds the cutoff; third-party figures are not used",
+            "release_date": "2026-06-12",
+            "release_date_source": "https://www.kimi.com/code/docs/kimi-code/whats-new.html"
           },
           "runs_count": 3,
           "official": true,
@@ -12108,7 +12114,7 @@
             512
           ],
           "representative_run": 1,
-          "key_exposure": "unknown",
+          "key_exposure": "before",
           "discovery_index": 50.0,
           "brier": 0.225,
           "runs": [
@@ -12807,7 +12813,9 @@
             "exact_version": null,
             "training_cutoff": null,
             "training_cutoff_source": "https://docs.z.ai/guides/llm/glm-5.2",
-            "training_cutoff_note": "Z.AI publishes no training or knowledge cutoff for GLM-5.2 (model page checked on 2026-09-30); third-party figures are not used"
+            "training_cutoff_note": "Z.AI publishes no training or knowledge cutoff for GLM-5.2 (model page checked on 2026-09-30). Its release date, 2026-06-16 (Z.AI release notes), bounds the cutoff; third-party figures are not used",
+            "release_date": "2026-06-16",
+            "release_date_source": "https://docs.z.ai/release-notes/new-released"
           },
           "runs_count": 1,
           "official": false,
@@ -12816,7 +12824,7 @@
             388
           ],
           "representative_run": 1,
-          "key_exposure": "unknown",
+          "key_exposure": "before",
           "discovery_index": 50.0,
           "brier": 0.001,
           "runs": [
@@ -13536,7 +13544,7 @@
             "exact_version": null,
             "training_cutoff": null,
             "training_cutoff_source": "https://api-docs.deepseek.com/news/news260424/",
-            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Flash (release note of 2026-04-24, checked on 2026-09-30). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used"
+            "training_cutoff_note": "DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Flash (release note of 2026-04-24, checked on 2026-09-30). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used. The 2026-04-24 release was a preview; the update of 2026-07-31 (DeepSeek-V4-Flash-0731) came after the answer key went public, and the hosts served the model under its generic name, so the release date cannot bound the weights these runs used (PROTOCOL §3)."
           },
           "runs_count": 2,
           "official": false,

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.89`
+**Versão atual:** `0.2.90`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.90` — 2026-10-05 — A model's release date bounds its training cutoff when the provider publishes none; four agents lose the dagger
+
+- `PROTOCOL §3`: when the provider publishes no training cutoff but does publish the model's release date
+  (`model.release_date`, `release_date_source`), the date bounds the cutoff. A release before the answer key
+  went public counts as `before`.
+- `tools/export-results.py`: `key_exposure` applies the rule, and the scorecard's "Training cutoff" row cites
+  the release and its source.
+- `run.json` records the provider's release date for Qwen3 Coder Next (2026-02-03), MiniMax-M3 (2026-06-01),
+  Kimi K2.7 Code (2026-06-12) and GLM-5.2 (2026-06-16), so those four lose the dagger.
+- DeepSeek V4 Pro and V4 Flash keep it. Their 2026-04-24 release was a preview, and same-name updates came
+  after the key (2026-07-31 and 2026-08-13).
+- Instance notes: a section *Release dates bound the training cutoff*, and the older dagger sentences
+  marked as superseded.
 
 ### `0.2.89` — 2026-10-05 — results/ adds the third runs of Kimi K3 at high (574) and Kimi K2.7 Code (512); both are official, at 629 and 415
 

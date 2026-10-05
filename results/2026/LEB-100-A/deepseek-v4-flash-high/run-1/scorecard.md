@@ -6,7 +6,7 @@
 | Field | Value |
 | --- | --- |
 | Model | DeepSeek V4 Flash (`deepseek-v4-flash`, DeepSeek) · reasoning effort `high` · exact version: not recorded |
-| Training cutoff | not published by the provider: DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Flash (release note of 2026-04-24, checked on 2026-09-30). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used ([source](https://api-docs.deepseek.com/news/news260424/)) — the answer key has been public since 2026-07-13: the model may have trained on it |
+| Training cutoff | not published by the provider: DeepSeek publishes no training or knowledge cutoff for DeepSeek-V4-Flash (release note of 2026-04-24, checked on 2026-09-30). The release predates the public answer key, but a release date is not a published cutoff; third-party figures are not used. The 2026-04-24 release was a preview; the update of 2026-07-31 (DeepSeek-V4-Flash-0731) came after the answer key went public, and the hosts served the model under its generic name, so the release date cannot bound the weights these runs used (PROTOCOL §3). ([source](https://api-docs.deepseek.com/news/news260424/)) — the answer key has been public since 2026-07-13: the model may have trained on it |
 | Client | opencode 1.18.33 · session 2026-09-30 12:12 → 12:21 |
 | Execution host | 4 vCPU · 3.8 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |

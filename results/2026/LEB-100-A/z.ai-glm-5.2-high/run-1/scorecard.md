@@ -6,7 +6,7 @@
 | Field | Value |
 | --- | --- |
 | Model | GLM-5.2 (`glm-5.2`, Z.AI) · reasoning effort `high` · exact version: not recorded |
-| Training cutoff | not published by the provider: Z.AI publishes no training or knowledge cutoff for GLM-5.2 (model page checked on 2026-09-30); third-party figures are not used ([source](https://docs.z.ai/guides/llm/glm-5.2)) — the answer key has been public since 2026-07-13: the model may have trained on it |
+| Training cutoff | not published by the provider: Z.AI publishes no training or knowledge cutoff for GLM-5.2 (model page checked on 2026-09-30). Its release date, 2026-06-16 (Z.AI release notes), bounds the cutoff; third-party figures are not used ([source](https://docs.z.ai/guides/llm/glm-5.2)) — released on 2026-06-16 ([source](https://docs.z.ai/release-notes/new-released)), before the answer key was published (2026-07-13): a model cannot train on data that appeared after its release |
 | Client | opencode 1.18.33 · session 2026-09-30 09:22 → 09:28 |
 | Execution host | 4 vCPU · 3.8 GiB RAM |
 | First message | Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json. |

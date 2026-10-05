@@ -154,13 +154,18 @@ def effort_short(model):
 def key_exposure(model, instance):
     """Could the model have trained on the instance's answer key? `before` when the provider's
     published cutoff is earlier than the day the key went public, `after` when it is not,
-    `unknown` when the provider publishes no cutoff; None when the key was never published."""
+    `unknown` when the provider publishes no cutoff; None when the key was never published.
+
+    Without a published cutoff, the provider's own release date bounds it: a model cannot
+    have trained on data that appeared after it was released (PROTOCOL §3, 2026-10-05). A
+    release on or after the key's date says nothing, so it stays `unknown`."""
     published = KEY_PUBLISHED.get(instance)
     if published is None:
         return None
     cutoff = model.get("training_cutoff")
     if not cutoff:
-        return "unknown"
+        released = model.get("release_date")
+        return "before" if released and released < published else "unknown"
     if len(cutoff) == 7:  # YYYY-MM: the data may run to the month's last day
         year, month = int(cutoff[:4]), int(cutoff[5:])
         cutoff = "%s-%02d" % (cutoff, calendar.monthrange(year, month)[1])
@@ -174,7 +179,12 @@ def cutoff_label(model, instance):
     if source:
         text += " ([source](%s))" % source
     exposure = key_exposure(model, instance)
-    if exposure == "before":
+    if exposure == "before" and not cutoff:
+        text += (" — released on %s%s, before the answer key was published (%s): a model cannot train on data"
+                 " that appeared after its release" % (model["release_date"],
+                 " ([source](%s))" % model["release_date_source"] if model.get("release_date_source") else "",
+                 KEY_PUBLISHED[instance]))
+    elif exposure == "before":
         text += " — before the answer key was published (%s): by its provider's own cutoff, the model did not train on it" % KEY_PUBLISHED[instance]
     elif exposure is not None:
         text += " — the answer key has been public since %s: the model may have trained on it" % KEY_PUBLISHED[instance]

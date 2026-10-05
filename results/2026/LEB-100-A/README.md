@@ -341,7 +341,8 @@ every verdict was in:
   - An earlier session, 11:38–11:46, never started: every request failed with HTTP 401 for an
     invalid API key.
   - Moonshot publishes no cutoff. The model was released on 2026-06-12, before the key went
-    public, but a release date is not a published cutoff, so it carries the dagger.
+    public, but a release date is not a published cutoff, so it carried the dagger until 2026-10-05
+    (see *Release dates bound the training cutoff*).
   - It fixed six flaws and kept the contract whole. It left the N+1 query and the CSV injection in
     place.
   - It is the worst calibrated so far (Brier 0.225). It reported SQL injection in `verChamado` and
@@ -389,7 +390,8 @@ every verdict was in:
     message and nothing else, used no web tool and made no request to GitHub. It cost US$ 1.53 in
     16 minutes.
   - The Qwen team publishes no cutoff. The model predates the public key (its card is dated
-    2026-02-03), but a release date is not a published cutoff, so it carries the dagger.
+    2026-02-03), but a release date is not a published cutoff, so it carried the dagger until
+    2026-10-05 (see *Release dates bound the training cutoff*).
   - It fixed five flaws: the SQL injection, session fixation, the empty average, the N+1 in the
     listing, and a file-handle leak it did not report. It moved one of the two secrets out of the
     code and kept the contract whole. It left MD5 and the ticket IDOR in place on purpose, and
@@ -1086,6 +1088,38 @@ recorded runs and is unaffected. The leaderboard goes from thirty-two agents to 
 nineteen official scores to eighteen. The notes above describe these runs as they were scored at the
 time and are left as written.
 
+
+## Release dates bound the training cutoff
+
+On 2026-10-05 the operator decided that a model's release date bounds its training cutoff when the
+provider publishes no cutoff. A model cannot have trained on data that appeared after it was released.
+That is now in `PROTOCOL §3`, and `run.json` records `model.release_date` with the provider's own source.
+Before, a release date was not accepted, and every model without a published cutoff carried the dagger.
+
+The release dates were taken from the providers' own announcements, release notes or model cards,
+never from third parties. Four agents were released before the answer key went public (2026-07-13), so
+they lose the dagger:
+
+| Agent | Release | Source |
+| --- | --- | --- |
+| Qwen3 Coder Next | 2026-02-03 | the Qwen team's announcement |
+| MiniMax-M3 (thinking variant) | 2026-06-01 | MiniMax model release notes |
+| Kimi K2.7 Code | 2026-06-12 | Kimi Code release notes |
+| GLM-5.2 | 2026-06-16 | Z.AI release notes |
+
+The rest keep it:
+
+- **DeepSeek V4 Pro and V4 Flash.** They were released on 2026-04-24, but as a preview. Updates under
+  the same name came after the key went public: V4 Flash on 2026-07-31 and V4 Pro's GA release on
+  2026-08-13. The hosts served the generic name, so the release date cannot bound the weights these
+  runs used.
+- **Released on or after 2026-07-13:** Kimi K3 (2026-07-16), Grok 4.6 (2026-08-12), GLM-5.3 (2026-08-14),
+  GLM-5.3-Flash (2026-08-26), Gemini 3.8 Flash (2026-09-02), DeepSeek V4.1 Flash (2026-09-10) and
+  GPT-6.1-sol, whose pro mode has no date of its own (2026-09-29).
+- **No official release date:** GLM-5.3-FlashX, GLM-5.3 Prime and Kimi K2.7 Code highspeed.
+
+No score changes; only the dagger and the scorecards' "Training cutoff" row do.
+
 ## Before quoting a number
 
 - **Twenty-one agents have three runs; the rest are not official.** An official score is the median of three
@@ -1118,8 +1152,8 @@ time and are left as written.
   name, but a deliberate connection straight to a GitHub address was not blocked. The address
   blocks came on 2026-09-30 (README, *Execution environment*). Each run also records the
   training cutoff its provider publishes: nine of the ten models have a cutoff before 2026-07-13,
-  and MiniMax publishes none for M3, so for that model training on the key cannot be ruled out. It
-  is marked † in the leaderboard, and its scorecard says so.
+  and MiniMax publishes none for M3, so for that model training on the key could not be ruled out
+  until its release date was accepted in place of a cutoff (*Release dates bound the training cutoff*).
 
 ## Reading the results
 
