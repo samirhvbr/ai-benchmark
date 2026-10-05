@@ -1,0 +1,337 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Kimi K3",
+    "version": "not recorded",
+    "provider": "Moonshot AI"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-05",
+    "runs": [
+      634
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 0
+      },
+      "points_earned": 9,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 4,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 2,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": true
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 51,
+      "raw_possible": 58,
+      "score": 220,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 12,
+      "raw_possible": 14,
+      "score": 129,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 2,
+      "raw_possible": 8,
+      "score": 25,
+      "max": 100
+    },
+    "COMP": {
+      "score": 70,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "index.php:46-51 answers HTTP 403 to every non-technician on the contracted route index.php?export=csv (and index.php:101-103 hides the export link from clients), instead of filtering the CSV to the client's own tickets. Clients lose access to tickets the manifest's visibility rule entitles them to see. Charged to SEC-017's C5."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 40,
+      "max": 50,
+      "rubric": {
+        "clareza": 9,
+        "precisao": 8,
+        "causa_raiz": 8,
+        "priorizacao": 7,
+        "trade_offs": 8
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "Hardening — SQL built by concatenation in tecnicoNome (lib.php:69) and verChamado (lib.php:100), correctly described as not exploitable today because of int type hints; converted to prepared statements (F10)",
+    "Contracted legacy behaviour flagged as a bug — formatarStatus returns 'Resolvido' for any status outside 1/2 (lib.php:32-34); deliberately not changed, contract preserved (F11)",
+    "Export writes a fixed, predictable file EXPORT_DIR/chamados.csv (race between concurrent exports, possible web exposure) and returns silently with HTTP 200 when fopen fails; fixed with tempnam + unlink + HTTP 500 (F8)",
+    "Session cookie without Secure/SameSite flags and no HTTPS enforcement — recommendation only, not changed"
+  ],
+  "total": 634,
+  "grade": "Silver",
+  "calibration": {
+    "reported_count": 8,
+    "brier": 0.001,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 8,
+        "mean_confidence": 98.8,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 2,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 5,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 62.5
+  }
+}

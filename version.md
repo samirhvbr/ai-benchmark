@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.86`
+**Versão atual:** `0.2.87`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.87` — 2026-10-05 — results/ adds Kimi K3's second run at high (634); its published score stays 629
+
+- `moonshot-kimi-k3-high/run-2` (BZ): 634, Silver, on `bench2` in 21 minutes for US$ 1.02. 9 flaws fixed,
+  compatibility 70 (the CSV 403 again), explanation 40/50. The agent publishes 629, 11th.
+- Instance notes: table row BZ and one bullet.
 
 ### `0.2.86` — 2026-10-05 — results/ notes give Kimi K3's run 1 the 8 fixed flaws its scorecard has, not 9
 

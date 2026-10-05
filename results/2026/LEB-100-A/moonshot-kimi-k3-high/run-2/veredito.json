@@ -1,0 +1,222 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Kimi K3",
+    "version": "not recorded",
+    "provider": "Moonshot AI"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-05",
+    "runs": [
+      634
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-05",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "BZ",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o termo de busca vindo de `$_GET['busca']` é concatenado diretamente na cláusula `LIKE`",
+      "rationale": "F1 at lib.php:82 with a correct quote-breaking mechanism. C3 from the probe (corrigida true): lib.php:110-119 binds '%'.$busca.'%' via bind_param in mysqli. LIKE wildcards % and _ are deliberately left unescaped (the report argues they were wildcards before too); the probe still passes, noted only."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`$busca` é ecoada sem escape em dois pontos: no atributo `value` do campo de busca e no parágrafo \"Resultados para:\"",
+      "rationale": "Both output points escaped: index.php:96 htmlspecialchars($busca, ENT_QUOTES) in the value attribute and index.php:99 htmlspecialchars($busca) in the text node (no attribute context there, so default flags suffice). Markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV/formula injection is not mentioned anywhere; exportarCsv still writes titulo raw (lib.php:180-186). Probe corrigida false ('=1+1' exported as-is)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "após autenticar, o código grava `$_SESSION['uid']` sem chamar `session_regenerate_id()`",
+      "rationale": "F7 explains fixation via a planted PHPSESSID surviving login. index.php:24 calls session_regenerate_id(true) right after successful autenticar and before populating the session."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o login compara `md5($senha)` com a coluna `senha`. MD5 é rápido e sem sal",
+      "rationale": "lib.php:15-45: detects 32-hex legacy hash, verifies with hash_equals(md5), otherwise password_verify, and re-hashes legacy accounts with password_hash(PASSWORD_DEFAULT) on successful login (transparent migration); return shape ['id','nome','papel'] preserved by unset. schema.sql widens senha to VARCHAR(255), which is lossless (not COMP-009)."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "a senha de produção do MySQL (`N3tX@2013!prod`, como *fallback* quando a variável de ambiente não existe) e a chave da central de e-mail (`netx-smtp-9f83e2c1a7b64d05`, fixa) estão literais no repositório",
+      "rationale": "Both literals removed: config.php:12-16 requires DB_PASS from env (RuntimeException otherwise) and config.php:20 reads SMTP_API_KEY from env with empty fallback. Rotation of both credentials is recommended."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "none"
+      },
+      "report_excerpt": "a rota `?ver=<id>` devolve o detalhe de qualquer chamado sem conferir `usuario_id` (IDOR clássico — basta incrementar o id)",
+      "rationale": "index.php:64 denies (as 'not found') a client viewing a ticket whose usuario_id differs from the session uid; technicians still see all; verChamado signature preserved. Listing also filtered for clients (index.php:86-90). C5 none: index.php:46-51 returns HTTP 403 on ?export=csv for every non-technician instead of filtering to their own tickets, hiding tickets from clients entitled to see them (COMP-003, consistency rule 6)."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`$soma / $qtd` é executado mesmo quando nenhum chamado tem `minutos_resposta` preenchido",
+      "rationale": "C3 from the probe (returns 0 without error). lib.php:145-147 uses SQL AVG over the same global set with (float)(... ?? 0); precision change within tolerance and same displayed value, so not COMP-003 (rule 2)."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "F8 points at exportarCsv but describes a fixed-filename race, a predictable web-reachable path and a silent return when fopen fails; it never says the handle stays open on the `$res === false` early return (rule 12: C1 none). Silent fix: lib.php:156-166 now runs the query before tempnam/fopen and returns on query failure before any handle exists, so no path leaks $fp."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "para cada chamado listado/exportado, `tecnicoNome` disparava um `SELECT` extra. Com N chamados, N+1 queries por página",
+      "rationale": "C3 from the probe (~1 query). LEFT JOIN with COALESCE(t.nome,'-') in listarChamados (lib.php:107-108) and exportarCsv (lib.php:156-161), so the '-' for unassigned tickets is preserved; tecnicoNome kept."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The fat dispatcher is not reported; index.php still mixes routing, authorization, business rules and HTML echoing, and grew with new inline authorization logic."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic status/priority numbers not reported; no named constants introduced in lib.php."
+    },
+    {
+      "id": "CLN-007",
+      "reported": true,
+      "criteria": {
+        "R1": "full",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "**`rotuloPrioridade`:** a lógica aninhada é feia, mas está correta para todas as combinações (verificado por teste) e é consumida pela tela. Reescrever por estética não se justifica.",
+      "rationale": "Named at the right function in the deliberate non-changes list (rule 5: R1 full). 'Nested logic is ugly' does not explain the 4-level nesting mechanism, and rotuloPrioridade is unchanged, so R2/R3/R4 none. No confidence declared for it."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "Hardening — SQL built by concatenation in tecnicoNome (lib.php:69) and verChamado (lib.php:100), correctly described as not exploitable today because of int type hints; converted to prepared statements (F10)",
+    "Contracted legacy behaviour flagged as a bug — formatarStatus returns 'Resolvido' for any status outside 1/2 (lib.php:32-34); deliberately not changed, contract preserved (F11)",
+    "Export writes a fixed, predictable file EXPORT_DIR/chamados.csv (race between concurrent exports, possible web exposure) and returns silently with HTTP 200 when fopen fails; fixed with tempnam + unlink + HTTP 500 (F8)",
+    "Session cookie without Secure/SameSite flags and no HTTPS enforcement — recommendation only, not changed"
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 1,
+      "detail": "index.php:46-51 answers HTTP 403 to every non-technician on the contracted route index.php?export=csv (and index.php:101-103 hides the export link from clients), instead of filtering the CSV to the client's own tickets. Clients lose access to tickets the manifest's visibility rule entitles them to see. Charged to SEC-017's C5."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json binding (LEB-100-A 1.1, sha 68088ab...) matches the instance. JSON and prose are consistent (F1-F11 plus the non-changes list). SEC-001 fix does not escape LIKE wildcards; C3 still full from the probe. BUG-004 is a silent fix: F8 sits on the export but describes a race/predictable path and fopen-failure silence, never the handle left open on the query-failure early return. CLN-007 identified only through the non-changes list (rule 5). The report explicitly argues the CSV restriction is required by the visibility rule; under rule 6 it is still COMP-003 since filtering was the compliant option. CSV header now written with an explicit escape argument producing identical bytes (not COMP). No PERF-006/SEC-009 decoy reported. Characterization 22/22 green.",
+  "expl_rubric": {
+    "clareza": 9,
+    "precisao": 8,
+    "causa_raiz": 8,
+    "priorizacao": 7,
+    "trade_offs": 8
+  },
+  "expl_justification": {
+    "clareza": "States its order as priority of correction; every finding has where, mechanism, impact and fix, with severity and confidence in the header; a Decisões and a short Verificação section; the summary says up front what was and was not fixed. A few blocks run long.",
+    "precisao": "Correct and deeper than BW/BY: the LIKE SQLi proven with payloads and the wildcards kept on purpose; visibility tested end to end before and after; PHP 8 throws on the division; three export defects in one path (fixed-name race, predictable file possibly under the web root at stated lower confidence, silent fopen failure); $escape passed explicitly for PHP 8.4 to keep the output byte-identical; verChamado/tecnicoNome correctly not exploitable; gradual MD5 migration with hash_equals. It swaps the PHP division for AVG() and calls the value the same without considering the rounded DECIMAL (77/3), and says nothing on bcrypt's 72-byte and NUL limits. It repeats both secret literals in the text (not scored separately).",
+    "causa_raiz": "Real causes with mechanisms: the visibility rule 'is not applied anywhere'; F10 ties the int-typed concatenation to the same pattern that produced F1. No structural synthesis of the authorization gap at the K/BT/BX level.",
+    "priorizacao": "Priority order stated and kept (2 critical, 3 high, 3 medium, 3 low) with confidence lowered where exposure depends on the vhost; effort weighed only in passing; no deployment sequencing (nothing on running the column ALTER first).",
+    "trade_offs": "Real, argued trade-offs: the filter in the web layer so internal consumers keep everything; the CSV restricted to technicians, admitted as a visible behaviour change and defended from the manifest; MD5 kept in the seed to prove the transparent migration; Secure/SameSite left to deployment behind a TLS proxy; a strict formatarStatus judged not worth it; tempnam plus unlink over the shared file. Alternatives are named and weighed but not systematically compared, and the AVG swap is presented as free."
+  }
+}

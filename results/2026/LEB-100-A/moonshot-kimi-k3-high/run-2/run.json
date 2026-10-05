@@ -1,0 +1,60 @@
+{
+  "agent": "moonshot-kimi-k3-high",
+  "model": {
+    "name": "Kimi K3",
+    "id": "kimi-k3",
+    "provider": "Moonshot AI",
+    "reasoning_effort": "high",
+    "exact_version": null,
+    "training_cutoff": null,
+    "training_cutoff_source": "https://huggingface.co/moonshotai/Kimi-K3",
+    "training_cutoff_note": "Moonshot AI publishes no training or knowledge cutoff for Kimi K3 (Hugging Face model card checked on 2026-09-30); third-party figures are not used",
+    "reasoning_effort_note": "opencode's high variant for kimi-k3 on Moonshot's own API"
+  },
+  "run": 2,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-05",
+  "evaluated_on": "2026-10-05",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-05T09:34:10-03:00",
+    "ended": "2026-10-05T09:55:23-03:00",
+    "log": "archived off the VM (opencode.db, session ses_ef3f1547fffe60PQXU2DivQQQu), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench2 (100.64.100.114) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored to its clean snapshot (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 session record (opencode.db)",
+    "elapsed_seconds": null,
+    "tokens": {
+      "input": 52871,
+      "output": 21600,
+      "cache": 1249024,
+      "total": 1334129
+    },
+    "usd_estimate": 1.02,
+    "note": "the total includes 10,634 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 1.0168"
+  },
+  "logs": "archived off the VM (opencode.db, session ses_ef3f1547fffe60PQXU2DivQQQu), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "The operator's folder was named run, copied into the snapshot ahead of the run and identical to the package. As in run 1, an earlier session at 09:25 sent the fixed message to the Kimi Code plan provider, which rejected the key, so no model answered; this run is a separate session that got the fixed message once and nothing else. 37 model responses in 21 minutes, on Moonshot's own API with the high variant. Runs 1 and 2 ran at the same time on bench1 and bench2, alongside a third on bench3 that was lost (void-1)."
+}

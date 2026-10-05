@@ -442,7 +442,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fifty-three deliveries were scored, labelled **Y** to **BY** in the order they arrived and judged blind like
+Fifty-four deliveries were scored, labelled **Y** to **BZ** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -500,8 +500,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **BW** | Grok 4.6, `high`, run 3 | 620 |
 | **BX** | GPT-6-astra, `ultra`, run 1 | 668 |
 | **BY** | Kimi K3, `high`, run 1 | 629 |
+| **BZ** | Kimi K3, `high`, run 2 | 634 |
 
-All fifty-three ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All fifty-four ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1033,6 +1034,11 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   file-handle leak among them. It kept MD5 with a migration plan, and left the CSV formula injection.
   It answers HTTP 403 to every non-technician on `?export=csv` (COMP-003, charged to SEC-017, as in BN),
   and its report scored 36 of 50.
+- **Kimi K3 at `high`, run 2 (BZ): 634, 5 points above run 1; its published score stays 629, the lower,
+  11th.** It ran on `bench2` at the same time as run 1, in 21 minutes for US$ 1.02, after the same
+  rejected Kimi Code plan session, in a separate session that got the fixed message once. It fixed 9 flaws,
+  migrating MD5 transparently this time, and again answered HTTP 403 to every non-technician on
+  `?export=csv` (COMP-003). Its report scored 40 of 50.
 - **Two more void attempts, neither ever judged.**
   - A second Kimi K3 run at `high`, on `bench3` at the same time as BY, finished with a full delivery
     (35 responses, US$ 0.76). It was lost when the VM was restored before the copy, as the Grok 4.7
