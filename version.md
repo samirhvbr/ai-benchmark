@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.101`
+**Versão atual:** `0.2.102`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.102` — 2026-10-05 — results/ adds a written comment for each of the 36 agents, exported into results.json
+
+- `results/2026/LEB-100-A/comments.json`: one to three sentences per agent, in English and Brazilian
+  Portuguese (the PT copy is end-user text for the results pages), drawn from the scorecards and verdicts.
+- `tools/export-results.py` copies it into each entry as `comment` (null when absent) and refuses an id
+  that names no agent.
+- Instance notes: a short "Agent comments" section saying what the comments are and are not.
 
 ### `0.2.101` — 2026-10-05 — results/ adds GPT-5.5's run 4 (536); with three counted runs it is official again at 558
 

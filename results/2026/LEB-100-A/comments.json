@@ -1,0 +1,146 @@
+{
+  "claude-sonnet-5.5-xhigh": {
+    "en": "The most complete single-agent result: security at 250 of 250 in its first two runs, performance at full marks, compatibility untouched, and the CSV formula injection fixed the way the answer key expects. Its third run left three security flaws found but unfixed and fell to 724; like every agent, it left the dispatcher whole.",
+    "pt_BR": "O resultado mais completo de um agente só: segurança em 250 de 250 nos dois primeiros runs, desempenho com nota máxima, compatibilidade intacta e a injeção de fórmula no CSV corrigida como o gabarito espera. O terceiro run encontrou três falhas de segurança sem corrigi-las e caiu para 724; como todos os agentes, deixou o dispatcher inteiro."
+  },
+  "claude-sonnet-5.5-max": {
+    "en": "The most consistent of the top three: 773 to 820 across three runs, bugs and performance at full marks in all of them, no false positive and no contract broken. More effort than xhigh bought nothing measurable, at about one and a half times the cost.",
+    "pt_BR": "O mais regular entre os três primeiros: de 773 a 820 em três runs, bugs e desempenho com nota máxima em todos, nenhum falso positivo e nenhum contrato quebrado. Mais esforço que o xhigh não trouxe ganho mensurável, a cerca de uma vez e meia o custo."
+  },
+  "claude-sonnet-5.5-max-ultracode": {
+    "en": "Claude Code's multi-agent mode: 68 to 145 subagents and 2 to 8 hours a run, at US$ 119 to 233 each, for 774, 820 and 759. At best it tied the same model working alone in half an hour, with the best-calibrated report of the Claude agents and the same untouched architecture.",
+    "pt_BR": "O modo multiagente do Claude Code: de 68 a 145 subagentes e de 2 a 8 horas por run, a US$ 119 a 233 cada, para 774, 820 e 759. No melhor caso empatou com o mesmo modelo trabalhando sozinho em meia hora, com o relatório mais bem calibrado entre os agentes Claude e a mesma arquitetura intocada."
+  },
+  "claude-fable-5.1-xhigh": {
+    "en": "Finds as much as Sonnet (11 to 12 of the 13 flaws) and fixes less of it: it explained the CSV formula injection and left it in place on purpose, to protect the file's consumers. Two runs so far; its client switched part of a third attempt to another model, which voided it.",
+    "pt_BR": "Encontra tanto quanto o Sonnet (11 ou 12 das 13 falhas) e corrige menos: explicou a injeção de fórmula no CSV e a deixou no lugar de propósito, para proteger quem consome o arquivo. Dois runs até agora; o cliente trocou de modelo no meio de uma terceira tentativa, que foi anulada."
+  },
+  "claude-opus-5.5-xhigh": {
+    "en": "The highest architecture score in an official run (50 of 200), and the widest spread among the Claude models: 711 and 717, then 805. It fixed 9 flaws in every run and never flattened the nested ifs in the run that counts, which is where its gap to Sonnet comes from.",
+    "pt_BR": "A maior nota de arquitetura num run oficial (50 de 200), e a maior variação entre os modelos Claude: 711 e 717, depois 805. Corrigiu 9 falhas em todos os runs e, no run que conta, não achatou os ifs aninhados; é daí que vem a distância para o Sonnet."
+  },
+  "gpt-6-astra-ultra": {
+    "en": "The strongest GPT agent, with two or three subagents in 10 to 15 minutes a run and three runs within 17 points of each other. It changed one business value in every run (−30 each), and its reports are among the best calibrated here (Brier 0.000).",
+    "pt_BR": "O agente GPT mais forte, com dois ou três subagentes em 10 a 15 minutos por run e três runs a menos de 17 pontos um do outro. Mudou um valor de negócio em todos os runs (−30 cada), e seus relatórios estão entre os mais bem calibrados daqui (Brier 0,000)."
+  },
+  "gpt-6.1-sol-xhigh": {
+    "en": "Security at 246 of 250, the best outside Claude, with the CSV formula injection and MD5 both fixed in the official run. What holds it below the Claude models is one business value changed in each run (−30) and the nested ifs left as they were.",
+    "pt_BR": "Segurança em 246 de 250, a melhor fora do Claude, com a injeção de fórmula no CSV e o MD5 corrigidos no run oficial. O que o deixa abaixo dos modelos Claude é um valor de negócio alterado em cada run (−30) e os ifs aninhados mantidos como estavam."
+  },
+  "gpt-6.1-sol-pro-xhigh": {
+    "en": "One run so far, through opencode, at US$ 1.01: 654, close to GPT-6.1-sol in Codex CLI. It left the CSV formula injection in place and changed one business value (−30).",
+    "pt_BR": "Um run até agora, pelo opencode, a US$ 1,01: 654, perto do GPT-6.1-sol no Codex CLI. Deixou a injeção de fórmula no CSV no lugar e alterou um valor de negócio (−30)."
+  },
+  "grok-4.7": {
+    "en": "The strongest model from outside Anthropic and OpenAI, with compatibility at 100 in two of three runs and reports at 42 of 50. It kept the unsalted MD5 passwords in every run; in its first it was the only agent to look something up on the web, the PHP manual page for fputcsv.",
+    "pt_BR": "O modelo mais forte de fora da Anthropic e da OpenAI, com compatibilidade em 100 em dois dos três runs e relatórios em 42 de 50. Manteve as senhas em MD5 sem salt em todos os runs; no primeiro foi o único agente a consultar a web, a página do manual do PHP sobre fputcsv."
+  },
+  "grok-4.6": {
+    "en": "Nearly Grok 4.7's score for about an eighth of the cost (US$ 0.28 to 0.31 a run), and steady: 620 to 640, 9 flaws found in each run, no contract broken. It never touched MD5 or the CSV formula injection.",
+    "pt_BR": "Quase a nota do Grok 4.7 por cerca de um oitavo do custo (US$ 0,28 a 0,31 por run), e estável: de 620 a 640, 9 falhas encontradas em cada run, nenhum contrato quebrado. Nunca mexeu no MD5 nem na injeção de fórmula no CSV."
+  },
+  "grok-4.7-xhigh": {
+    "en": "More effort scored slightly lower than Grok 4.7 at high, at a higher cost: it fixed 7 or 8 flaws a run and left MD5 and the hardcoded secrets in every one. Its reports, 42 to 44 of 50, are the best explanations from outside Anthropic and OpenAI.",
+    "pt_BR": "Mais esforço rendeu um pouco menos que o Grok 4.7 em high, a um custo maior: corrigiu 7 ou 8 falhas por run e deixou o MD5 e os segredos no código em todos. Os relatórios, de 42 a 44 de 50, são as melhores explicações de fora da Anthropic e da OpenAI."
+  },
+  "moonshot-kimi-k3-high": {
+    "en": "The strongest Kimi by a wide margin, with bugs and performance at full marks in its official run, for US$ 0.41 to 1.02 a run. Every run changed one business value (−30), and none fixed the CSV formula injection.",
+    "pt_BR": "O Kimi mais forte, com folga, com bugs e desempenho em nota máxima no run oficial, por US$ 0,41 a 1,02 por run. Todos os runs alteraram um valor de negócio (−30), e nenhum corrigiu a injeção de fórmula no CSV."
+  },
+  "gpt-6-astra-xhigh": {
+    "en": "Single-agent GPT-6-astra, 38 points below its ultra setting. Its runs disagree on what to fix: the first fixed the CSV formula injection and kept MD5, the official one migrated MD5 to password_hash and left the injection alone.",
+    "pt_BR": "O GPT-6-astra como agente único, 38 pontos abaixo do ajuste ultra. Os runs discordam sobre o que corrigir: o primeiro corrigiu a injeção de fórmula no CSV e manteve o MD5; o oficial migrou o MD5 para password_hash e deixou a injeção."
+  },
+  "glm-5.3-prime-high": {
+    "en": "The strongest GLM, at about US$ 2 a run. Its first run fixed all four flaws the probes cover, the CSV formula injection among them; the third changed two business values and fell to 541.",
+    "pt_BR": "O GLM mais forte, a cerca de US$ 2 por run. O primeiro run corrigiu as quatro falhas cobertas pelas sondas, a injeção de fórmula no CSV entre elas; o terceiro alterou dois valores de negócio e caiu para 541."
+  },
+  "gpt-5.6-terra-xhigh": {
+    "en": "Reports fewer flaws than it fixes: its first run listed 7 and fixed 9, the rest done in passing without a word in the report. Compatibility held in two of three runs, which keeps it 15th despite the short report.",
+    "pt_BR": "Relata menos falhas do que corrige: o primeiro run listou 7 e corrigiu 9, o resto feito de passagem, sem uma palavra no relatório. A compatibilidade se manteve em dois dos três runs, o que o deixa em 15º apesar do relatório curto."
+  },
+  "glm-5.3-flash-high": {
+    "en": "One run so far: 624 for US$ 0.08, about a tenth of GLM-5.3's cost for a slightly higher score. It left the CSV formula injection and the hardcoded secrets in place.",
+    "pt_BR": "Um run até agora: 624 por US$ 0,08, cerca de um décimo do custo do GLM-5.3 para uma nota um pouco maior. Deixou a injeção de fórmula no CSV e os segredos no código."
+  },
+  "glm-5.3-high": {
+    "en": "Steady (604 to 629) and cheap (US$ 0.47 to 0.73 a run), with compatibility at 100 in all three runs. It never fixed MD5 or the CSV formula injection.",
+    "pt_BR": "Estável (de 604 a 629) e barato (US$ 0,47 a 0,73 por run), com compatibilidade em 100 nos três runs. Nunca corrigiu o MD5 nem a injeção de fórmula no CSV."
+  },
+  "deepseek-v4-flash-xhigh": {
+    "en": "One run so far, through Novita: 617 for US$ 0.18, against 282 for the same model at high. It fixed 7 flaws and left the CSV injection, MD5 and the hardcoded secrets in place.",
+    "pt_BR": "Um run até agora, pela Novita: 617 por US$ 0,18, contra 282 do mesmo modelo em high. Corrigiu 7 falhas e deixou no lugar a injeção no CSV, o MD5 e os segredos no código."
+  },
+  "gpt-6.1-sol-ultra": {
+    "en": "Ultra effort scored 45 points below GPT-6.1-sol at xhigh, across runs from 597 to 656. With three subagents its first run kept MD5; with two, its second fixed 10 flaws, the CSV formula injection and MD5 among them.",
+    "pt_BR": "O esforço ultra ficou 45 pontos abaixo do GPT-6.1-sol em xhigh, com runs de 597 a 656. Com três subagentes, o primeiro run manteve o MD5; com dois, o segundo corrigiu 10 falhas, a injeção de fórmula no CSV e o MD5 entre elas."
+  },
+  "gpt-5.6-sol-xhigh": {
+    "en": "Security at 246 of 250 and the CSV formula injection fixed, but the fix also turned the '-' of a ticket with no technician into \"'-\", a new bug, and every run changed one business value (−30). The most repeatable GPT: 608 to 612.",
+    "pt_BR": "Segurança em 246 de 250 e a injeção de fórmula no CSV corrigida, mas a correção também transformou o '-' de um chamado sem técnico em \"'-\", um bug novo, e todo run alterou um valor de negócio (−30). O GPT mais repetível: de 608 a 612."
+  },
+  "deepseek-v4.1-flash-high": {
+    "en": "The cheapest agent here, US$ 0.01 to 0.04 a run, two of them under two minutes, for 597 to 625. Compatibility held in all three; the lowest explanation score among the agents above 600 (30 of 50).",
+    "pt_BR": "O agente mais barato daqui, US$ 0,01 a 0,04 por run, dois deles em menos de dois minutos, para 597 a 625. A compatibilidade se manteve nos três; a menor nota de explicação entre os agentes acima de 600 (30 de 50)."
+  },
+  "gpt-5.6-luna-xhigh": {
+    "en": "The smallest GPT-5.6, within 24 points of terra and sol across 599 to 624. It changed one business value in each run (−30).",
+    "pt_BR": "O menor GPT-5.6, a até 24 pontos do terra e do sol, com runs de 599 a 624. Alterou um valor de negócio em cada run (−30)."
+  },
+  "glm-5.3-flashX-high": {
+    "en": "One run so far: 597 for US$ 0.10, 27 points below GLM-5.3-Flash. It fixed 7 flaws and left the CSV injection, MD5 and the hardcoded secrets in place.",
+    "pt_BR": "Um run até agora: 597 por US$ 0,10, 27 pontos abaixo do GLM-5.3-Flash. Corrigiu 7 falhas e deixou a injeção no CSV, o MD5 e os segredos no código."
+  },
+  "gemini-3.8-flash-high": {
+    "en": "Three very different runs: 687 (it would have placed 6th), 588, and 100 from a run that stopped after ten minutes on a database server it started itself. The two complete runs kept MD5 and both secrets and left the CSV export serving every client.",
+    "pt_BR": "Três runs muito diferentes: 687 (que o colocaria em 6º), 588, e 100 de um run que parou após dez minutos, num servidor de banco que ele mesmo subiu. Os dois runs completos mantiveram o MD5 e os dois segredos e deixaram a exportação CSV servindo qualquer cliente."
+  },
+  "gemini-3.7-flash-high": {
+    "en": "The generation before Gemini 3.8 Flash, one point behind it and far steadier (556 to 587). Its first run is the only one outside Claude to flatten the nested ifs; its second searched the VM for the answer key, which is not there.",
+    "pt_BR": "A geração anterior ao Gemini 3.8 Flash, um ponto atrás dele e bem mais estável (de 556 a 587). O primeiro run é o único fora do Claude a achatar os ifs aninhados; o segundo procurou o gabarito na VM, que não está lá."
+  },
+  "gpt-5.5-xhigh": {
+    "en": "The previous GPT generation, 43 to 108 points below the GPT-5.6 and GPT-6 models: 8 flaws found and 7 fixed in every run, MD5 and the CSV formula injection always left in place.",
+    "pt_BR": "A geração anterior do GPT, de 43 a 108 pontos abaixo dos modelos GPT-5.6 e GPT-6: 8 falhas encontradas e 7 corrigidas em todos os runs, com o MD5 e a injeção de fórmula no CSV sempre no lugar."
+  },
+  "gemini-3.8-flash-medium": {
+    "en": "One run so far, in 4.5 minutes for US$ 0.19: 550. It fixed 6 flaws and claimed SQL injection in two functions that only take integers.",
+    "pt_BR": "Um run até agora, em 4,5 minutos por US$ 0,19: 550. Corrigiu 6 falhas e apontou injeção de SQL em duas funções que só recebem inteiros."
+  },
+  "qwen3-coder-next-default": {
+    "en": "The weakest explanation (18 of 50) and the worst calibration here: three flaws that cannot exist reported at confidence 100, and no tests run. It is, on the other hand, the only one of the bottom nine that fixed the N+1 query.",
+    "pt_BR": "A explicação mais fraca (18 de 50) e a pior calibração daqui: três falhas que não existem relatadas com confiança 100, e nenhum teste executado. Por outro lado, é o único dos nove últimos que corrigiu a consulta N+1."
+  },
+  "deepseek-v4-pro-high": {
+    "en": "The larger DeepSeek: all three runs (604, 496 and 432) score below DeepSeek V4.1 Flash's official 612. The first rated SQL injection at confidence 100 in two functions that only take integers; the other two left the N+1 query in place.",
+    "pt_BR": "O DeepSeek maior: os três runs (604, 496 e 432) ficam abaixo dos 612 oficiais do DeepSeek V4.1 Flash. O primeiro apontou injeção de SQL com confiança 100 em duas funções que só recebem inteiros; os outros dois deixaram a consulta N+1 no lugar."
+  },
+  "minimax-m3-thinking": {
+    "en": "Fixed 8 flaws in every run, with bugs at full marks, but changed business values (compatibility at 40 in its official run) and left the N+1 query. Its second run scored 616; its third broke four of the 22 characterization checks.",
+    "pt_BR": "Corrigiu 8 falhas em todos os runs, com bugs em nota máxima, mas alterou valores de negócio (compatibilidade em 40 no run oficial) e deixou a consulta N+1. O segundo run fez 616; o terceiro quebrou quatro das 22 checagens de caracterização."
+  },
+  "kimi-k2.7-code-default": {
+    "en": "Left the N+1 query in every run and reported flaws that do not exist in all three, SQL injection in functions that only take integers among them. Its third run, 512, fixed one flaw more than the other two.",
+    "pt_BR": "Deixou a consulta N+1 em todos os runs e relatou falhas inexistentes nos três, injeção de SQL em funções que só recebem inteiros entre elas. O terceiro run, 512, corrigiu uma falha a mais que os outros dois."
+  },
+  "gpt-5.3-codex-xhigh": {
+    "en": "One run so far, through opencode: 403, the lowest GPT. It found 6 flaws and fixed 5, leaving the N+1 query, the session fixation at login and MD5 in place, with no false positive.",
+    "pt_BR": "Um run até agora, pelo opencode: 403, o GPT mais baixo. Encontrou 6 falhas e corrigiu 5, deixando no lugar a consulta N+1, a fixação de sessão no login e o MD5, sem nenhum falso positivo."
+  },
+  "kimi-k2.7-code-highspeed": {
+    "en": "The fast variant of Kimi K2.7 Code, 13 points below it: 5 flaws fixed in every run, two flaws that do not exist reported in each, and the N+1 query always left in place.",
+    "pt_BR": "A variante rápida do Kimi K2.7 Code, 13 pontos abaixo dele: 5 falhas corrigidas em todos os runs, duas falhas inexistentes relatadas em cada um, e a consulta N+1 sempre no lugar."
+  },
+  "z.ai-glm-5.2-high": {
+    "en": "One run so far: 388, below the pass line and 233 points under GLM-5.3. It left the N+1 query, the leaked file handle and the session fixation in place; what it did report was accurate, with no false positive.",
+    "pt_BR": "Um run até agora: 388, abaixo da linha de aprovação e 233 pontos sob o GLM-5.3. Deixou no lugar a consulta N+1, o arquivo não fechado e a fixação de sessão; o que relatou estava certo, sem falso positivo."
+  },
+  "claude-haiku-4.5-default": {
+    "en": "The small Claude, at US$ 0.21 to 0.40 a run, below the pass line in all three. Its first run's visibility fix hides a client's own tickets, comparing an integer with the string mysqli returns; its third broke three characterization checks.",
+    "pt_BR": "O Claude pequeno, a US$ 0,21 a 0,40 por run, abaixo da linha de aprovação nos três. A correção de visibilidade do primeiro run esconde os chamados do próprio cliente, ao comparar um inteiro com a string que o mysqli devolve; o terceiro quebrou três checagens de caracterização."
+  },
+  "deepseek-v4-flash-high": {
+    "en": "Two runs that could hardly differ more: the first fixed 9 flaws for 612, the second's SQL-injection fix throws on every search and its client CSV comes out on one line, 282. It publishes the lower; which weights the hosts served under this name is not certain.",
+    "pt_BR": "Dois runs que mal poderiam ser mais diferentes: o primeiro corrigiu 9 falhas e fez 612; a correção de injeção de SQL do segundo quebra toda busca e o CSV do cliente sai numa linha só, 282. Publica o menor; não é certo quais pesos os provedores serviram com esse nome."
+  }
+}

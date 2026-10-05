@@ -1244,6 +1244,14 @@ No score changes; only the dagger and the scorecards' "Training cutoff" row do.
   and MiniMax publishes none for M3, so for that model training on the key could not be ruled out
   until its release date was accepted in place of a cutoff (*Release dates bound the training cutoff*).
 
+## Agent comments
+
+[`comments.json`](./comments.json) holds one short written reading per agent, in English and in Brazilian
+Portuguese, which `tools/export-results.py` copies into `results.json` as each entry's `comment` and the
+results pages show when a card is opened. Each was drafted from that agent's scorecards and verdicts and
+states only what they record: scores, flaws fixed or left, false positives, contract changes, cost. It is
+an editorial note, not part of the score; revisit it whenever the agent gains a run.
+
 ## Reading the results
 
 - **SEC-008** (formula injection in the CSV) was fixed by Sonnet 5.5, GPT-5.6-sol and GPT-6-astra,

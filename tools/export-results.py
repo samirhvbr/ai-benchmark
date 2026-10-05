@@ -477,6 +477,13 @@ def aggregate(runs):
         agents = {}
         for r in sorted(items, key=lambda x: (x["agent"], x["run"])):
             agents.setdefault(r["agent"], []).append(r)
+        # A short written reading of each agent, in the site's two languages, kept next to
+        # the instance notes. Optional per agent; an id that matches no agent is a typo.
+        comments_path = os.path.join(RESULTS, edition, instance, "comments.json")
+        comments = load(comments_path) if os.path.exists(comments_path) else {}
+        unknown = sorted(set(comments) - set(agents))
+        if unknown:
+            sys.exit("[export] %s names no agent: %s" % (rel(comments_path), ", ".join(unknown)))
         entries = []
         for agent, agent_runs in agents.items():
             check_agent_runs("%s/%s/%s" % (edition, instance, agent), agent_runs)
@@ -498,6 +505,7 @@ def aggregate(runs):
                 "key_exposure": key_exposure(agent_runs[0]["meta"]["model"], instance),
                 "discovery_index": representative["discovery_index"],
                 "brier": representative["brier"],
+                "comment": comments.get(agent),
                 "runs": summaries,
             })
         # Score first; the informative metrics break ties (SCORING §9).
