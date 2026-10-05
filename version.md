@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.90`
+**Versão atual:** `0.2.91`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.91` — 2026-10-05 — results/ adds Kimi K2.7 Code highspeed as a new agent with three runs (402, 363, 402), official at 402
+
+- `kimi-k2.7-code-highspeed/run-1..3` (CD, CE, CF): 402, 363 and 402, all three run at the same time on
+  2026-10-05. Official at 402, 30th. It is a separate Moonshot model id from `kimi-k2.7-code`.
+- Review change: CE's two findings that called the contracted `formatarStatus` and priority-4 labels bugs
+  moved from false positives to extra findings, as in BM. The label changes stay charged as COMP-003.
+- Twenty-two agents are official. Instance notes: table rows CD to CF, one bullet, the official count and
+  list.
 
 ### `0.2.90` — 2026-10-05 — A model's release date bounds its training cutoff when the provider publishes none; four agents lose the dagger
 

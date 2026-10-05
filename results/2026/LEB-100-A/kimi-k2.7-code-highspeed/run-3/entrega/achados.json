@@ -1,0 +1,171 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection em listarChamados via termo de busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O valor de $busca e concatenado diretamente na clausula WHERE titulo LIKE '%$busca%', permitindo injecao de SQL arbitrario.",
+      "impacto": "Atacante pode ler, alterar ou excluir chamados dependendo dos privilegios do usuario do banco.",
+      "correcao": "Reescrita com prepared statement: LIKE ? com o valor '%' . $busca . '%' passado como parametro.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL injection em verChamado via id",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O id e interpolado na query 'SELECT * FROM chamados WHERE id = ' . $id. A funcao e publica e consumida por outros scripts do ISP que podem nao validar o valor.",
+      "impacto": "Leitura ou manipulacao nao autorizada de chamados via SQL injection.",
+      "correcao": "Substituido por prepared statement WHERE id = ?.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL injection em tecnicoNome via tecnicoId",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 69,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O tecnicoId e interpolado na query 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId, embora a funcao receba ?int.",
+      "impacto": "Leitura nao autorizada da tabela de usuarios; pode ser combinada com UNION.",
+      "correcao": "Substituido por prepared statement WHERE id = ?.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Regra de visibilidade cliente/tecnico nao implementada",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados e verChamado consultam a tabela chamados sem filtrar usuario_id, permitindo que um cliente veja chamados de outros clientes alterando ?ver= ou a busca.",
+      "impacto": "Vazamento de dados de suporte entre clientes; quebra da regra de negocio declarada no manifesto.",
+      "correcao": "Adicionados parametros opcionais $usuarioId e $papel as funcoes; quando papel='cliente', a query inclui AND usuario_id = ?. index.php passa uid/papel. Compatibilidade com chamadas antigas preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Divisao por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Se nenhum chamado tiver minutos_resposta IS NOT NULL, $qtd fica 0 e $soma / $qtd lanca DivisionByZeroError no PHP 8.",
+      "impacto": "Pagina inicial fica indisponivel quando nao ha dados de SLA.",
+      "correcao": "Retorno condicional: $qtd > 0 ? $soma / $qtd : 0.0.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "XSS refletido no campo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$_GET['busca'] e reimpresso no atributo value do input e na mensagem 'Resultados para' sem escaping.",
+      "impacto": "Execucao de script no navegador da vitima, podendo levar a roubo de sessao ou redirecionamento.",
+      "correcao": "Aplicado htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') nos dois pontos.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "XSS no id do chamado exibido",
+      "arquivo": "code/index.php",
+      "linha": 59,
+      "linha_fim": 90,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "$c['id'] e interpolado no titulo da pagina de detalhe e no texto do link da listagem sem escaping.",
+      "impacto": "Se o id puder ser controlado por algum vetor futuro, permite execucao de script.",
+      "correcao": "Texto exibido passa por htmlspecialchars((string) $c['id'], ENT_QUOTES, 'UTF-8'); href mantem cast para int.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "CSV exportado para arquivo temporario em disco",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "exportarCsv gravava o CSV em EXPORT_DIR . '/chamados.csv' e depois chamava readfile, criando dependencia de diretorio, risco de vazamento entre processos e acumulo de arquivos.",
+      "impacto": "Exposicao de dados via arquivo compartilhado, falha de exportacao por permissao, condicao de corrida.",
+      "correcao": "CSV escrito diretamente em php://output com fputcsv; cabecalho escrito manualmente para manter o formato exato do manifesto.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Senhas armazenadas com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar usa md5($senha) para comparar com a coluna CHAR(32). MD5 e rapido demais e vulneravel a rainbow tables, inadequado para senhas.",
+      "impacto": "Se o banco vazar, as senhas podem ser recuperadas com facilidade.",
+      "correcao": "Nao aplicada. Migrar para password_hash/password_verify exigiria rehash de todos os usuarios e alteracao dos dados de teste; deve ser feito em janela planejada.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Credenciais e chave de API hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS e SMTP_API_KEY possuem fallback embutido no codigo-fonte, expondo segredos de producao no repositorio.",
+      "impacto": "Vazamento de credenciais de banco e de API de e-mail para quem acessar o codigo.",
+      "correcao": "Nao aplicada. Remover os fallbacks e exigir variaveis de ambiente e a pratica correta, mas pode quebrar ambientes legados; requer coordenacao com infraestrutura.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash de senhas MD5 em autenticar/schema/seed",
+      "porque": "Migrar para password_hash/password_verify invalidaria os usuarios de teste e exigiria rehash de todos os hashes em producao; fora do escopo desta manutencao agencial e deve ser feito em janela planejada."
+    },
+    {
+      "o_que": "Fallback de credenciais (DB_PASS, SMTP_API_KEY) em config.php",
+      "porque": "Remover os fallbacks pode quebrar ambientes que ainda nao usam variaveis de ambiente; a mudanca correta e operacional e depende de atualizacao dos scripts de deploy."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR em config.php",
+      "porque": "Mesmo que exportarCsv nao a utilize mais, scripts externos podem referencia-la; remova-la seria uma quebra de compatibilidade silenciosa."
+    },
+    {
+      "o_que": "Protecao CSRF nos formularios",
+      "porque": "Adicionar tokens exigiria alterar a interface e o fluxo de login/listagem; o login usa senha como barreira natural e a melhoria fica para evolucao futura."
+    },
+    {
+      "o_que": "Rate-limit/lockout contra forca bruta no login",
+      "porque": "Implementar exigiria estado extra (banco/cache) e mudaria o comportamento do sistema; fora do escopo desta manutencao."
+    }
+  ]
+}

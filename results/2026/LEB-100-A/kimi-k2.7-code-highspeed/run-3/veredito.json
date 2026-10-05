@@ -1,0 +1,227 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Kimi K2.7 Code (highspeed)",
+    "version": "not recorded",
+    "provider": "Moonshot AI"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-05",
+    "runs": [
+      402
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-05",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "CF",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "a string de busca do usuário é concatenada diretamente no SQL: `WHERE titulo LIKE '%\" . $busca . \"%'`. Um atacante pode injetar `' OR 1=1 --`",
+      "rationale": "F1 at lib.php:82 names the concatenation and an exploit payload. Delivered lib.php:97-113 binds the term via a mysqli prepared statement (LIKE ?); probe corrigida=true. The LIKE wildcards % and _ are not escaped, but C3 for this flaw comes from the probe."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o valor de `$_GET['busca']` é reimpresso no atributo `value` do input e na mensagem “Resultados para: …” sem escaping",
+      "rationale": "F6 names both output points (index.php:79 and :82) and the unescaped reflection. Delivered index.php:79 and :82 both apply htmlspecialchars($busca, ENT_QUOTES, 'UTF-8'); markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV/formula injection is not mentioned anywhere; delivered lib.php:187-193 still writes titulo raw via fputcsv. Probe corrigida=false ('=1+1' exported as-is)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Session fixation is not reported; delivered index.php:23-27 still sets $_SESSION['uid'] without session_regenerate_id()."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`autenticar` faz `md5($senha)` e compara com a coluna `senha CHAR(32)`. MD5 é rápido demais e vulnerável a rainbow tables/Força bruta",
+      "rationale": "F9 at lib.php:15 explains the real mechanism (fast, unsalted hash open to rainbow tables/brute force). Deliberately not fixed: delivered lib.php:15 still uses md5($senha), so C3 none and nothing to be compatible about."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`DB_PASS` e `SMTP_API_KEY` possuem fallback embutido no código-fonte. Quem obtiver acesso ao repositório lê esses segredos.",
+      "rationale": "F10 points at config.php:12 and :15 with the correct mechanism. Deliberately not fixed: delivered config.php:12 and :15 keep both literal secrets (C3 none per the both-literals-left rule)."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "um cliente logado que alterasse `?ver=103` na URL visualizava chamados de outros clientes. Teste local: `ana` (uid=1) conseguia enxergar o chamado 103 de `bruno`.",
+      "rationale": "F4 targets verChamado (lib.php:98-102) and index.php with a concrete IDOR walk-through. Delivered lib.php:130-146 adds optional ?int $usuarioId/?string $papel and appends AND usuario_id = ? only for papel 'cliente'; index.php:53 passes $uid/$papel, so clients are denied other clients' tickets and technicians still see all. The public verChamado(mysqli,int) call shape is preserved (optional parameters only); listing filter (lib.php:91-95) is enforcement of the manifest rule, not COMP-003."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "se não houver nenhum chamado com `minutos_resposta IS NOT NULL`, `$qtd` vale 0 e `$soma / $qtd` gera `DivisionByZeroError` (PHP 8)",
+      "rationale": "F5 at lib.php:116 with the exact mechanism. Delivered lib.php:160 returns 0.0 when $qtd is 0; probe corrigida=true."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "F8 covers the export lines (lib.php:125-150) but describes the temp file at a fixed shared path (directory dependency, cross-process leak, race), never the handle left open on the early return, so it does not identify BUG-004 (C1 none). The code fixes it silently: delivered lib.php:180-183 calls fclose($out) before returning on query failure, and lib.php:195 closes on the normal path."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The N+1 is not reported (F3 at tecnicoNome is about SQL injection, not the per-row query). Delivered lib.php:118 and :186 still call tecnicoNome() inside the loops; probe corrigida=false (~5 queries)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; delivered index.php keeps routing, authorization and HTML assembly in one script (only escaping and extra arguments changed)."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; delivered lib.php:28-58 still uses literal 1/2/3 and 3/4/30 with no named constants."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported; delivered rotuloPrioridade (lib.php:40-59) is byte-identical to the legacy nested ifs."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F2 — SQL injection in verChamado via id (lib.php:100)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "Claims a critical, exploitable SQL injection ('o banco executa SQL arbitrário' if a caller passes a string), but verChamado's $id parameter is typed int, so any value reaching the concatenation is an integer; the injection cannot exist. The real flaw at this spot (missing authorization) is reported separately as F4 and credited to SEC-017."
+    },
+    {
+      "reported_as": "F3 — SQL injection in tecnicoNome via tecnicoId (lib.php:69)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "Claims a critical SQL injection 'combinable with UNION', but tecnicoNome's parameter is typed ?int and null is handled before the query, so only an integer can be concatenated; the injection cannot exist. It does not describe the N+1 (PERF-001) at that function."
+    }
+  ],
+  "extra_findings": [
+    "F7 — hardening: ticket id echoed without htmlspecialchars in index.php:59/90 (report itself notes the id is an autoincrement integer, so not exploitable today)",
+    "F8 — exportarCsv writes to a fixed shared temp file (EXPORT_DIR/chamados.csv) before readfile: directory/permission dependency, concurrent-export race, stale data left on disk (lib.php:125-150)",
+    "SEC-005 — no CSRF protection on the login form (listed in the report's deliberate non-changes)",
+    "No rate limiting / lockout against login brute force (listed in the report's deliberate non-changes)"
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json leb binding (LEB-100-A, 1.1, sha 68088ab...) matches the instance. JSON and prose are consistent (F1-F10 in both). F8 is filed at the BUG-004 lines but describes the temp-file/shared-path problem, not the handle leak on the early return; under the consistency rule this is C1 none and the fclose added on the error path (lib.php:181) scores as a silent fix. SEC-014 and SEC-015 were reported with correct mechanisms but deliberately left unfixed (code unchanged in lib.php:15 and config.php:12/15). SEC-001 fix does not escape LIKE wildcards %/_ (behaviour identical to legacy for those characters); C3 taken from the probe as instructed. Visibility: listarChamados/verChamado gained optional parameters with defaults (not COMP-001); exportarCsv and mediaResposta were left unscoped, so the CSV still lists every ticket to a logged-in client (legacy behaviour, not introduced by the delivery, and not raised in the report). exportarCsv now streams to php://output instead of EXPORT_DIR/chamados.csv and writes the header row literally (unquoted \"Aberto em\"); header text and field order match the manifest, so no COMP. No new demonstrable bug found; no rewrite.",
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 5,
+    "causa_raiz": 5,
+    "priorizacao": 4,
+    "trade_offs": 5
+  },
+  "expl_justification": {
+    "clareza": "Ten findings in one layout (where, mechanism, impact, severity, confidence, what was done), with Decisões and verification sections; the order looks arbitrary and the verification is a list of things that 'passaram'.",
+    "precisao": "Real depth in places: it catches that fputcsv quotes 'Aberto em', writes the header by hand and says why; PHP 8 throws DivisionByZeroError; a test confirmed ana could read bruno's ticket 103; the export race and directory dependence are described correctly. But it takes the bait (verChamado and tecnicoNome rated critical despite noting the int cast and ?int hint); F1 claims stacked '; DELETE' though mysqli::query runs one statement; F7 inflates the autoincrement id in the HTML into a medium XSS; the visibility fix never covers the export and F4 omits that route; session fixation and the N+1 are missed.",
+    "causa_raiz": "Mostly symptoms ('is interpolated', 'consulted without filtering'); the visibility fix passes user context into the lib through optional parameters, but the cause (papel and uid never read or carried) is never stated, which is why the export path is missed; the int-typed functions are reasoned about as 'a future caller might pass a string' rather than type coercion.",
+    "priorizacao": "Severity labels without ordering (critical x3, two of them bait, high, medium, high, medium, medium, high, high); visibility rated below the bait; no principle or sequencing.",
+    "trade_offs": "One real, well-explained trade-off (optional $usuarioId/$papel versus changing signatures, keeping callers on the full set) and EXPORT_DIR kept for external includes; the rest is thin: MD5 deferred to 'a planned window', secrets kept 'for legacy environments' without fail-fast compared, CSRF skipped because 'the password already acts as a layer', rate limiting out of scope."
+  }
+}

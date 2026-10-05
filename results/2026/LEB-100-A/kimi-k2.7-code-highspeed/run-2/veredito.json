@@ -1,0 +1,232 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Kimi K2.7 Code (highspeed)",
+    "version": "not recorded",
+    "provider": "Moonshot AI"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-05",
+    "runs": [
+      363
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-05",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "CE",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "A string `$busca` é concatenada diretamente na consulta SQL (`$sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\";`).",
+      "rationale": "F1 at lib.php:84 (matrix :82) names the concatenation and an injection payload. Delivered lib.php:90-92 uses a mysqli prepared statement with bind_param('s'); the probe confirms (corrigida true). LIKE wildcards % and _ are not escaped, but C3 is mechanical; no COMP."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "O valor de `$_GET['busca']` é reimpresso diretamente no HTML do input (`value=\"$busca\"`) e no parágrafo \"Resultados para: $busca\".",
+      "rationale": "F6 names both output points (index.php:79/82). Delivered index.php:89-97 escapes both with htmlspecialchars(ENT_QUOTES, 'UTF-8'); markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "No finding mentions CSV/formula injection (F9 at the export is about the temp file). The probe shows '=1+1' is still exported raw (corrigida false); _escreverLinhaCsv (lib.php:141-151) writes titulo unsanitized."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Session fixation not reported; index.php login block is unchanged, with no session_regenerate_id."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`autenticar` calcula `md5($senha)` e compara com a coluna `senha CHAR(32)` do banco. MD5 é rápido, reversível por tabela rainbow e não possui salt.",
+      "rationale": "F10 at lib.php:15 explains the mechanism (fast, unsalted MD5) but deliberately did not fix it; autenticar is unchanged in the delivery. Nothing fixed, so C5 none."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`DB_PASS` possui fallback com senha de produção em texto plano (`N3tX@2013!prod`) e `SMTP_API_KEY` está totalmente hardcoded",
+      "rationale": "F11 at config.php:12/15 explains both literals and recommends rotation, but config.php is byte-identical to the legacy file (both secrets remain as literals), so C3 none per the SEC-015 rule; nothing fixed, C5 none."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Tanto a listagem quanto o detalhe chamam `listarChamados($db, $busca)` e `verChamado($db, $id)` sem verificar `usuario_id` ou `papel`. Um cliente autenticado consegue ver chamados de outros clientes apenas trocando `?ver=...`",
+      "rationale": "F4 (index.php:44-96) covers the dispatcher at :53. Delivered index.php:60 denies a client whose usuario_id differs from the session uid after verChamado, signature preserved; technicians still see everything. The listing filter (index.php:81-85) and the client-scoped CSV via exportarCsvDoUsuario (index.php:46-50) are enforcement of the manifest rule, not COMP; exportarCsv itself still exports everything and mediaResposta is unchanged."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se não houver chamados com `minutos_resposta IS NOT NULL`, `$qtd` é zero e `$soma / $qtd` gera warning",
+      "rationale": "F5 at lib.php:116. Delivered lib.php:135 returns 0.0 when $qtd is 0; probe corrigida true."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "F9 points at exportarCsv (lib.php:125-150) but describes the temp file in EXPORT_DIR (residual file, shared path, concurrency), never that $fp stays open on the early return, so C1 none per the BUG-004 rule. The code closes the handle on the error path (lib.php:170-172, and lib.php:206-208 in the new function): a silent fix. Streaming to php://output keeps the header, order and labels, and the characterization stayed green."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "F3 mentions that tecnicoNome is called in a loop, but only to argue about a larger 'attack surface' for SQL injection, not about one query per ticket. The N+1 remains (lib.php:105 and :143); probe corrigida false."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. index.php still mixes routing, authorization, rules and HTML echo; only inline checks were added."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. formatarStatus became a switch on bare literals 1/2/3 (lib.php:28-37) and rotuloPrioridade still uses bare 3/4/30; no named constants."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "half",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "F8 is at rotuloPrioridade but claims a business bug (priority 4 within SLA labelled 'Alto'), not the nesting, so it does not identify CLN-007. The rewrite (lib.php:43-64) adds an early return for null minutes and removes the else chains, taking the nesting from 4 to 3 levels (a genuine partial refactor, R3 half). But it changes the truth table: priority 4 with minutes <= 30 now returns 'CRITICO - dentro do SLA' (lib.php:57-59) instead of 'Alto - dentro do SLA'. That COMP-003 is charged here, so R4 is none."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F2 — SQL Injection in verChamado via id (lib.php:100)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "verChamado is typed int $id (and index.php casts (int) $_GET['ver']), so the concatenation cannot carry '1 OR 1=1' or a UNION payload. The claimed exploitable injection cannot exist."
+    },
+    {
+      "reported_as": "F3 — SQL Injection in tecnicoNome (lib.php:69)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "tecnicoNome takes ?int $tecnicoId; the integer-typed parameter makes the claimed (second-order) SQL injection impossible."
+    }
+  ],
+  "extra_findings": [
+    "Temp-file export: exportarCsv writes to a fixed shared path EXPORT_DIR/chamados.csv (lib.php:125), leaving a residual file and racing between concurrent exports (F9); replaced by streaming to php://output.",
+    "F7 — formatarStatus returns the wrong label for invalid statuses (lib.php:28-35) — reported as a bug in contracted legacy behaviour; the code changed the label, which is charged as COMP-003",
+    "F8 — rotuloPrioridade labels a critical ticket within SLA as 'Alto' (lib.php:40-59) — reported as a bug in contracted legacy behaviour; the code changed the label, which is charged as COMP-003"
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 2,
+      "detail": "(1) formatarStatus now returns 'Desconhecido' for statuses outside 1/2/3 (delivered lib.php:36-37), where the legacy code returned 'Resolvido'. (2) rotuloPrioridade(4, <=30) now returns 'CRITICO - dentro do SLA' (delivered lib.php:57-59) instead of the contracted 'Alto - dentro do SLA'; charged to CLN-007's R4. Neither change was required by any fix."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json.leb matches the instance (LEB-100-A 1.1, sha 68088ab…). The JSON and the prose agree. SEC-014 and SEC-015 were reported with their mechanism but deliberately left unfixed (config.php is byte-identical to the legacy file; autenticar is unchanged). The SEC-001 fix binds '%'.$busca.'%' without escaping the LIKE wildcards; C3 comes from the probe (full). SEC-017: the client listing is filtered in PHP after listarChamados, and the CSV route for clients goes through the new exportarCsvDoUsuario, scoped to the client's own tickets. That is enforcement (rule 6), not COMP, and technicians and sessionless callers of exportarCsv still get every ticket. The BUG-004 handle leak was fixed silently: F9 at the same lines describes the temp file instead. Hard call: F7 and F8 are logged as non-decoy false positives, not extras, because rule 14 makes the extra classification conditional on the contracted behaviour being kept, and here it was changed (both counted under COMP-003). The new helper _escreverLinhaCsv and the new public function exportarCsvDoUsuario are additions, not violations. Review: F7 and F8 were moved from false positives to extra findings, as in BM (MiniMax-M3 thinking run 1), where findings that called the same contracted labels bugs, and changed them, were recorded as extras and the change was charged only as COMP-003. The findings describe real legacy behaviour; what is wrong is changing it, and COMP-003 already counts that.",
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 3,
+    "causa_raiz": 4,
+    "priorizacao": 4,
+    "trade_offs": 4
+  },
+  "expl_justification": {
+    "clareza": "Eleven findings with the same header (file, category, severity, confidence) and mechanism, impact and what was done; Decisões and validation sections. Readable, but the order looks arbitrary and the validation is a list of 'preservado' assertions.",
+    "precisao": "Correct core (LIKE SQLi, visibility now covered in list, detail and export, reflected XSS, the export file on disk), with serious errors: F2 rates verChamado a critical injection with a concrete ?ver= exploit that the int cast and int parameter make impossible; F3 calls the ?int tecnicoNome a high second-order injection; F5 says the division returns INF/NaN with a warning where PHP 8 throws; F1's 'RCE via INTO OUTFILE' is speculation; the formatarStatus fallback becomes 'Desconhecido' though its own F7 says the management report matches on the text, and rotuloPrioridade gains a 'CRITICO - dentro do SLA' label, both unweighed; session fixation and the N+1 are missed; both secret literals are repeated.",
+    "causa_raiz": "Symptoms per function; never says papel and uid are never read and no user context reaches the lib; the division mechanism is wrong; the int-typed concatenation treated as injectable instead of reasoning about coercion.",
+    "priorizacao": "Severity labels without ordering (critical, critical, high, critical, high, medium x4, high, high); XSS medium and the bait critical corrupt the triage; no principle or sequencing.",
+    "trade_offs": "Thin reasons: MD5 and the secrets left for 'evoluir, não reescrever' and possible infra dependence, not compared with a gradual migration or fail-fast; the out-of-scope list (CSRF, rate limiting, headers) asserted; the new exportarCsvDoUsuario keeps the public function intact but is not argued; the two label changes come with no trade-off."
+  }
+}

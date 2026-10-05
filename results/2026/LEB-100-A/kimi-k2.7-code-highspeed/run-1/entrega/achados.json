@@ -1,0 +1,152 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em listarChamados via parametro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A funcao concatena o valor de $busca diretamente na clausula WHERE titulo LIKE '%...%'. O valor vem de $_GET['busca'], permitindo injecao de SQL (ex.: ' OR '1'='1).",
+      "impacto": "Vazamento total dos chamados e potencial leitura/escrita arbitraria no banco, dependendo dos privilegios do usuario do banco.",
+      "correcao": "Substituida a concatenacao por prepared statement com bind_param('s', $like).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A funcao publica concatena $id diretamente na query. Embora index.php faca cast para int, outros consumidores da lib podem esquecer o cast ou passar valor nao numerico.",
+      "impacto": "Leitura arbitraria do banco e, dependendo do contexto, acesso a outras tabelas.",
+      "correcao": "Substituida a concatenacao por prepared statement com bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A funcao recebe ?int, mas ainda concatena o valor na query. O tipo ajuda quando chamada tipada, mas o valor pode vir de fontes nao confiaveis em outros cenarios.",
+      "impacto": "Leitura da tabela usuarios e potencial SQLi em outras tabelas.",
+      "correcao": "Substituida a concatenacao por prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisao por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "A funcao calcula $soma / $qtd sem verificar se $qtd eh maior que zero. Se nenhum chamado tiver minutos_resposta preenchido, ocorre DivisionByZeroError.",
+      "impacto": "Quebra da pagina de listagem quando nao ha dados de SLA.",
+      "correcao": "Retorno condicional: $qtd > 0 ? $soma / $qtd : 0.0.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Violação da regra de visibilidade: cliente ve chamados de outros",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados retorna todos os chamados e verChamado retorna qualquer chamado pelo ID, sem levar em conta o usuario logado. A regra de negocio diz que cliente so ve seus proprios chamados.",
+      "impacto": "Vazamento de titulos, descricoes, status e nomes de tecnicos entre clientes diferentes.",
+      "correcao": "Mantidas as assinaturas publicas. A autorizacao foi implementada em index.php: filtro do array na listagem para clientes e verificacao de usuario_id no detalhe.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "XSS refletido no parametro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "O valor de $_GET['busca'] eh ecoado sem escaping no atributo value do input e no paragrafo 'Resultados para', permitindo injecao de script.",
+      "impacto": "Execucao de JavaScript no navegador da vitima, possivel roubo de sessao ou acoes nao autorizadas.",
+      "correcao": "Aplicado htmlspecialchars() no valor exibido, com ENT_QUOTES no atributo do input.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Exportar CSV grava arquivo temporario em disco",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "exportarCsv grava /var/www/painel/tmp/chamados.csv em disco e depois faz readfile. O arquivo pode ser lido por outros processos, vazar dados em caso de falha e nao eh removido.",
+      "impacto": "Vazamento de dados do CSV no filesystem e falhas silenciosas quando o diretorio nao eh gravavel.",
+      "correcao": "Reescrita a funcao para escrever diretamente em php://output, eliminando o arquivo temporario.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "formatarStatus retorna rotulo incorreto para status invalidos",
+      "arquivo": "code/lib.php",
+      "linha": 26,
+      "linha_fim": 35,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A funcao retorna 'Resolvido' para qualquer valor diferente de 1 e 2. Status 0, 4 ou corrompidos sao exibidos como resolvidos.",
+      "impacto": "Informacao incorreta no painel e nos relatorios gerenciais que fazem correspondencia por texto.",
+      "correcao": "Deixados explicitos os casos 1, 2 e 3; qualquer outro valor retorna 'Desconhecido'. O contrato de valor continua atendido.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Senhas armazenadas como MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha eh hasheada com md5($senha), algoritmo rapido, sem salt e vulneravel a rainbow tables. O schema.sql tambem define a coluna como CHAR(32).",
+      "impacto": "Em vazamento do banco, as senhas podem ser recuperadas rapidamente e reutilizadas em outros servicos.",
+      "correcao": "Nao alterado. Mudar para bcrypt exigiria alterar o schema, os dados de teste e possivelmente integracoes que comparam hash MD5.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Credenciais e chave de API hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "DB_PASS e SMTP_API_KEY possuem fallbacks embutidos no codigo. Se o repositorio for exposto, as credenciais vazam.",
+      "impacto": "Acesso nao autorizado ao banco de dados e/ou ao servico de e-mail.",
+      "correcao": "Nao alterado. O arquivo ja permite sobrescricao via getenv; remover os fallbacks sem garantir configuracao em todos os ambientes seria arriscado.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    { "o_que": "Algoritmo de hash MD5 para senhas", "porque": "Mudar para bcrypt exigiria alterar schema.sql (CHAR(32) nao comporta bcrypt), re-gerar senhas de teste em seed.sql e possivelmente quebrar integracoes que leem a coluna senha diretamente. A assinatura de autenticar() se manteria, mas o contrato de valor interno mudaria." },
+    { "o_que": "Fallbacks de credenciais e API key em config.php", "porque": "O codigo ja oferece variaveis de ambiente via getenv. Remover os fallbacks quebraria ambientes de teste legados que nao configuram as variaveis. A correcao definitiva esta fora do codigo (CI/CD/secrets manager)." },
+    { "o_que": "Protecao CSRF, logout e regeneracao de ID de sessao", "porque": "A aplicacao nao possui acoes destrutivas via POST alem do login. Adicionar uma rota de logout mudaria a superficie publica. Fora do escopo minimo desta manutencao." },
+    { "o_que": "Logica aninhada de rotuloPrioridade", "porque": "A funcao produz os rotulos esperados para as prioridades e SLAs dos dados de teste. Sem testes de negocio detalhados, nao reescrevi para evitar regressao." },
+    { "o_que": "Estrutura HTML e ordem das colunas da listagem", "porque": "O manifesto declara explicitamente a tabela id='tabela-chamados', colunas e links. Mantive inalterado." }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Kimi K2.7 Code (highspeed)",
+    "version": "not recorded",
+    "provider": "Moonshot AI"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-05",
+    "runs": [
+      402
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-10-05",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery; the EXPL score by a second EXPL judge instance that kept the scale of the one that scored A-J, blind to the answer key and to every other score"
+  },
+  "blind_label": "CD",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "a função concatena a string de busca diretamente na cláusula `WHERE titulo LIKE '%...%'`. Como o valor vem de `$_GET['busca']` em `index.php`, um atacante pode injetar SQL",
+      "rationale": "F1 at lib.php:82 with the real mechanism. Fixed with a mysqli prepared statement and bind_param at lib.php:83-90 (probe corrigida=true); the LIKE wildcards % and _ are not escaped, which the probe does not test (noted). Stack kept as mysqli, signature unchanged."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o valor de `$_GET['busca']` é ecoado sem `htmlspecialchars` no atributo `value` do input e no parágrafo \"Resultados para\"",
+      "rationale": "F6 at index.php:79/82 names both output points. Both are escaped in the delivered index.php:84 (htmlspecialchars with ENT_QUOTES in the attribute) and index.php:87 (htmlspecialchars with PHP 8 default flags in element text); markup structure unchanged."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "No finding addresses CSV formula injection; F7 at the export lines is about the temp file on disk. The title is still written raw by fputcsv at lib.php:151 (probe corrigida=false: '=1+1' exported)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "criteria": {
+        "C1": "full",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "CSRF / logout / session fixation: não adicionei tokens CSRF, botão de logout nem regeneração de ID de sessão.",
+      "rationale": "Named (session fixation / no session id regeneration) in the report's list of deliberate non-changes, which counts as identified under rule 5. No mechanism explained and not fixed: index.php:24 still sets $_SESSION['uid'] without session_regenerate_id. No confidence was declared for this item, so none is recorded."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "a senha do usuário é hasheada com `md5($senha)` e comparada com o banco. MD5 é rápido, reversível por rainbow tables e não usa salt. Duas senhas iguais produzem hashes idênticos.",
+      "rationale": "F9 at lib.php:15 explains the real mechanism (fast unsalted hash). Deliberately not fixed: lib.php still uses md5 and schema.sql is unchanged."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "`DB_PASS` e `SMTP_API_KEY` possuem valores padrão embutidos no código-fonte. Se o repositório for exposto, essas credenciais vazam junto.",
+      "rationale": "F10 at config.php:12/15 with the right mechanism. Deliberately not fixed: config.php is byte-identical, both literals remain (config.php:12 fallback, config.php:15 plain literal). The report's claim that the file already allows env overrides is only true for DB_PASS; SMTP_API_KEY has no getenv."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Um cliente autenticado pode simplesmente acessar `index.php?ver=103` (onde 103 é de outro cliente) ou ver na listagem todos os chamados.",
+      "rationale": "F5 points at the ?ver dispatcher (index.php:52-66) with the IDOR mechanism. Delivered index.php:55 denies when papel=cliente and usuario_id != uid ($uid is cast to int at index.php:38), technicians still see all; verChamado(mysqli,int) preserved. The listing filter at index.php:74-78 enforces the manifest visibility rule (not COMP); the SLA average and the CSV route are unchanged, so no COMP-003 here."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "a função calcula `$soma / $qtd` sem verificar se `$qtd > 0`. Se nenhum chamado tiver `minutos_resposta` preenchido, ocorre `DivisionByZeroError`",
+      "rationale": "F4 at lib.php:116 (category bug) with the real mechanism; lib.php:124 returns 0.0 on an empty set (probe corrigida=true)."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "F7 sits on the export lines but describes a different defect (temp file readable by other processes, never removed, silent failure) and never says the handle stays open on the early return, so C1 none per rule 12. The leak is fixed silently: fclose($fp) before the early return at lib.php:144. Moving the output to php://output keeps the manifest contract ('escreve o CSV na saída'), header and order unchanged."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. tecnicoNome() is still called per row in listarChamados and at lib.php:148 in the export; it was only converted to a prepared statement (probe corrigida=false, ~5 queries)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. index.php still mixes routing, authorization, business logic and HTML; the delivery even added more inline logic (index.php:55, 74-78)."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. Status literals 1/2/3 remain in formatarStatus (lib.php:28-33) and priority literals in rotuloPrioridade; no named constants introduced."
+    },
+    {
+      "id": "CLN-007",
+      "reported": true,
+      "criteria": {
+        "R1": "full",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "Não alterei `rotuloPrioridade`: a lógica, embora aninhada, parece produzir os rótulos esperados para as prioridades e SLAs do seed.",
+      "rationale": "Named at the right function in the list of deliberate non-changes (rule 5): R1 full. No explanation of why the nesting is a problem and no refactor: rotuloPrioridade is unchanged in the delivered lib.php."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F2 — SQL Injection em verChamado (lib.php:100)",
+      "is_isca": false,
+      "confidence": 95,
+      "detail": "verChamado's $id parameter is typed int, so the value concatenated into the query is always an integer; the claim that a future caller passing a string 'opens a breach' allowing arbitrary database reads cannot happen (a string is coerced or rejected by the int type). Rated high severity with an exploitation impact, so it is a false positive rather than a hardening note."
+    },
+    {
+      "reported_as": "F3 — SQL Injection em tecnicoNome (lib.php:69)",
+      "is_isca": false,
+      "confidence": 90,
+      "detail": "tecnicoNome's parameter is typed ?int and the null case returns early, so only an integer reaches the concatenation; the claimed SQL injection reading other tables cannot exist."
+    }
+  ],
+  "extra_findings": [
+    "F7 — exportarCsv writes the CSV to a fixed shared path (/var/www/painel/tmp/chamados.csv) that is never removed and fails silently when the directory is not writable (lib.php:125-150); real hardening issue outside the matrix (its export-line location does not identify BUG-004).",
+    "F8 — formatarStatus returns 'Resolvido' for any status other than 1/2 (lib.php:26-35); true observation of contracted legacy behaviour, but the delivery changed that behaviour (see COMP-003)."
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 1,
+      "detail": "formatarStatus now returns 'Desconhecido' for any status outside 1/2/3 (delivered lib.php:28-35), where the legacy code returned 'Resolvido'. Contracted label behaviour changed with no planted fix requiring it (driven by the extra finding F8)."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "notes": "achados.json binding (LEB-100-A 1.1, sha 68088ab...) matches the package. JSON and prose are consistent (10 findings F1-F10); the prose additionally lists deliberate non-changes, of which session fixation (SEC-013) and the nested rotuloPrioridade (CLN-007) are credited as identified under rule 5, without confidence values. Only index.php and lib.php changed; config.php, schema.sql and seed.sql are byte-identical. SEC-001 fix does not escape LIKE wildcards; C3 is taken from the probe (full). The SEC-015 non-change rationale wrongly says the file already allows env overrides for both secrets (SMTP_API_KEY is a bare literal). F2/F3 judged false positives (typed int parameters) under rule 4; this was the hardest call, since F2 concedes the current caller casts to int, but it still asserts a breach for other callers that the int type rules out. exportarCsv now sends headers before writing and outputs only the header row on a failed query (previously nothing); this error-path difference is not treated as COMP or PEN-001. The CSV route still exports all tickets to clients (unchanged legacy behaviour, not charged).",
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 4,
+    "causa_raiz": 4,
+    "priorizacao": 4,
+    "trade_offs": 4
+  },
+  "expl_justification": {
+    "clareza": "Ten findings in one layout (where, mechanism, impact, severity, confidence, what was done), a Decisões section and a compatibility checklist; the order looks arbitrary and the closing checklist asserts things the body contradicts.",
+    "precisao": "Correct core (LIKE SQLi, visibility in list and detail, reflected XSS, PHP 8 DivisionByZeroError, the export file on disk), but it takes the bait (verChamado high and tecnicoNome medium SQL injection, both int/?int); the export is never covered by the visibility fix while the checklist says the rule is 'agora corretamente aplicada'; the formatarStatus fallback is changed to 'Desconhecido' and called contract-safe though the management report matches on the label; calling MD5 'reversível' is loose.",
+    "causa_raiz": "Symptoms function by function; never says papel and uid are never read and no user context reaches the lib, so the export path is never fixed; reasons about the int-typed concatenation as a future string caller rather than type coercion.",
+    "priorizacao": "Severity labels without ordering (critical, high, medium, high, critical, high, medium, medium, high, medium); secrets rated medium and the bait high; no principle or sequencing.",
+    "trade_offs": "Decisões gives reasons, several weak: session fixation skipped because a logout 'would change the public surface', though session_regenerate_id changes none; the DB and SMTP fallbacks kept 'for legacy test environments' without weighing exposure; the status-fallback change presented with no trade-off; MD5 deferred for schema reasons without comparing a gradual migration."
+  }
+}

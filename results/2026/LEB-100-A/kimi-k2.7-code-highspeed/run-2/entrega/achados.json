@@ -1,0 +1,173 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection em listarChamados via parametro busca",
+      "arquivo": "code/lib.php",
+      "linha": 84,
+      "linha_fim": null,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A string $_GET['busca'] e concatenada diretamente na clausula WHERE com LIKE '%$busca%', permitindo injecao SQL (ex.: ' OR '1'='1) sem prepared statement.",
+      "impacto": "Leitura arbitraria da tabela chamados, potencial acesso a usuarios/senhas MD5 e, em configuracoes permissivas, execucao de comandos via MySQL.",
+      "correcao": "Substituida a concatenacao por prepared statement: titulo LIKE ? com bind_param('s', $termo).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL Injection em verChamado via parametro id",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O id do chamado e concatenado diretamente em SELECT * FROM chamados WHERE id = ' . $id, sem sanitizacao ou prepared statement.",
+      "impacto": "Um atacante pode ler qualquer chamado ou fazer UNION SELECT para extrair dados da tabela usuarios, incluindo hashes MD5 de senha.",
+      "correcao": "Uso de prepared statement com bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parametro $tecnicoId e concatenado diretamente na query SELECT nome FROM usuarios WHERE id = ' . $tecnicoId.",
+      "impacto": "Ataque de segundo ordem: embora o valor normalmente venha do banco, a funcao publica e chamada em loop em listarChamados e exportarCsv, ampliando a superficie de injecao.",
+      "correcao": "Prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Quebra da regra de visibilidade cliente/tecnico",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 96,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A listagem, o detalhe e o export CSV chamam as funcoes de lib.php sem verificar usuario_id ou papel. Clientes podem acessar chamados de outros clientes trocando ?ver=... ou ?busca=... e exportar todos os chamados.",
+      "impacto": "Vazamento de chamados entre clientes, violando a regra de negocio: 'cliente so pode ver os chamados que ele mesmo abriu'.",
+      "correcao": "Adicionada filtragem por usuario_id na listagem e verificacao no detalhe para clientes; criada exportarCsvDoUsuario em lib.php para exportar apenas os chamados visiveis ao usuario.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Divisao por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Se nenhum chamado tiver minutos_resposta preenchido, $qtd permanece 0 e a funcao retorna $soma / 0, gerando warning e valor INF/NaN.",
+      "impacto": "Painel exibe indicador de SLA invalido quando a base esta vazia ou sem respostas registradas.",
+      "correcao": "Retorno condicional: $qtd > 0 ? $soma / $qtd : 0.0.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "XSS refletido no parametro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "O valor de $_GET['busca'] e impresso sem escaping no atributo value do input e no paragrafo 'Resultados para', permitindo execucao de JavaScript via link.",
+      "impacto": "Roubo de sessao, phishing e execucao de acoes na interface em nome da vitima.",
+      "correcao": "Aplicado htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') em ambos os pontos.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "formatarStatus retorna rotulo errado para status invalidos",
+      "arquivo": "code/lib.php",
+      "linha": 28,
+      "linha_fim": 35,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O else final retorna 'Resolvido' para qualquer valor diferente de 1 e 2, classificando status 0, 4 ou 99 como resolvidos.",
+      "impacto": "Relatorios gerenciais que fazem matching por texto podem contabilizar chamados nao resolvidos como resolvidos.",
+      "correcao": "Substituida a cadeia if/else por switch; valores fora de {1,2,3} retornam 'Desconhecido', mantendo os rotulos contratuais inalterados.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "rotuloPrioridade classifica chamado critico dentro do SLA como 'Alto'",
+      "arquivo": "code/lib.php",
+      "linha": 40,
+      "linha_fim": 59,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Quando prioridade == 4 e minutos <= 30, o codigo cai no ramo else e retorna 'Alto - dentro do SLA', em vez de identificar o chamado como critico.",
+      "impacto": "Operadores podem subestimar chamados de prioridade maxima ainda dentro do SLA.",
+      "correcao": "Adicionado ramo especifico para prioridade 4 dentro do SLA, retornando 'CRITICO - dentro do SLA'.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "exportarCsv grava arquivo temporario em disco",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O CSV e escrito em EXPORT_DIR . '/chamados.csv' e depois devolvido com readfile, criando dependencia de diretorio/permissao e deixando arquivo residual.",
+      "impacto": "Falha silenciosa se o diretorio nao for gravavel, possivel vazamento entre requisicoes concorrentes e acumulo de arquivos temporarios.",
+      "correcao": "Stream direto para php://output; extracao da formatacao de linha para funcao auxiliar _escreverLinhaCsv reaproveitada em exportarCsvDoUsuario.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Senhas armazenadas e validadas com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5($senha) e compara com a coluna senha CHAR(32) do banco, sem salt e com algoritmo rapido/reversivel.",
+      "impacto": "Em vazamento da base, as senhas sao quebradas rapidamente por rainbow tables; facilita forca bruta online.",
+      "correcao": "Nao corrigido no codigo. Requer migracao de schema (aumentar CHAR(32)) e rehash de todos os usuarios, o que foge do escopo de evolucao sem quebrar os dados de teste.",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Segredos hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS contem fallback com senha de producao em texto plano e SMTP_API_KEY esta totalmente hardcoded.",
+      "impacto": "Vazamento de credenciais no repositorio; qualquer pessoa com acesso ao codigo pode conectar no banco de producao ou usar a chave SMTP.",
+      "correcao": "Nao corrigido no codigo. A solucao correta e operacional: remover os valores do repositorio, injetar via variaveis de ambiente/secrets manager e rotacionar as credenciais.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 de senhas em autenticar e schema.sql",
+      "porque": "Migrar para bcrypt exige alterar a coluna senha (CHAR(32) nao comporta hashes bcrypt) e rehashar os usuarios do seed.sql. Isso quebraria os dados de teste e scripts externos ate uma migracao coordenada, fugindo do escopo de evolucao."
+    },
+    {
+      "o_que": "Segredos hardcoded em config.php (DB_PASS fallback e SMTP_API_KEY)",
+      "porque": "Remover os fallbacks pode quebrar ambientes que ainda nao configuraram as variaveis de ambiente. A correcao adequada e operacional: env vars + secrets manager + rotacao, nao apenas editar o arquivo."
+    },
+    {
+      "o_que": "Stack mysqli, nomes de arquivos e assinaturas publicas do manifest.md",
+      "porque": "O manifest.md define a superficie publica (funcoes, rotas, parametros, formato CSV, HTML). Preservar esses contratos e obrigatorio; as correcoes usaram prepared statements dentro da mesma stack e mantiveram as assinaturas originais."
+    }
+  ]
+}

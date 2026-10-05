@@ -444,7 +444,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Fifty-seven deliveries were scored, labelled **Y** to **CC** in the order they arrived and judged blind like
+Sixty deliveries were scored, labelled **Y** to **CF** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -506,8 +506,11 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CA** | Kimi K2.7 Code, default effort, run 2 | 415 |
 | **CB** | Kimi K3, `high`, run 3 | 574 |
 | **CC** | Kimi K2.7 Code, default effort, run 3 | 512 |
+| **CD** | Kimi K2.7 Code highspeed, run 1 | 402 |
+| **CE** | Kimi K2.7 Code highspeed, run 2 | 363 |
+| **CF** | Kimi K2.7 Code highspeed, run 3 | 402 |
 
-All fifty-seven ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All sixty ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1059,6 +1062,20 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   flaws, both secrets out of the code among them (it deleted the unused SMTP key), and named the N+1 query
   as a deliberate non-change. It kept compatibility at 100. It reports SQL injection in both int-typed
   functions (two false positives), and its report scored 24 of 50.
+- **Kimi K2.7 Code highspeed, runs 1 to 3 (CD, CE, CF): 402, 363 and 402. With three runs its score is
+  official: 402, the median, 30th.** It is a new agent. Moonshot serves `kimi-k2.7-code-highspeed` as a
+  separate model id from `kimi-k2.7-code`, which is official on its own. The three runs ran at the same
+  time on `bench3`, `bench1` and `bench2` on 2026-10-05, in opencode on Moonshot's API with no effort
+  variant, in 2 to 10 minutes each, for US$ 0.38, 0.68 and 1.16. They are numbered in the order they
+  reached the evaluator. Run 3's first message went out first, at 10:36:39.
+  - All three fixed the SQL injection, the XSS, the visibility rule, the empty average and the file-handle
+    leak. None fixed the N+1 query, MD5, the secrets or the CSV formula injection.
+  - All three report SQL injection in the int-typed `verChamado` and `tecnicoNome` (false positives).
+  - Runs 1 and 2 changed `formatarStatus`'s fallback to "Desconhecido" (COMP-003). Run 2 also gave a
+    priority-4 ticket within SLA a new label (a second COMP-003). On review, its two findings that called
+    those labels bugs were moved from false positives to extra findings, as in BM.
+  - Its reports scored 23, 22 and 26 of 50. Moonshot publishes no release date for the highspeed id, so
+    it carries the dagger.
 - **Two more void attempts, neither ever judged.**
   - A second Kimi K3 run at `high`, on `bench3` at the same time as BY, finished with a full delivery
     (35 responses, US$ 0.76). It was lost when the VM was restored before the copy, as the Grok 4.7
@@ -1122,7 +1139,7 @@ No score changes; only the dagger and the scorecards' "Training cutoff" row do.
 
 ## Before quoting a number
 
-- **Twenty-one agents have three runs; the rest are not official.** An official score is the median of three
+- **Twenty-two agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,
   628), GPT-5.6-terra (625, 611, 645), DeepSeek V4.1 Flash (625, 612, 597), GPT-5.6-sol (612, 612, 608) and
@@ -1130,7 +1147,7 @@ No score changes; only the dagger and the scorecards' "Training cutoff" row do.
   GPT-5.6-luna (599, 601, 624) at 601, GPT-6.1-sol at `ultra`
   (597, 656, 616) at 616, GLM-5.3 Prime (635, 628, 541) at 628, MiniMax-M3 with the thinking variant (462, 616, 434) at 462,
   GLM-5.3 (629, 621, 604) at 621, Gemini 3.8 Flash at `high` (687, 588, 100) at 588 and Claude Haiku 4.5
-  (317, 369, 232) at 317, Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774, Grok 4.6 (633, 640, 620) at 633, Kimi K3 at `high` (629, 634, 574) at 629 and Kimi K2.7 Code (415, 415, 512) at 415. Fable 5.1,
+  (317, 369, 232) at 317, Sonnet 5.5 in multi-agent mode (774, 820, 759) at 774, Grok 4.6 (633, 640, 620) at 633, Kimi K3 at `high` (629, 634, 574) at 629 Kimi K2.7 Code (415, 415, 512) at 415 and Kimi K2.7 Code highspeed (402, 363, 402) at 402. Fable 5.1,
   DeepSeek V4 Flash and GPT-5.5 have two, and publish the lower: DeepSeek V4 Flash fell from 612 to 282 on its
   second run, and GPT-5.5 keeps runs 2 and 3 (558, 568) after its run 1 was withdrawn (below). A single run can sit more than 100 points from the agent's median, as
   DeepSeek V4 Pro's first did, and two runs of one agent can fall on either side of a grade line, as
