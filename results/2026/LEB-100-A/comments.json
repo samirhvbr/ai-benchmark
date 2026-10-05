@@ -8,8 +8,8 @@
     "pt_BR": "O mais regular entre os três primeiros: de 773 a 820 em três runs, bugs e desempenho com nota máxima em todos, nenhum falso positivo e nenhum contrato quebrado. Mais esforço que o xhigh não trouxe ganho mensurável, a cerca de uma vez e meia o custo."
   },
   "claude-sonnet-5.5-max-ultracode": {
-    "en": "Claude Code's multi-agent mode: 68 to 145 subagents and 2 to 8 hours a run, at US$ 119 to 233 each, for 774, 820 and 759. At best it tied the same model working alone in half an hour, with the best-calibrated report of the Claude agents and the same untouched architecture.",
-    "pt_BR": "O modo multiagente do Claude Code: de 68 a 145 subagentes e de 2 a 8 horas por run, a US$ 119 a 233 cada, para 774, 820 e 759. No melhor caso empatou com o mesmo modelo trabalhando sozinho em meia hora, com o relatório mais bem calibrado entre os agentes Claude e a mesma arquitetura intocada."
+    "en": "Claude Code's multi-agent mode: 68 to 145 subagents and 2h to 7h 55min a run, at US$ 119 to 233 each, for 774, 820 and 759. At best it tied the same model working alone in half an hour, with the best-calibrated report of the Claude agents and the same untouched architecture.",
+    "pt_BR": "O modo multiagente do Claude Code: de 68 a 145 subagentes e de 2h a 7h 55min por run, a US$ 119 a 233 cada, para 774, 820 e 759. No melhor caso empatou com o mesmo modelo trabalhando sozinho em meia hora, com o relatório mais bem calibrado entre os agentes Claude e a mesma arquitetura intocada."
   },
   "claude-fable-5.1-xhigh": {
     "en": "Finds as much as Sonnet (11 to 12 of the 13 flaws) and fixes less of it: it explained the CSV formula injection and left it in place on purpose, to protect the file's consumers. Two runs so far; its client switched part of a third attempt to another model, which voided it.",
@@ -104,8 +104,8 @@
     "pt_BR": "A geração anterior do GPT, de 43 a 108 pontos abaixo dos modelos GPT-5.6 e GPT-6: 8 falhas encontradas e 7 corrigidas em todos os runs, com o MD5 e a injeção de fórmula no CSV sempre no lugar."
   },
   "gemini-3.8-flash-medium": {
-    "en": "One run so far, in 4.5 minutes for US$ 0.19: 550. It fixed 6 flaws and claimed SQL injection in two functions that only take integers.",
-    "pt_BR": "Um run até agora, em 4,5 minutos por US$ 0,19: 550. Corrigiu 6 falhas e apontou injeção de SQL em duas funções que só recebem inteiros."
+    "en": "One run so far, in 4min 34s for US$ 0.19: 550. It fixed 6 flaws and claimed SQL injection in two functions that only take integers.",
+    "pt_BR": "Um run até agora, em 4min 34s por US$ 0,19: 550. Corrigiu 6 falhas e apontou injeção de SQL em duas funções que só recebem inteiros."
   },
   "qwen3-coder-next-default": {
     "en": "The weakest explanation (18 of 50) and the worst calibration here: three flaws that cannot exist reported at confidence 100, and no tests run. It is, on the other hand, the only one of the bottom nine that fixed the N+1 query.",

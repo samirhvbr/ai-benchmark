@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.103`
+**Versão atual:** `0.2.104`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.104` — 2026-10-05 — The multi-agent Sonnet's run times are quoted from the session record, in hours and minutes
+
+- Instance notes: run 1 of Sonnet 5.5 in multi-agent mode took 7h 55min by its session record (13:05 to
+  21:00), not the 8.1 hours quoted before; runs 2 and 3 are 2h and 3h 34min, and model time is 16h 24min,
+  15h 54min and 8h 28min. Times are written as hours and minutes, not decimal hours.
+- `comments.json`: the multi-agent Sonnet's range is 2h to 7h 55min; Gemini 3.8 Flash at medium took 4min 34s
+  (it said 4.5 minutes).
 
 ### `0.2.103` — 2026-10-05 — results.json gives each run its wall-clock minutes, from the session's start and end
 

@@ -422,7 +422,8 @@ every verdict was in:
     to 21:00 on the first VM resized to 20 vCPUs. It got the fixed first message and nothing else,
     used no web tool and made no request to GitHub. It began before the clean-machine rule, so it
     ran as the VM's administrator with earlier runs' leftovers present.
-  - It ran 7 workflows with 68 subagents: 8.1 hours of wall-clock and 16.4 hours of model time.
+  - It ran 7 workflows with 68 subagents: 7h 55min of wall-clock (the session's record) and 16h 24min of
+    model time.
     The client's record puts the cost at US$ 233.08, about 65 times the US$ 3.60 of its `xhigh`
     run, which took 19 minutes.
   - It scores the same as the `xhigh` run in every other category: security at 250 of 250, all
@@ -655,7 +656,7 @@ fixed first message and nothing else, used no web tool and made no request to Gi
 - **Claude Sonnet 5.5 at `max`, without the multi-agent mode (AM): 807, Gold, 2nd, two points
   below the same model's official 809 at `xhigh` and 33 above it at `max` in ultracode (774).**
   - It ran on `bench1` in 27 minutes, for US$ 3.86, as a single agent; the ultracode run of the
-    same model at the same effort took about 8 hours. The model, the effort and the permission
+    same model at the same effort took 7h 55min. The model, the effort and the permission
     mode were set before the first message.
   - It fixed 11 of the 13 planted flaws, missing only the two architecture ones, with security,
     bugs, performance, clean code and compatibility all at the maximum and an explanation score
@@ -930,9 +931,9 @@ fixed first message and nothing else, used no web tool and made no request to Gi
   received it, and the session was closed to log in again.
 - **Claude Sonnet 5.5 at `max` in multi-agent mode, run 2 (BS): 820, Gold, 46 points above run 1
   (774); its published score stays 774, the lower, 3rd.**
-  - It ran in Claude Code 2.1.285 on `bench1` for 2.0 hours, against 8.1 for run 1, with 2 workflows and
+  - It ran in Claude Code 2.1.285 on `bench1` for 2h, against 7h 55min for run 1, with 2 workflows and
     105 subagents (run 1: 7 workflows, 68 subagents), for US$ 171.18 against 233.08. Model time summed
-    across the parallel agents was 15.9 hours.
+    across the parallel agents was 15h 54min.
   - As in run 1, the safety classifier stopped a response in some subagents (eight of 105) and the
     client switched each of them to `claude-sonnet-5`, for US$ 4.43 of the cost. Their one file edit
     went to a scratch copy. The delivery was written by Sonnet 5.5 in the main session, which never
@@ -951,9 +952,9 @@ fixed first message and nothing else, used no web tool and made no request to Gi
     unescaped, as in BO and BQ.
 - **Claude Sonnet 5.5 at `max` in multi-agent mode, run 3 (BT): 759, Gold. With three runs its score is
   official: 774, the median of 774, 820 and 759, 3rd.**
-  - It ran in Claude Code 2.1.285 on `bench1` from 13:31 to 17:05 (3.6 hours), with 3 workflows and 145
-    subagents, for US$ 119.07. Model time summed across the parallel agents was 8.5 hours. The three runs
-    took 8.1, 2.0 and 3.6 hours and cost US$ 233, 171 and 119, and they scored 774, 820 and 759.
+  - It ran in Claude Code 2.1.285 on `bench1` from 13:31 to 17:05 (3h 34min), with 3 workflows and 145
+    subagents, for US$ 119.07. Model time summed across the parallel agents was 8h 28min. The three runs
+    took 7h 55min, 2h and 3h 34min and cost US$ 233, 171 and 119, and they scored 774, 820 and 759.
   - The VM was restored to the snapshot taken before run 2. It still held the session file of the
     logged-out attempt (`void-2`, the first message and the client's "Login expired") and an empty memory
     folder. The agent never opened either, and nothing from run 2 was on the machine.
