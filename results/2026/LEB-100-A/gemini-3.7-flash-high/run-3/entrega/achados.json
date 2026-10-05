@@ -1,0 +1,177 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL no parâmetro de busca de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A função listarChamados concatenava a string $busca recebida por GET diretamente na consulta SQL (WHERE titulo LIKE '%$busca%') sem sanitização, escape ou uso de prepared statements.",
+      "impacto": "Permite a um atacante autenticado executar consultas SQL arbitrárias, extraindo dados de qualquer tabela do banco (como logins e hashes de senha de usuários) ou contornando filtros via SQL Injection.",
+      "correcao": "Refatoração para uso de Prepared Statements com mysqli::prepare e bind_param vinculando o termo de pesquisa de forma segura.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Vulnerabilidade de Cross-Site Scripting (XSS Refletido) na busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor da variável $busca vinda de $_GET['busca'] era interpolado diretamente no HTML sem sanitização tanto no atributo value do campo input quanto no parágrafo de exibição de resultados.",
+      "impacto": "Possibilita a execução de código JavaScript malicioso no navegador de vítimas ao acessarem links forjados, permitindo roubo de dados de sessão e ataques client-side.",
+      "correcao": "Aplicação de htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') em todos os pontos de saída do parâmetro na página HTML.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Controle de acesso quebrado (IDOR) e vazamento de chamados entre clientes",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A listagem em index.php e a rota de detalhe (index.php?ver=...) não filtravam os chamados pelo usuario_id do cliente autenticado, permitindo que qualquer cliente veja e liste chamados pertencentes a outros clientes.",
+      "impacto": "Violação da regra de negócio de isolamento de chamados por cliente estabelecida no manifesto, causando vazamento de dados de suporte confidenciais.",
+      "correcao": "Filtragem da listagem por usuario_id quando o papel do usuário for 'cliente' e verificação estrita de titularidade do chamado antes da exibição de detalhes.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero e crash fatal em mediaResposta quando não há respostas de SLA",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A função mediaResposta realizava a média em PHP dividindo $soma por $qtd. Caso não existissem chamados com minutos_resposta preenchidos, $qtd permanecia 0, causando divisão por zero ($soma / 0) e disparando a exceção fatal DivisionByZeroError no PHP 8+.",
+      "impacto": "Indisponibilidade do painel principal (HTTP 500) em bases novas ou sem respostas registradas.",
+      "correcao": "Utilização da função agregadora SQL AVG(minutos_resposta) com tratamento para retornar 0.0 caso o resultado seja nulo.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Gargalo de performance por consultas N+1 na listagem e exportação",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 91,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O código iterava sobre as linhas de chamados em listarChamados e exportarCsv invocando a função tecnicoNome() para cada registro, gerando uma consulta SELECT adicional individual para cada chamado.",
+      "impacto": "Degradação substancial do tempo de resposta e consumo excessivo de conexões de banco de dados sob carga ou com grande volume de dados.",
+      "correcao": "Inclusão de LEFT JOIN usuarios u ON c.tecnico_id = u.id na consulta de chamados, retornando o nome do técnico em uma única consulta.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Condição de corrida e dependência de arquivo em disco na exportação CSV",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 130,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "A função exportarCsv gravava a saída em um arquivo de caminho fixo (/var/www/painel/tmp/chamados.csv). Exportações concorrentes sobrescreviam o mesmo arquivo em disco, além de falhar caso o diretório não existisse ou estivesse sem permissões.",
+      "impacto": "Corrupção de relatórios exportados em requisições simultâneas e falha de download caso o sistema de arquivos local não permitisse escrita.",
+      "correcao": "Envio dos cabeçalhos HTTP de anexo e gravação direta do fluxo CSV na saída padrão usando fopen('php://output', 'w').",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Vulnerabilidade de fixação de sessão e falta de proteção de cookies",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O fluxo de login não invocava session_regenerate_id(true) após autenticar o usuário com sucesso, e os cookies de sessão não eram configurados explicitamente com a flag HttpOnly.",
+      "impacto": "Suscetibilidade a ataques de Session Fixation, possibilitando que um invasor se aproprie da sessão autenticada da vítima.",
+      "correcao": "Configuração da diretiva session.cookie_httponly e regeneração obrigatória do identificador de sessão no login bem-sucedido.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Vazamento de detalhes de conexão devido a exceções não capturadas no PHP 8.1+",
+      "arquivo": "code/index.php",
+      "linha": 9,
+      "linha_fim": 12,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "No PHP 8.1+, o driver mysqli dispara exceções mysqli_sql_exception em falhas de conexão. A ausência de bloco try...catch podia expor credenciais de banco e host em traces de erro não tratados.",
+      "impacto": "Divulgação de informações sensíveis de infraestrutura em telas de erro quando o banco estiver indisponível.",
+      "correcao": "Envolvimento da instanciação mysqli em bloco try...catch (mysqli_sql_exception $e) com encerramento gracioso e seguro.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Segredos e chaves de API hardcoded no arquivo de configuração",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 18,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "As constantes SMTP_API_KEY e EXPORT_DIR estavam fixadas diretamente no código-fonte sem priorização de leitura de variáveis de ambiente do sistema operacional.",
+      "impacto": "Risco de exposição de chaves e segredos em repositórios de controle de versão.",
+      "correcao": "Configuração para obter valores via getenv('SMTP_API_KEY') e getenv('EXPORT_DIR'), mantendo valores legados como fallback de compatibilidade.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Armazenamento e validação de senhas com algoritmo MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 18,
+      "categoria": "arquitetura",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O banco de dados e o método autenticar utilizam hash MD5 sem salt para verificação e persistência de senhas de usuários.",
+      "impacto": "Exposição facilitada de senhas a ataques de força bruta e rainbow tables caso a base de usuários seja vazada.",
+      "correcao": "Registrado como débito arquitetural para futura migração com re-hash progressivo; mantido sem alteração no momento para não quebrar a autenticação dos usuários legados.",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Mapeamento genérico e permissivo de status em formatarStatus",
+      "arquivo": "code/lib.php",
+      "linha": 26,
+      "linha_fim": 35,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "A função formatarStatus tratava status 1 e 2 e assumia incondicionalmente 'Resolvido' para qualquer outro inteiro no ramo else.",
+      "impacto": "Atribuição do rótulo 'Resolvido' a registros contendo status inválidos, nulos ou negativos.",
+      "correcao": "Uso de estrutura match expressiva tratando 1, 2 e 3 individualmente e retornando 'Desconhecido' para valores fora da especificação.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migração da biblioteca de banco de dados mysqli para PDO ou Doctrine ORM",
+      "porque": "O manifesto de superfície pública estabelece como contrato estrito que as funções públicas recebam instâncias de 'mysqli $db'. Alterar a tecnologia de acesso quebraria integrações externas e violaria a restrição §6.2 da tarefa."
+    },
+    {
+      "o_que": "Substituição imediata dos hashes de senha MD5 no banco por password_hash (bcrypt/Argon2)",
+      "porque": "O banco de dados legado em produção e os dados de teste (schema.sql e seed.sql) possuem hashes MD5 fixos. Uma alteração imediata no algoritmo de autenticação sem um processo em duas fases de re-hashing progressivo no login quebraria o acesso de todos os usuários existentes."
+    },
+    {
+      "o_que": "Reestruturação do front-end com templates modernos ou frameworks SPA",
+      "porque": "A especificação da tarefa (§6.4) exige não reescrever o sistema e preservar a estrutura de HTML declarada (como os IDs de tabela e ordem das colunas) que são consumidos por testes e rotinas de automação."
+    }
+  ]
+}
