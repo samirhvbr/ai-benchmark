@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.99`
+**Versão atual:** `0.2.100`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.100` — 2026-10-05 — results/ adds DeepSeek V4 Flash at xhigh as a new agent: run 1 scores 617, 18th
+
+- `deepseek-v4-flash-xhigh/run-1` (CO): 617, Silver, 18th, through Novita AI for US$ 0.18. 7 flaws fixed,
+  compatibility 100, explanation 31/50. It is separate from DeepSeek V4 Flash at high (282).
+- Instance notes: table row CO and one bullet.
 
 ### `0.2.99` — 2026-10-05 — results/ adds GPT-6-astra at ultra's third run (651); the agent is official at 666, the strongest official GPT agent
 

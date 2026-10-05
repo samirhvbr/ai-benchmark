@@ -444,7 +444,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Sixty-eight deliveries were scored, labelled **Y** to **CN** in the order they arrived and judged blind like
+Sixty-nine deliveries were scored, labelled **Y** to **CO** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -517,8 +517,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CL** | Grok 4.7, `xhigh`, run 3 | 631 |
 | **CM** | GPT-6-astra, `ultra`, run 2 | 666 |
 | **CN** | GPT-6-astra, `ultra`, run 3 | 651 |
+| **CO** | DeepSeek V4 Flash, `xhigh`, run 1 | 617 |
 
-All sixty-eight ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All sixty-nine ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1130,6 +1131,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   prefix because the integrations read the cells. It scoped the SLA average to each client (COMP-003), as
   run 2 had, and its report scored 45 of 50. The client's prompt history lists the fixed message twice, 5
   seconds apart, but the session log shows the model received it once.
+- **DeepSeek V4 Flash at `xhigh` (CO): 617, Silver, 18th, a new agent.** The same model at `high` publishes
+  282, the lower of its two runs (612 and 282). This run used opencode's `xhigh` variant through Novita AI, on
+  `bench3`, in 28 minutes for US$ 0.18, and is filed separately. It fixed 7 flaws and kept compatibility at 100,
+  with no penalty. Both the MD5 migration and the secrets count as half: it verifies bcrypt but never re-hashes
+  on login, and the DB password keeps its literal fallback. It missed the export file race, and its report
+  scored 31 of 50. DeepSeek publishes no cutoff, so it carries the dagger.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.

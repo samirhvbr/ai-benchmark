@@ -1,0 +1,147 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL Injection na busca de chamados via concatenacao crua de $busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 84,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados() monta 'WHERE titulo LIKE \"%' . $busca . '%\"' com $busca vindo cru de $_GET['busca'] e executa com $db->query(). Nenhuma parametrizacao ou escape: qualquer payload SQL do cliente chega direto ao SGBD com o privilegio da aplicacao (usuario 'painel').",
+      "impacto": "Dump completo de chamados e de outras tabelas (usuarios, com hashes de senha) via UNION/boolean; anula qualquer regra de visibilidade no nivel de dados.",
+      "correcao": "Reescrito com prepared statement: 'SELECT c.*, u.nome AS tecnico_nome FROM chamados c LEFT JOIN usuarios u ON u.id=c.tecnico_id' + 'WHERE c.titulo LIKE ?' com parametro '%termo%'. Mesma ordem (criado_em DESC) e mesma chave tecnico_nome no retorno.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Regra de negocio de visibilidade nao aplicada: cliente le/exporta chamados alheios (IDOR)",
+      "arquivo": "code/index.php",
+      "linha": 53,
+      "linha_fim": 67,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A tela de detalhe (?ver=) chama verChamado() sem verificar $papel; a listagem e o ?export=csv nao filtram por usuario_id. O cookie de cliente ('cliente/ana') permite iterar index.php?ver=101..105 e baixar o CSV com chamados de todos os clientes.",
+      "impacto": "Quebra do contrato do manifesto 'um cliente so ve os chamados que ele mesmo abriu'; exposicao de dados de terceiros (descricoes, status, SLA) via navegador.",
+      "correcao": "Filtro na camada web preservando as assinaturas publicas: no detalhe, cliente com usuario_id != uid responde 'Chamado nao encontrado.'; na listagem, array_filter por usuario_id; em exportarCsv(), WHERE c.usuario_id = uid quando a sessao web e de cliente (fora de sessao, rotina noturna, mantem export integral).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido no parametro de busca (atributo value e paragrafo sem escape)",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$busca de $_GET['busca'] e ecoada sem htmlspecialchars em <input value=\"...\"> e em '<p>Resultados para: ...'. Payload como \"?busca=\"><script>...</script>\" quebra o atributo e injeta HTML/JS no contexto do usuario logado.",
+      "impacto": "Execucao de script no navegador de quem abrir um link de busca manipulado: roubo de sessao (endurecida pelo HttpOnly), acoes em nome do usuario e defacement. puxa inclusive o CSV total se a vitima for tecnico.",
+      "correcao": "$buscaEsc = htmlspecialchars($busca, ENT_QUOTES, 'UTF-8'); usado no atributo value e no paragrafo.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas em MD5 (hash rapido, forca bruta viavel) e hash vazado no retorno de autenticar()",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar() calcula md5($senha) e compara na SQL (coluna CHAR(32) no schema, seed com MD5()); alem disso retorna a linha inteira do usuario, incluindo $linha['senha']. Dump do banco (via F1/F2) expoe senhas viaveis de quebrar por dicionario/GPU.",
+      "impacto": "Comprometimento de contas de clientes e tecnicos; a senha dos tecnicos da 'chave-mestra' do painel.",
+      "correcao": "Busca por login + verificacao na aplicacao: hash_equals() para hashes md5 legados (compatibilidade) e password_verify() para bcrypt; schema.sql -> senha VARCHAR(255) e seed.sql com bcrypt; retorno restrito a ['id','nome','papel'] (sem expor o hash).",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Chave de API de servico externo embutida no codigo-fonte",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "define('SMTP_API_KEY', 'netx-smtp-9f83e2c1a7b64d05') deixa a credencial do servico de e-mail transacional literal no repositorio, visivel em backups, suporte e codigo-fonte.",
+      "impacto": "Uso indevido do servico de e-mail em nome do ISP (envio em massa/fraude).",
+      "correcao": "Chave lida de getenv('SMTP_API_KEY') sem fallback embutido; a constante continua definida para consumidores existentes.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisao por zero em mediaResposta() quando nao ha chamados com primeira resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "mediaResposta() acumula soma/qtd de minutos_resposta e retorna $soma / $qtd. Com $qtd==0 (tabela vazia ou nenhum chamado respondido ainda), PHP >= 8 lanca DivisionByZeroError; a funcao roda na home (index.php:84).",
+      "impacto": "Pagina inicial com erro fatal (500) ate existir o primeiro chamado com resposta — indisponibilidade apos deploy/reset.",
+      "correcao": "if ($qtd === 0) return 0.0; antes da divisao.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Cookie de sessao sem HttpOnly/SameSite e id nao regenerado no login",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "session_start() com defaults (cookie viavel ao JS, sem SameSite) e sessao pre-login reaproveitada apos autenticacao sem session_regenerate_id(). Um XSS (F3) roubaria a sessao direto no cookie; rotas GET sensiveis (export) ficam expostas a CSRF; id fixado antes do login sobrevive.",
+      "impacto": "Sequestro de sessao, CSRF basico e sessao fixada.",
+      "correcao": "session_set_cookie_params(['httponly'=>true,'samesite'=>'Lax','secure'=><https dinamicamente>]) antes de session_start(); session_regenerate_id(true) logo apos o login.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Consultas N+1 na listagem e na exportacao (tecnicoNome por chamado)",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 92,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "listarChamados() e exportarCsv() excutam, para cada chamado, uma SELECT extra em usuarios via tecnicoNome() (N+1 round-trips). Com centenas de chamados a lagencia cresce linearmente e sobrecarrega o SGBD em horario de relatorio noturno.",
+      "impacto": "Listagem lenta; exportacao noturna pesada, risco de timeout e de pico de conexoes no banco.",
+      "correcao": "LEFT JOIN usuarios u ON u.id = c.tecnico_id trazendo u.nome AS tecnico_nome na propria query; 1 round-trip. Mantida a chave tecnico_nome e o valor '-' para chamado sem tecnico. CSV resultante byte-a-byte identico ao original (validado com cmp).",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Fallback da senha do banco embutido em config.php (DB_PASS)",
+      "porque": "Remover quebraria a subida do legado em ambientes sem DB_PASS no environment. Nao ha gerenciador de segredos para onde mover no escopo; correcao definitiva (env vars obrigatorias) ficou documentada como recomendacao."
+    },
+    {
+      "o_que": "Assinaturas publicas de lib.php (listarChamados/verChamado/exportarCsv) continuam expostas ao dataset completo",
+      "porque": "A rotina noturna e o relatorio gerencial consomem esses retornos (manifesto). A regra de visibilidade foi aplicada na camada web e no export apenas sob sessao de cliente, sem mudar o contrato."
+    },
+    {
+      "o_que": "Hashes md5 ja gravados em banco de producao",
+      "porque": "Migracao forcada comprometeria contas existentes; a correcao torna a verificacao dual (md5 legado + bcrypt) e o seed passa a bcrypt, permitindo migracao on-island a cada reset."
+    },
+    {
+      "o_que": "formatarStatus() deve continuar devolvendo 'Resolvido' para valores fora de 1..3",
+      "porque": "O relatorio gerencial faz match por texto exato; mudar o fallback alteraria o contrato de rotulos sem consumidor conhecido."
+    },
+    {
+      "o_que": "Metrica agregada 'tempo medio de resposta' na home para clientes",
+      "porque": "Media agregada nao revela chamado individual e alterar exigiria mudar assinatura de mediaResposta(); custo/beneficio negativo."
+    },
+    {
+      "o_que": "Adicionar CSRF token no form de login e novas dependencias externas",
+      "porque": "Login nao tem efeito mutavel relevante e SameSite=Lax ja mitiga CSRF; novas dependencias sao proibidas pelo enunciado e desnecessarias (bcrypt e prepared statements sao nativos do PHP/mysqli)."
+    }
+  ]
+}
