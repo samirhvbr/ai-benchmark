@@ -15515,19 +15515,20 @@
             "release_date_source": "https://openrouter.ai/api/v1/models",
             "reasoning_effort_note": "opencode's high variant for nex-agi/nex-n2.5-pro through OpenRouter"
           },
-          "runs_count": 1,
+          "runs_count": 2,
           "official": false,
           "score": 317,
           "totals": [
-            317
+            317,
+            428
           ],
           "representative_run": 1,
           "key_exposure": "unknown",
           "discovery_index": 62.5,
           "brier": 0.0,
           "comment": {
-            "en": "The longest single-agent run here, 10h 03min with six review subagents, for US$ 2.80. Its code fixes most of the security flaws, MD5 and the IDOR among them, but every function now returns nothing without a logged-in user, which breaks 8 of the 22 contract checks (−160) and takes it below the pass line.",
-            "pt_BR": "O run de agente único mais longo daqui, 10h 03min com seis subagentes de revisão, por US$ 2,80. O código corrige a maior parte das falhas de segurança, o MD5 e o IDOR entre elas, mas toda função passou a não devolver nada sem um usuário logado, o que quebra 8 das 22 checagens de contrato (−160) e o põe abaixo da linha de aprovação."
+            "en": "Two very long runs that ran side by side, 10h 03min and 19h 35min, for US$ 2.80 and 4.87, both strong on security and both breaking the contract: the first made every function return nothing without a logged-in user (8 checks, −160, 317), the second made the CSV export throw for a caller that has already printed output (3 checks, 428). It publishes the lower.",
+            "pt_BR": "Dois runs muito longos, rodados lado a lado, de 10h 03min e 19h 35min, por US$ 2,80 e 4,87, ambos fortes em segurança e ambos quebrando o contrato: o primeiro fez toda função não devolver nada sem usuário logado (8 checagens, −160, 317), o segundo fez a exportação CSV lançar exceção para quem já imprimiu saída (3 checagens, 428). Publica o menor."
           },
           "runs": [
             {
@@ -15706,6 +15707,193 @@
               },
               "wall_minutes": 603.3,
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nex-n2.5-pro-high/run-1/scorecard.md"
+            },
+            {
+              "run": 2,
+              "total": 428,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 207,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 96,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 112,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 55,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 33,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 7,
+                "priorizacao": 4,
+                "trade_offs": 7
+              },
+              "penalties": [
+                {
+                  "id": "PEN-002",
+                  "count": 3,
+                  "deduction": -60
+                },
+                {
+                  "id": "PEN-001",
+                  "count": 1,
+                  "deduction": -15
+                }
+              ],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                },
+                {
+                  "id": "COMP-005",
+                  "count": 1,
+                  "deduction": -15
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 8,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-013": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-014": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 7,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "BUG-004": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 5,
+              "brier": 0.0,
+              "discovery_index": 70.8,
+              "characterization": {
+                "passed": 19,
+                "failed": 3
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db), the main session and its thirteen subagent sessions",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 50033318,
+                  "output": 254132,
+                  "cache": 33604416,
+                  "total": 83891866
+                },
+                "usd_estimate": 4.87,
+                "note": "the total includes 2,198,229 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 4.8697, of which US$ 2.31 is the main session"
+              },
+              "wall_minutes": 1174.8,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nex-n2.5-pro-high/run-2/scorecard.md"
             }
           ],
           "rank": 35

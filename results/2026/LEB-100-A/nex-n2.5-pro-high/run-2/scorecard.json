@@ -1,0 +1,356 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Nex N2.5 Pro",
+    "version": "not recorded",
+    "provider": "Nex AGI"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-06",
+    "runs": [
+      428
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 2,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 5,
+      "points_possible": 6,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 7,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 7,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 2,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 48,
+      "raw_possible": 58,
+      "score": 207,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 9,
+      "raw_possible": 14,
+      "score": 96,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 6,
+      "raw_possible": 8,
+      "score": 112,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 55,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "The SLA average is now computed over the logged-in client's own tickets only (lib.php:478-481 via index.php:183), so the 'Tempo medio de 1a resposta' a client sees differs from the legacy global average. Charged to SEC-017's C5."
+        },
+        {
+          "id": "COMP-005",
+          "count": 1,
+          "deduction": -15,
+          "detail": "exportarCsv now throws FalhaExportacaoCsv and writes no CSV when any output was sent before the call (headers_sent() guard at lib.php:704-706; exportarCsv at lib.php:755-767 does not catch it). The legacy function wrote the CSV with only a header() warning. This fails the 3 CSV characterization checks (19/22). Charged to BUG-004's C5 (export rewrite)."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 33,
+      "max": 50,
+      "rubric": {
+        "clareza": 8,
+        "precisao": 7,
+        "causa_raiz": 7,
+        "priorizacao": 4,
+        "trade_offs": 7
+      }
+    }
+  },
+  "penalties": [
+    {
+      "id": "PEN-002",
+      "count": 3,
+      "deduction": -60,
+      "detail": "3 teste(s) de caracterização quebrado(s)"
+    },
+    {
+      "id": "PEN-001",
+      "count": 1,
+      "deduction": -15
+    }
+  ],
+  "extra_findings": [
+    "Unchecked mysqli/stream return values across lib.php and index.php (F3, generic error handling beyond BUG-001)",
+    "Export written to a fixed shared path EXPORT_DIR/chamados.csv — concurrent requests can overwrite or serve another export (F9), lib.php:125-150",
+    "Session cookie without explicit HttpOnly/SameSite attributes (F6, alongside SEC-013)",
+    "Tables without explicit charset/collation in schema.sql (F10)",
+    "SEC-005 — no CSRF protection on the login POST (acknowledged in the non-changes list, not fixed)"
+  ],
+  "total": 428,
+  "grade": "Bronze",
+  "calibration": {
+    "reported_count": 9,
+    "brier": 0.0,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 9,
+        "mean_confidence": 99.4,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 3,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 4,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 70.8
+  }
+}

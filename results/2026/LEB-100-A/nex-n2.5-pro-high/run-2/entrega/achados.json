@@ -1,0 +1,183 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Credenciais e chave de e-mail fixas no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 18,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha do banco e a chave SMTP estavam literais no fonte, com fallback embutido para a senha de produção; o diretório de exportação também era um caminho fixo conhecido.",
+      "impacto": "Quem obtivesse o repositório, imagem, backup ou artefato de deploy poderia comprometer o banco e a central de e-mail e conhecer o local dos exports.",
+      "correcao": "DB_PASS, SMTP_API_KEY e EXPORT_DIR passaram a vir de variáveis de ambiente, sem segredos literais no código.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Autenticação MD5 e coluna incompatível com hash moderno",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar() calculava md5($senha) e comparava o valor com a coluna; MD5 é rápido e sem salt, e senha CHAR(32) não comporta password_hash()/bcrypt. O seed também usava MD5.",
+      "impacto": "Um vazamento da tabela permite ataques de dicionário e rainbow tables com custo reduzido, possibilitando takeover de contas e acesso aos chamados.",
+      "correcao": "A autenticação usa password_verify(), aceita MD5 apenas como fallback legado e faz rehash bcrypt quando a coluna comporta 60 ou mais caracteres; schema e seed usam bcrypt.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Falhas de mysqli, sentinela e invariantes numéricas não tratadas",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "O código assumia sucesso de prepare(), bind_param(), execute(), get_result(), query(), fetch_assoc(), fopen() e readfile(); resultados falsos eram tratados como objetos. mediaResposta() dividia por zero quando não havia respostas e falhas de conexão/charset não eram tratadas uniformemente.",
+      "impacto": "Falhas transitórias do banco ou de disco podiam derrubar a página, produzir saída parcial ou retornar dados inconsistentes.",
+      "correcao": "Foram adicionados binding auxiliado, verificações de resultado, fechamento de recursos, tratamento de mysqli_sql_exception, COALESCE para a média e tratamento explícito de conexão/charset.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Injeção SQL no filtro de busca",
+      "arquivo": "code/lib.php",
+      "linha": 81,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro GET busca era concatenado diretamente na cláusula LIKE, permitindo que aspas e metacaracteres alterassem a expressão SQL.",
+      "impacto": "Um usuário autenticado poderia ampliar ou modificar a consulta, expor registros fora do filtro ou provocar erro/indisponibilidade conforme os privilégios do banco.",
+      "correcao": "A busca usa statement preparado com LIKE CONCAT('%', ?, '%'), preservando o filtro textual sem compor a SQL.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no campo de busca",
+      "arquivo": "code/index.php",
+      "linha": 72,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor bruto de $_GET['busca'] era impresso no atributo value do formulário e no texto de resultados, sem escaping contextual.",
+      "impacto": "Um link malicioso poderia executar script no contexto do painel, roubar a sessão ou induzir ações não desejadas.",
+      "correcao": "getTexto() normaliza o parâmetro e e() aplica htmlspecialchars() com ENT_QUOTES, ENT_SUBSTITUTE e ENT_HTML5; os demais dados exibidos também são escapados.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Fixação de sessão e cookies sem atributos de proteção",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "A sessão era iniciada antes da autenticação, o identificador não era renovado após o login e os atributos do cookie usavam os padrões do runtime.",
+      "impacto": "Uma sessão previamente fixada poderia ser associada à conta após o login; cookies também ficavam mais expostos a leitura por script ou envio em contextos inadequados.",
+      "correcao": "Foram habilitados session strict mode e atributos explícitos de cookie, com session_regenerate_id(true) após login e validação do papel contra o banco.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Ausência de autorização por dono ou papel (IDOR)",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 101,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Listagem, detalhe e exportação consultavam chamados sem usar usuario_id; uid e papel da sessão não restringiam os dados, permitindo que um cliente acessasse chamados de outro cliente.",
+      "impacto": "Vazamento cruzado de chamados, descrições, status, prioridades e dados de outros clientes, violando a regra de negócio do manifesto.",
+      "correcao": "contextoSessao() valida usuário e papel no banco; consultas de cliente incluem c.usuario_id = ?, enquanto técnicos continuam vendo todos os chamados.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Injeção de fórmula em CSV",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 98,
+      "mecanismo": "Título e nome do técnico eram escritos diretamente no CSV; valores iniciados por =, +, @ ou - podem ser interpretados como fórmula por planilhas.",
+      "impacto": "Uma planilha aberta por um operador poderia executar uma fórmula, exfiltrar dados locais ou provocar ações inesperadas.",
+      "correcao": "valorCsvSeguro() remove prefixos de espaço/controle usados para ocultar o sinal e antepõe tabulação aos valores perigosos, mantendo o formato contratual.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Exportação por arquivo compartilhado e consultas N+1",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 150,
+      "categoria": "arquitetura",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "Cada exportação gravava sempre EXPORT_DIR/chamados.csv e depois fazia readfile(); requisições concorrentes podiam sobrescrever ou consumir conteúdo parcial. O mesmo caminho executava uma consulta adicional por chamado para obter o técnico (N+1), e falhas de abertura/leitura eram silenciosas.",
+      "impacto": "Requisições concorrentes podiam sobrescrever o arquivo, consumir conteúdo parcial ou vazar uma exportação anterior; a consulta de técnico por linha causava N+1 e degradava a exportação.",
+      "correcao": "A exportação usa JOIN em uma consulta, escreve diretamente em php://output, aplica autorização antes da consulta e libera recursos em todos os caminhos.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Schema sem charset explícito e largura incompatível",
+      "arquivo": "code/schema.sql",
+      "linha": 7,
+      "linha_fim": 10,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 100,
+      "mecanismo": "As tabelas não declaravam charset/collation e senha CHAR(32) não comportava hashes password_hash()/bcrypt, deixando a codificação dependente do servidor e causando truncamento potencial.",
+      "impacto": "Falha ao migrar para bcrypt, corrupção ou comparação inconsistente de acentos e comportamento diferente entre ambientes.",
+      "correcao": "O schema declara utf8mb4/utf8mb4_unicode_ci nas duas tabelas, usa senha VARCHAR(255) e o seed contém hashes bcrypt.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Migration DDL automática e rehash em massa em produção",
+      "porque": "A alteração de CHAR(32) para VARCHAR(255) e a conversão dos hashes exigem backup, janela e validação operacional; o código suporta coexistência e rehash no próximo login."
+    },
+    {
+      "o_que": "Fallback MD5 para contas legadas",
+      "porque": "Removê-lo imediatamente tornaria as contas existentes inacessíveis; ele é aceito apenas para hash hexadecimal de 32 caracteres e é substituído por bcrypt quando possível."
+    },
+    {
+      "o_que": "Comportamento das funções públicas chamadas diretamente sem sessão",
+      "porque": "Scripts ISP legados dependem dessas chamadas; exigir sessão quebraria o contrato, enquanto o painel web autenticado aplica a regra de dono/papel."
+    },
+    {
+      "o_que": "Assinaturas públicas, rotas, parâmetros, rótulos, HTML contratual e formato do CSV",
+      "porque": "São superfície pública declarada no manifest.md e precisam permanecer compatíveis."
+    },
+    {
+      "o_que": "EXPORT_DIR como constante configurável",
+      "porque": "A exportação web já é streaming, mas a constante é mantida para configurações e consumidores legados que ainda a leem."
+    },
+    {
+      "o_que": "Framework, ORM ou dependência externa",
+      "porque": "A correção permanece na stack PHP/mysqli existente e a tarefa proíbe novas dependências."
+    },
+    {
+      "o_que": "Forçamento de HTTPS e proteção CSRF",
+      "porque": "O pacote não define proxy ou política de TLS; impor Secure/CSRF poderia quebrar instalações HTTP legadas e deve ser tratado no deployment."
+    },
+    {
+      "o_que": "Alteração estrutural do CSV",
+      "porque": "O prefixo de segurança preserva o cabeçalho exato, as colunas e a ordenação exigidos pelo manifest.md."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.106`
+**Versão atual:** `0.2.107`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.107` — 2026-10-06 — results/ adds Nex N2.5 Pro's run 2 (428); it publishes the lower, 317, still 35th
+
+- `nex-n2.5-pro-high/run-2` (CR): 428, Bronze, on bench2 alongside run 1, 19h 35min, US$ 4.87; the session ended on
+  the output-length limit. 10 flaws fixed; 3 characterization checks fail on a new headers_sent() guard in the
+  export (PEN-002 and COMP-005), COMP-003 for the SLA average, PEN-001 for the tab before '-'; explanation 33/50.
+- Instance notes: row CR, the count to seventy-two, one bullet. `comments.json`: Nex's comment covers both runs.
 
 ### `0.2.106` — 2026-10-06 — The instance notes no longer say every delivery from Y on avoided the web
 

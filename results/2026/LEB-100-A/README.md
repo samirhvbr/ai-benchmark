@@ -445,7 +445,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Seventy-one deliveries were scored, labelled **Y** to **CQ** in the order they arrived and judged blind like
+Seventy-two deliveries were scored, labelled **Y** to **CR** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -521,10 +521,11 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CO** | DeepSeek V4 Flash, `xhigh`, run 1 | 617 |
 | **CP** | GPT-5.5, `xhigh`, run 4 | 536 |
 | **CQ** | Nex N2.5 Pro, `high`, run 1 | 317 |
+| **CR** | Nex N2.5 Pro, `high`, run 2 | 428 |
 
-All seventy-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot and got the
-fixed first message and nothing else from the operator. All but CQ used no web tool and made no request to
-GitHub; CQ's web use, and the messages its client inserted after compacting, are in its bullet.
+All seventy-two ran as the unprivileged user `leb` on a machine restored to its clean snapshot and got the
+fixed first message and nothing else from the operator. All but CQ and CR used no web tool and made no request
+to GitHub; their web use, and the messages their client inserted after compacting, are in their bullets.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
   for US$ 1.01. OpenAI publishes no page or cutoff for a pro variant, so it carries the dagger. It
@@ -1167,6 +1168,20 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
     neither the file-handle leak nor the N+1. Its report scored 31 of 50 and claims that visibility and the
     CSV are unchanged for existing callers, which they are not. No published cutoff and a release after the
     answer key went public: it carries the dagger.
+- **Nex N2.5 Pro at `high`, run 2 (CR): 428, Bronze, 111 points above run 1; its published score stays 317, the
+  lower, 35th.** It started on `bench2` 15 seconds after run 1, with the same model, variant and host, and ran for
+  19h 35min with thirteen subagents and 780 model responses, for US$ 4.87. The client compacted the context 24
+  times, inserting its synthetic "Continue…" message after each; the operator sent nothing. It read OWASP's
+  CSV-injection pages and the PHP manual on the web. The session ended on its own at 07:52: the last response hit
+  the output-length limit while it announced another round of tests. Its report and findings were last written
+  at 21:00 the evening before, while the code kept changing until 06:52, so the report describes an earlier code.
+  - It fixed 10 flaws, all four probes among them, and both secrets, MD5 and the session fixation. Sessionless
+    callers keep the full view this time.
+  - Three characterization checks fail (PEN-002, −60): a new `headers_sent()` guard makes `exportarCsv` throw
+    instead of writing when output has already started, which is how the batch caller in the suite reaches it.
+    That is also charged as COMP-005, as the sessionless CSV of Haiku's run 3 was. It scoped the SLA average to
+    each client (COMP-003), and its formula sanitizer puts a tab before the `-` of a ticket with no technician
+    (PEN-001). Its report scored 33 of 50 and says the CSV behaviour was kept.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.

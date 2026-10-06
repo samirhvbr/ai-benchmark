@@ -59,7 +59,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 | 32 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
 | 33 | [Kimi K2.7 Code (highspeed)](2026/LEB-100-A/kimi-k2.7-code-highspeed/run-1/scorecard.md) † · default | **402** | Bronze | 155 | 0 | 129 | 0 | 25 | 70 | 23 | 0 | 54.2 | 0.216 | 3/3 (402 · 363 · 402) |
 | 34 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
-| 35 | [Nex N2.5 Pro](2026/LEB-100-A/nex-n2.5-pro-high/run-1/scorecard.md) † · high | **317** | Reprovada | 194 | 0 | 107 | 75 | 0 | 70 | 31 | -160 | 62.5 | 0.000 | 1/3 |
+| 35 | [Nex N2.5 Pro](2026/LEB-100-A/nex-n2.5-pro-high/run-1/scorecard.md) † · high | **317** | Reprovada | 194 | 0 | 107 | 75 | 0 | 70 | 31 | -160 | 62.5 | 0.000 | 2/3 (317 · 428) |
 | 36 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 3/3 (317 · 369 · 232) |
 | 37 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md) † · high | **282** | Reprovada | 99 | 0 | 96 | 0 | 0 | 100 | 22 | -35 | 50.0 | 0.122 | 2/3 (612 · 282) |
 
