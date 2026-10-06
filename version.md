@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.105`
+**Versão atual:** `0.2.106`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.106` — 2026-10-06 — The instance notes no longer say every delivery from Y on avoided the web
+
+- 0.2.105 extended "all seventy ran … used no web tool and made no request to GitHub" to seventy-one, but CQ
+  (Nex N2.5 Pro) read OWASP's page, searched Google and tried GitHub. The sentence now excepts CQ and points to
+  its bullet, and says the operator sent nothing after the fixed message, which holds for all seventy-one.
 
 ### `0.2.105` — 2026-10-06 — results/ adds Nex N2.5 Pro at high as a new agent: run 1 scores 317, below the pass line
 

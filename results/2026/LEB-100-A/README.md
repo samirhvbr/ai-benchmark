@@ -522,8 +522,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CP** | GPT-5.5, `xhigh`, run 4 | 536 |
 | **CQ** | Nex N2.5 Pro, `high`, run 1 | 317 |
 
-All seventy-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
-fixed first message and nothing else, used no web tool and made no request to GitHub.
+All seventy-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot and got the
+fixed first message and nothing else from the operator. All but CQ used no web tool and made no request to
+GitHub; CQ's web use, and the messages its client inserted after compacting, are in its bullet.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
   for US$ 1.01. OpenAI publishes no page or cutoff for a pro variant, so it carries the dagger. It
