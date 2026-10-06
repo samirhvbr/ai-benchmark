@@ -1,0 +1,231 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Credenciais fixas no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha de produção do banco e a chave SMTP estavam literais no repositório, tornando-as acessíveis a quem obtivesse código, backup, imagem ou histórico de revisão.",
+      "impacto": "Comprometimento direto do banco de suporte e possível uso indevido da conta de e-mail transacional.",
+      "correcao": "DB_PASS e SMTP_API_KEY passaram a ser lidos do ambiente, preservando valores como \"0\" e removendo o fallback secreto.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Senhas em MD5 e coluna incompatível com bcrypt",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O login calculava md5($senha) e comparava o valor no SQL; o schema usava CHAR(32), incapaz de armazenar um hash password_hash comum.",
+      "impacto": "Uma cópia da tabela permite ataques offline de recuperação de senha e aumenta o risco de reutilização de credenciais.",
+      "correcao": "A autenticação usa password_verify, mantém MD5 apenas como fallback de migração, tenta regravar bcrypt quando a coluna comporta 60 caracteres, e o schema/seed passaram a usar VARCHAR(255) e bcrypt.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Cliente podia acessar dados de outros clientes",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "Listagem, detalhe, média e exportação não filtravam por chamados.usuario_id; o ID de ver selecionava o registro sem verificar o dono.",
+      "impacto": "Um cliente autenticado podia enumerar, detalhar e exportar chamados e métricas de todos os clientes.",
+      "correcao": "A sessão validada define o UID do cliente ou acesso irrestrito do técnico, e todas as consultas de dados passaram a aplicar esse escopo.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Injeção SQL na busca",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo de busca era concatenado diretamente na cláusula LIKE, permitindo alterar a condição SQL com metacaracteres e texto malicioso.",
+      "impacto": "Leitura não autorizada ou manipulação da consulta, dependendo dos privilégios e da configuração do banco.",
+      "correcao": "A busca agora usa statement preparado e parâmetro, mantendo a busca parcial por título.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no campo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor de busca era impresso sem escape no atributo value e no texto de resultados, permitindo sair do atributo e injetar HTML ou script.",
+      "impacto": "Execução de script no contexto do painel, com risco de roubo de sessão ou alteração da interface.",
+      "correcao": "Foi adicionado escape com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8 para o termo e os valores dinâmicos da página.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Sessão sem regeneração e cookies sem proteções",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O ID de sessão era mantido após o login e não havia política explícita de HttpOnly, Secure, SameSite, strict mode ou uso exclusivo de cookies.",
+      "impacto": "Fixação, captura ou reuso de sessão autenticada.",
+      "correcao": "O ID é regenerado no login; os cookies usam HttpOnly, SameSite=Lax e Secure quando aplicável, com strict mode e use_only_cookies ativados.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Injeção de fórmula pelo CSV",
+      "arquivo": "code/lib.php",
+      "linha": 136,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Títulos e nomes eram gravados crus; células iniciadas por =, +, @ ou - podem ser interpretadas como fórmulas por planilhas.",
+      "impacto": "Execução de fórmula no computador do usuário, com risco de leitura, modificação ou exfiltração de dados locais.",
+      "correcao": "Valores potencialmente ativos recebem apóstrofo, inclusive após espaços ou controles; o sentinel - permanece inalterado.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Exportação por arquivo fixo compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "Todas as requisições gravavam e liam EXPORT_DIR/chamados.csv; exportações concorrentes podiam compartilhar conteúdo parcial ou sobrescrever o arquivo persistente.",
+      "impacto": "Vazamento entre exportações, dados incompletos e falhas dependentes de permissões do diretório.",
+      "correcao": "A exportação agora streama os dados autorizados diretamente para php://output, mantendo headers, nome e ordem do CSV.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Consultas N+1 na listagem e exportação",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada chamado executava uma consulta adicional em tecnicoNome para descobrir o responsável.",
+      "impacto": "Latência e carga desnecessárias no banco, especialmente em exportações grandes.",
+      "correcao": "Listagem e exportação usam LEFT JOIN para obter tecnico_nome na consulta principal.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Divisão por zero na média de resposta",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Sem registros de minutos_resposta, qtd permanecia zero e soma/qtd gerava divisão por zero em vez de um float estável.",
+      "impacto": "Warning, possível NAN e violação do contrato de retorno float.",
+      "correcao": "A média é calculada com AVG no banco e retorna 0.0 quando não há dados ou ocorre falha.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Falhas mysqli tratadas como objetos válidos",
+      "arquivo": "code/lib.php",
+      "linha": 16,
+      "linha_fim": 20,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Prepare, bind, execute, query, get_result e set_charset podiam retornar false antes de métodos ou iterações que assumiam sucesso.",
+      "impacto": "Erros fatais, indisponibilidade e respostas inconsistentes, com possível exposição de detalhes internos.",
+      "correcao": "Os retornos críticos são verificados e as funções retornam null, array vazio ou 0.0 conforme seu contrato.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Instalações existentes permanecem em MD5 até migration",
+      "arquivo": "code/schema.sql",
+      "linha": 7,
+      "linha_fim": 7,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Alterar schema.sql não modifica uma tabela já criada; o código evita gravar bcrypt em CHAR(32), então os usuários legados permanecem em MD5 até a coluna ser ampliada e o login ocorrer.",
+      "impacto": "O risco de senhas MD5 persiste após o deploy se a alteração de schema não for executada.",
+      "correcao": "O schema novo usa VARCHAR(255) e o login migra quando possível; falta aplicar uma migration explícita de ALTER/backfill nas instalações existentes.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "HTTP não é recusado explicitamente",
+      "arquivo": "code/index.php",
+      "linha": 1,
+      "linha_fim": 97,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A aplicação não redireciona HTTP nem valida a camada de transporte; o cookie Secure não protege a própria requisição de login enviada em plaintext.",
+      "impacto": "Interceptação de credenciais ou sessão se a porta HTTP estiver exposta.",
+      "correcao": "Não foi adicionado redirect; TLS e proxy reverso são decisões de infraestrutura, para evitar quebra de health checks e consumidores internos.",
+      "corrigido": false
+    },
+    {
+      "id": "F14",
+      "titulo": "Status inválido é apresentado como Resolvido",
+      "arquivo": "code/lib.php",
+      "linha": 26,
+      "linha_fim": 34,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "Qualquer valor diferente de 1 ou 2 cai no else de formatarStatus e vira Resolvido; o TINYINT não impede valores inválidos inseridos fora da aplicação.",
+      "impacto": "Classificação incorreta em telas e relatórios.",
+      "correcao": "O comportamento foi mantido para preservar o contrato de rótulos; a validação deve ser aplicada na origem dos dados.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Stack, camada mysqli, nomes e assinaturas das funções públicas, rotas e parâmetros GET",
+      "porque": "São contrato de consumidores externos declarado em manifest.md."
+    },
+    {
+      "o_que": "Fallback MD5 durante a transição",
+      "porque": "Remover imediatamente o fallback bloquearia instalações legadas; ele só é aceito para hashes MD5 e não substitui a migration."
+    },
+    {
+      "o_que": "Migration automática de CHAR(32) para VARCHAR(255) e backfill",
+      "porque": "Alterar schema e dados durante uma requisição de login é mais arriscado que uma migration explícita com backup e janela operacional."
+    },
+    {
+      "o_que": "EXPORT_DIR e SMTP_API_KEY como constantes",
+      "porque": "Scripts externos podem consultá-las; a rota CSV deixou de depender do arquivo fixo, mas a compatibilidade de configuração foi preservada."
+    },
+    {
+      "o_que": "Redirect HTTPS, rate limit, CSRF e reset de senha",
+      "porque": "A aplicação atual não tem operações de escrita no painel e essas controles dependem de edge/infraestrutura; podem ser adicionados sem reescrever o sistema."
+    },
+    {
+      "o_que": "Rótulos de status/prioridade e ordem declarada da listagem/CSV",
+      "porque": "Consumidores fazem correspondência textual e scripts noturnos dependem do formato atual."
+    }
+  ]
+}

@@ -144,7 +144,7 @@
     "pt_BR": "Dois runs que mal poderiam ser mais diferentes: o primeiro corrigiu 9 falhas e fez 612; a correção de injeção de SQL do segundo quebra toda busca e o CSV do cliente sai numa linha só, 282. Publica o menor; não é certo quais pesos os provedores serviram com esse nome."
   },
   "nex-n2.5-pro-high": {
-    "en": "Two very long runs that ran side by side, 10h 03min and 19h 35min, for US$ 2.80 and 4.87, both strong on security and both breaking the contract: the first made every function return nothing without a logged-in user (8 checks, −160, 317), the second made the CSV export throw for a caller that has already printed output (3 checks, 428). It publishes the lower.",
-    "pt_BR": "Dois runs muito longos, rodados lado a lado, de 10h 03min e 19h 35min, por US$ 2,80 e 4,87, ambos fortes em segurança e ambos quebrando o contrato: o primeiro fez toda função não devolver nada sem usuário logado (8 checagens, −160, 317), o segundo fez a exportação CSV lançar exceção para quem já imprimiu saída (3 checagens, 428). Publica o menor."
+    "en": "Too slow to finish three runs: 10h 03min and 19h 35min, and a third voided after more than 21 hours when the operator's connection failed, so it stays at two and publishes the lower. Both runs were strong on security and both broke the contract: the first made every function return nothing without a logged-in user (8 checks, −160, 317), the second made the CSV export throw for a caller that has already printed output (3 checks, 428).",
+    "pt_BR": "Lento demais para fechar três runs: 10h 03min e 19h 35min, e um terceiro anulado depois de mais de 21 horas, quando a conexão do operador caiu; fica com dois e publica o menor. Os dois runs foram fortes em segurança e os dois quebraram o contrato: o primeiro fez toda função não devolver nada sem usuário logado (8 checagens, −160, 317), o segundo fez a exportação CSV lançar exceção para quem já imprimiu saída (3 checagens, 428)."
   }
 }

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.107`
+**Versão atual:** `0.2.108`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.108` — 2026-10-06 — Nex N2.5 Pro's third run is voided for an operator connection failure and not repeated
+
+- `nex-n2.5-pro-high/void-1/`: the bench3 run, 21+ hours and US$ 6.05, aborted when the operator's connection
+  failed and again after the operator's "contnua"; voided before any judge saw it. The operator will not repeat
+  it, the model being too slow (runs of 10h 03min, 19h 35min and 21+ hours): the agent stays at two runs.
+- Instance notes: one bullet. `comments.json`: Nex's comment says it is too slow to finish three runs.
 
 ### `0.2.107` — 2026-10-06 — results/ adds Nex N2.5 Pro's run 2 (428); it publishes the lower, 317, still 35th
 

@@ -1182,6 +1182,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
     That is also charged as COMP-005, as the sessionless CSV of Haiku's run 3 was. It scoped the SLA average to
     each client (COMP-003), and its formula sanitizer puts a tab before the `-` of a ticket with no technician
     (PEN-001). Its report scored 33 of 50 and says the CSV behaviour was kept.
+- **Nex N2.5 Pro stops at two runs: too slow to run again.** A third run on `bench3`, started an hour after the
+  other two, had worked for more than 21 hours (925 responses, US$ 6.05) when the operator's connection failed
+  and aborted it at 10:43 the next morning; the operator's "contnua" afterwards was aborted too. It was voided
+  for that before any judge saw it and is in `nex-n2.5-pro-high/void-1/`. With runs of 10h 03min, 19h 35min and
+  more than 21 hours, against minutes to half an hour for nearly every other single agent, the operator chose
+  not to repeat it. The agent publishes the lower of its two runs, 317, and stays unofficial.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.
