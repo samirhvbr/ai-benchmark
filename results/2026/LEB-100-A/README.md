@@ -445,7 +445,7 @@ every verdict was in:
 
 ### Runs of 2026-10-01
 
-Seventy deliveries were scored, labelled **Y** to **CP** in the order they arrived and judged blind like
+Seventy-one deliveries were scored, labelled **Y** to **CQ** in the order they arrived and judged blind like
 the others. The first three came one per VM; after restores, the three VMs ran the rest:
 
 | Label | Run | Outcome |
@@ -520,8 +520,9 @@ the others. The first three came one per VM; after restores, the three VMs ran t
 | **CN** | GPT-6-astra, `ultra`, run 3 | 651 |
 | **CO** | DeepSeek V4 Flash, `xhigh`, run 1 | 617 |
 | **CP** | GPT-5.5, `xhigh`, run 4 | 536 |
+| **CQ** | Nex N2.5 Pro, `high`, run 1 | 317 |
 
-All seventy ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
+All seventy-one ran as the unprivileged user `leb` on a machine restored to its clean snapshot, got the
 fixed first message and nothing else, used no web tool and made no request to GitHub.
 
 - **GPT-6.1-sol pro (Y): 654, Silver, 7th.** It ran in opencode through OpenRouter, in 16 minutes,
@@ -1146,6 +1147,25 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
   and left MD5, the CSV formula injection and the file-handle leak (two early returns still skip `fclose`). It
   scoped the SLA average to each client (COMP-003), and its report scored 32 of 50. It is one of the few to
   catch that `fputcsv` quotes the `Aberto em` header.
+- **Nex N2.5 Pro at `high` (CQ): 317, Failed, 35th, a new agent.** Nex AGI's model, released on OpenRouter on
+  2026-09-08, ran in opencode through OpenRouter on `bench1` for 10h 03min, the longest single-agent run here,
+  with six review subagents and 461 model responses, for US$ 2.80. The client compacted the context eleven
+  times and after each one inserted its own synthetic "Continue if you have next steps…" message; none came
+  from the operator. It is the first run since Grok 4.7's first to use the web: it read OWASP's CSV-injection
+  page and ran two Google searches, and its two fetches from GitHub failed on the block.
+  - The code fixes most of what it touched: prepared statements in the search, both outputs escaped, the
+    session regenerated at login, MD5 migrated to `password_hash` with a re-hash on login, both secrets out of
+    the code, the IDOR closed, the SLA division and the N+1 fixed, and a formula sanitizer that leaves the lone
+    `-` alone.
+  - But every public function in `lib.php` now returns an empty list, `null` or `0.0` when no user is logged
+    in. The manifest names callers outside the web page, and 8 of the 22 characterization checks fail
+    (PEN-002, −160): listing, search, detail, SLA average and CSV. The same early return makes the export
+    probe see an empty cell, so SEC-008 gets no fix credit although the sanitizer is the expected one; the
+    SEC-001, BUG-001 and PERF-001 probes pass for the same reason, and the code would have earned them anyway.
+  - It also scoped the SLA average to each client (COMP-003), left the LIKE wildcards unescaped, and reported
+    neither the file-handle leak nor the N+1. Its report scored 31 of 50 and claims that visibility and the
+    CSV are unchanged for existing callers, which they are not. No published cutoff and a release after the
+    answer key went public: it carries the dagger.
 - **A fourth Gemini 3.7 Flash run is kept unscored** in `gemini-3.7-flash-high/void-1/`. It was started on
   `bench1` 13 seconds after run 3 on `bench3`, and it reached the evaluator after it. As a fourth run, which
   `PROTOCOL §4` forbids, it was set aside before any judge saw it.

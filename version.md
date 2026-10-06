@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.104`
+**Versão atual:** `0.2.105`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.105` — 2026-10-06 — results/ adds Nex N2.5 Pro at high as a new agent: run 1 scores 317, below the pass line
+
+- `nex-n2.5-pro-high/run-1` (CQ): 317, Failed, 35th, in opencode through OpenRouter on bench1, 10h 03min, US$ 2.80.
+  Every public function returns nothing without a session: 8 of 22 characterization checks fail (PEN-002, −160);
+  one COMP-003 (the SLA average scoped to each client); explanation 31/50. Released 2026-09-08 with no published
+  cutoff: dagger.
+- Instance notes: table row CQ, the count to seventy-one, one bullet. `comments.json`: its comment.
 
 ### `0.2.104` — 2026-10-05 — The multi-agent Sonnet's run times are quoted from the session record, in hours and minutes
 

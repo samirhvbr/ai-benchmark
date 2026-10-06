@@ -21,7 +21,7 @@
         "date": "2026-09-29",
         "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery, one EXPL judge for all four reports, blind to the answer key and to every other score"
       },
-      "evaluated_on": "2026-10-05",
+      "evaluated_on": "2026-10-06",
       "category_max": {
         "SEC": 250,
         "ARCH": 200,
@@ -15500,6 +15500,217 @@
           "rank": 34
         },
         {
+          "agent": "nex-n2.5-pro-high",
+          "model": {
+            "name": "Nex N2.5 Pro",
+            "id": "nex-n2.5-pro",
+            "provider": "Nex AGI",
+            "served_by": "OpenRouter (opencode provider openrouter, model nex-agi/nex-n2.5-pro)",
+            "reasoning_effort": "high",
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://openrouter.ai/nex-agi/nex-n2.5-pro",
+            "training_cutoff_note": "Nex AGI publishes no training or knowledge cutoff for Nex-N2.5-Pro (OpenRouter's model page checked on 2026-10-06); OpenRouter lists the model from 2026-09-08, after the answer key went public, so the release date cannot bound it (PROTOCOL §3)",
+            "release_date": "2026-09-08",
+            "release_date_source": "https://openrouter.ai/api/v1/models",
+            "reasoning_effort_note": "opencode's high variant for nex-agi/nex-n2.5-pro through OpenRouter"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 317,
+          "totals": [
+            317
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 62.5,
+          "brier": 0.0,
+          "comment": {
+            "en": "The longest single-agent run here, 10h 03min with six review subagents, for US$ 2.80. Its code fixes most of the security flaws, MD5 and the IDOR among them, but every function now returns nothing without a logged-in user, which breaks 8 of the 22 contract checks (−160) and takes it below the pass line.",
+            "pt_BR": "O run de agente único mais longo daqui, 10h 03min com seis subagentes de revisão, por US$ 2,80. O código corrige a maior parte das falhas de segurança, o MD5 e o IDOR entre elas, mas toda função passou a não devolver nada sem um usuário logado, o que quebra 8 das 22 checagens de contrato (−160) e o põe abaixo da linha de aprovação."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 317,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 194,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 107,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 75,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 31,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 6,
+                "causa_raiz": 7,
+                "priorizacao": 4,
+                "trade_offs": 6
+              },
+              "penalties": [
+                {
+                  "id": "PEN-002",
+                  "count": 8,
+                  "deduction": -160
+                }
+              ],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 8,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-013": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-014": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 7,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 3,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 4,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 6,
+              "brier": 0.0,
+              "discovery_index": 62.5,
+              "characterization": {
+                "passed": 14,
+                "failed": 8
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db), the main session and its six subagent sessions",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 29260714,
+                  "output": 117982,
+                  "cache": 20215616,
+                  "total": 49594312
+                },
+                "usd_estimate": 2.8,
+                "note": "the total includes 1,101,770 reasoning tokens; opencode keeps no model time; the recorded cost is US$ 2.8027, of which US$ 1.1970 is the main session"
+              },
+              "wall_minutes": 603.3,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nex-n2.5-pro-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 35
+        },
+        {
           "agent": "claude-haiku-4.5-default",
           "model": {
             "name": "Claude Haiku 4.5",
@@ -16042,7 +16253,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-3/scorecard.md"
             }
           ],
-          "rank": 35
+          "rank": 36
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -16421,7 +16632,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md"
             }
           ],
-          "rank": 36
+          "rank": 37
         }
       ]
     }

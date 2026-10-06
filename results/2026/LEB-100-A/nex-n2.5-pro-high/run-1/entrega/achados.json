@@ -1,0 +1,185 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Segredos de produção embutidos",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 18,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha do banco estava no fallback de DB_PASS e uma chave SMTP estava diretamente no fonte; o fallback permitia executar a aplicação sem configuração externa e distribuía credenciais de produção.",
+      "impacto": "Quem obtivesse o fonte poderia conectar ao banco e usar a central de e-mail.",
+      "correcao": "config.php passou a exigir DB_PASS via ambiente e removeu os segredos/constantes não utilizados.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL montado por concatenação na busca",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados() inseria $busca diretamente no LIKE, alcançável por index.php?busca. verChamado() e tecnicoNome() também concatenavam valores, embora seus parâmetros públicos fossem tipados como inteiros ou nulos; essas consultas foram convertidas para a mesma camada preparada como defesa em profundidade.",
+      "impacto": "Um atacante podia alterar filtros, ampliar resultados ou explorar os privilégios do usuário do banco.",
+      "correcao": "As consultas passaram a usar parâmetros preparados por executarPreparada(), inclusive na validação de sessão, busca, detalhe, média, técnico e exportação.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido e escape HTML inconsistente",
+      "arquivo": "code/index.php",
+      "linha": 53,
+      "linha_fim": 95,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O termo de busca era impresso diretamente no atributo value; os demais valores usavam htmlspecialchars() sem flags nem UTF-8 explícitos, deixando a proteção dependente do padrão do runtime. Um termo com aspas ou markup podia sair do atributo.",
+      "impacto": "Markup ou script podia ser executado no contexto autenticado, permitindo roubo de sessão ou alteração da visão do usuário.",
+      "correcao": "Foi adicionado e() com ENT_QUOTES | ENT_SUBSTITUTE e UTF-8, aplicado a busca, título, descrição e técnico; IDs passaram a ser tratados como inteiros.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Sessão fixável e confiança excessiva nos dados da sessão",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 39,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 98,
+      "mecanismo": "O login não regenerava o ID da sessão, não habilitava modo estrito e não definia cookies HttpOnly, Secure e SameSite; o papel era usado diretamente de $_SESSION sem confirmação no banco.",
+      "impacto": "Fixação ou roubo de sessão podia preservar acesso e permitir uso de papel manipulado.",
+      "correcao": "O cookie passou a ter HttpOnly, SameSite=Lax e Secure condicional; o login regenera o ID e usuarioSessaoValido() valida ID e papel no banco.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Falha de autorização após login (IDOR)",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O índice web possuía um gate de login, mas após o login o papel vinha da sessão sem validação e não havia predicado usuario_id para clientes; as funções públicas também não recebiam contexto de usuário. O CSV exportava todos os registros para qualquer sessão autenticada.",
+      "impacto": "Qualquer cliente autenticado podia enumerar chamados, abrir detalhes de outros clientes e baixar o CSV completo.",
+      "correcao": "O entrypoint web passou a rejeitar sessão ausente ou inválida; clientes recebem apenas c.usuario_id = ?, enquanto técnicos mantêm acesso total. A exportação e a média usam a mesma regra.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Senhas armazenadas com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação calculava md5($senha) e comparava o resultado com o banco; MD5 é rápido, sem sal e permite recuperação offline das senhas após vazamento.",
+      "impacto": "Comprometimento das contas de clientes e técnicos após vazamento do banco.",
+      "correcao": "O schema passou a usar VARCHAR(255), o seed usa bcrypt e autenticar() usa password_verify(); MD5 permanece apenas como fallback de migração com rehash progressivo.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Injeção de fórmula via CSV",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 146,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Título e técnico eram enviados crus ao fputcsv(); campos iniciados por =, +, - ou @ podem ser interpretados como fórmula ou DDE ao abrir o arquivo em uma planilha.",
+      "impacto": "Execução de ação no contexto do usuário que abre o arquivo, incluindo leitura ou envio de dados dependendo da aplicação.",
+      "correcao": "valorCsvSeguro() remove BOM, espaços e caracteres Unicode de formato e prefixa operadores perigosos; a exportação aplica a função a título e técnico.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Divisão por zero na média de resposta",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Sem linhas com minutos_resposta, $qtd permanecia zero e $soma / $qtd gerava aviso e resultado inválido.",
+      "impacto": "Erro visível no painel, poluição de logs e indicador de SLA incorreto.",
+      "correcao": "A média passou a usar AVG() no banco e retorna 0.0 quando não há resultado ou a média é nula.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Consultas sem paginação e com varredura completa",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 116,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A listagem buscava todos os chamados e usava LIKE '%termo%', que não aproveita um índice comum de título; a média varria novamente as linhas a cada renderização. A exportação também precisa percorrer tudo, conforme o contrato.",
+      "impacto": "Latência, uso de memória e carga no MySQL crescem com o volume, especialmente para técnicos.",
+      "correcao": "Não alterei paginação ou exportação completa porque o manifesto exige a listagem e o CSV sem parâmetros de limite; a evolução recomendada é paginação compatível, busca indexada e cache do indicador.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Falhas de banco e exportação silenciosas",
+      "arquivo": "code/lib.php",
+      "linha": 10,
+      "linha_fim": 35,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Falhas de prepare, execute, query ou abertura da saída são convertidas em null, lista vazia, 0.0 ou retorno sem cabeçalhos, sem log estruturado.",
+      "impacto": "Indisponibilidade silenciosa e diagnóstico lento; uma falha de segurança ou de dados pode passar despercebida.",
+      "correcao": "Mantive os retornos públicos para não quebrar consumidores; a melhoria recomendada é log interno e separação entre erro e resultado vazio.",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Controles de autenticação dependentes de infraestrutura",
+      "arquivo": "code/index.php",
+      "linha": 19,
+      "linha_fim": 58,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "Não há limite de tentativas, bloqueio progressivo ou integração com WAF/rate limiter; o cookie só é Secure quando HTTPS ou X-Forwarded-Proto indica HTTPS, sem redirecionamento explícito.",
+      "impacto": "Credenciais fracas ficam expostas a tentativas repetidas e uma implantação HTTP ou configuração incorreta de proxy pode não proteger o cookie.",
+      "correcao": "Não implementei throttling no código porque a política depende de infraestrutura; TLS, confiança no proxy e limite de login devem ser aplicados no servidor/WAF.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas públicas, rotas, parâmetros, rótulos, estrutura HTML, cabeçalho/ordem do CSV e regras de visibilidade",
+      "porque": "São contrato declarado no manifest.md e consumidores externos dependem deles."
+    },
+    {
+      "o_que": "Paginação, remoção da exportação completa e alteração do formato de busca",
+      "porque": "O manifesto exige listagem e CSV sem parâmetros de limite; mudar isso quebraria compatibilidade."
+    },
+    {
+      "o_que": "Fallback MD5 para bases legadas",
+      "porque": "Remover o fallback bloquearia usuários antes da migração; o rehash ocorre quando a coluna comporta o novo hash."
+    },
+    {
+      "o_que": "Rate limiting, redirecionamento HTTPS e logging centralizado",
+      "porque": "São controles de infraestrutura ou mudança de comportamento sem contrato de armazenamento no pacote."
+    },
+    {
+      "o_que": "Comportamento de formatarStatus() para valores fora de 1, 2 e 3",
+      "porque": "O manifesto define apenas os três rótulos válidos e alterar o fallback poderia quebrar relatórios existentes."
+    }
+  ]
+}
