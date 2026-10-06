@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.108`
+**Versão atual:** `0.2.109`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.109` — 2026-10-06 — Nex N2.5 Pro's void record names the operator by role, not by pronoun
+
+- `nex-n2.5-pro-high/void-1/VOID.md` said "his side" and "he judged"; it now says the operator's side and that the
+  operator judged it too slow to repeat.
 
 ### `0.2.108` — 2026-10-06 — Nex N2.5 Pro's third run is voided for an operator connection failure and not repeated
 

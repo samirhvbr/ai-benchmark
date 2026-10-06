@@ -1,6 +1,6 @@
 # Unscored run: Nex N2.5 Pro at high, 2026-10-05 13:15 to 2026-10-06 14:30 (UTC−3)
 
-This delivery is **not scored**: the operator voided it for a connection failure on his side, before any judge
+This delivery is **not scored**: the operator voided it for a connection failure on the operator's side, before any judge
 saw it, and chose not to repeat it.
 
 ## What the session log shows
@@ -19,6 +19,6 @@ saw it, and chose not to repeat it.
 The interruption came from the operator's connection, not from the model or its client, and the operator's
 message after it breaks the fixed-message rule (`PROTOCOL §4`). Either is a result-independent reason, and the
 run was set aside on it before any judge saw it. The operator decided not to run a third attempt: each Nex
-N2.5 Pro run took between 10 and more than 25 hours, which he judged too slow to repeat. The agent therefore
+N2.5 Pro run took between 10 and more than 25 hours, which the operator judged too slow to repeat. The agent therefore
 keeps two runs and publishes the lower. The delivery (`entrega/`) is kept here as filed; it has no
 `scorecard.json`, so `tools/export-results.py` does not publish it.
