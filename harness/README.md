@@ -32,8 +32,8 @@ O que ele faz:
    preenchendo o **vínculo** (instância, nível, versão, spec, SHA-256 da matriz, modo). Os
    metadados vêm do *cabeçalho* de `private/matrix.json` — nunca das falhas. Sem `private/`
    à mão, informe por flag (`--instance-id`, `--matrix-sha`, …).
-3. Varre o resultado: se qualquer caminho parecer gabarito (`matrix`, `private`, `verify`,
-   `characterization`, `probes`), **apaga a pasta** e sai com erro.
+3. Scans the result (see *Package leak guard* below) and, if anything looks like the answer key,
+   **deletes the folder** and exits with an error.
 4. Escreve `.leb-pacote.sha256` (sha por arquivo) e imprime o `package_sha256` no stdout.
 
 O pacote é **determinístico** — mesma instância + mesmo modo ⇒ bytes idênticos, sem timestamp
@@ -118,3 +118,42 @@ O `timing_s` do relatório mede o **harness** (fases docker), não o modelo. As
 métricas de custo do *modelo* (tokens, US$/run, tok/s, wall-clock da inferência)
 vivem no bloco `cost_time` do scorecard (`../scoring/scorecard.schema.json`,
 informativo — não pontua) e são preenchidas quando o modelo é de fato executado.
+
+## Package leak guard
+
+`pack.py` scans the package before it finishes, and aborts (deleting the package) on:
+
+- **a path word** — `matrix`, `matriz`, `private`, `verify`, `characterization` or `probes` as a whole word of any path segment
+  (`matrix_x.json` and a `verify/` folder are refused; `VerifyToken.java` is not). An instance whose code has a legitimate name equal to
+  one of them lists the path in `pack_allow_paths` in the matrix header. The list exempts a path, never content;
+- **a content marker** — any text file containing a text of the matrix (`evidence`, `expected_fix`, `location`, `notes`, 20 characters
+  or more; comment leaders and line wrapping do not hide it) or a path of the private destination (the instance's `private/`,
+  `LEB_PRIVATE_RESULTS`, `LEB_RUNS_DIR`). The public matrix hash in `TAREFA.md` is not a marker.
+
+Before every scan the guard runs on a temporary copy with a planted `private/` folder and a planted marker and must report both,
+otherwise the packaging aborts: a guard that has not shown it can see does not count.
+
+## Per-instance runner (`private/runner.json`)
+
+Without the file, `leb_harness.py` runs as always (docker compose + PHP). With it, the instance says how to characterize and verify:
+
+```json
+{"runner": {"caracterizacao": {"cmd": ["..."]}, "verificacao": {"cmd": ["..."]}, "timeout_s": 1800}}
+```
+
+Each command runs with `private/` as its working directory and receives `LEB_ENTREGA_DIR` (the code under test), `LEB_INSTANCIA_DIR`
+and `LEB_RUN_DIR` (a scratch folder the harness creates and removes). The characterization prints `{"passed": N, "failed": M}`; the verification prints
+`{"probes": [...]}` (`../scoring/probe-result.schema.json`: `id`, `corrigida` and/or `result`, optional `proves`, `unobserved`,
+`affected`). The exit code of a command never decides regression; the report does (the submission fails more than the baseline).
+Anything unreadable (no JSON, an invalid or repeated probe id, a crash, a timeout — the whole process group is killed) makes the report
+`inconclusive` and the harness exit **3**: `leb` says so and `score.py` refuses to score it. A planted flaw with no probe is listed
+under `unverified`.
+
+## Tests and tools
+
+```sh
+python3 tests/run_all.py                 # tooling tests: standard library, no network, no Docker, synthetic and public fixtures only
+python3 tools/export-results.py --check  # the published LEB-100-A results are still what the tooling produces
+python3 tools/saturacao.py               # saturation and dispersion of a published instance (read-only)
+python3 tools/export-results.py --publish-aggregate <instance>   # active instances only: writes aggregate.json, nothing else
+```

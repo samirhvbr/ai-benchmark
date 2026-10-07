@@ -32,7 +32,10 @@
           "evidence": { "type": "string", "description": "Trecho/sintoma que caracteriza a falha" },
           "expected_fix": { "type": "string", "description": "Correção/estrutura-alvo canônica" },
           "verify": { "type": "string", "description": "Caminho do teste de verificação em private/verify/" },
-          "notes": { "type": "string", "description": "Equivalentes aceitos, armadilhas de avaliação" }
+          "notes": { "type": "string", "description": "Equivalentes aceitos, armadilhas de avaliação" },
+          "dimensions": { "type": "array", "uniqueItems": true, "items": { "enum": ["concorrencia", "consistencia", "resiliencia"] }, "description": "Informative (never changes points): cross-cutting properties the flaw exercises. The scorecard summarizes planted/detected/corrected per dimension." },
+          "decoy_kind": { "enum": ["diagnostico", "intervencao"], "description": "Informative, decoys only (exists=false): whether the decoy tempts the report or a change to the code." },
+          "informative_affected": { "type": "array", "items": { "type": "string" }, "description": "Informative: tests and contracts a fix touches. No effect on points." }
         },
         "allOf": [
           {
@@ -42,6 +45,9 @@
         ]
       }
     },
+    "task_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "Version of the canonical task (protocol/tasks/TAREFA-<version>.md) the instance is evaluated against; absent = 1.0.0." },
+    "publication": { "const": "aggregate", "description": "ACTIVE instance: only the per-agent aggregate is published (tools/export-results.py --publish-aggregate); deliveries, verdicts and per-flaw results stay in the private archive. Absent = full publication, as always." },
+    "pack_allow_paths": { "type": "array", "items": { "type": "string" }, "description": "Package paths (relative to the package root, e.g. code/src/verify) exempt from the leak guard's path-word check. Never exempts content." },
     "public_surface": {
       "type": "object",
       "description": "Superfície de contrato declarada (espelha manifest.md) usada na verificação COMP",

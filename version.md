@@ -1,10 +1,10 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.109`
+**Versão atual:** `0.2.119`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
-> ⚠️ A **spec RFC tem versão própria** (hoje `1.2.0`, declarada no `README.md`), e as
+> ⚠️ A **spec RFC tem versão própria** (hoje `1.4.0`, declarada no `README.md`), e as
 > instâncias também (LEB-100-A `v1.1`). Este arquivo versiona o **repositório**, não a
 > spec — os números são independentes de propósito.
 
@@ -61,6 +61,139 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.119` — 2026-10-06 — Spec 1.4.0: the extensions are documented, and nothing about scoring changes
+
+- `SPEC.md` is version 1.4.0, with release notes for every extension of `0.2.110` to `0.2.118` and a new invariant (§9.8: an active instance
+  publishes an aggregate only, and not even its retirement releases anything). The note on version 1.4.0 states that the §6.2 text on
+  C4 and the way `score.py` applies C4 and PEN-002 are still two different rules, documented in a separate proposal and not touched here.
+- `matrix/MATRIX.md`: the optional entry fields (`dimensions`, `decoy_kind`, `informative_affected`), the optional header fields
+  (`task_version`, `publication`, `pack_allow_paths`), the rule that `evidence` is written as the symptom, and §4.6 on active instances.
+- `harness/README.md`: the package leak guard, the per-instance runner, and the test and tool commands. `README.md` and `README_br.md`
+  carry spec 1.4.0.
+- The comments, schema descriptions and the `scoring/JUDGE.md` paragraph added in `0.2.110` to `0.2.118` are in English (US).
+- Verified after the extensions, against the real LEB-100-A: the legacy mechanical run is identical before and after (timings aside),
+  the 95 scorecards are reproduced, the package hash is the published one and `export-results.py --check` is green.
+
+### `0.2.118` — 2026-10-06 — A read-only tool says whether an instance still tells agents apart
+
+- New `tools/saturacao.py`. For one instance it prints, per category, the share of runs at the category maximum, the mean, standard
+  deviation and minimum, and per planted flaw the rate of found (C1/R1 full or half), fixed completely (C3/R3 full) and points earned.
+  It declares its base first: by default one run per agent, the representative run that counts toward the score (the lower median,
+  `counts_in_score`), so 37 of the 92 LEB-100-A runs; `--all-runs` uses every run.
+- Two sources, never mixed: a published instance from `results/runs.csv` and `results/flaws.csv`, or an ACTIVE instance from the private
+  archive (`--private ROOT --instance NAME`, which prints a PRIVATE REPORT notice because it names flaws). It writes nothing and changes no score.
+- Demonstrated on LEB-100-A before any use: at the category maximum PERF 28 of 37, SEC 3, BUG 3, ARCH 0, CLN 4, COMP 24, EXPL 0, total
+  min 282, mean 579, max 809 — the numbers measured in the F0 study, now reproduced by the tool and pinned by a test.
+- Tests: `tests/test_saturacao.py` (8 cases: published demonstration, declared base, nothing written, active mode on a synthetic archive).
+
+### `0.2.117` — 2026-10-06 — An active instance is published as an aggregate, by an explicit command, and nothing else
+
+- A matrix header may declare `"publication": "aggregate"` (an ACTIVE instance). `tools/export-results.py --publish-aggregate <instance>
+  [--edition <year>]` is then the only way anything about it reaches `results/`: it reads the private archive (`LEB_PRIVATE_RESULTS`, else
+  `LEB_RUNS_DIR`, laid out `<root>/<instance>/<agent>/run-<n>/`) and writes `results/<edition>/<instance>/aggregate.json`
+  (`scoring/publicacao-agregada.schema.json`): hashes, protocol, and per agent the score of the representative run (lower median),
+  grade, category scores, cost and time. There is no field for a flaw, a verdict, a delivery or a test name.
+- Before writing, the aggregate must validate against the schema and must not contain any flaw id or any long text of the matrix. A normal
+  run never reads the private archive: it reads the `aggregate.json` files already published, adds them to the leaderboard
+  (`README.md`, a section "aggregate only") and to `results.json` as an additive `aggregate_instances` key, and writes no `flaws.csv` or
+  `runs.csv` row and no scorecard for them.
+- The folder of an aggregate instance (published, or declared so by a matrix the exporter can see) holds nothing but `aggregate.json`;
+  a normal run and `--check` fail otherwise. Retiring an instance publishes nothing: the exporter has no release or retire flag.
+- Without the declaration everything is as before: `export-results.py --check` still passes on the 92 published LEB-100-A runs and
+  `results.json` has no new key. New: `harness/jsonschema_lite.py` (the schema validator, shared by the exporter and the tests) and the
+  header properties `task_version`, `publication` and `pack_allow_paths` in `matrix/matrix.schema.json`.
+- Tests: `tests/test_agregado.py` (13 cases on a synthetic tree: public instance, active instance, private archive).
+
+### `0.2.116` — 2026-10-06 — The package leak guard reads content, matches whole words, and proves it can see before it looks
+
+- `harness/pack.py`: the path patterns (`matrix`, `matriz`, `private`, `verify`, `characterization`, `probes`) now match **whole words** of
+  a path segment instead of substrings: `VerifyToken.java` and `MatrixController.java` no longer refuse a package, `matrix_x.json`,
+  a `verify/` directory or `Probes.php` still do. An instance whose code has a legitimate name equal to a pattern lists the path in
+  `pack_allow_paths` in the matrix header; the list exempts a path (never a word, never content).
+- New content scan of every text file in the package for markers derived from the matrix: the texts of `evidence`, `expected_fix`,
+  `location` and `notes` with 20 or more characters, and the paths of the private destination (the instance's `private/`, `LEB_PRIVATE_RESULTS`,
+  `LEB_RUNS_DIR`). Comment leaders and line wrapping do not hide a text. The public matrix hash in the header of `TAREFA.md` is not a marker.
+  An `evidence` that is a verbatim line of the delivered code would match the code itself: the packaging fails safe and the fix is to write
+  the evidence as the symptom.
+- Positive control on every packaging run: the guard first scans a temporary copy with a planted `private/` folder and a planted
+  marker and must report both, or the packaging aborts. A guard that has not shown it can see does not count.
+- The LEB-100-A package passes the new guard and its published `package_sha256` is unchanged (tested); none of the 34 long texts of its
+  matrix occurs in its code, so the content scan is not vacuous there either.
+- Tests: `tests/test_guarda_vazamento.py` (14 cases, synthetic instances).
+
+### `0.2.115` — 2026-10-06 — Informative fields on the matrix reach the scorecard and the exports, and never the points
+
+- A matrix entry may carry `dimensions` (`concorrencia`, `consistencia`, `resiliencia`), `decoy_kind` (`diagnostico`, `intervencao`; decoys
+  only) and `informative_affected` (tests and contracts a fix touches). `harness/score.py` copies them to the finding and, only when they
+  exist, adds `dimension_breakdown` (planted, detected, corrected per dimension) and `decoy_breakdown` (decoys and reported, per kind) to
+  the scorecard. A mechanical report may also carry `informative_affected` per flaw.
+- `tools/export-results.py` adds `dimensions` to the instance's flaws and `decoy_kinds` to `results.json`, and appends a `dimensions`
+  column at the end of `flaws.csv`, all only when the matrix declares them. Without the fields the outputs are byte for byte what they
+  were: `export-results.py --check` still passes on the 92 published LEB-100-A runs.
+- No weight, point or penalty reads these fields (tested: same totals, categories, penalties and criteria with and without them).
+  Schemas: `matrix/matrix.schema.json` and `scoring/scorecard.schema.json` gain the optional properties.
+- Tests: `tests/test_informativos.py` (7 cases) and a synthetic published-tree fixture in `tests/helpers.py`.
+
+### `0.2.114` — 2026-10-06 — Structural evidence can cap the refactoring criterion of Template R, and never raise it
+
+- `harness/score.py`: a probe that carries `result` (`full|half|none`) **and** `proves` naming `R3` is evidence for the R3 of an
+  ARCH or CLN flaw. `R3_final = min(R3_judge, evidence)` (order `none < half < full`; a judge that omitted R3 counts as `none`).
+  Evidence never raises R3 and never fills R1, R2 or R4; the existing rule that R4 only counts when a refactoring was attempted
+  applies to the lower R3. `proves` naming anything but `C3` or `R3`, or `R3` without `result`, makes the assembler refuse the report.
+- The scorecard gets `evidence: {R3, judge_R3, applied_R3}` for each flaw that had evidence, and no key otherwise.
+- The legacy boolean `corrigida` is still ignored for Template R and still decides C3 for Template C. Reports without `proves` are
+  scored exactly as before: the 95 published scorecards are still reproduced (test) and the LEB-100-A results are untouched.
+- `scoring/probe-result.schema.json` (new), `evidence` in `scoring/scorecard.schema.json` (optional), and one additive paragraph in
+  `scoring/JUDGE.md`. No existing score or penalty changes.
+- Tests: `tests/test_score_evidencia.py` (13 cases: the eight prototype cases plus half/half, schema checks and C3 control).
+
+### `0.2.113` — 2026-10-06 — An instance can declare its own runner, and an unreadable measurement is inconclusive, never a pass
+
+- `harness/leb_harness.py` reads `private/runner.json` (`runner.caracterizacao.cmd`, `runner.verificacao.cmd`, optional `timeout_s`).
+  Each command runs with the instance's `private/` as cwd and gets `LEB_ENTREGA_DIR`, `LEB_INSTANCIA_DIR` and `LEB_RUN_DIR`;
+  stdout carries one JSON object (`{"passed", "failed"}` for the characterization, `{"probes": [...]}` for the verification).
+  A probe says `corrigida` (boolean) and/or `result` (`full|half|none`), may carry `unobserved`, `affected` and `proves`
+  (`C3`/`R3` only). The exit code of a command never decides regression: the report does (submission fails more than baseline).
+- Output that cannot be read, an unknown or repeated probe id, a malformed probe, a crash or a timeout (the whole process group
+  is killed) make the report `inconclusive` and the harness exit 3. `leb` prints it as INCONCLUSIVO and `harness/score.py`
+  refuses to score such a report. Planted flaws with no probe are listed in `unverified`.
+- An instance without `runner.json` takes exactly the old docker/PHP path: a real LEB-100-A mechanical run before and after
+  gives identical reports once the timing fields are ignored. No scoring, penalty or published result changes.
+- Tests: `tests/test_runner.py` (17 cases, synthetic instance and synthetic runner scripts).
+
+### `0.2.112` — 2026-10-06 — One resolver finds an instance in either layout, wherever it lives
+
+- New `harness/instances.py`, used by `leb`, `harness/pack.py`, `harness/leb_harness.py` and `tools/export-results.py`.
+  It understands the legacy layout (`instances/<id>/{code, manifest.md, private/}`) and a split one
+  (`instances/<id>/{public/{code, manifest.md}, private/}`, where `public/` means "meant for the candidate", not "publishable").
+- `LEB_INSTANCES_PATH` (a `:`-separated list of roots that hold `instances/`) is searched first, so an instance can live
+  outside this repository; `LEB_RUNS_DIR` moves the run areas and packages out of the tree too. Without them nothing changes,
+  and LEB-100-A resolves to the same files (tested).
+- `./leb pacote`, `./leb scorecard` and `./leb instancias` work end to end on a split instance kept outside the repository
+  (tested with a synthetic one). No scoring, penalty or published result changes.
+
+### `0.2.111` — 2026-10-06 — Each instance declares the version of the canonical task it is evaluated against
+
+- `protocol/TAREFA.md` stays the task 1.0.0, byte for byte, and LEB-100-A stays on it. Later versions live in
+  `protocol/tasks/TAREFA-<version>.md`; the new `protocol/tasks/TAREFA-1.1.0.md` lets the agent create, split, move and
+  rename files while keeping the manifest, and says that not rewriting the system does not mean keeping its internal
+  organization. The quoted canonical statement is identical in both.
+- The matrix header may carry `task_version` (absent means 1.0.0). `harness/pack.py` picks the template by it, refuses an
+  unknown version and refuses a template whose version differs from the declared one.
+- `PROTOCOL §2.2` and `SPEC §9.4` now say the task is the same across instances that declare the same version, and that
+  comparisons need the same task version. No scoring, penalty or published result changes; the LEB-100-A package hash
+  is still the published one (tested).
+
+### `0.2.110` — 2026-10-06 — The tooling has tests that prove the published LEB-100-A results are still reproduced, and a workflow that runs them
+
+- New `tests/` (standard library only, no network, no Docker, synthetic fixtures and the published results only):
+  every published `scorecard.json` is reproduced by `harness/score.py` from its own `mecanico.json` and `veredito.json`
+  (95 of 95); the LEB-100-A package rebuilt in the published protocol (mode A, 30 turns) has the published SHA-256;
+  `tools/export-results.py --check` finds nothing to change; and the suffix `.a`/`.b` that MATRIX §2 already allows for two
+  occurrences of one taxonomy type scores each occurrence independently and normalizes the category over both.
+- New `.github/workflows/tests.yml` runs them on every push and pull request.
+- No scoring, penalty, identifier or published result changes.
 
 ### `0.2.109` — 2026-10-06 — Nex N2.5 Pro's void record names the operator by role, not by pronoun
 

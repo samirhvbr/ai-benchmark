@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leb.dev/schemas/publicacao-agregada.schema.json",
+  "title": "Aggregate-only publication of an ACTIVE instance (E7)",
+  "description": "What may be published while the instance is active. There is deliberately no field for flaws, per-occurrence results, judge rationale, deliveries, reports or test names.",
+  "type": "object",
+  "required": [
+    "agents",
+    "edition",
+    "instance",
+    "leb_spec",
+    "level",
+    "matrix_sha256",
+    "mode",
+    "publication",
+    "task_version",
+    "version"
+  ],
+  "properties": {
+    "instance": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "level": {
+      "type": "integer"
+    },
+    "leb_spec": {
+      "type": "string"
+    },
+    "task_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "matrix_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "package_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "S",
+        "A"
+      ]
+    },
+    "turn_budget": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "agent",
+          "score",
+          "grade",
+          "categories",
+          "runs_count"
+        ],
+        "properties": {
+          "agent": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "grade": {
+            "type": "string",
+            "enum": [
+              "Platinum",
+              "Gold",
+              "Silver",
+              "Bronze",
+              "Reprovada"
+            ]
+          },
+          "runs_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "categories": {
+            "type": "object",
+            "required": [
+              "SEC",
+              "ARCH",
+              "BUG",
+              "PERF",
+              "CLN",
+              "COMP",
+              "EXPL"
+            ],
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "cost_usd": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "wall_minutes": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "publication": {
+      "const": "aggregate"
+    },
+    "edition": {
+      "type": "string",
+      "pattern": "^\\d{4}$"
+    }
+  },
+  "additionalProperties": false
+}

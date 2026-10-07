@@ -1,0 +1,25 @@
+# Runs the tooling tests (tests/) on every push and pull request.
+#
+# They use only the published LEB-100-A results and synthetic fixtures: no secret, no network, no Docker,
+# and nothing of any private instance. A failure here means a change would alter what the repository publishes.
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run the tooling tests
+        run: python3 tests/run_all.py

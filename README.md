@@ -4,7 +4,7 @@
 
 🇧🇷 [Versão em português](README_br.md)
 
-**A Software Engineering evaluation standard for LLMs.** Spec version: **1.3.0**.
+**A Software Engineering evaluation standard for LLMs.** Spec version: **1.4.0**.
 
 LEB is not a prompt benchmark and does not measure who writes the prettiest code. It measures **who can evolve a legacy system without breaking it** — finding real flaws, fixing them, preserving compatibility, and explaining decisions like a senior engineer would.
 
@@ -116,7 +116,8 @@ Limits, stated plainly:
 
 ## Status
 
-- [x] Specification 1.3.0 (this repository) — canonical task shipped inside the package + delivery contract (`PROTOCOL §2.1–2.2`), calibration + difficulty axis (§8.1–8.2), cost/time block (§8.3), non-scoring
+- [x] Specification 1.4.0 (this repository) — additive and opt-in, no change to points: per-instance runner contract, structural evidence for Template R, whole-word and content leak guard, aggregate publication of active instances, tooling tests ([release notes](SPEC.md))
+- [x] Specification 1.3.0 — canonical task shipped inside the package + delivery contract (`PROTOCOL §2.1–2.2`), calibration + difficulty axis (§8.1–8.2), cost/time block (§8.3), non-scoring
 - [x] **Packager** ([`harness/pack.py`](harness/pack.py)) — builds `code/` + `manifest.md` + an instance-bound [`TAREFA.md`](protocol/TAREFA.md), with leak scanning and a deterministic `package_sha256`
 - [x] First instance: **[LEB-100-A](instances/LEB-100-A/)** v1.1 — PHP legacy code, 13 planted flaws + 2 decoys, private matrix, characterization + verify probes (validated live: characterization 22/22 green on both pristine and fixed code; probes flip PLANTADA→CORRIGIDA)
 - [x] Evaluation **harness** ([`harness/`](harness/)) — mechanical pipeline (characterization before/after + probes + difficulty coverage → JSON), stdlib-only, instance-agnostic; validated both ways on LEB-100-A

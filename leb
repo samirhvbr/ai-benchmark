@@ -20,7 +20,10 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-RUNS = os.path.join(ROOT, "runs")
+sys.path.insert(0, os.path.join(ROOT, "harness"))
+import instances as inst_lib  # noqa: E402  (the one resolver shared with pack.py, leb_harness.py and export-results.py)
+
+RUNS = inst_lib.runs_dir(ROOT)
 
 BOLD, DIM, OFF = "\033[1m", "\033[2m", "\033[0m"
 
@@ -30,24 +33,20 @@ def diz(msg=""):
 
 
 def rel(path):
-    try:
-        return os.path.relpath(path, ROOT)
-    except ValueError:
-        return path
+    """Relative to the repository when inside it, absolute otherwise (a private root or LEB_RUNS_DIR can be anywhere)."""
+    path = os.path.abspath(path)
+    return os.path.relpath(path, ROOT) if path.startswith(ROOT + os.sep) else path
 
 
 def instancia(nome):
-    """Aceita 'LEB-100-A' ou um caminho para a instância."""
-    for cand in (os.path.join(ROOT, "instances", nome), os.path.join(ROOT, nome), nome):
-        if os.path.isdir(os.path.join(cand, "code")):
-            return os.path.abspath(cand)
-    sys.exit("[leb] instância desconhecida: %s (veja ./leb instancias)" % nome)
+    """Accepts 'LEB-100-A' or a path to the instance; see LEB_INSTANCES_PATH (harness/instances.py)."""
+    return inst_lib.resolve(nome, ROOT)
 
 
 def rodar(cmd, capturar=False):
     r = subprocess.run(cmd, cwd=ROOT, text=True,
                        stdout=subprocess.PIPE if capturar else None)
-    if r.returncode not in (0, 2):
+    if r.returncode not in (0, 2, 3):
         sys.exit(r.returncode)
     return r
 
@@ -125,18 +124,18 @@ Official score = the **median TOTAL** of the 3 runs.
 
 def cmd_pacote(a):
     inst = instancia(a.instancia)
-    nome = os.path.basename(inst)
+    nome = inst.name
     base = os.path.join(RUNS, nome)
     destino = os.path.join(base, "pacote")
 
     cmd = [sys.executable, os.path.join("harness", "pack.py"),
-           "--instance", rel(inst), "--out", rel(destino), "--mode", a.mode]
+           "--instance", inst.root, "--out", rel(destino), "--mode", a.mode]
     if a.turnos:
         cmd += ["--turnos", str(a.turnos)]
     pacote_sha = rodar(cmd, capturar=True).stdout.strip()
 
     versao, matriz = "n/d", "n/d"
-    mpath = os.path.join(inst, "private", "matrix.json")
+    mpath = inst.matrix_path
     if os.path.exists(mpath):
         with open(mpath, encoding="utf-8") as f:
             m = json.load(f)
@@ -172,7 +171,7 @@ def cmd_pacote(a):
 
 def cmd_avaliar(a):
     inst = instancia(a.instancia)
-    nome = os.path.basename(inst)
+    nome = inst.name
     entrega = os.path.abspath(a.entrega)
     if not os.path.isdir(entrega):
         sys.exit("[leb] entrega não encontrada: %s" % entrega)
@@ -201,11 +200,13 @@ def cmd_avaliar(a):
         diz("[leb] AVISO: sem RELATORIO.md na entrega — sem ele não há C2/EXPL para pontuar")
 
     r = rodar([sys.executable, os.path.join("harness", "leb_harness.py"),
-               "--instance", rel(inst), "--submission", rel(code), "--out", rel(mech)])
+               "--instance", inst.root, "--submission", rel(code), "--out", rel(mech)])
 
     diz()
     if r.returncode == 2:
         diz("%s[leb] REGRESSÃO: a entrega quebrou a caracterização.%s" % (BOLD, OFF))
+    if r.returncode == 3:
+        diz("%s[leb] INCONCLUSIVO: o runner da instância não produziu uma medição legível. NÃO pontue esta entrega com este relatório.%s" % (BOLD, OFF))
     diz("Mecânico → %s" % rel(mech))
     diz()
     diz("%sPróximo passo — o juiz%s (scoring/JUDGE.md): leia RELATORIO.md + achados.json contra a" % (BOLD, OFF))
@@ -217,12 +218,12 @@ def cmd_avaliar(a):
 
 def cmd_scorecard(a):
     inst = instancia(a.instancia)
-    nome = os.path.basename(inst)
+    nome = inst.name
     saida = os.path.join(RUNS, nome, a.run)
     mech = os.path.join(saida, "mecanico.json")
     if not os.path.exists(mech):
         sys.exit("[leb] falta o relatório mecânico: %s (rode ./leb avaliar antes)" % rel(mech))
-    matriz = os.path.join(inst, "private", "matrix.json")
+    matriz = inst.matrix_path
     if not os.path.exists(matriz):
         sys.exit("[leb] esta instância não tem private/matrix.json — sem gabarito não há scorecard")
 
@@ -247,7 +248,7 @@ def cmd_estado(a):
         diz("[leb] nenhum run ainda. Comece com: ./leb pacote LEB-100-A")
         return
     for nome in alvos:
-        base = os.path.join(RUNS, os.path.basename(instancia(nome)))
+        base = os.path.join(RUNS, instancia(nome).name)
         if not os.path.isdir(base):
             diz("%s — nenhum run" % nome)
             continue
@@ -271,10 +272,8 @@ def cmd_estado(a):
 
 
 def cmd_instancias(_):
-    base = os.path.join(ROOT, "instances")
-    for nome in sorted(os.listdir(base)):
-        if os.path.isdir(os.path.join(base, nome, "code")):
-            diz(nome)
+    for inst in inst_lib.list_instances(ROOT):
+        diz(inst.name)
 
 
 def main():

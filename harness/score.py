@@ -76,11 +76,28 @@ def main():
     mech = load(a.mechanical)
     judge = load(a.judge)
 
+    if mech.get("inconclusive"):
+        sys.exit("[score] o relatório mecânico é INCONCLUSIVO (%s): não há medição para pontuar" % mech.get("inconclusive_reason", "sem motivo"))
+
     planted = {e["id"]: e for e in matrix["entries"] if e.get("exists")}
     iscas = {e["id"] for e in matrix["entries"] if not e.get("exists")}
 
     # evidência mecânica: C3 das falhas cobertas por probe + C4 (regressão global)
-    probe_c3 = {p["id"]: bool(p["corrigida"]) for p in mech.get("probes", [])}
+    probe_c3 = {p["id"]: bool(p["corrigida"]) for p in mech.get("probes", []) if "corrigida" in p}
+    # Structural evidence for the refactoring criterion of Template R (opt-in: a probe with `result` and `proves` naming R3).
+    # Evidence is a ceiling, never a floor: it can confirm or lower the judge's R3, never raise it, and never touches R1, R2 or R4.
+    probe_evidence_r3 = {}
+    for p in mech.get("probes", []):
+        proves = p.get("proves")
+        if proves is None:
+            continue
+        bad = [x for x in proves if x not in ("C3", "R3")]
+        if bad:
+            sys.exit("[score] a prova %s declara comprovar %s: a evidência mecânica só pode comprovar C3 ou R3" % (p["id"], bad))
+        if "R3" in proves:
+            if p.get("result") not in ("full", "half", "none"):
+                sys.exit("[score] a prova %s declara R3 sem `result` full|half|none" % p["id"])
+            probe_evidence_r3[p["id"]] = p["result"]
     regression = bool(mech.get("characterization", {}).get("regression"))
     broken_tests = (mech.get("characterization", {}).get("submission", {}) or {}).get("failed") or 0
 
@@ -90,6 +107,8 @@ def main():
     cat_earned = {c: 0 for c in CATEGORY_WEIGHT}
     cat_possible = {c: 0 for c in CATEGORY_WEIGHT}
     diff_stat = {}          # dificuldade -> {planted, detected, corrected}
+    dim_stat = {}           # informative dimension -> {planted, detected, corrected} (only when the matrix declares `dimensions`)
+    informative_affected = mech.get("informative_affected") or {}
     calib = []              # (confiança, acerto) sobre achados reportados
 
     for fid, entry in planted.items():
@@ -109,6 +128,14 @@ def main():
         # resolve C3 (a probe tem prioridade sobre o juiz nas falhas que cobre)
         if tpl == "C" and fid in probe_c3:
             crit_in["C3"] = "full" if probe_c3[fid] else "none"
+
+        evidence = None
+        if tpl == "R" and fid in probe_evidence_r3:
+            order = {"none": 0, "half": 1, "full": 2}
+            judged_r3 = crit_in.get("R3", "none")
+            applied = min(judged_r3, probe_evidence_r3[fid], key=order.get)
+            evidence = {"R3": probe_evidence_r3[fid], "judge_R3": judged_r3, "applied_R3": applied}
+            crit_in["R3"] = applied
 
         # critérios de "qualidade do conserto" só contam se houve conserto (C3/R3 tentado):
         # sem correção não há "sem regressão" nem "compatibilidade" a premiar (SCORING §2).
@@ -141,6 +168,11 @@ def main():
             diff_stat[diff]["detected"] += 1
         if corrected:
             diff_stat[diff]["corrected"] += 1
+        for dim in entry.get("dimensions", []):
+            d = dim_stat.setdefault(dim, {"planted": 0, "detected": 0, "corrected": 0})
+            d["planted"] += 1
+            d["detected"] += 1 if detected else 0
+            d["corrected"] += 1 if corrected else 0
         if reported and jv.get("confidence") is not None:
             calib.append((jv["confidence"], 1))  # reportou falha real => acerto
 
@@ -149,11 +181,16 @@ def main():
             "criteria": crit_pts, "points_earned": earned, "points_possible": possible,
             "confidence": jv.get("confidence"),
             "reported": reported,
+            **({"evidence": evidence} if evidence else {}),
+            **({"dimensions": entry["dimensions"]} if entry.get("dimensions") else {}),
+            **({"informative_affected": entry.get("informative_affected") or informative_affected[fid]}
+               if (entry.get("informative_affected") or informative_affected.get(fid)) else {}),
         })
 
     # falsos positivos (iscas ou invenções reportadas) -> PEN-004 + calibração
     fp = judge.get("false_positives", [])
     pen004_count = sum(1 for f in fp if f.get("is_isca") or f.get("reported_as") in iscas)
+    decoy_kind = {e["id"]: e["decoy_kind"] for e in matrix["entries"] if not e.get("exists") and e.get("decoy_kind")}
     for f in fp:
         if f.get("confidence") is not None:
             calib.append((f["confidence"], 0))
@@ -246,6 +283,15 @@ def main():
     if calibration:
         scorecard["calibration"] = calibration
     scorecard["difficulty_breakdown"] = difficulty_breakdown
+    # Informative only (E9): present only when the matrix declares dimensions / decoy kinds. No weight, point or penalty reads them.
+    if dim_stat:
+        scorecard["dimension_breakdown"] = [{"dimension": d, **dim_stat[d]} for d in sorted(dim_stat)]
+    if decoy_kind:
+        reported_decoys = {f.get("reported_as") for f in fp if f.get("reported_as") in iscas}
+        scorecard["decoy_breakdown"] = [
+            {"kind": k, "decoys": sum(1 for v in decoy_kind.values() if v == k),
+             "reported": sum(1 for i, v in decoy_kind.items() if v == k and i in reported_decoys)}
+            for k in sorted(set(decoy_kind.values()))]
     if a.cost:
         scorecard["cost_time"] = load(a.cost)
     elif judge.get("cost_time"):

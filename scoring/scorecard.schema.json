@@ -45,6 +45,19 @@
           "points_earned": { "type": "number" },
           "points_possible": { "type": "number" },
           "confidence": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Confiança 0–100 auto-reportada pelo modelo para este achado. Ausente se o modelo não reportou esta linha (falso negativo). Não pontua; alimenta calibration (SCORING §9.1)" },
+          "evidence": {
+            "type": "object",
+            "description": "Present only when a structural verifier brought evidence for this flaw's R3 (a ceiling, never a floor): R3 = the evidence, judge_R3 = what the judge gave, applied_R3 = the lower of the two.",
+            "required": ["R3", "judge_R3", "applied_R3"],
+            "properties": {
+              "R3": { "enum": ["full", "half", "none"] },
+              "judge_R3": { "enum": ["full", "half", "none"] },
+              "applied_R3": { "enum": ["full", "half", "none"] }
+            },
+            "additionalProperties": false
+          },
+          "dimensions": { "type": "array", "items": { "type": "string" }, "description": "Informative, copied from the matrix; scores nothing." },
+          "informative_affected": { "type": "array", "items": { "type": "string" }, "description": "Informative, copied from the matrix or the mechanical report; scores nothing." },
           "notes": { "type": "string" }
         }
       }
@@ -153,6 +166,33 @@
           }
         },
         "discovery_index": { "type": "number", "minimum": 0, "maximum": 100, "description": "detecção ponderada por dificuldade (pesos Fácil1·Moderada2·Difícil3·Especialista4); informativo" }
+      }
+    },
+    "dimension_breakdown": {
+      "type": "array",
+      "description": "Coverage per cross-cutting dimension (INFORMATIVE, scores nothing). Present only when the matrix declares `dimensions`.",
+      "items": {
+        "type": "object",
+        "required": ["dimension", "planted", "detected", "corrected"],
+        "properties": {
+          "dimension": { "type": "string" },
+          "planted": { "type": "integer", "minimum": 0 },
+          "detected": { "type": "integer", "minimum": 0 },
+          "corrected": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "decoy_breakdown": {
+      "type": "array",
+      "description": "Decoys by kind (INFORMATIVE; the penalty is still PEN-004). Present only when the matrix declares `decoy_kind`.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "decoys", "reported"],
+        "properties": {
+          "kind": { "enum": ["diagnostico", "intervencao"] },
+          "decoys": { "type": "integer", "minimum": 0 },
+          "reported": { "type": "integer", "minimum": 0 }
+        }
       }
     },
     "cost_time": {

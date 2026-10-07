@@ -20,6 +20,16 @@ the same inputs produces the same bytes and a diff shows only what really change
 
     python3 tools/export-results.py            # write
     python3 tools/export-results.py --check    # exit 1 if anything written would change
+
+An instance that declares `"publication": "aggregate"` in its matrix header is ACTIVE: its deliveries, verdicts, mechanical
+reports and per-flaw scorecards stay in the private archive (LEB_PRIVATE_RESULTS, else LEB_RUNS_DIR) and never enter results/.
+The only thing published for it is results/<edition>/<instance>/aggregate.json (scoring/publicacao-agregada.schema.json), written
+by an explicit command and only by it:
+
+    python3 tools/export-results.py --publish-aggregate LEB-300-A [--edition 2026]
+
+A normal run never reads the private archive. It reads the aggregate.json files that were already published, and `--check` fails
+if the folder of an aggregate instance holds anything else.
 """
 
 import argparse
@@ -35,6 +45,11 @@ import sys
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "harness"))
+import instances as instances_lib  # noqa: E402  (the resolver shared with leb, pack.py and leb_harness.py)
+import jsonschema_lite  # noqa: E402
+import pack as pack_lib  # noqa: E402  (the leak-marker rules of the package guard)
+
 RESULTS = os.path.join(ROOT, "results")
 REPO_URL = "https://github.com/samirhvbr/ai-benchmark"
 
@@ -438,7 +453,7 @@ def run_summary(r):
     }
 
 
-def check_agent_runs(where, agent_runs):
+def check_agent_runs(where, agent_runs, base=None):
     """The runs of one agent, sorted by number, before anything is published from them.
 
     A number may be missing only where a withdrawn-<n> folder holds it (PROTOCOL §4 item 5):
@@ -447,7 +462,7 @@ def check_agent_runs(where, agent_runs):
     """
     numbers = [x["run"] for x in agent_runs]
     withdrawn = {int(m.group(1)) for m in (re.fullmatch(r"withdrawn-(\d+)", d)
-                                           for d in os.listdir(os.path.join(RESULTS, where))) if m}
+                                           for d in os.listdir(os.path.join(base or RESULTS, where))) if m}
     expected = [n for n in range(1, len(numbers) + len(withdrawn) + 1) if n not in withdrawn]
     if numbers != expected:
         sys.exit("[export] %s has %s: runs are numbered run-1 to run-N with no gap, "
@@ -482,7 +497,7 @@ def aggregate(runs):
     instances = []
     for (edition, instance), items in sorted(by_instance.items()):
         first = items[0]
-        matrix = load(os.path.join(ROOT, "instances", instance, "private", "matrix.json"))
+        matrix = load(instances_lib.resolve(instance, ROOT).matrix_path)
         planted = [e for e in matrix["entries"] if e.get("exists")]
         agents = {}
         for r in sorted(items, key=lambda x: (x["agent"], x["run"])):
@@ -539,8 +554,12 @@ def aggregate(runs):
             "category_max": {c: (CATEGORY_WEIGHT.get(c) or {"COMP": 100, "EXPL": 50}[c]) for c in CATEGORIES},
             "flaws": [{"id": e["id"], "category": e["id"].split("-")[0], "severity": e["severity"],
                        "difficulty": e.get("difficulty"), "template": e["template"],
-                       "points_possible": sum(CRIT[e["template"]][e["severity"]].values())} for e in planted],
+                       "points_possible": sum(CRIT[e["template"]][e["severity"]].values()),
+                       **({"dimensions": e["dimensions"]} if e.get("dimensions") else {})} for e in planted],
             "decoys": [e["id"] for e in matrix["entries"] if not e.get("exists")],
+            # Informative (E9): the key exists only when the matrix declares the kind of at least one decoy.
+            **({"decoy_kinds": {e["id"]: e["decoy_kind"] for e in matrix["entries"] if not e.get("exists") and e.get("decoy_kind")}}
+               if any(e.get("decoy_kind") for e in matrix["entries"] if not e.get("exists")) else {}),
             "notes_url": "%s/blob/master/results/%s/%s/README.md" % (REPO_URL, edition, instance),
             "entries": entries,
         })
@@ -550,6 +569,133 @@ def aggregate(runs):
         "source": "%s/tree/master/results" % REPO_URL,
         "instances": instances,
     }
+
+
+# ------------------------------------------------------------------ aggregate-only publication of an active instance
+
+AGGREGATE_SCHEMA = os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json")
+FLAW_ID = re.compile(r"\b(?:SEC|ARCH|PERF|BUG|CLN)-\d{3}(?:\.[a-z])?\b")
+
+
+def private_results_root():
+    """Where the evaluated runs of active instances are kept: <root>/<instance>/<agent>/run-<n>/."""
+    return os.path.abspath(os.environ.get("LEB_PRIVATE_RESULTS") or instances_lib.runs_dir(ROOT))
+
+
+def is_aggregate(matrix):
+    return (matrix or {}).get("publication") == "aggregate"
+
+
+def discover_private_runs(instance, root):
+    runs = []
+    for card in sorted(glob.glob(os.path.join(root, instance, "*", "run-*", "scorecard.json"))):
+        run_dir = os.path.dirname(card)
+        missing = [n for n in ("run.json", "mecanico.json", "veredito.json") if not os.path.exists(os.path.join(run_dir, n))]
+        if missing:
+            sys.exit("[export] %s is missing %s" % (run_dir, ", ".join(missing)))
+        runs.append({
+            "dir": run_dir, "instance": instance, "agent": os.path.basename(os.path.dirname(run_dir)),
+            "run": int(os.path.basename(run_dir).split("-", 1)[1]),
+            "meta": load(os.path.join(run_dir, "run.json")), "mech": load(os.path.join(run_dir, "mecanico.json")),
+            "verdict": load(os.path.join(run_dir, "veredito.json")), "card": load(card),
+        })
+    return runs
+
+
+def build_aggregate(inst, matrix, runs, root, edition=None):
+    """The one thing published for an active instance: per agent, the score of the representative run (PROTOCOL §4), its grade and
+    its category scores, the cost and the time. Nothing about any flaw."""
+    if not runs:
+        sys.exit("[export] no evaluated run of %s under %s" % (inst.name, root))
+    first = runs[0]
+    for r in runs:
+        for what, got, want in (("matrix_sha256", r["card"].get("matrix_sha256"), first["card"].get("matrix_sha256")),
+                                ("package_sha256", r["meta"].get("package_sha256"), first["meta"].get("package_sha256")),
+                                ("mode", r["meta"].get("mode"), first["meta"].get("mode")),
+                                ("turn_budget", r["meta"].get("turn_budget"), first["meta"].get("turn_budget"))):
+            if got != want:
+                sys.exit("[export] %s/%s/run-%d: %s is %r, the first run says %r — runs of one instance share them"
+                         % (inst.name, r["agent"], r["run"], what, got, want))
+    by_agent = {}
+    for r in sorted(runs, key=lambda x: (x["agent"], x["run"])):
+        by_agent.setdefault(r["agent"], []).append(r)
+    agents = []
+    for agent, agent_runs in by_agent.items():
+        check_agent_runs("%s/%s" % (inst.name, agent), agent_runs, base=root)
+        score = statistics.median_low([x["card"]["total"] for x in agent_runs])
+        rep = next(x for x in agent_runs if x["card"]["total"] == score)
+        cats = rep["card"]["categories"]
+        agents.append({"agent": agent, "score": score, "grade": rep["card"]["grade"], "runs_count": len(agent_runs),
+                       "categories": {c: cats[c]["score"] for c in CATEGORIES},
+                       "cost_usd": (rep["meta"].get("cost_time") or {}).get("usd_estimate"),
+                       "wall_minutes": wall_minutes(rep["meta"])})
+    agents.sort(key=lambda e: (-e["score"], e["agent"]))
+    year = edition or max(r["meta"]["evaluated_on"] for r in runs)[:4]
+    return {"publication": "aggregate", "edition": year, "instance": matrix["instance"], "version": str(matrix["version"]),
+            "level": matrix["level"], "leb_spec": matrix["leb_spec"], "task_version": str(matrix.get("task_version") or "1.0.0"),
+            "matrix_sha256": first["card"]["matrix_sha256"], "package_sha256": first["meta"]["package_sha256"],
+            "mode": first["meta"]["mode"], "turn_budget": first["meta"].get("turn_budget"), "agents": agents}
+
+
+def refuse_unclean_aggregate(agg, matrix, inst):
+    """The schema has no field for a flaw, but a name can carry one: the agent id, or anything a future field allows. Before the
+    aggregate is written, no flaw id and no long text of the matrix may appear in it, and it must validate."""
+    errors = jsonschema_lite.validate(agg, load(AGGREGATE_SCHEMA))
+    if errors:
+        sys.exit("[export] the aggregate of %s does not match %s: %s" % (inst.name, rel(AGGREGATE_SCHEMA), "; ".join(errors[:5])))
+    text = pack_lib.squash(dumps(agg))
+    found = sorted(set(FLAW_ID.findall(text)))
+    markers = [origin for marker, origin in pack_lib.leak_markers(matrix, [os.path.realpath(inst.private_dir)]) if marker in text]
+    if found or markers:
+        sys.exit("[export] aggregate of %s refused: it names %s" % (inst.name, ", ".join(found + markers)))
+
+
+def load_aggregates():
+    """The aggregate.json files already published under results/, validated and sorted."""
+    schema = load(AGGREGATE_SCHEMA)
+    found = []
+    for path in sorted(glob.glob(os.path.join(RESULTS, "*", "*", "aggregate.json"))):
+        agg = load(path)
+        errors = jsonschema_lite.validate(agg, schema)
+        instance_dir = os.path.dirname(path)
+        if errors:
+            sys.exit("[export] %s does not match %s: %s" % (rel(path), rel(AGGREGATE_SCHEMA), "; ".join(errors[:5])))
+        if (agg["edition"], agg["instance"]) != (os.path.basename(os.path.dirname(instance_dir)), os.path.basename(instance_dir)):
+            sys.exit("[export] %s says %s/%s: the folder and the file must agree" % (rel(path), agg["edition"], agg["instance"]))
+        found.append(agg)
+    return found
+
+
+def check_public_tree():
+    """An aggregate instance, published or merely declared so by its matrix, has nothing in results/ but its aggregate.json:
+    no run folder, delivery, verdict, mechanical report, scorecard or note. Returns the problems found."""
+    problems = []
+    for instance_dir in sorted(glob.glob(os.path.join(RESULTS, "*", "*"))):
+        if not os.path.isdir(instance_dir):
+            continue
+        inst = instances_lib.find(os.path.basename(instance_dir), ROOT)
+        declared = inst is not None and os.path.exists(inst.matrix_path) and is_aggregate(load(inst.matrix_path))
+        if declared or os.path.exists(os.path.join(instance_dir, "aggregate.json")):
+            extra = sorted(set(os.listdir(instance_dir)) - {"aggregate.json"})
+            if extra:
+                problems.append("%s is an aggregate-only instance but holds %s" % (rel(instance_dir), ", ".join(extra)))
+    return problems
+
+
+def render_aggregate_sections(aggregates, w):
+    for agg in aggregates:
+        w("## %s · %s v%s (mode %s, %s turns) — aggregate only" % (agg["edition"], agg["instance"], agg["version"], agg["mode"], agg["turn_budget"]))
+        w("")
+        w("This instance is **active**. While it is, only the totals below are published: no per-flaw result, no verdict, no delivery.")
+        w("")
+        w("| # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |")
+        w("| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |")
+        for i, e in enumerate(agg["agents"], 1):
+            w("| %d | `%s` | **%d** | %s | %s | %d/%d |" % (i, e["agent"], e["score"], e["grade"],
+                                                         " | ".join(str(e["categories"][c]) for c in CATEGORIES), e["runs_count"], MAX_RUNS))
+        w("")
+        w("Matrix SHA-256 `%s` · package SHA-256 `%s`." % (agg["matrix_sha256"], agg.get("package_sha256", "n/d")))
+        w("")
 
 
 def runs_cell(e):
@@ -617,6 +763,7 @@ def render_readme(data):
             else:
                 w("Every agent above has a published cutoff earlier than that.")
         w("")
+    render_aggregate_sections(data.get("aggregate_instances", []), w)
     return "\n".join(out).rstrip() + "\n"
 
 
@@ -637,6 +784,8 @@ FLAW_COLUMNS = [
     "edition", "instance", "agent", "run", "counts_in_score", "flaw", "category", "severity", "difficulty",
     "reported", "found", "explained", "fixed", "compatible", "points_earned", "points_possible", "confidence",
 ]
+# Appended after the fixed columns, and only for a publication whose matrices declare dimensions (E9).
+OPTIONAL_FLAW_COLUMNS = ["dimensions"]
 
 
 def csv_text(columns, rows):
@@ -694,21 +843,45 @@ def render_csvs(runs, data):
             flaw_rows.append({**base, "flaw": f["id"], "category": info["category"], "severity": info["severity"],
                 "difficulty": info["difficulty"], "reported": v.get("reported"), "found": c("C1"), "explained": c("C2"),
                 "fixed": c("C3"), "compatible": c("C5"), "points_earned": f["points_earned"],
-                "points_possible": f["points_possible"], "confidence": f.get("confidence")})
-    return csv_text(RUN_COLUMNS, run_rows), csv_text(FLAW_COLUMNS, flaw_rows)
+                "points_possible": f["points_possible"], "confidence": f.get("confidence"),
+                "dimensions": "|".join(info["dimensions"]) if info.get("dimensions") else None})
+    flaw_columns = FLAW_COLUMNS + [c for c in OPTIONAL_FLAW_COLUMNS if any(i.get(c) for i in flaw_info.values())]
+    return csv_text(RUN_COLUMNS, run_rows), csv_text(flaw_columns, flaw_rows)
 
 
 def main():
     ap = argparse.ArgumentParser(description="Publish the evaluated LEB runs under results/")
     ap.add_argument("--check", action="store_true", help="exit 1 if any output would change")
+    ap.add_argument("--publish-aggregate", metavar="INSTANCE",
+                    help="write results/<edition>/<INSTANCE>/aggregate.json from the private archive (an instance whose matrix "
+                         "declares publication: aggregate); the only command that ever reads the private archive")
+    ap.add_argument("--edition", help="edition folder for --publish-aggregate (default: the year of the latest evaluation)")
     a = ap.parse_args()
+
+    problems = check_public_tree()
+    if problems:
+        sys.exit("[export] " + "\n[export] ".join(problems))
 
     runs = discover_runs()
     if not runs:
         sys.exit("[export] no evaluated run under results/ (a run needs scorecard.json)")
 
     outputs = {os.path.join(r["dir"], "scorecard.md"): render_scorecard(r) for r in runs}
+    aggregates = load_aggregates()
+    if a.publish_aggregate:
+        inst = instances_lib.resolve(a.publish_aggregate, ROOT)
+        matrix = load(inst.matrix_path)
+        if not is_aggregate(matrix):
+            sys.exit("[export] %s does not declare publication: aggregate; its results are published by a normal run" % inst.name)
+        root = private_results_root()
+        agg = build_aggregate(inst, matrix, discover_private_runs(inst.name, root), root, a.edition)
+        refuse_unclean_aggregate(agg, matrix, inst)
+        outputs[os.path.join(RESULTS, agg["edition"], inst.name, "aggregate.json")] = dumps(agg)
+        aggregates = [x for x in aggregates if (x["edition"], x["instance"]) != (agg["edition"], agg["instance"])] + [agg]
+    aggregates.sort(key=lambda x: (x["edition"], x["instance"]))
     data = aggregate(runs)
+    if aggregates:  # additive: results.json has no such key until an active instance is published
+        data["aggregate_instances"] = aggregates
     outputs[os.path.join(RESULTS, "results.json")] = dumps(data)
     outputs[os.path.join(RESULTS, "README.md")] = render_readme(data)
     outputs[os.path.join(RESULTS, "runs.csv")], outputs[os.path.join(RESULTS, "flaws.csv")] = render_csvs(runs, data)
@@ -720,6 +893,7 @@ def main():
             continue
         stale.append(rel(path))
         if not a.check:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(content)
 

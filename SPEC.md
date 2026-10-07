@@ -1,6 +1,6 @@
 # LEB — LLM Engineering Benchmark
 
-**Especificação Técnica** · Versão **1.3.0** · Status: **Rascunho normativo**
+**Especificação Técnica** · Versão **1.4.0** · Status: **Rascunho normativo**
 
 ---
 
@@ -214,16 +214,43 @@ Falta só **executar modelos de verdade** para gerar os primeiros scorecards de 
 1. IDs da taxonomia são **imutáveis** — nunca renumerar; depreciar e criar novo ID.
 2. A matriz de uma instância publicada **NÃO DEVE** mudar; erros exigem nova versão da instância.
 3. O enunciado dado ao modelo é **fixo e neutro** (`protocol/PROTOCOL.md §2`) — não pode vazar dicas da matriz.
-4. A tarefa (enunciado + contrato de entrega) é **do padrão, não da instância**: vive só em `protocol/TAREFA.md` e **NÃO DEVE** ser reescrita, parafraseada ou estendida dentro de uma instância (`protocol/PROTOCOL.md §2.2`). Instância declara contrato de sistema (`manifest.md`); padrão declara tarefa.
+4. A tarefa (enunciado + contrato de entrega) é **do padrão, não da instância**: vive só em `protocol/TAREFA.md` e **NÃO DEVE** ser reescrita, parafraseada ou estendida dentro de uma instância (`protocol/PROTOCOL.md §2.2`). Instância declara contrato de sistema (`manifest.md`); padrão declara tarefa. O padrão pode ter **várias versões da tarefa**: a 1.0.0 continua em `protocol/TAREFA.md`, intacta; as seguintes vivem em `protocol/tasks/`; cada instância declara a sua em `task_version` no cabeçalho da matriz (ausente = 1.0.0), e `harness/pack.py` usa exatamente essa. Comparações entre modelos exigem a mesma instância, o mesmo protocolo **e a mesma versão da tarefa**.
 5. O contrato de entrega é **descritivo**: padroniza a forma da resposta e não cria critério, bônus nem penalidade — mudar formato de entrega não muda pontuação.
 6. Todo resultado publicado **DEVE** citar: versão da spec, ID+hash da instância, protocolo do run (turnos, ferramentas, temperatura) e scorecard JSON.
 7. Comparações entre modelos só são válidas **na mesma instância e mesmo protocolo**.
+8. Uma instância **ativa** (`publication: "aggregate"` no cabeçalho da matriz) publica apenas o agregado por agente; entregas, vereditos e resultados por falha ficam em arquivo privado, e nada é liberado sem ordem expressa do operador, caso a caso — nem pela aposentadoria da instância (`matrix/MATRIX.md §4.6`).
 
 ---
 
 ## 10. Versionamento
 
 A spec segue **SemVer**: MAJOR muda pontuação/regras; MINOR adiciona falhas/níveis; PATCH corrige texto. Instâncias são versionadas separadamente (`LEB-200-A v1.2`).
+
+### Release notes for version 1.4.0
+
+No change to points, penalties, IDs or published matrices (hence MINOR; instances 1.1.0 to 1.3.0, and every published LEB-100-A result,
+remain valid without change; the 95 published scorecards are still reproduced by `harness/score.py`). Everything below is additive and
+opt-in per instance:
+
+- **Task versions** (§9.4) — an instance declares `task_version`; `protocol/TAREFA.md` stays 1.0.0, later versions live in
+  `protocol/tasks/`. Task 1.1.0 lets the agent create, split, move and rename files while keeping the manifest.
+- **Instance resolution** — an instance may live outside the repository (`LEB_INSTANCES_PATH`) in a split layout (`public/` for what the
+  candidate receives, `private/`), and runs and packages go to `LEB_RUNS_DIR`. `harness/instances.py` is the one resolver.
+- **Runner contract** — an instance may declare `private/runner.json`: the harness runs its characterization and verification commands
+  and reads one JSON object from each. A reading that cannot be made (no JSON, a crash, a timeout) is **inconclusive** (exit 3), never
+  an approval and never a regression; `score.py` refuses it. An instance without `runner.json` runs as before.
+- **Structural evidence for Template R** — a probe with `result` and `proves: ["R3"]` caps the judge's R3 (`R3_final = min(judge, evidence)`).
+  Evidence is a ceiling, never a floor, and it never fills R1, R2 or R4. Evidence that names another criterion is refused.
+- **Informative fields** — `dimensions`, `decoy_kind` and `informative_affected` on matrix entries reach the scorecard and the exports
+  only when declared; no weight, point or penalty reads them.
+- **Package leak guard** — whole-word path matching, a content scan for markers derived from the matrix and for the private destination,
+  an instance-declared `pack_allow_paths`, and a positive control on every packaging run.
+- **Aggregate publication of an active instance** (§9.8, `matrix/MATRIX.md §4.6`).
+- **Tooling tests** — `tests/run_all.py` (standard library, no network, no Docker) and a workflow that runs it on synthetic and public
+  fixtures only. `tools/saturacao.py` measures saturation and dispersion, read-only.
+
+Known and unchanged in this version: the §6.2 text on C4 as a global regression and the way `harness/score.py` applies C4 and PEN-002
+are not the same rule; the difference is documented in a separate proposal and is not altered here.
 
 ### Notas da versão 1.3.0
 

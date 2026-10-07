@@ -32,6 +32,21 @@ LEB-200-A/                     ← instância "A" do nível 200
 | `expected_fix` | Correção/estrutura-alvo canônica (o que o critério C3/R3 cobra) |
 | `verify` | Como conferir mecanicamente (teste em `private/verify/`, quando aplicável) |
 | `notes` | Armadilhas de avaliação (ex.: correções alternativas aceitas) |
+| `dimensions` | *Optional, informative.* Cross-cutting properties the flaw exercises (`concorrencia`, `consistencia`, `resiliencia`). The scorecard summarizes planted, detected and corrected per dimension. Never changes points. |
+| `decoy_kind` | *Optional, informative, decoys only.* `diagnostico` (tempts the report) or `intervencao` (tempts a change to the code). Never changes points or PEN-004. |
+| `informative_affected` | *Optional, informative.* Tests and contracts a fix touches. No effect on points. |
+
+The header of the matrix (next to `instance`, `level`, `version`, `leb_spec`) may also carry three optional fields:
+
+| Field | Meaning |
+| --- | --- |
+| `task_version` | Version of the canonical task the instance is evaluated against (`protocol/tasks/TAREFA-<version>.md`); absent means 1.0.0 (SPEC §9.4). |
+| `publication` | `"aggregate"` marks an **active** instance: only a per-agent aggregate is published (§4.6). Absent means full publication, as always. |
+| `pack_allow_paths` | Package paths (relative to the package root, e.g. `code/src/verify`) that the leak guard's path-word check lets through. It exempts a path, never content (`harness/README.md`, *Package leak guard*). |
+
+The texts of `evidence`, `expected_fix`, `location` and `notes` with 20 or more characters are also the markers the leak guard
+looks for inside the package. Write `evidence` as the **symptom**, not as a verbatim line of the code the model receives: a verbatim
+line matches the code itself and the packaging refuses it (fail-safe).
 
 Exemplo legível:
 
@@ -68,6 +83,13 @@ Exemplo legível:
    A cutoff after 2026-07-13, or none published, does not disqualify a run: its scorecard and the
    leaderboard say that the model may have trained on the key. Item 3 still decides when LEB-100-A
    is retired, and the cutoffs recorded run by run are the evidence for that decision.
+6. **Active instances (`publication: "aggregate"`).** While such an instance is active, the only thing published is an
+   aggregate per agent (`scoring/publicacao-agregada.schema.json`: hashes, protocol, score, grade, category scores, cost and
+   time), written by `tools/export-results.py --publish-aggregate` and by nothing else. Deliveries, verdicts, mechanical
+   reports and per-flaw results stay in a private archive and are not copied into the public repository. **Retiring the
+   instance publishes nothing by itself**, in spite of item 2: releasing any detail (the matrix, a delivery, the judge's
+   rationale, a per-flaw result) takes the owner's express order, case by case, recorded in the commit that does it. The
+   SHA-256 of `matrix.json` published at launch is what lets anyone verify the matrix if it is ever released.
 
 ## 5. Correspondência (matching) relatório × matriz
 
