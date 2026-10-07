@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.117`
+**Versão atual:** `0.2.118`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.118` — 2026-10-06 — A read-only tool says whether an instance still tells agents apart
+
+- New `tools/saturacao.py`. For one instance it prints, per category, the share of runs at the category maximum, the mean, standard
+  deviation and minimum, and per planted flaw the rate of found (C1/R1 full or half), fixed completely (C3/R3 full) and points earned.
+  It declares its base first: by default one run per agent, the representative run that counts toward the score (the lower median,
+  `counts_in_score`), so 37 of the 92 LEB-100-A runs; `--all-runs` uses every run.
+- Two sources, never mixed: a published instance from `results/runs.csv` and `results/flaws.csv`, or an ACTIVE instance from the private
+  archive (`--private ROOT --instance NAME`, which prints a PRIVATE REPORT notice because it names flaws). It writes nothing and changes no score.
+- Demonstrated on LEB-100-A before any use: at the category maximum PERF 28 of 37, SEC 3, BUG 3, ARCH 0, CLN 4, COMP 24, EXPL 0, total
+  min 282, mean 579, max 809 — the numbers measured in the F0 study, now reproduced by the tool and pinned by a test.
+- Tests: `tests/test_saturacao.py` (8 cases: published demonstration, declared base, nothing written, active mode on a synthetic archive).
 
 ### `0.2.117` — 2026-10-06 — An active instance is published as an aggregate, by an explicit command, and nothing else
 
