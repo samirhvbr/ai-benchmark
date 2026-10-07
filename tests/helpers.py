@@ -77,7 +77,7 @@ def synthetic_mech(failed=0, probes=()):
 
 def synthetic_verdict(planted, false_positives=()):
     return {"instance": "LEB-TEST-A", "matrix_sha256": "0" * 64, "model": {"name": "x"}, "protocol": {"mode": "A"},
-            "judge": "t", "blind_label": "x", "planted": list(planted), "false_positives": list(false_positives),
+            "judge": {"type": "llm", "id": "t"}, "blind_label": "x", "planted": list(planted), "false_positives": list(false_positives),
             "extra_findings": [], "comp_violations": [], "penalties": {},
             "expl_rubric": {"clareza": 5, "precisao": 5, "causa_raiz": 5, "priorizacao": 5, "trade_offs": 5}}
 
@@ -90,52 +90,10 @@ def finding(card, fid):
     return next(f for f in card["findings"] if f["id"] == fid)
 
 
-# ---- a tiny JSON Schema subset validator (type, enum, pattern, required, properties, items, ...) --------
+# ---- the schema validator lives in harness/jsonschema_lite.py (shared with the exporter) ----------------------
 
-def validate(value, schema, root=None, path="$"):
-    """Return a list of error strings. Covers the subset the repository's schemas use."""
-    root = root if root is not None else schema
-    if "$ref" in schema:
-        node = root
-        for part in schema["$ref"].lstrip("#/").split("/"):
-            node = node[part]
-        return validate(value, node, root, path)
-    errs = []
-    t = schema.get("type")
-    if t:
-        names = t if isinstance(t, list) else [t]
-        py = {"object": dict, "array": list, "string": str, "integer": int, "number": (int, float),
-              "boolean": bool, "null": type(None)}
-        if not any(isinstance(value, py[n]) and not (n in ("integer", "number") and isinstance(value, bool)) for n in names):
-            return ["%s: expected %s" % (path, t)]
-    if "enum" in schema and value not in schema["enum"]:
-        errs.append("%s: %r not in %s" % (path, value, schema["enum"]))
-    if "pattern" in schema and isinstance(value, str) and not re.search(schema["pattern"], value):
-        errs.append("%s: %r does not match %s" % (path, value, schema["pattern"]))
-    for key, op in (("minimum", lambda a, b: a < b), ("maximum", lambda a, b: a > b)):
-        if key in schema and isinstance(value, (int, float)) and not isinstance(value, bool) and op(value, schema[key]):
-            errs.append("%s: violates %s %s" % (path, key, schema[key]))
-    if isinstance(value, dict):
-        for req in schema.get("required", []):
-            if req not in value:
-                errs.append("%s: missing %s" % (path, req))
-        props = schema.get("properties", {})
-        for k, v in value.items():
-            if k in props:
-                errs += validate(v, props[k], root, path + "." + k)
-            elif isinstance(schema.get("additionalProperties"), dict):
-                errs += validate(v, schema["additionalProperties"], root, path + "." + k)
-            elif schema.get("additionalProperties") is False:
-                errs.append("%s: property not allowed: %s" % (path, k))
-    if isinstance(value, list):
-        if "minItems" in schema and len(value) < schema["minItems"]:
-            errs.append("%s: too few items" % path)
-        if schema.get("uniqueItems") and len({json.dumps(i, sort_keys=True) for i in value}) != len(value):
-            errs.append("%s: duplicate items" % path)
-        if "items" in schema:
-            for i, v in enumerate(value):
-                errs += validate(v, schema["items"], root, "%s[%d]" % (path, i))
-    return errs
+sys.path.insert(0, os.path.join(ROOT, "harness"))
+from jsonschema_lite import validate  # noqa: E402,F401
 
 
 def make_instance(parent, name="LEB-TEST-A", layout="legacy", matrix=None):
@@ -170,14 +128,17 @@ def load_exporter(root):
     return mod
 
 
-def make_published_tree(parent, matrix, runs, name="LEB-TEST-A", edition="2026", layout="legacy", failed=0):
+def make_published_tree(parent, matrix, runs, name="LEB-TEST-A", edition="2026", layout="legacy", failed=0, run_base=None):
     """Instance (`make_instance`) plus evaluated runs under results/<edition>/<name>/<agent>/run-<n>/.
 
     `runs` is a list of (agent, run_number, verdict) built with `synthetic_verdict`; the scorecard of each is produced by the real
-    score.py from the matrix, a synthetic mechanical report and that verdict. Returns the tree root."""
-    make_instance(parent, name, layout=layout, matrix=matrix)
+    score.py from the matrix, a synthetic mechanical report and that verdict. With `run_base` the run folders go to
+    <run_base>/<agent>/run-<n> instead (the private archive of an active instance) and the instance itself is not created.
+    Returns the tree root."""
+    if run_base is None:
+        make_instance(parent, name, layout=layout, matrix=matrix)
     for agent, number, verdict in runs:
-        d = os.path.join(parent, "results", edition, name, agent, "run-%d" % number)
+        d = os.path.join(run_base, agent, "run-%d" % number) if run_base else os.path.join(parent, "results", edition, name, agent, "run-%d" % number)
         os.makedirs(os.path.join(d, "entrega"))
         with open(os.path.join(d, "entrega", "RELATORIO.md"), "w", encoding="utf-8") as f:
             f.write("report of %s run %d\n" % (agent, number))

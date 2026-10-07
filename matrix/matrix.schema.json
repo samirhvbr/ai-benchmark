@@ -45,6 +45,9 @@
         ]
       }
     },
+    "task_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "Versão da tarefa canônica (protocol/tasks/TAREFA-<versão>.md) contra a qual a instância é avaliada; ausente = 1.0.0." },
+    "publication": { "const": "aggregate", "description": "Instância ATIVA: só o agregado por agente é publicado (tools/export-results.py --publish-aggregate); entregas, vereditos e resultados por falha ficam no arquivo privado. Ausente = publicação completa, como sempre." },
+    "pack_allow_paths": { "type": "array", "items": { "type": "string" }, "description": "Caminhos do pacote (relativos à raiz do pacote, ex.: code/src/verify) isentos da checagem de palavra no caminho do guarda anti-vazamento. Nunca isenta conteúdo." },
     "public_surface": {
       "type": "object",
       "description": "Superfície de contrato declarada (espelha manifest.md) usada na verificação COMP",

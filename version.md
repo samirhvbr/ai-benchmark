@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.116`
+**Versão atual:** `0.2.117`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.117` — 2026-10-06 — An active instance is published as an aggregate, by an explicit command, and nothing else
+
+- A matrix header may declare `"publication": "aggregate"` (an ACTIVE instance). `tools/export-results.py --publish-aggregate <instance>
+  [--edition <year>]` is then the only way anything about it reaches `results/`: it reads the private archive (`LEB_PRIVATE_RESULTS`, else
+  `LEB_RUNS_DIR`, laid out `<root>/<instance>/<agent>/run-<n>/`) and writes `results/<edition>/<instance>/aggregate.json`
+  (`scoring/publicacao-agregada.schema.json`): hashes, protocol, and per agent the score of the representative run (lower median),
+  grade, category scores, cost and time. There is no field for a flaw, a verdict, a delivery or a test name.
+- Before writing, the aggregate must validate against the schema and must not contain any flaw id or any long text of the matrix. A normal
+  run never reads the private archive: it reads the `aggregate.json` files already published, adds them to the leaderboard
+  (`README.md`, a section "aggregate only") and to `results.json` as an additive `aggregate_instances` key, and writes no `flaws.csv` or
+  `runs.csv` row and no scorecard for them.
+- The folder of an aggregate instance (published, or declared so by a matrix the exporter can see) holds nothing but `aggregate.json`;
+  a normal run and `--check` fail otherwise. Retiring an instance publishes nothing: the exporter has no release or retire flag.
+- Without the declaration everything is as before: `export-results.py --check` still passes on the 92 published LEB-100-A runs and
+  `results.json` has no new key. New: `harness/jsonschema_lite.py` (the schema validator, shared by the exporter and the tests) and the
+  header properties `task_version`, `publication` and `pack_allow_paths` in `matrix/matrix.schema.json`.
+- Tests: `tests/test_agregado.py` (13 cases on a synthetic tree: public instance, active instance, private archive).
 
 ### `0.2.116` — 2026-10-06 — The package leak guard reads content, matches whole words, and proves it can see before it looks
 
