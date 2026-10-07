@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.122`
+**Versão atual:** `0.2.123`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.123` — 2026-10-07 — A read-only tool says which model answered, and when it changed
+
+- New `tools/modelos-usados.py`. It reads Claude Code transcripts (a file, or a directory searched for `*.jsonl`, which takes in the
+  subagents' files) and reports, per file, each model that wrote an assistant message with its messages, tool calls and first and last
+  instant, and every point where the model changed. It exits 1 when a switch is found.
+- `--not-before <instant>` allows a switch only at or after that instant. It is meant for a run in stages: pass the moment the first
+  stage's delivery was saved, and the exit code says whether everything before it was written by a single model.
+- Until now a switch (`PROTOCOL §3`, *One model per run*) was found by reading the session log by hand. The tool changes no rule and no
+  score. It does not know other clients, nor which model was requested, only the one that answered.
+- New `tests/test_modelos_usados.py` (7 cases, synthetic transcripts): one model, a switch with its instant, ignored synthetic and damaged
+  lines, subagent files, the `--not-before` boundary, unreadable input, and that it writes nothing. The suite is 104 tests.
 
 ### `0.2.122` — 2026-10-07 — The text now states how C4 and PEN-002 are applied, with no score changed
 
