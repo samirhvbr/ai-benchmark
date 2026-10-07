@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.109`
+**Versão atual:** `0.2.110`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.110` — 2026-10-06 — The tooling has tests that prove the published LEB-100-A results are still reproduced, and a workflow that runs them
+
+- New `tests/` (standard library only, no network, no Docker, synthetic fixtures and the published results only):
+  every published `scorecard.json` is reproduced by `harness/score.py` from its own `mecanico.json` and `veredito.json`
+  (95 of 95); the LEB-100-A package rebuilt in the published protocol (mode A, 30 turns) has the published SHA-256;
+  `tools/export-results.py --check` finds nothing to change; and the suffix `.a`/`.b` that MATRIX §2 already allows for two
+  occurrences of one taxonomy type scores each occurrence independently and normalizes the category over both.
+- New `.github/workflows/tests.yml` runs them on every push and pull request.
+- No scoring, penalty, identifier or published result changes.
 
 ### `0.2.109` — 2026-10-06 — Nex N2.5 Pro's void record names the operator by role, not by pronoun
 
