@@ -1254,6 +1254,12 @@ No score changes; only the dagger and the scorecards' "Training cutoff" row do.
 
 ## Before quoting a number
 
+- **A broken characterization test is charged twice, and the published scores keep it.** `SPEC §6.2` says a regression localized in the fix of
+  one flaw costs only that flaw's C4, and that PEN-002 is for a regression outside every flaw. `harness/score.py` applies the rule differently:
+  one broken test turns C4 to `none` for every attempted flaw and also costs PEN-002 (−20). Five of the 92 runs broke characterization tests
+  (Claude Haiku 4.5 run 3, DeepSeek V4 Flash run 2, MiniMax-M3 thinking run 3, Nex N2.5 Pro runs 1 and 2). Two of them are the run that
+  defines an official score: DeepSeek V4 Flash at `high` (run 2) and Nex N2.5 Pro at `high` (run 1). No verdict gives an explicit C4, and every
+  published scorecard is reproduced by `score.py` as it is, so nothing here was recomputed. The full statement is in `SPEC §6.2`.
 - **Twenty-six agents have three runs; the rest are not official.** An official score is the median of three
   runs (`PROTOCOL §4`). Sonnet 5.5 at `xhigh` (825, 809, 724) and at `max` (807, 773, 820), Opus 5.5 at
   `xhigh` (711, 717, 805), GPT-6.1-sol (666, 653, 661), Grok 4.7 (638, 663, 607), GPT-6-astra (661, 596,

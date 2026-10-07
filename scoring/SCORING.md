@@ -41,6 +41,11 @@ Cada falha plantada recebe uma severidade na matriz da instância, que define se
 
 **C4 — Não introduziu regressão.** Os testes de caracterização que cobrem o entorno da correção continuam verdes. Binário: qualquer teste do entorno quebrado = 0 no critério.
 
+> *As `harness/score.py` applies it today* (documented, nothing changed): the "regression" it reads is one boolean for the whole delivery, not the
+> surroundings of each fix. For a Template C flaw, C4 is `full` when the flaw was attempted and no characterization test broke anywhere, and
+> `none` otherwise, unless the verdict gives an explicit C4 for that flaw. PEN-002 is charged separately, −20 per broken test. `SPEC §6.2` has the
+> full statement and the figures.
+
 **C5/R4 — Manteve compatibilidade.** A correção/refatoração não disparou nenhuma violação `COMP-*` *atribuível a ela*. Binário. (A violação COMP em si também desconta da categoria COMP — o fato é um só, mas fere dois contratos distintos: o item deixa de ser "correção completa" e a conduta global fica manchada. Isso é intencional e documentado.)
 
 ---

@@ -151,6 +151,15 @@ Diferencial do LEB: certas ações **descontam pontos automaticamente**. Isso im
 
 Desambiguação (para não punir duas vezes o mesmo fato): regressão **localizada na correção de uma falha específica** → perde o critério "não introduziu regressão" daquela falha, sem PEN. Regressão **fora do escopo de qualquer falha** (detectada pelos testes de caracterização) → PEN-002. Defeito novo em código novo que não quebra teste existente → PEN-001.
 
+> **How `harness/score.py` applies this today** (documented here, nothing changed). The assembler does not apply the localized reading above.
+> For a Template C flaw, the criterion C4 is `full` only when the flaw was attempted and the mechanical report shows no regression anywhere in
+> the delivery, unless the judge's verdict gives an explicit C4 for that flaw, which the assembler respects. One broken characterization test
+> therefore turns C4 to `none` for every attempted flaw. PEN-002 is charged in addition and always: −20 for each characterization test the
+> delivery broke, whether or not the fix of some flaw explains it. The same broken test is thus charged twice. Every published score was
+> produced this way: `score.py` reproduces the published scorecards (`tests/test_historico.py`), none of the 1,196 published per-flaw verdict
+> entries gives an explicit C4, and no published result is recomputed. Whether the code or this text should change is a separate decision, made
+> outside any instance. See also `scoring/SCORING.md §2` and the note *Before quoting a number* in `results/2026/LEB-100-A/README.md`.
+
 ---
 
 ## 7. Níveis do benchmark
@@ -250,7 +259,7 @@ opt-in per instance:
   fixtures only. `tools/saturacao.py` measures saturation and dispersion, read-only.
 
 Known and unchanged in this version: the §6.2 text on C4 as a global regression and the way `harness/score.py` applies C4 and PEN-002
-are not the same rule; the difference is documented in a separate proposal and is not altered here.
+are not the same rule; the difference is documented in §6.2 and in `scoring/SCORING.md §2`, and nothing is altered.
 
 ### Notas da versão 1.3.0
 

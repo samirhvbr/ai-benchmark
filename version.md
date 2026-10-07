@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.121`
+**Versão atual:** `0.2.122`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.122` — 2026-10-07 — The text now states how C4 and PEN-002 are applied, with no score changed
+
+- `SPEC.md §6.2` and `scoring/SCORING.md §2` now say what `harness/score.py` does today: C4 is one boolean for the whole delivery, so one
+  broken characterization test turns C4 to `none` for every attempted Template C flaw (unless the verdict gives an explicit C4), and PEN-002
+  is charged on top, −20 per broken test. The localized reading in the §6.2 disambiguation is not what the assembler applies, and the same
+  broken test is charged twice. The 1.4.0 release note no longer points at a separate proposal.
+- `results/2026/LEB-100-A/README.md`, *Before quoting a number*: five of the 92 runs broke characterization tests, two of them define an
+  official score (DeepSeek V4 Flash at `high`, Nex N2.5 Pro at `high`), and none of the 1,196 published per-flaw verdict entries gives an
+  explicit C4. Nothing was recomputed.
+- Text only. No code, schema, weight, penalty or result changed, and the spec version stays 1.4.0 because only descriptive text was added.
+  Whether the code or the text should change is left as a separate decision. Checked: the 97 tests pass, which includes the 95 published
+  scorecards reproduced by `score.py`, and `tools/export-results.py --check` is up to date (92 runs).
 
 ### `0.2.121` — 2026-10-07 — PEN-003 has a ruler for task 1.1.0 or later, checked by ten cases
 
