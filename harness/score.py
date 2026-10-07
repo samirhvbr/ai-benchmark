@@ -107,7 +107,7 @@ def main():
     cat_earned = {c: 0 for c in CATEGORY_WEIGHT}
     cat_possible = {c: 0 for c in CATEGORY_WEIGHT}
     diff_stat = {}          # dificuldade -> {planted, detected, corrected}
-    dim_stat = {}           # dimensão informativa -> {planted, detected, corrected} (só existe com `dimensions` na matriz)
+    dim_stat = {}           # informative dimension -> {planted, detected, corrected} (only when the matrix declares `dimensions`)
     informative_affected = mech.get("informative_affected") or {}
     calib = []              # (confiança, acerto) sobre achados reportados
 

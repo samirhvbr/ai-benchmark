@@ -1,10 +1,10 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.118`
+**Versão atual:** `0.2.119`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
-> ⚠️ A **spec RFC tem versão própria** (hoje `1.2.0`, declarada no `README.md`), e as
+> ⚠️ A **spec RFC tem versão própria** (hoje `1.4.0`, declarada no `README.md`), e as
 > instâncias também (LEB-100-A `v1.1`). Este arquivo versiona o **repositório**, não a
 > spec — os números são independentes de propósito.
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.119` — 2026-10-06 — Spec 1.4.0: the extensions are documented, and nothing about scoring changes
+
+- `SPEC.md` is version 1.4.0, with release notes for every extension of `0.2.110` to `0.2.118` and a new invariant (§9.8: an active instance
+  publishes an aggregate only, and not even its retirement releases anything). The note on version 1.4.0 states that the §6.2 text on
+  C4 and the way `score.py` applies C4 and PEN-002 are still two different rules, documented in a separate proposal and not touched here.
+- `matrix/MATRIX.md`: the optional entry fields (`dimensions`, `decoy_kind`, `informative_affected`), the optional header fields
+  (`task_version`, `publication`, `pack_allow_paths`), the rule that `evidence` is written as the symptom, and §4.6 on active instances.
+- `harness/README.md`: the package leak guard, the per-instance runner, and the test and tool commands. `README.md` and `README_br.md`
+  carry spec 1.4.0.
+- The comments, schema descriptions and the `scoring/JUDGE.md` paragraph added in `0.2.110` to `0.2.118` are in English (US).
+- Verified after the extensions, against the real LEB-100-A: the legacy mechanical run is identical before and after (timings aside),
+  the 95 scorecards are reproduced, the package hash is the published one and `export-results.py --check` is green.
 
 ### `0.2.118` — 2026-10-06 — A read-only tool says whether an instance still tells agents apart
 

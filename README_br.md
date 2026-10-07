@@ -4,7 +4,7 @@
 
 🇺🇸 [English version](README.md)
 
-**Um padrão de avaliação de Engenharia de Software para LLMs.** Versão da spec: **1.3.0**.
+**Um padrão de avaliação de Engenharia de Software para LLMs.** Versão da spec: **1.4.0**.
 
 O LEB não é um benchmark de prompts e não mede quem escreve o código mais bonito. Ele mede **quem consegue evoluir um sistema legado sem quebrá-lo** — encontrando falhas reais, corrigindo-as, preservando compatibilidade e explicando as decisões como uma engenheira sênior.
 

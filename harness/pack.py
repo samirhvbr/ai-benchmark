@@ -25,13 +25,13 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import instances  # noqa: E402
 
-# palavras que NUNCA podem ser um segmento do caminho de um arquivo do pacote (PROTOCOL §1, BENCHMARK "regra de ouro").
-# Casam por palavra inteira: um segmento é cortado em palavras por tudo que não é letra ou dígito (`matrix_x.json` tem a palavra
-# `matrix`; `VerifyToken.java` tem a palavra `verifytoken`, que não é padrão). Uma instância cujo código tem um nome legítimo igual a
-# um padrão (um pacote `verify`) o declara em `pack_allow_paths` no cabeçalho da matriz; a lista isenta só o caminho, nunca o conteúdo.
+# Words that must NEVER be a path segment of a file in the package (PROTOCOL §1, BENCHMARK "golden rule").
+# They match whole words: a segment is cut into words at everything that is not a letter or a digit (`matrix_x.json` has the word
+# `matrix`; `VerifyToken.java` has the word `verifytoken`, which is not a pattern). An instance whose code has a legitimate name equal
+# to a pattern (a `verify` package) declares it in `pack_allow_paths` in the matrix header; the list exempts the path, never the content.
 LEAK_PATTERNS = ("matrix", "matriz", "private", "verify", "characterization", "probes")
 
-# textos da matriz que não podem aparecer no conteúdo de nenhum arquivo-texto do pacote, desde que tenham este tamanho
+# Texts of the matrix that must not appear in the content of any text file of the package, once they are this long
 MARKER_FIELDS = ("evidence", "expected_fix", "location", "notes")
 MIN_MARKER_LEN = 20
 

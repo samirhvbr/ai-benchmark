@@ -39,7 +39,7 @@ def rel(path):
 
 
 def instancia(nome):
-    """Aceita 'LEB-100-A' ou um caminho para a instância; vê LEB_INSTANCES_PATH (harness/instances.py)."""
+    """Accepts 'LEB-100-A' or a path to the instance; see LEB_INSTANCES_PATH (harness/instances.py)."""
     return inst_lib.resolve(nome, ROOT)
 
 
