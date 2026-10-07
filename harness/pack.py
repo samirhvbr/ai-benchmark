@@ -20,12 +20,20 @@ import os
 import re
 import shutil
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import instances  # noqa: E402
 
-# padrões que NUNCA podem aparecer dentro do pacote (PROTOCOL §1, BENCHMARK "regra de ouro")
+# palavras que NUNCA podem ser um segmento do caminho de um arquivo do pacote (PROTOCOL §1, BENCHMARK "regra de ouro").
+# Casam por palavra inteira: um segmento é cortado em palavras por tudo que não é letra ou dígito (`matrix_x.json` tem a palavra
+# `matrix`; `VerifyToken.java` tem a palavra `verifytoken`, que não é padrão). Uma instância cujo código tem um nome legítimo igual a
+# um padrão (um pacote `verify`) o declara em `pack_allow_paths` no cabeçalho da matriz; a lista isenta só o caminho, nunca o conteúdo.
 LEAK_PATTERNS = ("matrix", "matriz", "private", "verify", "characterization", "probes")
+
+# textos da matriz que não podem aparecer no conteúdo de nenhum arquivo-texto do pacote, desde que tenham este tamanho
+MARKER_FIELDS = ("evidence", "expected_fix", "location", "notes")
+MIN_MARKER_LEN = 20
 
 DEFAULT_TASK_VERSION = "1.0.0"
 
@@ -110,15 +118,92 @@ def render_tarefa(template_path, meta, mode_label):
     return out, m.group(1)
 
 
-def leak_scan(pkg_dir):
+COMMENT_LEADER = re.compile(r"^\s*(?://+|/\*+|\*+/?|#+|--+|%+|;+)\s*")
+
+
+def squash(text):
+    """The text with comment leaders at the start of each line removed and whitespace collapsed to single spaces, so neither
+    re-wrapping a leaked sentence nor putting it in a comment hides it."""
+    return " ".join(" ".join(COMMENT_LEADER.sub("", line) for line in text.splitlines()).split())
+
+
+def read_text_file(path):
+    """The text of a file, or None for a binary one (a NUL byte in the first 8 KiB)."""
+    with open(path, "rb") as f:
+        raw = f.read()
+    if b"\0" in raw[:8192]:
+        return None
+    return raw.decode("utf-8", errors="replace")
+
+
+def leak_markers(matrix, extra_paths=()):
+    """What must not appear inside the package, as a list of (marker, origin): the long texts of the matrix (`evidence`,
+    `expected_fix`, `location`, `notes`) and the paths of the private destination. The public hash of the matrix in the header
+    of TAREFA.md is public by design and is not a marker.
+
+    An `evidence` that is a verbatim line of the delivered code would match the code itself and refuse every package of the
+    instance. That fails safe, and the fix is in the matrix text: evidence is written as the symptom, not as a quote."""
+    markers = []
+    for e in (matrix or {}).get("entries", []):
+        for field in MARKER_FIELDS:
+            value = e.get(field)
+            if isinstance(value, str) and len(squash(value)) >= MIN_MARKER_LEN:
+                markers.append((squash(value), "%s.%s" % (e.get("id", "?"), field)))
+    for path in extra_paths:
+        if path and len(path) >= MIN_MARKER_LEN:
+            markers.append((path, "private path"))
+    return markers
+
+
+def segment_words(segment):
+    return [w for w in re.split(r"[^a-z0-9]+", segment.lower()) if w]
+
+
+def allowed(rel, allow):
+    parts = rel.replace(os.sep, "/").split("/")
+    return any(parts[:len(a.split("/"))] == a.split("/") for a in allow)
+
+
+def leak_scan(pkg_dir, markers=(), allow=()):
+    """Everything in `pkg_dir` that looks like the answer key. Returns a list of (relative path, why)."""
     hits = []
     for root, dirs, files in os.walk(pkg_dir):
-        for name in list(dirs) + files:
-            rel = os.path.relpath(os.path.join(root, name), pkg_dir)
-            low = rel.lower()
-            if any(p in low for p in LEAK_PATTERNS):
-                hits.append(rel)
+        dirs.sort()
+        for name in sorted(list(dirs) + files):
+            path = os.path.join(root, name)
+            rel = os.path.relpath(path, pkg_dir)
+            if not allowed(rel, allow):
+                words = {w for seg in rel.replace(os.sep, "/").split("/") for w in segment_words(seg)}
+                for pattern in LEAK_PATTERNS:
+                    if pattern in words:
+                        hits.append((rel, "path segment `%s`" % pattern))
+                        break
+            if markers and os.path.isfile(path):
+                text = read_text_file(path)
+                if text is None:
+                    continue
+                text = squash(text)
+                for marker, origin in markers:
+                    if marker in text:
+                        hits.append((rel, "content: %s" % origin))
     return hits
+
+
+def guard_with_positive_control(pkg_dir, markers, allow):
+    """Scan the package, after proving that the guard can see. The scan first runs on a temporary copy that has a planted
+    private path and a planted marker, and it must report both: a guard that has not shown it works is not a guard."""
+    control = "LEB-CONTROL-MARKER-" + hashlib.sha256(os.urandom(16)).hexdigest()
+    with tempfile.TemporaryDirectory() as t:
+        copy = os.path.join(t, "pkg")
+        shutil.copytree(pkg_dir, copy)
+        os.makedirs(os.path.join(copy, "private"), exist_ok=True)
+        with open(os.path.join(copy, "private", "planted.txt"), "w", encoding="utf-8") as f:
+            f.write("planted: %s\n" % control)
+        seen = leak_scan(copy, list(markers) + [(control, "control")], ())
+        why = {h[1] for h in seen}
+        if not ("path segment `private`" in why and "content: control" in why):
+            sys.exit("[pack] o guarda anti-vazamento não acusou o controle positivo (%s): pacote descartado" % sorted(why))
+    return leak_scan(pkg_dir, markers, allow)
 
 
 def main():
@@ -173,10 +258,22 @@ def main():
     with open(os.path.join(out, "TAREFA.md"), "w", encoding="utf-8") as f:
         f.write(tarefa)
 
-    hits = leak_scan(out)
+    matrix = None
+    if os.path.exists(inst.matrix_path):
+        with open(inst.matrix_path, encoding="utf-8") as f:
+            matrix = json.load(f)
+    private_paths = {os.path.realpath(inst.private_dir)}
+    for var in ("LEB_PRIVATE_RESULTS", "LEB_RUNS_DIR"):
+        if os.environ.get(var):
+            private_paths.add(os.path.realpath(os.environ[var]))
+    if inst.layout != "legacy":
+        private_paths.add(os.path.realpath(inst.root))
+    markers = leak_markers(matrix, sorted(private_paths))
+    allow = [x.strip("/") for x in (matrix or {}).get("pack_allow_paths", [])]
+    hits = guard_with_positive_control(out, markers, allow)
     if hits:
         shutil.rmtree(out)
-        sys.exit("[pack] VAZAMENTO — pacote descartado. Arquivos suspeitos: %s" % ", ".join(hits))
+        sys.exit("[pack] VAZAMENTO — pacote descartado. Suspeitos: %s" % "; ".join("%s (%s)" % h for h in hits))
 
     entries = []
     for root, dirs, files in os.walk(out):

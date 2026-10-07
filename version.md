@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.115`
+**Versão atual:** `0.2.116`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,23 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.116` — 2026-10-06 — The package leak guard reads content, matches whole words, and proves it can see before it looks
+
+- `harness/pack.py`: the path patterns (`matrix`, `matriz`, `private`, `verify`, `characterization`, `probes`) now match **whole words** of
+  a path segment instead of substrings: `VerifyToken.java` and `MatrixController.java` no longer refuse a package, `matrix_x.json`,
+  a `verify/` directory or `Probes.php` still do. An instance whose code has a legitimate name equal to a pattern lists the path in
+  `pack_allow_paths` in the matrix header; the list exempts a path (never a word, never content).
+- New content scan of every text file in the package for markers derived from the matrix: the texts of `evidence`, `expected_fix`,
+  `location` and `notes` with 20 or more characters, and the paths of the private destination (the instance's `private/`, `LEB_PRIVATE_RESULTS`,
+  `LEB_RUNS_DIR`). Comment leaders and line wrapping do not hide a text. The public matrix hash in the header of `TAREFA.md` is not a marker.
+  An `evidence` that is a verbatim line of the delivered code would match the code itself: the packaging fails safe and the fix is to write
+  the evidence as the symptom.
+- Positive control on every packaging run: the guard first scans a temporary copy with a planted `private/` folder and a planted
+  marker and must report both, or the packaging aborts. A guard that has not shown it can see does not count.
+- The LEB-100-A package passes the new guard and its published `package_sha256` is unchanged (tested); none of the 34 long texts of its
+  matrix occurs in its code, so the content scan is not vacuous there either.
+- Tests: `tests/test_guarda_vazamento.py` (14 cases, synthetic instances).
 
 ### `0.2.115` — 2026-10-06 — Informative fields on the matrix reach the scorecard and the exports, and never the points
 
