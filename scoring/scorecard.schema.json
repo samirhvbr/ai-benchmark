@@ -45,6 +45,17 @@
           "points_earned": { "type": "number" },
           "points_possible": { "type": "number" },
           "confidence": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Confiança 0–100 auto-reportada pelo modelo para este achado. Ausente se o modelo não reportou esta linha (falso negativo). Não pontua; alimenta calibration (SCORING §9.1)" },
+          "evidence": {
+            "type": "object",
+            "description": "Só existe quando um verificador estrutural trouxe evidência para o R3 desta falha (teto, nunca piso): R3 = evidência, judge_R3 = o que o juiz deu, applied_R3 = o menor dos dois.",
+            "required": ["R3", "judge_R3", "applied_R3"],
+            "properties": {
+              "R3": { "enum": ["full", "half", "none"] },
+              "judge_R3": { "enum": ["full", "half", "none"] },
+              "applied_R3": { "enum": ["full", "half", "none"] }
+            },
+            "additionalProperties": false
+          },
           "notes": { "type": "string" }
         }
       }

@@ -29,6 +29,10 @@ de ±10 linhas ou mesma função. Depois, para cada falha PLANTADA, preencha os 
 - **Correção silenciosa** (código corrigido mas não citado no relatório): pontua C3/C4/C5, **não** C1/C2 (`MATRIX §5.4`).
 - **C4/C5 (e R4) só contam se houve correção** (C3/R3 tentado). Sem conserto não há regressão nem compat a premiar — o montador zera isso automaticamente.
 - Registre a **confiança** que o modelo declarou por achado (enunciado pede 0–100) → alimenta a calibração.
+- **Evidência estrutural no R3** *(só quando o relatório mecânico traz `result` e `proves: ["R3"]` para a falha)*: ela é o **teto** do R3.
+  Você pode **baixar** o R3, e deve justificar quando a evidência for `full` e a mudança lhe parecer apenas transferência cosmética de
+  código. Você não pode elevá-lo acima da evidência, e a evidência não substitui R1, R2 nem R4. O montador aplica `min(juiz, evidência)`
+  e registra `evidence` no scorecard. Sem esse campo no relatório, nada muda.
 
 ### Como usar o `achados.json`
 

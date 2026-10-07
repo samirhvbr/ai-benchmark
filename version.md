@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.113`
+**Versão atual:** `0.2.114`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.114` — 2026-10-06 — Structural evidence can cap the refactoring criterion of Template R, and never raise it
+
+- `harness/score.py`: a probe that carries `result` (`full|half|none`) **and** `proves` naming `R3` is evidence for the R3 of an
+  ARCH or CLN flaw. `R3_final = min(R3_judge, evidence)` (order `none < half < full`; a judge that omitted R3 counts as `none`).
+  Evidence never raises R3 and never fills R1, R2 or R4; the existing rule that R4 only counts when a refactoring was attempted
+  applies to the lower R3. `proves` naming anything but `C3` or `R3`, or `R3` without `result`, makes the assembler refuse the report.
+- The scorecard gets `evidence: {R3, judge_R3, applied_R3}` for each flaw that had evidence, and no key otherwise.
+- The legacy boolean `corrigida` is still ignored for Template R and still decides C3 for Template C. Reports without `proves` are
+  scored exactly as before: the 95 published scorecards are still reproduced (test) and the LEB-100-A results are untouched.
+- `scoring/probe-result.schema.json` (new), `evidence` in `scoring/scorecard.schema.json` (optional), and one additive paragraph in
+  `scoring/JUDGE.md`. No existing score or penalty changes.
+- Tests: `tests/test_score_evidencia.py` (13 cases: the eight prototype cases plus half/half, schema checks and C3 control).
 
 ### `0.2.113` — 2026-10-06 — An instance can declare its own runner, and an unreadable measurement is inconclusive, never a pass
 

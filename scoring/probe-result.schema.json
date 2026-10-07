@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leb.dev/schemas/probe-result.schema.json",
+  "title": "LEB verification result (one entry of `probes` in the mechanical report)",
+  "description": "Backward compatible. The legacy form is {id, corrigida, msg}. The new form adds `result` and `proves`. Evidence from a structural verifier may only prove R3 (a ceiling) or C3; it never proves R1, R2, R4, C1, C2, C4 or C5.",
+  "type": "object",
+  "required": ["id"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^(SEC|ARCH|PERF|BUG|CLN)-\\d{3}(\\.[a-z])?$"},
+    "difficulty": {"type": "string", "enum": ["Fácil", "Moderada", "Difícil", "Especialista"]},
+    "corrigida": {"type": "boolean", "description": "legacy boolean; decides C3 for Template C only"},
+    "result": {"type": "string", "enum": ["full", "half", "none"], "description": "required when `proves` names R3"},
+    "proves": {"type": "array", "items": {"type": "string", "enum": ["C3", "R3"]}, "minItems": 1, "uniqueItems": true},
+    "unobserved": {"type": "array", "items": {"type": "string"}, "description": "properties of the flaw this verifier cannot observe; copied into the report as NOT VERIFIED"},
+    "msg": {"type": "string"}
+  },
+  "additionalProperties": false
+}

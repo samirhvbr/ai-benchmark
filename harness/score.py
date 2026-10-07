@@ -83,7 +83,21 @@ def main():
     iscas = {e["id"] for e in matrix["entries"] if not e.get("exists")}
 
     # evidência mecânica: C3 das falhas cobertas por probe + C4 (regressão global)
-    probe_c3 = {p["id"]: bool(p["corrigida"]) for p in mech.get("probes", [])}
+    probe_c3 = {p["id"]: bool(p["corrigida"]) for p in mech.get("probes", []) if "corrigida" in p}
+    # Structural evidence for the refactoring criterion of Template R (opt-in: a probe with `result` and `proves` naming R3).
+    # Evidence is a ceiling, never a floor: it can confirm or lower the judge's R3, never raise it, and never touches R1, R2 or R4.
+    probe_evidence_r3 = {}
+    for p in mech.get("probes", []):
+        proves = p.get("proves")
+        if proves is None:
+            continue
+        bad = [x for x in proves if x not in ("C3", "R3")]
+        if bad:
+            sys.exit("[score] a prova %s declara comprovar %s: a evidência mecânica só pode comprovar C3 ou R3" % (p["id"], bad))
+        if "R3" in proves:
+            if p.get("result") not in ("full", "half", "none"):
+                sys.exit("[score] a prova %s declara R3 sem `result` full|half|none" % p["id"])
+            probe_evidence_r3[p["id"]] = p["result"]
     regression = bool(mech.get("characterization", {}).get("regression"))
     broken_tests = (mech.get("characterization", {}).get("submission", {}) or {}).get("failed") or 0
 
@@ -112,6 +126,14 @@ def main():
         # resolve C3 (a probe tem prioridade sobre o juiz nas falhas que cobre)
         if tpl == "C" and fid in probe_c3:
             crit_in["C3"] = "full" if probe_c3[fid] else "none"
+
+        evidence = None
+        if tpl == "R" and fid in probe_evidence_r3:
+            order = {"none": 0, "half": 1, "full": 2}
+            judged_r3 = crit_in.get("R3", "none")
+            applied = min(judged_r3, probe_evidence_r3[fid], key=order.get)
+            evidence = {"R3": probe_evidence_r3[fid], "judge_R3": judged_r3, "applied_R3": applied}
+            crit_in["R3"] = applied
 
         # critérios de "qualidade do conserto" só contam se houve conserto (C3/R3 tentado):
         # sem correção não há "sem regressão" nem "compatibilidade" a premiar (SCORING §2).
@@ -152,6 +174,7 @@ def main():
             "criteria": crit_pts, "points_earned": earned, "points_possible": possible,
             "confidence": jv.get("confidence"),
             "reported": reported,
+            **({"evidence": evidence} if evidence else {}),
         })
 
     # falsos positivos (iscas ou invenções reportadas) -> PEN-004 + calibração
