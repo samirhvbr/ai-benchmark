@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.112`
+**Versão atual:** `0.2.113`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.113` — 2026-10-06 — An instance can declare its own runner, and an unreadable measurement is inconclusive, never a pass
+
+- `harness/leb_harness.py` reads `private/runner.json` (`runner.caracterizacao.cmd`, `runner.verificacao.cmd`, optional `timeout_s`).
+  Each command runs with the instance's `private/` as cwd and gets `LEB_ENTREGA_DIR`, `LEB_INSTANCIA_DIR` and `LEB_RUN_DIR`;
+  stdout carries one JSON object (`{"passed", "failed"}` for the characterization, `{"probes": [...]}` for the verification).
+  A probe says `corrigida` (boolean) and/or `result` (`full|half|none`), may carry `unobserved`, `affected` and `proves`
+  (`C3`/`R3` only). The exit code of a command never decides regression: the report does (submission fails more than baseline).
+- Output that cannot be read, an unknown or repeated probe id, a malformed probe, a crash or a timeout (the whole process group
+  is killed) make the report `inconclusive` and the harness exit 3. `leb` prints it as INCONCLUSIVO and `harness/score.py`
+  refuses to score such a report. Planted flaws with no probe are listed in `unverified`.
+- An instance without `runner.json` takes exactly the old docker/PHP path: a real LEB-100-A mechanical run before and after
+  gives identical reports once the timing fields are ignored. No scoring, penalty or published result changes.
+- Tests: `tests/test_runner.py` (17 cases, synthetic instance and synthetic runner scripts).
 
 ### `0.2.112` — 2026-10-06 — One resolver finds an instance in either layout, wherever it lives
 

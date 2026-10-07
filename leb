@@ -46,7 +46,7 @@ def instancia(nome):
 def rodar(cmd, capturar=False):
     r = subprocess.run(cmd, cwd=ROOT, text=True,
                        stdout=subprocess.PIPE if capturar else None)
-    if r.returncode not in (0, 2):
+    if r.returncode not in (0, 2, 3):
         sys.exit(r.returncode)
     return r
 
@@ -205,6 +205,8 @@ def cmd_avaliar(a):
     diz()
     if r.returncode == 2:
         diz("%s[leb] REGRESSÃO: a entrega quebrou a caracterização.%s" % (BOLD, OFF))
+    if r.returncode == 3:
+        diz("%s[leb] INCONCLUSIVO: o runner da instância não produziu uma medição legível. NÃO pontue esta entrega com este relatório.%s" % (BOLD, OFF))
     diz("Mecânico → %s" % rel(mech))
     diz()
     diz("%sPróximo passo — o juiz%s (scoring/JUDGE.md): leia RELATORIO.md + achados.json contra a" % (BOLD, OFF))

@@ -76,6 +76,9 @@ def main():
     mech = load(a.mechanical)
     judge = load(a.judge)
 
+    if mech.get("inconclusive"):
+        sys.exit("[score] o relatório mecânico é INCONCLUSIVO (%s): não há medição para pontuar" % mech.get("inconclusive_reason", "sem motivo"))
+
     planted = {e["id"]: e for e in matrix["entries"] if e.get("exists")}
     iscas = {e["id"] for e in matrix["entries"] if not e.get("exists")}
 
