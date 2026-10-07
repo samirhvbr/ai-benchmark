@@ -214,7 +214,7 @@ Falta só **executar modelos de verdade** para gerar os primeiros scorecards de 
 1. IDs da taxonomia são **imutáveis** — nunca renumerar; depreciar e criar novo ID.
 2. A matriz de uma instância publicada **NÃO DEVE** mudar; erros exigem nova versão da instância.
 3. O enunciado dado ao modelo é **fixo e neutro** (`protocol/PROTOCOL.md §2`) — não pode vazar dicas da matriz.
-4. A tarefa (enunciado + contrato de entrega) é **do padrão, não da instância**: vive só em `protocol/TAREFA.md` e **NÃO DEVE** ser reescrita, parafraseada ou estendida dentro de uma instância (`protocol/PROTOCOL.md §2.2`). Instância declara contrato de sistema (`manifest.md`); padrão declara tarefa.
+4. A tarefa (enunciado + contrato de entrega) é **do padrão, não da instância**: vive só em `protocol/TAREFA.md` e **NÃO DEVE** ser reescrita, parafraseada ou estendida dentro de uma instância (`protocol/PROTOCOL.md §2.2`). Instância declara contrato de sistema (`manifest.md`); padrão declara tarefa. O padrão pode ter **várias versões da tarefa**: a 1.0.0 continua em `protocol/TAREFA.md`, intacta; as seguintes vivem em `protocol/tasks/`; cada instância declara a sua em `task_version` no cabeçalho da matriz (ausente = 1.0.0), e `harness/pack.py` usa exatamente essa. Comparações entre modelos exigem a mesma instância, o mesmo protocolo **e a mesma versão da tarefa**.
 5. O contrato de entrega é **descritivo**: padroniza a forma da resposta e não cria critério, bônus nem penalidade — mudar formato de entrega não muda pontuação.
 6. Todo resultado publicado **DEVE** citar: versão da spec, ID+hash da instância, protocolo do run (turnos, ferramentas, temperatura) e scorecard JSON.
 7. Comparações entre modelos só são válidas **na mesma instância e mesmo protocolo**.

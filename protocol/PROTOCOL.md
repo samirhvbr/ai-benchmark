@@ -66,8 +66,10 @@ instância e **não é** comparável às demais.
 
 Consequência para quem escreve instâncias novas: o enunciado e o contrato de entrega **NÃO DEVEM**
 ser reescritos dentro da instância. A instância declara o seu contrato de sistema no `manifest.md`;
-a tarefa é do padrão, e é a mesma para LEB-100-A, LEB-300-B e todas as futuras. Um enunciado por
-instância destruiria a comparabilidade entre modelos e entre casos.
+a tarefa é do padrão, e é a mesma em toda instância que declara a mesma versão dela (`task_version` no
+cabeçalho da matriz; ausente é a 1.0.0, que vive em `protocol/TAREFA.md`; as seguintes ficam em
+`protocol/tasks/TAREFA-<versão>.md`). Um enunciado por instância destruiria a comparabilidade entre modelos
+e entre casos.
 
 ## 3. Modos de execução
 

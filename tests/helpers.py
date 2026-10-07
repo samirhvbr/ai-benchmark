@@ -28,6 +28,11 @@ def write_json(path, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def read_text(*parts):
+    with open(os.path.join(*parts), encoding="utf-8") as f:
+        return f.read()
+
+
 def read_json(path):
     with open(path, encoding="utf-8") as f:
         return json.load(f)
@@ -131,3 +136,22 @@ def validate(value, schema, root=None, path="$"):
             for i, v in enumerate(value):
                 errs += validate(v, schema["items"], root, "%s[%d]" % (path, i))
     return errs
+
+
+def make_instance(parent, name="LEB-TEST-A", layout="legacy", matrix=None):
+    """Create a synthetic instance on disk and return its path.
+
+    legacy: <name>/{code, manifest.md, private/matrix.json}
+    split:  <name>/{public/{code, manifest.md}, private/matrix.json}
+    """
+    inst = os.path.join(parent, "instances", name)
+    pub = inst if layout == "legacy" else os.path.join(inst, "public")
+    os.makedirs(os.path.join(pub, "code"))
+    os.makedirs(os.path.join(inst, "private"))
+    with open(os.path.join(pub, "code", "main.txt"), "w", encoding="utf-8") as f:
+        f.write("synthetic application file\n")
+    with open(os.path.join(pub, "manifest.md"), "w", encoding="utf-8") as f:
+        f.write("# Synthetic manifest\n")
+    write_json(os.path.join(inst, "private", "matrix.json"),
+               matrix or synthetic_matrix([entry("SEC-001", "Alta")], instance=name))
+    return inst

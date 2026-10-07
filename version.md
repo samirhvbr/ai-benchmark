@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.110`
+**Versão atual:** `0.2.111`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.111` — 2026-10-06 — Each instance declares the version of the canonical task it is evaluated against
+
+- `protocol/TAREFA.md` stays the task 1.0.0, byte for byte, and LEB-100-A stays on it. Later versions live in
+  `protocol/tasks/TAREFA-<version>.md`; the new `protocol/tasks/TAREFA-1.1.0.md` lets the agent create, split, move and
+  rename files while keeping the manifest, and says that not rewriting the system does not mean keeping its internal
+  organization. The quoted canonical statement is identical in both.
+- The matrix header may carry `task_version` (absent means 1.0.0). `harness/pack.py` picks the template by it, refuses an
+  unknown version and refuses a template whose version differs from the declared one.
+- `PROTOCOL §2.2` and `SPEC §9.4` now say the task is the same across instances that declare the same version, and that
+  comparisons need the same task version. No scoring, penalty or published result changes; the LEB-100-A package hash
+  is still the published one (tested).
 
 ### `0.2.110` — 2026-10-06 — The tooling has tests that prove the published LEB-100-A results are still reproduced, and a workflow that runs them
 

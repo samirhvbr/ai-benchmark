@@ -24,6 +24,8 @@ import sys
 # padrões que NUNCA podem aparecer dentro do pacote (PROTOCOL §1, BENCHMARK "regra de ouro")
 LEAK_PATTERNS = ("matrix", "matriz", "private", "verify", "characterization", "probes")
 
+DEFAULT_TASK_VERSION = "1.0.0"
+
 PLACEHOLDERS = (
     "INSTANCIA", "NIVEL", "VERSAO_INSTANCIA", "LEB_SPEC",
     "MATRIZ_SHA256", "MODO", "TAREFA_VERSAO",
@@ -56,6 +58,7 @@ def instance_metadata(instance_dir, args):
         "VERSAO_INSTANCIA": args.instance_version or "n/d",
         "LEB_SPEC": args.leb_spec or "n/d",
         "MATRIZ_SHA256": args.matrix_sha or "n/d",
+        "TASK_VERSION": args.task_version or DEFAULT_TASK_VERSION,
     }
     mpath = os.path.join(instance_dir, "private", "matrix.json")
     if os.path.exists(mpath):
@@ -65,10 +68,27 @@ def instance_metadata(instance_dir, args):
         for key, field, override in fields:
             if not override and m.get(field) is not None:
                 meta[key] = str(m[field])
+        # The instance declares which version of the canonical task it is evaluated against (absent = 1.0.0).
+        if not args.task_version and m.get("task_version") is not None:
+            meta["TASK_VERSION"] = str(m["task_version"])
     elif meta["MATRIZ_SHA256"] == "n/d":
         print("[pack] aviso: private/matrix.json ausente — sem hash de matriz no vínculo "
               "(use --matrix-sha para informá-lo)", file=sys.stderr)
     return meta
+
+
+def task_template(here, task_version):
+    """The canonical task file for a version. 1.0.0 stays at protocol/TAREFA.md, untouched since the
+    first published run; later versions live in protocol/tasks/TAREFA-<version>.md."""
+    if not re.fullmatch(r"\d+\.\d+\.\d+", task_version):
+        sys.exit("[pack] task_version inválida: %r (esperado X.Y.Z)" % task_version)
+    if task_version == DEFAULT_TASK_VERSION:
+        path = os.path.join(here, "protocol", "TAREFA.md")
+    else:
+        path = os.path.join(here, "protocol", "tasks", "TAREFA-%s.md" % task_version)
+    if not os.path.isfile(path):
+        sys.exit("[pack] a instância declara a tarefa %s, mas %s não existe" % (task_version, os.path.relpath(path, here)))
+    return path
 
 
 def render_tarefa(template_path, meta, mode_label):
@@ -105,8 +125,9 @@ def main():
     ap.add_argument("--out", help="pasta de destino (default: runs/<instância>/pacote, recriada)")
     ap.add_argument("--mode", choices=["S", "A"], default="S", help="modo de execução (PROTOCOL §3)")
     ap.add_argument("--turnos", type=int, help="orçamento de turnos, obrigatório no modo A")
-    ap.add_argument("--tarefa", default=os.path.join(here, "protocol", "TAREFA.md"),
-                    help="modelo canônico da tarefa")
+    ap.add_argument("--tarefa", default=None,
+                    help="modelo canônico da tarefa (default: o da versão declarada pela instância, ver --task-version)")
+    ap.add_argument("--task-version", help="versão da tarefa (X.Y.Z); default: a do cabeçalho da matriz, ou 1.0.0")
     ap.add_argument("--instance-id", help="override do vínculo (quando não há private/)")
     ap.add_argument("--level", help="override do vínculo")
     ap.add_argument("--instance-version", help="override do vínculo")
@@ -137,7 +158,11 @@ def main():
     mode_label = ("S (turno único: 1 prompt → 1 resposta)" if a.mode == "S"
                   else "A (agêntico · orçamento de %d turnos)" % a.turnos)
     meta = instance_metadata(inst, a)
-    tarefa, tarefa_version = render_tarefa(a.tarefa, meta, mode_label)
+    tarefa_path = a.tarefa or task_template(here, meta["TASK_VERSION"])
+    tarefa, tarefa_version = render_tarefa(tarefa_path, meta, mode_label)
+    if tarefa_version != meta["TASK_VERSION"]:
+        sys.exit("[pack] a instância declara a tarefa %s, mas %s é a versão %s"
+                 % (meta["TASK_VERSION"], os.path.relpath(tarefa_path, here), tarefa_version))
 
     shutil.copytree(code_dir, os.path.join(out, "code"))
     shutil.copy2(manifest, os.path.join(out, "manifest.md"))
