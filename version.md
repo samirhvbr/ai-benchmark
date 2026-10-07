@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.111`
+**Versão atual:** `0.2.112`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.112` — 2026-10-06 — One resolver finds an instance in either layout, wherever it lives
+
+- New `harness/instances.py`, used by `leb`, `harness/pack.py`, `harness/leb_harness.py` and `tools/export-results.py`.
+  It understands the legacy layout (`instances/<id>/{code, manifest.md, private/}`) and a split one
+  (`instances/<id>/{public/{code, manifest.md}, private/}`, where `public/` means "meant for the candidate", not "publishable").
+- `LEB_INSTANCES_PATH` (a `:`-separated list of roots that hold `instances/`) is searched first, so an instance can live
+  outside this repository; `LEB_RUNS_DIR` moves the run areas and packages out of the tree too. Without them nothing changes,
+  and LEB-100-A resolves to the same files (tested).
+- `./leb pacote`, `./leb scorecard` and `./leb instancias` work end to end on a split instance kept outside the repository
+  (tested with a synthetic one). No scoring, penalty or published result changes.
 
 ### `0.2.111` — 2026-10-06 — Each instance declares the version of the canonical task it is evaluated against
 

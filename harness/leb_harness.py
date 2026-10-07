@@ -29,6 +29,9 @@ import subprocess
 import sys
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import instances  # noqa: E402
+
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 RESUMO = re.compile(r"(\d+)\s+verifica\S+\s+ok,\s+(\d+)\s+falharam")
 
@@ -82,8 +85,8 @@ def run_probes(compose_dir, code_dir_container, mount=None):
     return data
 
 
-def load_matrix(instance_dir):
-    mpath = os.path.join(instance_dir, "private", "matrix.json")
+def load_matrix(inst):
+    mpath = inst.matrix_path
     with open(mpath, encoding="utf-8") as f:
         matrix = json.load(f)
     # probe-id (ex.: "sec-001") -> {matrix_id, difficulty} a partir do campo verify
@@ -98,19 +101,20 @@ def load_matrix(instance_dir):
 
 def main():
     ap = argparse.ArgumentParser(description="Harness mecânico do LEB")
-    ap.add_argument("--instance", required=True, help="pasta da instância (ex.: instances/LEB-100-A)")
+    ap.add_argument("--instance", required=True, help="nome ou pasta da instância (ex.: LEB-100-A ou instances/LEB-100-A)")
     ap.add_argument("--submission", help="pasta code/ entregue pelo modelo (default: o legado da instância)")
     ap.add_argument("--out", help="arquivo JSON de saída (default: stdout)")
     ap.add_argument("--keep-db", action="store_true", help="não derrubar o MySQL ao final")
     a = ap.parse_args()
 
-    instance_dir = os.path.abspath(a.instance)
+    inst = instances.resolve(a.instance, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    instance_dir = inst.root
     compose_dir = os.path.join(instance_dir, "characterization")
     if not os.path.isfile(os.path.join(compose_dir, "docker-compose.yml")):
         sys.exit(f"[erro] não achei characterization/docker-compose.yml em {instance_dir}")
 
-    matrix, mpath, probe_map = load_matrix(instance_dir)
-    pristine_code = os.path.join(instance_dir, "code")
+    matrix, mpath, probe_map = load_matrix(inst)
+    pristine_code = inst.code_dir
     submission = os.path.abspath(a.submission) if a.submission else pristine_code
     is_pristine = os.path.abspath(submission) == os.path.abspath(pristine_code)
     mount = None if is_pristine else submission

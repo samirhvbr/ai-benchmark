@@ -21,6 +21,9 @@ import re
 import shutil
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import instances  # noqa: E402
+
 # padrões que NUNCA podem aparecer dentro do pacote (PROTOCOL §1, BENCHMARK "regra de ouro")
 LEAK_PATTERNS = ("matrix", "matriz", "private", "verify", "characterization", "probes")
 
@@ -40,7 +43,7 @@ def sha256_file(path):
     return h.hexdigest()
 
 
-def instance_metadata(instance_dir, args):
+def instance_metadata(inst, args):
     """Metadados de vínculo. Vêm da matriz (privada, lado do avaliador) quando existe.
 
     Da matriz sai só o *cabeçalho* (id, nível, versão, spec) e o hash do arquivo —
@@ -53,14 +56,14 @@ def instance_metadata(instance_dir, args):
               ("VERSAO_INSTANCIA", "version", args.instance_version),
               ("LEB_SPEC", "leb_spec", args.leb_spec))
     meta = {
-        "INSTANCIA": args.instance_id or os.path.basename(os.path.abspath(instance_dir)),
+        "INSTANCIA": args.instance_id or inst.name,
         "NIVEL": args.level or "n/d",
         "VERSAO_INSTANCIA": args.instance_version or "n/d",
         "LEB_SPEC": args.leb_spec or "n/d",
         "MATRIZ_SHA256": args.matrix_sha or "n/d",
         "TASK_VERSION": args.task_version or DEFAULT_TASK_VERSION,
     }
-    mpath = os.path.join(instance_dir, "private", "matrix.json")
+    mpath = inst.matrix_path
     if os.path.exists(mpath):
         with open(mpath, encoding="utf-8") as f:
             m = json.load(f)
@@ -121,8 +124,9 @@ def leak_scan(pkg_dir):
 def main():
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ap = argparse.ArgumentParser(description="monta o pacote público de uma instância LEB")
-    ap.add_argument("--instance", required=True, help="raiz da instância (ex.: instances/LEB-100-A)")
-    ap.add_argument("--out", help="pasta de destino (default: runs/<instância>/pacote, recriada)")
+    ap.add_argument("--instance", required=True,
+                    help="nome ou raiz da instância (ex.: LEB-100-A ou instances/LEB-100-A); vê LEB_INSTANCES_PATH")
+    ap.add_argument("--out", help="pasta de destino (default: <LEB_RUNS_DIR ou runs>/<instância>/pacote, recriada)")
     ap.add_argument("--mode", choices=["S", "A"], default="S", help="modo de execução (PROTOCOL §3)")
     ap.add_argument("--turnos", type=int, help="orçamento de turnos, obrigatório no modo A")
     ap.add_argument("--tarefa", default=None,
@@ -136,8 +140,8 @@ def main():
     ap.add_argument("--force", action="store_true", help="sobrescreve --out se já existir")
     a = ap.parse_args()
 
-    inst = os.path.abspath(a.instance)
-    code_dir, manifest = os.path.join(inst, "code"), os.path.join(inst, "manifest.md")
+    inst = instances.resolve(a.instance, here)
+    code_dir, manifest = inst.code_dir, inst.manifest_path
     for path in (code_dir, manifest):
         if not os.path.exists(path):
             sys.exit("[pack] instância inválida: %s não existe" % path)
@@ -145,7 +149,7 @@ def main():
         sys.exit("[pack] modo A exige --turnos N (o orçamento é parâmetro obrigatório do run)")
 
     default_out = a.out is None
-    out = os.path.abspath(a.out or os.path.join(here, "runs", os.path.basename(inst), "pacote"))
+    out = os.path.abspath(a.out or os.path.join(instances.runs_dir(here), inst.name, "pacote"))
     if os.path.exists(out):
         # a pasta padrão (e qualquer pacote já montado por aqui) é sempre refeita: o
         # pacote é derivado da instância, nunca fonte de nada.

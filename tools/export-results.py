@@ -35,6 +35,9 @@ import sys
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "harness"))
+import instances as instances_lib  # noqa: E402  (the resolver shared with leb, pack.py and leb_harness.py)
+
 RESULTS = os.path.join(ROOT, "results")
 REPO_URL = "https://github.com/samirhvbr/ai-benchmark"
 
@@ -482,7 +485,7 @@ def aggregate(runs):
     instances = []
     for (edition, instance), items in sorted(by_instance.items()):
         first = items[0]
-        matrix = load(os.path.join(ROOT, "instances", instance, "private", "matrix.json"))
+        matrix = load(instances_lib.resolve(instance, ROOT).matrix_path)
         planted = [e for e in matrix["entries"] if e.get("exists")]
         agents = {}
         for r in sorted(items, key=lambda x: (x["agent"], x["run"])):
