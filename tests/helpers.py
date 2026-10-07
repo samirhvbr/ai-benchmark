@@ -155,3 +155,44 @@ def make_instance(parent, name="LEB-TEST-A", layout="legacy", matrix=None):
     write_json(os.path.join(inst, "private", "matrix.json"),
                matrix or synthetic_matrix([entry("SEC-001", "Alta")], instance=name))
     return inst
+
+
+# ---- a synthetic published tree (instance + evaluated runs) for the exporter ---------------------------
+
+def load_exporter(root):
+    """The exporter module pointed at `root` (its ROOT and RESULTS are module globals)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("leb_export_under_test", os.path.join(ROOT, "tools", "export-results.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.ROOT = root
+    mod.RESULTS = os.path.join(root, "results")
+    return mod
+
+
+def make_published_tree(parent, matrix, runs, name="LEB-TEST-A", edition="2026", layout="legacy", failed=0):
+    """Instance (`make_instance`) plus evaluated runs under results/<edition>/<name>/<agent>/run-<n>/.
+
+    `runs` is a list of (agent, run_number, verdict) built with `synthetic_verdict`; the scorecard of each is produced by the real
+    score.py from the matrix, a synthetic mechanical report and that verdict. Returns the tree root."""
+    make_instance(parent, name, layout=layout, matrix=matrix)
+    for agent, number, verdict in runs:
+        d = os.path.join(parent, "results", edition, name, agent, "run-%d" % number)
+        os.makedirs(os.path.join(d, "entrega"))
+        with open(os.path.join(d, "entrega", "RELATORIO.md"), "w", encoding="utf-8") as f:
+            f.write("report of %s run %d\n" % (agent, number))
+        mech = synthetic_mech(failed=failed)
+        mech["matrix_sha256"] = "a" * 64
+        card, rc, err = score_files(matrix, mech, verdict)
+        if rc != 0:
+            raise AssertionError(err)
+        write_json(os.path.join(d, "mecanico.json"), mech)
+        write_json(os.path.join(d, "veredito.json"), verdict)
+        write_json(os.path.join(d, "scorecard.json"), card)
+        write_json(os.path.join(d, "run.json"), {
+            "agent": agent, "model": {"name": agent, "id": agent, "provider": "Test", "reasoning_effort": "high"},
+            "run": number, "instance": name, "instance_version": matrix.get("version"), "leb_spec": matrix.get("leb_spec"),
+            "task_version": "1.0.0", "matrix_sha256": "a" * 64, "package_sha256": "b" * 64, "mode": "A", "turn_budget": 30,
+            "operator_replies": 0, "filed_on": "2026-10-06", "evaluated_on": "2026-10-06",
+            "client": {"name": "test", "version": "0"}, "cost_time": {"usd_estimate": 1.5, "tokens": {"total": 10}}})
+    return parent

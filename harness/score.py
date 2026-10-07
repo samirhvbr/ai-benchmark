@@ -107,6 +107,8 @@ def main():
     cat_earned = {c: 0 for c in CATEGORY_WEIGHT}
     cat_possible = {c: 0 for c in CATEGORY_WEIGHT}
     diff_stat = {}          # dificuldade -> {planted, detected, corrected}
+    dim_stat = {}           # dimensão informativa -> {planted, detected, corrected} (só existe com `dimensions` na matriz)
+    informative_affected = mech.get("informative_affected") or {}
     calib = []              # (confiança, acerto) sobre achados reportados
 
     for fid, entry in planted.items():
@@ -166,6 +168,11 @@ def main():
             diff_stat[diff]["detected"] += 1
         if corrected:
             diff_stat[diff]["corrected"] += 1
+        for dim in entry.get("dimensions", []):
+            d = dim_stat.setdefault(dim, {"planted": 0, "detected": 0, "corrected": 0})
+            d["planted"] += 1
+            d["detected"] += 1 if detected else 0
+            d["corrected"] += 1 if corrected else 0
         if reported and jv.get("confidence") is not None:
             calib.append((jv["confidence"], 1))  # reportou falha real => acerto
 
@@ -175,11 +182,15 @@ def main():
             "confidence": jv.get("confidence"),
             "reported": reported,
             **({"evidence": evidence} if evidence else {}),
+            **({"dimensions": entry["dimensions"]} if entry.get("dimensions") else {}),
+            **({"informative_affected": entry.get("informative_affected") or informative_affected[fid]}
+               if (entry.get("informative_affected") or informative_affected.get(fid)) else {}),
         })
 
     # falsos positivos (iscas ou invenções reportadas) -> PEN-004 + calibração
     fp = judge.get("false_positives", [])
     pen004_count = sum(1 for f in fp if f.get("is_isca") or f.get("reported_as") in iscas)
+    decoy_kind = {e["id"]: e["decoy_kind"] for e in matrix["entries"] if not e.get("exists") and e.get("decoy_kind")}
     for f in fp:
         if f.get("confidence") is not None:
             calib.append((f["confidence"], 0))
@@ -272,6 +283,15 @@ def main():
     if calibration:
         scorecard["calibration"] = calibration
     scorecard["difficulty_breakdown"] = difficulty_breakdown
+    # Informative only (E9): present only when the matrix declares dimensions / decoy kinds. No weight, point or penalty reads them.
+    if dim_stat:
+        scorecard["dimension_breakdown"] = [{"dimension": d, **dim_stat[d]} for d in sorted(dim_stat)]
+    if decoy_kind:
+        reported_decoys = {f.get("reported_as") for f in fp if f.get("reported_as") in iscas}
+        scorecard["decoy_breakdown"] = [
+            {"kind": k, "decoys": sum(1 for v in decoy_kind.values() if v == k),
+             "reported": sum(1 for i, v in decoy_kind.items() if v == k and i in reported_decoys)}
+            for k in sorted(set(decoy_kind.values()))]
     if a.cost:
         scorecard["cost_time"] = load(a.cost)
     elif judge.get("cost_time"):

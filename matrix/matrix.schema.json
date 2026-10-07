@@ -32,7 +32,10 @@
           "evidence": { "type": "string", "description": "Trecho/sintoma que caracteriza a falha" },
           "expected_fix": { "type": "string", "description": "Correção/estrutura-alvo canônica" },
           "verify": { "type": "string", "description": "Caminho do teste de verificação em private/verify/" },
-          "notes": { "type": "string", "description": "Equivalentes aceitos, armadilhas de avaliação" }
+          "notes": { "type": "string", "description": "Equivalentes aceitos, armadilhas de avaliação" },
+          "dimensions": { "type": "array", "uniqueItems": true, "items": { "enum": ["concorrencia", "consistencia", "resiliencia"] }, "description": "Informativo (nunca altera pontos): propriedades transversais que a falha exercita. O scorecard resume plantadas/detectadas/corrigidas por dimensão." },
+          "decoy_kind": { "enum": ["diagnostico", "intervencao"], "description": "Informativo, só em isca (exists=false): se a isca tenta o relatório ou a alteração do código." },
+          "informative_affected": { "type": "array", "items": { "type": "string" }, "description": "Informativo: testes e contratos que a correção toca. Sem efeito em pontos." }
         },
         "allOf": [
           {

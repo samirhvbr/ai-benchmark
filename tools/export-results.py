@@ -542,8 +542,12 @@ def aggregate(runs):
             "category_max": {c: (CATEGORY_WEIGHT.get(c) or {"COMP": 100, "EXPL": 50}[c]) for c in CATEGORIES},
             "flaws": [{"id": e["id"], "category": e["id"].split("-")[0], "severity": e["severity"],
                        "difficulty": e.get("difficulty"), "template": e["template"],
-                       "points_possible": sum(CRIT[e["template"]][e["severity"]].values())} for e in planted],
+                       "points_possible": sum(CRIT[e["template"]][e["severity"]].values()),
+                       **({"dimensions": e["dimensions"]} if e.get("dimensions") else {})} for e in planted],
             "decoys": [e["id"] for e in matrix["entries"] if not e.get("exists")],
+            # Informative (E9): the key exists only when the matrix declares the kind of at least one decoy.
+            **({"decoy_kinds": {e["id"]: e["decoy_kind"] for e in matrix["entries"] if not e.get("exists") and e.get("decoy_kind")}}
+               if any(e.get("decoy_kind") for e in matrix["entries"] if not e.get("exists")) else {}),
             "notes_url": "%s/blob/master/results/%s/%s/README.md" % (REPO_URL, edition, instance),
             "entries": entries,
         })
@@ -640,6 +644,8 @@ FLAW_COLUMNS = [
     "edition", "instance", "agent", "run", "counts_in_score", "flaw", "category", "severity", "difficulty",
     "reported", "found", "explained", "fixed", "compatible", "points_earned", "points_possible", "confidence",
 ]
+# Appended after the fixed columns, and only for a publication whose matrices declare dimensions (E9).
+OPTIONAL_FLAW_COLUMNS = ["dimensions"]
 
 
 def csv_text(columns, rows):
@@ -697,8 +703,10 @@ def render_csvs(runs, data):
             flaw_rows.append({**base, "flaw": f["id"], "category": info["category"], "severity": info["severity"],
                 "difficulty": info["difficulty"], "reported": v.get("reported"), "found": c("C1"), "explained": c("C2"),
                 "fixed": c("C3"), "compatible": c("C5"), "points_earned": f["points_earned"],
-                "points_possible": f["points_possible"], "confidence": f.get("confidence")})
-    return csv_text(RUN_COLUMNS, run_rows), csv_text(FLAW_COLUMNS, flaw_rows)
+                "points_possible": f["points_possible"], "confidence": f.get("confidence"),
+                "dimensions": "|".join(info["dimensions"]) if info.get("dimensions") else None})
+    flaw_columns = FLAW_COLUMNS + [c for c in OPTIONAL_FLAW_COLUMNS if any(i.get(c) for i in flaw_info.values())]
+    return csv_text(RUN_COLUMNS, run_rows), csv_text(flaw_columns, flaw_rows)
 
 
 def main():

@@ -56,6 +56,8 @@
             },
             "additionalProperties": false
           },
+          "dimensions": { "type": "array", "items": { "type": "string" }, "description": "Informativo, copiado da matriz; não pontua." },
+          "informative_affected": { "type": "array", "items": { "type": "string" }, "description": "Informativo, copiado da matriz ou do relatório mecânico; não pontua." },
           "notes": { "type": "string" }
         }
       }
@@ -164,6 +166,33 @@
           }
         },
         "discovery_index": { "type": "number", "minimum": 0, "maximum": 100, "description": "detecção ponderada por dificuldade (pesos Fácil1·Moderada2·Difícil3·Especialista4); informativo" }
+      }
+    },
+    "dimension_breakdown": {
+      "type": "array",
+      "description": "Cobertura por dimensão transversal (INFORMATIVO, não pontua). Só existe quando a matriz declara `dimensions`.",
+      "items": {
+        "type": "object",
+        "required": ["dimension", "planted", "detected", "corrected"],
+        "properties": {
+          "dimension": { "type": "string" },
+          "planted": { "type": "integer", "minimum": 0 },
+          "detected": { "type": "integer", "minimum": 0 },
+          "corrected": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "decoy_breakdown": {
+      "type": "array",
+      "description": "Iscas por tipo (INFORMATIVO; a penalidade continua sendo a PEN-004). Só existe quando a matriz declara `decoy_kind`.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "decoys", "reported"],
+        "properties": {
+          "kind": { "enum": ["diagnostico", "intervencao"] },
+          "decoys": { "type": "integer", "minimum": 0 },
+          "reported": { "type": "integer", "minimum": 0 }
+        }
       }
     },
     "cost_time": {

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.114`
+**Versão atual:** `0.2.115`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.115` — 2026-10-06 — Informative fields on the matrix reach the scorecard and the exports, and never the points
+
+- A matrix entry may carry `dimensions` (`concorrencia`, `consistencia`, `resiliencia`), `decoy_kind` (`diagnostico`, `intervencao`; decoys
+  only) and `informative_affected` (tests and contracts a fix touches). `harness/score.py` copies them to the finding and, only when they
+  exist, adds `dimension_breakdown` (planted, detected, corrected per dimension) and `decoy_breakdown` (decoys and reported, per kind) to
+  the scorecard. A mechanical report may also carry `informative_affected` per flaw.
+- `tools/export-results.py` adds `dimensions` to the instance's flaws and `decoy_kinds` to `results.json`, and appends a `dimensions`
+  column at the end of `flaws.csv`, all only when the matrix declares them. Without the fields the outputs are byte for byte what they
+  were: `export-results.py --check` still passes on the 92 published LEB-100-A runs.
+- No weight, point or penalty reads these fields (tested: same totals, categories, penalties and criteria with and without them).
+  Schemas: `matrix/matrix.schema.json` and `scoring/scorecard.schema.json` gain the optional properties.
+- Tests: `tests/test_informativos.py` (7 cases) and a synthetic published-tree fixture in `tests/helpers.py`.
 
 ### `0.2.114` — 2026-10-06 — Structural evidence can cap the refactoring criterion of Template R, and never raise it
 
