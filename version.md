@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.123`
+**Versão atual:** `0.2.124`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,25 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.124` — 2026-10-07 — Task 1.2.0 puts a run in two stages, with a checkpoint that keeps the evidence
+
+- New task `protocol/tasks/TAREFA-1.2.0.md`, derived from 1.1.0: stage 1 covers architecture, bugs, performance, quality and compatibility and
+  leaves the specific investigation of security vulnerabilities to stage 2. It never asks to keep a vulnerability, and an incidental improvement
+  stays. One budget serves both stages. The canonical statement is byte for byte the 1.1.0 one, and `TAREFA.md` (1.0.0) and `TAREFA-1.1.0.md`
+  are unchanged, pinned by hash in a test. The two operator messages are versioned in `protocol/tasks/mensagens-1.2.0.json`.
+- New `tools/etapas.py` (one file, standard library, copyable to the execution VM): `checkpoint` keeps a read-only copy of the stage 1 delivery
+  and the position reached in every transcript, and refuses while a transcript is still moving; `finalize` keeps the final delivery and writes the
+  verdict and the budget per stage; `check` gives the verdict without writing; `perfis` shows the checkpoint and the final scorecards side by
+  side with no combined total.
+- The verdict is conforming, non-conforming or inconclusive, from the whole transcripts, subagents included, against the recorded boundary.
+  Missing records are inconclusive, never a proof of a single model. A switch after the checkpoint does not invalidate the run. The attribution
+  names the sequence observed and no cause.
+- `protocol/PROTOCOL.md §3.1` states the protocol: messages, checkpoint, shared budget, fallback on in the pilot's candidate profile, conformity,
+  scoring (official on the final delivery, the checkpoint informative, no mixing) and wording. It is separate from runs that require one model.
+- Nothing about scoring changes: no weight, penalty, rubric or schema. `score.py` is untouched.
+- Tests: `tests/test_etapas.py` and `tests/test_tarefa_1_2_0.py`, on synthetic transcripts, deliveries and scorecards (133 tests in all).
+  Also run against a real finished session with subagents (conforming) and against a live one (refused as not ready).
 
 ### `0.2.123` — 2026-10-07 — A read-only tool says which model answered, and when it changed
 

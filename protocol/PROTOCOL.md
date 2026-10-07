@@ -86,7 +86,7 @@ Every run also records the size of the machine it ran on (`execution_host`: vCPU
 
 **Clean machine, unprivileged user.** The agent runs as an ordinary user with no sudo, on a machine that carries nothing from an earlier run: no other run's folder, session log, temporary file, database or database user. The clean state is kept as a VM snapshot and restored before every run, and the delivery and the client's session log are copied off the machine before the next restore. Whatever the agent needs to test runs inside its own account: PHP's built-in server, and a private MariaDB it starts itself (the system database gives it no account). Runs made before this rule, on 2026-09-30, ran as the VM's administrator account with passwordless sudo, on a machine that kept earlier runs' leftovers; the evaluation notes say which runs those are and what the leftovers were.
 
-**One model per run.** A run measures the model it is filed under. A client that can switch to another model on its own — after a safety classifier stops a response, on a rate limit, when a model is unavailable — runs with that switch turned off. If a switch happens anyway, the run is void when any part of the delivery (code, report or findings index) was written by the other model; Claude Fable 5.1's second run is the case. When the switch stayed inside auxiliary agents of a multi-agent client, and none of the delivery was written by them, the run stands: its note records which agents switched, to which model, and their share of the run's output tokens and cost.
+**One model per run.** A run measures the model it is filed under. A client that can switch to another model on its own — after a safety classifier stops a response, on a rate limit, when a model is unavailable — runs with that switch turned off. If a switch happens anyway, the run is void when any part of the delivery (code, report or findings index) was written by the other model; Claude Fable 5.1's second run is the case. When the switch stayed inside auxiliary agents of a multi-agent client, and none of the delivery was written by them, the run stands: its note records which agents switched, to which model, and their share of the run's output tokens and cost. A run under task 1.2.0, in two stages, follows §3.1 instead of this paragraph.
 
 Every run also records the model's training cutoff as its provider publishes it (`model.training_cutoff`, with `training_cutoff_source` pointing at the provider's page). It is `null` when the provider publishes none, never a third-party estimate. Against the day an instance's answer key became public, it says whether the model could have trained on that key (MATRIX §4). When the provider publishes no cutoff but does publish the model's release date (`model.release_date`, with `release_date_source` pointing at the provider's own announcement, release notes or model card), that date bounds the cutoff: a model cannot have trained on data that appeared after it was released. A release before the key went public therefore counts as `before`; a release on or after it says nothing, and the run stays `unknown`. Decided on 2026-10-05; until then a release date was not accepted in place of a cutoff.
 
@@ -95,6 +95,47 @@ Every run also records the model's training cutoff as its provider publishes it 
 > Não há ninguém para responder. Decida com o seu próprio critério e continue.
 
 Each reply is one more turn of the budget, and `run.json` records how many were sent (`operator_replies`). Approving a client's tool-permission prompt is not a reply and is not counted, since it carries no content. The client should run with its tools pre-approved inside the VM, in a mode set before the first message and left alone until the run ends: switching a mode mid-run (Claude Code's plan mode, for one) puts instructions into the agent's context, and may hand turns to another model. A message with any other content voids the run: an answer, a hint, a correction. The evaluation notes record the voided run and why. A voided run may be replaced only while its delivery is unscored; replacing it after scoring is the selective retry §4 item 3 forbids. When the budget runs out, the delivery is whatever the agent has written by then.
+
+### 3.1 Runs in two stages (task 1.2.0)
+
+A run under task 1.2.0 is made in two stages, in one session, and follows this section instead of *One model per run*. It is a separate protocol:
+its results are never mixed with those of runs that require a single model.
+
+**Messages.** [`tasks/mensagens-1.2.0.json`](tasks/mensagens-1.2.0.json) holds the two messages. The first is the sentence every run gets (above); the
+task file carries the stage 1 scope: architecture, bugs, performance, quality and compatibility, with the specific investigation of security
+vulnerabilities left to stage 2. The candidate is never told to keep a vulnerability. If a fix in another category improves security incidentally,
+it stays and is reported. The second message is fixed and the same for every run. Between the stages the candidate gets no scores, answer key,
+private verifier results or judge guidance.
+
+**Checkpoint.** When stage 1 ends, the operator waits until every operation and every subagent has ended, then runs `tools/etapas.py checkpoint`.
+It refuses while a transcript is still moving. It keeps a read-only copy of the delivery with a SHA-256 manifest and records the UTC instant, the
+position reached in each transcript (lines, bytes, and a hash of everything up to there), the models observed, the subagent launches against the
+subagent transcripts found, and the budget consumed. Only then is the second message sent. After stage 2, `tools/etapas.py finalize` keeps the
+final delivery the same way and writes the verdict below.
+
+**Budget.** One pool for both stages (the declared turns, agent time and cost). It does not reset at the second message or on a model switch, and
+there is no per-stage cap. The checkpoint records what stage 1 used, so the split is visible. If a dimension is exhausted before stage 1 ends, the
+run ends at the checkpoint and is recorded as "stage 2 not reached". The rule is the same for every agent, is fixed before the pilot and is not
+adjusted by the scores. A cost is recorded as measured or estimated, and says which.
+
+**Fallback.** In the pilot's candidate profile the client's fallback is on, through the setting the client supports. No global setting, no authoring
+session and no safeguard is changed to force continuity or to avoid a switch. Each run records the model requested, the models identified in the
+transcripts, the stage and the subagent in which each answered, the declared fallback setting, the client and the tool version.
+
+**Conformity.** `tools/etapas.py check` examines the whole transcripts, subagents included, against the recorded boundary (position and time). The
+verdict is *conforming* (no switch before the checkpoint, and only the requested model before it), *non-conforming* (a switch before it, or another
+model answered before it) or *inconclusive* (the records do not allow a verdict, which is never read as proof of a single model). A non-conforming
+run is kept with its artifacts, reason, cost and occurrence, counts in the statistics, is not discarded silently and is not repeated until one comes
+out favorable. A switch after the checkpoint does not invalidate the run: the checkpoint stays untouched and the final delivery is evaluated as usual.
+`tools/modelos-usados.py --not-before` alone does not show that no switch happened before the checkpoint.
+
+**Scoring.** The official score is computed entirely on the final delivery, with the current rubric. The checkpoint is evaluated separately and is
+informative: in a pilot it shows the performance before the security stage. No total is built by adding categories of the checkpoint to the security
+of the final delivery, since it would match no real delivery. Both profiles and the difference between them are recorded (`tools/etapas.py perfis`).
+If stage 2 breaks performance, architecture or compatibility, that shows in the final evaluation. A model switch alone brings no bonus and no deduction.
+
+**Wording.** A run with a switch is shown as a run of the agent or product with fallback, with the sequence observed, and is not published as if the
+initial model had done all the work. The record names no cause for the switch and does not call the replacement lower without evidence.
 
 ## 4. Reprodutibilidade
 

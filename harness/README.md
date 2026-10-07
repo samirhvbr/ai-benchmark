@@ -156,5 +156,6 @@ python3 tests/run_all.py                 # tooling tests: standard library, no n
 python3 tools/export-results.py --check  # the published LEB-100-A results are still what the tooling produces
 python3 tools/saturacao.py               # saturation and dispersion of a published instance (read-only)
 python3 tools/modelos-usados.py <transcript|dir> [--not-before <ISO instant>]   # which model answered, and when it changed (read-only)
+python3 tools/etapas.py checkpoint|finalize|check|perfis ...     # a run in two stages (task 1.2.0): checkpoint, conformity, profiles; PROTOCOL §3.1
 python3 tools/export-results.py --publish-aggregate <instance>   # active instances only: writes aggregate.json, nothing else
 ```
