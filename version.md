@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.120`
+**Versão atual:** `0.2.121`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.121` — 2026-10-07 — PEN-003 has a ruler for task 1.1.0 or later, checked by ten cases
+
+- `scoring/JUDGE.md` gets a section on PEN-003 when the task is 1.1.0 or later. The judge decides it from six elements taken together (public
+  surface, contracted behavior, declared stack, changes tied to concrete problems, proportionality, no indiscriminate replacement) and never
+  from the number of classes, files or lines changed. Internal reorganization needed to fix an architecture defect is explicitly allowed.
+  PEN-003 is registered as 0 or 1 per run. Which of COMP or PEN-002 takes a contract fact follows how it was detected.
+- It applies only to task 1.1.0 or later. Every published LEB-100-A run is on task 1.0.0 and is judged as before. No weight, penalty or
+  value changes, and `SPEC §6.2` is untouched.
+- New `scoring/pen003-cases.md`: ten fictional deliveries with the expected outcome of each, kept apart from the descriptions. Two blind judges
+  (Sonnet 5.5 and Opus 5.5) took the PEN-003 decision the same way in all ten in the first round; their secondary labels differed in two
+  cases, which exposed a gap in the text, fixed with one sentence. In the second round both matched the table in all ten. The limits of that
+  proof are written in the file.
+- New `tests/test_pen003_casos.py` (7 cases): the cases file keeps a closed set of outcomes, covers both sides of the boundary, can be given
+  to a judge without the answers, and the section names the six elements. The suite is 97 tests.
 
 ### `0.2.119` — 2026-10-06 — Spec 1.4.0: the extensions are documented, and nothing about scoring changes
 

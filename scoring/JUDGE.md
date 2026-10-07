@@ -67,6 +67,51 @@ Liste em `comp_violations` cada violação de superfície pública atribuível �
 (`../SPEC.md §6.1`), com `count` por ocorrência. Ex.: migrar mysqli→PDO = `COMP-010` **+** `COMP-001`
 por assinatura pública alterada. (Até o diff de superfície virar mecânico no harness, isto é do juiz.)
 
+### PEN-003 when the task is 1.1.0 or later
+
+**Scope.** This section applies only to a delivery evaluated against task **1.1.0 or later** (`task_version` in `run.json`). A delivery on
+task 1.0.0, which is every published LEB-100-A run, is judged as before, and nothing here changes its score. Task 1.0.0 forbids moving or
+renaming files, so a delivery could hardly look like a rewrite. Task 1.1.0 allows creating, splitting, moving and renaming files and keeping
+facades, so the size of a diff no longer tells a legitimate extraction from a substitution.
+
+Rewriting is not changing many lines, creating many classes or reorganizing the internals. Decide PEN-003 from the **combination** of six
+elements, on the delivery, and **without using** the number of classes, files created, lines changed or the size of the diff as a shortcut
+(the mechanical report may print them as information):
+
+1. **Public surface preserved.**
+2. **Contracted behaviors preserved** (manifest, API, formats, database, rules). A broken contract is COMP-* or PEN-002, never PEN-003.
+3. **Declared stack kept and declared restrictions respected.**
+4. **Changes tied to concrete problems:** each relevant structural change answers a problem the delivery identified.
+5. **Proportionality** of the change.
+6. **No indiscriminate replacement** of correct parts only to impose another architecture.
+
+The internal reorganization needed to fix an architecture defect is **explicitly allowed**. PEN-003 applies when the delivery **replaces** the
+system or a whole module unnecessarily and out of scope (elements 5 and 6), or changes the declared stack (element 3). It does not apply to an
+internal reorganization that preserves the contract and answers concrete problems, however large the diff. To avoid punishing one fact twice
+(`../SPEC.md §6.2`): if the change also breaks a contract, the deduction is the COMP-* or PEN-002 one, and PEN-003 is not added for the same fact.
+How the fact was detected tells which of the two takes it: a characterization test that fails is PEN-002 and comes from the mechanical report; a
+surface or contract break that no characterization test catches is COMP and comes from your own list.
+
+*Reorganization allowed* (examples): extracting a responsibility into another class; moving data access into its own component and making the
+rules delegate to it; centralizing in one policy a rule duplicated across paths; injecting a dependency at the edge instead of reading global
+state; splitting a long method; moving, renaming or creating files and packages while keeping the manifest's facades.
+
+*Replacement not authorized* (examples): swapping the data-access layer for another technology, or the database for another; adding a web
+framework, a dependency-injection framework or any dependency the manifest does not allow; changing routes, formats or the schema in an
+incompatible way; rewriting a whole module with behavior different from the contracted one; changing the language or the platform.
+
+**Evidence.** Elements 1 and 2 come from the mechanical result that already exists (characterization, contract checks, the evaluator's own
+checks). Element 3 comes from what the evaluator builds: where it builds against its own dependency list, a new dependency fails the build,
+and the type references in the bytecode show a swapped layer. Elements 4 to 6 come from reading the report and the diff, with the map the
+candidate delivers in `achados.json` linking changes to findings. A structural change with no matching finding is not punished by itself;
+only a **substitution** is.
+
+**Recording.** Register PEN-003 as 0 or 1 per run, because `SPEC §6.2` lists one flat −25. When you apply it, put the six elements and a
+justification in the verdict's `notes`. When the delivery changed many files and you do not apply it, put one line saying why.
+
+**Calibration cases.** [`pen003-cases.md`](pen003-cases.md) holds ten fictional deliveries with the expected outcome of each. Two independent
+passes agree with it before this section is relied on. No weight, penalty or value changes.
+
 ## Passo 5 — rubrica EXPL (às cegas)
 
 Pontue a Explicação Técnica do relatório em 5 dimensões × 10 (âncoras em `SCORING.md §6`):
