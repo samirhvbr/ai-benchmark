@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.125`
+**Versão atual:** `0.2.126`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.126` — 2026-10-08 — docs/candidate-vm.md covers OpenCode, the model pin and the Codex sandbox
+
+- `docs/candidate-vm.md` now lists OpenCode among the clients (version, the state that is cleaned, and why `model.json` matters), says how the work folder is made trusted in
+  Claude Code and Codex, and tells the reader to pass the model on the command line because a default can sit in one VM's settings.
+- It records a measurement: Codex's default sandbox writes to the work folder but cannot connect to the local PostgreSQL, so a run needs hand-approved escalations or the
+  bypass flag. Four rows are added to the list of what went wrong.
+- Documentation only: no protocol text, instance, tool, weight, penalty or schema changes. The 133 tests are unchanged.
 
 ### `0.2.125` — 2026-10-08 — docs/candidate-vm.md says how to rebuild the VM that runs the agents
 

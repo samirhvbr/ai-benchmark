@@ -127,14 +127,21 @@ The deviations, the same on every VM, are all about keeping the operator's own c
 
 - Claude Code: `"syncClaudeAiSkills": false` and `"disableClaudeAiConnectors": true` in the runner's user settings. Without them the client loads the account's synced skills
   and connectors.
-- The work folder (`/srv/run`) is trusted beforehand in each client, so no trust dialog opens.
+- The work folder (`/srv/run`) is trusted beforehand in each client, so no trust dialog opens: a `projects` entry with `hasTrustDialogAccepted` in `~/.claude.json` for Claude
+  Code, and `[projects."/srv/run"]` with `trust_level = "trusted"` in Codex's `config.toml`.
 - Tools are pre-approved and one permission mode is set before the first message and never changed. Fallback is on through the client's own setting; the conformity rules of
-  task 1.2.0 apply.
+  task 1.2.0 apply. Codex's default sandbox (`workspace-write`) writes to the work folder but cannot connect to the local PostgreSQL, which the tests need (measured with
+  `codex sandbox`), so either every escalation is approved by hand or the run starts with the bypass flag (`--dangerously-bypass-approvals-and-sandbox`; Claude Code's
+  equivalent is `--dangerously-skip-permissions`). The VM is disposable. Record which one a run used.
+- **Pin the model on the command line.** A default model can sit in one VM's client settings (on one reference VM both Claude Code and Codex had one, the others none), so a
+  bare `claude` or `codex` would not start the same model everywhere. Pass the model every time and record the exact id.
 
 **Clean state.** The runner's client folders hold credentials and configuration, and nothing from earlier sessions: no transcripts, sessions, history, memory or state
 databases, and no skills or plugins. On the reference VMs that meant removing `~/.claude/{projects,sessions,backups}/*` and `~/.claude/history.jsonl`, and in `~/.codex` the
-`sessions` and `shell_snapshots` folders, `history.jsonl` and the `memories`, `goals`, `queue`, `thread_history`, `logs` and `state` SQLite files. Client versions on the
-reference VMs: Claude Code 2.1.285 and Codex CLI 0.159.3.
+`sessions` and `shell_snapshots` folders, `history.jsonl` and the `memories`, `goals`, `queue`, `thread_history`, `logs` and `state` SQLite files, and for OpenCode
+`~/.local/share/opencode/{opencode.db*,log/*,repos/*}` plus `prompt-history.jsonl` and `model.json` in `~/.local/state/opencode` (the last one remembers the last model and would
+change the next default). Claude Code also keeps figures of earlier sessions per project in `~/.claude.json`; keep only the trust entry of the work folder. Client versions on
+the reference VMs: Claude Code 2.1.285, Codex CLI 0.159.3 and OpenCode 1.18.33.
 
 **Network.** It is not restricted: using the web is part of what is measured, and the package must not say otherwise. The one block is the GitHub layers of the README.
 
@@ -180,6 +187,10 @@ python3 etapas.py checkpoint --entrega /srv/run --transcript $TX --out ~leb/leb/
 | The database is newer than the evaluator's (17 against 16) | Accept 16 or newer and tell the candidate which version grades it |
 | A candidate-facing note said there was no outbound network | It was false and discouraged the behavior under test; the note now says what is true |
 | PostgreSQL answers in the VM's language (`pt_BR`) | No code decides by message text; the text only reaches the agent as it is |
+| One VM had a default model in the Claude Code and Codex settings, the others none | Pass the model on the command line (§6) |
+| Codex's default sandbox blocked the connection to the local PostgreSQL | Approve each escalation by hand, or start with the bypass flag (§6) |
+| A trust entry existed on one VM only, so the other two opened a trust dialog each run | Write the entry on every VM before the snapshot (§6) |
+| OpenCode and Claude Code kept the last model and per-project figures outside the folders that were cleaned | Clean them too (§6) |
 
 ## 11. Limits
 
