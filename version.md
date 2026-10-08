@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.131`
+**Versão atual:** `0.2.132`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.132` — 2026-10-08 — The LEB-300-A aggregate lists Claude Sonnet 5.5 and GPT-5.6-terra
+
+- `results/2026/LEB-300-A/aggregate.json` goes from three agents to five. Claude Sonnet 5.5 at xhigh effort leads with 860 of 1000 (Gold) on **one** run of three, in Claude Code; GPT-5.6-terra at xhigh is third with 625
+  (Silver, one run, in Codex CLI), ahead of MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three), and DeepSeek V4.1 Flash (649, one run) is second. A line on fewer than three runs is not official and says so.
+- Both new agents have the agent ids they have in LEB-100 (`claude-sonnet-5.5-xhigh`, `gpt-5.6-terra-xhigh`) and the same model blocks. Codex CLI keeps no cost, so the GPT-5.6-terra line carries none (`cost_usd` null); the operator
+  took 20 minutes between its two stages, and its session time (52 minutes, 32 of work) includes that wait, as the definition of session time says.
+- Two judge calls worth knowing, both kept as judged: PEN-001 (−15) was applied to GPT-5.6-terra for a new, recoverable concurrency fault in one of its fixes (640 without it), and COMP-008 was counted once on Claude Sonnet 5.5
+  (compatibility 75) for a change in how a contracted header behaves between users of one company.
+- Every run was judged with the same two prompts by independent Claude Opus 5.5 judges, step 4 on the anonymized delivery and EXPL blind to everything else. Three readings were rewritten, and two written, because "the strongest
+  result so far" and "the most expensive run" stopped being true; none names a flaw, a count of flaws or a location. `results/README.md` and `results/results.json` are regenerated. No protocol text, tool, weight, penalty or
+  schema changes. The 139 tests are unchanged.
 
 ### `0.2.131` — 2026-10-08 — The LEB-300-A aggregate carries each agent's runs and a short written reading
 
