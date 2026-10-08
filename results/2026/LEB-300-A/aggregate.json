@@ -12,6 +12,40 @@
   "turn_budget": 60,
   "agents": [
     {
+      "agent": "deepseek-v4.1-flash-high",
+      "score": 649,
+      "grade": "Silver",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 229,
+        "ARCH": 47,
+        "BUG": 137,
+        "PERF": 96,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 40
+      },
+      "cost_usd": 0.12,
+      "wall_minutes": 38.6
+    },
+    {
+      "agent": "minimax-m3-thinking",
+      "score": 388,
+      "grade": "Reprovada",
+      "runs_count": 2,
+      "categories": {
+        "SEC": 113,
+        "ARCH": 56,
+        "BUG": 47,
+        "PERF": 26,
+        "CLN": 7,
+        "COMP": 100,
+        "EXPL": 39
+      },
+      "cost_usd": 1.21,
+      "wall_minutes": 43.7
+    },
+    {
       "agent": "claude-haiku-4.5-default",
       "score": 242,
       "grade": "Reprovada",

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.129`
+**Versão atual:** `0.2.130`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.130` — 2026-10-08 — The LEB-300-A aggregate lists DeepSeek V4.1 Flash and MiniMax-M3, with the runs each rests on
+
+- `results/2026/LEB-300-A/aggregate.json` goes from one agent to three. DeepSeek V4.1 Flash at high effort leads with 649 of 1000 (Silver) on **one** run of three; MiniMax-M3 with its thinking variant has 388 (Reprovada) on **two**
+  runs of three (388 and 398, the published score being the lower of two); Claude Haiku 4.5 keeps its 242 on three. A line that rests on fewer than three runs is not official and says so: the same rule as the LEB-100 table.
+- Both new agents are the same agent ids as in LEB-100 (`deepseek-v4.1-flash-high`, `minimax-m3-thinking`), each on its provider's own API, and they ran in OpenCode 1.18.33 while Claude Haiku 4.5 ran in Claude Code. OpenCode keeps
+  no model time, so those lines carry the cost and the session time of the session record and nothing else.
+- Every run was judged with the same two prompts by independent Claude Opus 5.5 judges, step 4 on the anonymized delivery and EXPL blind to everything else. No flaw, verdict, delivery or mechanical report is published: the
+  instance is active and its matrix declares `publication: aggregate`.
+- What the record still does not have: no checkpoint was taken between the two stages of task 1.2.0 in any run (`etapas.py` reads only the Claude Code transcript layout, so the OpenCode runs could not have one), so their
+  conformity is inconclusive; and the task text the agents read names the previous matrix hash (`3331a107`) while the matrix they are scored against (`c42c8287`) differs from it only by the header field `publication`.
+- `results/README.md` and `results/results.json` are regenerated from it. No protocol text, tool, weight, penalty or schema changes. The 134 tests are unchanged.
 
 ### `0.2.129` — 2026-10-08 — The LEB-300-A aggregate rests on three runs of its first agent
 
