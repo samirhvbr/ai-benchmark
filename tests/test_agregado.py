@@ -182,6 +182,64 @@ class Publishing(ExportCase):
         self.assertFalse(os.path.exists(self.results("2026", "LEB-TEST-A")))
 
 
+class WrittenReading(ExportCase):
+    """A short written reading of an agent travels inside the aggregate (comments.json of the private archive). It is free text, so it is
+    the one place a flaw could leak: the same guard that reads the agent id reads it."""
+
+    def publish_with(self, comments):
+        if not getattr(self, "_built", False):
+            self.build()
+            self._built = True
+        write_json(os.path.join(self.priv, "LEB-TEST-A", "comments.json"), comments)
+        return self.export("--publish-aggregate", "LEB-TEST-A")
+
+    def test_each_agent_lists_its_runs_and_the_score_is_one_of_their_totals(self):
+        self.build()
+        self.assertEqual(self.export("--publish-aggregate", "LEB-TEST-A")[0], 0)
+        agg = read_json(self.results("2026", "LEB-TEST-A", "aggregate.json"))
+        by = {e["agent"]: e for e in agg["agents"]}
+        total = lambda c3: score_files(active_matrix(), synthetic_mech(), verdict_of(c3))[0]["total"]
+        self.assertEqual([(r["run"], r["total"]) for r in by["agent-one"]["runs"]], [(1, total("full")), (2, total("none")), (3, total("full"))])
+        self.assertEqual([r["run"] for r in by["agent-two"]["runs"]], [1])
+        for e in agg["agents"]:
+            self.assertIn(e["score"], [r["total"] for r in e["runs"]])
+            self.assertEqual(len(e["runs"]), e["runs_count"])
+        # the README shows the totals of an agent with more than one run, as the table of an open instance does
+        readme = read_text(self.t, "results", "README.md")
+        self.assertIn("3/3 (%d · %d · %d)" % (total("full"), total("none"), total("full")), readme)
+
+    def test_a_reading_travels_in_the_aggregate_in_both_languages_and_only_for_its_agent(self):
+        code, err, _ = self.publish_with({"agent-one": {"en": "Strong on security, weak on architecture.", "pt_BR": "Forte em segurança, fraco em arquitetura."}})
+        self.assertEqual(code, 0, err)
+        agg = read_json(self.results("2026", "LEB-TEST-A", "aggregate.json"))
+        by = {e["agent"]: e for e in agg["agents"]}
+        self.assertEqual(by["agent-one"]["comment"]["pt_BR"], "Forte em segurança, fraco em arquitetura.")
+        self.assertNotIn("comment", by["agent-two"])
+        self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
+        self.assertEqual(self.export("--publish-aggregate", "LEB-TEST-A", "--check")[0], 0)
+
+    def test_a_reading_that_names_a_flaw_or_quotes_the_matrix_is_refused_and_nothing_is_written(self):
+        for text in ("It fixed BUG-041 before anything else.", "The fix was to " + SECRET_FIX + ".", "Left SEC-042.b alone."):
+            with self.subTest(text=text):
+                code, err, _ = self.publish_with({"agent-one": {"en": text, "pt_BR": "Texto."}})
+                self.assertNotEqual(code, 0)
+                self.assertIn("refused", err)
+                self.assertFalse(os.path.exists(self.results("2026", "LEB-TEST-A")))
+
+    def test_a_reading_for_an_agent_that_does_not_exist_is_refused(self):
+        code, err, _ = self.publish_with({"agent-nine": {"en": "Text.", "pt_BR": "Texto."}})
+        self.assertNotEqual(code, 0)
+        self.assertIn("names no agent: agent-nine", err)
+
+    def test_a_reading_in_one_language_or_too_long_does_not_match_the_schema(self):
+        for comment in ({"en": "Only English."}, {"en": "x" * 1201, "pt_BR": "Texto."}, {"en": "Text.", "pt_BR": ""}):
+            with self.subTest(comment=list(comment)):
+                code, err, _ = self.publish_with({"agent-one": comment})
+                self.assertNotEqual(code, 0)
+                self.assertIn("does not match", err)
+                self.assertFalse(os.path.exists(self.results("2026", "LEB-TEST-A")))
+
+
 class PublicTree(ExportCase):
     def test_a_per_flaw_file_in_the_folder_of_an_aggregate_instance_fails_every_run_and_check(self):
         self.build()

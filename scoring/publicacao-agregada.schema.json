@@ -116,6 +116,66 @@
               "number",
               "null"
             ]
+          },
+          "runs": {
+            "type": "array",
+            "description": "One line per run of the agent, by run number: its total, its cost and its session time. The same numbers the score is the lower median of.",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": [
+                "run",
+                "total"
+              ],
+              "properties": {
+                "run": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "total": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000
+                },
+                "cost_usd": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "wall_minutes": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "comment": {
+            "type": "object",
+            "description": "A short written reading of the agent in the site's two languages. Free text is the one place a flaw could leak, so the exporter refuses any flaw id or any long text of the matrix in it.",
+            "required": [
+              "en",
+              "pt_BR"
+            ],
+            "properties": {
+              "en": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200,
+                "pattern": "^[\\s\\S]{1,1200}$"
+              },
+              "pt_BR": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200,
+                "pattern": "^[\\s\\S]{1,1200}$"
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false

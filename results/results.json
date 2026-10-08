@@ -16854,7 +16854,19 @@
             "EXPL": 40
           },
           "cost_usd": 0.12,
-          "wall_minutes": 38.6
+          "wall_minutes": 38.6,
+          "runs": [
+            {
+              "run": 1,
+              "total": 649,
+              "cost_usd": 0.12,
+              "wall_minutes": 38.6
+            }
+          ],
+          "comment": {
+            "en": "The strongest result so far, on a single run: security at 229 of 250 and bugs at 137 of 150, with the contract untouched (compatibility 100). It left architecture largely alone (47 of 200) and earned nothing in clean code, which is where its points ran out. One of its findings described a problem the code cannot have. Both stages ran in one OpenCode session of 39 minutes for US$ 0.12, the cheapest line here. One run of three: it is not official and could move.",
+            "pt_BR": "O melhor resultado até agora, com uma execução só: segurança em 229 de 250 e bugs em 137 de 150, com o contrato intacto (compatibilidade 100). Deixou a arquitetura quase de lado (47 de 200) e não pontuou em código limpo, que é onde os pontos acabaram. Um dos achados descreveu um problema que o código não pode ter. As duas etapas rodaram numa sessão do OpenCode de 39 minutos por US$ 0,12, a linha mais barata daqui. Uma execução de três: não é oficial e pode mudar."
+          }
         },
         {
           "agent": "minimax-m3-thinking",
@@ -16871,7 +16883,25 @@
             "EXPL": 39
           },
           "cost_usd": 1.21,
-          "wall_minutes": 43.7
+          "wall_minutes": 43.7,
+          "runs": [
+            {
+              "run": 1,
+              "total": 388,
+              "cost_usd": 1.21,
+              "wall_minutes": 43.7
+            },
+            {
+              "run": 2,
+              "total": 398,
+              "cost_usd": 0.81,
+              "wall_minutes": 66.1
+            }
+          ],
+          "comment": {
+            "en": "Two runs within ten points of each other (388 and 398), so the shape is steady: compatibility whole, security at 113 of 250, bugs at 47 of 150 and little in performance or clean code. In both, the first-stage report filed several security and architecture problems as plain bugs and never moved them, which cost points in the categories that mattered. Its runs took 44 and 66 minutes, the longest of any run here, at US$ 1.21 and 0.81. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções a dez pontos uma da outra (388 e 398), então o perfil é estável: compatibilidade inteira, segurança em 113 de 250, bugs em 47 de 150 e pouco em desempenho e código limpo. Nas duas, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou, o que custou pontos nas categorias que mais pesavam. As execuções levaram 44 e 66 minutos, as mais longas daqui, a US$ 1,21 e 0,81. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+          }
         },
         {
           "agent": "claude-haiku-4.5-default",
@@ -16888,7 +16918,31 @@
             "EXPL": 32
           },
           "cost_usd": 0.96,
-          "wall_minutes": 13.4
+          "wall_minutes": 13.4,
+          "runs": [
+            {
+              "run": 1,
+              "total": 242,
+              "cost_usd": 0.96,
+              "wall_minutes": 13.4
+            },
+            {
+              "run": 2,
+              "total": 218,
+              "cost_usd": 2.22,
+              "wall_minutes": 44.0
+            },
+            {
+              "run": 3,
+              "total": 272,
+              "cost_usd": 1.36,
+              "wall_minutes": 28.4
+            }
+          ],
+          "comment": {
+            "en": "Three runs from 218 to 272, and the published 242 is the middle one. Two of the three changed behaviour that the manifest contracts and lost 30 compatibility points; the published run did not. Its security score was 56 of 250 in the published run and above 100 in the other two, while performance and clean code stayed near zero throughout. The published run was the fastest line here, 13 minutes; the other two took 28 and 44, and the second cost US$ 2.22, the most of any run. All three ran in Claude Code.",
+            "pt_BR": "Três execuções entre 218 e 272, e os 242 publicados são a do meio. Duas das três mudaram um comportamento que o manifesto contrata e perderam 30 pontos de compatibilidade; a execução publicada não. A segurança foi 56 de 250 na execução publicada e passou de 100 nas outras duas, enquanto desempenho e código limpo ficaram perto de zero em todas. A execução publicada foi a linha mais rápida daqui, 13 minutos; as outras duas levaram 28 e 44, e a segunda custou US$ 2,22, o maior custo entre todas as execuções. As três rodaram no Claude Code."
+          }
         }
       ]
     }

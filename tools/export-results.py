@@ -24,7 +24,9 @@ the same inputs produces the same bytes and a diff shows only what really change
 An instance that declares `"publication": "aggregate"` in its matrix header is ACTIVE: its deliveries, verdicts, mechanical
 reports and per-flaw scorecards stay in the private archive (LEB_PRIVATE_RESULTS, else LEB_RUNS_DIR) and never enter results/.
 The only thing published for it is results/<edition>/<instance>/aggregate.json (scoring/publicacao-agregada.schema.json), written
-by an explicit command and only by it:
+by an explicit command and only by it. Per agent it carries the score, the grade, the category scores, the total, cost and time of each
+run and, optionally, a short written reading in two languages (<private root>/<instance>/comments.json); no flaw id and no long text of
+the matrix may appear in any of it:
 
     python3 tools/export-results.py --publish-aggregate LEB-300-A [--edition 2026]
 
@@ -619,16 +621,28 @@ def build_aggregate(inst, matrix, runs, root, edition=None):
     by_agent = {}
     for r in sorted(runs, key=lambda x: (x["agent"], x["run"])):
         by_agent.setdefault(r["agent"], []).append(r)
+    # A short written reading of each agent, in the site's two languages, kept in the private archive next to the runs
+    # (<root>/<instance>/comments.json) and published inside the aggregate, where the leak guard reads it like everything else.
+    comments_path = os.path.join(root, inst.name, "comments.json")
+    comments = load(comments_path) if os.path.exists(comments_path) else {}
+    unknown = sorted(set(comments) - set(by_agent))
+    if unknown:
+        sys.exit("[export] %s names no agent: %s" % (comments_path, ", ".join(unknown)))
     agents = []
     for agent, agent_runs in by_agent.items():
         check_agent_runs("%s/%s" % (inst.name, agent), agent_runs, base=root)
         score = statistics.median_low([x["card"]["total"] for x in agent_runs])
         rep = next(x for x in agent_runs if x["card"]["total"] == score)
         cats = rep["card"]["categories"]
-        agents.append({"agent": agent, "score": score, "grade": rep["card"]["grade"], "runs_count": len(agent_runs),
-                       "categories": {c: cats[c]["score"] for c in CATEGORIES},
-                       "cost_usd": (rep["meta"].get("cost_time") or {}).get("usd_estimate"),
-                       "wall_minutes": wall_minutes(rep["meta"])})
+        entry = {"agent": agent, "score": score, "grade": rep["card"]["grade"], "runs_count": len(agent_runs),
+                 "categories": {c: cats[c]["score"] for c in CATEGORIES},
+                 "cost_usd": (rep["meta"].get("cost_time") or {}).get("usd_estimate"),
+                 "wall_minutes": wall_minutes(rep["meta"]),
+                 "runs": [{"run": x["run"], "total": x["card"]["total"], "cost_usd": (x["meta"].get("cost_time") or {}).get("usd_estimate"),
+                           "wall_minutes": wall_minutes(x["meta"])} for x in agent_runs]}
+        if agent in comments:
+            entry["comment"] = comments[agent]
+        agents.append(entry)
     agents.sort(key=lambda e: (-e["score"], e["agent"]))
     year = edition or max(r["meta"]["evaluated_on"] for r in runs)[:4]
     return {"publication": "aggregate", "edition": year, "instance": matrix["instance"], "version": str(matrix["version"]),
@@ -691,8 +705,9 @@ def render_aggregate_sections(aggregates, w):
         w("| # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |")
         w("| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |")
         for i, e in enumerate(agg["agents"], 1):
-            w("| %d | `%s` | **%d** | %s | %s | %d/%d |" % (i, e["agent"], e["score"], e["grade"],
-                                                         " | ".join(str(e["categories"][c]) for c in CATEGORIES), e["runs_count"], MAX_RUNS))
+            totals = " (%s)" % " · ".join(str(r["total"]) for r in e["runs"]) if len(e.get("runs") or []) > 1 else ""
+            w("| %d | `%s` | **%d** | %s | %s | %d/%d%s |" % (i, e["agent"], e["score"], e["grade"],
+                                                            " | ".join(str(e["categories"][c]) for c in CATEGORIES), e["runs_count"], MAX_RUNS, totals))
         w("")
         w("Matrix SHA-256 `%s` · package SHA-256 `%s`." % (agg["matrix_sha256"], agg.get("package_sha256", "n/d")))
         w("")

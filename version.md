@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.130`
+**Versão atual:** `0.2.131`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.131` — 2026-10-08 — The LEB-300-A aggregate carries each agent's runs and a short written reading
+
+- `scoring/publicacao-agregada.schema.json` gains two optional fields per agent: `runs` (the total, the cost and the session time of each run, by run number, which the published score is the lower median of) and `comment` (a short
+  reading in English and Brazilian Portuguese, up to 1200 characters each). Nothing about a flaw gets a field: the schema still has none.
+- `tools/export-results.py --publish-aggregate` reads the readings from `<private root>/<instance>/comments.json`, refuses one that names an agent that does not exist, and runs the existing leak guard over them like over the
+  rest of the aggregate: a flaw id or a long text of the matrix in a reading stops the publication and writes nothing. The README line of an agent with more than one run now shows its totals, as the open instances do.
+- `results/2026/LEB-300-A/aggregate.json` carries the three readings (DeepSeek V4.1 Flash, MiniMax-M3, Claude Haiku 4.5). They speak of categories, scores, runs, cost and time, and name no flaw, no count of flaws or decoys and
+  no location. The sites show each as the comment of its card, the way LEB-100 does.
+- 5 new tests (139 in all): the runs line by line, a reading in both languages and only for its agent, a reading that names a flaw or quotes the matrix, an unknown agent, and a reading in one language or too long.
 
 ### `0.2.130` — 2026-10-08 — The LEB-300-A aggregate lists DeepSeek V4.1 Flash and MiniMax-M3, with the runs each rests on
 
