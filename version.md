@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.132`
+**Versão atual:** `0.2.133`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.133` — 2026-10-08 — The LEB-300-A aggregate lists Kimi K3
+
+- `results/2026/LEB-300-A/aggregate.json` goes from five agents to six. Kimi K3 at high effort is second with 737 of 1000 (Silver) on **one** run of three, in OpenCode: after Claude Sonnet 5.5 (860) and ahead of DeepSeek V4.1 Flash
+  (649), GPT-5.6-terra (625), MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three). It has the agent id it has in LEB-100 (`moonshot-kimi-k3-high`) and the same model block, **except for the host**: the LEB-100 runs of
+  this agent used Moonshot's own API and this one was served by Novita AI (opencode provider `novita-ai`), which its run record says. The operator took 10 minutes between its two stages, and its session time (80 minutes) includes it.
+- Judged with the same two prompts as every run, by independent Claude Opus 5.5 judges. Four readings were rewritten, and one written, because "second", "third", "the longest runs" and "more than five times any other line"
+  stopped being true; none names a flaw, a count of flaws or a location. `results/README.md` and `results/results.json` are regenerated. No protocol text, tool, weight, penalty or schema changes. The 139 tests are unchanged.
 
 ### `0.2.132` — 2026-10-08 — The LEB-300-A aggregate lists Claude Sonnet 5.5 and GPT-5.6-terra
 

@@ -36,8 +36,37 @@
         }
       ],
       "comment": {
-        "en": "The strongest result so far, on a single run: full marks in security (250), 156 of 200 in architecture, 139 of 150 in bugs, 140 of 150 in performance and 57 of 100 in clean code, where every other line scores 7 at most. One of its changes altered a behaviour the manifest contracts and cost 25 compatibility points. It is also the line that spent the most: US$ 6.58 for a 55-minute session, more than five times any other line that records a cost. One run of three: it is not official and could move.",
-        "pt_BR": "O melhor resultado até agora, com uma execução só: nota máxima em segurança (250), 156 de 200 em arquitetura, 139 de 150 em bugs, 140 de 150 em desempenho e 57 de 100 em código limpo, onde todas as outras linhas fazem 7 no máximo. Uma das mudanças alterou um comportamento que o manifesto contrata e custou 25 pontos de compatibilidade. É também a linha que mais gastou: US$ 6,58 por uma sessão de 55 minutos, mais de cinco vezes qualquer outra linha que registra custo. Uma execução de três: não é oficial e pode mudar."
+        "en": "The strongest result so far, on a single run: full marks in security (250), 156 of 200 in architecture, 139 of 150 in bugs, 140 of 150 in performance and 57 of 100 in clean code, where every other line scores 7 at most. One of its changes altered a behaviour the manifest contracts and cost 25 compatibility points. It is also the line that spent the most: US$ 6.58 for a 55-minute session. One run of three: it is not official and could move.",
+        "pt_BR": "O melhor resultado até agora, com uma execução só: nota máxima em segurança (250), 156 de 200 em arquitetura, 139 de 150 em bugs, 140 de 150 em desempenho e 57 de 100 em código limpo, onde todas as outras linhas fazem 7 no máximo. Uma das mudanças alterou um comportamento que o manifesto contrata e custou 25 pontos de compatibilidade. É também a linha que mais gastou: US$ 6,58 por uma sessão de 55 minutos. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
+      "agent": "moonshot-kimi-k3-high",
+      "score": 737,
+      "grade": "Silver",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 232,
+        "ARCH": 92,
+        "BUG": 132,
+        "PERF": 96,
+        "CLN": 43,
+        "COMP": 100,
+        "EXPL": 42
+      },
+      "cost_usd": 4.86,
+      "wall_minutes": 79.8,
+      "runs": [
+        {
+          "run": 1,
+          "total": 737,
+          "cost_usd": 4.86,
+          "wall_minutes": 79.8
+        }
+      ],
+      "comment": {
+        "en": "Second, on a single run, and after Sonnet the best in architecture (92 of 200) and in clean code (43 of 100): security 232 of 250, bugs 132 of 150, performance 96 of 150, with the contract untouched. One of its findings described a conflict the code cannot produce. It ran through Novita AI, not Moonshot's own API as in LEB-100. The session lasted 80 minutes, 10 of them waiting for the operator between the stages, and cost US$ 4.86, the most after Sonnet among the lines that record a cost. One run of three: it is not official and could move.",
+        "pt_BR": "Segundo, com uma execução só, e depois do Sonnet o melhor em arquitetura (92 de 200) e em código limpo (43 de 100): segurança 232 de 250, bugs 132 de 150, desempenho 96 de 150, com o contrato intacto. Um dos achados descreveu um conflito que o código não pode produzir. Rodou pela Novita AI, não pela API da própria Moonshot como no LEB-100. A sessão durou 80 minutos, 10 deles esperando o operador entre as etapas, e custou US$ 4,86, o maior custo depois do Sonnet entre as linhas que registram custo. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -65,8 +94,8 @@
         }
       ],
       "comment": {
-        "en": "Second, on a single run: security at 229 of 250 and bugs at 137 of 150, with the contract untouched (compatibility 100). It left architecture largely alone (47 of 200) and earned nothing in clean code, which is where its points ran out. One of its findings described a problem the code cannot have. Both stages ran in one OpenCode session of 39 minutes for US$ 0.12, by far the cheapest line here. One run of three: it is not official and could move.",
-        "pt_BR": "Segundo, com uma execução só: segurança em 229 de 250 e bugs em 137 de 150, com o contrato intacto (compatibilidade 100). Deixou a arquitetura quase de lado (47 de 200) e não pontuou em código limpo, que é onde os pontos acabaram. Um dos achados descreveu um problema que o código não pode ter. As duas etapas rodaram numa sessão do OpenCode de 39 minutos por US$ 0,12, de longe a linha mais barata daqui. Uma execução de três: não é oficial e pode mudar."
+        "en": "Third, on a single run: security at 229 of 250 and bugs at 137 of 150, with the contract untouched (compatibility 100). It left architecture largely alone (47 of 200) and earned nothing in clean code, which is where its points ran out. One of its findings described a problem the code cannot have. Both stages ran in one OpenCode session of 39 minutes for US$ 0.12, by far the cheapest line here. One run of three: it is not official and could move.",
+        "pt_BR": "Terceiro, com uma execução só: segurança em 229 de 250 e bugs em 137 de 150, com o contrato intacto (compatibilidade 100). Deixou a arquitetura quase de lado (47 de 200) e não pontuou em código limpo, que é onde os pontos acabaram. Um dos achados descreveu um problema que o código não pode ter. As duas etapas rodaram numa sessão do OpenCode de 39 minutos por US$ 0,12, de longe a linha mais barata daqui. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -94,8 +123,8 @@
         }
       ],
       "comment": {
-        "en": "Third, and almost level with the DeepSeek line above it on the same profile: security 225 of 250, bugs 134 of 150, architecture 47 of 200 and nothing in clean code, with the contract untouched. One of its fixes introduced a new, recoverable concurrency fault and took the 15-point penalty for a new bug; without it the score would be 640. The session lasted 52 minutes, 32 of them of work, because the operator took 20 between the two stages. Codex keeps no cost. One run of three: it is not official and could move.",
-        "pt_BR": "Terceiro, e quase empatado com a linha do DeepSeek acima, no mesmo perfil: segurança 225 de 250, bugs 134 de 150, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto. Uma das correções introduziu uma nova falha de concorrência, recuperável, e levou a penalidade de 15 pontos por bug novo; sem ela a nota seria 640. A sessão durou 52 minutos, 32 de trabalho, porque o operador levou 20 entre as duas etapas. O Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+        "en": "Fourth, and almost level with the DeepSeek line above it on the same profile: security 225 of 250, bugs 134 of 150, architecture 47 of 200 and nothing in clean code, with the contract untouched. One of its fixes introduced a new, recoverable concurrency fault and took the 15-point penalty for a new bug; without it the score would be 640. The session lasted 52 minutes, 32 of them of work, because the operator took 20 between the two stages. Codex keeps no cost. One run of three: it is not official and could move.",
+        "pt_BR": "Quarto, e quase empatado com a linha do DeepSeek acima, no mesmo perfil: segurança 225 de 250, bugs 134 de 150, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto. Uma das correções introduziu uma nova falha de concorrência, recuperável, e levou a penalidade de 15 pontos por bug novo; sem ela a nota seria 640. A sessão durou 52 minutos, 32 de trabalho, porque o operador levou 20 entre as duas etapas. O Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -129,8 +158,8 @@
         }
       ],
       "comment": {
-        "en": "Two runs within ten points of each other (388 and 398), so the shape is steady: compatibility whole, security at 113 of 250, bugs at 47 of 150 and little in performance or clean code. In both, the first-stage report filed several security and architecture problems as plain bugs and never moved them, which cost points in the categories that mattered. Its runs took 44 and 66 minutes, the longest of any run here, at US$ 1.21 and 0.81. Two runs of three: not official, and the published score is the lower of the two.",
-        "pt_BR": "Duas execuções a dez pontos uma da outra (388 e 398), então o perfil é estável: compatibilidade inteira, segurança em 113 de 250, bugs em 47 de 150 e pouco em desempenho e código limpo. Nas duas, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou, o que custou pontos nas categorias que mais pesavam. As execuções levaram 44 e 66 minutos, as mais longas daqui, a US$ 1,21 e 0,81. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+        "en": "Two runs within ten points of each other (388 and 398), so the shape is steady: compatibility whole, security at 113 of 250, bugs at 47 of 150 and little in performance or clean code. In both, the first-stage report filed several security and architecture problems as plain bugs and never moved them, which cost points in the categories that mattered. Its runs took 44 and 66 minutes, at US$ 1.21 and 0.81. Two runs of three: not official, and the published score is the lower of the two.",
+        "pt_BR": "Duas execuções a dez pontos uma da outra (388 e 398), então o perfil é estável: compatibilidade inteira, segurança em 113 de 250, bugs em 47 de 150 e pouco em desempenho e código limpo. Nas duas, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou, o que custou pontos nas categorias que mais pesavam. As execuções levaram 44 e 66 minutos, a US$ 1,21 e 0,81. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
       }
     },
     {
