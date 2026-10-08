@@ -16824,5 +16824,39 @@
         }
       ]
     }
+  ],
+  "aggregate_instances": [
+    {
+      "publication": "aggregate",
+      "edition": "2026",
+      "instance": "LEB-300-A",
+      "version": "1.0",
+      "level": 300,
+      "leb_spec": "1.4.0",
+      "task_version": "1.2.0",
+      "matrix_sha256": "c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181",
+      "package_sha256": "7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7",
+      "mode": "A",
+      "turn_budget": 60,
+      "agents": [
+        {
+          "agent": "claude-haiku-4.5-default",
+          "score": 227,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 56,
+            "ARCH": 25,
+            "BUG": 29,
+            "PERF": 0,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 32
+          },
+          "cost_usd": 0.96,
+          "wall_minutes": 13.4
+        }
+      ]
+    }
   ]
 }

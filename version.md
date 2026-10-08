@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.127`
+**Versão atual:** `0.2.128`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.128` — 2026-10-08 — The first LEB-300-A result is published, as an aggregate
+
+- New `results/2026/LEB-300-A/aggregate.json`, written by `tools/export-results.py --publish-aggregate`: one agent, Claude Haiku 4.5 at its default effort, one run of the three an official
+  score needs, total 227 of 1000, grade Reprovada, the score of each category, US$0.96 and 13.4 minutes as the client reported them. It is an exploratory pilot, not an official result.
+  No flaw, verdict, delivery or mechanical report is published: the instance is active, and its matrix declares `publication: aggregate`.
+- `results/README.md` and `results/results.json` are regenerated from it, and the instance index lists LEB-300-A as an exploratory pilot.
+- What the record does not have, stated here because the aggregate cannot carry notes: no checkpoint was taken between the two stages of task 1.2.0, so the conformity of the run is inconclusive;
+  and the task text the agent read names the previous matrix hash (`3331a107`), while the matrix the run is scored against (`c42c8287`) differs from it only by the header field `publication`.
+  The scoring is the same.
+- One test is rewritten: it said the published `results.json` had no `aggregate_instances` key, which was true only until the first aggregate. It is now two guards: an aggregate must
+  validate against its schema, name no flaw and have no per-flaw entry, and the folder of an aggregate instance holds only its `aggregate.json`. 134 tests pass.
+- No protocol text, tool, weight, penalty or schema changes.
 
 ### `0.2.127` — 2026-10-08 — docs/candidate-vm.md describes the final layout of the candidate VM
 

@@ -213,10 +213,25 @@ class PublicTree(ExportCase):
         self.assertNotEqual(validate({**agg, "agents": [{**agg["agents"][0], "flaws": []}]}, schema), [])
 
 
-class LebOneHundredA(unittest.TestCase):
-    def test_the_published_outputs_are_unchanged_and_have_no_aggregate_key(self):
+class PublishedOutputs(unittest.TestCase):
+    """The repository's own results.json. Until the first aggregate was published this test said the key was absent; it now says what the key may hold."""
+
+    def test_an_aggregate_instance_is_published_as_its_aggregate_and_nothing_else(self):
         data = read_json(os.path.join(ROOT, "results", "results.json"))
-        self.assertNotIn("aggregate_instances", data)
+        schema = read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))
+        per_flaw = {item["id"] for item in data["instances"]}
+        for agg in data.get("aggregate_instances", []):
+            self.assertEqual(validate(agg, schema), [], agg["instance"])
+            self.assertEqual(agg["publication"], "aggregate")
+            self.assertNotIn(agg["instance"], per_flaw, "an aggregate instance has no per-flaw entry")
+            text = json.dumps(agg, ensure_ascii=False)
+            self.assertEqual(re.findall(r"\b(?:SEC|ARCH|PERF|BUG|CLN)-\d{3}(?:\.[a-z])?\b", text), [], agg["instance"])
+
+    def test_the_folder_of_each_aggregate_holds_only_its_aggregate(self):
+        results = os.path.join(ROOT, "results")
+        for agg in read_json(os.path.join(results, "results.json")).get("aggregate_instances", []):
+            folder = os.path.join(results, agg["edition"], agg["instance"])
+            self.assertEqual(os.listdir(folder), ["aggregate.json"])
 
 
 if __name__ == "__main__":

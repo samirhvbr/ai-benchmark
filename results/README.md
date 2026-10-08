@@ -71,3 +71,13 @@ A score with fewer than 3 runs is **not official**.
 The answer key of LEB-100-A has been public since 2026-07-13 (MATRIX §4). Each run records the training
 cutoff its provider publishes, and the scorecard says whether the model could have trained on the key.
 † Cutoff after the key went public, or not published: GPT-6.1-sol pro (not published), Grok 4.6 (not published), Kimi K3 (not published), GLM-5.3 Prime (not published), GLM-5.3-Flash (not published), GLM-5.3 (not published), DeepSeek V4 Flash (not published), DeepSeek V4.1 Flash (not published), GLM-5.3-FlashX (not published), Gemini 3.8 Flash (not published), Gemini 3.7 Flash (not published), Gemini 3.8 Flash (not published), DeepSeek V4 Pro (not published), Kimi K2.7 Code (highspeed) (not published), Nex N2.5 Pro (not published), DeepSeek V4 Flash (not published).
+
+## 2026 · LEB-300-A v1.0 (mode A, 60 turns) — aggregate only
+
+This instance is **active**. While it is, only the totals below are published: no per-flaw result, no verdict, no delivery.
+
+| # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
+| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
+| 1 | `claude-haiku-4.5-default` | **227** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 1/3 |
+
+Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
