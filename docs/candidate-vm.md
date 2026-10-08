@@ -1,0 +1,190 @@
+# The candidate VM
+
+How the machine that runs the agents is built, laid out and kept, so the runs can be reproduced. It describes the three reference VMs (`bench1` to `bench3`) as of
+2026-10-08.
+
+This is a record of current practice, not a rule of the protocol: the normative text is [`protocol/PROTOCOL.md`](../protocol/PROTOCOL.md). How the VM is kept away from
+GitHub, so an agent cannot read this repository or an answer key, is in the README ([Execution environment](../README.md#execution-environment)) and is not repeated here.
+
+## To replicate it, in short
+
+1. Build a Linux VM with the toolchain of §2, an admin account with sudo and an unprivileged runner account (§3).
+2. Create the folders of §3 and copy in the four items of §4, checking their hashes.
+3. Put each client at its factory default, with the few deviations of §6, and clean the runner's client folders.
+4. Apply the GitHub layers of the README.
+5. Take the clean snapshot (§7). Before every run: restore it, then do §5.
+
+## 1. Two machines, one direction
+
+| Machine | What it does | What it holds |
+| --- | --- | --- |
+| Candidate VM | Runs the client (Claude Code, Codex, ...) and the model's tools on the package | The package, the offline dependency cache, `tools/etapas.py`. **No answer key, matrix, verifier or reference solution, no GitHub, no copy of this repository** |
+| Evaluator workstation | Builds the package, evaluates the delivery (Docker, disposable database), scores it | Everything private |
+
+Only four things go to the VM: the package folder (`code/`, `manifest.md`, the task), the Maven cache tarball and its SHA-256 list, and `tools/etapas.py`. What comes back is the
+delivery, the transcripts and the evidence of the run.
+
+## 2. Reference build
+
+| Item | Reference | How to check |
+| --- | --- | --- |
+| Hypervisor | Proxmox; VM snapshots | |
+| CPU | 20 vCPU (QEMU virtual CPU), one thread per core | `nproc`, `lscpu` |
+| Memory | 15.5 GiB RAM, 3.8 GiB swap | `/proc/meminfo` |
+| Disk | 17 GB root, a separate 3.9 GB `/tmp`, and an XFS volume for `/srv`; 9 to 11 GB free on root after setup | `df -h` |
+| OS | Debian 13 (trixie), kernel 6.12 | `/etc/os-release` |
+| Clock | NTP synchronized | `timedatectl` |
+| Locale | `pt_BR.UTF-8` (see §10) | `locale` |
+| JDK and Maven | OpenJDK 21.0.12 and Maven 3.9.9, both from the distribution (`openjdk-21-jdk-headless`, `maven`) | `java -version`, `mvn -v` |
+| PostgreSQL | 17.11 from the distribution, on `127.0.0.1:5432`. The packages accept 16 or newer; the evaluator runs on 16 and the package says so | `pg_isready`, `psql --version` |
+| Other | Python 3.13 (for `etapas.py`), GNU tar and coreutils, curl | |
+
+The three VMs are identical in all of this. Each instance's own `code/AMBIENTE.md` lists the toolchain it needs; the table is what is installed. The versions come from the
+distribution and drift, so record them for every run with a read-only diagnostic: identity and clock, CPU, memory and disk, toolchain versions, the local PostgreSQL, Maven
+settings and cache, and whether Maven Central is reachable. It writes only to standard output and needs no sudo.
+
+## 3. Accounts and folders
+
+- **Admin account** (sudo): installs, copies files, takes snapshots.
+- **Runner account** (`leb`): runs the client. No sudo and no group but its own.
+
+```text
+/srv/<INSTANCE>/      pristine package, one folder per instance. Owned by the admin, folders 775, files 664: the runner reads it and cannot write it
+/srv/run/             the work copy, made by the runner for each run: sudo -u leb cp -r /srv/<INSTANCE> /srv/run
+/srv/prompt.md        the operator's messages (task messages and the fixed reply). Owned by the admin, mode 600: the runner cannot read it
+~leb/leb/             operator material: etapas.py, the cache tarball and list, a copy of the package, runs/<model>-<n>/ (marker and evidence)
+```
+
+- `/srv` is `root:leb` with the setgid and sticky bits, so what is created in it gets the runner's group. Set the group of each pristine folder back to the admin's and clear
+  the setgid bit (`sudo chgrp -R <admin> /srv/<INSTANCE>; sudo chmod -R g-s /srv/<INSTANCE>`), or the runner could write to it.
+- Keep **one** instance folder in `/srv` at run time: delete the other, so the agent does not see it.
+- The marker and the evidence of a run stay outside the work copy.
+- `/srv/prompt.md` holds the second-stage message of task 1.2.0. If the agent could read it during the first stage, the staged design would be spoiled; keep it unreadable
+  to the runner.
+
+## 4. What goes to the VM, and how it is checked
+
+The freeze keeps the package files read-only (mode 400), and a plain `cp -r` carries that into the work copy, where the agent could not edit `code/`. Copy with the modes
+normalized, and send nothing else:
+
+```bash
+# on the workstation, from the folder that holds the four items
+tar -c --mode='u+rwX,go-rwx' pacote maven-cache-<INSTANCE>.tar.gz cache-manifest.sha256 etapas.py \
+  | ssh <admin>@<vm> 'sudo -Hu leb bash -c "mkdir -p ~/leb && tar -x --no-same-owner -C ~/leb"'
+
+# on the VM, as the runner
+cd ~/leb
+sha256sum pacote/.leb-pacote.sha256                     # equals the package hash recorded for the freeze
+(cd pacote && LC_ALL=C sha256sum -c .leb-pacote.sha256) # every line must say OK
+sha256sum maven-cache-<INSTANCE>.tar.gz                 # equals the cache hash recorded for the freeze
+```
+
+Then make the pristine copy:
+
+```bash
+mkdir /srv/<INSTANCE>
+sudo tar -C ~leb/leb/pacote -cf - . | tar -C /srv/<INSTANCE> -xf - --no-same-owner --no-same-permissions
+find /srv/<INSTANCE> -type d -exec chmod 775 {} + ; find /srv/<INSTANCE> -type f -exec chmod 664 {} +
+sudo chgrp -R <admin> /srv/<INSTANCE>; sudo chmod -R g-s /srv/<INSTANCE>
+```
+
+## 5. Before every run
+
+Steps 2 and 3 are for an instance that needs Maven and PostgreSQL; an instance on another stack replaces them with what its own environment note asks.
+
+1. Restore the clean snapshot.
+2. Dependencies, from the offline cache (Maven Central is reachable, and Maven still runs with `-o` because the evaluator builds offline):
+
+   ```bash
+   mkdir -p ~/.m2/repository && tar -xzf ~/leb/maven-cache-<INSTANCE>.tar.gz -C ~/.m2/repository
+   cp ~/leb/cache-manifest.sha256 ~/.m2/repository/
+   (cd ~/.m2/repository && LC_ALL=C sha256sum -c cache-manifest.sha256 | grep -vc ': OK$')   # must print 0
+   ```
+
+3. A database and a role, recreated each time, with fictitious credentials. The role needs to create and drop schemas, nothing else:
+
+   ```sql
+   CREATE ROLE leb_dev LOGIN PASSWORD 'leb_dev_pw';
+   CREATE DATABASE leb_dev OWNER leb_dev;
+   ```
+
+4. The work copy and the marker, both before the client starts:
+
+   ```bash
+   sudo -u leb cp -r /srv/<INSTANCE> /srv/run
+   mkdir -p ~leb/leb/runs/<model>-<n> && touch ~leb/leb/runs/<model>-<n>/inicio
+   (cd /srv/run/code && bash verificar-ambiente.sh)    # the check shipped in the package; it must say the environment is ready
+   ```
+
+5. Start the client inside `/srv/run`, choose the model, and send the first message from `/srv/prompt.md`.
+
+## 6. The client profile
+
+**Each client runs at its factory default, with no equalization.** A client that has web search or fetch by default has it; one that does not, does not. The run is what a
+person gets by installing the client, logging in, choosing the model and sending the message. So a result is reported as a run of the agent or product, not of the model alone.
+
+The deviations, the same on every VM, are all about keeping the operator's own content out of the run:
+
+- Claude Code: `"syncClaudeAiSkills": false` and `"disableClaudeAiConnectors": true` in the runner's user settings. Without them the client loads the account's synced skills
+  and connectors.
+- The work folder (`/srv/run`) is trusted beforehand in each client, so no trust dialog opens.
+- Tools are pre-approved and one permission mode is set before the first message and never changed. Fallback is on through the client's own setting; the conformity rules of
+  task 1.2.0 apply.
+
+**Clean state.** The runner's client folders hold credentials and configuration, and nothing from earlier sessions: no transcripts, sessions, history, memory or state
+databases, and no skills or plugins. On the reference VMs that meant removing `~/.claude/{projects,sessions,backups}/*` and `~/.claude/history.jsonl`, and in `~/.codex` the
+`sessions` and `shell_snapshots` folders, `history.jsonl` and the `memories`, `goals`, `queue`, `thread_history`, `logs` and `state` SQLite files. Client versions on the
+reference VMs: Claude Code 2.1.285 and Codex CLI 0.159.3.
+
+**Network.** It is not restricted: using the web is part of what is measured, and the package must not say otherwise. The one block is the GitHub layers of the README.
+
+## 7. Snapshots
+
+Take the clean snapshot at the end of preparation, before the first client session: toolchain installed, the four items copied and checked, `/srv/<INSTANCE>` in place, the
+client folders clean, no run folder, no `~/.m2`, no database role. Restore it before every run, so a run never starts on the leftovers of another. A change to the package
+is a new package hash: copy it again and take a new snapshot.
+
+We suggest a snapshot without the RAM state, so the guest boots clean, and checking the clock after a restore (`timedatectl`).
+
+## 8. Check the VM before the first run
+
+Run the diagnostic of §2, then a disposable end-to-end check: create the role and database, extract the cache and check its list, run the package's public tests offline in a
+scratch copy under the VM's own locale, and remove everything it created (role, database, scratch copy, `~/.m2`). All public tests must pass; if they do not, nothing runs.
+
+## 9. Running the agent
+
+The staged protocol is [`PROTOCOL.md` §3.1](../protocol/PROTOCOL.md) and the tool is [`tools/etapas.py`](../tools/etapas.py). On this VM:
+
+```bash
+cd ~/leb
+TX=$(find ~/.claude* ~/.codex -name '*.jsonl' -newer ~leb/leb/runs/<model>-<n>/inicio 2>/dev/null)
+python3 etapas.py checkpoint --entrega /srv/run --transcript $TX --out ~leb/leb/runs/<model>-<n>/etapas \
+  --requested-model <exact id> --fallback on --client "<client and version>" --cost-usd <so far> --cost-kind measured
+```
+
+- Pass `--transcript` **once**, followed by every path. Repeating it for each file keeps only the last one, and the command still exits 0.
+- Before the second message, list what the checkpoint recorded; it must include the main session (`role` is `main`).
+- To bring a run back, keep the folder structure of the transcripts (`cp --parents`): `etapas.py` tells a subagent from the main session by the `subagents/` folder in the path.
+
+## 10. What went wrong, and the fix
+
+| What happened | Fix |
+| --- | --- |
+| In `pt_BR`, `sha256sum -c` prints `SUCESSO` and `FALHOU`, not `OK`, so a check that counts `: OK$` calls intact files corrupt | Run every `sha256sum -c` with `LC_ALL=C` |
+| The frozen package is mode 400 and `cp -r` copies that | Normalize the modes at the copy (§4) |
+| `/srv` is setgid to the runner's group, so the pristine copy came out writable by the runner | `chgrp` to the admin and clear setgid (§3) |
+| `--transcript` repeated per file kept one transcript | Pass it once (§9) |
+| Copying transcripts without their folders turned subagents into main sessions | `cp --parents` (§9) |
+| The client loaded the account's skills and connectors | The two settings of §6 |
+| Memories, history and databases of earlier sessions were still in the runner's home | Remove them (§6) |
+| The database is newer than the evaluator's (17 against 16) | Accept 16 or newer and tell the candidate which version grades it |
+| A candidate-facing note said there was no outbound network | It was false and discouraged the behavior under test; the note now says what is true |
+| PostgreSQL answers in the VM's language (`pt_BR`) | No code decides by message text; the text only reaches the agent as it is |
+
+## 11. Limits
+
+- **Process-level isolation only.** The runner can read what its user can read and reach what the network lets it reach, apart from the GitHub layers. The protection is that
+  the VM holds no answer key.
+- **Versions drift.** The packages come from the distribution; record the versions of every run.
+- **Copies elsewhere are not blocked**, as in the README.
+- **This is one reference build.** The protocol does not require Proxmox, Debian or these sizes; it requires a machine restored to a clean state before each run.

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.124`
+**Versão atual:** `0.2.125`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.125` — 2026-10-08 — docs/candidate-vm.md says how to rebuild the VM that runs the agents
+
+- New `docs/candidate-vm.md`: the reference build of the three candidate VMs (hardware, OS, toolchain, locale), the accounts and the `/srv` layout (pristine package,
+  work copy, operator messages kept unreadable to the runner), the four items sent to the VM and how they are checked, what is done before every run, the client profile,
+  the snapshot routine, how to check a VM before the first run, how to run `tools/etapas.py` on it, the mistakes found while preparing it with their fixes, and the limits.
+- The client profile is written down as current practice: each client at its factory default with no equalization, the web not restricted, and the few deviations that keep
+  the operator's own account content (synced skills and connectors) and the state of earlier sessions out of a run.
+- README: a row in the Documents table and a pointer from "Execution environment". The GitHub layers described there are unchanged.
+- It is a record of practice, not a rule: no text of the protocol, no instance, no tool, no weight, penalty or schema changes. The 133 tests are unchanged.
 
 ### `0.2.124` — 2026-10-07 — Task 1.2.0 puts a run in two stages, with a checkpoint that keeps the evidence
 
