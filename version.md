@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.128`
+**Versão atual:** `0.2.129`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.129` — 2026-10-08 — The LEB-300-A aggregate rests on three runs of its first agent
+
+- `results/2026/LEB-300-A/aggregate.json` now holds the three runs of Claude Haiku 4.5 at its default effort: totals 242, 218 and 272. The published score is the lower median, 242 of 1000, grade Reprovada, with
+  the categories, the US$0.96 and the 13.4 minutes of the run it belongs to. Three runs is what an official score needs; the instance itself is still an exploratory pilot, and its difficulty has not been homologated.
+- The three runs were judged with the same two prompts by independent Claude Opus 5.5 judges, step 4 on the anonymized delivery and EXPL blind to everything else. No flaw, verdict, delivery or mechanical report is
+  published: the instance is active and its matrix declares `publication: aggregate`.
+- What the record still does not have, because the aggregate cannot carry notes: no checkpoint was taken between the two stages of task 1.2.0 in any of the runs, so their conformity is inconclusive; and the task text the
+  agents read names the previous matrix hash (`3331a107`) while the matrix they are scored against (`c42c8287`) differs from it only by the header field `publication`. The scoring is the same.
+- `results/README.md` and `results/results.json` are regenerated from it. No protocol text, tool, weight, penalty or schema changes. The 134 tests are unchanged.
 
 ### `0.2.128` — 2026-10-08 — The first LEB-300-A result is published, as an aggregate
 
