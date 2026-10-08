@@ -10,15 +10,16 @@ GitHub, so an agent cannot read this repository or an answer key, is in the READ
 
 1. Build a Linux VM with the toolchain of §2, an admin account with sudo and an unprivileged runner account (§3).
 2. Create the folders of §3 and copy in the four items of §4, checking their hashes.
-3. Put each client at its factory default, with the few deviations of §6, and clean the runner's client folders.
-4. Apply the GitHub layers of the README.
-5. Take the clean snapshot (§7). Before every run: restore it, then do §5.
+3. Leave the VM ready once: the test database, the offline Maven cache, and a proof that they work on a throwaway copy (§5).
+4. Put each client at its factory default, with the few deviations of §6, and clean the runner's client folders.
+5. Apply the GitHub layers of the README.
+6. Power the VM off and take the clean snapshot (§7). A run is then: restore it, open the client in the package folder, send the first message (§9).
 
 ## 1. Two machines, one direction
 
 | Machine | What it does | What it holds |
 | --- | --- | --- |
-| Candidate VM | Runs the client (Claude Code, Codex, ...) and the model's tools on the package | The package, the offline dependency cache, `tools/etapas.py`. **No answer key, matrix, verifier or reference solution, no GitHub, no copy of this repository** |
+| Candidate VM | Runs the client (Claude Code, Codex, OpenCode, ...) and the model's tools on the package | The package, the offline dependency cache, `tools/etapas.py`. **No answer key, matrix, verifier or reference solution, no GitHub, no copy of this repository** |
 | Evaluator workstation | Builds the package, evaluates the delivery (Docker, disposable database), scores it | Everything private |
 
 Only four things go to the VM: the package folder (`code/`, `manifest.md`, the task), the Maven cache tarball and its SHA-256 list, and `tools/etapas.py`. What comes back is the
@@ -49,22 +50,21 @@ settings and cache, and whether Maven Central is reachable. It writes only to st
 - **Runner account** (`leb`): runs the client. No sudo and no group but its own.
 
 ```text
-/srv/<INSTANCE>/      pristine package, one folder per instance. Owned by the admin, folders 775, files 664: the runner reads it and cannot write it
-/srv/run/             the work copy, made by the runner for each run: sudo -u leb cp -r /srv/<INSTANCE> /srv/run
+/srv/<INSTANCE>/      the package, one folder per instance, and the agent's work folder. Owned by the runner, folders 775, files 664
 /srv/prompt.md        the operator's messages (task messages and the fixed reply). Owned by the admin, mode 600: the runner cannot read it
-~leb/leb/             operator material: etapas.py, the cache tarball and list, a copy of the package, runs/<model>-<n>/ (marker and evidence)
+~leb/leb/             operator material: etapas.py, the cache tarball and list, a copy of the package, runs/<model>-<n>/ (the evidence)
 ```
 
-- `/srv` is `root:leb` with the setgid and sticky bits, so what is created in it gets the runner's group. Set the group of each pristine folder back to the admin's and clear
-  the setgid bit (`sudo chgrp -R <admin> /srv/<INSTANCE>; sudo chmod -R g-s /srv/<INSTANCE>`), or the runner could write to it.
+- **The agent works directly in `/srv/<INSTANCE>`, so the runner must own it.** Restoring the snapshot is what gives the pristine package back. The package's
+  `.leb-pacote.sha256` lists what it was: `sha256sum -c` shows the files an agent changed, and a `find` shows the ones it added.
 - Keep **one** instance folder in `/srv` at run time: delete the other, so the agent does not see it.
-- The marker and the evidence of a run stay outside the work copy.
+- The evidence of a run stays outside the work folder.
 - `/srv/prompt.md` holds the second-stage message of task 1.2.0. If the agent could read it during the first stage, the staged design would be spoiled; keep it unreadable
   to the runner.
 
 ## 4. What goes to the VM, and how it is checked
 
-The freeze keeps the package files read-only (mode 400), and a plain `cp -r` carries that into the work copy, where the agent could not edit `code/`. Copy with the modes
+The freeze keeps the package files read-only (mode 400), and a plain copy carries that into the work folder, where the agent could not edit `code/`. Copy with the modes
 normalized, and send nothing else:
 
 ```bash
@@ -79,21 +79,30 @@ sha256sum pacote/.leb-pacote.sha256                     # equals the package has
 sha256sum maven-cache-<INSTANCE>.tar.gz                 # equals the cache hash recorded for the freeze
 ```
 
-Then make the pristine copy:
+Then make the work folder, owned by the runner:
 
 ```bash
 mkdir /srv/<INSTANCE>
 sudo tar -C ~leb/leb/pacote -cf - . | tar -C /srv/<INSTANCE> -xf - --no-same-owner --no-same-permissions
 find /srv/<INSTANCE> -type d -exec chmod 775 {} + ; find /srv/<INSTANCE> -type f -exec chmod 664 {} +
-sudo chgrp -R <admin> /srv/<INSTANCE>; sudo chmod -R g-s /srv/<INSTANCE>
+sudo chown -R leb:leb /srv/<INSTANCE>
 ```
 
-## 5. Before every run
+## 5. Leave the VM ready, once
 
-Steps 2 and 3 are for an instance that needs Maven and PostgreSQL; an instance on another stack replaces them with what its own environment note asks.
+The test database and the offline cache are the same at the start of every run, and the agent sees the same state whether they are made after the restore or before the
+snapshot. So they are made once, before the snapshot. Steps 2 and 3 are for an instance that needs Maven and PostgreSQL; an instance on another stack replaces them with what
+its own environment note asks.
 
-1. Restore the clean snapshot.
-2. Dependencies, from the offline cache (Maven Central is reachable, and Maven still runs with `-o` because the evaluator builds offline):
+1. Check that no client is running and that `~/.m2` does not exist yet.
+2. The database and the role, with fictitious credentials. The role needs to create and drop schemas, nothing else:
+
+   ```sql
+   CREATE ROLE leb_dev LOGIN PASSWORD 'leb_dev_pw';
+   CREATE DATABASE leb_dev OWNER leb_dev;
+   ```
+
+3. The dependencies, from the offline cache (Maven Central is reachable, and Maven still runs with `-o` because the evaluator builds offline):
 
    ```bash
    mkdir -p ~/.m2/repository && tar -xzf ~/leb/maven-cache-<INSTANCE>.tar.gz -C ~/.m2/repository
@@ -101,34 +110,22 @@ Steps 2 and 3 are for an instance that needs Maven and PostgreSQL; an instance o
    (cd ~/.m2/repository && LC_ALL=C sha256sum -c cache-manifest.sha256 | grep -vc ': OK$')   # must print 0
    ```
 
-3. A database and a role, recreated each time, with fictitious credentials. The role needs to create and drop schemas, nothing else:
-
-   ```sql
-   CREATE ROLE leb_dev LOGIN PASSWORD 'leb_dev_pw';
-   CREATE DATABASE leb_dev OWNER leb_dev;
-   ```
-
-4. The work copy and the marker, both before the client starts:
-
-   ```bash
-   sudo -u leb cp -r /srv/<INSTANCE> /srv/run
-   mkdir -p ~leb/leb/runs/<model>-<n> && touch ~leb/leb/runs/<model>-<n>/inicio
-   (cd /srv/run/code && bash verificar-ambiente.sh)    # the check shipped in the package; it must say the environment is ready
-   ```
-
-5. Start the client inside `/srv/run`, choose the model, and send the first message from `/srv/prompt.md`.
+4. **Prove it on a throwaway copy, never in the work folder.** Copy the package to a temporary folder, run the check shipped in the package (it must say the environment is ready)
+   and the package's public tests offline, in the VM's own language, then delete the copy. Building in `/srv/<INSTANCE>` would leave a `target/` folder in what the agent receives.
+5. Check that the tests left no schema in the database, and clean what the JVM left in `/tmp`.
 
 ## 6. The client profile
 
 **Each client runs at its factory default, with no equalization.** A client that has web search or fetch by default has it; one that does not, does not. The run is what a
 person gets by installing the client, logging in, choosing the model and sending the message. So a result is reported as a run of the agent or product, not of the model alone.
 
-The deviations, the same on every VM, are all about keeping the operator's own content out of the run:
+The deviations, the same on every VM, keep the operator's own account and content out of the run, and the run's output out of the operator's account:
 
-- Claude Code: `"syncClaudeAiSkills": false` and `"disableClaudeAiConnectors": true` in the runner's user settings. Without them the client loads the account's synced skills
-  and connectors.
-- The work folder (`/srv/run`) is trusted beforehand in each client, so no trust dialog opens: a `projects` entry with `hasTrustDialogAccepted` in `~/.claude.json` for Claude
-  Code, and `[projects."/srv/run"]` with `trust_level = "trusted"` in Codex's `config.toml`.
+- Claude Code, in the runner's user settings: `"syncClaudeAiSkills": false` and `"disableClaudeAiConnectors": true`, so the account's synced skills and connectors are not
+  loaded; and `"enableArtifact": false`, because the Artifact tool publishes pages to the logged-in account. On the first runs an agent used it to publish its report there.
+- OpenCode: `share` set to `disabled` (sessions are never shared) and `autoupdate` off, in its `opencode.json`.
+- The work folder (`/srv/<INSTANCE>`) is trusted beforehand in each client, so no trust dialog opens: a `projects` entry with `hasTrustDialogAccepted` in `~/.claude.json` for
+  Claude Code, and `[projects."/srv/<INSTANCE>"]` with `trust_level = "trusted"` in Codex's `config.toml`.
 - Tools are pre-approved and one permission mode is set before the first message and never changed. Fallback is on through the client's own setting; the conformity rules of
   task 1.2.0 apply. Codex's default sandbox (`workspace-write`) writes to the work folder but cannot connect to the local PostgreSQL, which the tests need (measured with
   `codex sandbox`), so either every escalation is approved by hand or the run starts with the bypass flag (`--dangerously-bypass-approvals-and-sandbox`; Claude Code's
@@ -147,42 +144,52 @@ the reference VMs: Claude Code 2.1.285, Codex CLI 0.159.3 and OpenCode 1.18.33.
 
 ## 7. Snapshots
 
-Take the clean snapshot at the end of preparation, before the first client session: toolchain installed, the four items copied and checked, `/srv/<INSTANCE>` in place, the
-client folders clean, no run folder, no `~/.m2`, no database role. Restore it before every run, so a run never starts on the leftovers of another. A change to the package
-is a new package hash: copy it again and take a new snapshot.
+Take the clean snapshot at the end of preparation, before the first client session, with the VM powered off (`sudo systemctl poweroff`) and without the RAM state, so PostgreSQL
+is shut down cleanly and the guest boots clean. It holds: the toolchain; the four items; `/srv/<INSTANCE>` untouched and owned by the runner; the database and the role; the
+extracted cache; the client folders clean; no run folder. Restore it before every run, so a run never starts on the leftovers of another. A change to the package is a new package
+hash: copy it again, repeat §5 and take a new snapshot. After a restore, check the clock (`timedatectl`).
 
-We suggest a snapshot without the RAM state, so the guest boots clean, and checking the clock after a restore (`timedatectl`).
+A snapshot taken after even a short client session carries its history, a transcript and the trust entry it created. Take it before any client is opened, and check the state
+after every restore (§8).
 
-## 8. Check the VM before the first run
+## 8. Check the VM
 
-Run the diagnostic of §2, then a disposable end-to-end check: create the role and database, extract the cache and check its list, run the package's public tests offline in a
-scratch copy under the VM's own locale, and remove everything it created (role, database, scratch copy, `~/.m2`). All public tests must pass; if they do not, nothing runs.
+A read-only check says, with a count at the end, whether a VM is in the state of the clean snapshot: toolchain and services; the database and the offline cache in place; the
+package untouched and owned by the runner; the GitHub block; the runner without sudo and unable to enter the admin's home; no client process and nothing left in `/tmp`; and the
+client profile of §6. It changes nothing. Run it after a restore, and before taking a snapshot. If any line fails, do not run.
 
 ## 9. Running the agent
 
-The staged protocol is [`PROTOCOL.md` §3.1](../protocol/PROTOCOL.md) and the tool is [`tools/etapas.py`](../tools/etapas.py). On this VM:
+1. Restore the snapshot.
+2. As the runner, `cd /srv/<INSTANCE>`, open the client with the model (and effort) chosen explicitly, and send the first message. The messages are in `/srv/prompt.md`, which only
+   the admin reads.
+3. At the end of the first stage, before the second message, keep the evidence ([`PROTOCOL.md` §3.1](../protocol/PROTOCOL.md), tool [`tools/etapas.py`](../tools/etapas.py)):
 
-```bash
-cd ~/leb
-TX=$(find ~/.claude* ~/.codex -name '*.jsonl' -newer ~leb/leb/runs/<model>-<n>/inicio 2>/dev/null)
-python3 etapas.py checkpoint --entrega /srv/run --transcript $TX --out ~leb/leb/runs/<model>-<n>/etapas \
-  --requested-model <exact id> --fallback on --client "<client and version>" --cost-usd <so far> --cost-kind measured
-```
+   ```bash
+   cd ~/leb
+   TX=$(find ~/.claude* ~/.codex -name '*.jsonl' 2>/dev/null)   # a restored VM holds only this run's transcripts
+   python3 etapas.py checkpoint --entrega /srv/<INSTANCE> --transcript $TX --out ~/leb/runs/<model>-<n>/etapas \
+     --requested-model <exact id> --fallback on --client "<client and version>" --cost-usd <so far> --cost-kind measured
+   ```
 
 - Pass `--transcript` **once**, followed by every path. Repeating it for each file keeps only the last one, and the command still exits 0.
 - Before the second message, list what the checkpoint recorded; it must include the main session (`role` is `main`).
 - To bring a run back, keep the folder structure of the transcripts (`cp --parents`): `etapas.py` tells a subagent from the main session by the `subagents/` folder in the path.
+- **`etapas.py` reads the Claude Code transcript layout only.** OpenCode keeps its sessions in SQLite, with no `.jsonl`, and the tool fails with "no transcript found"; Codex writes
+  `.jsonl` in another layout, and the verdict is expected to be inconclusive (not tested on a real file). For those clients keep the evidence by hand (a copy of the folder at the
+  end of the first stage and the client's own export of the session); the conformity of the run is then inconclusive, which the protocol already allows.
 
 ## 10. What went wrong, and the fix
 
 | What happened | Fix |
 | --- | --- |
 | In `pt_BR`, `sha256sum -c` prints `SUCESSO` and `FALHOU`, not `OK`, so a check that counts `: OK$` calls intact files corrupt | Run every `sha256sum -c` with `LC_ALL=C` |
-| The frozen package is mode 400 and `cp -r` copies that | Normalize the modes at the copy (§4) |
-| `/srv` is setgid to the runner's group, so the pristine copy came out writable by the runner | `chgrp` to the admin and clear setgid (§3) |
+| The frozen package is mode 400 and a plain copy keeps that | Normalize the modes at the copy (§4) |
+| **The work folder was a read-only copy for the runner**, so the agents copied the package to `/tmp`, wrote their deliveries there, and the folder stayed untouched | The runner owns the work folder (§3) |
+| The agent published its report to the logged-in account through the Artifact tool | `"enableArtifact": false` (§6) |
 | `--transcript` repeated per file kept one transcript | Pass it once (§9) |
 | Copying transcripts without their folders turned subagents into main sessions | `cp --parents` (§9) |
-| The client loaded the account's skills and connectors | The two settings of §6 |
+| The client loaded the account's skills and connectors | The settings of §6 |
 | Memories, history and databases of earlier sessions were still in the runner's home | Remove them (§6) |
 | The database is newer than the evaluator's (17 against 16) | Accept 16 or newer and tell the candidate which version grades it |
 | A candidate-facing note said there was no outbound network | It was false and discouraged the behavior under test; the note now says what is true |
@@ -191,6 +198,8 @@ python3 etapas.py checkpoint --entrega /srv/run --transcript $TX --out ~leb/leb/
 | Codex's default sandbox blocked the connection to the local PostgreSQL | Approve each escalation by hand, or start with the bypass flag (§6) |
 | A trust entry existed on one VM only, so the other two opened a trust dialog each run | Write the entry on every VM before the snapshot (§6) |
 | OpenCode and Claude Code kept the last model and per-project figures outside the folders that were cleaned | Clean them too (§6) |
+| A snapshot taken after a short client session brought back its history and a transcript | Snapshot before any client is opened, and check after each restore (§7, §8) |
+| The environment check run inside the work folder leaves a `target/` there | Prove the environment on a throwaway copy (§5) |
 
 ## 11. Limits
 
@@ -198,4 +207,5 @@ python3 etapas.py checkpoint --entrega /srv/run --transcript $TX --out ~leb/leb/
   the VM holds no answer key.
 - **Versions drift.** The packages come from the distribution; record the versions of every run.
 - **Copies elsewhere are not blocked**, as in the README.
+- **The staged evidence works for one client.** Today `etapas.py` understands Claude Code only (§9).
 - **This is one reference build.** The protocol does not require Proxmox, Debian or these sizes; it requires a machine restored to a clean state before each run.

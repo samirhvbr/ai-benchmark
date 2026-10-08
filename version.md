@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.126`
+**Versão atual:** `0.2.127`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.127` — 2026-10-08 — docs/candidate-vm.md describes the final layout of the candidate VM
+
+- The agent works directly in the package folder, which the runner owns; there is no copy to make for each run. The earlier text made that folder read-only for the runner, and
+  the first runs showed what follows: the agents copied the package to `/tmp` and delivered there. The page now says so, and lists it among what went wrong.
+- The test database, the offline Maven cache and a proof that they work are made once, before the snapshot, so a run is: restore, open the client, send the first message.
+  The proof runs on a throwaway copy, never in the work folder. The `inicio` marker is gone, since a restored VM holds only the transcripts of its run.
+- The Claude Code Artifact tool is turned off, because it publishes to the logged-in account and an agent used it to publish its report; OpenCode's sharing is disabled.
+- A new section describes the read-only check of a VM, and the page states that `tools/etapas.py` reads the Claude Code transcript layout only: OpenCode (SQLite) and Codex
+  (another `.jsonl` layout) need their evidence kept by hand.
+- Documentation only: no protocol text, instance, tool, weight, penalty or schema changes. The 133 tests are unchanged.
 
 ### `0.2.126` — 2026-10-08 — docs/candidate-vm.md covers OpenCode, the model pin and the Codex sandbox
 
