@@ -208,6 +208,14 @@ class WrittenReading(ExportCase):
         readme = read_text(self.t, "results", "README.md")
         self.assertIn("3/3 (%d · %d · %d)" % (total("full"), total("none"), total("full")), readme)
 
+    def test_each_agent_says_who_it_is_so_the_sites_need_no_other_instance_to_name_it(self):
+        self.build()
+        self.assertEqual(self.export("--publish-aggregate", "LEB-TEST-A")[0], 0)
+        agg = read_json(self.results("2026", "LEB-TEST-A", "aggregate.json"))
+        for e in agg["agents"]:
+            self.assertEqual(e["model"], {"name": e["agent"], "id": e["agent"], "provider": "Test", "reasoning_effort": "high"})
+        self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
+
     def test_the_session_time_leaves_out_the_operators_wait_between_the_stages_and_nothing_else(self):
         self.build()
         for agent, wait in (("agent-one", 12.5), ("agent-two", None)):

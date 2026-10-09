@@ -642,6 +642,9 @@ def build_aggregate(inst, matrix, runs, root, edition=None):
                  "wall_minutes": wall_minutes(rep["meta"]),
                  "runs": [{"run": x["run"], "total": x["card"]["total"], "cost_usd": (x["meta"].get("cost_time") or {}).get("usd_estimate"),
                            "wall_minutes": wall_minutes(x["meta"])} for x in agent_runs]}
+        # Who the agent is: the sites find the name of a model in the LEB-100 runs, which a new agent may not have yet.
+        block = rep["meta"].get("model") or {}
+        entry["model"] = {k: block[k] for k in ("name", "id", "provider", "reasoning_effort", "client_mode") if block.get(k)}
         if agent in comments:
             entry["comment"] = comments[agent]
         agents.append(entry)

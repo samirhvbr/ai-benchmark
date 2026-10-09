@@ -176,6 +176,33 @@
               }
             },
             "additionalProperties": false
+          },
+          "model": {
+            "type": "object",
+            "description": "Who the agent is, as its run record says (the same public block LEB-100 publishes): the sites show it when LEB-100 has no run of this agent.",
+            "required": [
+              "name",
+              "provider",
+              "reasoning_effort"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "reasoning_effort": {
+                "type": "string"
+              },
+              "client_mode": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false

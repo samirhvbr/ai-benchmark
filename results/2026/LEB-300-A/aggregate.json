@@ -12,6 +12,41 @@
   "turn_budget": 60,
   "agents": [
     {
+      "agent": "claude-sonnet-5.5-high",
+      "score": 897,
+      "grade": "Gold",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 250,
+        "ARCH": 178,
+        "BUG": 147,
+        "PERF": 128,
+        "CLN": 89,
+        "COMP": 75,
+        "EXPL": 45
+      },
+      "cost_usd": 5.18,
+      "wall_minutes": 42.6,
+      "runs": [
+        {
+          "run": 1,
+          "total": 897,
+          "cost_usd": 5.18,
+          "wall_minutes": 42.6
+        }
+      ],
+      "model": {
+        "name": "Claude Sonnet 5.5",
+        "id": "claude-sonnet-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "high"
+      },
+      "comment": {
+        "en": "On a single run: full marks in security (250), 178 of 200 in architecture, 147 of 150 in bugs, 128 of 150 in performance and 89 of 100 in clean code, the highest in both architecture and clean code so far. Two of its changes cost points outside the planted work: one altered a behaviour the manifest contracts (25 compatibility points) and another introduced a new bug (the 15-point penalty; the score would be 912 without it). The same model at xhigh effort scored 860 for US$ 6.58; this run cost US$ 5.18 in a 43-minute session. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: nota máxima em segurança (250), 178 de 200 em arquitetura, 147 de 150 em bugs, 128 de 150 em desempenho e 89 de 100 em código limpo, as maiores notas até agora em arquitetura e em código limpo. Duas mudanças custaram pontos fora do trabalho plantado: uma alterou um comportamento que o manifesto contrata (25 pontos de compatibilidade) e outra introduziu um bug novo (a penalidade de 15 pontos; a nota seria 912 sem ela). O mesmo modelo em xhigh fez 860 por US$ 6,58; esta execução custou US$ 5,18 numa sessão de 43 minutos. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
       "agent": "claude-opus-5.5-xhigh",
       "score": 886,
       "grade": "Gold",
@@ -35,9 +70,15 @@
           "wall_minutes": 81.9
         }
       ],
+      "model": {
+        "name": "Claude Opus 5.5",
+        "id": "claude-opus-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "xhigh"
+      },
       "comment": {
-        "en": "The strongest result so far, on a single run: 246 of 250 in security, 147 of 150 in bugs (level with the best), and the best of the board in architecture (164 of 200), performance (144 of 150) and clean code (71 of 100). One of its changes altered a behaviour the manifest contracts and cost 30 compatibility points. It is also the line that spent the most: US$ 13.03 in an 82-minute session, about twice what the next one spent. One run of three: it is not official and could move.",
-        "pt_BR": "O melhor resultado até agora, com uma execução só: 246 de 250 em segurança, 147 de 150 em bugs (empatado com o melhor) e o melhor do placar em arquitetura (164 de 200), desempenho (144 de 150) e código limpo (71 de 100). Uma das mudanças alterou um comportamento que o manifesto contrata e custou 30 pontos de compatibilidade. É também a linha que mais gastou: US$ 13,03 numa sessão de 82 minutos, cerca do dobro da seguinte. Uma execução de três: não é oficial e pode mudar."
+        "en": "On a single run: 246 of 250 in security, 164 of 200 in architecture, 147 of 150 in bugs (level with the best), 71 of 100 in clean code and the best of the board in performance (144 of 150). One of its changes altered a behaviour the manifest contracts and cost 30 compatibility points. It is also the line that spent the most: US$ 13.03 in an 82-minute session, about twice what the next one spent. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: 246 de 250 em segurança, 164 de 200 em arquitetura, 147 de 150 em bugs (empatado com o melhor), 71 de 100 em código limpo e o melhor do placar em desempenho (144 de 150). Uma das mudanças alterou um comportamento que o manifesto contrata e custou 30 pontos de compatibilidade. É também a linha que mais gastou: US$ 13,03 numa sessão de 82 minutos, cerca do dobro da seguinte. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -64,9 +105,15 @@
           "wall_minutes": 42.1
         }
       ],
+      "model": {
+        "name": "Claude Sonnet 5.5",
+        "id": "claude-sonnet-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "xhigh"
+      },
       "comment": {
-        "en": "Second, on a single run, close behind the leader: full marks in security (250), 156 of 200 in architecture, 139 of 150 in bugs, 140 of 150 in performance and 57 of 100 in clean code. One of its changes altered a behaviour the manifest contracts and cost 25 compatibility points. It spent US$ 6.58 in a 42-minute session, the second highest cost on the board. One run of three: it is not official and could move.",
-        "pt_BR": "Segundo, com uma execução só, logo atrás do líder: nota máxima em segurança (250), 156 de 200 em arquitetura, 139 de 150 em bugs, 140 de 150 em desempenho e 57 de 100 em código limpo. Uma das mudanças alterou um comportamento que o manifesto contrata e custou 25 pontos de compatibilidade. Gastou US$ 6,58 numa sessão de 42 minutos, o segundo maior custo do placar. Uma execução de três: não é oficial e pode mudar."
+        "en": "On a single run: full marks in security (250), 156 of 200 in architecture, 139 of 150 in bugs, 140 of 150 in performance and 57 of 100 in clean code. One of its changes altered a behaviour the manifest contracts and cost 25 compatibility points. It spent US$ 6.58 in a 42-minute session; the same model at high effort scored 897 for US$ 5.18. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: nota máxima em segurança (250), 156 de 200 em arquitetura, 139 de 150 em bugs, 140 de 150 em desempenho e 57 de 100 em código limpo. Uma das mudanças alterou um comportamento que o manifesto contrata e custou 25 pontos de compatibilidade. Gastou US$ 6,58 numa sessão de 42 minutos; o mesmo modelo em esforço high fez 897 por US$ 5,18. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -93,9 +140,56 @@
           "wall_minutes": 69.4
         }
       ],
+      "model": {
+        "name": "Kimi K3",
+        "id": "kimi-k3",
+        "provider": "Moonshot AI",
+        "reasoning_effort": "high"
+      },
       "comment": {
-        "en": "Third, on a single run, and after the two Claude lines the best in architecture (92 of 200) and in clean code (43 of 100): security 232 of 250, bugs 132 of 150, performance 96 of 150, with the contract untouched. One of its findings described a conflict the code cannot produce. It ran through Novita AI, not Moonshot's own API as in LEB-100. The session took 69 minutes, without the 10 the operator took between the stages, and cost US$ 4.86, the third highest among the lines that record a cost. One run of three: it is not official and could move.",
-        "pt_BR": "Terceiro, com uma execução só, e depois das duas linhas do Claude o melhor em arquitetura (92 de 200) e em código limpo (43 de 100): segurança 232 de 250, bugs 132 de 150, desempenho 96 de 150, com o contrato intacto. Um dos achados descreveu um conflito que o código não pode produzir. Rodou pela Novita AI, não pela API da própria Moonshot como no LEB-100. A sessão levou 69 minutos, sem os 10 que o operador levou entre as etapas, e custou US$ 4,86, o terceiro maior custo entre as linhas que registram custo. Uma execução de três: não é oficial e pode mudar."
+        "en": "On a single run: security 232 of 250, bugs 132 of 150, performance 96 of 150, architecture 92 of 200 and clean code 43 of 100, with the contract untouched. One of its findings described a conflict the code cannot produce. It ran through Novita AI, not Moonshot's own API as in LEB-100. The session took 69 minutes, without the 10 the operator took between the stages, and cost US$ 4.86. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: segurança 232 de 250, bugs 132 de 150, desempenho 96 de 150, arquitetura 92 de 200 e código limpo 43 de 100, com o contrato intacto. Um dos achados descreveu um conflito que o código não pode produzir. Rodou pela Novita AI, não pela API da própria Moonshot como no LEB-100. A sessão levou 69 minutos, sem os 10 que o operador levou entre as etapas, e custou US$ 4,86. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
+      "agent": "claude-haiku-5.5-xhigh",
+      "score": 708,
+      "grade": "Silver",
+      "runs_count": 2,
+      "categories": {
+        "SEC": 243,
+        "ARCH": 92,
+        "BUG": 121,
+        "PERF": 96,
+        "CLN": 43,
+        "COMP": 70,
+        "EXPL": 43
+      },
+      "cost_usd": 1.72,
+      "wall_minutes": 36.3,
+      "runs": [
+        {
+          "run": 1,
+          "total": 708,
+          "cost_usd": 1.72,
+          "wall_minutes": 36.3
+        },
+        {
+          "run": 2,
+          "total": 732,
+          "cost_usd": 1.61,
+          "wall_minutes": 39.4
+        }
+      ],
+      "model": {
+        "name": "Claude Haiku 5.5",
+        "id": "claude-haiku-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "xhigh"
+      },
+      "comment": {
+        "en": "Two runs 24 points apart (708 and 732) with a steady profile: security 243 of 250 in the published run and full marks in the other, 92 and 100 of 200 in architecture, 121 of 150 in bugs in both, 96 and 102 of 150 in performance and 43 of 100 in clean code in both. In each run one security change altered a behaviour the manifest contracts, which cost 30 and 25 compatibility points. The sessions took 36 and 39 minutes for US$ 1.72 and US$ 1.61. Claude Haiku 4.5 scored 242 on the same task. Two runs of three: not official, and the published score is the lower of the two.",
+        "pt_BR": "Duas execuções a 24 pontos uma da outra (708 e 732), com perfil estável: segurança 243 de 250 na execução publicada e nota máxima na outra, 92 e 100 de 200 em arquitetura, 121 de 150 em bugs nas duas, 96 e 102 de 150 em desempenho e 43 de 100 em código limpo nas duas. Em cada execução uma mudança de segurança alterou um comportamento que o manifesto contrata, o que custou 30 e 25 pontos de compatibilidade. As sessões levaram 36 e 39 minutos por US$ 1,72 e US$ 1,61. O Claude Haiku 4.5 fez 242 na mesma tarefa. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
       }
     },
     {
@@ -122,9 +216,15 @@
           "wall_minutes": 74.8
         }
       ],
+      "model": {
+        "name": "GLM-5.3",
+        "id": "glm-5.3",
+        "provider": "Z.AI",
+        "reasoning_effort": "high"
+      },
       "comment": {
-        "en": "Fourth, on a single run, and level with the best in bugs (147 of 150): security 222 of 250, performance 96 of 150, architecture 69 of 200 and 14 of 100 in clean code, with the contract untouched. Several of its security and architecture findings were filed as plain bugs or as quality issues, and each costs half of its credit. It ran through OpenRouter, in a 75-minute session for US$ 1.62. One run of three: it is not official and could move.",
-        "pt_BR": "Quarto, com uma execução só, e empatado com o melhor em bugs (147 de 150): segurança 222 de 250, desempenho 96 de 150, arquitetura 69 de 200 e 14 de 100 em código limpo, com o contrato intacto. Vários achados de segurança e de arquitetura foram registrados como bugs comuns ou como problemas de qualidade, e cada um perde metade do crédito. Rodou pelo OpenRouter, numa sessão de 75 minutos por US$ 1,62. Uma execução de três: não é oficial e pode mudar."
+        "en": "On a single run, level with the best in bugs (147 of 150): security 222 of 250, performance 96 of 150, architecture 69 of 200 and 14 of 100 in clean code, with the contract untouched. Several of its security and architecture findings were filed as plain bugs or as quality issues, and each costs half of its credit. It ran through OpenRouter, in a 75-minute session for US$ 1.62. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só, empatado com o melhor em bugs (147 de 150): segurança 222 de 250, desempenho 96 de 150, arquitetura 69 de 200 e 14 de 100 em código limpo, com o contrato intacto. Vários achados de segurança e de arquitetura foram registrados como bugs comuns ou como problemas de qualidade, e cada um perde metade do crédito. Rodou pelo OpenRouter, numa sessão de 75 minutos por US$ 1,62. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -151,9 +251,15 @@
           "wall_minutes": 35.6
         }
       ],
+      "model": {
+        "name": "DeepSeek V4.1 Flash",
+        "id": "deepseek-flash",
+        "provider": "DeepSeek",
+        "reasoning_effort": "high"
+      },
       "comment": {
-        "en": "Fifth, on a single run: security at 229 of 250 and bugs at 137 of 150, with the contract untouched (compatibility 100). It left architecture largely alone (47 of 200) and earned nothing in clean code, which is where its points ran out. One of its findings described a problem the code cannot have. Both stages ran in one OpenCode session of 36 minutes for US$ 0.12, by far the cheapest line here. One run of three: it is not official and could move.",
-        "pt_BR": "Quinto, com uma execução só: segurança em 229 de 250 e bugs em 137 de 150, com o contrato intacto (compatibilidade 100). Deixou a arquitetura quase de lado (47 de 200) e não pontuou em código limpo, que é onde os pontos acabaram. Um dos achados descreveu um problema que o código não pode ter. As duas etapas rodaram numa sessão do OpenCode de 36 minutos por US$ 0,12, de longe a linha mais barata daqui. Uma execução de três: não é oficial e pode mudar."
+        "en": "On a single run: security at 229 of 250 and bugs at 137 of 150, with the contract untouched (compatibility 100). It left architecture largely alone (47 of 200) and earned nothing in clean code, which is where its points ran out. One of its findings described a problem the code cannot have. Both stages ran in one OpenCode session of 36 minutes for US$ 0.12, by far the cheapest line here. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: segurança em 229 de 250 e bugs em 137 de 150, com o contrato intacto (compatibilidade 100). Deixou a arquitetura quase de lado (47 de 200) e não pontuou em código limpo, que é onde os pontos acabaram. Um dos achados descreveu um problema que o código não pode ter. As duas etapas rodaram numa sessão do OpenCode de 36 minutos por US$ 0,12, de longe a linha mais barata daqui. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -180,9 +286,15 @@
           "wall_minutes": 32.1
         }
       ],
+      "model": {
+        "name": "GPT-5.6-terra",
+        "id": "gpt-5.6-terra",
+        "provider": "OpenAI",
+        "reasoning_effort": "xhigh"
+      },
       "comment": {
-        "en": "Sixth, and almost level with the DeepSeek line above it on the same profile: security 225 of 250, bugs 134 of 150, architecture 47 of 200 and nothing in clean code, with the contract untouched. One of its fixes introduced a new, recoverable concurrency fault and took the 15-point penalty for a new bug; without it the score would be 640. The session took 32 minutes, without the 20 the operator took between the two stages. Codex keeps no cost. One run of three: it is not official and could move.",
-        "pt_BR": "Sexto, e quase empatado com a linha do DeepSeek acima, no mesmo perfil: segurança 225 de 250, bugs 134 de 150, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto. Uma das correções introduziu uma nova falha de concorrência, recuperável, e levou a penalidade de 15 pontos por bug novo; sem ela a nota seria 640. A sessão levou 32 minutos, sem os 20 que o operador levou entre as duas etapas. O Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+        "en": "Almost level with DeepSeek V4.1 Flash on the same profile: security 225 of 250, bugs 134 of 150, architecture 47 of 200 and nothing in clean code, with the contract untouched. One of its fixes introduced a new, recoverable concurrency fault and took the 15-point penalty for a new bug; without it the score would be 640. The session took 32 minutes, without the 20 the operator took between the two stages. Codex keeps no cost. One run of three: it is not official and could move.",
+        "pt_BR": "Quase empatado com o DeepSeek V4.1 Flash, no mesmo perfil: segurança 225 de 250, bugs 134 de 150, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto. Uma das correções introduziu uma nova falha de concorrência, recuperável, e levou a penalidade de 15 pontos por bug novo; sem ela a nota seria 640. A sessão levou 32 minutos, sem os 20 que o operador levou entre as duas etapas. O Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -209,9 +321,15 @@
           "wall_minutes": 21.2
         }
       ],
+      "model": {
+        "name": "GLM-5.2",
+        "id": "glm-5.2",
+        "provider": "Z.AI",
+        "reasoning_effort": "high"
+      },
       "comment": {
-        "en": "Explanation scored 41 of 50, fourth on the board, but the code lost ground: security 151 of 250, bugs 63 of 150, performance 51 of 150 and nothing in clean code. Two of its changes broke contracts of the manifest, which cost 55 of the 100 compatibility points, the lowest on the board. It ran through Novita AI, in a 21-minute session for US$ 3.14. One run of three: it is not official and could move.",
-        "pt_BR": "A explicação fez 41 de 50, quarta do placar, mas o código perdeu terreno: segurança 151 de 250, bugs 63 de 150, desempenho 51 de 150 e nada em código limpo. Duas das mudanças quebraram contratos do manifesto, o que custou 55 dos 100 pontos de compatibilidade, a menor nota do placar. Rodou pela Novita AI, numa sessão de 21 minutos por US$ 3,14. Uma execução de três: não é oficial e pode mudar."
+        "en": "Explanation scored 41 of 50, but the code lost ground: security 151 of 250, bugs 63 of 150, performance 51 of 150 and nothing in clean code. Two of its changes broke contracts of the manifest, which cost 55 of the 100 compatibility points, the lowest on the board. It ran through Novita AI, in a 21-minute session for US$ 3.14. One run of three: it is not official and could move.",
+        "pt_BR": "A explicação fez 41 de 50, mas o código perdeu terreno: segurança 151 de 250, bugs 63 de 150, desempenho 51 de 150 e nada em código limpo. Duas das mudanças quebraram contratos do manifesto, o que custou 55 dos 100 pontos de compatibilidade, a menor nota do placar. Rodou pela Novita AI, numa sessão de 21 minutos por US$ 3,14. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -244,6 +362,12 @@
           "wall_minutes": 53.1
         }
       ],
+      "model": {
+        "name": "MiniMax-M3",
+        "id": "minimax-m3",
+        "provider": "MiniMax",
+        "reasoning_effort": "thinking"
+      },
       "comment": {
         "en": "Two runs within ten points of each other (388 and 398), so the shape is steady: compatibility whole, security at 113 of 250, bugs at 47 of 150 and little in performance or clean code. In both, the first-stage report filed several security and architecture problems as plain bugs and never moved them, which cost points in the categories that mattered. Its runs took 42 and 53 minutes, at US$ 1.21 and 0.81. Two runs of three: not official, and the published score is the lower of the two.",
         "pt_BR": "Duas execuções a dez pontos uma da outra (388 e 398), então o perfil é estável: compatibilidade inteira, segurança em 113 de 250, bugs em 47 de 150 e pouco em desempenho e código limpo. Nas duas, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou, o que custou pontos nas categorias que mais pesavam. As execuções levaram 42 e 53 minutos, a US$ 1,21 e 0,81. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
@@ -285,6 +409,12 @@
           "wall_minutes": 27.9
         }
       ],
+      "model": {
+        "name": "Claude Haiku 4.5",
+        "id": "claude-haiku-4-5-20251001",
+        "provider": "Anthropic",
+        "reasoning_effort": "default"
+      },
       "comment": {
         "en": "Three runs from 218 to 272, and the published 242 is the middle one. Two of the three changed behaviour that the manifest contracts and lost 30 compatibility points; the published run did not. Its security score was 56 of 250 in the published run and above 100 in the other two, while performance and clean code stayed near zero throughout. The published run was the fastest line here, 12 minutes; the other two took 28 and 44, and the second cost US$ 2.22. All three ran in Claude Code.",
         "pt_BR": "Três execuções entre 218 e 272, e os 242 publicados são a do meio. Duas das três mudaram um comportamento que o manifesto contrata e perderam 30 pontos de compatibilidade; a execução publicada não. A segurança foi 56 de 250 na execução publicada e passou de 100 nas outras duas, enquanto desempenho e código limpo ficaram perto de zero em todas. A execução publicada foi a linha mais rápida daqui, 12 minutos; as outras duas levaram 28 e 44, e a segunda custou US$ 2,22. As três rodaram no Claude Code."

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.135`
+**Versão atual:** `0.2.136`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.136` — 2026-10-09 — The LEB-300-A aggregate lists Claude Haiku 5.5 and Claude Sonnet 5.5 at high effort, and says who each agent is
+
+- `results/2026/LEB-300-A/aggregate.json` goes from nine agents to eleven. Claude Sonnet 5.5 at **high** effort leads with 897 of 1000 (Gold) on one run of three, ahead of Claude Opus 5.5 (886) and of the same model at xhigh (860). Claude Haiku 5.5 at xhigh effort,
+  new in the lineup, has two runs (708 and 732) and is published at the lower one, 708 (Silver, 2 of 3, not official), between Kimi K3 (737) and GLM-5.3 (688). All four are Claude Code runs, now on version 2.1.295; the earlier Claude Code
+  runs were made on 2.1.285, and each run record carries the version that really ran.
+- Two judge calls worth knowing, both kept as judged: PEN-001 (−15) was applied to Claude Sonnet 5.5 at high effort for a security change that makes a user with a very long password fail to log in after the first login (912 without it),
+  and COMP-008 or COMP-003 was counted once on each of the three other new runs, for a security change that altered a behaviour the manifest contracts (compatibility 70 to 75).
+- **New in the data:** each agent of the aggregate now carries `model` (name, id, provider, effort), the same public block its run record has, because the sites named an agent by finding it in the LEB-100 runs and the two new agents have none there.
+  The schema gains the optional field and the exporter writes it for every agent; 1 new test (141 in all).
+- The written readings no longer say "second", "third" or "the most" about the board, which went stale every round: they speak of the agent's own numbers, and compare only where the comparison is stable. Session times leave out the operator's
+  wait between the stages (11.9, 5.3 and 0.7 minutes in these runs), as of 0.2.134. No protocol text, tool, weight or penalty changes.
 
 ### `0.2.135` — 2026-10-09 — The LEB-300-A aggregate lists Claude Opus 5.5, GLM-5.3 and GLM-5.2
 

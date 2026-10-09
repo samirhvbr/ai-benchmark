@@ -78,14 +78,16 @@ This instance is **active**. While it is, only the totals below are published: n
 
 | # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
-| 1 | `claude-opus-5.5-xhigh` | **886** | Gold | 246 | 164 | 147 | 144 | 71 | 70 | 44 | 1/3 |
-| 2 | `claude-sonnet-5.5-xhigh` | **860** | Gold | 250 | 156 | 139 | 140 | 57 | 75 | 43 | 1/3 |
-| 3 | `moonshot-kimi-k3-high` | **737** | Silver | 232 | 92 | 132 | 96 | 43 | 100 | 42 | 1/3 |
-| 4 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
-| 5 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
-| 6 | `gpt-5.6-terra-xhigh` | **625** | Silver | 225 | 47 | 134 | 96 | 0 | 100 | 38 | 1/3 |
-| 7 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
-| 8 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
-| 9 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
+| 1 | `claude-sonnet-5.5-high` | **897** | Gold | 250 | 178 | 147 | 128 | 89 | 75 | 45 | 1/3 |
+| 2 | `claude-opus-5.5-xhigh` | **886** | Gold | 246 | 164 | 147 | 144 | 71 | 70 | 44 | 1/3 |
+| 3 | `claude-sonnet-5.5-xhigh` | **860** | Gold | 250 | 156 | 139 | 140 | 57 | 75 | 43 | 1/3 |
+| 4 | `moonshot-kimi-k3-high` | **737** | Silver | 232 | 92 | 132 | 96 | 43 | 100 | 42 | 1/3 |
+| 5 | `claude-haiku-5.5-xhigh` | **708** | Silver | 243 | 92 | 121 | 96 | 43 | 70 | 43 | 2/3 (708 · 732) |
+| 6 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
+| 7 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
+| 8 | `gpt-5.6-terra-xhigh` | **625** | Silver | 225 | 47 | 134 | 96 | 0 | 100 | 38 | 1/3 |
+| 9 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
+| 10 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
+| 11 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
