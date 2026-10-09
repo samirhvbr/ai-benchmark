@@ -416,11 +416,13 @@ def render_scorecard(r):
 # ------------------------------------------------------------------ aggregate
 
 def wall_minutes(meta):
-    """Minutes from the session's first message to its end, as run.json records them."""
+    """Minutes from the session's first message to its end, as run.json records them, minus the minutes the OPERATOR took between the end of
+    stage 1 and the stage 2 message of a two-stage task (`operator_wait_minutes`): that wait is not the agent's time. Nothing else is taken out."""
     session = meta.get("session") or {}
     if not (session.get("started") and session.get("ended")):
         return None
-    return round((datetime.fromisoformat(session["ended"]) - datetime.fromisoformat(session["started"])).total_seconds() / 60, 1)
+    minutes = (datetime.fromisoformat(session["ended"]) - datetime.fromisoformat(session["started"])).total_seconds() / 60
+    return round(minutes - (meta.get("operator_wait_minutes") or 0), 1)
 
 
 def run_summary(r):

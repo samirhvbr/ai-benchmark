@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.133`
+**Versão atual:** `0.2.134`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.134` — 2026-10-09 — The session time of a two-stage run leaves out the operator's wait between the stages
+
+- The operator's wait between the end of stage 1 and the stage 2 message is not the agent's time, and the session times published for LEB-300-A had it inside them: 20 minutes in GPT-5.6-terra's, 10 in Kimi K3's, 13 in one
+  of MiniMax-M3's runs and 13 in Claude Sonnet 5.5's. `tools/export-results.py` now reads `operator_wait_minutes` of a run's `run.json` and subtracts it from the minutes between the first message and the end of the session.
+  Only that wait is taken out: an idle stretch inside a stage (a slow provider, a long test run) is the agent's session, and no operator reply exists inside a stage (`operator_replies` is 0). A run without the field is unchanged,
+  so no LEB-100 number moves (they are single-stage).
+- The wait was measured for all nine LEB-300-A runs from their own logs (Claude Code transcript, OpenCode database, Codex rollout log), from the end of the agent's last message of stage 1 to the stage 2 message: from 0.1 minute
+  (Claude Haiku 4.5's second run) to 20.1 (GPT-5.6-terra's). The session times change accordingly: Claude Sonnet 5.5 42.1 minutes (was 54.8), Kimi K3 69.4 (79.8), DeepSeek V4.1 Flash 35.6 (38.6), GPT-5.6-terra 32.1 (52.2),
+  MiniMax-M3 42.3 and 53.1 (43.7 and 66.1) and Claude Haiku 4.5 12.4, 43.9 and 27.9 (13.4, 44.0 and 28.4). Scores, grades and costs do not move.
+- The written readings that quoted those times are corrected. 1 new test (140 in all). `results/README.md` is unchanged: it carries no time.
 
 ### `0.2.133` — 2026-10-08 — The LEB-300-A aggregate lists Kimi K3
 

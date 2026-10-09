@@ -208,6 +208,21 @@ class WrittenReading(ExportCase):
         readme = read_text(self.t, "results", "README.md")
         self.assertIn("3/3 (%d · %d · %d)" % (total("full"), total("none"), total("full")), readme)
 
+    def test_the_session_time_leaves_out_the_operators_wait_between_the_stages_and_nothing_else(self):
+        self.build()
+        for agent, wait in (("agent-one", 12.5), ("agent-two", None)):
+            path = os.path.join(self.priv, "LEB-TEST-A", agent, "run-1", "run.json")
+            meta = read_json(path)
+            meta["session"] = {"started": "2026-10-08T10:00:00-03:00", "ended": "2026-10-08T11:00:00-03:00"}
+            if wait is not None:
+                meta["operator_wait_minutes"] = wait
+            write_json(path, meta)
+        self.assertEqual(self.export("--publish-aggregate", "LEB-TEST-A")[0], 0)
+        by = {e["agent"]: e for e in read_json(self.results("2026", "LEB-TEST-A", "aggregate.json"))["agents"]}
+        self.assertEqual(by["agent-one"]["runs"][0]["wall_minutes"], 47.5)   # 60 minutes of session, 12.5 of the operator's wait
+        self.assertEqual(by["agent-two"]["runs"][0]["wall_minutes"], 60.0)   # no wait recorded: nothing is taken out
+        self.assertIsNone(by["agent-one"]["runs"][1]["wall_minutes"])        # a run with no session record keeps none
+
     def test_a_reading_travels_in_the_aggregate_in_both_languages_and_only_for_its_agent(self):
         code, err, _ = self.publish_with({"agent-one": {"en": "Strong on security, weak on architecture.", "pt_BR": "Forte em segurança, fraco em arquitetura."}})
         self.assertEqual(code, 0, err)
