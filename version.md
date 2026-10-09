@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.134`
+**Versão atual:** `0.2.135`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.135` — 2026-10-09 — The LEB-300-A aggregate lists Claude Opus 5.5, GLM-5.3 and GLM-5.2
+
+- `results/2026/LEB-300-A/aggregate.json` goes from six agents to nine. Claude Opus 5.5 at xhigh effort leads with 886 of 1000 (Gold) on **one** run of three, in Claude Code, ahead of Claude Sonnet 5.5 (860). GLM-5.3 at high effort is
+  fourth with 688 (Silver, one run, OpenCode, served by OpenRouter) and GLM-5.2 at high effort seventh with 390 (Reprovada, one run, OpenCode, served by Novita AI), one point above MiniMax-M3 (388, two runs). A line on fewer than
+  three runs is not official and says so.
+- The three agents have the ids they have in LEB-100 (`claude-opus-5.5-xhigh`, `glm-5.3-high`, `z.ai-glm-5.2-high`) and the same model blocks, with the host written in the run record of the two GLM runs. The session times leave out the
+  operator's wait between the stages, as of 0.2.134 (1.3, 0.9 and 2.3 minutes).
+- Two judge calls worth knowing, both kept as judged: COMP-003 was counted once on Claude Opus 5.5 (compatibility 70) for a change in how a contracted rule treats the users of one company, and GLM-5.2 has two COMP violations (compatibility 45),
+  one of them a change in an error code of the manifest's table; seven of GLM-5.3's findings were halved only for filing a security or architecture problem under another category.
+- Every run was judged with the same two prompts by independent Claude Opus 5.5 judges, step 4 on the anonymized delivery and EXPL blind to everything else. Five readings were rewritten, and three written, because the ranks and
+  the costs they quoted changed; none names a flaw, a count of flaws or a location. `results/README.md` and `results/results.json` are regenerated. No protocol text, tool, weight, penalty or schema changes. The 140 tests are unchanged.
 
 ### `0.2.134` — 2026-10-09 — The session time of a two-stage run leaves out the operator's wait between the stages
 
