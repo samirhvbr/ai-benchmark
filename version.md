@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.141`
+**Versão atual:** `0.2.142`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.142` — 2026-10-10 — The LEB-300-A aggregate lists GLM-5.3-FlashX at high effort, and two agents gain a second run
+
+- `results/2026/LEB-300-A/aggregate.json` goes from fifteen agents to sixteen. **GLM-5.3-FlashX at high effort** is new, with one run of three: 648 of 1000 (Silver), 10th, between DeepSeek V4.1 Flash (649) and GPT-5.6-luna (638). It is an OpenCode run
+  through Z.ai's own API. It reported 22 of the 36 planted flaws with no false positive, and its report was rated 40 of 50. One COMP violation was charged, kept as judged: the login lockout it added (10 failed attempts for an e-mail in 15 minutes, from
+  anyone) answers 401 even to the right password (COMP-008, compatibility 75 of 100). The session took 47 minutes and cost US$ 0.96.
+- **Two published scores change**, because each agent gained a second run and the published score of an agent with fewer than three runs is the lower of its runs (PROTOCOL section 4); neither agent is official yet.
+  - **Claude Opus 5.5 at xhigh effort** goes from 886 to **822** and from 1st to 4th, so the board is now led by Claude Sonnet 5.5 at xhigh (860). The second run reported 27 of 36 with no false positive and its report was rated 42 of 50. Both runs
+    took the same 30-point deduction (COMP-003: the idempotency fingerprint now includes the user), kept as judged in both. The second run cost US$ 6.77 in 48 minutes of work, against US$ 13.03 in 82.
+  - **Kimi K3 at high effort** goes from 737 to **712** and stays 6th. The first run went through Novita AI; the second went through Moonshot's own API, as in LEB-100, and the reading on the page says so. It reported 26 of 36 with no false positive
+    and no COMP violation; it cost US$ 4.67 in 71 minutes.
+- That run's VM also held four short "who are you?" sessions the operator opened in OpenCode to check the logins before the run. They are separate sessions: only the run's own session is read for time, counts, tokens and cost.
+- The operator's wait between the stages (0.4 to 1.9 minutes in these three runs) is left out of the session time, as before.
+- No protocol text, tool, weight, penalty or test changes (141 tests).
 
 ### `0.2.141` — 2026-10-10 — The LEB-300-A aggregate lists GPT-5.6-luna at xhigh effort
 

@@ -16840,41 +16840,6 @@
       "turn_budget": 60,
       "agents": [
         {
-          "agent": "claude-opus-5.5-xhigh",
-          "score": 886,
-          "grade": "Gold",
-          "runs_count": 1,
-          "categories": {
-            "SEC": 246,
-            "ARCH": 164,
-            "BUG": 147,
-            "PERF": 144,
-            "CLN": 71,
-            "COMP": 70,
-            "EXPL": 44
-          },
-          "cost_usd": 13.03,
-          "wall_minutes": 81.9,
-          "runs": [
-            {
-              "run": 1,
-              "total": 886,
-              "cost_usd": 13.03,
-              "wall_minutes": 81.9
-            }
-          ],
-          "model": {
-            "name": "Claude Opus 5.5",
-            "id": "claude-opus-5-5",
-            "provider": "Anthropic",
-            "reasoning_effort": "xhigh"
-          },
-          "comment": {
-            "en": "On a single run: 246 of 250 in security, 164 of 200 in architecture, 147 of 150 in bugs (level with the best), 71 of 100 in clean code and the best of the board in performance (144 of 150). One of its changes altered a behaviour the manifest contracts and cost 30 compatibility points. It is also the line that spent the most: US$ 13.03 in an 82-minute session, about twice what the next one spent. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: 246 de 250 em segurança, 164 de 200 em arquitetura, 147 de 150 em bugs (empatado com o melhor), 71 de 100 em código limpo e o melhor do placar em desempenho (144 de 150). Uma das mudanças alterou um comportamento que o manifesto contrata e custou 30 pontos de compatibilidade. É também a linha que mais gastou: US$ 13,03 numa sessão de 82 minutos, cerca do dobro da seguinte. Uma execução de três: não é oficial e pode mudar."
-          }
-        },
-        {
           "agent": "claude-sonnet-5.5-xhigh",
           "score": 860,
           "grade": "Gold",
@@ -16980,6 +16945,47 @@
           }
         },
         {
+          "agent": "claude-opus-5.5-xhigh",
+          "score": 822,
+          "grade": "Gold",
+          "runs_count": 2,
+          "categories": {
+            "SEC": 229,
+            "ARCH": 144,
+            "BUG": 139,
+            "PERF": 134,
+            "CLN": 64,
+            "COMP": 70,
+            "EXPL": 42
+          },
+          "cost_usd": 6.77,
+          "wall_minutes": 47.8,
+          "runs": [
+            {
+              "run": 1,
+              "total": 886,
+              "cost_usd": 13.03,
+              "wall_minutes": 81.9
+            },
+            {
+              "run": 2,
+              "total": 822,
+              "cost_usd": 6.77,
+              "wall_minutes": 47.8
+            }
+          ],
+          "model": {
+            "name": "Claude Opus 5.5",
+            "id": "claude-opus-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "Two runs, 64 points apart (886 and 822), with the same shape: 229 to 246 of 250 in security, 144 to 164 of 200 in architecture, 139 to 147 of 150 in bugs, 134 to 144 of 150 in performance and 64 to 71 of 100 in clean code. Both took the same 30-point compatibility deduction (COMP-003): the idempotency fingerprint now includes the user, so a repeated key from another user of the same company no longer returns the original response, which the manifest requires. The second run cost US$ 6.77 in 48 minutes of work, against US$ 13.03 in 82 for the first. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções, 64 pontos uma da outra (886 e 822), com o mesmo perfil: de 229 a 246 de 250 em segurança, de 144 a 164 de 200 em arquitetura, de 139 a 147 de 150 em bugs, de 134 a 144 de 150 em desempenho e de 64 a 71 de 100 em código limpo. As duas levaram o mesmo desconto de 30 pontos em compatibilidade (COMP-003): a impressão digital da idempotência passou a incluir o usuário, então a mesma chave repetida por outro usuário da mesma empresa deixa de devolver a resposta original, que o manifesto exige. A segunda execução custou US$ 6,77 em 48 minutos de trabalho, contra US$ 13,03 em 82 da primeira. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-high",
           "score": 763,
           "grade": "Gold",
@@ -17022,26 +17028,32 @@
         },
         {
           "agent": "moonshot-kimi-k3-high",
-          "score": 737,
+          "score": 712,
           "grade": "Silver",
-          "runs_count": 1,
+          "runs_count": 2,
           "categories": {
-            "SEC": 232,
+            "SEC": 229,
             "ARCH": 92,
-            "BUG": 132,
+            "BUG": 137,
             "PERF": 96,
-            "CLN": 43,
+            "CLN": 18,
             "COMP": 100,
-            "EXPL": 42
+            "EXPL": 40
           },
-          "cost_usd": 4.86,
-          "wall_minutes": 69.4,
+          "cost_usd": 4.67,
+          "wall_minutes": 71.0,
           "runs": [
             {
               "run": 1,
               "total": 737,
               "cost_usd": 4.86,
               "wall_minutes": 69.4
+            },
+            {
+              "run": 2,
+              "total": 712,
+              "cost_usd": 4.67,
+              "wall_minutes": 71.0
             }
           ],
           "model": {
@@ -17051,8 +17063,8 @@
             "reasoning_effort": "high"
           },
           "comment": {
-            "en": "On a single run: security 232 of 250, bugs 132 of 150, performance 96 of 150, architecture 92 of 200 and clean code 43 of 100, with the contract untouched. One of its findings described a conflict the code cannot produce. It ran through Novita AI, not Moonshot's own API as in LEB-100. The session took 69 minutes, without the 10 the operator took between the stages, and cost US$ 4.86. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 232 de 250, bugs 132 de 150, desempenho 96 de 150, arquitetura 92 de 200 e código limpo 43 de 100, com o contrato intacto. Um dos achados descreveu um conflito que o código não pode produzir. Rodou pela Novita AI, não pela API da própria Moonshot como no LEB-100. A sessão levou 69 minutos, sem os 10 que o operador levou entre as etapas, e custou US$ 4,86. Uma execução de três: não é oficial e pode mudar."
+            "en": "Two runs, 25 points apart (737 and 712), on two different hosts: the first through Novita AI, the second through Moonshot's own API, as in LEB-100. Same shape in both: security 232 and 229 of 250, architecture 92 of 200, performance 96 of 150 and the contract untouched (compatibility 100). The difference is clean code, 43 against 18 of 100. In the first run one finding described a conflict the code cannot produce. The first session took 69 minutes without the 10 the operator took between the stages and cost US$ 4.86; the second took 71 and cost US$ 4.67. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções, 25 pontos uma da outra (737 e 712), em dois provedores diferentes: a primeira pela Novita AI, a segunda pela API da própria Moonshot, como no LEB-100. Mesmo perfil nas duas: segurança em 232 e 229 de 250, arquitetura em 92 de 200, desempenho em 96 de 150 e o contrato intacto (compatibilidade 100). A diferença está no código limpo, 43 contra 18 de 100. Na primeira execução um achado descreveu um conflito que o código não pode produzir. A primeira sessão levou 69 minutos, sem os 10 que o operador levou entre as etapas, e custou US$ 4,86; a segunda levou 71 e custou US$ 4,67. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
@@ -17164,6 +17176,41 @@
           "comment": {
             "en": "On a single run: security at 229 of 250 and bugs at 137 of 150, with the contract untouched (compatibility 100). It left architecture largely alone (47 of 200) and earned nothing in clean code, which is where its points ran out. One of its findings described a problem the code cannot have. Both stages ran in one OpenCode session of 36 minutes for US$ 0.12, by far the cheapest line here. One run of three: it is not official and could move.",
             "pt_BR": "Com uma execução só: segurança em 229 de 250 e bugs em 137 de 150, com o contrato intacto (compatibilidade 100). Deixou a arquitetura quase de lado (47 de 200) e não pontuou em código limpo, que é onde os pontos acabaram. Um dos achados descreveu um problema que o código não pode ter. As duas etapas rodaram numa sessão do OpenCode de 36 minutos por US$ 0,12, de longe a linha mais barata daqui. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
+          "agent": "glm-5.3-flashx-high",
+          "score": 648,
+          "grade": "Silver",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 187,
+            "ARCH": 92,
+            "BUG": 145,
+            "PERF": 77,
+            "CLN": 32,
+            "COMP": 75,
+            "EXPL": 40
+          },
+          "cost_usd": 0.96,
+          "wall_minutes": 46.9,
+          "runs": [
+            {
+              "run": 1,
+              "total": 648,
+              "cost_usd": 0.96,
+              "wall_minutes": 46.9
+            }
+          ],
+          "model": {
+            "name": "GLM-5.3-FlashX",
+            "id": "glm-5.3-flashx",
+            "provider": "Z.AI",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "On a single run: bugs at 145 of 150, security 187 of 250, architecture 92 of 200, performance 77 of 150 and clean code 32 of 100. It added a login lockout (10 failed attempts for an e-mail in 15 minutes, from anyone) that answers 401 even to the right password, which the judge charged as a change of contracted behaviour (compatibility 75 of 100). It ran through Z.ai's own API. The session took 47 minutes and cost US$ 0.96. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: bugs em 145 de 150, segurança em 187 de 250, arquitetura em 92 de 200, desempenho em 77 de 150 e código limpo em 32 de 100. Acrescentou um bloqueio de login (10 tentativas erradas para um e-mail em 15 minutos, vindas de qualquer um) que responde 401 até para a senha certa, e o juiz cobrou isso como mudança de comportamento contratado (compatibilidade 75 de 100). Rodou pela API da própria Z.ai. A sessão levou 47 minutos e custou US$ 0,96. Uma execução de três: não é oficial e pode mudar."
           }
         },
         {
