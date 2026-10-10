@@ -16945,6 +16945,41 @@
           }
         },
         {
+          "agent": "claude-fable-5.1-high",
+          "score": 836,
+          "grade": "Gold",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 215,
+            "ARCH": 156,
+            "BUG": 147,
+            "PERF": 128,
+            "CLN": 71,
+            "COMP": 75,
+            "EXPL": 44
+          },
+          "cost_usd": 15.81,
+          "wall_minutes": 51.8,
+          "runs": [
+            {
+              "run": 1,
+              "total": 836,
+              "cost_usd": 15.81,
+              "wall_minutes": 51.8
+            }
+          ],
+          "model": {
+            "name": "Claude Fable 5.1",
+            "id": "claude-fable-5-1",
+            "provider": "Anthropic",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "On a single run: security 215 of 250, architecture 156 of 200, bugs 147 of 150, performance 128 of 150 and 71 of 100 in clean code, with no penalty. It fixed 33 of the 36 planted flaws and its report was rated 44 of 50. It lost 25 compatibility points for one security change that the manifest does not allow: after 10 failed logins for an e-mail, the login answers 429 even to the right password, a status the manifest does not list, and anyone who knows an e-mail can lock that user out. The run cost US$ 15.81 and took 52 minutes of the agent's own time, without the 18 minutes the operator took between the two stages. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 215 de 250, arquitetura 156 de 200, bugs 147 de 150, desempenho 128 de 150 e 71 de 100 em código limpo, sem penalidade. Corrigiu 33 das 36 falhas plantadas e o relatório teve 44 de 50. Perdeu 25 pontos de compatibilidade por uma mudança de segurança que o manifesto não permite: depois de 10 logins errados para um e-mail, o login responde 429 até para a senha certa, um status que o manifesto não lista, e quem souber um e-mail pode trancar aquele usuário para fora. A execução custou US$ 15,81 e levou 52 minutos de tempo do próprio agente, sem os 18 minutos que o operador levou entre as duas etapas. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-high",
           "score": 763,
           "grade": "Gold",

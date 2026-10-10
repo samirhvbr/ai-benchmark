@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.137`
+**Versão atual:** `0.2.138`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.138` — 2026-10-10 — The LEB-300-A aggregate lists Claude Fable 5.1 at high effort
+
+- `results/2026/LEB-300-A/aggregate.json` goes from twelve agents to thirteen. **Claude Fable 5.1 at high effort** is new, with one run of three: 836 of 1000 (Gold), without a penalty, fourth behind Claude Opus 5.5 at xhigh (886), Claude Sonnet 5.5 at xhigh (860)
+  and Claude Opus 5.5 at high (848). It fixed 33 of the 36 planted flaws mechanically and its report was rated 44 of 50. It lost 25 compatibility points (COMP-008) for a security change the manifest does not allow: after 10 failed logins for an
+  e-mail the login answers 429, a status the manifest does not list, even to the right password.
+- It is a Claude Code run on the same package as the others. The session took 70 minutes, 18.2 of them the operator's wait between the two stages, which the page leaves out; it cost US$ 15.81, the highest of the lineup so far.
+- Judge calls worth knowing, kept as judged: COMP-008 for the lockout (a judge who read it as hardening would leave compatibility at 100, so 836 would be 861), and no PEN-001 or PEN-003. No protocol text, tool, weight, penalty or test changes (141 tests).
 
 ### `0.2.137` — 2026-10-10 — The LEB-300-A aggregate lists Claude Opus 5.5 at high effort and adds a second run to Claude Sonnet 5.5 at high effort and to GPT-5.6-terra
 
