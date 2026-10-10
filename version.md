@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.136`
+**Versão atual:** `0.2.137`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.137` — 2026-10-10 — The LEB-300-A aggregate lists Claude Opus 5.5 at high effort and adds a second run to Claude Sonnet 5.5 at high effort and to GPT-5.6-terra
+
+- `results/2026/LEB-300-A/aggregate.json` goes from eleven agents to twelve. **Claude Opus 5.5 at high effort** is new, with one run of three: 848 of 1000 (Gold), without a penalty, against 886 for the same model at xhigh. It lost 25 compatibility points
+  (COMP-008) for a security change that makes a repeated idempotency key from another user answer 422 where the manifest says the original response comes back.
+- **Claude Sonnet 5.5 at high effort** now has two runs, 897 and 763, and is published at the lower one: 763 (Gold, 2 of 3, not official), which moves it from first to fourth, behind Opus 5.5 at high effort (848). **GPT-5.6-terra at xhigh effort** also has two
+  runs, 625 and 574, and is published at 574 (Bronze), below DeepSeek V4.1 Flash (649). The rule is the one in PROTOCOL §4 and the one already used for Claude Haiku 5.5 and MiniMax-M3: with fewer than three runs the published score is the lower.
+- Judge calls worth knowing, both kept as judged: PEN-001 (−15) was applied to the second Sonnet run for a login-failure counter that is never evicted, and to the second GPT run for removing the only two server-side error records; the first run of each took the same
+  penalty for other changes. The run on a third VM with an open-weights model was discarded by the operator before scoring, because that model has no model block in the LEB-100-A runs to copy.
+- The written readings of the two agents with a second run were rewritten, and the new agent has one. Session times leave out the operator's wait between the stages (0.6, 0.2 and 1.4 minutes in these runs). No protocol text, tool, weight, penalty or test changes (141 tests).
 
 ### `0.2.136` — 2026-10-09 — The LEB-300-A aggregate lists Claude Haiku 5.5 and Claude Sonnet 5.5 at high effort, and says who each agent is
 

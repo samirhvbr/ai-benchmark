@@ -16840,41 +16840,6 @@
       "turn_budget": 60,
       "agents": [
         {
-          "agent": "claude-sonnet-5.5-high",
-          "score": 897,
-          "grade": "Gold",
-          "runs_count": 1,
-          "categories": {
-            "SEC": 250,
-            "ARCH": 178,
-            "BUG": 147,
-            "PERF": 128,
-            "CLN": 89,
-            "COMP": 75,
-            "EXPL": 45
-          },
-          "cost_usd": 5.18,
-          "wall_minutes": 42.6,
-          "runs": [
-            {
-              "run": 1,
-              "total": 897,
-              "cost_usd": 5.18,
-              "wall_minutes": 42.6
-            }
-          ],
-          "model": {
-            "name": "Claude Sonnet 5.5",
-            "id": "claude-sonnet-5-5",
-            "provider": "Anthropic",
-            "reasoning_effort": "high"
-          },
-          "comment": {
-            "en": "On a single run: full marks in security (250), 178 of 200 in architecture, 147 of 150 in bugs, 128 of 150 in performance and 89 of 100 in clean code, the highest in both architecture and clean code so far. Two of its changes cost points outside the planted work: one altered a behaviour the manifest contracts (25 compatibility points) and another introduced a new bug (the 15-point penalty; the score would be 912 without it). The same model at xhigh effort scored 860 for US$ 6.58; this run cost US$ 5.18 in a 43-minute session. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: nota máxima em segurança (250), 178 de 200 em arquitetura, 147 de 150 em bugs, 128 de 150 em desempenho e 89 de 100 em código limpo, as maiores notas até agora em arquitetura e em código limpo. Duas mudanças custaram pontos fora do trabalho plantado: uma alterou um comportamento que o manifesto contrata (25 pontos de compatibilidade) e outra introduziu um bug novo (a penalidade de 15 pontos; a nota seria 912 sem ela). O mesmo modelo em xhigh fez 860 por US$ 6,58; esta execução custou US$ 5,18 numa sessão de 43 minutos. Uma execução de três: não é oficial e pode mudar."
-          }
-        },
-        {
           "agent": "claude-opus-5.5-xhigh",
           "score": 886,
           "grade": "Gold",
@@ -16942,6 +16907,82 @@
           "comment": {
             "en": "On a single run: full marks in security (250), 156 of 200 in architecture, 139 of 150 in bugs, 140 of 150 in performance and 57 of 100 in clean code. One of its changes altered a behaviour the manifest contracts and cost 25 compatibility points. It spent US$ 6.58 in a 42-minute session; the same model at high effort scored 897 for US$ 5.18. One run of three: it is not official and could move.",
             "pt_BR": "Com uma execução só: nota máxima em segurança (250), 156 de 200 em arquitetura, 139 de 150 em bugs, 140 de 150 em desempenho e 57 de 100 em código limpo. Uma das mudanças alterou um comportamento que o manifesto contrata e custou 25 pontos de compatibilidade. Gastou US$ 6,58 numa sessão de 42 minutos; o mesmo modelo em esforço high fez 897 por US$ 5,18. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
+          "agent": "claude-opus-5.5-high",
+          "score": 848,
+          "grade": "Gold",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 232,
+            "ARCH": 153,
+            "BUG": 137,
+            "PERF": 134,
+            "CLN": 71,
+            "COMP": 75,
+            "EXPL": 46
+          },
+          "cost_usd": 8.77,
+          "wall_minutes": 56.3,
+          "runs": [
+            {
+              "run": 1,
+              "total": 848,
+              "cost_usd": 8.77,
+              "wall_minutes": 56.3
+            }
+          ],
+          "model": {
+            "name": "Claude Opus 5.5",
+            "id": "claude-opus-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "On a single run: security 232 of 250, architecture 153 of 200, bugs 137 of 150, performance 134 of 150 and 71 of 100 in clean code, with no penalty. It lost 25 compatibility points for one change that contradicts the manifest: a repeated idempotency key from a different user now gets a 422 where the manifest says the original response comes back. The same model at xhigh effort scored 886 for US$ 13.03 in 82 minutes; this run cost US$ 8.77 in 56 minutes. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 232 de 250, arquitetura 153 de 200, bugs 137 de 150, desempenho 134 de 150 e 71 de 100 em código limpo, sem penalidade. Perdeu 25 pontos de compatibilidade por uma mudança que contradiz o manifesto: uma chave de idempotência repetida por outro usuário agora recebe 422, onde o manifesto diz que a resposta original volta. O mesmo modelo em xhigh fez 886 por US$ 13,03 em 82 minutos; esta execução custou US$ 8,77 em 56 minutos. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
+          "agent": "claude-sonnet-5.5-high",
+          "score": 763,
+          "grade": "Gold",
+          "runs_count": 2,
+          "categories": {
+            "SEC": 239,
+            "ARCH": 133,
+            "BUG": 129,
+            "PERF": 102,
+            "CLN": 36,
+            "COMP": 100,
+            "EXPL": 39
+          },
+          "cost_usd": 2.5,
+          "wall_minutes": 31.4,
+          "runs": [
+            {
+              "run": 1,
+              "total": 897,
+              "cost_usd": 5.18,
+              "wall_minutes": 42.6
+            },
+            {
+              "run": 2,
+              "total": 763,
+              "cost_usd": 2.5,
+              "wall_minutes": 31.4
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "Two runs, 134 points apart (897 and 763), so this agent is not steady yet. The first had full marks in security and the best architecture and clean-code scores so far; the second kept security near the top (239 of 250) but fell to 133 of 200 in architecture and 36 of 100 in clean code, while keeping the contract whole (compatibility 100, against 75 in the first). Both runs took the 15-point penalty for introducing a new bug, and the second one cost US$ 2.50 in 31 minutes, against US$ 5.18 in 43. The same model at xhigh effort scored 860 for US$ 6.58. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções a 134 pontos uma da outra (897 e 763), então este agente ainda não é estável. A primeira teve nota máxima em segurança e as maiores notas até agora em arquitetura e código limpo; a segunda manteve a segurança perto do topo (239 de 250), mas caiu para 133 de 200 em arquitetura e 36 de 100 em código limpo, e manteve o contrato inteiro (compatibilidade 100, contra 75 na primeira). As duas levaram a penalidade de 15 pontos por introduzir um bug novo, e a segunda custou US$ 2,50 em 31 minutos, contra US$ 5,18 em 43. O mesmo modelo em xhigh fez 860 por US$ 6,58. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
@@ -17092,26 +17133,32 @@
         },
         {
           "agent": "gpt-5.6-terra-xhigh",
-          "score": 625,
-          "grade": "Silver",
-          "runs_count": 1,
+          "score": 574,
+          "grade": "Bronze",
+          "runs_count": 2,
           "categories": {
             "SEC": 225,
             "ARCH": 47,
-            "BUG": 134,
-            "PERF": 96,
+            "BUG": 137,
+            "PERF": 41,
             "CLN": 0,
             "COMP": 100,
-            "EXPL": 38
+            "EXPL": 39
           },
           "cost_usd": null,
-          "wall_minutes": 32.1,
+          "wall_minutes": 27.5,
           "runs": [
             {
               "run": 1,
               "total": 625,
               "cost_usd": null,
               "wall_minutes": 32.1
+            },
+            {
+              "run": 2,
+              "total": 574,
+              "cost_usd": null,
+              "wall_minutes": 27.5
             }
           ],
           "model": {
@@ -17121,8 +17168,8 @@
             "reasoning_effort": "xhigh"
           },
           "comment": {
-            "en": "Almost level with DeepSeek V4.1 Flash on the same profile: security 225 of 250, bugs 134 of 150, architecture 47 of 200 and nothing in clean code, with the contract untouched. One of its fixes introduced a new, recoverable concurrency fault and took the 15-point penalty for a new bug; without it the score would be 640. The session took 32 minutes, without the 20 the operator took between the two stages. Codex keeps no cost. One run of three: it is not official and could move.",
-            "pt_BR": "Quase empatado com o DeepSeek V4.1 Flash, no mesmo perfil: segurança 225 de 250, bugs 134 de 150, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto. Uma das correções introduziu uma nova falha de concorrência, recuperável, e levou a penalidade de 15 pontos por bug novo; sem ela a nota seria 640. A sessão levou 32 minutos, sem os 20 que o operador levou entre as duas etapas. O Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+            "en": "Two runs, 625 and 574, with the same shape: security 225 of 250, architecture 47 of 200 and nothing in clean code, with the contract untouched (compatibility 100). The difference is performance, 96 of 150 in the first and 41 in the second, and bugs, 134 and 137. Both runs took the 15-point penalty for a fix that introduced a new bug. The sessions took 32 and 28 minutes, without the operator's wait between the two stages. Codex keeps no cost. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções, 625 e 574, com o mesmo perfil: segurança 225 de 250, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto (compatibilidade 100). A diferença está no desempenho, 96 de 150 na primeira e 41 na segunda, e nos bugs, 134 e 137. As duas levaram a penalidade de 15 pontos por uma correção que introduziu um bug novo. As sessões levaram 32 e 28 minutos, sem a espera do operador entre as duas etapas. O Codex não registra custo. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
