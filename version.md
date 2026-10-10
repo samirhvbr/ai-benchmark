@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.140`
+**Versão atual:** `0.2.141`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.141` — 2026-10-10 — The LEB-300-A aggregate lists GPT-5.6-luna at xhigh effort
+
+- `results/2026/LEB-300-A/aggregate.json` goes from fourteen agents to fifteen. **GPT-5.6-luna at xhigh effort** is new, with one run of three: 638 of 1000 (Silver), without a penalty, between DeepSeek V4.1 Flash (649) and GPT-5.6-terra (574). It is a Codex run
+  (the model is the default of the client's configuration on that VM; the session records it for both turns). It fixed 22 of the 36 planted flaws mechanically, reported 20 of them with no false positive, and its report was rated 38 of 50.
+- Judge calls worth knowing, kept as judged: no COMP violation (the migration deletes duplicate rows keeping the lowest id, which the manifest prescribes when a unique index is blocked) and no PEN-001 (a slowdown on the quadratic path that PERF-012 plants would
+  have punished the same fact twice). The session took 43 minutes, 1.4 of them the operator's wait between the two stages, which the page leaves out; Codex keeps no cost, so none is published.
+- Nothing published before is changed. No protocol text, tool, weight, penalty or test changes (141 tests).
 
 ### `0.2.140` — 2026-10-10 — The 0.2.139 entry no longer claims two "firsts" it had not checked
 

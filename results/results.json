@@ -17167,6 +17167,41 @@
           }
         },
         {
+          "agent": "gpt-5.6-luna-xhigh",
+          "score": 638,
+          "grade": "Silver",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 211,
+            "ARCH": 47,
+            "BUG": 147,
+            "PERF": 77,
+            "CLN": 18,
+            "COMP": 100,
+            "EXPL": 38
+          },
+          "cost_usd": null,
+          "wall_minutes": 41.6,
+          "runs": [
+            {
+              "run": 1,
+              "total": 638,
+              "cost_usd": null,
+              "wall_minutes": 41.6
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-luna",
+            "id": "gpt-5.6-luna",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "On a single run: security 211 of 250, bugs 147 of 150, performance 77 of 150, architecture 47 of 200 and 18 of 100 in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 22 of the 36 planted flaws and reported 20 of them, with no false positive; the report was rated 38 of 50, weakest on prioritisation, because the list follows the order of the work and not the order of severity. The session took 42 minutes, without the 1 minute the operator took between the two stages, and used about 19.7 million tokens; Codex keeps no cost. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 211 de 250, bugs 147 de 150, desempenho 77 de 150, arquitetura 47 de 200 e 18 de 100 em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 22 das 36 falhas plantadas e reportou 20 delas, sem falso positivo; o relatório teve 38 de 50, com a nota mais baixa em priorização, porque a lista segue a ordem do trabalho e não a da gravidade. A sessão levou 42 minutos, sem o 1 minuto que o operador levou entre as duas etapas, e usou cerca de 19,7 milhões de tokens; o Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "gpt-5.6-terra-xhigh",
           "score": 574,
           "grade": "Bronze",
