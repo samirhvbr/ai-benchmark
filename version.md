@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.138`
+**Versão atual:** `0.2.139`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.139` — 2026-10-10 — The LEB-300-A aggregate lists Gemma 4 26B A4B at high effort
+
+- `results/2026/LEB-300-A/aggregate.json` goes from thirteen agents to fourteen. **Gemma 4 26B A4B at high effort** is new, with one run of three: 232 of 1000 (Reprovada), last in the lineup, just below Claude Haiku 4.5 (242). It is the first open-weights
+  model of Google's family in the lineup and the first run served by Novita AI through OpenCode with a model that has a published training cutoff (January 2025, from Google's model card for the Gemma 4 family). The contract stayed whole
+  (compatibility 100); it fixed 3 of the 36 planted flaws mechanically and reported 5, all real, with no false positive.
+- Judge calls and instrument notes worth knowing. The first mechanical evaluation of this delivery lacked one probe (BUG-011.b); a second evaluation of the same delivery returned all 36 with identical results for the other 35, and the second is the record
+  (the first is kept in the run's logs). The only earlier report with 35 probes is the second run of Claude Haiku 4.5 (SEC-014.a missing), published at 218 with that flaw decided by the judge alone; nothing published is changed here.
+- The first message of this session was sent three times: the first two went to model ids the host did not know (404, no tokens, no output) and are left out of the session time and of the counts, as the run note says. Session times leave out the operator's wait between
+  the stages (6.9 minutes in this run). No protocol text, tool, weight, penalty or test changes (141 tests).
 
 ### `0.2.138` — 2026-10-10 — The LEB-300-A aggregate lists Claude Fable 5.1 at high effort
 

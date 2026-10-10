@@ -17329,6 +17329,41 @@
             "en": "Three runs from 218 to 272, and the published 242 is the middle one. Two of the three changed behaviour that the manifest contracts and lost 30 compatibility points; the published run did not. Its security score was 56 of 250 in the published run and above 100 in the other two, while performance and clean code stayed near zero throughout. The published run was the fastest line here, 12 minutes; the other two took 28 and 44, and the second cost US$ 2.22. All three ran in Claude Code.",
             "pt_BR": "Três execuções entre 218 e 272, e os 242 publicados são a do meio. Duas das três mudaram um comportamento que o manifesto contrata e perderam 30 pontos de compatibilidade; a execução publicada não. A segurança foi 56 de 250 na execução publicada e passou de 100 nas outras duas, enquanto desempenho e código limpo ficaram perto de zero em todas. A execução publicada foi a linha mais rápida daqui, 12 minutos; as outras duas levaram 28 e 44, e a segunda custou US$ 2,22. As três rodaram no Claude Code."
           }
+        },
+        {
+          "agent": "gemma-4-26b-a4b-high",
+          "score": 232,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 63,
+            "ARCH": 14,
+            "BUG": 8,
+            "PERF": 16,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 31
+          },
+          "cost_usd": 0.36,
+          "wall_minutes": 13.8,
+          "runs": [
+            {
+              "run": 1,
+              "total": 232,
+              "cost_usd": 0.36,
+              "wall_minutes": 13.8
+            }
+          ],
+          "model": {
+            "name": "Gemma 4 26B A4B",
+            "id": "google/gemma-4-26b-a4b-it",
+            "provider": "Google DeepMind",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "On a single run: the contract stayed whole (compatibility 100), but little else moved: security 63 of 250, architecture 14 of 200, bugs 8 of 150, performance 16 of 150 and nothing in clean code. It fixed 3 of the 36 planted flaws and reported 5, all of them real and none a false positive, each with full confidence; the report was rated 31 of 50, weakest on prioritisation and on trade-offs. The run cost US$ 0.36 and took 14 minutes of the agent's own time, without the 7 minutes the operator took between the two stages. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: o contrato ficou inteiro (compatibilidade 100), mas pouco mais se moveu: segurança 63 de 250, arquitetura 14 de 200, bugs 8 de 150, desempenho 16 de 150 e nada em código limpo. Corrigiu 3 das 36 falhas plantadas e reportou 5, todas reais e nenhuma falso positivo, cada uma com confiança total; o relatório teve 31 de 50, com as notas mais baixas em priorização e em trade-offs. A execução custou US$ 0,36 e levou 14 minutos do tempo do próprio agente, sem os 7 minutos que o operador levou entre as duas etapas. Uma execução de três: não é oficial e pode mudar."
+          }
         }
       ]
     }

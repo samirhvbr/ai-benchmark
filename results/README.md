@@ -91,5 +91,6 @@ This instance is **active**. While it is, only the totals below are published: n
 | 11 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
 | 12 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
 | 13 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
+| 14 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
