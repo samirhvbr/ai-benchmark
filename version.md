@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.142`
+**Versão atual:** `0.2.143`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.143` — 2026-10-10 — The LEB-300-A aggregate lists GPT-6.1-sol and GPT-6-astra at xhigh effort
+
+- `results/2026/LEB-300-A/aggregate.json` goes from sixteen agents to eighteen. Both are Codex CLI runs, with one run of three each, so neither is official and the published score is that run's.
+  - **GPT-6.1-sol at xhigh effort**: 800 of 1000 (Gold), 5th, between Claude Opus 5.5 at xhigh (822) and Claude Sonnet 5.5 at high (763). It fixed 31 of the 36 planted flaws and reported 22, with one false positive, no COMP violation and no penalty. Its report
+    was rated 45 of 50. The session took 50 minutes and used about 7.4 million tokens; Codex keeps no cost.
+  - **GPT-6-astra at xhigh effort**: 717 of 1000 (Silver), 7th, between Claude Sonnet 5.5 at high (763) and Kimi K3 at high (712). It fixed 32 of the 36 and reported 22, with no false positive. One characterization test broke (the customer's ticket
+    history no longer came most recent first), which costs 20 points as PEN-002 and is not charged a second time as a COMP violation. Its report was rated 41 of 50. The session took 28 minutes and used about 7.3 million tokens.
+- Both agents already had an LEB-100-A model block, so their model data is copied from it. The top four are unchanged (Claude Sonnet 5.5 at xhigh, 860, still leads).
+- The operator's wait between the stages (4.0 and 1.8 minutes in these two runs) is left out of the session time, as before.
+- No protocol text, tool, weight, penalty or test changes.
 
 ### `0.2.142` — 2026-10-10 — The LEB-300-A aggregate lists GLM-5.3-FlashX at high effort, and two agents gain a second run
 
