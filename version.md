@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.146`
+**Versão atual:** `0.2.147`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.147` — 2026-10-11 — The LEB-300-A aggregate adds GPT-6.1-sol at ultra effort and more runs of Claude Sonnet 5.5 (xhigh and high) and Claude Haiku 5.5 (xhigh)
+
+- `results/2026/LEB-300-A/aggregate.json` goes from twenty-one agents to twenty-two. **GPT-6.1-sol at ultra effort** is new (Codex CLI, one run of three, so not official): 797 of 1000 (Gold), 7th. Three agents get another run, each from the same freeze and matrix as before.
+  - **Claude Sonnet 5.5 at xhigh**: run 2 scored 911 (Platinum), the highest single run of any LEB-300-A agent so far; the published score stays 860, the lower of two runs, and the agent stays 1st (2/3). Run 2 took 25 compatibility points (COMP-008: after ten failed attempts the login answers 429 even to a correct password, where the manifest says 200);
+    the matching judge noted that a lenient reading would record no violation, which would give 936.
+  - **Claude Sonnet 5.5 at high**: run 3 scored 855 (Gold). With 897, 763 and 855 the agent has three runs and its score is the median, 855, up from 763 (2nd, was 6th); it is official. Run 3 took 25 compatibility points (COMP-008: a fix made another user of the same company get an error, not the original response, when repeating an idempotency key)
+    and no PEN-001 (runs 1 and 2 took 15 points each). The judge hesitated on three architecture items described inside bundled findings; the strict reading is kept (10 raw points).
+  - **Claude Haiku 5.5 at xhigh**: run 3 scored 824 (Gold), the best of its three. With 708, 732 and 824 the score is the median, 732, up from 708 (8th, was 9th); it is official. The agent spawned one subagent, so the run took 99 minutes and US$ 5.16 against about 38 minutes and US$ 1.7 for the first two. Run 3 took 25 compatibility points (COMP-008: login can answer 429 from a static concurrency limit); a stricter judge could add COMP-003 for the login lockout and a title limit.
+  - **GPT-6.1-sol at ultra**: 797, no compatibility violation and no penalty. The agent spread its work over three subagent threads of its own; the four Codex threads together used about 28.4 million tokens (10.4 million in the main one).
+- Each run was judged by two fresh Opus 5.5 subagents, as always: the matching judge on the anonymized delivery and a blind judge of the report alone. The matching prompt gained one sentence confining reads and searches to the judge's own folder and the matrix file (after an incident in the previous round); it changes no rule or score.
+- `trazer-codex.py` and `medir-espera.py` (private tools) now accept a Codex session with subagent threads: tokens are summed over all threads, the stage counts are the main thread's, and the operator's wait is measured on the main thread. After their last turn the two Sonnet sessions received two calls of the client itself (an away summary and an automatic compaction); their cost is inside the client's totals and is noted in each run record. The operator's wait between the stages (3.0, 2.9, 20.2 and 20.9 minutes) is left out of the session time, as before.
+- Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.146` — 2026-10-11 — The LEB-300-A aggregate adds more runs of Claude Opus 5.5 (high), GPT-6-astra, GPT-5.6-luna and GPT-5.6-terra
 
