@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.144`
+**Versão atual:** `0.2.145`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.145` — 2026-10-10 — The LEB-300-A aggregate lists MiniMax-M2.7
+
+- `results/2026/LEB-300-A/aggregate.json` goes from twenty agents to twenty-one. **MiniMax-M2.7** (OpenCode, MiniMax's own API, no effort setting, so "default") is new, with one run of three, so it is not official: 202 of 1000 (Reprovada), 21st, below
+  Gemma 4 26B (232). It is the standard-speed model of the same series as MiniMax-M2.7-highspeed (291, added in 0.2.144); the two are separate agents because the session records two model ids, and each has one run. MiniMax publishes no knowledge cutoff
+  for the M2.7 series; its release date, 2026-03-18, bounds it.
+- It fixed 3 of the 36 planted flaws and reported 5 (two of those left unfixed), with one false positive and one extra finding. One COMP violation was charged, kept as judged: the login rate limiter it added answers 401 even to the right password
+  after five attempts in 15 minutes from the same non-local address (COMP-008, compatibility 75 of 100). No penalty. Its report was rated 34 of 50. The session took 15 minutes and cost US$ 0.44.
+- That run's VM also held four short "who are you?" sessions the operator opened in OpenCode to check the logins before the run. They are separate sessions: only the run's own session is read for time, counts, tokens and cost.
+- The operator's wait between the stages (6.8 minutes) is left out of the session time, as before.
+- The top five of the board is unchanged (Claude Sonnet 5.5 at xhigh, 860, still leads).
+- No protocol text, tool, weight, penalty or test changes.
 
 ### `0.2.144` — 2026-10-10 — The LEB-300-A aggregate lists GPT-6-luna at xhigh effort and MiniMax-M2.7-highspeed
 

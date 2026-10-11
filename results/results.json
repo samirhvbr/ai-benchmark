@@ -17586,6 +17586,41 @@
             "en": "On a single run: the contract stayed whole (compatibility 100), but little else moved: security 63 of 250, architecture 14 of 200, bugs 8 of 150, performance 16 of 150 and nothing in clean code. It fixed 3 of the 36 planted flaws and reported 5, all of them real and none a false positive, each with full confidence; the report was rated 31 of 50, weakest on prioritisation and on trade-offs. The run cost US$ 0.36 and took 14 minutes of the agent's own time, without the 7 minutes the operator took between the two stages. One run of three: it is not official and could move.",
             "pt_BR": "Com uma execução só: o contrato ficou inteiro (compatibilidade 100), mas pouco mais se moveu: segurança 63 de 250, arquitetura 14 de 200, bugs 8 de 150, desempenho 16 de 150 e nada em código limpo. Corrigiu 3 das 36 falhas plantadas e reportou 5, todas reais e nenhuma falso positivo, cada uma com confiança total; o relatório teve 31 de 50, com as notas mais baixas em priorização e em trade-offs. A execução custou US$ 0,36 e levou 14 minutos do tempo do próprio agente, sem os 7 minutos que o operador levou entre as duas etapas. Uma execução de três: não é oficial e pode mudar."
           }
+        },
+        {
+          "agent": "minimax-m2.7-default",
+          "score": 202,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 85,
+            "ARCH": 0,
+            "BUG": 8,
+            "PERF": 0,
+            "CLN": 0,
+            "COMP": 75,
+            "EXPL": 34
+          },
+          "cost_usd": 0.44,
+          "wall_minutes": 15.0,
+          "runs": [
+            {
+              "run": 1,
+              "total": 202,
+              "cost_usd": 0.44,
+              "wall_minutes": 15.0
+            }
+          ],
+          "model": {
+            "name": "MiniMax-M2.7",
+            "id": "minimax-m2.7",
+            "provider": "MiniMax",
+            "reasoning_effort": "default"
+          },
+          "comment": {
+            "en": "On a single run: security 85 of 250, bugs 8 of 150, and nothing in architecture, performance or clean code, with compatibility at 75 of 100 for one violation kept as judged: the login rate limiter it added answers 401 even to the right password after five attempts in 15 minutes from the same non-local address (COMP-008). It fixed 3 of the 36 planted flaws and reported 5 (two of those left unfixed), with one false positive, a counting bug the code does not have, and one extra finding. The report was rated 34 of 50, weakest on precision, because it contradicts itself in places (a token valid \"until expiry\" and then \"indefinitely\") and overstates how long a brute-force attack would take. MiniMax-M2.7 is the standard-speed model of the series, and OpenCode offers no effort setting for it. Both stages ran in one OpenCode session of 15 minutes, without the 7 minutes the operator took between the two stages, through MiniMax's own API, for US$ 0.44. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 85 de 250, bugs 8 de 150, e nada em arquitetura, desempenho ou código limpo, com a compatibilidade em 75 de 100 por uma violação mantida como julgada: o limitador de tentativas de login que ela criou responde 401 até para a senha certa depois de cinco tentativas em 15 minutos pelo mesmo endereço não local (COMP-008). Corrigiu 3 das 36 falhas plantadas e reportou 5 (duas delas ficaram sem correção), com um falso positivo, um erro de contagem que o código não tem, e um achado extra. O relatório teve 34 de 50, com a nota mais baixa em precisão, porque se contradiz em alguns pontos (um token válido \"até a expiração\" e depois \"indefinidamente\") e exagera o tempo que um ataque de força bruta levaria. O MiniMax-M2.7 é o modelo de velocidade padrão da série, e o OpenCode não oferece ajuste de esforço para ele. As duas etapas rodaram em uma sessão do OpenCode de 15 minutos, sem os 7 minutos que o operador levou entre as duas etapas, pela API da própria MiniMax, por US$ 0,44. Uma execução de três: não é oficial e pode mudar."
+          }
         }
       ]
     }
