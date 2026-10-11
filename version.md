@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.145`
+**Versão atual:** `0.2.146`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.146` — 2026-10-11 — The LEB-300-A aggregate adds more runs of Claude Opus 5.5 (high), GPT-6-astra, GPT-5.6-luna and GPT-5.6-terra
+
+- `results/2026/LEB-300-A/aggregate.json` keeps its twenty-one agents; four of them get another run, each from the same freeze and matrix as before. Below 3 runs the published score is the lowest run's, as before (PROTOCOL §4).
+  - **Claude Opus 5.5 at high effort**: run 2 scored 866 (Gold); the published score stays 848, the lower of two runs, 2nd on the board (2/3).
+  - **GPT-6-astra at xhigh**: run 2 scored 729 (Silver); published 717, the lower of two, 7th (2/3). Both runs broke the same characterization test (the customer's ticket history no longer came most recent first, PEN-002, −20 each).
+  - **GPT-5.6-luna at xhigh**: run 2 scored 512 (Bronze), 126 below its first (638), so the published score falls from 638 to 512 and the agent from 13th to 14th (2/3). Run 2 took a 20-point penalty for a characterization test (a company administrator could now switch a company on and off) and 25 compatibility points
+    for the same edit to the company routes (COMP-008: the platform role lost the write access the route table gives it). The matching judge hesitated between COMP-008 and COMP-003 because the manifest is not consistent about that role; the call is kept as judged and is worth 25 points (537 without it).
+  - **GPT-5.6-terra at xhigh**: run 3 scored 657 (Silver). With 625, 574 and 657 the agent now has three runs and its score is the median, 625, up from 574 (13th, was 14th). Run 3 took no PEN-001 (runs 1 and 2 took 15 points each for a fix that introduced a new bug); the matching judge noted
+    a risk it left uncharged (the token now stored for new sessions still works as a bearer token), and charging it would give 642, which leaves the median at 625.
+- Each run was judged by two fresh Opus 5.5 subagents, as always: the matching judge on the anonymized delivery and a blind judge of the report alone. One matching judge's recursive search printed a few lines of published LEB-100-A scorecards; it opened no file there and saw nothing of LEB-300-A, and it recorded the incident in its own notes. The verdict was kept.
+- The operator's wait between the stages (1.0 to 6.8 minutes) is left out of the session time, as before. The VM of the Terra run still held a 12-second login-check session from before the run; it is not part of the run and is not counted.
+- Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. The top five of the board is unchanged (Claude Sonnet 5.5 at xhigh, 860, still leads). No protocol text, tool, weight, penalty or test changes.
 
 ### `0.2.145` — 2026-10-10 — The LEB-300-A aggregate lists MiniMax-M2.7
 

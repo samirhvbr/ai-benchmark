@@ -16878,7 +16878,7 @@
           "agent": "claude-opus-5.5-high",
           "score": 848,
           "grade": "Gold",
-          "runs_count": 1,
+          "runs_count": 2,
           "categories": {
             "SEC": 232,
             "ARCH": 153,
@@ -16896,6 +16896,12 @@
               "total": 848,
               "cost_usd": 8.77,
               "wall_minutes": 56.3
+            },
+            {
+              "run": 2,
+              "total": 866,
+              "cost_usd": 7.57,
+              "wall_minutes": 50.1
             }
           ],
           "model": {
@@ -16905,8 +16911,8 @@
             "reasoning_effort": "high"
           },
           "comment": {
-            "en": "On a single run: security 232 of 250, architecture 153 of 200, bugs 137 of 150, performance 134 of 150 and 71 of 100 in clean code, with no penalty. It lost 25 compatibility points for one change that contradicts the manifest: a repeated idempotency key from a different user now gets a 422 where the manifest says the original response comes back. The same model at xhigh effort scored 886 for US$ 13.03 in 82 minutes; this run cost US$ 8.77 in 56 minutes. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 232 de 250, arquitetura 153 de 200, bugs 137 de 150, desempenho 134 de 150 e 71 de 100 em código limpo, sem penalidade. Perdeu 25 pontos de compatibilidade por uma mudança que contradiz o manifesto: uma chave de idempotência repetida por outro usuário agora recebe 422, onde o manifesto diz que a resposta original volta. O mesmo modelo em xhigh fez 886 por US$ 13,03 em 82 minutos; esta execução custou US$ 8,77 em 56 minutos. Uma execução de três: não é oficial e pode mudar."
+            "en": "Two runs, 18 points apart (848 and 866), with the same shape: 232 and 229 of 250 in security, 153 of 200 in architecture in both, 137 and 147 of 150 in bugs, 134 and 124 of 150 in performance and 71 of 100 in clean code in both, with no penalty. The first lost 25 compatibility points for one change that contradicts the manifest: a repeated idempotency key from a different user got a 422 where the manifest says the original response comes back. The second kept the contract whole (compatibility 100). The first cost US$ 8.77 in 56 minutes, the second US$ 7.57 in 50, without the operator's wait between the two stages. The same model at xhigh effort scored 886 and 822. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções, 18 pontos de diferença (848 e 866), com o mesmo perfil: 232 e 229 de 250 em segurança, 153 de 200 em arquitetura nas duas, 137 e 147 de 150 em bugs, 134 e 124 de 150 em desempenho e 71 de 100 em código limpo nas duas, sem penalidade. A primeira perdeu 25 pontos de compatibilidade por uma mudança que contradiz o manifesto: uma chave de idempotência repetida por outro usuário recebeu 422, onde o manifesto diz que a resposta original volta. A segunda manteve o contrato inteiro (compatibilidade 100). A primeira custou US$ 8,77 em 56 minutos, a segunda US$ 7,57 em 50, sem a espera do operador entre as duas etapas. O mesmo modelo em xhigh fez 886 e 822. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
@@ -17065,7 +17071,7 @@
           "agent": "gpt-6-astra-xhigh",
           "score": 717,
           "grade": "Silver",
-          "runs_count": 1,
+          "runs_count": 2,
           "categories": {
             "SEC": 194,
             "ARCH": 142,
@@ -17083,6 +17089,12 @@
               "total": 717,
               "cost_usd": null,
               "wall_minutes": 27.6
+            },
+            {
+              "run": 2,
+              "total": 729,
+              "cost_usd": null,
+              "wall_minutes": 42.5
             }
           ],
           "model": {
@@ -17092,8 +17104,8 @@
             "reasoning_effort": "xhigh"
           },
           "comment": {
-            "en": "On a single run: security 194 of 250, bugs 124 of 150, performance 86 of 150, architecture 142 of 200 and 50 of 100 in clean code, with the contract untouched (compatibility 100) and a 20-point penalty for one characterization test it broke: after its refactor the customer's ticket history no longer came most recent first. It fixed 32 of the 36 planted flaws and reported 22 of them, with no false positive; the report was rated 41 of 50, weakest on prioritisation. The session took 28 minutes, without the 2 minutes the operator took between the two stages, and used about 7.3 million tokens; Codex keeps no cost. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 194 de 250, bugs 124 de 150, desempenho 86 de 150, arquitetura 142 de 200 e 50 de 100 em código limpo, com o contrato intacto (compatibilidade 100) e 20 pontos de penalidade por um teste de caracterização que quebrou: depois da refatoração, o histórico de chamados do cliente deixou de vir do mais recente para o mais antigo. Corrigiu 32 das 36 falhas plantadas e reportou 22 delas, sem falso positivo; o relatório teve 41 de 50, com a nota mais baixa em priorização. A sessão levou 28 minutos, sem os 2 minutos que o operador levou entre as duas etapas, e usou cerca de 7,3 milhões de tokens; o Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+            "en": "Two runs, 717 and 729, with the same shape: 194 of 250 in security and 124 of 150 in bugs in both, architecture 142 and 136 of 200, performance 86 and 89 of 150, clean code 50 and 64 of 100, with the contract untouched (compatibility 100). Both took the 20-point penalty for the same characterization test, which broke after the refactor: the customer's ticket history no longer came most recent first. It fixed 32 and 33 of the 36 planted flaws and reported 22 and 23 of them, with no false positive; the reports were rated 41 and 42 of 50, weakest on prioritisation. The sessions took 28 and 43 minutes, without the operator's wait between the two stages, and used about 7.3 and 7.7 million tokens; Codex keeps no cost. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções, 717 e 729, com o mesmo perfil: 194 de 250 em segurança e 124 de 150 em bugs nas duas, arquitetura 142 e 136 de 200, desempenho 86 e 89 de 150, código limpo 50 e 64 de 100, com o contrato intacto (compatibilidade 100). As duas levaram a penalidade de 20 pontos pelo mesmo teste de caracterização, que quebrou depois da refatoração: o histórico de chamados do cliente deixou de vir do mais recente para o mais antigo. Corrigiu 32 e 33 das 36 falhas plantadas e reportou 22 e 23 delas, sem falso positivo; os relatórios tiveram 41 e 42 de 50, com a nota mais baixa em priorização. As sessões levaram 28 e 43 minutos, sem a espera do operador entre as duas etapas, e usaram cerca de 7,3 e 7,7 milhões de tokens; o Codex não registra custo. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
@@ -17284,56 +17296,21 @@
           }
         },
         {
-          "agent": "gpt-5.6-luna-xhigh",
-          "score": 638,
+          "agent": "gpt-5.6-terra-xhigh",
+          "score": 625,
           "grade": "Silver",
-          "runs_count": 1,
+          "runs_count": 3,
           "categories": {
-            "SEC": 211,
+            "SEC": 225,
             "ARCH": 47,
-            "BUG": 147,
-            "PERF": 77,
-            "CLN": 18,
+            "BUG": 134,
+            "PERF": 96,
+            "CLN": 0,
             "COMP": 100,
             "EXPL": 38
           },
           "cost_usd": null,
-          "wall_minutes": 41.6,
-          "runs": [
-            {
-              "run": 1,
-              "total": 638,
-              "cost_usd": null,
-              "wall_minutes": 41.6
-            }
-          ],
-          "model": {
-            "name": "GPT-5.6-luna",
-            "id": "gpt-5.6-luna",
-            "provider": "OpenAI",
-            "reasoning_effort": "xhigh"
-          },
-          "comment": {
-            "en": "On a single run: security 211 of 250, bugs 147 of 150, performance 77 of 150, architecture 47 of 200 and 18 of 100 in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 22 of the 36 planted flaws and reported 20 of them, with no false positive; the report was rated 38 of 50, weakest on prioritisation, because the list follows the order of the work and not the order of severity. The session took 42 minutes, without the 1 minute the operator took between the two stages, and used about 19.7 million tokens; Codex keeps no cost. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 211 de 250, bugs 147 de 150, desempenho 77 de 150, arquitetura 47 de 200 e 18 de 100 em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 22 das 36 falhas plantadas e reportou 20 delas, sem falso positivo; o relatório teve 38 de 50, com a nota mais baixa em priorização, porque a lista segue a ordem do trabalho e não a da gravidade. A sessão levou 42 minutos, sem o 1 minuto que o operador levou entre as duas etapas, e usou cerca de 19,7 milhões de tokens; o Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
-          }
-        },
-        {
-          "agent": "gpt-5.6-terra-xhigh",
-          "score": 574,
-          "grade": "Bronze",
-          "runs_count": 2,
-          "categories": {
-            "SEC": 225,
-            "ARCH": 47,
-            "BUG": 137,
-            "PERF": 41,
-            "CLN": 0,
-            "COMP": 100,
-            "EXPL": 39
-          },
-          "cost_usd": null,
-          "wall_minutes": 27.5,
+          "wall_minutes": 32.1,
           "runs": [
             {
               "run": 1,
@@ -17346,6 +17323,12 @@
               "total": 574,
               "cost_usd": null,
               "wall_minutes": 27.5
+            },
+            {
+              "run": 3,
+              "total": 657,
+              "cost_usd": null,
+              "wall_minutes": 32.4
             }
           ],
           "model": {
@@ -17355,8 +17338,49 @@
             "reasoning_effort": "xhigh"
           },
           "comment": {
-            "en": "Two runs, 625 and 574, with the same shape: security 225 of 250, architecture 47 of 200 and nothing in clean code, with the contract untouched (compatibility 100). The difference is performance, 96 of 150 in the first and 41 in the second, and bugs, 134 and 137. Both runs took the 15-point penalty for a fix that introduced a new bug. The sessions took 32 and 28 minutes, without the operator's wait between the two stages. Codex keeps no cost. Two runs of three: not official, and the published score is the lower of the two.",
-            "pt_BR": "Duas execuções, 625 e 574, com o mesmo perfil: segurança 225 de 250, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto (compatibilidade 100). A diferença está no desempenho, 96 de 150 na primeira e 41 na segunda, e nos bugs, 134 e 137. As duas levaram a penalidade de 15 pontos por uma correção que introduziu um bug novo. As sessões levaram 32 e 28 minutos, sem a espera do operador entre as duas etapas. O Codex não registra custo. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+            "en": "Three runs from 574 to 657, and the official 625 is the middle one. Security was 225, 225 and 246 of 250, architecture 47 of 200 in all three, clean code 0, 0 and 18 of 100, bugs 134, 137 and 142 of 150 and performance 96, 41 and 64 of 150, with the contract untouched in every run (compatibility 100). The first two took the 15-point penalty for a fix that introduced a new bug; the third took none. The sessions took 32, 28 and 32 minutes, without the operator's wait between the two stages. Codex keeps no cost.",
+            "pt_BR": "Três execuções, de 574 a 657, e a nota oficial, 625, é a do meio. A segurança foi 225, 225 e 246 de 250, a arquitetura 47 de 200 nas três, o código limpo 0, 0 e 18 de 100, os bugs 134, 137 e 142 de 150 e o desempenho 96, 41 e 64 de 150, com o contrato intacto em todas (compatibilidade 100). As duas primeiras levaram a penalidade de 15 pontos por uma correção que introduziu um bug novo; a terceira não levou nenhuma. As sessões levaram 32, 28 e 32 minutos, sem a espera do operador entre as duas etapas. O Codex não registra custo."
+          }
+        },
+        {
+          "agent": "gpt-5.6-luna-xhigh",
+          "score": 512,
+          "grade": "Bronze",
+          "runs_count": 2,
+          "categories": {
+            "SEC": 173,
+            "ARCH": 67,
+            "BUG": 121,
+            "PERF": 57,
+            "CLN": 0,
+            "COMP": 75,
+            "EXPL": 39
+          },
+          "cost_usd": null,
+          "wall_minutes": 37.7,
+          "runs": [
+            {
+              "run": 1,
+              "total": 638,
+              "cost_usd": null,
+              "wall_minutes": 41.6
+            },
+            {
+              "run": 2,
+              "total": 512,
+              "cost_usd": null,
+              "wall_minutes": 37.7
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-luna",
+            "id": "gpt-5.6-luna",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "Two runs, 126 points apart (638 and 512), so this agent is not steady yet. The first had no penalty and kept the contract whole (compatibility 100): security 211 of 250, bugs 147 of 150, performance 77 of 150, architecture 47 of 200 and 18 of 100 in clean code. The second fell in every category except architecture (67): security 173, bugs 121, performance 57 and nothing in clean code. It lost 25 compatibility points and took a 20-point penalty for one edit to the company routes: the platform role lost the write access the route table gives it, and the company administrator gained the right to switch a company on and off, which broke a public characterization test. It fixed 22 and 23 of the 36 planted flaws and reported 20 and 18 of them, with one false positive in the second; the reports were rated 38 and 39 of 50, weakest on prioritisation. The sessions took 42 and 38 minutes, without the operator's wait between the two stages; Codex keeps no cost. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções, 126 pontos de diferença (638 e 512), então este agente ainda não é estável. A primeira não teve penalidade e manteve o contrato inteiro (compatibilidade 100): segurança 211 de 250, bugs 147 de 150, desempenho 77 de 150, arquitetura 47 de 200 e 18 de 100 em código limpo. A segunda caiu em todas as categorias, menos arquitetura (67): segurança 173, bugs 121, desempenho 57 e nada em código limpo. Perdeu 25 pontos de compatibilidade e levou 20 de penalidade por uma edição nas rotas de empresa: o papel de plataforma perdeu o acesso de escrita que a tabela de rotas lhe dá, e o administrador da empresa passou a poder ligar e desligar uma empresa, o que quebrou um teste de caracterização público. Corrigiu 22 e 23 das 36 falhas plantadas e reportou 20 e 18 delas, com um falso positivo na segunda; os relatórios tiveram 38 e 39 de 50, com a nota mais baixa em priorização. As sessões levaram 42 e 38 minutos, sem a espera do operador entre as duas etapas; o Codex não registra custo. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
