@@ -92,9 +92,11 @@ This instance is **active**. While it is, only the totals below are published: n
 | 12 | `glm-5.3-flashx-high` | **648** | Silver | 187 | 92 | 145 | 77 | 32 | 75 | 40 | 1/3 |
 | 13 | `gpt-5.6-luna-xhigh` | **638** | Silver | 211 | 47 | 147 | 77 | 18 | 100 | 38 | 1/3 |
 | 14 | `gpt-5.6-terra-xhigh` | **574** | Bronze | 225 | 47 | 137 | 41 | 0 | 100 | 39 | 2/3 (625 · 574) |
-| 15 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
-| 16 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
-| 17 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
-| 18 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
+| 15 | `gpt-6-luna-xhigh` | **471** | Bronze | 180 | 47 | 124 | 70 | 0 | 45 | 40 | 1/3 |
+| 16 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
+| 17 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
+| 18 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
+| 19 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
+| 20 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.

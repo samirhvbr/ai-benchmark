@@ -17360,6 +17360,41 @@
           }
         },
         {
+          "agent": "gpt-6-luna-xhigh",
+          "score": 471,
+          "grade": "Bronze",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 180,
+            "ARCH": 47,
+            "BUG": 124,
+            "PERF": 70,
+            "CLN": 0,
+            "COMP": 45,
+            "EXPL": 40
+          },
+          "cost_usd": null,
+          "wall_minutes": 34.4,
+          "runs": [
+            {
+              "run": 1,
+              "total": 471,
+              "cost_usd": null,
+              "wall_minutes": 34.4
+            }
+          ],
+          "model": {
+            "name": "GPT-6-luna",
+            "id": "gpt-6-luna",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "On a single run: security 180 of 250, bugs 124 of 150, performance 70 of 150, architecture 47 of 200 and nothing in clean code. Compatibility fell to 45 of 100, with two violations kept as judged (the company update route now refuses the platform role, and the technician productivity report lists deactivated technicians), and two penalties took 35 points: one characterization test broke (an admin could no longer change a company's active flag) and a login limiter it added keyed its block on the connection address. It fixed 22 of the 36 planted flaws and reported 21, with two false positives, neither a decoy; the report was rated 40 of 50, weakest on prioritisation. The session took 35 minutes, without the 1 minute the operator took between the two stages, and used about 9.4 million tokens; Codex keeps no cost. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 180 de 250, bugs 124 de 150, desempenho 70 de 150, arquitetura 47 de 200 e nada em código limpo. A compatibilidade caiu para 45 de 100, com duas violações mantidas como julgadas (a rota de alteração de empresa passou a recusar o papel de plataforma, e o relatório de produtividade dos técnicos passou a listar técnicos desativados), e duas penalidades tiraram 35 pontos: um teste de caracterização quebrou (um administrador deixou de poder alterar a situação ativa de uma empresa) e um limitador de login que ela criou baseou o bloqueio no endereço da conexão. Corrigiu 22 das 36 falhas plantadas e reportou 21, com dois falsos positivos, nenhum deles isca; o relatório teve 40 de 50, com a nota mais baixa em priorização. A sessão levou 35 minutos, sem o 1 minuto que o operador levou entre as duas etapas, e usou cerca de 9,4 milhões de tokens; o Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "z.ai-glm-5.2-high",
           "score": 390,
           "grade": "Reprovada",
@@ -17433,6 +17468,41 @@
           "comment": {
             "en": "Two runs within ten points of each other (388 and 398), so the shape is steady: compatibility whole, security at 113 of 250, bugs at 47 of 150 and little in performance or clean code. In both, the first-stage report filed several security and architecture problems as plain bugs and never moved them, which cost points in the categories that mattered. Its runs took 42 and 53 minutes, at US$ 1.21 and 0.81. Two runs of three: not official, and the published score is the lower of the two.",
             "pt_BR": "Duas execuções a dez pontos uma da outra (388 e 398), então o perfil é estável: compatibilidade inteira, segurança em 113 de 250, bugs em 47 de 150 e pouco em desempenho e código limpo. Nas duas, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou, o que custou pontos nas categorias que mais pesavam. As execuções levaram 42 e 53 minutos, a US$ 1,21 e 0,81. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+          }
+        },
+        {
+          "agent": "minimax-m2.7-highspeed-default",
+          "score": 291,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 77,
+            "ARCH": 22,
+            "BUG": 11,
+            "PERF": 51,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 30
+          },
+          "cost_usd": 0.35,
+          "wall_minutes": 10.2,
+          "runs": [
+            {
+              "run": 1,
+              "total": 291,
+              "cost_usd": 0.35,
+              "wall_minutes": 10.2
+            }
+          ],
+          "model": {
+            "name": "MiniMax-M2.7-highspeed",
+            "id": "minimax-m2.7-highspeed",
+            "provider": "MiniMax",
+            "reasoning_effort": "default"
+          },
+          "comment": {
+            "en": "On a single run: security 77 of 250, bugs 11 of 150, performance 51 of 150, architecture 22 of 200 and nothing in clean code, with the contract untouched (compatibility 100) and no penalty. It made a few small, targeted edits and fixed 7 of the 36 planted flaws; it reported 8 of them (one of those left unfixed) and one false positive, a counting bug the code does not have. The report was rated 30 of 50, weakest on prioritisation and trade-offs: its two critical findings come 7th and 8th in the list, and its table of decisions rarely compares alternatives. MiniMax-M2.7-highspeed is the M2.7 series served faster (MiniMax: \"same performance, faster\"), and OpenCode offers no effort setting for it. The agent wrote RELATORIO.md and achados.json inside code/ instead of the project root, and the delivery was accepted as made. Both stages ran in one OpenCode session of 10 minutes, without the 7 minutes the operator took between the two stages, through MiniMax's own API, for US$ 0.35. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 77 de 250, bugs 11 de 150, desempenho 51 de 150, arquitetura 22 de 200 e nada em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Fez poucas edições pequenas e pontuais e corrigiu 7 das 36 falhas plantadas; reportou 8 delas (uma das quais ficou sem correção) e um falso positivo, um erro de contagem que o código não tem. O relatório teve 30 de 50, com as notas mais baixas em priorização e trade-offs: os dois achados críticos aparecem em 7º e 8º na lista, e a tabela de decisões quase não compara alternativas. O MiniMax-M2.7-highspeed é a série M2.7 servida mais rápido (a MiniMax diz \"mesmo desempenho, mais rápido\"), e o OpenCode não oferece ajuste de esforço para ele. O agente gravou RELATORIO.md e achados.json dentro de code/ em vez da raiz do projeto, e a entrega foi aceita como veio. As duas etapas rodaram em uma sessão do OpenCode de 10 minutos, sem os 7 minutos que o operador levou entre as duas etapas, pela API da própria MiniMax, por US$ 0,35. Uma execução de três: não é oficial e pode mudar."
           }
         },
         {

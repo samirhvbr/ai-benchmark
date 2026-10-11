@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.143`
+**Versão atual:** `0.2.144`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.144` — 2026-10-10 — The LEB-300-A aggregate lists GPT-6-luna at xhigh effort and MiniMax-M2.7-highspeed
+
+- `results/2026/LEB-300-A/aggregate.json` goes from eighteen agents to twenty. Both are new, with one run of three each, so neither is official and the published score is that run's. Neither had a model block in LEB-100-A: the owner approved the data below
+  before the runs were scored.
+  - **GPT-6-luna at xhigh effort** (Codex CLI): 471 of 1000 (Bronze), 15th, between GPT-5.6-terra (574) and GLM-5.2 (390). It is a different model from the GPT-5.6-luna already on the board (638); OpenAI's model page gives a knowledge cutoff of
+    2026-05-18. It fixed 22 of the 36 planted flaws and reported 21, with two false positives, neither a decoy. Two COMP violations were charged, kept as judged (COMP-008, 25 points, and COMP-003, 30 points), and two penalties took 35 points:
+    one characterization test broke (PEN-002) and a login limiter it added keyed its block on the connection address (PEN-001). Its report was rated 40 of 50. The session took 35 minutes and used about 9.4 million tokens; Codex keeps no cost.
+  - **MiniMax-M2.7-highspeed** (OpenCode, MiniMax's own API, no effort setting, so "default"): 291 of 1000 (Reprovada), 18th, between MiniMax-M3 (388) and Claude Haiku 4.5 (242). MiniMax publishes no knowledge cutoff for the M2.7 series; its release date,
+    2026-03-18, bounds it, and its guide describes highspeed as the same series served faster. It fixed 7 of the 36 planted flaws and reported 8, with one false positive, no COMP violation and no penalty. Its report was rated 30 of 50. The session took
+    10 minutes and cost US$ 0.35. The agent wrote RELATORIO.md and achados.json inside code/ instead of the project root; the owner accepted the delivery as made, and the judges worked on a copy with the two files at the root.
+- The operator's wait between the stages (1.2 and 6.7 minutes in these two runs) is left out of the session time, as before.
+- The top five of the board is unchanged (Claude Sonnet 5.5 at xhigh, 860, still leads).
+- No protocol text, tool, weight, penalty or test changes.
 
 ### `0.2.143` — 2026-10-10 — The LEB-300-A aggregate lists GPT-6.1-sol and GPT-6-astra at xhigh effort
 
