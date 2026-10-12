@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.150`
+**Versão atual:** `0.2.151`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.151` — 2026-10-12 — The LEB-300-A aggregate adds a second run of GPT-6.1-sol at xhigh effort, and corrects a statement of 0.2.148 on bundled findings
+
+- `results/2026/LEB-300-A/aggregate.json`: GPT-6.1-sol at xhigh goes from one run (800) to two (800 and 830). Fewer than three runs publish the lowest, so its score stays 800 (Gold, 6th, 2/3); the run list shows the second run. No other agent changes.
+- **Run 2** (Codex CLI): 830 (Gold). It fixed 33 flaws and reported 22, with no false positive, no compatibility violation and no penalty; its report was rated 40 of 50 (45 in run 1). The agent used 49 minutes of session (52 minutes less the 3.2 that the operator took between the two stages) and 5.1 million tokens; Codex keeps no cost. Security, architecture, bugs and performance score the same as in run 1; clean code goes from 29 to 64. Mechanical evaluation: 36 probes, characterization 70 of 70.
+- **Judged under the rule as written.** The matching judge of this run had the standing prompt, which since 0.2.148 carries the paragraph restating MATRIX §5 item 1 (a report finding maps to at most one matrix row). Two findings of the report each name several planted flaws; each was credited to its single most specific row, and the five flaws they also mention are counted as fixes without a report (no C1/C2/R1/R2). Credited separately and in full, those five rows would add up to 874, which is a bound and not a judgment. Run 1 of this agent was judged before the paragraph existed; none of its findings was credited to more than one row.
+- **Correction to 0.2.148.** That entry said that every other judge, in that round and the earlier ones, had applied the one-row rule. That was wrong: a scan of every verdict of the instance shows four runs in which a judge credited one finding to several rows, each time as a recorded hesitation, reading the finding as stating distinct problems: GLM-5.3-FlashX at high run 1 (published 648; 639 to 642 when the rule is applied strictly), Moonshot Kimi K3 at high run 2 (published 712 as the lower of two; 692 to 699), Claude Sonnet 5.5 at xhigh run 2 (911; 872 to 884; the published 860 is run 1) and Claude Haiku 5.5 at xhigh run 1 (708; 685 to 688; the published 732 is run 2). The ranges come from re-scoring the verdict with each possible choice of the one row a finding keeps. Those scores are not changed by this release.
+- The reading of the agent is rewritten for two runs. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.150` — 2026-10-12 — The LEB-300-A aggregate adds a third run of Claude Sonnet 5.5 at medium effort, which makes the agent official
 

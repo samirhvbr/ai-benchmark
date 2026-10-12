@@ -17138,7 +17138,7 @@
           "agent": "gpt-6.1-sol-xhigh",
           "score": 800,
           "grade": "Gold",
-          "runs_count": 1,
+          "runs_count": 2,
           "categories": {
             "SEC": 232,
             "ARCH": 142,
@@ -17168,6 +17168,18 @@
                 "cache": 6995200,
                 "total": 7405519
               }
+            },
+            {
+              "run": 2,
+              "total": 830,
+              "cost_usd": null,
+              "wall_minutes": 49.0,
+              "tokens": {
+                "input": 217725,
+                "output": 77782,
+                "cache": 4814592,
+                "total": 5110099
+              }
             }
           ],
           "model": {
@@ -17177,8 +17189,8 @@
             "reasoning_effort": "xhigh"
           },
           "comment": {
-            "en": "On a single run: security 232 of 250, bugs 147 of 150, performance 105 of 150, architecture 142 of 200 and 29 of 100 in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 31 of the 36 planted flaws and reported 22 of them, with one false positive; the report was rated 45 of 50, weakest on prioritisation, because inside each severity band the order follows the work and does not weigh effort. The session took 50 minutes, without the 4 minutes the operator took between the two stages, and used about 7.4 million tokens; Codex keeps no cost. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 232 de 250, bugs 147 de 150, desempenho 105 de 150, arquitetura 142 de 200 e 29 de 100 em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 31 das 36 falhas plantadas e reportou 22 delas, com um falso positivo; o relatório teve 45 de 50, com a nota mais baixa em priorização, porque dentro de cada faixa de gravidade a ordem segue o trabalho e não pesa o esforço. A sessão levou 50 minutos, sem os 4 minutos que o operador levou entre as duas etapas, e usou cerca de 7,4 milhões de tokens; o Codex não registra custo. Uma execução de três: não é oficial e pode mudar."
+            "en": "Two runs (800 and 830), so the published score is the lower, 800. Security 232, architecture 142, bugs 147 and performance 105 were the same in both; the second run took clean code from 29 to 64 of 100 and its report from 45 to 40 of 50, weakest on prioritisation. It fixed 33 of the 36 planted flaws and reported 22, with no false positive (the first run fixed 31 and had one), and kept the contract untouched (compatibility 100) with no penalty. The sessions took 50 and 49 minutes, without the 4 and 3 minutes the operator took between the two stages, and used about 7.4 and 5.1 million tokens; Codex keeps no cost. The second run was judged under the written rule that one finding is credited to one row only, which left five flaws named inside two bundled findings as fixes without a report. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções (800 e 830), então a nota publicada é a menor, 800. Segurança 232, arquitetura 142, bugs 147 e desempenho 105 foram iguais nas duas; a segunda subiu o código limpo de 29 para 64 de 100 e o relatório caiu de 45 para 40 de 50, com a nota mais baixa em priorização. Corrigiu 33 das 36 falhas plantadas e reportou 22, sem falso positivo (a primeira corrigiu 31 e teve um), e manteve o contrato intacto (compatibilidade 100), sem penalidade. As sessões levaram 50 e 49 minutos, sem os 4 e 3 minutos que o operador levou entre as duas etapas, e usaram cerca de 7,4 e 5,1 milhões de tokens; o Codex não registra custo. A segunda foi julgada pela regra escrita de que um achado vale uma linha só, o que deixou cinco falhas citadas dentro de dois achados agrupados como correções sem relato. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {
