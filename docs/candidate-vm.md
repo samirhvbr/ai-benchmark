@@ -180,6 +180,17 @@ client profile of §6. It changes nothing. Run it after a restore, and before ta
   `.jsonl` in another layout, and the verdict is expected to be inconclusive (not tested on a real file). For those clients keep the evidence by hand (a copy of the folder at the
   end of the first stage and the client's own export of the session); the conformity of the run is then inconclusive, which the protocol already allows.
 
+**Closing a run.** The restore of §7 destroys the VM's copy of the run, so it comes last:
+
+1. The run is over: the client was closed with `/exit` (Claude Code writes the session's cost and time to `~/.claude.json` only then) and no process of the runner
+   is left.
+2. Bring the delivery (without build output) and every transcript, the main session's and the subagents', to the evaluator workstation.
+3. Compare the SHA-256 of every file brought with the VM's copy. Restore nothing until they are identical.
+4. Power off and restore the clean snapshot **by its name**. Never restore "the latest": a snapshot taken after a run would bring that run's leftovers back.
+5. Start the VM and run the check of §8.
+
+The key is applied on the workstation, after step 3; nothing of the evaluator's side goes to the VM.
+
 ## 10. What went wrong, and the fix
 
 | What happened | Fix |

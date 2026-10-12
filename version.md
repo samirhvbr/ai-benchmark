@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.176`
+**Versão atual:** `0.2.177`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.177` — 2026-10-12 — The candidate VM guide says how a run is closed: collect, compare with the VM, then restore the clean snapshot by name
+
+- `docs/candidate-vm.md` §9 gains *Closing a run*: the run is over (`/exit`, no runner process), the delivery and every transcript are
+  brought to the workstation and compared file by file (SHA-256) with the VM's copy, and only then is the VM powered off and
+  restored to its clean snapshot, named, never "the latest", which can be a snapshot taken after a run. The key is applied on the
+  workstation after the comparison. The order exists because the restore destroys the only other copy of the run.
 
 ### `0.2.176` — 2026-10-12 — System A gets its 70 characterization tests and its manifest
 
