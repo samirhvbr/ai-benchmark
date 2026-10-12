@@ -10,7 +10,8 @@ that same clean code produce its two instances:
 | `LEB-D-<level>-<letter>` | maintenance flaws: architecture, bugs, performance, code quality; no vulnerability | `instances/LEB-D-<level>-<letter>/` |
 | `LEB-S-<level>-<letter>` | vulnerabilities from [`taxonomy/SEC.md`](../taxonomy/SEC.md); no maintenance flaw | `instances/LEB-S-<level>-<letter>/` |
 
-The same letter is the same system. Everything here is public from the first commit, and each instance, answer key included,
+The same letter is the same system, and both instance folders exist from the day the system is specified, so that every
+step of their authoring is in the history. Everything here is public from the first commit, and each instance, answer key included,
 is committed before its first run ([`matrix/MATRIX.md §4`](../matrix/MATRIX.md), items 1 and 2).
 
 | System | Domain | Stack | Status |

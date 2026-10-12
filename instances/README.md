@@ -65,6 +65,8 @@ Segue o pipeline do [`PROTOCOL.md §5`](../protocol/PROTOCOL.md):
 | --- | --- | --- | ---: | ---: | --- |
 | [LEB-100-A](LEB-100-A/) | 100 (~300 linhas) | PHP 8 + mysqli | 13 | 2 | 🟢 referência |
 | LEB-200-A | 200 (~1.000 linhas) | — | — | — | ⬜ planejada |
-| LEB-300-A | 300 (~3.000 linhas) | — | — | — | 🟡 exploratory pilot (only the aggregate is published) |
+| [LEB-300-A](LEB-300-A/) | 300 (~3,000 lines) | Java 21 + Maven + PostgreSQL | 36 | 5 | 🟡 exploratory pilot (only the aggregate of its runs is published) |
+| [LEB-D-300-A](LEB-D-300-A/) | 300 | Java 21 + Maven + PostgreSQL | — | — | ⬜ in authoring: next series, Default track of system A |
+| [LEB-S-300-A](LEB-S-300-A/) | 300 | Java 21 + Maven + PostgreSQL | — | — | ⬜ in authoring: next series, Security track of system A |
 
 > `LEB-100-A` é a **instância de referência**: didática, cabe em turno único (modo S), exercita 5 das 6 categorias pontuáveis + as penalidades de compatibilidade. Use-a como modelo para as demais.

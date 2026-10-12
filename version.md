@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.177`
+**Versão atual:** `0.2.178`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.178` — 2026-10-12 — The two instances of system A have their folders in instances/ from now on, before any of their files exist
+
+- `instances/LEB-D-300-A/README.md` and `instances/LEB-S-300-A/README.md`: what each instance is, the system it is built from, its
+  status (in authoring: no package, no key, no run) and the layout it will have. By the owner's rule, an instance is in this
+  folder while it is being thought, and every file lands here as it is written; the folders hold no `public/code/` yet, so the
+  harness does not list them as instances.
+- `instances/README.md`: the index lists both, and its LEB-300-A row now links the published instance with its stack and counts.
+- `systems/README.md` says both folders exist from the day a system is specified.
 
 ### `0.2.177` — 2026-10-12 — The candidate VM guide says how a run is closed: collect, compare with the VM, then restore the clean snapshot by name
 
