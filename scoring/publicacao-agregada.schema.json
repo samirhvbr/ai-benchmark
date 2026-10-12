@@ -117,9 +117,41 @@
               "null"
             ]
           },
+          "tokens": {
+            "description": "The client's own token counts of the run: input without the part served from the cache, output with the reasoning tokens, cache read plus written, and the total. Null when the run record lacks them.",
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "input",
+              "output",
+              "cache",
+              "total"
+            ],
+            "properties": {
+              "input": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "output": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "cache": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          },
           "runs": {
             "type": "array",
-            "description": "One line per run of the agent, by run number: its total, its cost and its session time. The same numbers the score is the lower median of.",
+            "description": "One line per run of the agent, by run number: its total, its cost, its session time and its tokens. The same numbers the score is the lower median of.",
             "minItems": 1,
             "maxItems": 3,
             "items": {
@@ -149,6 +181,38 @@
                     "number",
                     "null"
                   ]
+                },
+                "tokens": {
+                  "description": "The client's own token counts of the run: input without the part served from the cache, output with the reasoning tokens, cache read plus written, and the total. Null when the run record lacks them.",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "required": [
+                    "input",
+                    "output",
+                    "cache",
+                    "total"
+                  ],
+                  "properties": {
+                    "input": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "output": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "cache": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false

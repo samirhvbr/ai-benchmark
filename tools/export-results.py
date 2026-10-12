@@ -425,6 +425,14 @@ def wall_minutes(meta):
     return round(minutes - (meta.get("operator_wait_minutes") or 0), 1)
 
 
+def tokens_of(meta):
+    """The client's own token counts of the run, as run.json's cost_time keeps them (SCORING §9.3): input without the part served from the cache, output
+    with the reasoning tokens, cache read plus written, and their total. None when the record lacks any of the four: a partial figure is not published."""
+    tokens = (meta.get("cost_time") or {}).get("tokens") or {}
+    keys = ("input", "output", "cache", "total")
+    return {k: tokens[k] for k in keys} if all(tokens.get(k) is not None for k in keys) else None
+
+
 def run_summary(r):
     card, verdict, mech = r["card"], r["verdict"], r["mech"]
     cats = card["categories"]
@@ -608,7 +616,7 @@ def discover_private_runs(instance, root):
 
 def build_aggregate(inst, matrix, runs, root, edition=None):
     """The one thing published for an active instance: per agent, the score of the representative run (PROTOCOL §4), its grade and
-    its category scores, the cost and the time. Nothing about any flaw."""
+    its category scores, the cost, the time and the tokens. Nothing about any flaw."""
     if not runs:
         sys.exit("[export] no evaluated run of %s under %s" % (inst.name, root))
     first = runs[0]
@@ -639,9 +647,9 @@ def build_aggregate(inst, matrix, runs, root, edition=None):
         entry = {"agent": agent, "score": score, "grade": rep["card"]["grade"], "runs_count": len(agent_runs),
                  "categories": {c: cats[c]["score"] for c in CATEGORIES},
                  "cost_usd": (rep["meta"].get("cost_time") or {}).get("usd_estimate"),
-                 "wall_minutes": wall_minutes(rep["meta"]),
+                 "wall_minutes": wall_minutes(rep["meta"]), "tokens": tokens_of(rep["meta"]),
                  "runs": [{"run": x["run"], "total": x["card"]["total"], "cost_usd": (x["meta"].get("cost_time") or {}).get("usd_estimate"),
-                           "wall_minutes": wall_minutes(x["meta"])} for x in agent_runs]}
+                           "wall_minutes": wall_minutes(x["meta"]), "tokens": tokens_of(x["meta"])} for x in agent_runs]}
         # Who the agent is: the sites find the name of a model in the LEB-100 runs, which a new agent may not have yet.
         block = rep["meta"].get("model") or {}
         entry["model"] = {k: block[k] for k in ("name", "id", "provider", "reasoning_effort", "client_mode") if block.get(k)}

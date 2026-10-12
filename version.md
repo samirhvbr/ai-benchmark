@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.148`
+**Versão atual:** `0.2.149`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.149` — 2026-10-12 — The LEB-300-A aggregate carries the tokens of each agent and of each run
+
+- `tools/export-results.py` writes `tokens` (`input`, `output`, `cache`, `total`) on every agent of `results/2026/LEB-300-A/aggregate.json` and on every line of its `runs`, next to the cost and the session time it already had. The agent's figures are those of the run its score is, as its cost and time already were. They are the client's own counts, as `run.json` keeps them (SCORING §9.3): `input` is what was not served from the cache, `output` includes the reasoning tokens, `cache` is what was read from or written to it, and `total` is their sum. A run whose record lacks any of the four publishes `null`, never a partial figure.
+- `scoring/publicacao-agregada.schema.json` gains the field, on the agent and on the run line; nothing else in the schema moves. All twenty-five agents and their forty-one runs have the four figures, so the file grows by that field only: no score, grade, category, cost or time changes, and `results/README.md` is the same.
+- The LEB-100 runs already published their `cost_time.tokens` in `results/results.json` (all ninety-two have them); this release changes no LEB-100 file. The two sites show them from their next sync.
+- One new test; 142 in all. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, weight, penalty or public scoring rule changes.
 
 ### `0.2.148` — 2026-10-12 — The LEB-300-A aggregate adds GPT-6.1-sol at high effort, Claude Sonnet 5.5 at medium effort and GLM-5.3-Flash at high effort
 

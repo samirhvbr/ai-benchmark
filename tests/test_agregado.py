@@ -231,6 +231,23 @@ class WrittenReading(ExportCase):
         self.assertEqual(by["agent-two"]["runs"][0]["wall_minutes"], 60.0)   # no wait recorded: nothing is taken out
         self.assertIsNone(by["agent-one"]["runs"][1]["wall_minutes"])        # a run with no session record keeps none
 
+    def test_the_tokens_of_each_run_travel_with_its_cost_and_a_partial_record_publishes_none(self):
+        self.build()
+        full = {"input": 1200, "output": 34000, "cache": 3400000, "total": 3435200}
+        for agent, tokens in (("agent-one", full), ("agent-two", {"input": 5, "output": 6})):
+            path = os.path.join(self.priv, "LEB-TEST-A", agent, "run-1", "run.json")
+            meta = read_json(path)
+            meta["cost_time"] = {**(meta.get("cost_time") or {}), "tokens": tokens}
+            write_json(path, meta)
+        self.assertEqual(self.export("--publish-aggregate", "LEB-TEST-A")[0], 0)
+        agg = read_json(self.results("2026", "LEB-TEST-A", "aggregate.json"))
+        by = {e["agent"]: e for e in agg["agents"]}
+        self.assertEqual(by["agent-one"]["runs"][0]["tokens"], full)
+        self.assertEqual(by["agent-one"]["tokens"], full)                    # the agent shows the tokens of the run its score is
+        self.assertIsNone(by["agent-one"]["runs"][1]["tokens"])             # a run whose record has none keeps none
+        self.assertIsNone(by["agent-two"]["tokens"])                        # input and output without cache and total: no partial figure
+        self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
+
     def test_a_reading_travels_in_the_aggregate_in_both_languages_and_only_for_its_agent(self):
         code, err, _ = self.publish_with({"agent-one": {"en": "Strong on security, weak on architecture.", "pt_BR": "Forte em segurança, fraco em arquitetura."}})
         self.assertEqual(code, 0, err)
