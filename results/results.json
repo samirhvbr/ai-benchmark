@@ -16841,25 +16841,25 @@
       "agents": [
         {
           "agent": "claude-sonnet-5.5-max",
-          "score": 932,
-          "grade": "Platinum",
-          "runs_count": 1,
+          "score": 864,
+          "grade": "Gold",
+          "runs_count": 2,
           "categories": {
             "SEC": 250,
-            "ARCH": 178,
-            "BUG": 134,
-            "PERF": 140,
-            "CLN": 89,
-            "COMP": 100,
-            "EXPL": 41
+            "ARCH": 156,
+            "BUG": 139,
+            "PERF": 144,
+            "CLN": 57,
+            "COMP": 75,
+            "EXPL": 43
           },
-          "cost_usd": 10.75,
-          "wall_minutes": 92.5,
+          "cost_usd": 81.94,
+          "wall_minutes": 208.5,
           "tokens": {
-            "input": 1390,
-            "output": 550255,
-            "cache": 15124592,
-            "total": 15676237
+            "input": 239393,
+            "output": 1517144,
+            "cache": 237046492,
+            "total": 238803029
           },
           "runs": [
             {
@@ -16873,6 +16873,18 @@
                 "cache": 15124592,
                 "total": 15676237
               }
+            },
+            {
+              "run": 2,
+              "total": 864,
+              "cost_usd": 81.94,
+              "wall_minutes": 208.5,
+              "tokens": {
+                "input": 239393,
+                "output": 1517144,
+                "cache": 237046492,
+                "total": 238803029
+              }
             }
           ],
           "model": {
@@ -16882,8 +16894,8 @@
             "reasoning_effort": "max"
           },
           "comment": {
-            "en": "On a single run: security 250 of 250, architecture 178 of 200, bugs 134 of 150, performance 140 of 150 and clean code 89 of 100, with the contract untouched (compatibility 100) and no penalty. It is the highest score of any run so far, above the 911 of the same model at xhigh effort, whose published score is 860 over two runs. It fixed 34 of the 36 planted flaws and reported 31, with one false positive, and its report was rated 41 of 50. One check of the verifier did not register a fix that reads correct; it counts as not fixed, which costs 8 points. The session took 93 minutes, without the 16 minutes the operator took between the two stages, for US$ 10.75. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 250 de 250, arquitetura 178 de 200, bugs 134 de 150, desempenho 140 de 150 e código limpo 89 de 100, com o contrato intacto (compatibilidade 100) e sem penalidade. É a maior nota de qualquer execução até agora, acima dos 911 do mesmo modelo em xhigh, cuja nota publicada é 860 em duas execuções. Corrigiu 34 das 36 falhas plantadas e reportou 31, com um falso positivo, e o relatório teve 41 de 50. Uma verificação do avaliador não registrou uma correção que parece certa; ela conta como não corrigida, o que custa 8 pontos. A sessão levou 93 minutos, sem os 16 minutos que o operador levou entre as duas etapas, por US$ 10,75. Uma execução de três: não é oficial e pode mudar."
+            "en": "Two runs (932 and 864), so the published score is the lower one, 864; with two of three runs it is not official and could move. Security was 250 of 250 in both. The second run lost ground in architecture (156 of 200, against 178), clean code (57 of 100, against 89) and compatibility (75, against 100): it added a login lockout that answers 429, a status the manifest does not list, even to the right password (25 points). It fixed 31 of the 36 planted flaws by the verifier's count (34 in the first) and reported 31, with no false positive; its report was rated 43 of 50. The same check of the verifier did not register a fix that reads correct in both runs (8 points each). Unlike the first run, the second used four read-only reviewer subagents on Claude Opus 5.5, US$ 23.69 of its cost. The sessions took 93 and 209 minutes, without the 16 and 8 minutes the operator took between the two stages, for US$ 10.75 and US$ 81.94.",
+            "pt_BR": "Duas execuções (932 e 864), então a nota publicada é a menor, 864; com duas de três execuções ela não é oficial e pode mudar. A segurança foi 250 de 250 nas duas. A segunda perdeu em arquitetura (156 de 200, contra 178), código limpo (57 de 100, contra 89) e compatibilidade (75, contra 100): acrescentou um bloqueio de login que responde 429, um status que o manifesto não lista, até para a senha certa (25 pontos). Corrigiu 31 das 36 falhas plantadas pela contagem do avaliador (34 na primeira) e reportou 31, sem falso positivo; o relatório teve 43 de 50. A mesma verificação do avaliador deixou de registrar uma correção que parece certa nas duas execuções (8 pontos em cada). Diferente da primeira, a segunda usou quatro subagentes revisores só de leitura no Claude Opus 5.5, US$ 23,69 do custo. As sessões levaram 93 e 209 minutos, sem os 16 e 8 minutos que o operador levou entre as duas etapas, por US$ 10,75 e US$ 81,94."
           }
         },
         {

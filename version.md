@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.162`
+**Versão atual:** `0.2.163`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.163` — 2026-10-12 — The LEB-300-A aggregate adds a second run of Claude Sonnet 5.5 at max effort, which lowers its published score from 932 to 864
+
+- `results/2026/LEB-300-A/aggregate.json`: Claude Sonnet 5.5 at max goes from one run (932, Platinum) to two (932 and 864). With fewer than three runs the published score is the lowest, so the agent moves from 932 (Platinum) to 864 (Gold). It stays 1st, 4 points ahead of Claude Sonnet 5.5 at xhigh (860), and it is still not official (2/3, PROTOCOL §4). The 932 of run 1 remains the highest single run of the instance, but no agent shows Platinum for now. No other agent changed; the categories, cost, session time and tokens shown for the agent are those of the run whose score is published (run 2).
+- **Run 2** (Claude Code, two of three): 864 (Gold). It fixed 31 flaws by the verifier's count and reported 31, with no false positive, 39 real findings outside the matrix and no penalty; its report was rated 43 of 50. It took 25 compatibility points (COMP-008) for a login lockout that answers 429, a status outside the manifest's list, also to the right password (889 without it); each of the seven earlier runs with the same behaviour had been charged the same way (checked by searching the deliveries for the status against the verdicts). The agent used 208.5 minutes of session (216.9 minutes less the 8.4 that the operator took between the two stages), US$ 81.94 and 238.8 million tokens, against 92.5 minutes, US$ 10.75 and 15.7 million tokens in run 1. Mechanical evaluation: 36 probes, characterization 70 of 70.
+- **Subagents on another model.** Run 1 used none; in run 2 the agent itself launched four read-only reviewers with the client's Agent tool (`model: opus`), two in each stage. Each answered only with Claude Opus 5.5 and handed its report back to the main session, which answered only with Claude Sonnet 5.5 (882 messages). The client's totals above include them: US$ 58.25 for Sonnet 5.5 and US$ 23.69 for Opus 5.5. The only other Claude runs of the instance with subagents (Claude Haiku 4.5 run 2 and Claude Haiku 5.5 xhigh run 3) had them on the main session's own model, so this is the only Claude run whose subagents answered with another one. The protocol of this series records the subagents and the models observed and does not forbid them; the rule that only the requested model may answer belongs to the proposed design of the next series (`docs/new-series-design.md`). The run stands as the agent's, with the fact in the run record and in the agent's reading.
+- **Two checks of the verifier that miss.** The check of a low-severity flaw (5 points) that reads the cause of a failure from the standard streams missed a fix again: the delivery logs the exception with its cause through `System.Logger`, which that check does not see (872 if counted; see 0.2.159). And the check of a low-severity clean-code flaw read a prose comment of the delivery, a sentence that ends with a semicolon, as code left behind, although the code it was meant to find was deleted (878 if counted, 886 with the other check). The mechanical result prevails and no check was changed here; the owner decides whether to change them and to repeat the mechanical evaluation of the runs they affect.
+- Judged by two fresh Opus 5.5 subagents with the standing prompts, including the paragraphs on bundled findings and on the login lockout; the lockout was charged in the first pass, and no finding was credited to more than one row (checked after the verdict).
+- The reading of the agent is rewritten for two runs. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.162` — 2026-10-12 — The next-series design records the pin probed on a bench VM: every response came from the pinned model
 

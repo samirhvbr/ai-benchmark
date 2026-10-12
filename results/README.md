@@ -78,7 +78,7 @@ This instance is **active**. While it is, only the totals below are published: n
 
 | # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
-| 1 | `claude-sonnet-5.5-max` | **932** | Platinum | 250 | 178 | 134 | 140 | 89 | 100 | 41 | 1/3 |
+| 1 | `claude-sonnet-5.5-max` | **864** | Gold | 250 | 156 | 139 | 144 | 57 | 75 | 43 | 2/3 (932 · 864) |
 | 2 | `claude-sonnet-5.5-xhigh` | **860** | Gold | 250 | 156 | 139 | 140 | 57 | 75 | 43 | 2/3 (860 · 911) |
 | 3 | `claude-sonnet-5.5-high` | **855** | Gold | 243 | 153 | 145 | 115 | 79 | 75 | 45 | 3/3 (897 · 763 · 855) |
 | 4 | `claude-opus-5.5-high` | **848** | Gold | 232 | 153 | 137 | 134 | 71 | 75 | 46 | 2/3 (848 · 866) |
