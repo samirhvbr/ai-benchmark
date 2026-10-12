@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.157`
+**Versão atual:** `0.2.158`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.158` — 2026-10-12 — The owner confirms the rule on stops: only a stop that ends the work blocks an attempt
+
+- `docs/new-series-design.md` (still `PROPOSED`): the owner confirmed the refinement that 0.2.157 proposed. The decision table of
+  §2 now reads that a safeguard stop after which the requested model does no further work ends the attempt as *blocked*, and that
+  a stop it recovers from on its own, or one inside a subagent, is counted in the stop rate while the delivery is evaluated. §6.2
+  records the confirmation and rewords *completed* and *blocked* to match; §13 drops the question.
+- `tools/auditar-tentativa.py` already applies this rule (0.2.155), so no tool or test changes. No protocol text or published
+  result changes.
 
 ### `0.2.157` — 2026-10-12 — The next-series design records what step 1 found, and proposes a refinement on stops the model recovers from
 

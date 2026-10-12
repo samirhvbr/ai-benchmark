@@ -53,7 +53,7 @@ Taken by the owner on 2026-10-12.
 | --- | --- |
 | Tracks | **LEB Default** and **LEB Security**, each with its own package, session, budget and score. The two scores are shown side by side and **never added**. |
 | Systems | Several reference systems. Each one yields **both** tracks: two planting profiles of the same clean code. |
-| Model per run | Strict: the requested model only, **pinned in the client** so that no substitute can answer, in the main conversation or in a subagent. A safeguard stop ends the attempt as *blocked*. |
+| Model per run | Strict: the requested model only, **pinned in the client** so that no substitute can answer, in the main conversation or in a subagent. A safeguard stop after which the requested model does no further work ends the attempt as *blocked*; a stop it recovers from on its own, or one inside a subagent, is counted in the stop rate and the delivery is evaluated (§6.2; the second sentence refined by the owner the same day). |
 | Fairness | The same rule for every agent: no exception per vendor or model. A model that cannot finish without a substitute shows it in its completion rate. |
 | Repetitions | A **fixed** number of runs per case (5), all counted. |
 | Size | Level 300, with some level 400 cases. |
@@ -164,8 +164,8 @@ Every attempt ends in exactly one of these, and every one is published:
 
 | Outcome | Meaning |
 | --- | --- |
-| completed | the delivery exists and was written by the requested model (and the client's own auxiliary model, if allowed) |
-| blocked | a safeguard ended a request and no substitute ran |
+| completed | the model ended the session by itself, and everything in it was written by the requested model (and the client's own auxiliary model, if allowed); stops it recovered from are counted, not fatal |
+| blocked | a safeguard stop in the main conversation ended the work: the requested model did nothing more on its own, and no substitute ran |
 | switched | another model answered; with the pin this should be impossible, so it is investigated as a lab defect |
 | budget exhausted | the declared budget ran out before the delivery |
 | lab failure | the environment or the tooling broke, not the agent |
@@ -179,14 +179,14 @@ The audit (§7) decides the outcome from the transcripts, with the lab's word fo
 attributed (no response, a session cut with no reason from the lab, work of a kind the audit does not know) it says
 *inconclusive*, and a person files one of the outcomes above.
 
-**Proposed refinement, for the owner to confirm: a stop the model recovers from on its own.** The transcripts show that after a
-stopped response the client retries once on the same model, with a note. With the pin, nothing else can answer, so the retry is
-the requested model's own work. The audit therefore files an attempt as *blocked* only when a stop in the main conversation
-leaves the requested model doing no further work (no tool call before the session ends or the operator writes again). A stop
-it recovers from, and a stop inside a subagent, are counted in the stop rate and published with it, and the delivery is
-evaluated. The literal rule of §2, "a safeguard stop ends the attempt as blocked", would also void those deliveries, written
-by the requested model alone; stops in subagents are frequent (17 in one LEB-100-A run, 5 of them recovered within the
-subagent).
+**A stop the model recovers from on its own** (confirmed by the owner on 2026-10-12, refining the first wording of §2). The
+transcripts show that after a stopped response the client retries once on the same model, with a note. With the pin, nothing
+else can answer, so the retry is the requested model's own work. An attempt is therefore *blocked* only when a stop in the main
+conversation leaves the requested model doing no further work (no tool call before the session ends or the operator writes
+again). A stop it recovers from, and a stop inside a subagent, are counted in the stop rate and published with it, and the
+delivery is evaluated. The first wording, "a safeguard stop ends the attempt as blocked", would also have voided those
+deliveries, written by the requested model alone; stops in subagents are frequent (17 in one LEB-100-A run, 5 of them recovered
+within the subagent).
 
 ### 6.3 Repetitions
 
@@ -283,7 +283,6 @@ the mode does not change the agent's behavior in other ways.
 - Names and ids. Proposal: `LEB-D-<level>-<letter>` and `LEB-S-<level>-<letter>`.
 - The stacks of the reference systems: each one adds to the toolchain and the offline caches of the bench VMs.
 - Whether the client's auxiliary model stays allowed, and whether `exact` matching admits a dated id: the lab probe decides.
-- The refinement of §6.2 on stops the model recovers from on its own.
 - Interactive or non-interactive automation.
 - Whether, and how, the partial state of a blocked attempt is published.
 - The errata rule in detail.
