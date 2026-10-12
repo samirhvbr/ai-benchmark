@@ -285,6 +285,31 @@ class Audit(unittest.TestCase):
         self.assertEqual((code, rep["outcome"]), (2, "inconclusive"))
         self.assertIn("iteration advisor_message", self.findings(rep, "inconclusive")[0])
 
+    def test_a_model_the_managed_settings_restrict_is_an_operator_error(self):
+        # The shape the client wrote on a bench VM under the candidate profile, asked for --model claude-opus-4-8.
+        warning = [{"type": "system", "subtype": "informational", "level": "warning", "isMeta": False, "timestamp": at(0, 50),
+                    "content": 'Model "claude-opus-4-8" is restricted by your organization\'s settings. Using claude-fable-5-1 instead.'}]
+        code, rep, _ = self.audit(self.session(warning + clean()))
+        self.assertEqual((code, rep["outcome"]), (1, "operator error"))
+        self.assertEqual([(x["asked"], x["used"]) for x in rep["transcripts"][0]["restrictions"]], [("claude-opus-4-8", REQ)])
+        self.assertIn('asked for "claude-opus-4-8"', self.findings(rep, "operator error")[0])
+        self.assertFalse(self.findings(rep, "switched"), "the requested model answered")
+
+    def test_a_subagent_type_comes_from_its_meta_file(self):
+        sub = user(at(2), "Count the files.") + response("s1", at(2, 10), stop="end_turn", tools=0)
+        path = self.session(clean(), {"agent-a1.jsonl": sub})
+        with open(os.path.join(self.project, SID, "subagents", "agent-a1.meta.json"), "w", encoding="utf-8") as f:
+            json.dump({"agentType": "Explore", "description": "Count files", "spawnDepth": 1}, f)
+        code, rep, _ = self.audit(path)
+        self.assertEqual((code, rep["transcripts"][1]["agent_type"]), (0, "Explore"))
+        self.assertIn("subagents  1 [Explore 1]", run_py(TOOL, path, "--requested", REQ).stdout)
+
+    def test_a_session_without_turn_records_reports_its_span(self):
+        events = start() + response("m1", at(2)) + tool_result(at(2, 5)) + response("m2", at(9), stop="end_turn", tools=0)
+        code, rep, _ = self.audit(self.session(events))
+        self.assertEqual((code, rep["turns"], rep["span_seconds"]), (0, 0, 480.0))
+        self.assertIn("8.0 min after the first message; no turn records", run_py(TOOL, self.session(events), "--requested", REQ).stdout)
+
     def test_a_folder_must_hold_exactly_one_attempt(self):
         self.session(clean())
         self.session(command(at(0), "login", "Login successful"), sid="99999999-0000-0000-0000-000000000000")

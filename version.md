@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.159`
+**Versão atual:** `0.2.160`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.160` — 2026-10-12 — The audit records a model the client was asked for and its managed settings refused, the type of each subagent, and a session's span
+
+- A probe on a bench VM, under the candidate profile (0.2.156), asked the client for `--model claude-opus-4-8` and for the alias
+  `opus`. The client answered both with the pinned model and no error, and wrote one system warning in the transcript:
+  `Model "claude-opus-4-8" is restricted by your organization's settings. Using claude-fable-5-1 instead.`
+  `tools/auditar-tentativa.py` now reads that warning. In the main conversation it is an *operator error*: the requested model
+  answered, so the work stays attributable, but the launcher or a setting asked for another model, so the procedure was not the
+  declared one. In a subagent it is listed.
+- Each subagent now carries its type (`Explore`, say), read from the `<agent>.meta.json` that the client writes next to its
+  transcript; the text report counts the subagents by type.
+- A non-interactive session (`claude -p`) writes no turn records, so it reported 0 turns and 0 minutes. The report now gives the
+  span from the first message to the end (`span_seconds`), and says when there are no turn records.
+- Three new tests (19 for this tool, 171 in all); both new checks were broken on purpose and a test failed each time. Run on the
+  probe's own transcripts, the session asked for `claude-opus-4-8` comes out *operator error* and the subagent session shows its
+  Explore subagent on the pinned model. No protocol text or published result changes.
 
 ### `0.2.159` — 2026-10-12 — The LEB-300-A aggregate adds a third run of Claude Opus 5.5 at xhigh effort, which makes the agent official
 

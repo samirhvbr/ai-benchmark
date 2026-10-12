@@ -11,14 +11,17 @@ session (the main transcript and the subagent transcripts under <session-id>/sub
 - every safeguard stop (a response that ended with stop_reason "refusal", or that the client's own note says was stopped), with its
   category, the number of responses before it and the tool calls the allowed models made after it on their own, in the same
   transcript and before the operator's next message; every safeguard notice and every model fallback event;
-- the operator's activity (messages, slash commands, interruptions), the API errors the client wrote, and how the session ended.
+- the operator's activity (messages, slash commands, interruptions), the API errors the client wrote, the type of each subagent
+  (from the <agent>.meta.json next to its transcript), and how and when the session ended. A non-interactive session (claude -p)
+  writes no turn records, so its length is the span from the first message to the end.
 
 The outcome is the first of these that applies:
 
   operator error    the procedure was not the declared one: the session started on a model not allowed, or the operator switched to
-                    one; responses at an effort other than the declared one (--effort); a slash command not declared with
-                    --allow-command (one after the last response cannot touch the attempt and is only listed); an interruption;
-                    more operator messages than declared, or a message that differs from the declared text
+                    one; the client was asked for a model its managed settings restrict (it then answers with an allowed one and
+                    says so in the transcript); responses at an effort other than the declared one (--effort); a slash command
+                    not declared with --allow-command (one after the last response cannot touch the attempt and is only listed);
+                    an interruption; more operator messages than declared, or a message that differs from the declared text
   switched          a model outside the allowed set answered, in the main conversation or in a subagent
   lab failure       the session ended on an API error, or the lab stopped the client for a reason of its own (--stopped-by lab)
   blocked           the main conversation hit a safeguard stop and the allowed models made no tool call after the last one
@@ -61,6 +64,9 @@ INTERRUPTION = "[Request interrupted by user"
 # response's own lines can lack stop_reason "refusal", and this note is then the only trace of the stop.
 STOP_NOTE = "Your response above was stopped by a safety classifier"
 KNOWN_BLOCKS = ("text", "thinking", "redacted_thinking", "tool_use")
+# What the client writes when it is asked for a model its managed settings do not allow: it uses an allowed one instead, with no
+# error (seen on a bench VM under the candidate profile, 2026-10-12).
+RESTRICTED = re.compile(r'Model "(?P<asked>[^"]+)" is restricted by your organization.*?Using (?P<used>\S+?) instead', re.S)
 
 
 class Unusable(Exception):
@@ -125,7 +131,7 @@ def first_text(message):
 def parse(path, main):
     """One transcript. Positions are line numbers, so "after" means later in the file."""
     t = {"responses": [], "api_errors": [], "notices": [], "fallbacks": [], "identities": [], "messages": [], "commands": [],
-         "interruptions": [], "turns": [], "versions": set(), "sidechain": False, "last": None}
+         "interruptions": [], "turns": [], "restrictions": [], "versions": set(), "sidechain": False, "last": None}
     by_id = {}
     for n, e in read_events(path):
         kind, ts = e.get("type"), e.get("timestamp")
@@ -168,9 +174,12 @@ def parse(path, main):
         elif kind == "system":
             sub = e.get("subtype") or ""
             content = e.get("content") if isinstance(e.get("content"), str) else ""
+            restricted = RESTRICTED.search(content)
             if sub == "model_refusal_fallback":
                 t["fallbacks"].append({"at": ts, "line": n, "from": e.get("originalModel"), "to": e.get("fallbackModel"),
                                        "scope": e.get("scope"), "category": e.get("apiRefusalCategory")})
+            elif restricted:
+                t["restrictions"].append({"at": ts, "line": n, "asked": restricted.group("asked"), "used": restricted.group("used")})
             elif "refusal" in sub or "safeguard" in content.lower():
                 t["notices"].append({"at": ts, "line": n, "subtype": sub, "text": content[:160]})
             elif sub == "turn_duration":
@@ -247,6 +256,16 @@ def model_table(responses, allow):
         effort = r["effort"] or "unset"
         m["efforts"][effort] = m["efforts"].get(effort, 0) + 1
     return models
+
+
+def agent_type(path):
+    """The subagent's type (Explore, say), from the <agent>.meta.json the client writes next to its transcript, when there is one."""
+    try:
+        with open(os.path.splitext(path)[0] + ".meta.json", encoding="utf-8") as f:
+            meta = json.load(f)
+        return meta.get("agentType") if isinstance(meta, dict) else None
+    except (OSError, ValueError):
+        return None
 
 
 def other_work(responses):
@@ -332,6 +351,11 @@ def audit(session, requested, allow_more=(), messages=(), allow_commands=(), eff
         for level, n in sorted(off.items()):
             find("operator error", "%d of %d responses in the main conversation ran at effort %s; the attempt declares %s"
                  % (n, len(own), level, effort))
+    # A model the launcher or a setting asked for and the managed policy refused: the client answered with an allowed one, so
+    # the work stays attributable, but the procedure was not the declared one.
+    for x in main["restrictions"]:
+        find("operator error", 'the client was asked for "%s", which its managed settings restrict, and used %s instead (%s)'
+             % (x["asked"], x["used"], x["at"]))
 
     # Who answered in the main conversation, and why a model outside the allowed set did.
     transcripts = []
@@ -353,7 +377,8 @@ def audit(session, requested, allow_more=(), messages=(), allow_commands=(), eff
             find("switched", "%s answered %d responses in the main conversation" % (model, m["responses"]))
     main_stops = stops_of(main, allow, start)
     transcripts.append({"path": main_path, "kind": "main", "models": main_models, "stops": main_stops, "notices": main["notices"],
-                        "fallbacks": main["fallbacks"], "api_errors": main["api_errors"], "other_work": other_work(main["responses"])})
+                        "fallbacks": main["fallbacks"], "api_errors": main["api_errors"], "restrictions": main["restrictions"],
+                        "other_work": other_work(main["responses"])})
 
     # Subagents: the client picks their model, so any model outside the allowed set is a switch.
     for p in sub_paths:
@@ -366,8 +391,9 @@ def audit(session, requested, allow_more=(), messages=(), allow_commands=(), eff
                 first = next(r for r in s["responses"] if r["model"] == model)
                 m["cause"] = "after a stop" if any(r["stopped"] and r["line"] < first["line"] for r in s["responses"]) else "unexplained"
                 find("switched", "%s answered %d responses in subagent %s (%s)" % (model, m["responses"], rel, m["cause"]))
-        transcripts.append({"path": rel, "kind": "subagent", "models": models, "stops": stops, "notices": s["notices"],
-                            "fallbacks": s["fallbacks"], "api_errors": s["api_errors"], "other_work": other_work(s["responses"])})
+        transcripts.append({"path": rel, "kind": "subagent", "agent_type": agent_type(p), "models": models, "stops": stops,
+                            "notices": s["notices"], "fallbacks": s["fallbacks"], "api_errors": s["api_errors"],
+                            "restrictions": s["restrictions"], "other_work": other_work(s["responses"])})
     for t in transcripts:
         for kind, n in sorted(t["other_work"].items()):
             find("inconclusive", "%d responses in %s carry %s, which this audit does not know: check whether another model "
@@ -403,6 +429,7 @@ def audit(session, requested, allow_more=(), messages=(), allow_commands=(), eff
         "declared_effort": effort, "stopped_by": stopped_by, "client_versions": sorted(main["versions"]),
         "advisors_configured": sorted({r["advisor"] for r in main["responses"] if r["advisor"]}), "start_model": start_model,
         "first_message_at": start, "ended": {"how": ended_how, "at": ended_at},
+        "span_seconds": seconds_between(start, ended_at) if start and ended_at else None,
         "turns": len(main["turns"]), "agent_seconds": round(sum(x["ms"] for x in main["turns"]) / 1000, 1),
         "operator": {"messages": ops, "declared_messages": max(1, len(declared)), "commands": main["commands"],
                      "interruptions": [x["at"] for x in main["interruptions"]]},
@@ -432,7 +459,8 @@ def render(rep):
         rep["start_model"] or "unknown", rep["first_message_at"] or "never", ", ".join(rep["advisors_configured"]) or "none"))
 
     def block(t, label):
-        w("%-10s %s" % (label, t["path"] if t["kind"] == "subagent" else "conversation"))
+        w("%-10s %s" % (label, "%s (%s)" % (t["path"], t.get("agent_type") or "type unknown") if t["kind"] == "subagent"
+                        else "conversation"))
         for model, m in sorted(t["models"].items(), key=lambda kv: kv[1]["first"]):
             note = "" if m["allowed"] else "   NOT ALLOWED (%s)" % m.get("cause", "")
             efforts = ", ".join("%s %d" % kv for kv in sorted(m["efforts"].items()))
@@ -448,11 +476,18 @@ def render(rep):
             w("   fallback at %s: %s -> %s (%s)" % (x["at"], x["from"], x["to"], x["scope"]))
         for x in t["api_errors"]:
             w("   API error at %s: %s %s" % (x["at"], x["error"], x["text"]))
+        for x in t["restrictions"]:
+            w('   restricted at %s: asked for "%s", used %s' % (x["at"], x["asked"], x["used"]))
 
     block(rep["transcripts"][0], "main")
     subs = rep["transcripts"][1:]
-    odd = [t for t in subs if t["stops"] or t["fallbacks"] or t["api_errors"] or not all(m["allowed"] for m in t["models"].values())]
-    w("subagents  %d (%d with a stop, a model not allowed or an API error)" % (len(subs), len(odd)))
+    odd = [t for t in subs if t["stops"] or t["fallbacks"] or t["api_errors"] or t["restrictions"]
+           or not all(m["allowed"] for m in t["models"].values())]
+    kinds = {}
+    for t in subs:
+        kinds[t.get("agent_type") or "type unknown"] = kinds.get(t.get("agent_type") or "type unknown", 0) + 1
+    w("subagents  %d%s (%d with a stop, a model not allowed, a restricted model or an API error)" % (
+        len(subs), " [%s]" % ", ".join("%s %d" % kv for kv in sorted(kinds.items())) if subs else "", len(odd)))
     for t in odd:
         block(t, "  subagent")
     w("models     " + "; ".join("%s %d responses (%.1f%%)%s" % (m, b["responses"], 100 * b["share"], "" if b["allowed"] else " NOT ALLOWED")
@@ -461,8 +496,10 @@ def render(rep):
         s["stops"], s["stops_main"], s["stops_recovered"], s["fallbacks"], s["api_errors"]))
     how = {"model": "the model ended its turn", "refusal": "on a safeguard stop", "api error": "on an API error",
            "interrupted": "on an interruption", "cut": "cut mid-work", "no response": "with no response"}[rep["ended"]["how"]]
-    w("ended      %s%s (%d turn%s, %.1f min of agent time)" % (how, " at %s" % rep["ended"]["at"] if rep["ended"]["at"] else "",
-                                                               rep["turns"], "" if rep["turns"] == 1 else "s", rep["agent_seconds"] / 60))
+    span = "%.1f min after the first message" % (rep["span_seconds"] / 60) if rep["span_seconds"] is not None else "no span"
+    timing = ("%d turn%s, %.1f min of agent time" % (rep["turns"], "" if rep["turns"] == 1 else "s", rep["agent_seconds"] / 60)
+              if rep["turns"] else "no turn records, as in a non-interactive session")
+    w("ended      %s%s (%s; %s)" % (how, " at %s" % rep["ended"]["at"] if rep["ended"]["at"] else "", span, timing))
     w("OUTCOME    %s" % rep["outcome"].upper())
     for f in rep["findings"]:
         w("   - %s: %s" % (f["outcome"], f["detail"]))
