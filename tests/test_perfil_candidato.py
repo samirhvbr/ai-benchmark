@@ -154,7 +154,7 @@ class Profile(unittest.TestCase):
         user = os.path.join(cfg, "settings.json")
         overrides = [{"model": "claude-opus-5-5"}, {"advisorModel": "opus"}, {"fallbackModel": ["claude-opus-4-8"]},
                      {"hooks": {"Stop": []}}, {"enabledPlugins": {"x@y": True}}, {"env": {"ANTHROPIC_MODEL": "opus"}},
-                     {"effortLevel": "high"}, {"modelSettings": {REQ: {"effortLevel": "high"}}}, "{ broken"]
+                     {"env": {"CLAUDE_CODE_EFFORT_LEVEL": "high"}}, "{ broken"]
         for s in overrides:
             with self.subTest(settings=s):
                 write_json(user, s)
@@ -179,6 +179,22 @@ class Profile(unittest.TestCase):
         code, rep, _ = self.check()
         self.assertEqual(code, 1)
         self.assertEqual(len(self.failed(rep)), 2, "an MCP server, and the work folder not trusted")
+
+    def test_a_user_effort_fails_only_when_nothing_outranks_it(self):
+        write_json(os.path.join(self.home, ".claude", "settings.json"), {"effortLevel": "low", "modelSettings": {REQ: {"effortLevel": "high"}}})
+        code, rep, _ = self.check()
+        self.assertEqual(code, 0, "the managed effortLevel outranks it, as a bench VM showed")
+        self.assertIn("outranked by the managed effortLevel", next(c["detail"] for c in rep["checks"] if "user effort" in c["detail"]))
+        write_json(os.path.join(self.managed, "managed-settings.json"),
+                   json.loads(run("policy", "--requested", REQ, "--effort", "max").stdout))
+        r = run("check", "--requested", REQ, "--effort", "max", "--home", self.home, "--workdir", self.workdir,
+                "--managed-dir", self.managed, "--owner-uid", str(UID))
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("outranked by --effort max at launch", r.stdout)
+        self.with_policy(effortLevel=None)
+        code, rep, _ = self.check()
+        self.assertEqual(code, 1)
+        self.assertTrue(any("outranked by nothing" in d for d in self.failed(rep)))
 
     def test_the_work_folder_must_carry_no_project_customization(self):
         for name in (".mcp.json", "CLAUDE.md", ".claude/settings.local.json"):

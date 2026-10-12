@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.160`
+**Versão atual:** `0.2.161`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.161` — 2026-10-12 — The preflight reports a runner's saved per-model effort that the policy outranks, instead of failing on it
+
+- On the bench VM probe, the runner's settings still held a per-model effort saved by `/effort` (`modelSettings`, xhigh for the
+  requested model) while the policy declared high. `tools/perfil-candidato.py check` failed on it, and every response of the
+  probe ran at high: the managed `effortLevel` outranked it, as the settings reference says it should.
+- `check` now lists such a user effort with what outranks it (the managed `effortLevel`, or `--effort max` at launch) and fails
+  only when nothing does. A `CLAUDE_CODE_EFFORT_LEVEL` in the user's `env` still fails: that variable outranks both.
+- One new test (11 for this tool, 172 in all); the new rule was broken on purpose and the test failed. No protocol text or
+  published result changes.
 
 ### `0.2.160` — 2026-10-12 — The audit records a model the client was asked for and its managed settings refused, the type of each subagent, and a session's span
 

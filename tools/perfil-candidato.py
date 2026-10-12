@@ -224,12 +224,17 @@ def check(requested, allow=(), effort=None, home=None, workdir=None, managed_dir
         bad = [k for k in ("model", "fallbackModel", "advisorModel", "hooks", "outputStyle") if s.get(k)]
         bad += ["enabledPlugins.%s" % k for k, v in (s.get("enabledPlugins") or {}).items() if v]
         bad += ["env.%s" % k for k in (s.get("env") or {}) if MODEL_ENV.match(k) or k == "CLAUDE_CODE_EFFORT_LEVEL"]
-        if effort is not None:
-            if s.get("effortLevel") not in (None, effort):
-                bad.append("effortLevel")
-            bad += ["modelSettings.%s" % k for k, v in (s.get("modelSettings") or {}).items()
-                    if k in wanted and isinstance(v, dict) and v.get("effortLevel") not in (None, effort)]
         add("home", not bad, "user settings %s: %s" % (user, "no override" if not bad else "overrides " + ", ".join(bad)))
+        if effort is not None:
+            # A per-model effort the runner saved with /effort is outranked by the policy's effortLevel and by --effort at
+            # launch (a bench VM showed the managed level winning, 2026-10-12): reported, not failed, unless neither is in force.
+            stale = ["effortLevel=%s" % s["effortLevel"]] if s.get("effortLevel") not in (None, effort) else []
+            stale += ["modelSettings.%s=%s" % (k, v.get("effortLevel")) for k, v in (s.get("modelSettings") or {}).items()
+                      if k in wanted and isinstance(v, dict) and v.get("effortLevel") not in (None, effort)]
+            outranked = effort == "max" or merged.get("effortLevel") == effort
+            if stale:
+                add("home", outranked, "user effort %s, outranked by %s" % (", ".join(stale), "--effort max at launch" if effort == "max"
+                    else "the managed effortLevel" if outranked else "nothing: the policy sets no effortLevel"))
         present = [n for n in CUSTOM_HOME if os.path.isfile(os.path.join(cfg, n))
                    or (os.path.isdir(os.path.join(cfg, n)) and os.listdir(os.path.join(cfg, n)))]
         add("home", not present, "customizations in %s: %s" % (cfg, ", ".join(present) or "none"))
