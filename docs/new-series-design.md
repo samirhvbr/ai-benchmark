@@ -1,7 +1,8 @@
 # The next LEB series: two tracks — design
 
-> **Status: `PROPOSED`.** The design was decided by the owner on 2026-10-12, and it is not normative. Step 1 of §12 has its two
-> tools, the audit (`tools/auditar-tentativa.py`) and the profile (`tools/perfil-candidato.py`); nothing else of it is built.
+> **Status: `PROPOSED`.** The design was decided by the owner on 2026-10-12, and it is not normative. Step 1 of §12 is done: the
+> audit (`tools/auditar-tentativa.py`), the profile with its preflight (`tools/perfil-candidato.py`), the pin probed on a bench
+> VM and the unattended run. The steps after it are not built.
 > It changes nothing in LEB-100-A or in the LEB-300-A pilot: their results stay as published, as the *full LEB* series. The
 > normative texts of the new series (spec, protocol, scoring, levels) are written after the pilot of §12 has validated the
 > process, and they replace nothing of the full LEB's.
@@ -131,7 +132,11 @@ A **case** is one system × one track × one agent configuration. It runs 5 time
 ### 6.1 Candidate profile
 
 - **Client at its factory default**, with the account's own content off (synced skills, connectors, plugins), the Artifact tool
-  off, the work folder trusted and the tools pre-approved.
+  off, and the work folder trusted. The runner's saved defaults (a model or an effort left by `/model` and `/effort`) are
+  cleared before each case: the bench snapshots carried different ones, among them a `sonnet` default and a `[1m]` variant.
+- **Permissions in the client's auto mode**, as in the LEB-300-A pilot's sessions: the client's own classifier approves or
+  refuses each action, and its refusals are counted (`permission_denials` in the `-p` result). No case runs with permissions
+  bypassed.
 - **Model pinned**, by a managed policy that `tools/perfil-candidato.py policy` writes:
   - `availableModels` holds the requested model alone, with `availableModelsMatch: "exact"` (managed only, Claude Code v2.1.283
     or later), `enforceAvailableModels` and `model`. The pin covers the main conversation, subagents, skills and the advisor.
@@ -271,10 +276,15 @@ A case runs unattended:
 Cases are scheduled across the bench VMs. With 5 runs per case, two tracks and several systems, this is what makes the battery
 possible: the constraint is time in the lab, not the price of the runs.
 
-Whether the client runs interactively (a scripted terminal) or non-interactively (`-p`) is decided in the pilot. In
-non-interactive mode a flagged request ends the turn with a refusal (same docs), which fits the strict rule; the pilot checks that
-the mode does not change the agent's behavior in other ways. A non-interactive session writes no turn records: the driver takes
-the duration, the turns and the cost from the JSON result of `-p`, and the audit measures the span of the session.
+The client runs non-interactively (`-p`), the owner's choice of 2026-10-12. In that mode a flagged request ends the turn with a
+refusal (same docs), which fits the rule of §6.2; the pilot checks that the mode does not change the agent's behavior in other
+ways. A non-interactive session writes no turn records: the driver takes the duration, the turns, the cost, the safety stops
+(`safety_stops`) and the permission refusals from the JSON result of `-p`, and the audit measures the span of the session.
+
+**Built** (2026-10-12): the lab's driver, which lives with the lab's private material, runs one case per command through these
+six steps; the bench VMs are restored and started through a hypervisor token limited to those VMs and to power and snapshot
+operations. A ledger refuses to roll back a VM that the lab did not itself leave restored or collected. A smoke case (create
+one file) passed on a bench VM: preflight, a 13-second session on the pinned model, collection, audit *completed*.
 
 ## 11. Statistics
 
@@ -287,8 +297,8 @@ the duration, the turns and the cost from the JSON result of `-p`, and the audit
 ## 12. Order of work
 
 1. **Traceability and lab automation:** the pin, the preflight, the audit, the unattended run. Built: the audit (0.2.155) and
-   the profile with its preflight (0.2.156), and the pin probed on a bench VM (§6.1; 0.2.160 and 0.2.161 carry what it taught
-   the tools). Left: the unattended run.
+   the profile with its preflight (0.2.156), the pin probed on a bench VM (§6.1; 0.2.160 and 0.2.161 carry what it taught the
+   tools), and the unattended run (§10), which passed a smoke case. Step 1 is done.
 2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop.
 3. **Pilot:** 3 reference systems × 2 tracks × a panel of configurations × 5 runs. It validates the process, calibrates the
    weights and measures the variance.
@@ -301,7 +311,6 @@ the duration, the turns and the cost from the JSON result of `-p`, and the audit
 - The context window as part of a configuration: the exact list admits the 1M-context variant, and the transcript does not say
   which one a session ran with. The profile pins the plain id, and the preflight fails on a `model` default (such as a `[1m]`
   one) left in the runner's settings.
-- Interactive or non-interactive automation.
 - Whether, and how, the partial state of a blocked attempt is published.
 - The errata rule in detail.
 - The grade seals with uncertainty.

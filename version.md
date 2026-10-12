@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.163`
+**Versão atual:** `0.2.164`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.164` — 2026-10-12 — The next-series design marks step 1 done: the unattended run passed a smoke case on a bench VM
+
+- `docs/new-series-design.md` (still `PROPOSED`), §10: the lab's driver, kept with the lab's private material, runs one case per
+  command through the six steps: it restores and starts a bench VM through a hypervisor token limited to those VMs and to power
+  and snapshot operations, installs the profile and runs the preflight, runs `claude -p` once under a budget, collects the main
+  and subagent transcripts, the delivery and the `-p` result, audits the session and files the case. A ledger refuses to roll
+  back a VM that the lab did not itself leave restored or collected. A smoke case (create one file) passed on a bench VM:
+  preflight, a 13-second session on the pinned model, collection, audit *completed*. §10 also records the owner's choice of
+  non-interactive runs and the fields of the `-p` result the driver keeps (`safety_stops`, the permission refusals).
+- §6.1 corrects "the tools pre-approved": the cases run in the client's auto permission mode, as the LEB-300-A pilot's sessions
+  did, with the client's refusals counted, and never with permissions bypassed. It adds that the runner's saved model and effort
+  defaults are cleared before each case, because the bench snapshots carried different ones (a `sonnet` default, a `[1m]`
+  variant). The status and §12 mark step 1 done; §13 drops the question on interactive or non-interactive runs. No tool, test
+  or published result changes.
 
 ### `0.2.163` — 2026-10-12 — The LEB-300-A aggregate adds a second run of Claude Sonnet 5.5 at max effort, which lowers its published score from 932 to 864
 
