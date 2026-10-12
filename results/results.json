@@ -17076,6 +17076,77 @@
           }
         },
         {
+          "agent": "claude-opus-5.5-xhigh",
+          "score": 845,
+          "grade": "Gold",
+          "runs_count": 3,
+          "categories": {
+            "SEC": 232,
+            "ARCH": 153,
+            "BUG": 139,
+            "PERF": 131,
+            "CLN": 71,
+            "COMP": 75,
+            "EXPL": 44
+          },
+          "cost_usd": 13.69,
+          "wall_minutes": 74.3,
+          "tokens": {
+            "input": 1384,
+            "output": 340120,
+            "cache": 14941510,
+            "total": 15283014
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 886,
+              "cost_usd": 13.03,
+              "wall_minutes": 81.9,
+              "tokens": {
+                "input": 1104,
+                "output": 247375,
+                "cache": 23558840,
+                "total": 23807319
+              }
+            },
+            {
+              "run": 2,
+              "total": 822,
+              "cost_usd": 6.77,
+              "wall_minutes": 47.8,
+              "tokens": {
+                "input": 1294,
+                "output": 143108,
+                "cache": 8673335,
+                "total": 8817737
+              }
+            },
+            {
+              "run": 3,
+              "total": 845,
+              "cost_usd": 13.69,
+              "wall_minutes": 74.3,
+              "tokens": {
+                "input": 1384,
+                "output": 340120,
+                "cache": 14941510,
+                "total": 15283014
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Opus 5.5",
+            "id": "claude-opus-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "Three runs (886, 822 and 845), so the published score is their median, 845. The shape is the same in all three: 229 to 246 of 250 in security, 144 to 164 of 200 in architecture, 139 to 147 of 150 in bugs, 131 to 144 of 150 in performance and 64 to 71 of 100 in clean code. The first two took the same 30-point compatibility deduction (COMP-003): the idempotency fingerprint now includes the user, so a repeated key from another user of the same company no longer returns the original response, which the manifest requires. The third did not repeat that, but lost 25 points (COMP-008) for a login lockout that answers 429, a status the manifest does not list, even to the right password. It fixed 32 of the 36 planted flaws and reported 28, with no false positive, and its report was rated 44 of 50. The sessions took 82, 48 and 74 minutes for US$ 13.03, US$ 6.77 and US$ 13.69.",
+            "pt_BR": "Três execuções (886, 822 e 845), então a nota publicada é a mediana, 845. O perfil é o mesmo nas três: de 229 a 246 de 250 em segurança, de 144 a 164 de 200 em arquitetura, de 139 a 147 de 150 em bugs, de 131 a 144 de 150 em desempenho e de 64 a 71 de 100 em código limpo. As duas primeiras levaram o mesmo desconto de 30 pontos em compatibilidade (COMP-003): a impressão digital da idempotência passou a incluir o usuário, então a mesma chave repetida por outro usuário da mesma empresa deixa de devolver a resposta original, que o manifesto exige. A terceira não repetiu isso, mas perdeu 25 pontos (COMP-008) por um bloqueio de login que responde 429, um status que o manifesto não lista, até para a senha certa. Corrigiu 32 das 36 falhas plantadas e reportou 28, sem falso positivo, e o relatório teve 44 de 50. As sessões levaram 82, 48 e 74 minutos, por US$ 13,03, US$ 6,77 e US$ 13,69."
+          }
+        },
+        {
           "agent": "claude-fable-5.1-high",
           "score": 836,
           "grade": "Gold",
@@ -17120,65 +17191,6 @@
           "comment": {
             "en": "On a single run: security 215 of 250, architecture 156 of 200, bugs 147 of 150, performance 128 of 150 and 71 of 100 in clean code, with no penalty. It fixed 33 of the 36 planted flaws and its report was rated 44 of 50. It lost 25 compatibility points for one security change that the manifest does not allow: after 10 failed logins for an e-mail, the login answers 429 even to the right password, a status the manifest does not list, and anyone who knows an e-mail can lock that user out. The run cost US$ 15.81 and took 52 minutes of the agent's own time, without the 18 minutes the operator took between the two stages. One run of three: it is not official and could move.",
             "pt_BR": "Com uma execução só: segurança 215 de 250, arquitetura 156 de 200, bugs 147 de 150, desempenho 128 de 150 e 71 de 100 em código limpo, sem penalidade. Corrigiu 33 das 36 falhas plantadas e o relatório teve 44 de 50. Perdeu 25 pontos de compatibilidade por uma mudança de segurança que o manifesto não permite: depois de 10 logins errados para um e-mail, o login responde 429 até para a senha certa, um status que o manifesto não lista, e quem souber um e-mail pode trancar aquele usuário para fora. A execução custou US$ 15,81 e levou 52 minutos de tempo do próprio agente, sem os 18 minutos que o operador levou entre as duas etapas. Uma execução de três: não é oficial e pode mudar."
-          }
-        },
-        {
-          "agent": "claude-opus-5.5-xhigh",
-          "score": 822,
-          "grade": "Gold",
-          "runs_count": 2,
-          "categories": {
-            "SEC": 229,
-            "ARCH": 144,
-            "BUG": 139,
-            "PERF": 134,
-            "CLN": 64,
-            "COMP": 70,
-            "EXPL": 42
-          },
-          "cost_usd": 6.77,
-          "wall_minutes": 47.8,
-          "tokens": {
-            "input": 1294,
-            "output": 143108,
-            "cache": 8673335,
-            "total": 8817737
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 886,
-              "cost_usd": 13.03,
-              "wall_minutes": 81.9,
-              "tokens": {
-                "input": 1104,
-                "output": 247375,
-                "cache": 23558840,
-                "total": 23807319
-              }
-            },
-            {
-              "run": 2,
-              "total": 822,
-              "cost_usd": 6.77,
-              "wall_minutes": 47.8,
-              "tokens": {
-                "input": 1294,
-                "output": 143108,
-                "cache": 8673335,
-                "total": 8817737
-              }
-            }
-          ],
-          "model": {
-            "name": "Claude Opus 5.5",
-            "id": "claude-opus-5-5",
-            "provider": "Anthropic",
-            "reasoning_effort": "xhigh"
-          },
-          "comment": {
-            "en": "Two runs, 64 points apart (886 and 822), with the same shape: 229 to 246 of 250 in security, 144 to 164 of 200 in architecture, 139 to 147 of 150 in bugs, 134 to 144 of 150 in performance and 64 to 71 of 100 in clean code. Both took the same 30-point compatibility deduction (COMP-003): the idempotency fingerprint now includes the user, so a repeated key from another user of the same company no longer returns the original response, which the manifest requires. The second run cost US$ 6.77 in 48 minutes of work, against US$ 13.03 in 82 for the first. Two runs of three: not official, and the published score is the lower of the two.",
-            "pt_BR": "Duas execuções, 64 pontos uma da outra (886 e 822), com o mesmo perfil: de 229 a 246 de 250 em segurança, de 144 a 164 de 200 em arquitetura, de 139 a 147 de 150 em bugs, de 134 a 144 de 150 em desempenho e de 64 a 71 de 100 em código limpo. As duas levaram o mesmo desconto de 30 pontos em compatibilidade (COMP-003): a impressão digital da idempotência passou a incluir o usuário, então a mesma chave repetida por outro usuário da mesma empresa deixa de devolver a resposta original, que o manifesto exige. A segunda execução custou US$ 6,77 em 48 minutos de trabalho, contra US$ 13,03 em 82 da primeira. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
           }
         },
         {

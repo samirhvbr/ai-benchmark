@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.158`
+**Versão atual:** `0.2.159`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.159` — 2026-10-12 — The LEB-300-A aggregate adds a third run of Claude Opus 5.5 at xhigh effort, which makes the agent official
+
+- `results/2026/LEB-300-A/aggregate.json`: Claude Opus 5.5 at xhigh goes from two runs (886 and 822, published 822) to three (886, 822 and 845) and becomes official (3/3, PROTOCOL §4). Its score is the median, 845 (Gold), which puts it 5th instead of 6th: it passes Claude Fable 5.1 at high (836), which moves to 6th; the first four places do not change. No run score changed in the other runs; the categories, cost, session time and tokens shown for the agent are those of the median run (run 3).
+- **Run 3** (Claude Code, one of three): 845 (Gold). It fixed 32 flaws and reported 28, with no false positive, 24 real findings outside the matrix and no penalty; its report was rated 44 of 50. It took 25 compatibility points (COMP-008) for a login lockout that answers 429, a status outside the manifest's list, also to the right password. The agent used 74.3 minutes of session (79.9 minutes less the 5.6 that the operator took between the two stages), US$ 13.69 and 15.3 million tokens. Mechanical evaluation: 36 probes, characterization 70 of 70.
+- **The lockout was judged twice.** The first matching pass did not charge it (870). Six earlier runs of this instance with the same behaviour had each been charged COMP-008 once, and none had been left uncharged (checked by reading every delivery and every verdict), so the same matching judge was asked, with that fact and nothing else, to decide that single call again; it charged COMP-008 once and recorded the change in `notes` (845). Nothing else in the verdict changed, and the first pass is kept in the private archive.
+- **A mechanical check that misses fixes logged through `java.util.logging`.** The check of one low-severity flaw (5 points) reads the cause of a failure from what is written to the standard streams during the request. A delivery that logs through `java.util.logging` is seen only when no record was logged earlier in the same JVM, so such a fix counts as not fixed. It happened in this run (853 if counted) and in two others: Claude Sonnet 5.5 at max (932 as scored, 940 if counted) and run 1 of Claude Sonnet 5.5 at xhigh (860, the published score, 866 if counted). The mechanical result prevails and the scores stay as scored; the effect is 6 to 8 points per run, and the check is not changed by this release.
+- Judged by two fresh Opus 5.5 subagents with the standing prompts, including the paragraph on bundled findings; no finding was credited to more than one row (checked after the verdict).
+- The reading of the agent is rewritten for three runs. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.158` — 2026-10-12 — The owner confirms the rule on stops: only a stop that ends the work blocks an attempt
 
