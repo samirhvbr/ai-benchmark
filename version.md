@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.171`
+**Versão atual:** `0.2.172`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.172` — 2026-10-12 — The next series names its instances and specifies its first reference system, a condominium management application
+
+- `docs/new-series-design.md` §2 records two decisions the owner took today: the instances are named `LEB-D-<level>-<letter>`
+  (Default) and `LEB-S-<level>-<letter>` (Security), the same letter being the same system; and system A of level 300 is a
+  condominium management application in Java 21, Maven and PostgreSQL, the toolchain the bench VMs carry, written in English.
+  §5 says where the systems live, §12 marks step 3 started, and §13 drops the question of names.
+- `systems/README.md`: what a reference system is and how its two instances come from it.
+- `systems/300-A/README.md`: the specification of CondoDesk, the system the reference is written against: constraints (LEB-300-A's
+  exact dependencies, so the bench VMs' offline Maven cache serves it unchanged), roles, data, behavior, the place where each of
+  the 20 security classes meets the reference and how the reference defends it, the hosts for the Default profile, how the
+  instances are built, and the authoring status. It also records why this series publishes its evaluator scripts: LEB-300-A's
+  never reached the repository.
+- `README.md` lists `systems/` among the documents.
 
 ### `0.2.171` — 2026-10-12 — LEB-300-A is published with its answer key, by the owner's order
 

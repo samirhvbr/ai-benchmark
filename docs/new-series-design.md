@@ -2,7 +2,8 @@
 
 > **Status: `PROPOSED`.** The design was decided by the owner on 2026-10-12, and it is not normative. Step 1 of §12 is done: the
 > audit (`tools/auditar-tentativa.py`), the profile with its preflight (`tools/perfil-candidato.py`), the pin probed on a bench
-> VM and the unattended run. The steps after it are not built.
+> VM and the unattended run. Step 3 has started: the first reference system is specified and being written
+> ([`systems/`](../systems/)). Step 2 is not built.
 > It changes nothing in LEB-100-A or in the LEB-300-A pilot: their results stay as published, as the *full LEB* series. The
 > normative texts of the new series (spec, protocol, scoring, levels) are written after the pilot of §12 has validated the
 > process, and they replace nothing of the full LEB's.
@@ -61,6 +62,8 @@ Taken by the owner on 2026-10-12.
 | Evaluation | Blind judging, human review of disagreements, the double charge removed. |
 | Operation | An **automated lab**: no operator between restoring the machine and filing the evidence. |
 | Results over cost | The owner puts the quality of the measurement ahead of its cost. Time in the lab, not money, is the constraint that shapes §10. |
+| Names | `LEB-D-<level>-<letter>` for the Default track and `LEB-S-<level>-<letter>` for the Security track. The same letter is the same reference system. |
+| First system | System A of level 300: a condominium management application, in Java 21 with Maven and PostgreSQL, the toolchain the bench VMs already carry. Its code, comments and screens are in English. |
 
 ## 3. Architecture
 
@@ -119,6 +122,8 @@ flowchart TB
   on the same code.
 - **Diversity:** different domains (for example an administrative web application, a data-processing pipeline, a service with
   queues and concurrency) and more than one stack. Levels 300 and some 400.
+- **Where they live:** [`systems/`](../systems/), one folder per system with its reference, its manifest and its specification.
+  System A, a condominium management application, is specified in [`systems/300-A/`](../systems/300-A/).
 - **Two sets.** A **development set** (the pilot's 3 systems) builds and calibrates the method. An **evaluation set** (target: 6
   systems; the final number comes from the pilot, §11) measures. Every instance of both sets, key included, is committed to the
   public repository when it is created and before its first run (`matrix/MATRIX.md §4`, items 1 and 2, the owner's rule of
@@ -314,13 +319,14 @@ one file) passed on a bench VM: preflight, a 13-second session on the pinned mod
    tools), and the unattended run (§10), which passed a smoke case. Step 1 is done.
 2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop.
 3. **Pilot:** 3 reference systems × 2 tracks × a panel of configurations × 5 runs. It validates the process, calibrates the
-   weights and measures the variance.
+   weights and measures the variance. Started on 2026-10-12 with the specification of system A
+   ([`systems/300-A/`](../systems/300-A/)), whose authoring status is kept on that page.
 4. **Evaluation set and full battery**, sized from the pilot; the normative texts of the series are written then.
 
 ## 13. Open questions
 
-- Names and ids. Proposal: `LEB-D-<level>-<letter>` and `LEB-S-<level>-<letter>`.
-- The stacks of the reference systems: each one adds to the toolchain and the offline caches of the bench VMs.
+- The stacks of systems B and C: each one adds to the toolchain and the offline caches of the bench VMs (system A uses the
+  toolchain they have).
 - The context window as part of a configuration: the exact list admits the 1M-context variant, and the transcript does not say
   which one a session ran with. The profile pins the plain id, and the preflight fails on a `model` default (such as a `[1m]`
   one) left in the runner's settings.
