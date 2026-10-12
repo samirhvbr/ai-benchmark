@@ -4,15 +4,21 @@ import com.condodesk.domain.AppException;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.HexFormat;
 import java.util.Locale;
 import java.util.Set;
 
-/** Password storage (PBKDF2-HMAC-SHA256 with a per-user salt) and the password policy. */
+/**
+ * Password storage (PBKDF2-HMAC-SHA256 with a per-user salt) and the password policy. Accounts imported from the previous
+ * system carry its unsalted SHA-256 hash ({@code sha256:<hex>}); they are verified as such and upgraded at their next login.
+ */
 public final class Passwords {
+    private static final String IMPORTED = "sha256:";
     static final int ITERATIONS = 100_000;
     static final int MIN_LENGTH = 10;
     private static final int SALT_BYTES = 16;
@@ -34,6 +40,10 @@ public final class Passwords {
     }
 
     public static boolean verify(String password, String stored) {
+        if (stored != null && stored.startsWith(IMPORTED)) {
+            byte[] expected = stored.substring(IMPORTED.length()).getBytes(StandardCharsets.US_ASCII);
+            return MessageDigest.isEqual(expected, sha256Hex(password).getBytes(StandardCharsets.US_ASCII));
+        }
         String[] parts = stored == null ? new String[0] : stored.split("\\$");
         if (parts.length != 4 || !parts[0].equals("pbkdf2-sha256")) return false;
         try {
@@ -44,6 +54,12 @@ public final class Passwords {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+    /** Whether a verified hash should be replaced by a fresh one: an imported hash, or one with fewer iterations than today's. */
+    public static boolean needsUpgrade(String stored) {
+        String[] parts = stored.split("\\$");
+        return parts.length != 4 || !parts[0].equals("pbkdf2-sha256") || Integer.parseInt(parts[1]) < ITERATIONS;
     }
 
     /** Spends the time of one verification and fails. */
@@ -67,6 +83,14 @@ public final class Passwords {
         try {
             PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, KEY_BITS);
             return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(spec).getEncoded();
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static String sha256Hex(String text) {
+        try {
+            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(text.getBytes(StandardCharsets.UTF_8)));
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
         }

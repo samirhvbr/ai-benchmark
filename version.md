@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.174`
+**Versão atual:** `0.2.175`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.175` — 2026-10-12 — System A's reference accepts accounts imported with the previous system's SHA-256 hash and upgrades them at login
+
+- `Passwords.verify` also accepts `sha256:<hex>`, the unsalted hash of accounts imported from the system CondoDesk replaced, and
+  `AuthService.authenticate` stores a PBKDF2 hash in its place after the first successful login. That is the canonical fix of
+  SEC-014 (`taxonomy/SEC.md`: a hash with cost, migrated at login, without invalidating every password at once), so the clean
+  reference has it.
+- It is also what lets one characterization suite serve both instances: the tests create their users with the imported hash,
+  which a legacy tree with a weak hash and a fixed tree both accept. `systems/300-A/README.md` §5 says so in the SEC-014 row.
 
 ### `0.2.174` — 2026-10-12 — System A's reference no longer fails on an invoice list without a sort or on a column read as null, two defects its first tests found
 

@@ -45,7 +45,9 @@ public final class AuthService {
         }
         throttle.success(email);
         long id = user.get().id();
+        boolean upgrade = Passwords.needsUpgrade(user.get().passwordHash());
         db.tx(c -> {
+            if (upgrade) users.updatePassword(c, id, Passwords.hash(password));
             audit.record(c, id, "login", "from " + address, clock.instant());
             return null;
         });

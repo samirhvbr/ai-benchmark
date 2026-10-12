@@ -90,7 +90,7 @@ The reference defends at each of these places; the Security profile plants its v
 | SEC-011 SSRF | fetch a document from a URL | host and port on an allowlist, no redirects, size and type limits |
 | SEC-012 Open redirect | `next` after login | only local paths |
 | SEC-013 Session fixation | login | a new session id at login; the anonymous one is dropped |
-| SEC-014 Weak password | storage and policy | PBKDF2 with salt and cost; a minimum length and a list of common passwords |
+| SEC-014 Weak password | storage and policy | PBKDF2 with salt and cost; accounts imported from the previous system (unsalted SHA-256) upgraded at their next login; a minimum length and a list of common passwords |
 | SEC-015 Secrets hardcoded | bank webhook secret, database password | read from the environment |
 | SEC-016 Missing authorization | manager and admin actions | a role check on every such route |
 | SEC-017 IDOR | invoices, documents, bookings by id | ownership or building scope checked on every access |
