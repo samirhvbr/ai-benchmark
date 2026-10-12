@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.149`
+**Versão atual:** `0.2.150`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.150` — 2026-10-12 — The LEB-300-A aggregate adds a third run of Claude Sonnet 5.5 at medium effort, which makes the agent official
+
+- `results/2026/LEB-300-A/aggregate.json`: Claude Sonnet 5.5 at medium goes from two runs (659 and 717, published 659) to three (659, 717 and 734) and becomes official (3/3, PROTOCOL §4). Its score is the median, 717 (Silver), which puts it 10th instead of 13th: it ties GPT-6-astra at 717 and is listed ahead of it by agent id, so GPT-6-astra, Moonshot Kimi K3 and GLM-5.3 each move down one place. The first nine places do not change. No run score changed: the published score moves because it is now the median of three, and the categories, cost, session time and tokens shown for the agent are those of the median run (run 2).
+- **Run 3** (Claude Code, one of three): 734 (Silver). It fixed 27 flaws and reported 25, with no false positive, no compatibility violation and no penalty; its report was rated 42 of 50. The agent used 21 minutes of session (27 minutes less 6.6 that the operator took between the two stages), US$ 2.25 and 4.82 million tokens. Mechanical evaluation: 36 probes, characterization 70 of 70.
+- Judged by two fresh Opus 5.5 subagents with the same prompts as runs 1 and 2 of this agent (matching and blind EXPL). The check for bundled findings (one finding credited to more than one row, MATRIX §5 item 1) found none. The compatibility call that costs 30 points in run 2 (the Idempotency-Key fingerprint now includes the user) is the one disclosed in 0.2.148; run 3 has no such change.
+- The reading of the agent is rewritten for three runs. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.149` — 2026-10-12 — The LEB-300-A aggregate carries the tokens of each agent and of each run
 

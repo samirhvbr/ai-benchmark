@@ -519,6 +519,77 @@
       }
     },
     {
+      "agent": "claude-sonnet-5.5-medium",
+      "score": 717,
+      "grade": "Silver",
+      "runs_count": 3,
+      "categories": {
+        "SEC": 236,
+        "ARCH": 100,
+        "BUG": 121,
+        "PERF": 99,
+        "CLN": 50,
+        "COMP": 70,
+        "EXPL": 41
+      },
+      "cost_usd": 2.96,
+      "wall_minutes": 28.7,
+      "tokens": {
+        "input": 1794,
+        "output": 59634,
+        "cache": 5841812,
+        "total": 5903240
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 659,
+          "cost_usd": 1.98,
+          "wall_minutes": 13.8,
+          "tokens": {
+            "input": 1364,
+            "output": 34340,
+            "cache": 3425232,
+            "total": 3460936
+          }
+        },
+        {
+          "run": 2,
+          "total": 717,
+          "cost_usd": 2.96,
+          "wall_minutes": 28.7,
+          "tokens": {
+            "input": 1794,
+            "output": 59634,
+            "cache": 5841812,
+            "total": 5903240
+          }
+        },
+        {
+          "run": 3,
+          "total": 734,
+          "cost_usd": 2.25,
+          "wall_minutes": 20.6,
+          "tokens": {
+            "input": 1272,
+            "output": 61955,
+            "cache": 4759376,
+            "total": 4822603
+          }
+        }
+      ],
+      "model": {
+        "name": "Claude Sonnet 5.5",
+        "id": "claude-sonnet-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "medium"
+      },
+      "comment": {
+        "en": "Three runs (659, 717 and 734), so the published score is their median, 717. Security stayed between 222 and 236 of 250 and bugs between 121 and 137 of 150; performance rose from 77 to 99 to 115 of 150, architecture was 61, 100 and 94 of 200 and clean code 21, 50 and 21 of 100. The runs fixed 23, 28 and 27 of the 36 planted flaws and reported 21, 22 and 25, none with a false positive, and the reports were rated 41, 41 and 42 of 50. In the second run, the median one, a change went beyond what the manifest contracts (the idempotency key now includes the user, so another user of the same company repeating the request gets a 422 instead of the original answer) and cost 30 compatibility points (70, against 100 in the other two). The sessions took 14, 29 and 21 minutes, without the wait between the two stages, for US$ 1.98, US$ 2.96 and US$ 2.25. The same model at high effort has a median of 855 and at xhigh effort a published score of 860 over two runs.",
+        "pt_BR": "Três execuções (659, 717 e 734), então a nota publicada é a mediana, 717. A segurança ficou entre 222 e 236 de 250 e os bugs entre 121 e 137 de 150; o desempenho subiu de 77 para 99 e 115 de 150, a arquitetura foi 61, 100 e 94 de 200 e o código limpo 21, 50 e 21 de 100. As execuções corrigiram 23, 28 e 27 das 36 falhas plantadas e reportaram 21, 22 e 25, nenhuma com falso positivo, e os relatórios tiveram 41, 41 e 42 de 50. Na segunda, a mediana, uma mudança foi além do que o manifesto contrata (a chave de idempotência passou a incluir o usuário, então outro usuário da mesma empresa que repete o pedido recebe 422 em vez da resposta original) e custou 30 pontos de compatibilidade (70, contra 100 nas outras duas). As sessões levaram 14, 29 e 21 minutos, sem a espera entre as duas etapas, por US$ 1,98, US$ 2,96 e US$ 2,25. O mesmo modelo em esforço high tem mediana de 855 e em xhigh uma nota publicada de 860 em duas execuções."
+      }
+    },
+    {
       "agent": "gpt-6-astra-xhigh",
       "score": 717,
       "grade": "Silver",
@@ -681,65 +752,6 @@
       "comment": {
         "en": "On a single run, level with the best in bugs (147 of 150): security 222 of 250, performance 96 of 150, architecture 69 of 200 and 14 of 100 in clean code, with the contract untouched. Several of its security and architecture findings were filed as plain bugs or as quality issues, and each costs half of its credit. It ran through OpenRouter, in a 75-minute session for US$ 1.62. One run of three: it is not official and could move.",
         "pt_BR": "Com uma execução só, empatado com o melhor em bugs (147 de 150): segurança 222 de 250, desempenho 96 de 150, arquitetura 69 de 200 e 14 de 100 em código limpo, com o contrato intacto. Vários achados de segurança e de arquitetura foram registrados como bugs comuns ou como problemas de qualidade, e cada um perde metade do crédito. Rodou pelo OpenRouter, numa sessão de 75 minutos por US$ 1,62. Uma execução de três: não é oficial e pode mudar."
-      }
-    },
-    {
-      "agent": "claude-sonnet-5.5-medium",
-      "score": 659,
-      "grade": "Silver",
-      "runs_count": 2,
-      "categories": {
-        "SEC": 222,
-        "ARCH": 61,
-        "BUG": 137,
-        "PERF": 77,
-        "CLN": 21,
-        "COMP": 100,
-        "EXPL": 41
-      },
-      "cost_usd": 1.98,
-      "wall_minutes": 13.8,
-      "tokens": {
-        "input": 1364,
-        "output": 34340,
-        "cache": 3425232,
-        "total": 3460936
-      },
-      "runs": [
-        {
-          "run": 1,
-          "total": 659,
-          "cost_usd": 1.98,
-          "wall_minutes": 13.8,
-          "tokens": {
-            "input": 1364,
-            "output": 34340,
-            "cache": 3425232,
-            "total": 3460936
-          }
-        },
-        {
-          "run": 2,
-          "total": 717,
-          "cost_usd": 2.96,
-          "wall_minutes": 28.7,
-          "tokens": {
-            "input": 1794,
-            "output": 59634,
-            "cache": 5841812,
-            "total": 5903240
-          }
-        }
-      ],
-      "model": {
-        "name": "Claude Sonnet 5.5",
-        "id": "claude-sonnet-5-5",
-        "provider": "Anthropic",
-        "reasoning_effort": "medium"
-      },
-      "comment": {
-        "en": "Two runs 58 points apart (659 and 717). Security 222 and 236 of 250, bugs 137 and 121 of 150, performance 77 and 99 of 150, architecture 61 and 100 of 200 and clean code 21 and 50 of 100. The first run fixed 23 of the 36 planted flaws and reported 21; the second fixed 28 and reported 22; neither had a false positive, and both reports were rated 41 of 50. In the second run one change went beyond what the manifest contracts (the idempotency key now includes the user, so another user of the same company repeating the request gets a 422 instead of the original answer) and cost 30 compatibility points (70, against 100 in the first). The sessions took 14 and 29 minutes, without the two hours the operator took between the two stages, for US$ 1.98 and US$ 2.96. The same model at high effort has a median of 855 over three runs and at xhigh effort a published score of 860 over two runs. Two runs of three: not official, and the published score is the lower of the two.",
-        "pt_BR": "Duas execuções a 58 pontos uma da outra (659 e 717). Segurança 222 e 236 de 250, bugs 137 e 121 de 150, desempenho 77 e 99 de 150, arquitetura 61 e 100 de 200 e código limpo 21 e 50 de 100. A primeira execução corrigiu 23 das 36 falhas plantadas e reportou 21; a segunda corrigiu 28 e reportou 22; nenhuma teve falso positivo, e os dois relatórios tiveram 41 de 50. Na segunda uma mudança foi além do que o manifesto contrata (a chave de idempotência passou a incluir o usuário, então outro usuário da mesma empresa que repete o pedido recebe 422 em vez da resposta original) e custou 30 pontos de compatibilidade (70, contra 100 na primeira). As sessões levaram 14 e 29 minutos, sem as duas horas que o operador levou entre as duas etapas, por US$ 1,98 e US$ 2,96. O mesmo modelo em esforço high tem mediana de 855 em três execuções e em xhigh uma nota publicada de 860 em duas execuções. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
       }
     },
     {
