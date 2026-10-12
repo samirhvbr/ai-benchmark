@@ -17115,6 +17115,41 @@
           }
         },
         {
+          "agent": "gpt-6.1-sol-high",
+          "score": 779,
+          "grade": "Gold",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 232,
+            "ARCH": 142,
+            "BUG": 147,
+            "PERF": 70,
+            "CLN": 46,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "cost_usd": null,
+          "wall_minutes": 33.0,
+          "runs": [
+            {
+              "run": 1,
+              "total": 779,
+              "cost_usd": null,
+              "wall_minutes": 33.0
+            }
+          ],
+          "model": {
+            "name": "GPT-6.1-sol",
+            "id": "gpt-6.1-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "On a single run: security 232 of 250, bugs 147 of 150, performance 70 of 150, architecture 142 of 200 and 46 of 100 in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 30 of the 36 planted flaws and reported 21 of them, with no false positive; ten of the fixes were never reported as findings of their own (several sat bundled inside another finding), so they count only for the code. The report was rated 42 of 50, weakest on prioritisation, because effort is not weighed. The session took 33 minutes, without the 127 minutes the operator took between the two stages, and used about 7.1 million tokens; Codex keeps no cost. The same model at xhigh effort scored 800 and at ultra 797. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 232 de 250, bugs 147 de 150, desempenho 70 de 150, arquitetura 142 de 200 e 46 de 100 em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 30 das 36 falhas plantadas e reportou 21 delas, sem falso positivo; dez das correções nunca foram reportadas como achados próprios (várias estavam agrupadas dentro de outro achado), e por isso valem só pelo código. O relatório teve 42 de 50, com a nota mais baixa em priorização, porque o esforço não é pesado. A sessão levou 33 minutos, sem os 127 minutos que o operador levou entre as duas etapas, e usou cerca de 7,1 milhões de tokens; o Codex não registra custo. O mesmo modelo em xhigh fez 800 e em ultra 797. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "claude-haiku-5.5-xhigh",
           "score": 732,
           "grade": "Silver",
@@ -17279,6 +17314,47 @@
           }
         },
         {
+          "agent": "claude-sonnet-5.5-medium",
+          "score": 659,
+          "grade": "Silver",
+          "runs_count": 2,
+          "categories": {
+            "SEC": 222,
+            "ARCH": 61,
+            "BUG": 137,
+            "PERF": 77,
+            "CLN": 21,
+            "COMP": 100,
+            "EXPL": 41
+          },
+          "cost_usd": 1.98,
+          "wall_minutes": 13.8,
+          "runs": [
+            {
+              "run": 1,
+              "total": 659,
+              "cost_usd": 1.98,
+              "wall_minutes": 13.8
+            },
+            {
+              "run": 2,
+              "total": 717,
+              "cost_usd": 2.96,
+              "wall_minutes": 28.7
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "medium"
+          },
+          "comment": {
+            "en": "Two runs 58 points apart (659 and 717). Security 222 and 236 of 250, bugs 137 and 121 of 150, performance 77 and 99 of 150, architecture 61 and 100 of 200 and clean code 21 and 50 of 100. The first run fixed 23 of the 36 planted flaws and reported 21; the second fixed 28 and reported 22; neither had a false positive, and both reports were rated 41 of 50. In the second run one change went beyond what the manifest contracts (the idempotency key now includes the user, so another user of the same company repeating the request gets a 422 instead of the original answer) and cost 30 compatibility points (70, against 100 in the first). The sessions took 14 and 29 minutes, without the two hours the operator took between the two stages, for US$ 1.98 and US$ 2.96. The same model at high effort has a median of 855 over three runs and at xhigh effort a published score of 860 over two runs. Two runs of three: not official, and the published score is the lower of the two.",
+            "pt_BR": "Duas execuções a 58 pontos uma da outra (659 e 717). Segurança 222 e 236 de 250, bugs 137 e 121 de 150, desempenho 77 e 99 de 150, arquitetura 61 e 100 de 200 e código limpo 21 e 50 de 100. A primeira execução corrigiu 23 das 36 falhas plantadas e reportou 21; a segunda corrigiu 28 e reportou 22; nenhuma teve falso positivo, e os dois relatórios tiveram 41 de 50. Na segunda uma mudança foi além do que o manifesto contrata (a chave de idempotência passou a incluir o usuário, então outro usuário da mesma empresa que repete o pedido recebe 422 em vez da resposta original) e custou 30 pontos de compatibilidade (70, contra 100 na primeira). As sessões levaram 14 e 29 minutos, sem as duas horas que o operador levou entre as duas etapas, por US$ 1,98 e US$ 2,96. O mesmo modelo em esforço high tem mediana de 855 em três execuções e em xhigh uma nota publicada de 860 em duas execuções. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+          }
+        },
+        {
           "agent": "deepseek-v4.1-flash-high",
           "score": 649,
           "grade": "Silver",
@@ -17393,6 +17469,41 @@
           "comment": {
             "en": "Three runs from 574 to 657, and the official 625 is the middle one. Security was 225, 225 and 246 of 250, architecture 47 of 200 in all three, clean code 0, 0 and 18 of 100, bugs 134, 137 and 142 of 150 and performance 96, 41 and 64 of 150, with the contract untouched in every run (compatibility 100). The first two took the 15-point penalty for a fix that introduced a new bug; the third took none. The sessions took 32, 28 and 32 minutes, without the operator's wait between the two stages. Codex keeps no cost.",
             "pt_BR": "Três execuções, de 574 a 657, e a nota oficial, 625, é a do meio. A segurança foi 225, 225 e 246 de 250, a arquitetura 47 de 200 nas três, o código limpo 0, 0 e 18 de 100, os bugs 134, 137 e 142 de 150 e o desempenho 96, 41 e 64 de 150, com o contrato intacto em todas (compatibilidade 100). As duas primeiras levaram a penalidade de 15 pontos por uma correção que introduziu um bug novo; a terceira não levou nenhuma. As sessões levaram 32, 28 e 32 minutos, sem a espera do operador entre as duas etapas. O Codex não registra custo."
+          }
+        },
+        {
+          "agent": "glm-5.3-flash-high",
+          "score": 568,
+          "grade": "Bronze",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 204,
+            "ARCH": 47,
+            "BUG": 126,
+            "PERF": 51,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 40
+          },
+          "cost_usd": 0.31,
+          "wall_minutes": 45.6,
+          "runs": [
+            {
+              "run": 1,
+              "total": 568,
+              "cost_usd": 0.31,
+              "wall_minutes": 45.6
+            }
+          ],
+          "model": {
+            "name": "GLM-5.3-Flash",
+            "id": "glm-5.3-flash",
+            "provider": "Z.AI",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "On a single run: security 204 of 250, bugs 126 of 150, performance 51 of 150, architecture 47 of 200 and nothing in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 17 of the 36 planted flaws and reported 20, with no false positive; the report was rated 40 of 50, weakest on prioritisation, because the order of the findings contradicts its own severity labels. It ran through Z.ai's own API; the session took 46 minutes, without the nearly two hours the operator took between the two stages, for US$ 0.31 and about 7.7 million tokens. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 204 de 250, bugs 126 de 150, desempenho 51 de 150, arquitetura 47 de 200 e nada em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 17 das 36 falhas plantadas e reportou 20, sem falso positivo; o relatório teve 40 de 50, com a nota mais baixa em priorização, porque a ordem dos achados contradiz as próprias etiquetas de gravidade. Rodou pela API da própria Z.ai; a sessão levou 46 minutos, sem as quase duas horas que o operador levou entre as duas etapas, por US$ 0,31 e cerca de 7,7 milhões de tokens. Uma execução de três: não é oficial e pode mudar."
           }
         },
         {

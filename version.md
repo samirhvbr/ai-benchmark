@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.147`
+**Versão atual:** `0.2.148`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.148` — 2026-10-12 — The LEB-300-A aggregate adds GPT-6.1-sol at high effort, Claude Sonnet 5.5 at medium effort and GLM-5.3-Flash at high effort
+
+- `results/2026/LEB-300-A/aggregate.json` goes from twenty-two agents to twenty-five. Three agents are new, none official (below 3 runs the published score is the lowest run's, PROTOCOL §4). Agents below 779 move down one place, those below 659 two and those below 568 three; the first seven places do not change.
+  - **GPT-6.1-sol at high** (Codex CLI, one run of three): 779 of 1000 (Gold), 8th. It fixed 30 flaws and reported 21, with no false positive, no compatibility violation and no penalty. **It was judged twice.** The first matching pass credited ten fixes that sit inside bundled findings (one finding naming several flaws) as if each had been reported on its own, which gave 851.
+    MATRIX §5 item 1 maps a finding to at most one row, and every other judge, in this round and the earlier ones, had applied it that way, so a fresh matching judge was run on the same anonymized delivery with the standard prompt plus one paragraph restating that rule and asking for the bundles to be listed in the notes. That second pass is the score, 779; the first pass stays in the private archive for audit.
+    Re-scoring the first pass under every strict choice of the surviving row gives 761 to 779. The blind EXPL judge (42 of 50) was not repeated: it reads only the report.
+  - **Claude Sonnet 5.5 at medium** (two runs, 659 and 717): published 659, the lower, 13th (2/3). Run 1 fixed 23 flaws and run 2 fixed 28. Run 2 took 30 compatibility points (COMP-003: the Idempotency-Key fingerprint now includes the user, so another user of the same company repeating the request gets a 422 instead of the original answer; 747 without it).
+    The matching judge of the Sonnet 5.5 high run 3, in the previous round, classified the same effect as COMP-008 (25 points) instead of COMP-003 (30); the difference of 5 points between the two readings is left as judged.
+  - **GLM-5.3-Flash at high** (OpenCode through Z.ai, one run of three): 568 (Bronze), 17th. It fixed 17 flaws and reported 20, with no false positive and no compatibility violation.
+- Each run was judged by two fresh Opus 5.5 subagents, as always: the matching judge on the anonymized delivery and a blind judge of the report alone. The standard prompt is the one of the previous round (read confined to the judge's folder and the matrix file); the paragraph on bundled findings was added only to the second pass of the GPT-6.1-sol run.
+- The operator sent the stage 2 message to the four VMs at the same moment, 116 to 130 minutes after each agent had finished stage 1; that wait (129.8, 122.4, 127.2 and 116.2 minutes) is left out of the session time, as before. The two Sonnet runs used 14 and 29 minutes of the agent's time.
+- `trazer-rodada.py` (a private tool) now starts a Claude session at the first message to the agent instead of the first event of the transcript: in this round the `/model`, `/effort` and `/login` of the operator came 3.3 minutes before it, and counting them would have inflated the first run's time and its first stage; earlier runs differ by seconds.
+  The client's totals of the two Sonnet runs include a few calls of the client itself after the last turn (an away summary in one, a 1,202-token Haiku 5.5 call in both); they are noted in each run record.
+- Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.147` — 2026-10-11 — The LEB-300-A aggregate adds GPT-6.1-sol at ultra effort and more runs of Claude Sonnet 5.5 (xhigh and high) and Claude Haiku 5.5 (xhigh)
 
