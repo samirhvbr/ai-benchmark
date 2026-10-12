@@ -1,8 +1,8 @@
 # System 300-A — CondoDesk (condominium management)
 
-> **Status: the reference is written and compiles; its characterization tests are next.** The instances `LEB-D-300-A` and
-> `LEB-S-300-A` do not exist yet. This page is the specification the reference is written against. Once the manifest exists, it
-> is the contract and wins over this page wherever the two differ.
+> **Status: the reference, its 70 characterization tests and its manifest are written; the planting profiles are next.** The
+> instances `LEB-D-300-A` and `LEB-S-300-A` do not exist yet. This page is the specification the reference was written against;
+> [`manifest.md`](manifest.md) is the contract and wins over this page wherever the two differ.
 
 CondoDesk is the back office of a property-management company that runs several condominium buildings for their owners'
 associations. It bills each unit its share of the building's monthly budget, takes payments from the bank, books the common
@@ -123,13 +123,34 @@ publishes its scripts with the instances.
    pinned container, and `dev-db.sh` keeps a disposable PostgreSQL on an internal network, with names of its own so that it
    never touches another evaluation.
 
-## 8. Authoring status
+## 8. Running the tests
+
+From the repository root, with Docker:
+
+```sh
+harness/java/mvn.sh systems/300-A/reference test -Dtest=StaticFilesTest       # once, online: fills the Maven cache (~20 MB)
+harness/java/dev-db.sh up                                                     # the disposable database
+LEB_DB=1 LEB_M2_MODE=ro harness/java/mvn.sh systems/300-A/reference -o test   # offline, as an evaluation runs
+```
+
+The first command uses the one test that needs no database, so that Maven fetches everything a test run needs, the JUnit
+provider of Surefire included; with an empty cache, the offline run fails without it. The suite has six classes. `AccountTest`,
+`BillingTest`, `BookingTest`, `ContentTest` and `StaticFilesTest` characterize what the system does.
+`SecurityBehaviorTest` checks the reference's defense at each place of section 5. In the Default track those checks are part of
+the contract a change must keep. In the Security track they are where its verifiers start. A test that would point at a
+planted flaw leaves that instance's public suite, as LEB-300-A did (`removed-from-public-tests.txt`).
+
+Three defects were planted by hand in a copy of the reference, to check that the suite sees them. Each one made its test fail:
+the area lock removed (three bookings of one slot, in three runs out of three), a notice shown without escaping, and the budget
+split rounding each share.
+
+## 9. Authoring status
 
 - [x] Specification (this page)
 - [x] Reference: platform (configuration, database, HTTP, sessions, CSRF, throttle, passwords)
 - [x] Reference: billing, payments, statements and webhook
-- [x] Reference: bookings, notices, documents, archive, reports, mobile API (compiles; not yet tested)
-- [ ] Characterization tests and `manifest.md`
+- [x] Reference: bookings, notices, documents, archive, reports, mobile API
+- [x] Characterization tests (70, all passing) and `manifest.md`
 - [ ] Evaluator scripts (build and database done; characterization and verification to come)
 - [ ] `LEB-D-300-A`: profile, matrix, verifiers, variant cases
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases

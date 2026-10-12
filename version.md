@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.175`
+**Versão atual:** `0.2.176`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.176` — 2026-10-12 — System A gets its 70 characterization tests and its manifest
+
+- `systems/300-A/reference/src/test/`: six classes, 70 tests, all passing against a disposable PostgreSQL. Each test gets its own
+  schema, a clock it moves, two buildings with their people and areas, a site on the fetch allowlist and an internal server that
+  is not on it. `AccountTest`, `BillingTest`, `BookingTest`, `ContentTest` and `StaticFilesTest` characterize the system (among
+  them eight concurrent requests for one booking slot, of which exactly one succeeds); `SecurityBehaviorTest` checks the
+  reference's defense for each of the 20 security classes. Three defects planted by hand in a copy (the area lock removed, a
+  notice not escaped, the budget split rounding each share) each made their test fail; the race failed in three runs out of
+  three.
+- `systems/300-A/manifest.md`: the contract both instances will ship: the Java surface, every page and API route with who may
+  use it, the business rules, the CSV and archive formats, the database and the configuration. It states the access rules, as
+  LEB-300-A's did, and leaves out what would point at a planted vulnerability (formula neutralization in the CSV, the upload
+  check by content, the webhook's answer without a secret).
+- `systems/300-A/README.md` §8 says how to run the tests from an empty Maven cache: one online run of the test that needs no
+  database fetches everything, Surefire's JUnit provider included, which a run of zero tests does not.
 
 ### `0.2.175` — 2026-10-12 — System A's reference accepts accounts imported with the previous system's SHA-256 hash and upgrades them at login
 
