@@ -12,8 +12,11 @@ session (the main transcript and the subagent transcripts under <session-id>/sub
   category, the number of responses before it and the tool calls the allowed models made after it on their own, in the same
   transcript and before the operator's next message; every safeguard notice and every model fallback event;
 - the operator's activity (messages, slash commands, interruptions), the API errors the client wrote, the type of each subagent
-  (from the <agent>.meta.json next to its transcript), and how and when the session ended. A non-interactive session (claude -p)
-  writes no turn records, so its length is the span from the first message to the end.
+  and the model the agent that launched it asked for, if any (from the <agent>.meta.json next to its transcript, or the Agent
+  tool call), and how and when the session ended. A non-interactive session (claude -p) writes no turn records, so its length is
+  the span from the first message to the end.
+- why a subagent ran on a model outside the allowed set: the agent asked for it, the client changed it after a stop, or neither
+  is in the record (unexplained). Any of the three is a switch: under the candidate profile none of them can happen.
 
 The outcome is the first of these that applies:
 
@@ -131,7 +134,8 @@ def first_text(message):
 def parse(path, main):
     """One transcript. Positions are line numbers, so "after" means later in the file."""
     t = {"responses": [], "api_errors": [], "notices": [], "fallbacks": [], "identities": [], "messages": [], "commands": [],
-         "interruptions": [], "turns": [], "restrictions": [], "versions": set(), "sidechain": False, "last": None}
+         "interruptions": [], "turns": [], "restrictions": [], "agent_calls": {}, "versions": set(), "sidechain": False,
+         "last": None}
     by_id = {}
     for n, e in read_events(path):
         kind, ts = e.get("type"), e.get("timestamp")
@@ -157,6 +161,10 @@ def parse(path, main):
             r["end_line"] = n
             content = m.get("content") if isinstance(m.get("content"), list) else []
             r["tool_calls"] += sum(1 for c in content if isinstance(c, dict) and c.get("type") == "tool_use")
+            # A subagent the agent launches may ask for its own model (the Agent tool's `model` parameter).
+            for c in content:
+                if isinstance(c, dict) and c.get("type") == "tool_use" and c.get("name") in ("Agent", "Task") and c.get("id"):
+                    t["agent_calls"][c["id"]] = (c.get("input") or {}).get("model")
             # Work a response did besides its own generation (a server-side tool, an advisor call) shows as content blocks or
             # usage iterations of another kind. None was seen in the pilot's transcripts; any that appears is flagged.
             r["other_work"].update("block " + str(c.get("type")) for c in content
@@ -258,14 +266,15 @@ def model_table(responses, allow):
     return models
 
 
-def agent_type(path):
-    """The subagent's type (Explore, say), from the <agent>.meta.json the client writes next to its transcript, when there is one."""
+def agent_meta(path):
+    """The <agent>.meta.json the client writes next to a subagent's transcript: its type (Explore, say), the model the agent
+    that launched it asked for, if any, and the id of that Agent tool call. {} when there is none."""
     try:
         with open(os.path.splitext(path)[0] + ".meta.json", encoding="utf-8") as f:
             meta = json.load(f)
-        return meta.get("agentType") if isinstance(meta, dict) else None
+        return meta if isinstance(meta, dict) else {}
     except (OSError, ValueError):
-        return None
+        return {}
 
 
 def other_work(responses):
@@ -380,20 +389,32 @@ def audit(session, requested, allow_more=(), messages=(), allow_commands=(), eff
                         "fallbacks": main["fallbacks"], "api_errors": main["api_errors"], "restrictions": main["restrictions"],
                         "other_work": other_work(main["responses"])})
 
-    # Subagents: the client picks their model, so any model outside the allowed set is a switch.
-    for p in sub_paths:
-        s = parse(p, False)
+    # Subagents: any model outside the allowed set is a switch, whether the client changed it after a stop or the agent itself
+    # launched the subagent asking for that model (the Agent tool's `model`); the cause says which.
+    subs = [(p, parse(p, False)) for p in sub_paths]
+    calls = dict(main["agent_calls"])
+    for _, s in subs:
+        calls.update(s["agent_calls"])
+    for p, s in subs:
+        meta = agent_meta(p)
+        asked = meta.get("model") or calls.get(meta.get("toolUseId"))
         models = model_table(s["responses"], allow)
         stops = stops_of(s, allow, start)
         rel = os.path.relpath(p, os.path.dirname(main_path))
         for model, m in models.items():
             if not m["allowed"]:
                 first = next(r for r in s["responses"] if r["model"] == model)
-                m["cause"] = "after a stop" if any(r["stopped"] and r["line"] < first["line"] for r in s["responses"]) else "unexplained"
+                if asked and first is s["responses"][0]:
+                    m["cause"] = 'requested by the agent ("%s")' % asked
+                elif any(r["stopped"] and r["line"] < first["line"] for r in s["responses"]):
+                    m["cause"] = "after a stop"
+                else:
+                    m["cause"] = "unexplained"
                 find("switched", "%s answered %d responses in subagent %s (%s)" % (model, m["responses"], rel, m["cause"]))
-        transcripts.append({"path": rel, "kind": "subagent", "agent_type": agent_type(p), "models": models, "stops": stops,
-                            "notices": s["notices"], "fallbacks": s["fallbacks"], "api_errors": s["api_errors"],
-                            "restrictions": s["restrictions"], "other_work": other_work(s["responses"])})
+        transcripts.append({"path": rel, "kind": "subagent", "agent_type": meta.get("agentType"), "asked_model": asked,
+                            "models": models, "stops": stops, "notices": s["notices"], "fallbacks": s["fallbacks"],
+                            "api_errors": s["api_errors"], "restrictions": s["restrictions"],
+                            "other_work": other_work(s["responses"])})
     for t in transcripts:
         for kind, n in sorted(t["other_work"].items()):
             find("inconclusive", "%d responses in %s carry %s, which this audit does not know: check whether another model "
@@ -459,8 +480,9 @@ def render(rep):
         rep["start_model"] or "unknown", rep["first_message_at"] or "never", ", ".join(rep["advisors_configured"]) or "none"))
 
     def block(t, label):
-        w("%-10s %s" % (label, "%s (%s)" % (t["path"], t.get("agent_type") or "type unknown") if t["kind"] == "subagent"
-                        else "conversation"))
+        w("%-10s %s" % (label, "%s (%s%s)" % (t["path"], t.get("agent_type") or "type unknown",
+                                               ', asked for "%s"' % t["asked_model"] if t.get("asked_model") else "")
+                        if t["kind"] == "subagent" else "conversation"))
         for model, m in sorted(t["models"].items(), key=lambda kv: kv[1]["first"]):
             note = "" if m["allowed"] else "   NOT ALLOWED (%s)" % m.get("cause", "")
             efforts = ", ".join("%s %d" % kv for kv in sorted(m["efforts"].items()))

@@ -295,6 +295,25 @@ class Audit(unittest.TestCase):
         self.assertIn('asked for "claude-opus-4-8"', self.findings(rep, "operator error")[0])
         self.assertFalse(self.findings(rep, "switched"), "the requested model answered")
 
+    def test_a_subagent_the_agent_launched_on_another_model_is_a_switch_with_that_cause(self):
+        # The shapes of a LEB-300-A run: the Agent tool call carries "model": "opus", the meta file repeats it with the call's id.
+        launch = [{"type": "assistant", "timestamp": at(2), "requestId": "req_ma", "effort": "high", "message": {
+            "id": "ma", "model": REQ, "role": "assistant", "stop_reason": "tool_use", "content": [
+                {"type": "tool_use", "id": "toolu_A1", "name": "Agent",
+                 "input": {"description": "Review", "prompt": "Review the code.", "subagent_type": "general-purpose", "model": "opus"}}]}}]
+        sub = user(at(2, 5), "Review the code.") + response("s1", at(2, 10), model="claude-opus-5-5", stop="end_turn", tools=0)
+        for meta in ({"agentType": "general-purpose", "toolUseId": "toolu_A1", "model": "opus"},
+                     {"agentType": "general-purpose", "toolUseId": "toolu_A1"}):
+            with self.subTest(meta=sorted(meta)):
+                path = self.session(start() + launch + tool_result(at(2, 30)) + finish(), {"agent-b1.jsonl": sub})
+                with open(os.path.join(self.project, SID, "subagents", "agent-b1.meta.json"), "w", encoding="utf-8") as f:
+                    json.dump(meta, f)
+                code, rep, _ = self.audit(path)
+                self.assertEqual((code, rep["outcome"]), (1, "switched"))
+                t = rep["transcripts"][1]
+                self.assertEqual((t["asked_model"], t["models"]["claude-opus-5-5"]["cause"]), ("opus", 'requested by the agent ("opus")'))
+                self.assertIn('(general-purpose, asked for "opus")', run_py(TOOL, path, "--requested", REQ).stdout)
+
     def test_a_subagent_type_comes_from_its_meta_file(self):
         sub = user(at(2), "Count the files.") + response("s1", at(2, 10), stop="end_turn", tools=0)
         path = self.session(clean(), {"agent-a1.jsonl": sub})

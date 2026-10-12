@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.165`
+**Versão atual:** `0.2.166`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.166` — 2026-10-12 — The audit names a subagent that the agent itself launched on another model, instead of calling the switch unexplained
+
+- In run 2 of Claude Sonnet 5.5 at max effort on LEB-300-A (published in 0.2.163, with the fact disclosed), the agent launched
+  four subagents asking the Agent tool for `"model": "opus"`; they answered 122 of the session's 543 responses on
+  claude-opus-5-5. `tools/auditar-tentativa.py` filed them as switched with the cause *unexplained*, because no stop preceded
+  them. The client records the request twice: in the `input.model` of the Agent tool call and in the `model` of the subagent's
+  `<agent>.meta.json`, next to the call's id.
+- The audit now reads both. A subagent that starts on a model outside the allowed set after its launcher asked for it is filed
+  as switched with the cause *requested by the agent ("opus")*; the report gives each subagent's requested model and the text
+  report shows it next to the subagent's type. The outcome is unchanged: any model outside the allowed set is a switch, and
+  under the candidate profile the client would not run that request on another model.
+- One new test, on the real shapes, with the request read from the meta file and, without it, from the tool call (20 for this
+  tool, 173 in all); the new branch was broken on purpose and the test failed. Run on that session, the four subagents come out
+  with this cause and the 122 responses match the count of the run's record. No protocol text or published result changes.
 
 ### `0.2.165` — 2026-10-12 — The next-series design adds an expected score per scheduled attempt, and splits blocks into at the start and during the work
 
