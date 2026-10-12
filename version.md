@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.161`
+**Versão atual:** `0.2.162`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.162` — 2026-10-12 — The next-series design records the pin probed on a bench VM: every response came from the pinned model
+
+- `docs/new-series-design.md` (still `PROPOSED`), §6.1: on a bench VM, with Claude Code 2.1.295 and Claude Fable 5.1 pinned at
+  high by the candidate profile, six trivial non-interactive sessions (no safety classifier touched) all answered with the
+  pinned model. That held for the default session, for a session asked for `claude-opus-4-8` and one asked for the alias `opus`
+  (each answered by the pinned model, with a system warning), for an Explore subagent (it defaults to the client's auxiliary
+  model) and for the 1M-context variant. No other model, the auxiliary one included, shows in the sessions' model usage. The
+  policy's effort outranked the runner's saved one, `--effort max` reached the responses, and the advisor stayed off.
+  `claude doctor` reports that the runner's Pro/Max account gets no console policy, so the file is the policy in force. The
+  safety fallback itself is not something a probe can show; the audit of the first runs is where it is seen.
+- §7 adds the two things the probe taught the audit (0.2.160); §10 says that a non-interactive session writes no turn records,
+  so the driver takes duration, turns and cost from the JSON result of `-p`; §12 marks the probe done, leaving the unattended
+  run; §13 replaces the question the probe answered with the context window as part of a configuration (the exact list admits
+  the 1M variant, and the transcript does not say which one ran). No tool, test or published result changes.
 
 ### `0.2.161` — 2026-10-12 — The preflight reports a runner's saved per-model effort that the policy outranks, instead of failing on it
 

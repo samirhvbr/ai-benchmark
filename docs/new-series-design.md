@@ -146,9 +146,20 @@ A **case** is one system × one track × one agent configuration. It runs 5 time
   - The managed file must be readable by the runner: a policy the client cannot read is skipped without notice.
   - **A policy from the claude.ai console outranks the file** and, by default, replaces it whole. No file check sees it: in the
     lab, `/status` must name `Enterprise managed settings (file)` as the setting source, with no `Skipped sources`, and
-    `claude doctor` must report no server-managed settings.
-  - Whether the client's own auxiliary model (used for titles and some subagents) stays allowed, and whether `exact` admits a
-    dated id of an allowed model, are decided in the lab; the share of the work of every model is recorded either way.
+    `claude doctor` must report no server-managed settings. The lab's runner account is a Pro/Max one, for which the client
+    fetches no console policy at all (`claude doctor` on a bench VM, 2026-10-12).
+  - **Probed on a bench VM** (2026-10-12, Claude Code 2.1.295, Claude Fable 5.1 pinned at high), with six trivial
+    non-interactive sessions, so that no safety classifier was touched. Every response came from the pinned model:
+    - the default session;
+    - a session asked for `--model claude-opus-4-8`, and one asked for the alias `opus`: both answered by the pinned model, with
+      no error and one system warning in the transcript, which the audit files as an operator error;
+    - an Explore subagent, which defaults to the client's auxiliary model and ran on the pinned one;
+    - the 1M-context variant `claude-fable-5-1[1m]`, admitted with no warning.
+
+    No other model shows in the sessions' model usage, the auxiliary one included, so under the pin nothing needs `--allow`. The
+    policy's `effortLevel` outranked a per-model effort left in the runner's settings, `--effort max` reached the responses, and
+    the advisor stayed off. What a probe cannot show is the safety fallback itself; the docs say a fallback target outside the
+    list means no fallback, and the audit of the first runs is where that is seen.
 - **Preflight, scripted, before the first message** (`tools/perfil-candidato.py check`): the managed policy, the runner's home
   (no cached console policy, no model, effort, advisor, hook or plugin override, no CLAUDE.md, skills, agents or commands, no
   MCP server, no transcript or memory of an earlier session), the work folder, the launcher's environment and the client
@@ -214,6 +225,9 @@ Reading real transcripts shaped it:
   A subagent's switch writes no fallback event at all: only the model of its later responses shows it.
 - Every response records its effort, so an attempt at another effort than the one it is filed under is caught, as an operator
   error.
+- Asked for a model outside the pin, the client answers with the pinned model and writes a system warning: the work is
+  attributable, but the launcher or a setting asked for another model, so the audit files an operator error.
+- A non-interactive session writes no turn records; its length is the span from the first message to the end.
 
 Run on public LEB-100-A records, it finds both void attempts of Claude Fable 5.1 at xhigh switched to claude-opus-4-8 after a
 cyber stop, and the nine of 68 subagents of the Claude Sonnet 5.5 max ultracode run 1 that switched to claude-sonnet-5, each
@@ -259,7 +273,8 @@ possible: the constraint is time in the lab, not the price of the runs.
 
 Whether the client runs interactively (a scripted terminal) or non-interactively (`-p`) is decided in the pilot. In
 non-interactive mode a flagged request ends the turn with a refusal (same docs), which fits the strict rule; the pilot checks that
-the mode does not change the agent's behavior in other ways.
+the mode does not change the agent's behavior in other ways. A non-interactive session writes no turn records: the driver takes
+the duration, the turns and the cost from the JSON result of `-p`, and the audit measures the span of the session.
 
 ## 11. Statistics
 
@@ -272,7 +287,8 @@ the mode does not change the agent's behavior in other ways.
 ## 12. Order of work
 
 1. **Traceability and lab automation:** the pin, the preflight, the audit, the unattended run. Built: the audit (0.2.155) and
-   the profile with its preflight (0.2.156). Left: the probe that shows the pin holding on a bench VM, and the unattended run.
+   the profile with its preflight (0.2.156), and the pin probed on a bench VM (§6.1; 0.2.160 and 0.2.161 carry what it taught
+   the tools). Left: the unattended run.
 2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop.
 3. **Pilot:** 3 reference systems × 2 tracks × a panel of configurations × 5 runs. It validates the process, calibrates the
    weights and measures the variance.
@@ -282,7 +298,9 @@ the mode does not change the agent's behavior in other ways.
 
 - Names and ids. Proposal: `LEB-D-<level>-<letter>` and `LEB-S-<level>-<letter>`.
 - The stacks of the reference systems: each one adds to the toolchain and the offline caches of the bench VMs.
-- Whether the client's auxiliary model stays allowed, and whether `exact` matching admits a dated id: the lab probe decides.
+- The context window as part of a configuration: the exact list admits the 1M-context variant, and the transcript does not say
+  which one a session ran with. The profile pins the plain id, and the preflight fails on a `model` default (such as a `[1m]`
+  one) left in the runner's settings.
 - Interactive or non-interactive automation.
 - Whether, and how, the partial state of a blocked attempt is published.
 - The errata rule in detail.
