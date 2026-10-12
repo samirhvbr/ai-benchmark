@@ -188,8 +188,13 @@ Every attempt ends in exactly one of these, and every one is published:
 | operator error | the profile or the procedure was not the declared one |
 
 Only *lab failure* and *operator error* allow a rerun, under a rule fixed before the pilot. The work folder is snapshotted while
-the attempt runs, so a blocked attempt keeps the state it reached. That state may be read as a separate partial profile; it never
-enters the quality score.
+the attempt runs, so a blocked attempt keeps the state it reached. That state never enters the quality score; it enters the
+expected score of §9, and may also be read as a separate partial profile.
+
+**Where a block falls** (added by the owner on 2026-10-12). A blocked attempt is published as *blocked at the start* when the
+work folder it left is identical to the package, so the agent changed nothing before the stop, and as *blocked during the work*
+otherwise. The first says that the task itself trips the safeguard for that configuration; the second, that the work led there.
+The lab compares every attempt's folder with its package, so the split needs no judgment.
 
 The audit (§7) decides the outcome from the transcripts, with the lab's word for a budget it stopped. When the record cannot be
 attributed (no response, a session cut with no reason from the lab, work of a kind the audit does not know) it says
@@ -256,7 +261,14 @@ For each configuration and track:
 - **Quality of the evaluable deliveries**, as an estimate with its uncertainty interval.
 - **Completion rate with the requested model**, over all scheduled attempts, and its consistency (the share of systems on which
   all five attempts completed, the guide's pass^k).
-- **Blocks, switches, budget exhaustion and lab failures**, each counted separately.
+- **Expected score per scheduled attempt** (added by the owner on 2026-10-12), with its interval. Every scheduled attempt counts
+  with the score of what it left: a completed attempt with its score; a blocked attempt, or one whose budget ran out, with the
+  score of the work folder it left, graded by the same evaluator. Switched attempts are left out and investigated as lab
+  defects, and lab failures and operator errors are rerun. It says what a configuration delivers when it is handed the task,
+  safeguards included, so a configuration whose hard cases end blocked cannot look strong on the quality of the rest alone. It
+  is published next to the first two figures, never in place of them.
+- **Blocks, switches, budget exhaustion and lab failures**, each counted separately; blocks split into *at the start* and
+  *during the work* (§6.2).
 
 Comparisons between configurations are **paired** (same systems, same schedule) and published with their uncertainty. A ranking is
 not drawn finer than the data supports. Grade seals are defined on the estimate together with its interval (for example, Platinum
@@ -311,7 +323,8 @@ one file) passed on a bench VM: preflight, a 13-second session on the pinned mod
 - The context window as part of a configuration: the exact list admits the 1M-context variant, and the transcript does not say
   which one a session ran with. The profile pins the plain id, and the preflight fails on a `model` default (such as a `[1m]`
   one) left in the runner's settings.
-- Whether, and how, the partial state of a blocked attempt is published.
+- Whether the partial state of a blocked attempt is also published as a profile of its own (it already counts in the expected
+  score of §9).
 - The errata rule in detail.
 - The grade seals with uncertainty.
 - Other clients (Codex, OpenCode): the same traceability applies, and their own fallback mechanisms are checked in the lab.

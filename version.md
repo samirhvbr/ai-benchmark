@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.164`
+**Versão atual:** `0.2.165`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.165` — 2026-10-12 — The next-series design adds an expected score per scheduled attempt, and splits blocks into at the start and during the work
+
+- `docs/new-series-design.md` (still `PROPOSED`), two additions the owner decided on 2026-10-12:
+  - §9, **expected score per scheduled attempt**, published with its interval next to the quality of the evaluable deliveries
+    and the completion rate, never in place of them. Every scheduled attempt counts with the score of what it left: a completed
+    one with its score, a blocked one or one whose budget ran out with the score of the work folder it left, graded by the same
+    evaluator. Switched attempts are left out and investigated; lab failures and operator errors are rerun. A configuration
+    whose hard cases end blocked can no longer look strong on the quality of the rest alone.
+  - §6.2, **where a block falls**: *blocked at the start* when the work folder the attempt left is identical to the package (the
+    agent changed nothing before the stop), *blocked during the work* otherwise. The lab compares every attempt's folder with
+    its package, so the split needs no judgment; §9 publishes blocks split this way.
+- §6.2 now says that a blocked attempt's state enters the expected score and never the quality score; §13 narrows the open
+  question on that state to whether it is also published as a profile of its own. No tool, test or published result changes.
 
 ### `0.2.164` — 2026-10-12 — The next-series design marks step 1 done: the unattended run passed a smoke case on a bench VM
 
