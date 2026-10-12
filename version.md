@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.173`
+**Versão atual:** `0.2.174`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.174` — 2026-10-12 — System A's reference no longer fails on an invoice list without a sort or on a column read as null, two defects its first tests found
+
+- `FinanceRepository.search` looked the sort up in an immutable map, which throws on a null key: every invoice list without
+  `sort` answered 500. It now falls back to the month when no sort is given.
+- `Db.one` wrapped the mapped value in `Optional.of`, which throws on null: the failed-login check read a null `locked_until` and
+  every login answered 500. It now treats a null value as absent, and `LoginThrottle` reads it that way.
 
 ### `0.2.173` — 2026-10-12 — System A's reference code is written, with the series' scripts that build it offline and give it a disposable database
 

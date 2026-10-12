@@ -52,7 +52,7 @@ public final class LoginThrottle {
 
     private boolean isLocked(Connection c, String key, Instant now) throws SQLException {
         Optional<Instant> until = Db.one(c, "select locked_until from login_throttle where key = ?", rs -> Db.instant(rs, "locked_until"), key);
-        return until.isPresent() && until.get() != null && now.isBefore(until.get());
+        return until.isPresent() && now.isBefore(until.get());
     }
 
     private void count(Connection c, String key, int limit) throws SQLException {

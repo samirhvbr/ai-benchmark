@@ -74,9 +74,10 @@ public final class Db {
         }
     }
 
+    /** The first row, mapped; empty when there is no row or the mapped value is null. */
     public static <T> Optional<T> one(Connection c, String sql, Row<T> row, Object... args) throws SQLException {
         List<T> rows = list(c, sql, row, args);
-        return rows.isEmpty() ? Optional.empty() : Optional.of(rows.get(0));
+        return rows.isEmpty() ? Optional.empty() : Optional.ofNullable(rows.get(0));
     }
 
     public static int update(Connection c, String sql, Object... args) throws SQLException {
