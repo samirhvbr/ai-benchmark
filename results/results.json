@@ -16840,6 +16840,53 @@
       "turn_budget": 60,
       "agents": [
         {
+          "agent": "claude-sonnet-5.5-max",
+          "score": 932,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 250,
+            "ARCH": 178,
+            "BUG": 134,
+            "PERF": 140,
+            "CLN": 89,
+            "COMP": 100,
+            "EXPL": 41
+          },
+          "cost_usd": 10.75,
+          "wall_minutes": 92.5,
+          "tokens": {
+            "input": 1390,
+            "output": 550255,
+            "cache": 15124592,
+            "total": 15676237
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 932,
+              "cost_usd": 10.75,
+              "wall_minutes": 92.5,
+              "tokens": {
+                "input": 1390,
+                "output": 550255,
+                "cache": 15124592,
+                "total": 15676237
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "max"
+          },
+          "comment": {
+            "en": "On a single run: security 250 of 250, architecture 178 of 200, bugs 134 of 150, performance 140 of 150 and clean code 89 of 100, with the contract untouched (compatibility 100) and no penalty. It is the highest score of any run so far, above the 911 of the same model at xhigh effort, whose published score is 860 over two runs. It fixed 34 of the 36 planted flaws and reported 31, with one false positive, and its report was rated 41 of 50. One check of the verifier did not register a fix that reads correct; it counts as not fixed, which costs 8 points. The session took 93 minutes, without the 16 minutes the operator took between the two stages, for US$ 10.75. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 250 de 250, arquitetura 178 de 200, bugs 134 de 150, desempenho 140 de 150 e código limpo 89 de 100, com o contrato intacto (compatibilidade 100) e sem penalidade. É a maior nota de qualquer execução até agora, acima dos 911 do mesmo modelo em xhigh, cuja nota publicada é 860 em duas execuções. Corrigiu 34 das 36 falhas plantadas e reportou 31, com um falso positivo, e o relatório teve 41 de 50. Uma verificação do avaliador não registrou uma correção que parece certa; ela conta como não corrigida, o que custa 8 pontos. A sessão levou 93 minutos, sem os 16 minutos que o operador levou entre as duas etapas, por US$ 10,75. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-xhigh",
           "score": 860,
           "grade": "Gold",

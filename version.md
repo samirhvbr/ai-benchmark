@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.151`
+**Versão atual:** `0.2.152`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.152` — 2026-10-12 — The LEB-300-A aggregate adds Claude Sonnet 5.5 at max effort, which leads the board with 932 (Platinum)
+
+- `results/2026/LEB-300-A/aggregate.json` goes from twenty-five agents to twenty-six. The new one is **Claude Sonnet 5.5 at max effort** (Claude Code, one run of three, so not official): **932 of 1000 (Platinum), 1st**. It is the first Platinum of this board and the highest score of any run so far; the previous highest, 911, is the second run of the same model at xhigh effort. Every other agent moves down one place, and Claude Sonnet 5.5 at xhigh (860) is now 2nd.
+- The run fixed 34 flaws and reported 31, with one false positive, 22 real findings outside the matrix, no compatibility violation and no penalty; its report was rated 41 of 50. The agent used 92.5 minutes of session (108.5 minutes less the 16.0 that the operator took between the two stages), US$ 10.75 and 15.7 million tokens. Mechanical evaluation: 36 probes, characterization 70 of 70. No subagent and no workflow was used: this is plain max effort, not the multi-agent mode that LEB-100 publishes as a different agent (`claude-sonnet-5.5-max-ultracode`).
+- Judged by two fresh Opus 5.5 subagents with the standing prompts, including the paragraph on bundled findings; no finding was credited to more than one row (checked after the verdict).
+- **Two contestable calls, both kept as judged.** (1) The mechanical check of one low-severity flaw (5 points) did not register a fix that the matching judge read as correct in the code: the check looks at a side effect of the request, and the delivery produces it through a path that the check does not observe. The mechanical result prevails (the protocol takes C3 from it) and the judge flagged it in `notes`; counted as fixed, the run would score 940. (2) One report finding was classed as a false positive because the race it describes is real but breaks no contract in the manifest; read as a real defect it moves to the extra findings and changes only the calibration, not the total.
+- The operator sent only the two fixed messages (`operator_replies` is 0). During stage 1 the agent hit the output token limit and Claude Code itself sent its standard resume message ("Output token limit hit. Resume directly..."), an `isMeta` event that no one typed; it is not an operator reply and is noted in the run record. At the end of stage 2 the agent also saved two notes in the client's own memory folder, outside the delivery.
+- The reading of the agent is written in both languages. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.151` — 2026-10-12 — The LEB-300-A aggregate adds a second run of GPT-6.1-sol at xhigh effort, and corrects a statement of 0.2.148 on bundled findings
 
