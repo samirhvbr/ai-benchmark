@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.166`
+**Versão atual:** `0.2.167`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.167` — 2026-10-12 — `leb pacote` prints the operator's first message exactly as PROTOCOL §3 fixes it
+
+- A review of the public repository from a replicator's seat found that `./leb pacote` told the operator to say *"Leia o
+  TAREFA.md e execute. ..."*, while PROTOCOL §3 (*Operator replies*) and every published run use *"Agora leia o TAREFA.md e
+  execute. Devolva code/ alterado, RELATORIO.md e achados.json."*. The script now prints the protocol's sentence. Nothing else in
+  the package or the scoring changes; 173 tests pass.
 
 ### `0.2.166` — 2026-10-12 — The audit names a subagent that the agent itself launched on another model, instead of calling the switch unexplained
 

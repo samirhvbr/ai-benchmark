@@ -160,7 +160,7 @@ def cmd_pacote(a):
     diz("    %s" % rel(destino))
     diz()
     diz("%sE diga só isto:%s" % (BOLD, OFF))
-    diz('    "Leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json."')
+    diz('    "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json."')
     diz()
     diz("Receita completa do run (o que anotar, onde salvar, como avaliar):")
     diz("    %s" % rel(os.path.join(base, "COMO-RODAR.md")))
