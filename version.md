@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.154`
+**Versão atual:** `0.2.155`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,37 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.155` — 2026-10-12 — A read-only tool audits one attempt's Claude Code session: who answered, every safeguard stop, and the outcome
+
+- New `tools/auditar-tentativa.py`, the audit of step 1 of `docs/new-series-design.md` (§7). It reads one session, the main
+  transcript and every subagent transcript under `<session-id>/subagents/` (workflows included), and reports each model that
+  answered, with its responses, tool calls and effort; every safeguard stop, with its category, its place in the transcript and the
+  tool calls the allowed models made after it on their own; the safeguard notices and the model fallback events; the operator's
+  messages, slash commands and interruptions; the API errors; and how the session ended.
+- It decides one outcome, the first that applies: operator error, switched, lab failure, blocked, budget exhausted, inconclusive,
+  completed. These are the outcomes of the design's §6.2, plus *inconclusive* when the record cannot be attributed. A stop the model
+  recovers from on its own (it goes on calling tools, with no substitute) is counted and reported, not fatal; a stop after which it
+  does no more work is *blocked*, and work that only an operator's new message brought back does not count as recovery.
+  `--requested` names the model; `--allow` adds one the lab allows (the client's auxiliary model, say), matched exactly or with a
+  date suffix and never as a prefix (`claude-sonnet-5` does not allow `claude-sonnet-5-5`); `--message` and `--allow-command`
+  declare the procedure; `--effort` is the effort every response must carry; `--stopped-by` says the lab stopped the client. Exit 0
+  completed, 1 any other outcome, 2 inconclusive.
+- What reading real transcripts taught it:
+  - a response is one API message, and the client writes one line per content block, so responses are counted by message id.
+    `tools/modelos-usados.py` counts lines: the 33 "responses" of claude-opus-4-8 in the void-2 record of Claude Fable 5.1 at xhigh
+    are 33 transcript lines, which are 16 API responses;
+  - in subagents, a stopped response's own lines can lack `stop_reason: "refusal"`, and the note the client adds after it ("Your
+    response above was stopped by a safety classifier") is then the only trace of the stop; a subagent's switch writes no fallback
+    event;
+  - every response records its effort, so the effort an attempt is filed under can be checked.
+- Run against public LEB-100-A records: both void attempts of Claude Fable 5.1 at xhigh come out *switched* (a fallback to
+  claude-opus-4-8 after a cyber stop), and run 1 of Claude Sonnet 5.5 at max effort in ultracode shows the nine of its 68 subagents
+  that switched to claude-sonnet-5, as its run note says, each after a stop in that subagent. Four of that run's 17 stops are seen
+  only through the client's note.
+- New `tests/test_auditar_tentativa.py` (16 cases, synthetic sessions in the shapes the client writes). Each check was also broken
+  on purpose to see a test fail: 8 mutations, 8 caught. 158 tests in all. `harness/README.md` lists the tool. No protocol text,
+  instance, weight, penalty or published result changes, and the LEB-300-A pilot does not use the tool.
 
 ### `0.2.154` — 2026-10-12 — The LEB-300-A aggregate adds GLM-5.3-Flash at max effort
 
