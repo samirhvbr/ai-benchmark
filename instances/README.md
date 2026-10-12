@@ -21,7 +21,7 @@ LEB-<nível>-<letra>/
     └── verify/               roteiro de verificação por falha (exploits, probes)
 ```
 
-Público × privado (MATRIX.md §4): o pacote que a IA recebe é **apenas** `code/` + `manifest.md` + a `TAREFA.md` gerada — montado por [`../harness/pack.py`](../harness/pack.py). `characterization/` é público mas usado pelo avaliador. `private/` **nunca** é entregue nem publicado no mesmo lugar do código — só o SHA-256 de `matrix.json` é divulgado no lançamento.
+Público × privado (MATRIX.md §4): o pacote que a IA recebe é **apenas** `code/` + `manifest.md` + a `TAREFA.md` gerada — montado por [`../harness/pack.py`](../harness/pack.py). `characterization/` é público mas usado pelo avaliador. `private/` (the key) is **never** in the package, and it **is** committed to this public repository together with the rest of the instance when the instance is created, **before its first run** (MATRIX §4, items 1 and 2): that commit's public timestamp is what proves that every run used this instance and this key.
 
 > **A instância não escreve a tarefa.** Repare que não há enunciado nesta árvore: a tarefa
 > (enunciado canônico + contrato de entrega) vive só em [`../protocol/TAREFA.md`](../protocol/TAREFA.md)
@@ -42,7 +42,7 @@ Público × privado (MATRIX.md §4): o pacote que a IA recebe é **apenas** `cod
 7. **Escrever a matriz** (`private/`) com localização, severidade, correção esperada e `verify`.
 8. **Validar**: o código roda, a caracterização passa no legado intocado, cada `verify` reproduz sua falha.
 9. **Empacotar de teste**: `./leb pacote <ID>` tem de sair sem erro — é o que prova que a instância monta um pacote limpo e que o vínculo (id, nível, versão, spec, hash) está correto na matriz.
-10. **Congelar e versionar**: publicar o hash de `matrix.json`; instância vira imutável.
+10. **Commit and push the whole instance, key included, and only then run it** (MATRIX §4, items 1 and 2). From that commit on the instance is immutable: a fix is a new version. Every run records the package's and the matrix's SHA-256, which anyone can recompute from the instance at that commit.
 
 ## Roteiro — avaliar um modelo numa instância
 

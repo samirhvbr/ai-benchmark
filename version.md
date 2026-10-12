@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.168`
+**Versão atual:** `0.2.169`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,28 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.169` — 2026-10-12 — Spec 1.5.0: an instance and its answer key are committed to the public repository at creation, before any run
+
+- **The owner's rule of 2026-10-12.** An instance, its answer key (`private/`) included, is committed to this public repository
+  when it is created, and no run starts before that commit is on GitHub. The commit's public timestamp is what proves that
+  every run used that instance and that key.
+- **Why.** The earlier rule kept the key private and published only its SHA-256, to be checked when the key was revealed at
+  retirement. That proves nothing about a run made before the hash was public, and LEB-300-A's hash reached GitHub in the same
+  commit as its first result (0.2.128, 2026-10-08): the results published after that commit are covered by the public hash,
+  the runs before it only by the operator's private freeze record. The new rule closes the gap for every instance from now on.
+  What it cannot prevent, a model trained after the publication having seen the key, is handled as LEB-100-A already does: every
+  run records its model's training cutoff, and the result says so when the cutoff is later than the publication.
+- **Where it is written.** `matrix/MATRIX.md §4` is rewritten in English as eight items: publication at creation; the hashes every
+  run records and anyone can recompute; the isolation that keeps the key from the agent during a run; the training cutoff;
+  expiry, counted from the publication; official runs; active instances, whose per-run material stays aggregate-only under the
+  owner's case-by-case orders; and the reason, with LEB-300-A's history and the hash its key must match. `SPEC.md` goes to
+  **1.5.0** (§9 item 8 and the release notes; MINOR, no change to points, penalties, IDs or published matrices). The rule is
+  repeated where an author or an operator meets it: the instance authoring steps (`instances/README.md`, step 10 and the public
+  and private note), the matrix template, the first item of the pre-run checklist (`BENCHMARK.md`), `README.md` (and its
+  Portuguese copy) and the next-series design (§5, both sets).
+- LEB-300-A's own instance and key are not part of this commit; they must hash to the `matrix_sha256` its results cite
+  (`c42c8287…3181`). No tool, test or published result changes; 173 tests pass and the export check is unchanged.
 
 ### `0.2.168` — 2026-10-12 — The documents correct seven things a replicator's review of the public repository found wrong
 

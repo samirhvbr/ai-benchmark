@@ -1,6 +1,6 @@
 # LEB — LLM Engineering Benchmark
 
-**Especificação Técnica** · Versão **1.4.0** · Status: **Rascunho normativo**
+**Especificação Técnica** · Versão **1.5.0** · Status: **Rascunho normativo**
 
 ---
 
@@ -227,13 +227,25 @@ Falta só **executar modelos de verdade** para gerar os primeiros scorecards de 
 5. O contrato de entrega é **descritivo**: padroniza a forma da resposta e não cria critério, bônus nem penalidade — mudar formato de entrega não muda pontuação.
 6. Todo resultado publicado **DEVE** citar: versão da spec, ID+hash da instância, protocolo do run (turnos, ferramentas, temperatura) e scorecard JSON.
 7. Comparações entre modelos só são válidas **na mesma instância e mesmo protocolo**.
-8. Uma instância **ativa** (`publication: "aggregate"` no cabeçalho da matriz) publica apenas o agregado por agente; entregas, vereditos e resultados por falha ficam em arquivo privado, e nada é liberado sem ordem expressa do operador, caso a caso — nem pela aposentadoria da instância (`matrix/MATRIX.md §4.6`).
+8. An instance and its key are committed to this public repository when the instance is created, and no run starts before that commit is on GitHub (`matrix/MATRIX.md §4`, items 1 and 2). An **active** instance (`publication: "aggregate"` in the matrix header) publishes only the per-agent aggregate of its runs; their deliveries, verdicts and per-flaw results stay in a private archive, and none of them is released without the owner's express order, case by case (`matrix/MATRIX.md §4`, item 7).
 
 ---
 
 ## 10. Versionamento
 
 A spec segue **SemVer**: MAJOR muda pontuação/regras; MINOR adiciona falhas/níveis; PATCH corrige texto. Instâncias são versionadas separadamente (`LEB-200-A v1.2`).
+
+### Release notes for version 1.5.0
+
+- **Instances and their keys are public from creation** (§9.8, `matrix/MATRIX.md §4`, rewritten): an instance, `private/`
+  included, is committed to the public repository when it is created, and no run starts before that commit is on GitHub. Its
+  public timestamp is what proves that every run used that instance and that key. The earlier rule kept the key private and
+  published only its SHA-256, to be checked when the key was revealed at retirement; for LEB-300-A that hash reached GitHub in
+  the same commit as the first result, so the runs before it could not be checked by anyone but the operator. The owner's
+  decision of 2026-10-12.
+- No change to points, penalties, IDs or published matrices (hence MINOR): instances written for 1.1.0 to 1.4.0, and every
+  published result, stay valid. What a model may have seen in training is handled as before, by the training cutoff each run
+  records (PROTOCOL §3), now for every instance.
 
 ### Release notes for version 1.4.0
 
@@ -254,7 +266,7 @@ opt-in per instance:
   only when declared; no weight, point or penalty reads them.
 - **Package leak guard** — whole-word path matching, a content scan for markers derived from the matrix and for the private destination,
   an instance-declared `pack_allow_paths`, and a positive control on every packaging run.
-- **Aggregate publication of an active instance** (§9.8, `matrix/MATRIX.md §4.6`).
+- **Aggregate publication of an active instance** (§9.8, `matrix/MATRIX.md §4`, item 7).
 - **Tooling tests** — `tests/run_all.py` (standard library, no network, no Docker) and a workflow that runs it on synthetic and public
   fixtures only. `tools/saturacao.py` measures saturation and dispersion, read-only.
 

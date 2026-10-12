@@ -82,4 +82,4 @@ Os pontos brutos por categoria são normalizados para os pesos oficiais — **to
 
 ## Licença e contribuição
 
-IDs da taxonomia são imutáveis (SPEC §9). Propostas de novas falhas/níveis: issue com o caso real que a motive. Matrizes de instâncias **vigentes** nunca entram neste repositório público — apenas seus hashes SHA-256; a matriz é revelada quando a instância é aposentada.
+IDs da taxonomia são imutáveis (SPEC §9). Propostas de novas falhas/níveis: issue com o caso real que a motive. An instance and its answer key are committed to this public repository when the instance is created, before its first run (MATRIX §4, items 1 and 2); until 2026-10-12 a key stayed private and only its hash was published.

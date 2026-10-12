@@ -120,8 +120,9 @@ flowchart TB
 - **Diversity:** different domains (for example an administrative web application, a data-processing pipeline, a service with
   queues and concurrency) and more than one stack. Levels 300 and some 400.
 - **Two sets.** A **development set** (the pilot's 3 systems) builds and calibrates the method. An **evaluation set** (target: 6
-  systems; the final number comes from the pilot, §11) stays private until it is published. Weights and criteria are frozen
-  before the evaluation set runs.
+  systems; the final number comes from the pilot, §11) measures. Every instance of both sets, key included, is committed to the
+  public repository when it is created and before its first run (`matrix/MATRIX.md §4`, items 1 and 2, the owner's rule of
+  2026-10-12). Weights and criteria are frozen before the evaluation set runs.
 - **Calibration does not delete items by a threshold.** Easy items check basic competence and some very hard ones measure what
   matters most; an item is kept, changed or removed for its purpose, with its numbers in hand.
 

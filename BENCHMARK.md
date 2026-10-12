@@ -295,12 +295,14 @@ da spec**. Comparações entre modelos só valem **na mesma instância e mesmo p
 A pasta `runs/` inteira é **gitignored** — pacotes, entregas e scorecards não sobem para o
 repo público junto do código. A published run is a curated copy under `results/<edition>/<instance>/<agent>/run-<n>/`
 (the delivery, `run.json`, `mecanico.json`, `veredito.json` and the scorecard; `results/README.md` lists the files), written
-for an instance that publishes in full; an active instance publishes only its aggregate (MATRIX §4, item 6).
+for an instance that publishes in full; an active instance publishes only its aggregate (MATRIX §4, item 7).
 
 ---
 
 ## Checklist anti-vazamento (antes de apertar "enviar")
 
+- [ ] Is the instance, **answer key included**, committed and pushed to the public repository **before this run**, at the version
+      this package was built from? If not, stop: no run starts before that commit is on GitHub (MATRIX §4, items 1 and 2).
 - [ ] O pacote saiu do `./leb pacote` (sem erro) e tem **só** `code/` + `manifest.md` + `TAREFA.md`?
 - [ ] Mandei a pasta `runs/<ID>/pacote/` — e **não** a pasta `runs/<ID>/`, que tem o `COMO-RODAR.md`?
 - [ ] **Nenhum** arquivo `matrix*`, `private/`, `verify/` ou `characterization/` no que o modelo vê?

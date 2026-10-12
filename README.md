@@ -4,7 +4,7 @@
 
 🇧🇷 [Versão em português](README_br.md)
 
-**A Software Engineering evaluation standard for LLMs.** Spec version: **1.4.0**.
+**A Software Engineering evaluation standard for LLMs.** Spec version: **1.5.0**.
 
 LEB is not a prompt benchmark and does not measure who writes the prettiest code. It measures **who can evolve a legacy system without breaking it** — finding real flaws, fixing them, preserving compatibility, and explaining decisions like a senior engineer would.
 
@@ -120,15 +120,16 @@ The rest of the recipe for that machine (toolchain, accounts and folders, how a 
 
 ## Status
 
-- [x] Specification 1.4.0 (this repository) — additive and opt-in, no change to points: per-instance runner contract, structural evidence for Template R, whole-word and content leak guard, aggregate publication of active instances, tooling tests ([release notes](SPEC.md))
+- [x] Specification 1.5.0 (this repository) — an instance and its key are public from creation, before the first run; no change to points ([release notes](SPEC.md))
+- [x] Specification 1.4.0 — additive and opt-in, no change to points: per-instance runner contract, structural evidence for Template R, whole-word and content leak guard, aggregate publication of active instances, tooling tests ([release notes](SPEC.md))
 - [x] Specification 1.3.0 — canonical task shipped inside the package + delivery contract (`PROTOCOL §2.1–2.2`), calibration + difficulty axis (§8.1–8.2), cost/time block (§8.3), non-scoring
 - [x] **Packager** ([`harness/pack.py`](harness/pack.py)) — builds `code/` + `manifest.md` + an instance-bound [`TAREFA.md`](protocol/TAREFA.md), with leak scanning and a deterministic `package_sha256`
 - [x] First instance: **[LEB-100-A](instances/LEB-100-A/)** v1.1 — PHP legacy code, 13 planted flaws + 2 decoys, private matrix, characterization + verify probes (validated live: characterization 22/22 green on both pristine and fixed code; probes flip PLANTADA→CORRIGIDA)
 - [x] Evaluation **harness** ([`harness/`](harness/)) — mechanical pipeline (characterization before/after + probes + difficulty coverage → JSON), stdlib-only, instance-agnostic; validated both ways on LEB-100-A
 - [x] Scorecard **assembler** ([`harness/score.py`](harness/score.py)) + **judge interface** ([`scoring/JUDGE.md`](scoring/JUDGE.md), `judge.schema.json`) — deterministic 1000-pt scorecard from mechanical evidence + judge verdict; validated end-to-end (incl. the mysqli→PDO rewrite scoring 0/Reprovada, and a Gold run at 860)
 - [x] First scored runs — 37 agents on LEB-100-A (92 runs), 26 of them official with three runs each (an official score is the median of three), published in [results/](results/) with every delivery, verdict and scorecard
-- [ ] Official reference runs — 3 runs per model on LEB-100-A, which stays current under [MATRIX §4](matrix/MATRIX.md), item 5: runs on a machine that cannot reach GitHub, and each run records the model's training cutoff
+- [ ] Official reference runs — 3 runs per model on LEB-100-A, which stays current under [MATRIX §4](matrix/MATRIX.md), items 3 to 5: runs on a machine that cannot reach GitHub, and each run records the model's training cutoff
 
 ## License & contributing
 
-Taxonomy IDs are immutable (SPEC §9). Proposals for new failures/levels: open an issue with the real-world case motivating it. Matrices of **active** instances never enter this public repository — only their SHA-256 hashes; matrices are revealed when an instance is retired. LEB-100-A is the one exception: its matrix has been public since 2026-07-13, and [MATRIX §4](matrix/MATRIX.md), item 5, says under which conditions it stays current.
+Taxonomy IDs are immutable (SPEC §9). Proposals for new failures/levels: open an issue with the real-world case motivating it. **An instance and its answer key are committed to this public repository when the instance is created, before its first run** ([MATRIX §4](matrix/MATRIX.md), items 1 and 2): the public timestamp of that commit is what proves that every run used that instance and that key. No agent reads the key during a run, because the bench machines cannot reach GitHub (*Execution environment* above), and every run records its model's training cutoff for what a model may have seen in training (items 3 and 4). Until 2026-10-12 a key stayed private and only its hash was published; item 8 says why that changed.

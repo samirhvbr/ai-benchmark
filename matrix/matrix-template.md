@@ -1,6 +1,6 @@
 # Matriz Oficial de Falhas — <INSTÂNCIA> v<VERSÃO>
 
-> **CONFIDENCIAL** — este arquivo vive em `private/`. Publicar apenas o SHA-256 de `matrix.json` no lançamento; revelar a matriz na aposentadoria da instância (MATRIX.md §4).
+> **The answer key.** This file lives in `private/`: it never goes into the package the agent receives, and it is committed to the public repository with the rest of the instance when the instance is created, before its first run (MATRIX.md §4, items 1 and 2).
 
 | Spec LEB | Instância | Nível | Versão | Stack | Hash publicado em |
 | --- | --- | --- | --- | --- | --- |
