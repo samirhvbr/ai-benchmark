@@ -17595,6 +17595,53 @@
           }
         },
         {
+          "agent": "glm-5.3-flash-max",
+          "score": 693,
+          "grade": "Silver",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 211,
+            "ARCH": 106,
+            "BUG": 147,
+            "PERF": 89,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 40
+          },
+          "cost_usd": 0.54,
+          "wall_minutes": 52.8,
+          "tokens": {
+            "input": 622450,
+            "output": 63956,
+            "cache": 12599424,
+            "total": 13354809
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 693,
+              "cost_usd": 0.54,
+              "wall_minutes": 52.8,
+              "tokens": {
+                "input": 622450,
+                "output": 63956,
+                "cache": 12599424,
+                "total": 13354809
+              }
+            }
+          ],
+          "model": {
+            "name": "GLM-5.3-Flash",
+            "id": "glm-5.3-flash",
+            "provider": "Z.AI",
+            "reasoning_effort": "max"
+          },
+          "comment": {
+            "en": "On a single run: security 211 of 250, bugs 147 of 150, architecture 106 of 200, performance 89 of 150 and nothing in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 25 of the 36 planted flaws and reported 23, with no false positive; the report was rated 40 of 50. The same model at high effort scored 568 on a run through Z.ai's own API; this one ran at max effort through Novita AI, so the gap of 125 points mixes the effort and the host. The session took 53 minutes, without the 13 minutes the operator took between the two stages, for US$ 0.54 and about 13.4 million tokens. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 211 de 250, bugs 147 de 150, arquitetura 106 de 200, desempenho 89 de 150 e nada em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 25 das 36 falhas plantadas e reportou 23, sem falso positivo; o relatório teve 40 de 50. O mesmo modelo em esforço high fez 568 numa execução pela API da própria Z.ai; esta rodou em esforço max pela Novita AI, então a diferença de 125 pontos mistura o esforço e o provedor. A sessão levou 53 minutos, sem os 13 minutos que o operador levou entre as duas etapas, por US$ 0,54 e cerca de 13,4 milhões de tokens. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "glm-5.3-high",
           "score": 688,
           "grade": "Silver",

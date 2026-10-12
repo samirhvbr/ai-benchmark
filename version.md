@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.153`
+**Versão atual:** `0.2.154`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.154` — 2026-10-12 — The LEB-300-A aggregate adds GLM-5.3-Flash at max effort
+
+- `results/2026/LEB-300-A/aggregate.json` goes from twenty-six agents to twenty-seven. The new one is **GLM-5.3-Flash at max effort** (OpenCode through Novita AI, one run of three, so not official): **693 of 1000 (Silver), 14th**. Agents below it move down one place; the first thirteen places do not change.
+- The run fixed 25 flaws and reported 23, with no false positive, 9 real findings outside the matrix, no compatibility violation and no penalty; its report was rated 40 of 50. The agent used 52.8 minutes of session (66.2 minutes less the 13.4 that the operator took between the two stages), US$ 0.54 and 13.4 million tokens. Mechanical evaluation: 36 probes, characterization 70 of 70.
+- The same model at high effort (`glm-5.3-flash-high`, 568) ran through Z.ai's own API, and this run went through Novita AI, so the 125 points between them mix the effort and the host. The session records the host's own id, `zai-org/glm-5.3-flash`, and the variant `max`; Z.ai's model page lists `reasoning_effort: max` among its recommended settings, and Novita AI's page describes no effort control. The model block of the run records both.
+- Judged by two fresh Opus 5.5 subagents with the standing prompts, including the paragraph on bundled findings; no finding was credited to more than one row (checked after the verdict).
+- **Two calls kept as judged.** (1) A change in a background job moves the creation of a folder out of the per-item error handling, so a folder that cannot be created now aborts the whole pass; the judge did not charge the penalty for introducing a new bug (15 points if charged), because it only happens with a misconfigured folder. (2) The new request-body cap answers 413, a status outside the manifest's error list; it was not charged as a compatibility violation.
+- The reading of the agent is written in both languages. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.153` — 2026-10-12 — Propose the next LEB series: two independent tracks, LEB Default and LEB Security
 

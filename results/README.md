@@ -91,18 +91,19 @@ This instance is **active**. While it is, only the totals below are published: n
 | 11 | `claude-sonnet-5.5-medium` | **717** | Silver | 236 | 100 | 121 | 99 | 50 | 70 | 41 | 3/3 (659 · 717 · 734) |
 | 12 | `gpt-6-astra-xhigh` | **717** | Silver | 194 | 142 | 124 | 86 | 50 | 100 | 41 | 2/3 (717 · 729) |
 | 13 | `moonshot-kimi-k3-high` | **712** | Silver | 229 | 92 | 137 | 96 | 18 | 100 | 40 | 2/3 (737 · 712) |
-| 14 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
-| 15 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
-| 16 | `glm-5.3-flashx-high` | **648** | Silver | 187 | 92 | 145 | 77 | 32 | 75 | 40 | 1/3 |
-| 17 | `gpt-5.6-terra-xhigh` | **625** | Silver | 225 | 47 | 134 | 96 | 0 | 100 | 38 | 3/3 (625 · 574 · 657) |
-| 18 | `glm-5.3-flash-high` | **568** | Bronze | 204 | 47 | 126 | 51 | 0 | 100 | 40 | 1/3 |
-| 19 | `gpt-5.6-luna-xhigh` | **512** | Bronze | 173 | 67 | 121 | 57 | 0 | 75 | 39 | 2/3 (638 · 512) |
-| 20 | `gpt-6-luna-xhigh` | **471** | Bronze | 180 | 47 | 124 | 70 | 0 | 45 | 40 | 1/3 |
-| 21 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
-| 22 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
-| 23 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
-| 24 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
-| 25 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
-| 26 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
+| 14 | `glm-5.3-flash-max` | **693** | Silver | 211 | 106 | 147 | 89 | 0 | 100 | 40 | 1/3 |
+| 15 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
+| 16 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
+| 17 | `glm-5.3-flashx-high` | **648** | Silver | 187 | 92 | 145 | 77 | 32 | 75 | 40 | 1/3 |
+| 18 | `gpt-5.6-terra-xhigh` | **625** | Silver | 225 | 47 | 134 | 96 | 0 | 100 | 38 | 3/3 (625 · 574 · 657) |
+| 19 | `glm-5.3-flash-high` | **568** | Bronze | 204 | 47 | 126 | 51 | 0 | 100 | 40 | 1/3 |
+| 20 | `gpt-5.6-luna-xhigh` | **512** | Bronze | 173 | 67 | 121 | 57 | 0 | 75 | 39 | 2/3 (638 · 512) |
+| 21 | `gpt-6-luna-xhigh` | **471** | Bronze | 180 | 47 | 124 | 70 | 0 | 45 | 40 | 1/3 |
+| 22 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
+| 23 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
+| 24 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
+| 25 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
+| 26 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
+| 27 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
