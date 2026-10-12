@@ -121,10 +121,11 @@ o scorecard das outras categorias, para não contaminar a nota.
 ## Montagem
 
 ```sh
+# --mechanical: the output of leb_harness.py; --judge: this document's verdict, in the judge.schema.json format
 python3 harness/score.py \
-    --matrix    instances/LEB-100-A/private/matrix.json \
-    --mechanical relatorio_mecanico.json   # saída do leb_harness.py \
-    --judge      veredito.json             # este documento, no formato judge.schema.json \
+    --matrix     instances/LEB-100-A/private/matrix.json \
+    --mechanical relatorio_mecanico.json \
+    --judge      veredito.json \
     --out        scorecard.json
 ```
 

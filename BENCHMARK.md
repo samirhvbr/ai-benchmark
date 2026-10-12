@@ -83,7 +83,7 @@ São **duas coisas** — e só elas:
 Um comando, a partir da raiz do repositório:
 
 ```sh
-./leb pacote LEB-100-A                      # modo agêntico: --mode A --turnos 20
+./leb pacote LEB-100-A                      # the published LEB-100-A runs: --mode A --turnos 30
 ```
 
 ```text
@@ -293,7 +293,9 @@ O resultado publicado **DEVE** conter ([PROTOCOL §7](protocol/PROTOCOL.md)): sc
 (`.md` + `.json`), os parâmetros do Passo 3, o **hash da matriz**, os logs e a **versão
 da spec**. Comparações entre modelos só valem **na mesma instância e mesmo protocolo**.
 A pasta `runs/` inteira é **gitignored** — pacotes, entregas e scorecards não sobem para o
-repo público junto do código.
+repo público junto do código. A published run is a curated copy under `results/<edition>/<instance>/<agent>/run-<n>/`
+(the delivery, `run.json`, `mecanico.json`, `veredito.json` and the scorecard; `results/README.md` lists the files), written
+for an instance that publishes in full; an active instance publishes only its aggregate (MATRIX §4, item 6).
 
 ---
 

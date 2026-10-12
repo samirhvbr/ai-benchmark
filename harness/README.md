@@ -119,6 +119,11 @@ métricas de custo do *modelo* (tokens, US$/run, tok/s, wall-clock da inferênci
 vivem no bloco `cost_time` do scorecard (`../scoring/scorecard.schema.json`,
 informativo — não pontua) e são preenchidas quando o modelo é de fato executado.
 
+In the published runs the model's cost is in `run.json`'s `cost_time`, taken from the client's own usage summary (SCORING
+§9.3), and the scorecard's `cost_time` is `null`: `score.py` fills it only when called with `--cost` (`./leb scorecard ...
+--custo`) and a JSON file in the `cost_time` shape, not with the `custo.txt` the operator saves as printed. Neither changes the
+score.
+
 ## Package leak guard
 
 `pack.py` scans the package before it finishes, and aborts (deleting the package) on:

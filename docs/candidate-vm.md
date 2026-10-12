@@ -126,8 +126,9 @@ The deviations, the same on every VM, keep the operator's own account and conten
 - OpenCode: `share` set to `disabled` (sessions are never shared) and `autoupdate` off, in its `opencode.json`.
 - The work folder (`/srv/<INSTANCE>`) is trusted beforehand in each client, so no trust dialog opens: a `projects` entry with `hasTrustDialogAccepted` in `~/.claude.json` for
   Claude Code, and `[projects."/srv/<INSTANCE>"]` with `trust_level = "trusted"` in Codex's `config.toml`.
-- Tools are pre-approved and one permission mode is set before the first message and never changed. Fallback is on through the client's own setting; the conformity rules of
-  task 1.2.0 apply. Codex's default sandbox (`workspace-write`) writes to the work folder but cannot connect to the local PostgreSQL, which the tests need (measured with
+- Tools are pre-approved and one permission mode is set before the first message and never changed. Fallback is on through the client's own setting, because this profile
+  runs task 1.2.0 and its conformity rules apply (PROTOCOL §3.1); a run of task 1.0.0, such as the published LEB-100-A runs, turns the switch off instead (PROTOCOL §3,
+  *One model per run*). Codex's default sandbox (`workspace-write`) writes to the work folder but cannot connect to the local PostgreSQL, which the tests need (measured with
   `codex sandbox`), so either every escalation is approved by hand or the run starts with the bypass flag (`--dangerously-bypass-approvals-and-sandbox`; Claude Code's
   equivalent is `--dangerously-skip-permissions`). The VM is disposable. Record which one a run used.
 - **Pin the model on the command line.** A default model can sit in one VM's client settings (on one reference VM both Claude Code and Codex had one, the others none), so a

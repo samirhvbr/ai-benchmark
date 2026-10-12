@@ -239,9 +239,9 @@ Reading real transcripts shaped it:
   attributable, but the launcher or a setting asked for another model, so the audit files an operator error.
 - A non-interactive session writes no turn records; its length is the span from the first message to the end.
 
-Run on public LEB-100-A records, it finds both void attempts of Claude Fable 5.1 at xhigh switched to claude-opus-4-8 after a
-cyber stop, and the nine of 68 subagents of the Claude Sonnet 5.5 max ultracode run 1 that switched to claude-sonnet-5, each
-after a stop in that subagent.
+Run on the operator's transcripts of published LEB-100-A runs (the transcripts themselves are not published), it finds both void
+attempts of Claude Fable 5.1 at xhigh switched to claude-opus-4-8 after a cyber stop, as their records say, and the nine of 68
+subagents of the Claude Sonnet 5.5 max ultracode run 1 that switched to claude-sonnet-5, each after a stop in that subagent.
 
 ## 8. Evaluation
 

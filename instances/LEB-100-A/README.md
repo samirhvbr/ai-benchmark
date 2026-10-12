@@ -11,6 +11,7 @@ Instância de **referência** do LEB, nível **LEB-100** (~300 linhas). Um paine
 | Dificuldade | Fácil ×6 · Moderada ×3 · Difícil ×4 · Especialista ×0 |
 | Iscas | **2** (SEC-009, PERF-006) |
 | Modo sugerido | **S** (turno único) — cabe numa janela de contexto |
+| Published runs | mode **A**, 30 turns: `./leb pacote LEB-100-A --mode A --turnos 30` rebuilds their package byte for byte (SHA-256 `34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f`, as in `results/results.json`) |
 | Matriz (SHA-256) | `68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625` |
 
 ## Estrutura

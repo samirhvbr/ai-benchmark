@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.167`
+**Versão atual:** `0.2.168`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,29 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.168` — 2026-10-12 — The documents correct seven things a replicator's review of the public repository found wrong
+
+A review that tried to replicate LEB-100-A from this repository alone rebuilt the published package byte for byte and recomputed
+a published scorecard identically (and `tools/export-results.py --check` passes), but found these errors in the documents:
+
+- The command that rebuilds the published package was nowhere: the documents give mode S, or mode A with 20 turns, and the
+  published runs are mode A with 30. `instances/LEB-100-A/README.md` now gives `./leb pacote LEB-100-A --mode A --turnos 30`
+  with the package's SHA-256, and `BENCHMARK.md` says the same at the packaging step.
+- `docs/candidate-vm.md` said fallback is on without its scope: that profile runs task 1.2.0 (PROTOCOL §3.1); a run of task
+  1.0.0, such as the published LEB-100-A runs, turns the switch off (PROTOCOL §3).
+- `scoring/JUDGE.md`: the `score.py` example broke when pasted, because comments after a line continuation swallowed it.
+- `BENCHMARK.md` step 8 said deliveries and scorecards do not reach the public repository; it now says where a published run's
+  curated copy lives, and that an active instance publishes only its aggregate.
+- `harness/README.md` says where the model's cost really is in published runs (`run.json`), and that `score.py` takes it as
+  JSON through `--cost`, not as the `custo.txt` the operator saves.
+- `README.md` counted twenty-seven LEB-100-A agents; it now gives 37 agents, 92 runs, 26 official.
+- `docs/new-series-design.md` §7 said the audit ran on public LEB-100-A records; it ran on the operator's transcripts of
+  published runs, and the transcripts are not published.
+
+What the review found that needs the owner's decision (unpublished judge prompts, the environment of the LEB-100-A runs, the
+transcripts the protocol says are published, pinned evaluation images, the retirement rule) is left as it is. No protocol text,
+tool or published result changes; 173 tests pass.
 
 ### `0.2.167` — 2026-10-12 — `leb pacote` prints the operator's first message exactly as PROTOCOL §3 fixes it
 
