@@ -1,0 +1,15 @@
+Moved out of the public characterization suite because they describe the visible symptom of a planted flaw.
+
+BUG-006 (month boundary in the company zone):
+    @Test
+    void oMesEContadoNoFusoDaEmpresa() throws Exception {
+        relogio.agora = MARCO;
+        // 2026-03-01 01:00 UTC ainda é 28 de fevereiro às 22:00 em São Paulo
+        chamadoNoBanco(empA, cliA, atdA, "NORMAL", "ABERTO", Instant.parse("2026-03-01T01:00:00Z"), Instant.parse("2026-03-20T12:00:00Z"), null);
+        String t = token(ADMIN_A);
+        assertEquals(0, get("/relatorios/sla?mes=2026-03", t).j("abertos").asInt());
+        assertEquals(1, get("/relatorios/sla?mes=2026-02", t).j("abertos").asInt());
+    }
+
+
+SEC-001 (an unknown status filter answers 422): get("/chamados?status=NADA") expected 422 in ChamadoTest.filtrosEPaginacao

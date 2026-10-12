@@ -1,0 +1,707 @@
+{
+  "leb_spec": "1.4.0",
+  "instance": "LEB-300-A",
+  "level": 300,
+  "version": "1.0",
+  "language": "java21-maven-postgresql",
+  "task_version": "1.2.0",
+  "publication": "aggregate",
+  "public_surface": {
+    "symbols": [
+      "br.netx.chamados.App.create(Config,DataSource,Clock):App",
+      "br.netx.chamados.App.start():int",
+      "br.netx.chamados.App.stop():void",
+      "br.netx.chamados.App.jobs():JobRunner",
+      "br.netx.chamados.JobRunner.executarUmaVez():void",
+      "br.netx.chamados.Config(int porta,boolean agendadorAtivo,Duration intervaloJobs,Path notificacaoDir,Duration tokenValidade)"
+    ],
+    "routes": [
+      "GET /chamados",
+      "GET /chamados/{id}",
+      "GET /chamados/{id}/eventos",
+      "GET /chamados/{id}/ordens",
+      "GET /chamados/{id}/sla",
+      "GET /clientes",
+      "GET /clientes/{id}",
+      "GET /clientes/{id}/chamados",
+      "GET /empresas",
+      "GET /empresas/{id}",
+      "GET /notificacoes",
+      "GET /ordens",
+      "GET /ordens/{id}",
+      "GET /relatorios/exportacao.csv",
+      "GET /relatorios/sla",
+      "GET /relatorios/status",
+      "GET /relatorios/tecnicos",
+      "GET /tecnicos",
+      "GET /tecnicos/{id}",
+      "GET /tecnicos/{id}/agenda",
+      "GET /usuarios",
+      "GET /usuarios/{id}",
+      "PATCH /chamados/{id}",
+      "PATCH /ordens/{id}",
+      "PATCH /usuarios/{id}",
+      "POST /auth/login",
+      "POST /auth/logout",
+      "POST /chamados",
+      "POST /chamados/{id}/eventos",
+      "POST /chamados/{id}/ordens",
+      "POST /chamados/{id}/transicoes",
+      "POST /clientes",
+      "POST /empresas",
+      "POST /ordens/{id}/cancelar",
+      "POST /ordens/{id}/concluir",
+      "POST /ordens/{id}/iniciar",
+      "POST /tecnicos",
+      "POST /usuarios",
+      "PUT /clientes/{id}",
+      "PUT /empresas/{id}",
+      "PUT /tecnicos/{id}"
+    ],
+    "db_schema": [
+      "empresa(id,nome,fuso_horario,expediente_inicio,expediente_fim,ativa)",
+      "usuario(id,empresa_id,email,nome,papel,senha_hash,ativo)",
+      "cliente(id,empresa_id,nome,documento,email,telefone,endereco,ativo)",
+      "tecnico(id,empresa_id,usuario_id,nome,ativo)",
+      "sla_politica(id,empresa_id,prioridade,horas_resposta,horas_resolucao,somente_expediente)",
+      "chamado(id,empresa_id,cliente_id,tecnico_id,titulo,descricao,prioridade,status,aberto_em,prazo_resposta,prazo_resolucao,primeira_resposta_em,resolvido_em,criado_por)",
+      "ordem_servico(id,empresa_id,chamado_id,tecnico_id,tipo,status,agendada_para,iniciada_em,concluida_em,valor_cents,observacoes)",
+      "evento_chamado(id,chamado_id,tipo,usuario_id,detalhe,ocorrido_em)",
+      "notificacao(id,empresa_id,chave_evento,destinatario,assunto,corpo,estado,tentativas,proxima_tentativa_em,enviada_em)",
+      "lancamento(id,empresa_id,ordem_servico_id,valor_cents,competencia,criado_em)"
+    ],
+    "artifacts": [
+      "CSV header: ID;Titulo;Cliente;Prioridade;Status;Aberto em;Prazo resolucao;Resolvido em;Tecnico;SLA cumprido",
+      "notification file: one JSON line per recipient in <notificacaoDir>/<empresa_id>.jsonl with chave, destinatario, assunto, corpo, enviada_em"
+    ]
+  },
+  "entries": [
+    {
+      "id": "SEC-001.a",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/repo/ChamadoRepo.java:85",
+      "evidence": "The status and priority filters of the ticket list are spliced into the statement text; a crafted value changes which rows come back or raises a database error.",
+      "expected_fix": "Bind the filter values as statement parameters (or validate them against the enum before use). Result sets and error behavior must not depend on the filter text.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec001_umFiltroNaoMudaAConsulta",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Keep plain JDBC. An allowlist check against the enum is an accepted equivalent. Escaping quotes by hand is a partial fix. The ordering fragment built from the enum is NOT part of this flaw (decoy SEC-001.b)."
+    },
+    {
+      "id": "SEC-016",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/http/CadastroHandlers.java:160",
+      "evidence": "Any authenticated user of a company can change another user's role through the user update route; only authentication is checked, the role is not.",
+      "expected_fix": "Require the ADMIN role of the same company before applying a user update; other roles get 403 and the row stays unchanged.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec016_soOAdminAlteraUmUsuario",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The check may live in a handler, a service or a filter. The company boundary (404 for other companies) must keep working."
+    },
+    {
+      "id": "SEC-017.a",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:117",
+      "evidence": "The event list of a ticket is returned without checking that the ticket belongs to the caller's company, so another company's events can be read by id.",
+      "expected_fix": "Resolve the ticket within the caller's company first (404 otherwise) or filter the events by company.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec017a_oHistoricoDeEventosEDaEmpresa",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The detail route already checks the company; the sibling route does not. Fixing only the visible route is the trap."
+    },
+    {
+      "id": "SEC-015",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/App.java:93",
+      "evidence": "On startup the application creates a platform account whose password is a literal in the source; that credential logs in.",
+      "expected_fix": "Remove the built-in credential. The first platform account must come from configuration or an operator action, never from the code.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec015_naoHaContaPadraoComSenhaNoCodigo",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Reading the secret from an environment variable at startup is accepted. The verifier also looks for the literal in the main sources."
+    },
+    {
+      "id": "SEC-014.a",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/auth/Auth.java:71",
+      "evidence": "New passwords are stored as an unsalted fast digest, so equal passwords give equal stored values and the value is the plain digest of the password.",
+      "expected_fix": "Store new passwords with a salted, deliberately slow scheme (PBKDF2, bcrypt, scrypt or Argon2); keep verifying the legacy stored format so existing users can still log in.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec014_asSenhasNovasSaoSalgadas",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Using only JDK primitives (PBKDF2WithHmacSHA256) is accepted and expected. The same digest helper is legitimately used elsewhere as a content fingerprint (decoy SEC-014.b)."
+    },
+    {
+      "id": "SEC-017.b",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Especialista",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/relatorio/RelatorioService.java:59",
+      "evidence": "The SLA report is cached by month only: a company asking right after another gets the other company's numbers for the same month.",
+      "expected_fix": "Include the company in the cache key (or drop the cache); the 30-second validity must keep working.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec017b_oRelatorioEmCacheNaoVazaEntreEmpresas",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The cache itself is part of the contract (manifest); removing it is accepted only if responses stay correct. Keying by company and month is the canonical fix.",
+      "dimensions": [
+        "consistencia"
+      ]
+    },
+    {
+      "id": "SEC-008",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/relatorio/CsvExportador.java:58",
+      "evidence": "Text cells that begin with an equals, plus, minus or at sign are written as they come, so a spreadsheet will run them as formulas.",
+      "expected_fix": "Neutralize risky leading characters in text cells with a leading apostrophe; leave every other byte of the file unchanged.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec008_aPlanilhaNaoExecutaFormulas",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Numbers and dates must not get the apostrophe. The verifier compares the rest of the file byte for byte."
+    },
+    {
+      "id": "SEC-020",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/http/CadastroHandlers.java:347",
+      "evidence": "User listings and details include the stored password hash.",
+      "expected_fix": "Remove the hash from every user representation.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec020_nenhumaRespostaTrazOHashDaSenha",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Every route returning a user is checked, including the list, the detail, creation and update responses."
+    },
+    {
+      "id": "SEC-013",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Difícil",
+      "points": 5,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/auth/Auth.java:62",
+      "evidence": "After logout the same token still authenticates: the session lookup does not honor the invalidation flag.",
+      "expected_fix": "Make the session lookup require the session to be active (and keep expiry), so a logged-out token gets 401.",
+      "verify": "verify/src/test/java/br/netx/chamados/V05_SegurancaTest.java#sec013_depoisDoLogoutOTokenNaoVale",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Deleting the session row on logout is an accepted equivalent."
+    },
+    {
+      "id": "ARCH-001",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 12,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:51",
+      "evidence": "One service class concentrates ticket handling, service orders, notification fan-out, idempotency and SLA arithmetic.",
+      "expected_fix": "Split the responsibilities into cohesive collaborators with their own state; no class should concentrate them again.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#arch001_nenhumaClasseMisturaDominiosSemRelacao",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Size is not the criterion: reformatting or shortening lines, moving methods into a helper or into a base class the god class extends separates nothing, and a long cohesive class is not penalized for being long. The verifier looks at groups of methods that share no collaborator and no call, and at how many data-access classes one class depends on (the class is seen together with what it inherits); it caps R3, the judge reads the split."
+    },
+    {
+      "id": "ARCH-002",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/http/RelatorioHandlers.java:34",
+      "evidence": "A report route in the HTTP layer opens a database statement itself instead of going through the report service.",
+      "expected_fix": "Move the query behind the service/repository layer; the HTTP layer must not reference the JDBC API.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#arch002_aCamadaHttpNaoFalaComOBanco",
+      "proves": [
+        "R3"
+      ],
+      "notes": "The HTTP layer is detected by dependency (it uses the JDK HTTP server or a class that does), not by package name."
+    },
+    {
+      "id": "ARCH-004",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/job/EscalonamentoJob.java:64",
+      "evidence": "The rule that decides who is notified when a ticket is escalated is written twice, once in the job and once in the notification path.",
+      "expected_fix": "Keep one definition of the recipient rule and call it from both places.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#arch004_aRegraDosDestinatariosNaoEstaEscritaDuasVezes",
+      "proves": [
+        "R3"
+      ],
+      "notes": "The verifier looks for the same recipient query text in more than one class."
+    },
+    {
+      "id": "ARCH-008",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/repo/NotificacaoRepo.java:5",
+      "evidence": "Persistence code depends on a service class that depends on persistence code: the packages form a cycle through a shared static helper.",
+      "expected_fix": "Break the cycle (move the shared helper to a lower-level package, or pass the value in) without merging packages.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#arch008_semCicloEntrePacotes",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Merging packages to hide the cycle fails the package-count floor. The composition root package is exempt."
+    },
+    {
+      "id": "ARCH-013",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Especialista",
+      "points": 10,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/db/Contexto.java:7",
+      "evidence": "The data source of the most recently built application is kept in a static holder, so two application instances in one JVM share the last one's database.",
+      "expected_fix": "Hold the data source in instance state passed through construction; two instances must stay independent.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_ConfiguracaoTest.java#arch013_duasAplicacoesNaMesmaJvmSaoIndependentes",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Making the static thread-local or per-class-loader is not a fix."
+    },
+    {
+      "id": "ARCH-011",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/relatorio/CsvExportador.java:29",
+      "evidence": "The class that formats the CSV also runs the database query for it.",
+      "expected_fix": "Separate querying from formatting: the formatter receives rows and returns text.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#arch011_aClasseQueFormataOCsvNaoTocaOBanco",
+      "proves": [
+        "R3"
+      ],
+      "notes": "The class holding the CSV header must not reference the JDBC API. The query may live in any repository class."
+    },
+    {
+      "id": "ARCH-014.a",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/auth/Auth.java:51",
+      "evidence": "The configured token validity and job interval are ignored: eight hours and sixty seconds are fixed in the code.",
+      "expected_fix": "Use Config.tokenValidade and Config.intervaloJobs where the fixed values are.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_ConfiguracaoTest.java#arch014a_aConfiguracaoManda",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Two sites: the token expiry in the authentication class and the scheduler interval in the composition root. Fixing one gives half."
+    },
+    {
+      "id": "ARCH-009",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:428",
+      "evidence": "Business limits (an escalation fraction, a batch size, a retry base and a maximum number of attempts) appear as bare numbers inside logic.",
+      "expected_fix": "Give each limit a named constant (or configuration) with its meaning.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#arch009_osLimitesTemNome",
+      "proves": [
+        "R3"
+      ],
+      "notes": "The verifier counts bare numbers outside the HTTP layer and the composition root, against a ceiling calibrated on the reference. Any constant name is accepted; whether the name says what the number means is for the judge."
+    },
+    {
+      "id": "BUG-011.a",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Especialista",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:140",
+      "evidence": "A partial ticket update writes back every column it read, so two simultaneous updates of different fields lose one of them.",
+      "expected_fix": "Write only the fields received (and/or lock the row for the read-modify-write); both simultaneous changes must survive.",
+      "verify": "verify/src/test/java/br/netx/chamados/V02_ConcorrenciaTest.java#bug011a_duasAlteracoesEmCamposDiferentesValemAmbas",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The interleaving is forced by state, never by sleeping, with threads in one JVM and again with two independent JVMs. A row lock on the read or a column-level update are both accepted; a lock that lives only inside one JVM is not.",
+      "dimensions": [
+        "concorrencia",
+        "consistencia"
+      ]
+    },
+    {
+      "id": "BUG-011.b",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Especialista",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/repo/NotificacaoRepo.java:28",
+      "evidence": "Two dispatch runs at the same time both pick up the same pending notifications and deliver them twice.",
+      "expected_fix": "Claim pending rows atomically (row lock with skip-locked, or claim by update) so each notification is delivered once.",
+      "verify": "verify/src/test/java/br/netx/chamados/V02_ConcorrenciaTest.java#bug011b_duasExecucoesNaoEntregamDuasVezes",
+      "proves": [
+        "C3"
+      ],
+      "notes": "A file-side guard alone is not a fix. The verifier holds both runners at their first write until both have claimed or one is provably blocked, with threads in one JVM and again with two independent JVMs; a lock that lives only inside one JVM does not pass.",
+      "dimensions": [
+        "concorrencia",
+        "consistencia"
+      ]
+    },
+    {
+      "id": "BUG-014",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/job/LancamentoJob.java:47",
+      "evidence": "The posting job records its resume point before doing the work, in another transaction; an interruption between the two skips orders for good.",
+      "expected_fix": "Make the resume point and the work atomic (same transaction), or derive pending work from the data instead of a stored position.",
+      "verify": "verify/src/test/java/br/netx/chamados/V02_ConcorrenciaTest.java#bug014_umaInterrupcaoEmQualquerComandoNaoPulaNemDuplicaOrdens",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier interrupts at every database command of a run and requires the retry to leave each order posted exactly once.",
+      "dimensions": [
+        "resiliencia",
+        "consistencia"
+      ]
+    },
+    {
+      "id": "BUG-006",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/relatorio/RelatorioService.java:143",
+      "evidence": "The report month and the posting period use the zone of the JVM instead of the company's zone, so month boundaries move with the server.",
+      "expected_fix": "Use the company's time zone for both the report period and the posting competence.",
+      "verify": "verify/src/test/java/br/netx/chamados/V01_NegocioTest.java#bug006_oFusoEODaEmpresaENaoODaJvm",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Two sites: the report service and the posting job. The verifier runs with the JVM in a distant zone."
+    },
+    {
+      "id": "BUG-007",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:437",
+      "evidence": "A ticket resolved exactly at its deadline counts as late, and a deadline that falls exactly at closing time is moved to the next working day.",
+      "expected_fix": "Make the deadline inclusive and keep a deadline that lands on the end of the working window at that instant.",
+      "verify": "verify/src/test/java/br/netx/chamados/V01_NegocioTest.java#bug007_asFronteirasDoSla",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Two boundary conditions in one rule; both must hold."
+    },
+    {
+      "id": "BUG-013",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/relatorio/RelatorioService.java:89",
+      "evidence": "Percentages and hour averages are truncated instead of rounded half up: two of three shows 66.6.",
+      "expected_fix": "Round half up to one decimal everywhere the manifest says so.",
+      "verify": "verify/src/test/java/br/netx/chamados/V01_NegocioTest.java#bug013_oArredondamentoEHalfUp",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "BUG-009",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/dominio/Dominio.java:29",
+      "evidence": "A resolved ticket cannot be reopened for attendance although the contract allows it, and the resolution time is not cleared.",
+      "expected_fix": "Allow the reopening transition and clear the resolution timestamp when it happens.",
+      "verify": "verify/src/test/java/br/netx/chamados/V01_NegocioTest.java#bug009_aReaberturaDeUmChamadoResolvidoELimpaAResolucao",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "BUG-015",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "points": 5,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/db/Db.java:36",
+      "evidence": "When a database call fails, the error log of the failure no longer shows what actually went wrong; the original cause is dropped.",
+      "expected_fix": "Keep the original exception as the cause of the wrapper (or log it) so the failure record shows it; the client still gets a generic 500.",
+      "verify": "verify/src/test/java/br/netx/chamados/V07_DiagnosticoTest.java#bug015_aCausaDeUmaFalhaInternaApareceNoRegistro",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The response must stay generic. The cause must reach the server-side record.",
+      "dimensions": [
+        "resiliencia"
+      ]
+    },
+    {
+      "id": "PERF-001",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/repo/ChamadoRepo.java:96",
+      "evidence": "Listing tickets runs extra statements for each row to fetch the client and technician names.",
+      "expected_fix": "Fetch the names in the list statement (join) or in one batched statement; commands per request must not grow with the page size.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf001_aListagemDeChamadosNaoFazUmaConsultaPorLinha",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "PERF-003",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/repo/OrdemRepo.java:55",
+      "evidence": "The service order list reads the whole table and slices the page in memory.",
+      "expected_fix": "Paginate in the statement (limit and offset or keyset); rows read must not grow with the table.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf003_aPaginaDeOrdensNaoLeATabelaInteira",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "PERF-005",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/relatorio/RelatorioService.java:108",
+      "evidence": "The technician productivity report runs one statement per technician.",
+      "expected_fix": "Aggregate in one statement; commands per request must not grow with the number of technicians.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf005_oRelatorioDeTecnicosNaoFazUmaConsultaPorTecnico",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "PERF-006",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/schema.sql:51",
+      "evidence": "The tables are filtered by company, status and parent ticket on every request but carry no secondary index.",
+      "expected_fix": "Add an additive migration with indexes whose first column is the company on tickets and the ticket on service orders.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf006_asColunasFiltradasTemIndice",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Only additive migrations are allowed (manifest). A composite index leading with the column is accepted."
+    },
+    {
+      "id": "PERF-011",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/job/EscalonamentoJob.java:40",
+      "evidence": "The escalation pass loads every open ticket in full, descriptions included, so memory grows with the number of tickets.",
+      "expected_fix": "Read only the columns the pass needs (or stream); a pass over twenty thousand tickets of 5 KB must fit in a 48 MB heap.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf011_oEscalonamentoNaoCarregaTodosOsChamadosNaMemoria",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier runs a child JVM with a small heap.",
+      "dimensions": [
+        "resiliencia"
+      ]
+    },
+    {
+      "id": "PERF-012",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Especialista",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/job/DespachoJob.java:64",
+      "evidence": "The dispatch pass searches a growing list for every notification, so its cost grows with the square of the backlog.",
+      "expected_fix": "Use a hash-based set (or push the check into the database) so the pass grows linearly.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf012_oDespachoCresceEmLinhaReta",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Measured as processor time of the pass at two sizes, as a ratio, not as an absolute time."
+    },
+    {
+      "id": "PERF-013",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "points": 5,
+      "template": "C",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:293",
+      "evidence": "Completing a service order reads the same ticket row twice in one request.",
+      "expected_fix": "Reuse the row already read.",
+      "verify": "verify/src/test/java/br/netx/chamados/V03_DesempenhoTest.java#perf013_umaRequisicaoNaoRepeteAMesmaLeitura",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "CLN-007",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:156",
+      "evidence": "The ticket transition method nests decisions five levels deep, which hides the main flow.",
+      "expected_fix": "Flatten with guard clauses or extracted methods; nesting of decisions at most four levels in any method.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#cln007_nenhumaDecisaoAninhadaDemais",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "CLN-001",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/job/DespachoJob.java:39",
+      "evidence": "The dispatch job is one long method that reads, deduplicates, writes and handles failures inline.",
+      "expected_fix": "Split into named steps; no method over forty useful lines.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#cln001_nenhumMetodoLongoDemais",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "CLN-002",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/http/ChamadoHandlers.java:208",
+      "evidence": "The pagination parameter parsing is copied in two handler classes.",
+      "expected_fix": "Keep one copy and call it from both.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#cln002_nenhumCorpoCopiado",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "CLN-005",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/br/netx/chamados/http/Servidor.java:83",
+      "evidence": "A block of disabled statements is left in the server startup code.",
+      "expected_fix": "Delete the commented-out code.",
+      "verify": "verify/src/test/java/br/netx/chamados/V04_EstruturaTest.java#cln005_nenhumCodigoComentado",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "SEC-001.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/br/netx/chamados/V06_IscasTest.java#d1_aOrdemDeListagemPorPrioridadeContinuaCerta",
+      "location": "code/src/main/java/br/netx/chamados/repo/ChamadoRepo.java:75",
+      "notes": "DECOY. Looks like text built by concatenation inside a statement. The concatenated text is made from the constants of an enum, never from input; there is nothing to inject. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "SEC-014.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/br/netx/chamados/V06_IscasTest.java#d2_aChaveDeIdempotenciaContinuaDistinguindoOCorpo",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:378",
+      "notes": "DECOY. Looks like a fast digest used for secrets. A digest of the request body used as a content fingerprint for idempotency, not a password hash. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "ARCH-014.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/br/netx/chamados/V06_IscasTest.java#d3_osPrazosPadraoDoManifestoContinuamValendo",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:382",
+      "notes": "DECOY. Looks like hard-coded configuration. The default SLA table is the contract (manifest); moving it would change documented behavior. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "PERF-015",
+      "exists": false,
+      "decoy_kind": "intervencao",
+      "verify": "verify/src/test/java/br/netx/chamados/V06_IscasTest.java#i1_duasExecucoesDoLancamentoNuncaLancamDuasVezesAMesmaOrdem",
+      "location": "code/src/main/java/br/netx/chamados/job/LancamentoJob.java:49",
+      "notes": "DECOY. Looks like needless blocking. The lock keeps one posting per order when two runners meet; removing it without another guard duplicates postings. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "ARCH-006",
+      "exists": false,
+      "decoy_kind": "intervencao",
+      "verify": "verify/src/test/java/br/netx/chamados/V06_IscasTest.java#i2_oEventoEAsNotificacoesSoExistemJuntos",
+      "location": "code/src/main/java/br/netx/chamados/servico/ChamadoService.java:71",
+      "notes": "DECOY. Looks like coupling of an event to its notifications. Notifications are written in the same transaction as the event so they only exist when the operation succeeds; splitting them breaks all-or-nothing. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    }
+  ]
+}

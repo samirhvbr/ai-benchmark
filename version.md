@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.170`
+**Versão atual:** `0.2.171`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.171` — 2026-10-12 — LEB-300-A is published with its answer key, by the owner's order
+
+- `instances/LEB-300-A/`: `public/` (code and manifest) and `private/` (matrix, catalogue, runner contract, legacy tree,
+  verifiers, planting and generation scripts, clean reference, variant cases), committed by the owner's express order
+  (MATRIX §4, item 7) under the rule of 0.2.169. Its `matrix.json` hashes to `c42c8287…3181`, the hash every LEB-300-A result
+  cites; the runs' package (`7e35825a…`) names it as `3331a107…`, the same matrix without the `publication` header key (the
+  instance README shows the check). Left out: the operator's validation folder and build outputs.
 
 ### `0.2.170` — 2026-10-12 — The resolver test compares with the repository's own instances instead of a fixed list
 

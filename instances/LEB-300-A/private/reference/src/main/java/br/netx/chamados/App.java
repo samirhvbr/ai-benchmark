@@ -1,0 +1,95 @@
+package br.netx.chamados;
+
+import br.netx.chamados.auth.Auth;
+import br.netx.chamados.db.Db;
+import br.netx.chamados.http.CadastroHandlers;
+import br.netx.chamados.http.ChamadoHandlers;
+import br.netx.chamados.http.RelatorioHandlers;
+import br.netx.chamados.http.Servidor;
+import br.netx.chamados.job.DespachoJob;
+import br.netx.chamados.job.EscalonamentoJob;
+import br.netx.chamados.job.LancamentoJob;
+import br.netx.chamados.relatorio.CsvExportador;
+import br.netx.chamados.relatorio.RelatorioService;
+import br.netx.chamados.repo.CadastroRepo;
+import br.netx.chamados.repo.ChamadoRepo;
+import br.netx.chamados.repo.IdempotenciaRepo;
+import br.netx.chamados.repo.NotificacaoRepo;
+import br.netx.chamados.repo.OrdemRepo;
+import br.netx.chamados.servico.ChamadoService;
+import br.netx.chamados.servico.Idempotencia;
+import br.netx.chamados.servico.NotificacaoService;
+import br.netx.chamados.servico.OrdemService;
+import br.netx.chamados.servico.SlaService;
+
+import javax.sql.DataSource;
+import java.time.Clock;
+import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+/** Raiz de composição: monta o sistema com o DataSource e o Clock recebidos, sobe e derruba o servidor e o agendador. */
+public final class App {
+    private final Config config;
+    private final Servidor servidor;
+    private final JobRunner jobs;
+    private ScheduledExecutorService agendador;
+
+    private App(Config config, Servidor servidor, JobRunner jobs) {
+        this.config = config;
+        this.servidor = servidor;
+        this.jobs = jobs;
+    }
+
+    public static App create(Config config, DataSource dataSource, Clock clock) {
+        Objects.requireNonNull(config.notificacaoDir(), "notificacaoDir é obrigatório");
+        Db db = new Db(dataSource);
+        CadastroRepo cadastros = new CadastroRepo();
+        ChamadoRepo chamadosRepo = new ChamadoRepo();
+        OrdemRepo ordensRepo = new OrdemRepo();
+        NotificacaoRepo notificacaoRepo = new NotificacaoRepo();
+        SlaService sla = new SlaService();
+        NotificacaoService notificacoes = new NotificacaoService(notificacaoRepo, clock);
+        Auth auth = new Auth(db, clock, config, cadastros);
+        ChamadoService chamados = new ChamadoService(chamadosRepo, cadastros, sla, notificacoes, clock);
+        OrdemService ordens = new OrdemService(ordensRepo, chamadosRepo, cadastros, notificacoes, clock);
+        Idempotencia idempotencia = new Idempotencia(db, new IdempotenciaRepo(), clock);
+        RelatorioService relatorios = new RelatorioService(db, cadastros, chamadosRepo, ordensRepo, sla, new CsvExportador(sla), clock);
+
+        Servidor servidor = new Servidor(auth);
+        new CadastroHandlers(db, auth, cadastros).registrar(servidor);
+        new ChamadoHandlers(db, chamados, ordens, idempotencia, notificacoes).registrar(servidor);
+        new RelatorioHandlers(relatorios).registrar(servidor);
+
+        JobRunner jobs = new JobRunner(new EscalonamentoJob(db, chamadosRepo, cadastros, sla, notificacoes, clock),
+                new DespachoJob(db, notificacaoRepo, config, clock), new LancamentoJob(db, ordensRepo, cadastros, clock));
+        return new App(config, servidor, jobs);
+    }
+
+    /** Sobe o servidor e, se a configuração pedir, o agendador. Devolve a porta ligada. */
+    public int start() {
+        int porta = servidor.iniciar(config.porta());
+        if (config.agendadorAtivo()) {
+            agendador = Executors.newSingleThreadScheduledExecutor();
+            long intervalo = config.intervaloJobs().toMillis();
+            agendador.scheduleWithFixedDelay(() -> {
+                try {
+                    jobs.executarUmaVez();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+            }, intervalo, intervalo, TimeUnit.MILLISECONDS);
+        }
+        return porta;
+    }
+
+    public void stop() {
+        if (agendador != null) agendador.shutdownNow();
+        servidor.parar();
+    }
+
+    public JobRunner jobs() {
+        return jobs;
+    }
+}
