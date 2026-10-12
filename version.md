@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.169`
+**Versão atual:** `0.2.170`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.170` — 2026-10-12 — The resolver test compares with the repository's own instances instead of a fixed list
+
+- `tests/test_resolver.py` checked that the repository lists exactly `LEB-100-A` (plus the synthetic instance of the test).
+  Under the rule of 0.2.169 every instance is committed here when it is created, so that fixed list would fail with each new
+  one, starting with LEB-300-A. The test now reads the repository's instances first, requires LEB-100-A among them, and checks
+  that the search path adds the synthetic one to that list. It passes with and without another instance in `instances/`;
+  173 tests. No tool, rule or published result changes.
 
 ### `0.2.169` — 2026-10-12 — Spec 1.5.0: an instance and its answer key are committed to the public repository at creation, before any run
 

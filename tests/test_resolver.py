@@ -42,6 +42,8 @@ class Resolver(unittest.TestCase):
         self.assertEqual(instances.resolve(os.path.join("instances", "LEB-100-A"), ROOT).root, base)
 
     def test_split_layout_found_through_the_search_path(self):
+        # The repository's own instances, whatever they are: instances are committed here when created (MATRIX §4).
+        in_repository = [x.name for x in instances.list_instances(ROOT)]
         with tempfile.TemporaryDirectory() as t:
             make_instance(t, "LEB-TEST-A", layout="split")
             os.environ["LEB_INSTANCES_PATH"] = t
@@ -50,7 +52,8 @@ class Resolver(unittest.TestCase):
             self.assertEqual(i.public_dir, os.path.join(t, "instances", "LEB-TEST-A", "public"))
             self.assertEqual(i.private_dir, os.path.join(t, "instances", "LEB-TEST-A", "private"))
             self.assertEqual(i.code_dir, os.path.join(i.public_dir, "code"))
-            self.assertEqual([x.name for x in instances.list_instances(ROOT)], ["LEB-100-A", "LEB-TEST-A"])
+            self.assertIn("LEB-100-A", in_repository)
+            self.assertEqual([x.name for x in instances.list_instances(ROOT)], sorted(in_repository + ["LEB-TEST-A"]))
 
     def test_the_search_path_comes_before_the_repository(self):
         with tempfile.TemporaryDirectory() as t:
