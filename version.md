@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.152`
+**Versão atual:** `0.2.153`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.153` — 2026-10-12 — Propose the next LEB series: two independent tracks, LEB Default and LEB Security
+
+- New `docs/new-series-design.md`, marked `PROPOSED`: the design the owner decided on 2026-10-12 for the series that follows the full LEB. Two tracks with their own package, session, budget and score, never added; several reference systems, each yielding both tracks; five scheduled runs per case, all counted and all published by outcome; the requested model pinned in the client (`availableModels`) and traced in every agent, subagents included; a blind evaluator that charges a regression once; an automated lab.
+- Why, from this repository's own data: model switches after a safety flag (two void LEB-100-A attempts, and `switchModelsOnFlag` does not cover subagents), the saturation of small instances (`tools/saturacao.py` on LEB-100-A), spreads inside one agent at the top of LEB-300-A that are larger than the gaps between agents, and the double charge of one regression that `SPEC.md §6.2` documents. Recomputed with `harness/score.py` itself on the 92 public LEB-100-A runs, all of them reproduced exactly: five runs broke a characterization test, and the worst one lost 235 points to the two charges together.
+- `README.md` lists the document. No protocol text, instance, weight, penalty, tool, test or published result changes; the LEB-300-A pilot continues under its own rules.
 
 ### `0.2.152` — 2026-10-12 — The LEB-300-A aggregate adds Claude Sonnet 5.5 at max effort, which leads the board with 932 (Platinum)
 
