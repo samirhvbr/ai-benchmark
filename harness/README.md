@@ -157,6 +157,7 @@ python3 tools/export-results.py --check  # the published LEB-100-A results are s
 python3 tools/saturacao.py               # saturation and dispersion of a published instance (read-only)
 python3 tools/modelos-usados.py <transcript|dir> [--not-before <ISO instant>]   # which model answered, and when it changed (read-only)
 python3 tools/auditar-tentativa.py <session> --requested <model> [...]          # one attempt: who answered, the safeguard stops, the outcome (read-only; next series)
+python3 tools/perfil-candidato.py policy|check --requested <model> [...]        # the candidate profile: the managed policy that pins the model, and the preflight (next series)
 python3 tools/etapas.py checkpoint|finalize|check|perfis ...     # a run in two stages (task 1.2.0): checkpoint, conformity, profiles; PROTOCOL §3.1
 python3 tools/export-results.py --publish-aggregate <instance>   # active instances only: writes aggregate.json, nothing else
 ```

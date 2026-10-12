@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.155`
+**Versão atual:** `0.2.156`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,37 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.156` — 2026-10-12 — A tool writes the candidate profile's managed policy, which pins the requested model, and checks a machine against it
+
+- New `tools/perfil-candidato.py`, the other tool of step 1 of `docs/new-series-design.md` (§6.1). `policy` prints the
+  `managed-settings.json` of the profile; `check` is a read-only preflight of a machine before the first message. Exit 0 every
+  check holds, 1 one failed, 2 a path or an argument could not be used.
+- The policy, from Claude Code's settings reference: `availableModels` holds the requested model alone (plus `--allow`), with
+  `availableModelsMatch: "exact"`, `enforceAvailableModels` and `model`, so that no other model can answer in the main conversation,
+  a subagent, a skill or the advisor, and a safety flag finds no model to fall back to. The default prefix matching would let an
+  id permit the later versions that extend it, hence `exact`, which needs v2.1.283; `requiredMinimumVersion` keeps an older client
+  from starting. No `fallbackModel` chain (the overload fallback). The advisor is off through `CLAUDE_CODE_DISABLE_ADVISOR_TOOL`
+  in the policy's `env`, which the client merges from every managed source. `switchModelsOnFlag` is false, the account's skills,
+  plugins and connectors and the Artifact tool are off, and `effortLevel` is the declared effort (`max` is not a settings value
+  and is passed at launch).
+- **No `deniedModels`, on purpose:** an id without a minor version also blocks the later minor versions, so denying
+  `claude-sonnet-5`, the fallback of Claude Sonnet 5.5, would block Claude Sonnet 5.5 itself. The exact allowlist already denies
+  every other model, and `check` refuses a denied entry that would block the requested model.
+- `check` reads the managed file and its drop-ins, merged as the client merges them (owned by root, writable by root only, and
+  readable by the runner: a policy the runner cannot read is skipped without notice); the runner's home (no cached
+  server-managed policy, no model, effort, advisor, hook, plugin or output-style override, no CLAUDE.md, skills, agents or
+  commands, no MCP server, the work folder trusted, no transcript or memory of an earlier session); the work folder (no project
+  settings, CLAUDE.md or `.mcp.json`); with `--env`, the launcher's environment (no variable that picks a model, a provider, an
+  API address or another effort); and the client's version.
+- **What a file check cannot see:** a policy that the account's organization delivers from the claude.ai console outranks the
+  file and, by default, replaces it whole. In the lab, `/status` must name `Enterprise managed settings (file)` as the setting
+  source with no `Skipped sources`, and `claude doctor` must report no server-managed settings; the audit of the transcripts
+  (0.2.155) shows whether the pin held. Whether `exact` admits a dated id of an allowed model, and what the client's auxiliary
+  model does under the pin, are left to that lab probe.
+- New `tests/test_perfil_candidato.py` (10 cases, synthetic machines in a temporary folder); each check was also broken on purpose
+  to see a test fail (5 mutations, 5 caught). 168 tests in all. `harness/README.md` lists the tool. No protocol text, instance,
+  weight, penalty or published result changes, and the LEB-300-A pilot does not use the tool.
 
 ### `0.2.155` — 2026-10-12 — A read-only tool audits one attempt's Claude Code session: who answered, every safeguard stop, and the outcome
 
