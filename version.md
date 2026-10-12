@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.172`
+**Versão atual:** `0.2.173`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.173` — 2026-10-12 — System A's reference code is written, with the series' scripts that build it offline and give it a disposable database
+
+- `systems/300-A/reference/`: CondoDesk, the clean system both instances of system A will be planted from. 41 Java files, 3,887
+  lines: the JDK HTTP server with browser sessions (CSRF token, a new session at login, idle expiry), mobile API tokens, failed
+  login counting, PBKDF2 passwords; the billing run (largest-remainder split), late fee and pro rata interest, payments from OFX
+  statements, the bank webhook (HMAC) and by hand; bookings decided under a row lock; notices; documents checked by content,
+  stored under generated names, fetched only from allowlisted hosts and archived with `tar` run without a shell; the
+  delinquency report (page and CSV) and the collection report. Same dependencies as LEB-300-A. It compiles offline; its
+  characterization tests are the next step, so it is not yet tested.
+- `harness/java/mvn.sh` runs Maven in a pinned container against a local repository used as the offline cache; `harness/java/dev-db.sh`
+  keeps a disposable PostgreSQL 16 on an internal Docker network. Their container and network names are their own, so they never
+  touch another evaluation.
+- `systems/300-A/README.md`: the real size (above level 300's 3,000 lines, because the security classes need both the browser
+  pages and the mobile API), the archive open to the building's manager, and the authoring status.
 
 ### `0.2.172` — 2026-10-12 — The next series names its instances and specifies its first reference system, a condominium management application
 

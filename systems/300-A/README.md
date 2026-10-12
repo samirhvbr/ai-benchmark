@@ -1,8 +1,8 @@
 # System 300-A — CondoDesk (condominium management)
 
-> **Status: specified; the reference is being written.** The instances `LEB-D-300-A` and `LEB-S-300-A` do not exist yet. This
-> page is the specification the reference is written against. Once the reference exists, its `manifest.md` is the contract and
-> wins over this page wherever the two differ.
+> **Status: the reference is written and compiles; its characterization tests are next.** The instances `LEB-D-300-A` and
+> `LEB-S-300-A` do not exist yet. This page is the specification the reference is written against. Once the manifest exists, it
+> is the contract and wins over this page wherever the two differ.
 
 CondoDesk is the back office of a property-management company that runs several condominium buildings for their owners'
 associations. It bills each unit its share of the building's monthly budget, takes payments from the bank, books the common
@@ -19,8 +19,9 @@ Maven and PostgreSQL, code, comments and screens in English.
   `com.tngtech.archunit:archunit-junit5` 1.5.1, with the same plugin versions. The offline Maven cache the bench VMs hold for
   LEB-300-A then serves this system unchanged. Nothing else: the HTTP server is the JDK's (`com.sun.net.httpserver`), XML is the
   JDK's, hashing is the JDK's (PBKDF2), and HTML is built by the code itself.
-- **Size:** level 300 ([`levels/LEVELS.md`](../../levels/LEVELS.md)): about 3,000 to 3,600 lines of main code in 25 to 35
-  files, so that flaws cross files and the agent has to navigate.
+- **Size:** level 300 ([`levels/LEVELS.md`](../../levels/LEVELS.md)), so that flaws cross files and the agent has to navigate.
+  The reference has 3,887 lines of main code (3,385 not blank) in 41 files, above the level's 3,000: it has two faces, the
+  browser pages and the mobile API, and the security classes need both.
 - **Determinism:** the clock is injected (`java.time.Clock`), every building has a time zone (`America/Sao_Paulo` in the
   fixtures), and nothing depends on the machine's locale or zone.
 - **The clean reference is clean on both axes.** It is reviewed for the maintenance categories and for every class of
@@ -65,7 +66,8 @@ Maven and PostgreSQL, code, comments and screens in English.
   areas with a fee wait for the manager's confirmation. A resident can cancel up to 48 hours before the start.
 - **Notices:** plain text with line breaks and `**bold**`; search by words in the title and body.
 - **Documents:** upload of PDF, PNG and JPEG up to 5 MB, checked by content; download by id with the original name; fetch from
-  a URL whose host is on the configured allowlist; an admin can download a building's documents as one `tar.gz`.
+  a URL whose host is on the configured allowlist; the building's manager or an admin can download its documents as one
+  `tar.gz`, named by an optional label.
 - **Reports:** delinquency by building (HTML and CSV), the collection of a year by month, and a dashboard per role.
 - **Mobile API** (JSON, bearer tokens): the resident's invoices and bookings, and the bank webhook.
 
@@ -83,7 +85,7 @@ The reference defends at each of these places; the Security profile plants its v
 | SEC-006 Path traversal | document storage and download | stored names are generated; the path is resolved and checked against the storage root |
 | SEC-007 Header injection | download `Content-Disposition`; redirects | names reduced to a safe set; CR and LF rejected |
 | SEC-008 CSV injection | delinquency CSV | formula-leading cells neutralized, the rest of the format unchanged |
-| SEC-009 Command injection | building archive (`tar`) | an argument vector, no shell, file names after `--` |
+| SEC-009 Command injection | building archive (`tar`) and its label | an argument vector, no shell, file names after `--`, the label checked against a pattern |
 | SEC-010 XXE | OFX import | DTDs and external entities disabled in the JDK parser |
 | SEC-011 SSRF | fetch a document from a URL | host and port on an allowlist, no redirects, size and type limits |
 | SEC-012 Open redirect | `next` after login | only local paths |
@@ -117,15 +119,17 @@ publishes its scripts with the instances.
 4. Per instance, the matrix generated from the legacy tree, the verifiers, and the variant cases that check each verifier in
    both directions (a right fix is accepted, a partial or wrong one is rejected).
 5. The evaluator's scripts (build, characterization, verification, a disposable database), public and shared by every Java
-   system of the series.
+   system of the series, in [`harness/java/`](../../harness/java/). The first two are there: `mvn.sh` runs Maven offline in a
+   pinned container, and `dev-db.sh` keeps a disposable PostgreSQL on an internal network, with names of its own so that it
+   never touches another evaluation.
 
 ## 8. Authoring status
 
 - [x] Specification (this page)
-- [ ] Reference: platform (configuration, database, HTTP, sessions, CSRF, throttle, passwords)
-- [ ] Reference: billing, payments, statements and webhook
-- [ ] Reference: bookings, notices, documents, archive, reports, mobile API
+- [x] Reference: platform (configuration, database, HTTP, sessions, CSRF, throttle, passwords)
+- [x] Reference: billing, payments, statements and webhook
+- [x] Reference: bookings, notices, documents, archive, reports, mobile API (compiles; not yet tested)
 - [ ] Characterization tests and `manifest.md`
-- [ ] Evaluator scripts
+- [ ] Evaluator scripts (build and database done; characterization and verification to come)
 - [ ] `LEB-D-300-A`: profile, matrix, verifiers, variant cases
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases

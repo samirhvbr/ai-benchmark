@@ -15,4 +15,4 @@ is committed before its first run ([`matrix/MATRIX.md §4`](../matrix/MATRIX.md)
 
 | System | Domain | Stack | Status |
 | --- | --- | --- | --- |
-| [`300-A`](300-A/) | Condominium management (CondoDesk) | Java 21 · Maven · PostgreSQL | specified; reference in authoring |
+| [`300-A`](300-A/) | Condominium management (CondoDesk) | Java 21 · Maven · PostgreSQL | reference written; tests next |
