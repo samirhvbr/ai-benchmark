@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.156`
+**Versão atual:** `0.2.157`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.157` — 2026-10-12 — The next-series design records what step 1 found, and proposes a refinement on stops the model recovers from
+
+- `docs/new-series-design.md` stays `PROPOSED`. Its status now says that step 1 has its two tools (0.2.155 and 0.2.156) and
+  that nothing else is built; §12 says what step 1 still lacks: the probe that shows the pin holding on a bench VM, and the
+  unattended run.
+- §6.1 spells out the profile as `tools/perfil-candidato.py` writes it: the exact allowlist, why there is no `deniedModels`
+  (denying `claude-sonnet-5` would block Claude Sonnet 5.5 itself), no overload fallback, the advisor off, the effort, a managed
+  file the runner can read, and the one thing no file check sees, a policy from the claude.ai console, which the lab confirms
+  with `/status` and `claude doctor`.
+- §6.2 says how the audit decides the outcome, including *inconclusive* when a record cannot be attributed, and adds a
+  **proposed refinement for the owner to confirm**: an attempt is *blocked* only when a stop in the main conversation leaves the
+  requested model doing no further work; a stop it recovers from on its own, and a stop inside a subagent, are counted in the
+  stop rate and the delivery is evaluated. The decision table of §2 is unchanged until the owner decides.
+- §7 describes the audit and what real transcripts taught it; §13 replaces the question on `availableModels` values with the two
+  that the lab probe answers, and adds the refinement. No tool, test, protocol text or published result changes.
 
 ### `0.2.156` — 2026-10-12 — A tool writes the candidate profile's managed policy, which pins the requested model, and checks a machine against it
 

@@ -1,6 +1,7 @@
 # The next LEB series: two tracks — design
 
-> **Status: `PROPOSED`.** The design was decided by the owner on 2026-10-12; nothing of it is built yet, and it is not normative.
+> **Status: `PROPOSED`.** The design was decided by the owner on 2026-10-12, and it is not normative. Step 1 of §12 has its two
+> tools, the audit (`tools/auditar-tentativa.py`) and the profile (`tools/perfil-candidato.py`); nothing else of it is built.
 > It changes nothing in LEB-100-A or in the LEB-300-A pilot: their results stay as published, as the *full LEB* series. The
 > normative texts of the new series (spec, protocol, scoring, levels) are written after the pilot of §12 has validated the
 > process, and they replace nothing of the full LEB's.
@@ -131,12 +132,27 @@ A **case** is one system × one track × one agent configuration. It runs 5 time
 
 - **Client at its factory default**, with the account's own content off (synced skills, connectors, plugins), the Artifact tool
   off, the work folder trusted and the tools pre-approved.
-- **Model pinned.** `availableModels` (with `enforceAvailableModels`) allows the requested model and nothing that could replace
-  it. Per the docs, when the fallback target is not allowed no fallback happens, the flagged request ends with the refusal and
-  the session's model is unchanged. `switchModelsOnFlag` is also `false`. Whether the client's own auxiliary model (used for
-  titles and some subagents) stays allowed is decided in the lab, and its share of the work is recorded either way.
-- **Preflight, scripted, before the first message:** client version, the settings above, no plugin or MCP server of the
-  account, the package hash, a clean home.
+- **Model pinned**, by a managed policy that `tools/perfil-candidato.py policy` writes:
+  - `availableModels` holds the requested model alone, with `availableModelsMatch: "exact"` (managed only, Claude Code v2.1.283
+    or later), `enforceAvailableModels` and `model`. The pin covers the main conversation, subagents, skills and the advisor.
+    Per the docs, when the model a safety flag would fall back to is not allowed, no fallback happens: the flagged request ends
+    with the refusal and the session's model is unchanged. The default prefix matching would let an id permit the later
+    versions that extend it, hence `exact`; `requiredMinimumVersion` keeps an older client from starting.
+  - **No `deniedModels`.** An id without a minor version also blocks the later minor versions: denying `claude-sonnet-5`, the
+    fallback of Claude Sonnet 5.5, would block Claude Sonnet 5.5 itself. The exact allowlist already denies everything else.
+  - No `fallbackModel` chain (the fallback on overload), the advisor off (`CLAUDE_CODE_DISABLE_ADVISOR_TOOL` in the policy's
+    `env`), and `switchModelsOnFlag: false`, so that a pin that failed would pause the main conversation instead of switching.
+  - The declared effort as `effortLevel` (low to xhigh). `max` is not a settings value and is passed at launch.
+  - The managed file must be readable by the runner: a policy the client cannot read is skipped without notice.
+  - **A policy from the claude.ai console outranks the file** and, by default, replaces it whole. No file check sees it: in the
+    lab, `/status` must name `Enterprise managed settings (file)` as the setting source, with no `Skipped sources`, and
+    `claude doctor` must report no server-managed settings.
+  - Whether the client's own auxiliary model (used for titles and some subagents) stays allowed, and whether `exact` admits a
+    dated id of an allowed model, are decided in the lab; the share of the work of every model is recorded either way.
+- **Preflight, scripted, before the first message** (`tools/perfil-candidato.py check`): the managed policy, the runner's home
+  (no cached console policy, no model, effort, advisor, hook or plugin override, no CLAUDE.md, skills, agents or commands, no
+  MCP server, no transcript or memory of an earlier session), the work folder, the launcher's environment and the client
+  version. The package hash stays with the lab's own tooling.
 - **After the first message:** the head of the transcript is read (model identity, the skills listed, no MCP section), and the
   attempt stops there if the profile is not the declared one. `claude --safe-mode` is the lab's tool to check whether a
   customization triggers a flag.
@@ -159,6 +175,19 @@ Only *lab failure* and *operator error* allow a rerun, under a rule fixed before
 the attempt runs, so a blocked attempt keeps the state it reached. That state may be read as a separate partial profile; it never
 enters the quality score.
 
+The audit (§7) decides the outcome from the transcripts, with the lab's word for a budget it stopped. When the record cannot be
+attributed (no response, a session cut with no reason from the lab, work of a kind the audit does not know) it says
+*inconclusive*, and a person files one of the outcomes above.
+
+**Proposed refinement, for the owner to confirm: a stop the model recovers from on its own.** The transcripts show that after a
+stopped response the client retries once on the same model, with a note. With the pin, nothing else can answer, so the retry is
+the requested model's own work. The audit therefore files an attempt as *blocked* only when a stop in the main conversation
+leaves the requested model doing no further work (no tool call before the session ends or the operator writes again). A stop
+it recovers from, and a stop inside a subagent, are counted in the stop rate and published with it, and the delivery is
+evaluated. The literal rule of §2, "a safeguard stop ends the attempt as blocked", would also void those deliveries, written
+by the requested model alone; stops in subagents are frequent (17 in one LEB-100-A run, 5 of them recovered within the
+subagent).
+
 ### 6.3 Repetitions
 
 Five scheduled runs per case, all counted, with no early stop and no replacement outside the rule above. A configuration then has
@@ -173,6 +202,22 @@ attributed.
 
 *Model evaluated* and *product that delivered* are separate fields. A delivery with another model in it is never published as the
 requested model's work.
+
+`tools/auditar-tentativa.py` is that audit for Claude Code. It reads the main transcript and every subagent transcript of the
+session and reports each model with its responses, tool calls and effort, every stop with the work after it, the notices and
+fallback events, the operator's messages, commands and interruptions, and the API errors; then it decides the outcome of §6.2.
+Reading real transcripts shaped it:
+
+- A response is one API message, written as one line per content block, so responses are counted by message id; a count of
+  lines overstates them (33 lines are 16 responses in the void-2 record of Claude Fable 5.1 on LEB-100-A).
+- In a subagent, a stopped response can lack `stop_reason: "refusal"`; the note the client adds after it is then the only trace.
+  A subagent's switch writes no fallback event at all: only the model of its later responses shows it.
+- Every response records its effort, so an attempt at another effort than the one it is filed under is caught, as an operator
+  error.
+
+Run on public LEB-100-A records, it finds both void attempts of Claude Fable 5.1 at xhigh switched to claude-opus-4-8 after a
+cyber stop, and the nine of 68 subagents of the Claude Sonnet 5.5 max ultracode run 1 that switched to claude-sonnet-5, each
+after a stop in that subagent.
 
 ## 8. Evaluation
 
@@ -226,7 +271,8 @@ the mode does not change the agent's behavior in other ways.
 
 ## 12. Order of work
 
-1. **Traceability and lab automation:** the pin, the preflight, the audit, the unattended run.
+1. **Traceability and lab automation:** the pin, the preflight, the audit, the unattended run. Built: the audit (0.2.155) and
+   the profile with its preflight (0.2.156). Left: the probe that shows the pin holding on a bench VM, and the unattended run.
 2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop.
 3. **Pilot:** 3 reference systems × 2 tracks × a panel of configurations × 5 runs. It validates the process, calibrates the
    weights and measures the variance.
@@ -236,7 +282,8 @@ the mode does not change the agent's behavior in other ways.
 
 - Names and ids. Proposal: `LEB-D-<level>-<letter>` and `LEB-S-<level>-<letter>`.
 - The stacks of the reference systems: each one adds to the toolchain and the offline caches of the bench VMs.
-- The exact `availableModels` values per client version, and whether the auxiliary model stays allowed.
+- Whether the client's auxiliary model stays allowed, and whether `exact` matching admits a dated id: the lab probe decides.
+- The refinement of §6.2 on stops the model recovers from on its own.
 - Interactive or non-interactive automation.
 - Whether, and how, the partial state of a blocked attempt is published.
 - The errata rule in detail.
