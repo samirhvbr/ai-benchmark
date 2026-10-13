@@ -1,7 +1,7 @@
 # LEB-D-300-A — CondoDesk, Default track
 
-> **Status: in authoring, not runnable.** The planted tree is written (`public/code/`), the matrix and the verifiers are not, so
-> there is no key and no run yet, and `./leb pacote` refuses the instance. Every file of this instance is committed here as it is
+> **Status: in authoring, not runnable.** The planted tree (`public/code/`), the verifiers and the matrix are written; the variant
+> cases and the task statement of the track are not, so there is no run yet, and `./leb pacote` refuses the instance. Every file of this instance is committed here as it is
 > written, the answer key included, and the instance is complete before its first run
 > ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2). The folder exists from the start so that its whole history is
 > public.
@@ -30,7 +30,8 @@ kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md
 ```text
 public/      code/ (the legacy tree: the reference with this profile planted) and manifest.md (the system's)
 private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed-from-public-tests.txt, verify/ (the
-             verifiers); then the matrix, the variant cases and the runner contract
+             verifiers), matrix_rows.py with matrix.json and matrix.md (the key); then the variant cases and the runner
+             contract
 ```
 
 `public/` is derived, never edited by hand. `private/build_public.py` plants the reference with `private/plant/`
@@ -58,3 +59,16 @@ harness/java/evaluate.sh verify instances/LEB-D-300-A <the delivery's code folde
 
 On `public/code/` every row comes out not fixed and every decoy holds; on the reference, with a migration that adds the payment
 index (a delivery may change the schema only through `migrations/`), every row comes out fixed and every decoy holds.
+
+## The matrix
+
+`private/matrix_rows.py` declares each row (severity, difficulty, template, an anchor in the planted file, the symptom, the
+expected fix and the notes), and `tools/make_matrix.py` writes `matrix.json` and `matrix.md` from it: the location of each row is
+the line of `public/code/` its anchor matches, and its verifier is the test method that writes its verdict. 27 flaws, 4 decoys,
+204 base points (ARCH 70, BUG 59, PERF 47, CLN 28). `tests/test_make_matrix.py` checks that the committed matrix is what the rows
+and the files give, so a change to the code or to a verifier that moves a row cannot leave the key behind.
+
+```sh
+python3 tools/make_matrix.py instances/LEB-D-300-A            # writes private/matrix.json and matrix.md
+python3 tools/make_matrix.py instances/LEB-D-300-A --check    # the committed matrix is up to date
+```

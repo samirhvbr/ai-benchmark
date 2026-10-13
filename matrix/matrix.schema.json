@@ -45,7 +45,7 @@
         ]
       }
     },
-    "task_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "Version of the canonical task (protocol/tasks/TAREFA-<version>.md) the instance is evaluated against; absent = 1.0.0." },
+    "task_version": { "type": "string", "pattern": "^([DS]-)?\\d+\\.\\d+\\.\\d+$", "description": "Version of the canonical task (protocol/tasks/TAREFA-<version>.md) the instance is evaluated against; absent = 1.0.0. The next series' tracks carry a prefix, D- (Default) or S- (Security), with their statements in protocol/tasks/TASK-<version>.md." },
     "publication": { "const": "aggregate", "description": "ACTIVE instance: only the per-agent aggregate is published (tools/export-results.py --publish-aggregate); deliveries, verdicts and per-flaw results stay in the private archive. Absent = full publication, as always." },
     "pack_allow_paths": { "type": "array", "items": { "type": "string" }, "description": "Package paths (relative to the package root, e.g. code/src/verify) exempt from the leak guard's path-word check. Never exempts content." },
     "public_surface": {

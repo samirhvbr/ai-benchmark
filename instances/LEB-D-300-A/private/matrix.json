@@ -1,0 +1,563 @@
+{
+  "leb_spec": "1.5.1",
+  "instance": "LEB-D-300-A",
+  "level": 300,
+  "version": "1.0",
+  "language": "java21-maven-postgresql",
+  "task_version": "D-1.0.0",
+  "publication": "aggregate",
+  "public_surface": {
+    "symbols": [
+      "com.condodesk.App.create(Config,DataSource,Clock):App",
+      "com.condodesk.App.start():int",
+      "com.condodesk.App.stop():void",
+      "com.condodesk.App.main(String[]):void",
+      "com.condodesk.Config(int port,Path storageDir,boolean secureCookies,Duration sessionIdle,Set<String> fetchAllowedHosts,String bankSecret,int maxUploadBytes)",
+      "com.condodesk.Config.fromEnvironment(Map<String,String>):Config",
+      "com.condodesk.Config.DEFAULT_MAX_UPLOAD:int"
+    ],
+    "routes": [
+      "DELETE /api/bookings/{id}",
+      "GET /",
+      "GET /account",
+      "GET /admin/billing",
+      "GET /admin/statements",
+      "GET /admin/users",
+      "GET /api/bookings",
+      "GET /api/invoices",
+      "GET /api/invoices/{id}",
+      "GET /api/me",
+      "GET /bookings",
+      "GET /documents",
+      "GET /documents/{id}/download",
+      "GET /invoices",
+      "GET /invoices/{id}",
+      "GET /login",
+      "GET /notices",
+      "GET /notices/{id}",
+      "GET /reports/collection",
+      "GET /reports/delinquency",
+      "GET /reports/delinquency.csv",
+      "GET /static/{name}",
+      "POST /account/password",
+      "POST /admin/billing",
+      "POST /admin/statements",
+      "POST /admin/users",
+      "POST /admin/users/{id}/deactivate",
+      "POST /api/bookings",
+      "POST /api/tokens",
+      "POST /api/webhooks/bank",
+      "POST /bookings",
+      "POST /bookings/{id}/cancel",
+      "POST /bookings/{id}/confirm",
+      "POST /documents",
+      "POST /documents/archive",
+      "POST /documents/fetch",
+      "POST /invoices/{id}/payments",
+      "POST /invoices/{id}/proof",
+      "POST /login",
+      "POST /logout",
+      "POST /notices"
+    ],
+    "db_schema": [
+      "building(id,name,address,time_zone,due_day,late_fee_pct,monthly_interest_pct)",
+      "unit(id,building_id,label,ideal_fraction)",
+      "app_user(id,email,name,role,building_id,password_hash,active,created_at)",
+      "residency(user_id,unit_id,kind)",
+      "user_session(id_hash,user_id,csrf_token,created_at,last_seen_at)",
+      "api_token(id,user_id,token_hash,created_at,last_used_at)",
+      "login_throttle(key,failures,window_start,locked_until)",
+      "billing_run(id,building_id,month,budget,created_by,created_at)",
+      "invoice(id,run_id,unit_id,month,due_date,amount,our_number,status,paid_on)",
+      "payment(id,invoice_id,external_id,source,amount,paid_on,memo,created_at)",
+      "common_area(id,building_id,name,opens,closes,max_hours,capacity,fee)",
+      "booking(id,area_id,unit_id,user_id,starts_at,ends_at,guests,status,created_at)",
+      "notice(id,building_id,author_id,title,body,pinned,published_at)",
+      "document(id,building_id,unit_id,kind,original_name,stored_name,content_type,size_bytes,source_url,uploaded_by,created_at)",
+      "audit_log(id,at,user_id,action,detail)"
+    ],
+    "artifacts": [
+      "delinquency CSV: UTF-8, CRLF, RFC 4180; header unit,owners,month,due_date,amount,amount_due,days_late",
+      "document archive: tar.gz with index.csv (file,name,kind,created_at) and every document under its stored name"
+    ]
+  },
+  "entries": [
+    {
+      "id": "BUG-011",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Especialista",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/booking/BookingService.java:55",
+      "evidence": "Two booking requests of one unit, for two different areas, can both pass the limit of two upcoming bookings: each counts the unit's bookings before the other has written, so the unit ends with three.",
+      "expected_fix": "Decide the requests of one unit one after the other (lock the unit's row before counting, or an equivalent that holds across connections), so that the second one sees the first and gets 409.",
+      "verify": "verify/src/test/java/com/condodesk/V02_ConcurrencyTest.java#bug011_twoRequestsOfOneUnitCannotBothPassItsLimit",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier holds both requests at their insert until both arrive or one is provably waiting for a lock. A lock on the unit row, an advisory lock per unit and a serializable transaction that retries are accepted; a lock inside the JVM is accepted by this probe but not by the manifest, which allows several instances. Removing the area's lock is the decoy PERF-015.b.",
+      "dimensions": [
+        "concorrencia",
+        "consistencia"
+      ]
+    },
+    {
+      "id": "BUG-014",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:143",
+      "evidence": "A statement whose later line is invalid is refused with 400, but the lines before it are already recorded and their invoices settled: the import is not whole or nothing.",
+      "expected_fix": "Import every line of a statement in one transaction, so that a refused statement records nothing.",
+      "verify": "verify/src/test/java/com/condodesk/V01_RulesTest.java#bug014_aStatementIsImportedWholeOrNotAtAll",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Validating every line before recording any is accepted when the recording itself is one transaction.",
+      "dimensions": [
+        "resiliencia",
+        "consistencia"
+      ]
+    },
+    {
+      "id": "BUG-006",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/booking/BookingService.java:63",
+      "evidence": "Around midnight in the building, the rule that blocks a unit with an invoice more than thirty days overdue counts the days from the date in UTC, so a unit exactly thirty days late is refused.",
+      "expected_fix": "Take today's date on the building's calendar (its time zone), as every other date rule does.",
+      "verify": "verify/src/test/java/com/condodesk/V01_RulesTest.java#bug006_theOverdueBlockCountsDaysOnTheBuildingsCalendar",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier runs with the JVM in Tokyo, so the JVM's default zone is not a fix."
+    },
+    {
+      "id": "BUG-013",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:265",
+      "evidence": "From one month late on, the days late restart from zero: an invoice 53 days late is charged and shown as 22 days late, in the amount due, the API, the invoice page and the delinquency report.",
+      "expected_fix": "Count the days late as the length of the period in days.",
+      "verify": "verify/src/test/java/com/condodesk/V01_RulesTest.java#bug013_theDaysLateAreTheLengthOfThePeriodInDays",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The copy of the rule in the resident's dashboard is ARCH-004; unifying it without fixing the count spreads the error."
+    },
+    {
+      "id": "BUG-003",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/db/Db.java:61",
+      "evidence": "Every read that ends in an error (a not-found decided inside it, a database error) never gives its connection back.",
+      "expected_fix": "Close the connection whatever the work does (try-with-resources or finally).",
+      "verify": "verify/src/test/java/com/condodesk/V07_ResourcesTest.java#bug003_aReadThatFailsGivesItsConnectionBack",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier counts the connections the application opens and closes through its DataSource; the driver closing a leaked connection when it is collected does not count.",
+      "dimensions": [
+        "resiliencia"
+      ]
+    },
+    {
+      "id": "BUG-010",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/docs/Archiver.java:29",
+      "evidence": "When a stored file is missing, the building's archive is still answered with 200 and downloaded as if it were whole: the failure of the archiving command is not looked at.",
+      "expected_fix": "Treat a non-zero exit status of the archiving command as a failure (an error answer), keeping a whole archive answered as before.",
+      "verify": "verify/src/test/java/com/condodesk/V07_ResourcesTest.java#bug010_anArchiveWithAMissingFileIsNotServedAsWhole",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Any error status is accepted for the incomplete archive; leaving the missing file out and saying so is not, because the user gets a file that looks whole.",
+      "dimensions": [
+        "resiliencia"
+      ]
+    },
+    {
+      "id": "BUG-007",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:215",
+      "evidence": "Only a total exactly equal to the amount due settles an invoice: a payment above it, or two payments that together exceed it, leave the invoice open for good.",
+      "expected_fix": "Settle when the payments cover the amount due (at least it), comparing the values, not their scale.",
+      "verify": "verify/src/test/java/com/condodesk/V01_RulesTest.java#bug007_aPaymentAboveTheAmountDueSettlesTheInvoice",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Comparing with compareTo for equality only is still wrong for a payment above the amount due."
+    },
+    {
+      "id": "BUG-015",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "points": 5,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/Server.java:118",
+      "evidence": "An internal error is logged with its incident id but without the exception, so the cause and the stack trace of every 500 are lost to whoever investigates it.",
+      "expected_fix": "Log the exception with the record that carries the incident id; the response stays generic.",
+      "verify": "verify/src/test/java/com/condodesk/V07_ResourcesTest.java#bug015_theRecordOfAnInternalErrorCarriesItsCause",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Any logging that puts the exception in the same record as the incident id, or in the process output next to it, is accepted.",
+      "dimensions": [
+        "resiliencia"
+      ]
+    },
+    {
+      "id": "PERF-001",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/reports/ReportService.java:69",
+      "evidence": "The delinquency report runs one more query for every late invoice to fetch the owners of its unit.",
+      "expected_fix": "Fetch the owners of every listed unit at once (a join or one batched query); commands per request must not grow with the number of late invoices.",
+      "verify": "verify/src/test/java/com/condodesk/V03_PerformanceTest.java#perf001_theDelinquencyReportDoesNotRunAQueryPerLateInvoice",
+      "proves": [
+        "C3"
+      ],
+      "notes": "A cache per request that still runs one query per distinct unit does not pass: every unit of the probe is distinct."
+    },
+    {
+      "id": "PERF-003",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/repo/FinanceRepository.java:80",
+      "evidence": "The invoice list reads every matching invoice and keeps one page of them in memory.",
+      "expected_fix": "Page in the query (limit and offset, or keyset) and count the total with a count query.",
+      "verify": "verify/src/test/java/com/condodesk/V03_PerformanceTest.java#perf003_onePageOfInvoicesDoesNotReadEveryMatchingInvoice",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The page must still say how many invoices match."
+    },
+    {
+      "id": "PERF-010",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/reports/ReportService.java:96",
+      "evidence": "The admin's dashboard keeps the buildings' totals from its first request for the life of the application: invoices billed afterwards never show as open.",
+      "expected_fix": "Compute the totals per request (they are aggregate queries), or invalidate them when invoices change.",
+      "verify": "verify/src/test/java/com/condodesk/V03_PerformanceTest.java#perf010_theAdminsDashboardShowsTheInvoicesOfToday",
+      "proves": [
+        "C3"
+      ],
+      "notes": "A cache that is right after every change is accepted; one that only expires with time is not, because the dashboard shows a wrong number until then."
+    },
+    {
+      "id": "PERF-006",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/schema.sql:86",
+      "evidence": "Payments are filtered and joined by their invoice on every settlement, invoice page and collection report, with no index for it.",
+      "expected_fix": "Add an index leading on the payment's invoice, in a migration (the schema file is the contract).",
+      "verify": "verify/src/test/java/com/condodesk/V03_PerformanceTest.java#perf006_paymentsHaveAnIndexLeadingOnTheirInvoice",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Only additive migrations count; a composite index that leads on the invoice is accepted."
+    },
+    {
+      "id": "PERF-012",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Especialista",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/repo/UserRepository.java:60",
+      "evidence": "The admin's user list joins the users and their residencies in memory with two nested loops, so its cost grows with the square of the number of accounts.",
+      "expected_fix": "Join in the query, or group the residencies by user in a map, so the list grows linearly.",
+      "verify": "verify/src/test/java/com/condodesk/V03_PerformanceTest.java#perf012_theUserListGrowsInAStraightLine",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Measured as the processor time of the application's threads at two sizes, as a ratio, never as an absolute time."
+    },
+    {
+      "id": "PERF-015",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:154",
+      "evidence": "Every bank event, of every building, waits for the one before to finish, although the row lock on the invoice already orders the events of one invoice.",
+      "expected_fix": "Drop the application-wide serialization of the webhook; keep the invoice's row lock.",
+      "verify": "verify/src/test/java/com/condodesk/V02_ConcurrencyTest.java#perf015_anEventHeldInsideItsTransactionDoesNotStopAnotherInvoicesEvent",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Replacing it with another application-wide lock, in the JVM or in the database, is not a fix.",
+      "dimensions": [
+        "concorrencia"
+      ]
+    },
+    {
+      "id": "PERF-009",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 5,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/reports/ReportService.java:122",
+      "evidence": "The manager's dashboard loads every overdue invoice of the building to show how many there are.",
+      "expected_fix": "Count them in the query.",
+      "verify": "verify/src/test/java/com/condodesk/V03_PerformanceTest.java#perf009_theManagersOverdueCountDoesNotReadEveryOverdueInvoice",
+      "proves": [
+        "C3"
+      ]
+    },
+    {
+      "id": "ARCH-001",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 12,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:51",
+      "evidence": "One class bills the month, lists and shows invoices, imports statements, checks and handles the bank's webhook, settles payments and holds the money rules.",
+      "expected_fix": "Separate the billing run, the payments and their settlement, and the money rules (split, amount due, days late) into cohesive classes; the money rules need no database.",
+      "verify": "verify/src/test/java/com/condodesk/V05_ArchitectureAtRunTimeTest.java#arch001_theBillingRunAndTheSettlementAreNotOneClass",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Size is not the criterion. The verifier sees which classes run under the insert of a billing run's invoices and under the settlement of an invoice, and whether the class that floors a budget's shares reaches the database; it caps R3, the judge reads the split. A facade that still sits on both paths is not a split."
+    },
+    {
+      "id": "ARCH-013",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Especialista",
+      "points": 10,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/db/Db.java:35",
+      "evidence": "The database helper keeps the data source in a static field that every new application overwrites: two applications in one JVM end up on the last one's database.",
+      "expected_fix": "Hold the data source in the helper's instance, given at construction, so that each application keeps its own.",
+      "verify": "verify/src/test/java/com/condodesk/V05_ArchitectureAtRunTimeTest.java#arch013_twoApplicationsInOneJvmKeepTheirOwnDatabases",
+      "proves": [
+        "R3"
+      ],
+      "notes": "A thread-local or a static map keyed by anything is not a fix."
+    },
+    {
+      "id": "ARCH-008",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/repo/ReportRepository.java:4",
+      "evidence": "The persistence package depends on the reports package, which depends on persistence: a cycle through the record of the admin's building totals.",
+      "expected_fix": "Break the cycle (the record belongs with the data access, or the repository returns its own type) without merging packages.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#arch008_noCycleBetweenPackages",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Merging packages fails the verifier's floor of ten packages under the root; the root package, which wires everything, is outside the check."
+    },
+    {
+      "id": "ARCH-002",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/web/ReportPages.java:67",
+      "evidence": "A page of the HTTP layer opens the database itself to compute the collection report, instead of going through the report service.",
+      "expected_fix": "Move the query behind the report service and the data access; the HTTP layer must not reference JDBC or the database helper.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#arch002_theHttpLayerDoesNotTalkToTheDatabase",
+      "proves": [
+        "R3"
+      ],
+      "notes": "The HTTP layer is found by dependency (the classes that use the JDK's server, and their packages), not by package name."
+    },
+    {
+      "id": "ARCH-004",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/reports/ReportService.java:109",
+      "evidence": "The amount-due rule is written a second time for the resident's dashboard, with its own day count, which already disagrees with the rule's own once an invoice is a month late.",
+      "expected_fix": "Keep one definition of the amount due and call it from the dashboard.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#arch004_theAmountDueRuleIsWrittenOnce",
+      "proves": [
+        "R3"
+      ],
+      "notes": "The verifier recognizes a computation of the late fee or of the interest by a division next to a call named for the rate; this is its one dependence on names. Unifying the copies does not fix BUG-013."
+    },
+    {
+      "id": "ARCH-003",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/notices/NoticeService.java:36",
+      "evidence": "The notice service writes and reads the notice table with SQL of its own, next to the rules of a notice, while the repository keeps the search.",
+      "expected_fix": "Move the notice SQL to the data access; the service keeps the rules.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#arch003_theNoticeRuleAndTheNoticeSqlLiveApart",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "ARCH-010",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/billing/CnabParser.java:11",
+      "evidence": "A parser of the bank's old return file format is kept although nothing uses it.",
+      "expected_fix": "Delete it.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#arch010_everyClassIsUsed",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "ARCH-009",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/notices/NoticeService.java:33",
+      "evidence": "The notice limits (title, text and search words) are bare numbers, each written twice, in the check and in its message.",
+      "expected_fix": "Give each limit a named constant and build its message from it.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#arch009_eachNoticeLimitIsNamedOnce",
+      "proves": [
+        "R3"
+      ],
+      "notes": "Any constant name is accepted; whether the name says what the number means is for the judge."
+    },
+    {
+      "id": "CLN-001",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/web/FinancePages.java:45",
+      "evidence": "The invoice list page is one long method that parses the filters, builds the table and the pager inline.",
+      "expected_fix": "Split it into named steps; no method over 45 useful lines or 45 statements.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#cln001_noMethodIsTooLong",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "CLN-007",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/booking/BookingService.java:78",
+      "evidence": "Cancelling a booking nests five decisions, with the main flow at the bottom.",
+      "expected_fix": "Use guard clauses; no chain of nested decisions deeper than 3.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#cln007_noDecisionIsNestedTooDeep",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "CLN-002",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/web/MobileApi.java:144",
+      "evidence": "The parsing of an enum parameter is copied, body and all, into two more classes of the HTTP layer.",
+      "expected_fix": "Keep one copy and call it from the others.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#cln002_noMethodBodyIsCopied",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "CLN-005",
+      "exists": true,
+      "severity": "Baixa",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "R",
+      "location": "code/src/main/java/com/condodesk/web/AdminPages.java:50",
+      "evidence": "An old handler is left in the code as comments, with its route.",
+      "expected_fix": "Delete the commented-out code.",
+      "verify": "verify/src/test/java/com/condodesk/V04_StructureTest.java#cln005_noCommentedOutCode",
+      "proves": [
+        "R3"
+      ]
+    },
+    {
+      "id": "BUG-013.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/V06_DecoyTest.java#bug013b_theInvoicesOfARunAddUpToItsBudget",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:240",
+      "notes": "DECOY. Looks like money rounded half-even. The quotient at 12 decimals is an intermediate value: each share is floored and the leftover cents go to the largest remainders, so the invoices add up to the budget exactly, and the rounding of the 12th decimal never moves a floor. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "ARCH-014",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/V06_DecoyTest.java#arch014_pagesKeepTheirContractedSizes",
+      "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:52",
+      "notes": "DECOY. Looks like hard-coded configuration. Twenty invoices and ten notices per page are the contract of the manifest, not a setting. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "BUG-010.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/V06_DecoyTest.java#bug010b_aMalformedStatementIsStillRefused",
+      "location": "code/src/main/java/com/condodesk/billing/OfxParser.java:30",
+      "notes": "DECOY. Looks like an error handler that swallows errors. It ignores warnings only; errors and fatal errors are thrown, so a malformed statement is refused with 400. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "PERF-015.b",
+      "exists": false,
+      "decoy_kind": "intervencao",
+      "verify": "verify/src/test/java/com/condodesk/V06_DecoyTest.java#perf015b_twoRequestsForOneSlotLeaveOneBooking",
+      "location": "code/src/main/java/com/condodesk/booking/BookingService.java:54",
+      "notes": "DECOY. Looks like needless blocking. The area's row lock decides two requests for one slot one after the other; without it both pass the overlap check and the slot is booked twice. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    }
+  ]
+}

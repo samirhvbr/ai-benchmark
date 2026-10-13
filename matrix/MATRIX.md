@@ -46,7 +46,7 @@ The header of the matrix (next to `instance`, `level`, `version`, `leb_spec`) ma
 
 | Field | Meaning |
 | --- | --- |
-| `task_version` | Version of the canonical task the instance is evaluated against (`protocol/tasks/TAREFA-<version>.md`); absent means 1.0.0 (SPEC §9.4). |
+| `task_version` | Version of the canonical task the instance is evaluated against (`protocol/tasks/TAREFA-<version>.md`); absent means 1.0.0 (SPEC §9.4). The next series' tracks carry a prefix, `D-` (Default) or `S-` (Security), and their statements live in `protocol/tasks/TASK-<version>.md` ([`docs/new-series-design.md`](../docs/new-series-design.md) §4). |
 | `publication` | `"aggregate"` marks an **active** instance: only a per-agent aggregate of its runs is published (§4, item 7); the key itself is public from the instance's creation (§4, item 1). Absent means full publication, as always. |
 | `pack_allow_paths` | Package paths (relative to the package root, e.g. `code/src/verify`) that the leak guard's path-word check lets through. It exempts a path, never content (`harness/README.md`, *Package leak guard*). |
 

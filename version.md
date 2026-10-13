@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.195`
+**Versão atual:** `0.2.196`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.196` — 2026-10-13 — LEB-D-300-A has its answer key, generated from its rows by a generic matrix writer
+
+- `tools/make_matrix.py INSTANCE [--check]`, generalized from LEB-300-A's own generator (which stays with that instance): an
+  instance declares its rows in `private/matrix_rows.py` (severity, difficulty, template, an anchor, the symptom, the expected fix,
+  the notes, the decoys, the Java surface and the produced files), and the tool writes `private/matrix.json` and `matrix.md`. The
+  location of each row is the line of `public/code/` its anchor matches; its verifier is the test method that writes its verdict;
+  the routes and tables of the public surface are read from the code and the schema. It refuses an anchor that matches nothing,
+  a row with no verifier, a verdict for an undeclared id and an id written by two methods; `--check` compares with the files.
+- `instances/LEB-D-300-A/private/matrix.json` and `matrix.md`: 27 flaws and 4 decoys, 204 base points (ARCH 70, BUG 59, PERF 47,
+  CLN 28), spec 1.5.1, task `D-1.0.0`, aggregate publication. No long text of the matrix occurs in the public material (the
+  packager's leak markers, checked).
+- `matrix/matrix.schema.json` and `matrix/MATRIX.md`: a task version may carry the prefix of a track of the next series, `D-` or
+  `S-`, whose statement lives in `protocol/tasks/TASK-<version>.md`. That statement is not written yet, so `./leb pacote` still
+  refuses the instance.
+- `tests/test_make_matrix.py`: the tool on synthetic instances, each refusal, and LEB-D-300-A's committed matrix up to date.
+- The instance's README describes the key and how to rewrite it; the instance index and `systems/300-A/README.md §9` say the
+  matrix is written and the variant cases are next.
 
 ### `0.2.195` — 2026-10-13 — LEB-D-300-A has its verifiers: every row is not fixed on the planted tree and fixed on the reference
 
