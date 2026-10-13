@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.189`
+**Versão atual:** `0.2.190`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.190` — 2026-10-13 — LEB-D-300-A plants its god class last: billing, payments and the money rules merged into one FinanceService
+
+- `instances/LEB-D-300-A/private/plant/flaws_z_god.py` plants ARCH-001 of the catalog (§4). Its edits repoint the callers (`App`,
+  `Routes`, `FinancePages`, `MobileApi`, `ReportService`) to one `FinanceService`; its post-hook writes that class from the
+  planted texts of `BillingService`, `PaymentService` and `Charges` (their imports merged, their methods carried over unchanged)
+  and deletes the three. The module's name makes it run after every other group, so BUG-013, BUG-014, BUG-007 and PERF-015 are
+  planted where they belong and then moved, as they are, into the merged class. Before merging, the hook checks that each source
+  still declares what the merged class restates.
+- The merged class has 267 lines: the billing run, the invoice list and view, the statement import, the webhook and its
+  signature, the settlement, and the money rules.
+- All 27 rows are now planted. The full tree compiles and, of the 70 public tests, only
+  `BillingTest.aStatementWithABadLineRecordsNothing` fails, the one the catalog (§8) says sees BUG-014.
 
 ### `0.2.189` — 2026-10-13 — LEB-D-300-A plants its four code-quality flaws, each measured against the limit the catalog declares
 
