@@ -82,8 +82,23 @@ abstract class TestBase {
         }
 
         @Override public ZoneId getZone() { return ZoneId.of("UTC"); }
-        @Override public Clock withZone(ZoneId zone) { return this; }
+        @Override public Clock withZone(ZoneId zone) { return new InZone(this, zone); }
         @Override public Instant instant() { return now; }
+    }
+
+    /** The test clock seen from another zone: the same instant, still moved by the test, in the zone asked for. */
+    static final class InZone extends Clock {
+        private final TestClock source;
+        private final ZoneId zone;
+
+        InZone(TestClock source, ZoneId zone) {
+            this.source = source;
+            this.zone = zone;
+        }
+
+        @Override public ZoneId getZone() { return zone; }
+        @Override public Clock withZone(ZoneId other) { return new InZone(source, other); }
+        @Override public Instant instant() { return source.instant(); }
     }
 
     /** A DataSource whose connections are already set to the test's schema. */

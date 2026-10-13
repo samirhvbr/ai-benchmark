@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.196`
+**Versão atual:** `0.2.197`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.197` — 2026-10-13 — System A's test clock keeps moving when the code asks it for another time zone
+
+- `systems/300-A/reference/src/test/java/com/condodesk/TestBase.java`: `TestClock.withZone` returned the clock itself, still in
+  UTC. Code that takes the date of a building with `LocalDate.now(clock.withZone(zone))`, which is right with any real `Clock`,
+  got the UTC date in the tests: a correct fix of LEB-D-300-A's BUG-006 written that way failed its verifier, and the public tests
+  would have told a candidate the same wrong thing. `withZone` now returns a view in the zone asked for that follows the test's
+  instant. No test depended on the old behavior: the reference's 70 tests pass, and so do LEB-D-300-A's on its public tree.
+- `instances/LEB-D-300-A/public/code/` is rebuilt by `private/build_public.py`; only `TestBase.java` changes.
+- Found while writing the variant cases of LEB-D-300-A: that fix of BUG-006 now passes its verifier.
 
 ### `0.2.196` — 2026-10-13 — LEB-D-300-A has its answer key, generated from its rows by a generic matrix writer
 
