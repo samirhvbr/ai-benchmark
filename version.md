@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.180`
+**Versão atual:** `0.2.181`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.181` — 2026-10-12 — The second run of Claude Sonnet 5.5 at max is voided because the agent's own Opus 5.5 subagents wrote part of it: the agent is back to 932, with one run
+
+- `results/2026/LEB-300-A/aggregate.json`: Claude Sonnet 5.5 at max goes from two runs (932 and 864) back to one, 932 (Platinum). The published score rises from 864 to 932, the agent stays 1st, its lead over Claude Sonnet 5.5 at xhigh (860) goes from 4 points to 72, and it is still not official (1/3, PROTOCOL §4). The board has a Platinum again. No other agent's score or place moves.
+- **Why void.** In run 2 the agent launched four read-only subagents of its own accord with the client's Agent tool (`model: "opus"`), two in each stage. They ran on Claude Opus 5.5 and wrote 122 of the session's 543 responses; Claude Sonnet 5.5 wrote the other 421 (counted by message id: the "882 messages" of the 0.2.163 note counted events, not responses). The audit files the session as SWITCHED, and a delivery with another model in it does not count as the requested model's work (`docs/new-series-design.md` §7).
+- **Why now, and why it is not a retry.** The run was scored and published (0.2.163), with a note about the subagents, before the owner decided that anything the audit files as OPERATOR ERROR or SWITCHED waits for his decision. He decided that this run is void, as the void runs of Claude Fable 5.1 on LEB-100-A are: its folder in the private archive becomes `void-1`, with a `VOID.md` that says it was scored first. The criterion is the record, never the result: voiding it raises the agent's score, and the same record would have voided a run with a higher total. A void run holds no run number, so the agent's next run is its run 2.
+- The reading of the agent is rewritten for one run and says that a second was voided. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No protocol text, public tool, weight, penalty or test changes.
 
 ### `0.2.180` — 2026-10-12 — The run of Claude Sonnet 5.5 filed as high that ran at medium is withdrawn: the agent keeps its score, 855, with two runs
 
