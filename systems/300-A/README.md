@@ -163,7 +163,7 @@ split rounding each share.
       (`public/code/`, `public/manifest.md`), on which the public suite passes
 - [x] `LEB-D-300-A`: the verifiers (`private/verify/`), checked in both directions on the planted tree and on the reference
 - [x] `LEB-D-300-A`: the matrix (`private/matrix_rows.py`, written out by `tools/make_matrix.py`)
-- [ ] `LEB-D-300-A`: the variant cases
+- [x] `LEB-D-300-A`: the variant cases (`private/variants/`, run by `tools/variants.py`)
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)

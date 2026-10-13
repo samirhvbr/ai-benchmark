@@ -1,7 +1,7 @@
 # LEB-D-300-A — CondoDesk, Default track
 
-> **Status: in authoring, not runnable.** The planted tree (`public/code/`), the verifiers and the matrix are written; the variant
-> cases and the task statement of the track are not, so there is no run yet, and `./leb pacote` refuses the instance. Every file of this instance is committed here as it is
+> **Status: in authoring, not runnable.** The planted tree (`public/code/`), the verifiers, the matrix and the variant cases are
+> written; the task statement of the track is not, so there is no run yet, and `./leb pacote` refuses the instance. Every file of this instance is committed here as it is
 > written, the answer key included, and the instance is complete before its first run
 > ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2). The folder exists from the start so that its whole history is
 > public.
@@ -30,8 +30,8 @@ kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md
 ```text
 public/      code/ (the legacy tree: the reference with this profile planted) and manifest.md (the system's)
 private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed-from-public-tests.txt, verify/ (the
-             verifiers), matrix_rows.py with matrix.json and matrix.md (the key); then the variant cases and the runner
-             contract
+             verifiers), matrix_rows.py with matrix.json and matrix.md (the key), variants/ (the control cases); then the
+             runner contract
 ```
 
 `public/` is derived, never edited by hand. `private/build_public.py` plants the reference with `private/plant/`
@@ -72,3 +72,22 @@ and the files give, so a change to the code or to a verifier that moves a row ca
 python3 tools/make_matrix.py instances/LEB-D-300-A            # writes private/matrix.json and matrix.md
 python3 tools/make_matrix.py instances/LEB-D-300-A --check    # the committed matrix is up to date
 ```
+
+## Variant cases
+
+A verifier that has only seen the planted tree and the reference has not shown that it can tell a fix from a near miss.
+`private/variants/` holds 77 control cases, each a few exact edits on `public/code/` (or on the reference): fixes written another
+way, which the verifier of their row must accept; partial and wrong fixes, which it must reject; and changes to the decoys, which
+keep their property or break it. `tools/variants.py` builds each case, runs its row's verifier through the Java evaluator and
+compares the verdict; with `--characterize` it also runs the public tests on every case that should pass, so an "alternative" that
+breaks the contract does not count as one. `private/variants/results.tsv` is the last full run.
+
+```sh
+python3 tools/variants.py instances/LEB-D-300-A --parallel 4 --characterize   # every case; rewrites results.tsv
+python3 tools/variants.py instances/LEB-D-300-A --only BUG-011                  # one row's cases
+```
+
+One case records a limit of a verifier rather than its strength, and says so in its note: a lock inside the JVM passes BUG-011's
+probe, which runs one JVM (the matrix's notes send it to the judge). Another limit has no case, because its outcome depends on the
+machine: PERF-012's coverage names the quadratic loop whose constant is too small to show at the sizes it measures (one that stops
+at the first match gave a ratio of 4.8, under the limit of 8).

@@ -41,7 +41,7 @@ final class Coverage {
         Map.entry("PERF-006", new Item("an index leads on payment(invoice_id) after schema.sql and the migrations",
                 new String[] {"that the planner uses it", "other useful indexes"})),
         Map.entry("PERF-012", new Item("the processor time of the user list grows by less than 8 times from 4,000 to 16,000 accounts",
-                new String[] {"absolute time", "other quadratic code"})),
+                new String[] {"absolute time", "a quadratic loop whose constant is too small to show at 16,000 accounts (one that stops at the first match)", "other quadratic code"})),
         Map.entry("PERF-015", new Item("a bank event held inside its transaction does not stop an event for another invoice from answering",
                 new String[] {"events for the same invoice, which its row lock orders", "statement imports at the same time"})),
         Map.entry("PERF-009", new Item("the manager's dashboard reads as many rows with 300 overdue invoices as with 3, and still counts them",

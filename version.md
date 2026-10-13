@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.198`
+**Versão atual:** `0.2.199`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,27 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.199` — 2026-10-13 — LEB-D-300-A's verifiers pass 77 control cases: fixes done another way accepted, near misses rejected
+
+- `tools/variants.py INSTANCE [--only ...] [--parallel N] [--characterize] [--list]`, generalized from LEB-300-A's own engine
+  (which stays with that instance): each case is a few exact edits on the planted tree or on the reference; the engine builds it,
+  runs its row's verifier through the instance's evaluator, and compares the verdict with what the case expects (`fixed`,
+  `not_fixed`, `half`, or a decoy that `holds` or is `broken`). A case that does not compile proves nothing and fails; with
+  `--characterize`, a case that should pass must also pass the public tests, so an "alternative" that breaks the contract does
+  not count. A full run writes `private/variants/results.tsv`.
+- `instances/LEB-D-300-A/private/variants/`: 77 cases over every row and decoy (26 BUG, 17 PERF, 18 ARCH, 8 CLN, 8 on the
+  decoys). Among them: an advisory lock per unit and a row lock for BUG-011, a serializable transaction without retry rejected
+  (its loser answers 500); one transaction per statement for BUG-014, and validating first rejected; a facade that sits on both the
+  billing run and the settlement capped at half for ARCH-001, and the money rules renamed and moved accepted; a static data source
+  kept beside the instance one capped at half for ARCH-013; a migration accepted and an edit of `schema.sql` rejected for PERF-006.
+  The last full run: 77 of 77 as expected, every passing case with the public suite at 70 of 70.
+- One case records a limit, not a strength: a lock inside the JVM passes BUG-011's probe, which runs one JVM; the matrix's notes
+  send it to the judge. Writing the cases also found a limit with no stable case: a quadratic user list that stops at the first
+  match has a constant too small to show at PERF-012's sizes (ratio 4.8 against a limit of 8); its coverage now says so.
+- `tests/test_variants.py`: the engine against a fake evaluator, each expectation, a case that does not compile, an edit that does
+  not apply, an alternative that breaks a public test, and the selection options.
+- The instance's README describes the cases; the instance index and `systems/300-A/README.md §9` check them off.
 
 ### `0.2.198` — 2026-10-13 — Three of LEB-D-300-A's verifiers close the partial fixes the variant cases showed they let through
 
