@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.185`
+**Versão atual:** `0.2.186`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.186` — 2026-10-13 — LEB-D-300-A's planting starts with its eight bugs, each an exact edit on the corrected reference
+
+- `instances/LEB-D-300-A/private/plant/flaws_a_bugs.py` plants the BUG rows of the catalog (§2) with `tools/plant.py`, and
+  `plant/paths.py` holds the source path the modules share. BUG-011 removes the unit's row lock (and its now unused repository
+  method), BUG-006 dates the overdue block on the clock's zone, BUG-013 counts days late with `Period.getDays`, BUG-014 settles
+  each statement line in its own transaction, BUG-007 compares the paid total with `equals`, BUG-003 closes a read's connection
+  only when the work returns, BUG-010 drops the check of `tar`'s exit status, and BUG-015 logs an incident without its exception.
+- Checked: every edit matches once, the planted tree compiles, and of the 70 public tests only
+  `BillingTest.aStatementWithABadLineRecordsNothing` fails, the test the catalog (§8) says sees BUG-014. The suite's leaked
+  connections did not reach the database's limit.
+- The legacy tree is not written yet: it comes, with the public suite, once every group is planted.
 
 ### `0.2.185` — 2026-10-13 — System A's reference is corrected where the review of the LEB-D-300-A catalog found it unclean, before either instance is planted
 
