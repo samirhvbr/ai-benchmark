@@ -6,8 +6,11 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,9 +43,22 @@ class V03_PerformanceTest extends VBase {
         lateUnits(buildingA, 360, "More", "2025-12", LocalDate.parse("2026-01-10"));
         String page = ok(a, list).body();
         long large = rowsFor(a, list);
+        long second = rowsFor(a, list + "&page=2");
+        Set<String> first = invoiceIds(page), next = invoiceIds(ok(a, list + "&page=2").body());
         boolean counted = page.contains("400 invoices.");
-        Verdict.fixed("PERF-003", large - small <= 2 && counted, "rows read for one page of 20: " + small + " with 40 matching invoices and " + large
-                + " with 400 (they should be the same); the page still says \"400 invoices.\": " + counted);
+        boolean paged = first.size() == 20 && next.size() == 20 && Collections.disjoint(first, next);
+        Verdict.fixed("PERF-003", large - small <= 2 && second - small <= 2 && counted && paged, "rows read for one page of 20: " + small + " with 40 matching invoices, "
+                + large + " with 400, and " + second + " for the second page (they should be the same); the page still says \"400 invoices.\": " + counted
+                + "; the second page has 20 other invoices: " + paged);
+    }
+
+    private static final Pattern INVOICE_LINK = Pattern.compile("<a href=\"/invoices/(\\d+)\">");
+
+    private static Set<String> invoiceIds(String page) {
+        Set<String> out = new HashSet<>();
+        Matcher m = INVOICE_LINK.matcher(page);
+        while (m.find()) out.add(m.group(1));
+        return out;
     }
 
     private static final Pattern BUILDING_ROW = Pattern.compile("<td>Maple Court</td><td>(\\d+)</td><td>(\\d+)</td>");

@@ -116,7 +116,7 @@
       "proves": [
         "C3"
       ],
-      "notes": "Validating every line before recording any is accepted when the recording itself is one transaction.",
+      "notes": "Validating every line before recording any is not enough: the verifier also makes the database refuse a later line, so the recording itself must be one transaction.",
       "dimensions": [
         "resiliencia",
         "consistencia"
@@ -222,7 +222,7 @@
       "proves": [
         "C3"
       ],
-      "notes": "Any logging that puts the exception in the same record as the incident id, or in the process output next to it, is accepted.",
+      "notes": "Any logging that puts the exception, with its stack, in the same record as the incident id, or in the process output next to it, is accepted; the exception's message alone is not.",
       "dimensions": [
         "resiliencia"
       ]
@@ -257,7 +257,7 @@
       "proves": [
         "C3"
       ],
-      "notes": "The page must still say how many invoices match."
+      "notes": "The page must still say how many invoices match, and the second page must hold the next invoices."
     },
     {
       "id": "PERF-010",

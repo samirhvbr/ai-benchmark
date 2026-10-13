@@ -81,17 +81,24 @@ class V01_RulesTest extends VBase {
     @Verifies({"BUG-014"})
     void bug014_aStatementIsImportedWholeOrNotAtAll() throws Exception {
         long id = invoice(unitA101, "2026-02", LocalDate.parse("2026-03-10"), "300.00");
+        long other = invoice(unitA201, "2026-02", LocalDate.parse("2026-03-10"), "400.00");
         String our = ourNumberOf(id);
         Browser b = loggedIn(ADMIN);
         ok(b, "/admin/statements");
+        // a later line the system refuses, then a later line the database refuses (an amount beyond the column's precision)
         R bad = b.upload("/admin/statements", "statement", "bad.ofx",
                 ofx(new String[] {"F1", "20260303", "300.00", "PIX " + our}, new String[] {"", "20260303", "10.00", "no id"}));
-        long paymentsAfterBad = count("select count(*) from payment");
-        Object statusAfterBad = value("select status from invoice where id = ?", id);
+        long afterBad = count("select count(*) from payment");
+        R broken = b.upload("/admin/statements", "statement", "broken.ofx",
+                ofx(new String[] {"F2", "20260303", "400.00", "PIX " + ourNumberOf(other)}, new String[] {"F3", "20260303", "10000000000000.00", "too much"}));
+        long afterBroken = count("select count(*) from payment");
+        Object statusOf = value("select status from invoice where id = ?", id), statusOfOther = value("select status from invoice where id = ?", other);
         R good = b.upload("/admin/statements", "statement", "good.ofx", ofx(new String[] {"F1", "20260303", "300.00", "PIX " + our}));
         Object statusAfterGood = value("select status from invoice where id = ?", id);
-        boolean ok = bad.status() == 400 && paymentsAfterBad == 0 && "OPEN".equals(statusAfterBad) && good.status() == 200 && "PAID".equals(statusAfterGood);
-        Verdict.fixed("BUG-014", ok, "a matched line then a line without FITID: " + bad.status() + ", " + paymentsAfterBad + " payments recorded, invoice " + statusAfterBad
-                + " (expected 400, 0, OPEN); the matched line alone afterwards: " + good.status() + ", invoice " + statusAfterGood + " (expected 200, PAID)");
+        boolean ok = bad.status() == 400 && afterBad == 0 && broken.status() >= 400 && afterBroken == 0 && "OPEN".equals(statusOf) && "OPEN".equals(statusOfOther)
+                && good.status() == 200 && "PAID".equals(statusAfterGood);
+        Verdict.fixed("BUG-014", ok, "a matched line then a line without FITID: " + bad.status() + ", " + afterBad + " payments recorded (expected 400 and 0); a matched line then "
+                + "a line the database refuses: " + broken.status() + ", " + afterBroken + " payments recorded (expected an error and 0); both invoices " + statusOf + " and "
+                + statusOfOther + " (expected OPEN); the first matched line alone afterwards: " + good.status() + ", invoice " + statusAfterGood + " (expected 200, PAID)");
     }
 }

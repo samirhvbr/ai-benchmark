@@ -109,14 +109,14 @@ class V07_ResourcesTest extends VBase {
         synchronized (records) {
             for (LogRecord rec : records) {
                 String text = String.valueOf(rec.getMessage()) + " " + java.util.Arrays.toString(rec.getParameters());
-                if (text.contains(incident) && (rec.getThrown() != null || text.contains("NoSuchFileException"))) inRecord = true;
+                if (text.contains(incident) && (rec.getThrown() != null || text.contains("NoSuchFileException") && text.contains("\tat "))) inRecord = true;
             }
         }
         String console = printed.toString(StandardCharsets.UTF_8);
         int at = console.indexOf(incident);
-        boolean inConsole = at >= 0 && console.indexOf("NoSuchFileException") >= 0;
+        boolean inConsole = at >= 0 && console.contains("NoSuchFileException") && console.contains("\tat ");
         boolean ok = generic && (inRecord || inConsole);
         Verdict.fixed("BUG-015", ok, "the download of a document whose file is gone answered 500 with incident " + incident + (generic ? ", without the cause" : ", WITH the cause")
-                + "; a log record with that incident carries the exception: " + inRecord + "; the process output carries the incident and the exception: " + inConsole);
+                + "; a log record with that incident carries the exception and its stack: " + inRecord + "; the process output carries the incident, the exception and its stack: " + inConsole);
     }
 }

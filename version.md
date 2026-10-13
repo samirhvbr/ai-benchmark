@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.197`
+**Versão atual:** `0.2.198`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.198` — 2026-10-13 — Three of LEB-D-300-A's verifiers close the partial fixes the variant cases showed they let through
+
+- BUG-014: a statement validated line by line before recording, but recorded in one transaction per line, passed. The verifier
+  now also imports a matched line followed by a line the database refuses (an amount beyond the column's precision) and requires
+  an error and no payment, so only one transaction for the whole statement passes.
+- PERF-003: a page read with a limit and no offset passed, showing the first page as every page. The verifier now reads the
+  second page too, and requires the same rows read and twenty other invoices.
+- BUG-015: logging the exception's message next to the incident id passed. The verifier now requires the exception with its
+  stack, in the incident's log record or in the process output beside the incident id.
+- On `public/code/` the three still come out not fixed, and on the reference fixed. The catalog's probes, the coverage map and the
+  matrix's notes say what each verifier now proves; the matrix is rewritten by `tools/make_matrix.py`.
 
 ### `0.2.197` — 2026-10-13 — System A's test clock keeps moving when the code asks it for another time zone
 

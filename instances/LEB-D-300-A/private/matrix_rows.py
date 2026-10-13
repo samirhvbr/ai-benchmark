@@ -57,7 +57,8 @@ FLAWS = [
          "A statement whose later line is invalid is refused with 400, but the lines before it are already recorded and their invoices "
          "settled: the import is not whole or nothing.",
          "Import every line of a statement in one transaction, so that a refused statement records nothing.",
-         "Validating every line before recording any is accepted when the recording itself is one transaction.",
+         "Validating every line before recording any is not enough: the verifier also makes the database refuse a later line, so "
+         "the recording itself must be one transaction.",
          dimensions=["resiliencia", "consistencia"]),
     flaw("BUG-006", "Alta", "Difícil", "C", "booking/BookingService.java", r"LocalDate\.now\(clock\)",
          "Around midnight in the building, the rule that blocks a unit with an invoice more than thirty days overdue counts the days "
@@ -95,7 +96,8 @@ FLAWS = [
          "An internal error is logged with its incident id but without the exception, so the cause and the stack trace of every 500 "
          "are lost to whoever investigates it.",
          "Log the exception with the record that carries the incident id; the response stays generic.",
-         "Any logging that puts the exception in the same record as the incident id, or in the process output next to it, is accepted.",
+         "Any logging that puts the exception, with its stack, in the same record as the incident id, or in the process output next "
+         "to it, is accepted; the exception's message alone is not.",
          dimensions=["resiliencia"]),
 
     # ---- PERF (Template C)
@@ -108,7 +110,7 @@ FLAWS = [
     flaw("PERF-003", "Alta", "Fácil", "C", "repo/FinanceRepository.java", r"all\.subList\(from",
          "The invoice list reads every matching invoice and keeps one page of them in memory.",
          "Page in the query (limit and offset, or keyset) and count the total with a count query.",
-         "The page must still say how many invoices match.")
+         "The page must still say how many invoices match, and the second page must hold the next invoices.")
     ,
     flaw("PERF-010", "Alta", "Difícil", "C", "reports/ReportService.java", r"if \(buildingTotals == null\)",
          "The admin's dashboard keeps the buildings' totals from its first request for the life of the application: invoices billed "
