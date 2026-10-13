@@ -68,6 +68,17 @@ class Resolver(unittest.TestCase):
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("LEB-NAO-EXISTE", r.stderr)
 
+    def test_a_package_of_the_next_series_names_its_one_message_and_writes_no_run_recipe(self):
+        with tempfile.TemporaryDirectory() as t:
+            private_root, runs = os.path.join(t, "private-root"), os.path.join(t, "runs")
+            make_instance(private_root, "LEB-TEST-D", layout="split", matrix=synthetic_matrix([entry("BUG-011")], task_version="D-1.0.0"))
+            r = run_py(LEB, "pacote", "LEB-TEST-D", env={"LEB_INSTANCES_PATH": private_root, "LEB_RUNS_DIR": runs})
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertEqual(sorted(os.listdir(os.path.join(runs, "LEB-TEST-D", "pacote"))), [".leb-pacote.sha256", "TASK.md", "code", "manifest.md"])
+            self.assertFalse(os.path.exists(os.path.join(runs, "LEB-TEST-D", "COMO-RODAR.md")))
+            message = helpers.read_json(os.path.join(ROOT, "protocol", "tasks", "messages-D-1.0.0.json"))["message"]
+            self.assertIn(message, r.stdout + r.stderr)
+
     def test_pack_and_leb_work_end_to_end_on_a_split_instance_outside_the_repository(self):
         with tempfile.TemporaryDirectory() as t:
             private_root, runs = os.path.join(t, "private-root"), os.path.join(t, "runs")

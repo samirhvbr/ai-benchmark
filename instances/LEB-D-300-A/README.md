@@ -1,7 +1,8 @@
 # LEB-D-300-A — CondoDesk, Default track
 
-> **Status: in authoring, not runnable.** The planted tree (`public/code/`), the verifiers, the matrix and the variant cases are
-> written; the task statement of the track is not, so there is no run yet, and `./leb pacote` refuses the instance. Every file of this instance is committed here as it is
+> **Status: in authoring, not runnable.** The planted tree (`public/code/`), the verifiers, the matrix, the variant cases and the
+> task statement are written, and `./leb pacote` builds the package. What is left before a first run (the evaluator of the new
+> series and a bench snapshot holding the package) is in [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status). Every file of this instance is committed here as it is
 > written, the answer key included, and the instance is complete before its first run
 > ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2). The folder exists from the start so that its whole history is
 > public.
@@ -35,8 +36,8 @@ private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed
 ```
 
 `public/` is derived, never edited by hand. `private/build_public.py` plants the reference with `private/plant/`
-(`tools/plant.py`), removes `.gitignore`, trims the one public test that `private/removed-from-public-tests.txt` names, and copies
-the system's manifest:
+(`tools/plant.py`), removes `.gitignore`, trims the one public test that `private/removed-from-public-tests.txt` names, adds the
+system's package files (`systems/300-A/package/`: `ENVIRONMENT.md`, `check-environment.sh`) and copies the system's manifest:
 
 ```sh
 python3 instances/LEB-D-300-A/private/build_public.py            # rewrites public/
@@ -91,3 +92,14 @@ One case records a limit of a verifier rather than its strength, and says so in 
 probe, which runs one JVM (the matrix's notes send it to the judge). Another limit has no case, because its outcome depends on the
 machine: PERF-012's coverage names the quadratic loop whose constant is too small to show at the sizes it measures (one that stops
 at the first match gave a ratio of 4.8, under the limit of 8).
+
+## The package
+
+```sh
+./leb pacote LEB-D-300-A      # runs/LEB-D-300-A/pacote/: code/, manifest.md, TASK.md
+```
+
+Everything in it is in English, the system's language: the code, the manifest, the environment notes in `code/`, and `TASK.md`,
+rendered from [`protocol/tasks/TASK-D-1.0.0.md`](../../protocol/tasks/TASK-D-1.0.0.md) and bound to the matrix by its SHA-256. The
+package is deterministic (55 files); the leak guard finds no text of the matrix in it. A run sends one message,
+[`protocol/tasks/messages-D-1.0.0.json`](../../protocol/tasks/messages-D-1.0.0.json), through the lab's unattended driver.

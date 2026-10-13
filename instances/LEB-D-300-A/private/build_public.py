@@ -3,7 +3,8 @@
 candidate receives is always derived, never edited by hand:
 
     public/code/      tools/plant.py with private/plant/ on systems/300-A/reference, without .gitignore, with the public
-                      tests trimmed as private/removed-from-public-tests.txt records
+                      tests trimmed as private/removed-from-public-tests.txt records, plus the system's package files
+                      (systems/300-A/package/: ENVIRONMENT.md and check-environment.sh)
     public/manifest.md  systems/300-A/manifest.md
 
     python3 instances/LEB-D-300-A/private/build_public.py            rewrites public/
@@ -64,6 +65,8 @@ def build(out):
             sys.exit("[build_public] %s: the trimmed test occurs %d times, expected once" % (path, text.count(old)))
         with open(full, "w", encoding="utf-8") as f:
             f.write(text.replace(old, new))
+    for name in sorted(os.listdir(os.path.join(SYSTEM, "package"))):
+        shutil.copy(os.path.join(SYSTEM, "package", name), os.path.join(code, name))
     shutil.copyfile(os.path.join(SYSTEM, "manifest.md"), os.path.join(out, "manifest.md"))
 
 

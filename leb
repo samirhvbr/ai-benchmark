@@ -16,6 +16,7 @@ harness/leb_harness.py e harness/score.py — a lógica está neles.
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -141,6 +142,8 @@ def cmd_pacote(a):
             m = json.load(f)
         versao = str(m.get("version", "n/d"))
     sha_file = os.path.join(destino, ".leb-pacote.sha256")
+    if os.path.exists(os.path.join(destino, "TASK.md")):
+        return pacote_da_serie(destino, sha_file)
     tarefa = os.path.join(destino, "TAREFA.md")
     if os.path.exists(tarefa):
         with open(tarefa, encoding="utf-8") as f:
@@ -164,6 +167,24 @@ def cmd_pacote(a):
     diz()
     diz("Receita completa do run (o que anotar, onde salvar, como avaliar):")
     diz("    %s" % rel(os.path.join(base, "COMO-RODAR.md")))
+    diz("%s(sha_file: %s)%s" % (DIM, rel(sha_file), OFF))
+
+
+def pacote_da_serie(destino, sha_file):
+    """A package of the next series (TASK.md, a track statement): one message, from protocol/tasks/messages-<version>.json, sent
+    by the lab's unattended driver (docs/new-series-design.md §10). The full LEB's run recipe (COMO-RODAR.md) does not apply."""
+    with open(os.path.join(destino, "TASK.md"), encoding="utf-8") as f:
+        version = re.search(r"<!--\s*LEB:TASK\s+version=([A-Z0-9.-]+)", f.read()).group(1)
+    with open(os.path.join(ROOT, "protocol", "tasks", "messages-%s.json" % version), encoding="utf-8") as f:
+        message = json.load(f)["message"]
+    diz()
+    diz("%sThe package for the agent:%s" % (BOLD, OFF))
+    diz("    %s" % rel(destino))
+    diz()
+    diz("%sThe one message of a run (task %s):%s" % (BOLD, version, OFF))
+    diz('    "%s"' % message)
+    diz()
+    diz("Runs of the next series go through the lab's driver, unattended (docs/new-series-design.md §6 and §10).")
     diz("%s(sha_file: %s)%s" % (DIM, rel(sha_file), OFF))
 
 

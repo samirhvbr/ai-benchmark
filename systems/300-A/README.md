@@ -114,7 +114,8 @@ verifiers, never reached this repository, and a replicator cannot evaluate its r
 publishes its scripts with the instances.
 
 1. `reference/`: the clean system, with its characterization tests (public) and its schema.
-2. `manifest.md`: the public contract both instances ship.
+2. `manifest.md`: the public contract both instances ship, and `package/`: the environment notes (`ENVIRONMENT.md`) and the
+   check script (`check-environment.sh`) that go into both packages' `code/`.
 3. Per instance, a planting profile: exact-match edits applied to a copy of the reference, which yield the legacy tree and
    `public/code/`.
 4. Per instance, the matrix generated from the legacy tree, the verifiers, and the variant cases that check each verifier in
@@ -165,6 +166,7 @@ split rounding each share.
 - [x] `LEB-D-300-A`: the verifiers (`private/verify/`), checked in both directions on the planted tree and on the reference
 - [x] `LEB-D-300-A`: the matrix (`private/matrix_rows.py`, written out by `tools/make_matrix.py`)
 - [x] `LEB-D-300-A`: the variant cases (`private/variants/`, run by `tools/variants.py`)
+- [x] `LEB-D-300-A`: its package, built clean by `./leb pacote` (`code/` with the environment notes, `manifest.md`, `TASK.md`)
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.200`
+**Versão atual:** `0.2.201`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.201` — 2026-10-13 — LEB-D-300-A's package builds clean, all in English, with the system's environment notes inside code/
+
+- `systems/300-A/package/ENVIRONMENT.md` and `check-environment.sh`: what the candidate needs to build and test system A (JDK 21,
+  Maven offline, PostgreSQL 16, `tar`), the database variables, and what the evaluation takes from a delivery (`src/main` and
+  `migrations/`, with the original `pom.xml`, `schema.sql` and public tests). English counterparts of LEB-300-A's `AMBIENTE.md`
+  and `verificar-ambiente.sh`, shared by both instances of the system.
+- `instances/LEB-D-300-A/private/build_public.py` adds them to `public/code/`, which is rebuilt; `--check` passes.
+- `./leb pacote LEB-D-300-A` builds the package: `code/`, `manifest.md` and `TASK.md` (task D-1.0.0, bound to the matrix by its
+  SHA-256), 55 files, the same hash on every build, no Portuguese anywhere, nothing the leak guard flags.
+- `leb pacote`: for a package of the next series (one with `TASK.md`) it prints the one message from
+  `protocol/tasks/messages-<version>.json` and writes no `COMO-RODAR.md`, the full LEB's recipe for an operator, which does not
+  apply to the lab's unattended runs. `tests/test_resolver.py` covers it.
+- The instance's README describes the package; `systems/300-A/README.md` lists `package/` (§7) and checks the package off (§9).
 
 ### `0.2.200` — 2026-10-13 — The Default track has its task statement, in English like system A, and the packager writes it as TASK.md
 
