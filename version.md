@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.187`
+**Versão atual:** `0.2.188`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.188` — 2026-10-13 — LEB-D-300-A plants seven of its eight architecture flaws; the god class of ARCH-001 comes last, on its own
+
+- `instances/LEB-D-300-A/private/plant/flaws_c_arch.py` plants the ARCH rows of the catalog (§4) except ARCH-001: ARCH-002 moves
+  the collection report into its page (SQL, the settled-share rule and the HTML in one handler; the service method, the repository
+  query and `Charges.rate` go), ARCH-003 gives the notice service SQL of its own beside the repository, ARCH-008 moves the
+  admin's building totals record into the report service so that `repo` and `reports` depend on each other, ARCH-013 keeps the
+  data source in a static field of `Db`, ARCH-004 writes the amount-due rule a second time on the resident's dashboard, ARCH-009
+  turns the notice limits into bare literals, and ARCH-010 adds the unused parser of the bank's old CNAB return file.
+- Checked with the bugs and the performance flaws: every edit matches once, the tree compiles, and the public suite still fails
+  only on the test that sees BUG-014.
 
 ### `0.2.187` — 2026-10-13 — LEB-D-300-A plants its seven performance flaws, none of which changes what a page or the API returns
 
