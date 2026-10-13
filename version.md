@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.186`
+**Versão atual:** `0.2.187`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.187` — 2026-10-13 — LEB-D-300-A plants its seven performance flaws, none of which changes what a page or the API returns
+
+- `instances/LEB-D-300-A/private/plant/flaws_b_perf.py` plants the PERF rows of the catalog (§3): PERF-001 reads the owners of
+  each late invoice's unit by one query per invoice, PERF-003 reads every matching invoice and keeps a page in memory, PERF-010
+  keeps the admin's building totals for the life of the application, PERF-006 drops the index on `payment(invoice_id)`, PERF-012
+  joins users and units in memory with nested loops, PERF-015 makes the webhook `synchronized`, and PERF-009 loads every overdue
+  invoice to count them. Repository methods that only the reference's versions used go with them, so that no planted row leaves
+  dead code behind.
+- Checked with the bugs of 0.2.186: every edit matches once, the tree compiles, and the public suite still fails only on the test
+  that sees BUG-014.
 
 ### `0.2.186` — 2026-10-13 — LEB-D-300-A's planting starts with its eight bugs, each an exact edit on the corrected reference
 
