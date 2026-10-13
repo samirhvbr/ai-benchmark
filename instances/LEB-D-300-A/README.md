@@ -29,8 +29,8 @@ kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md
 
 ```text
 public/      code/ (the legacy tree: the reference with this profile planted) and manifest.md (the system's)
-private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed-from-public-tests.txt; then the matrix,
-             the verifiers, the variant cases and the runner contract
+private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed-from-public-tests.txt, verify/ (the
+             verifiers); then the matrix, the variant cases and the runner contract
 ```
 
 `public/` is derived, never edited by hand. `private/build_public.py` plants the reference with `private/plant/`
@@ -44,3 +44,17 @@ python3 instances/LEB-D-300-A/private/build_public.py --check    # a fresh build
 
 `tests/test_leb_d_300_a.py` runs the check. The public suite (70 tests) passes on `public/code/`, `SecurityBehaviorTest`
 included.
+
+## Verifiers
+
+`private/verify/` holds one JUnit class per group of rows (`V01_RulesTest` … `V07_ResourcesTest`): each method writes the verdict
+of its row, `full` or `none` for a Template C row, a ceiling `full`, `half` or `none` for a Template R row, and the decoys say
+whether their property holds. The Java evaluator runs them on any delivery with the instance's own build, schema and public tests:
+
+```sh
+harness/java/dev-db.sh up
+harness/java/evaluate.sh verify instances/LEB-D-300-A <the delivery's code folder> [selector]
+```
+
+On `public/code/` every row comes out not fixed and every decoy holds; on the reference, with a migration that adds the payment
+index (a delivery may change the schema only through `migrations/`), every row comes out fixed and every decoy holds.

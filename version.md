@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.194`
+**Versão atual:** `0.2.195`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,26 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.195` — 2026-10-13 — LEB-D-300-A has its verifiers: every row is not fixed on the planted tree and fixed on the reference
+
+- `instances/LEB-D-300-A/private/verify/`: 31 verifiers in seven JUnit classes, one per row of the catalog and one per decoy,
+  written in English from LEB-300-A's machinery (verdict files, the extension that turns a refused scenario step into "not
+  fixed", a coverage map of what each verdict proves and leaves to the judge):
+  - `Instrument` wraps the application's `DataSource` through `TestBase.forTheApp`: connections opened and closed, commands,
+    rows read, and a hook before each command;
+  - `Rendezvous` and `Hold` force an interleaving by state: a party waits until the other arrives, or is provably waiting for a
+    lock in the database or in the application's code, never for a time;
+  - `Structure` reads the source (javac's tree) and the bytecode (ArchUnit) without depending on names; ARCH-004 is the one
+    exception, stated in the catalog.
+- Checked in both directions with `harness/java/evaluate.sh`: on `public/code/` all 27 rows come out not fixed and the 4 decoys
+  hold; on the reference, with a migration that adds the payment index, all 27 come out fixed and the decoys hold. No verdict is
+  inconclusive.
+- The catalog now says what each verifier measures where it differs from the first wording: PERF-012 measures the processor time
+  of the application's threads, not a child JVM; ARCH-001, ARCH-004 and ARCH-009 state their properties as measured; CLN-001,
+  CLN-002 and CLN-007 state their limits.
+- The instance's README describes the verifiers and how to run them; `systems/300-A/README.md §9` checks them off, the matrix and
+  the variant cases still open.
 
 ### `0.2.194` — 2026-10-13 — The Java evaluator characterizes and verifies a delivery with the instance's own build, schema and tests
 

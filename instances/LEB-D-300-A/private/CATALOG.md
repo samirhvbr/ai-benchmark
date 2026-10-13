@@ -9,7 +9,7 @@ This catalog is written before any planting code. The planting modules (`plant/`
 where they have to depart from it, this file changes in the same commit.
 
 - **Site** is the class and method in the reference layout ([`systems/300-A/reference/`](../../../systems/300-A/reference/),
-  `src/main/java/com/condodesk/`). The candidate may move code; the verifiers do not depend on names. Rows whose site is in
+  `src/main/java/com/condodesk/`). The candidate may move code; the verifiers do not depend on the names of classes or methods, with one exception, stated at ARCH-004. Rows whose site is in
   `BillingService`, `PaymentService` or `Charges` end up in the merged class of ARCH-001, which is planted last.
 - **Template C** is behavioral: a probe decides C3. **Template R** is structural: the property decides R3, and a behavioral probe,
   where one is given, is extra evidence.
@@ -54,7 +54,7 @@ where they have to depart from it, this file changes in the same commit.
 | PERF-003 | Alta | Fácil | `FinanceRepository.search` | the invoice list reads every matching row and keeps one page in memory | the rows read for one page of 20 do not grow between 40 and 400 matching invoices |
 | PERF-010 | Alta | Difícil | `ReportService.dashboard` (admin) | the admin's building totals are computed once and kept in a field for the life of the application: open invoices never change on the dashboard | the admin's dashboard, then a billing run of 3 units, then the dashboard again: the building's open invoices go from 0 to 3 |
 | PERF-006 | Média | Moderada | `schema.sql` | no index on `payment(invoice_id)`, which every settlement (`paidTotal`), every invoice page and the collection report filter or join by | after `schema.sql` and the candidate's `migrations/`, an index leads on `payment(invoice_id)` |
-| PERF-012 | Média | Especialista | `UserRepository.list` | the users and the residencies are read separately and joined in memory with two nested loops: the admin's user list is quadratic in the number of accounts | the user list with 16,000 accounts takes less than 8 times as long as with 4,000 (a child JVM, the same machine) |
+| PERF-012 | Média | Especialista | `UserRepository.list` | the users and the residencies are read separately and joined in memory with two nested loops: the admin's user list is quadratic in the number of accounts | the processor time the application's threads spend on the user list (the least of three requests) grows less than 8 times from 4,000 to 16,000 accounts: linear growth is 4, the nested loops give 16 |
 | PERF-015 | Média | Moderada | `PaymentService.webhook` | the webhook handler is `synchronized` on the service: every bank event, of every building, waits for the one before, although the invoice's row lock already orders the events of one invoice | an event held at a gate inside its transaction does not stop an event for another invoice from answering |
 | PERF-009 | Baixa | Fácil | `ReportService.dashboard` (manager) | the manager's count of overdue invoices loads every overdue invoice of the building and takes the list's size | the rows read for the manager's dashboard do not grow between 3 and 300 overdue invoices |
 
@@ -62,22 +62,22 @@ where they have to depart from it, this file changes in the same commit.
 
 | ID | Sev | Diff | Site | Mechanism | Structural property (name-independent) |
 |---|---|---|---|---|---|
-| ARCH-001 | Crítica | Difícil | `BillingService` + `PaymentService` + `Charges` | merged into one finance class: the billing run, the invoice list and view, the statement import, the webhook and its signature, the settlement and the money rules (split, amount due, days late, settled share) | the class that splits a budget and computes the amount due has no database access; the class that runs the billing run is not the class that settles payments |
+| ARCH-001 | Crítica | Difícil | `BillingService` + `PaymentService` + `Charges` | merged into one finance class: the billing run, the invoice list and view, the statement import, the webhook and its signature, the settlement and the money rules (split, amount due, days late, settled share) | the classes of the code under evaluation on the stack under the insert of a billing run's invoices and under the update of an invoice a bank event settles share none outside the HTTP layer, the data access and the database helper; and the class that floors the shares of a budget (`RoundingMode.FLOOR`) has no database access. Both: full; one: half |
 | ARCH-013 | Alta | Especialista | `Db`, `App.create` | the `DataSource` is kept in a static field of `Db`, set by every `App.create`: a second application in the same JVM takes over the first one's database | no static mutable field holds a `DataSource`, a `Db` or a `Clock`; evidence: two applications in one JVM, on two schemas, each write to their own |
 | ARCH-008 | Alta | Difícil | `ReportRepository` ↔ `ReportService` | the record of the admin's building totals moves into the report service, and the repository builds it: `repo` depends on `reports`, which depends on `repo` | no dependency cycle among the sub-packages of `com.condodesk`, with at least as many sub-packages as the legacy (the root package, which wires everything, is outside the check: the reference already has `App` → `web` → `Config`) |
 | ARCH-002 | Alta | Moderada | `ReportPages.collection` | the page runs the month totals SQL itself, computes the settled share and writes the HTML; the service method and the repository query are gone | no class of the package that holds the HTTP server references `java.sql`, `javax.sql` or the database helper |
-| ARCH-004 | Média | Difícil | `ReportService` (resident's dashboard) | the amount-due rule is written a second time, with its own day count, which already diverges from `Charges.daysLate` (BUG-013) | the late fee and the interest (the division by 100 and by the 30-day month) are computed in one class only |
+| ARCH-004 | Média | Difícil | `ReportService` (resident's dashboard) | the amount-due rule is written a second time, with its own day count, which already diverges from `Charges.daysLate` (BUG-013) | the late fee and the interest are computed in one class each. The exception to name independence: a computation is recognized as a method that calls `divide` and a method whose name holds `fee` (or `interest`), the building's rates; a copy that reads the rates under other names is not seen, and the coverage says so |
 | ARCH-003 | Média | Moderada | `NoticeService.publish`, `NoticeService.get` | the service writes and reads the notice table with SQL of its own, beside the repository that keeps the search | no class that holds an SQL literal on the `notice` table also holds a notice rule (the length limits) |
 | ARCH-010 | Baixa | Fácil | `billing/CnabParser` (new file) | a parser of the bank's old CNAB return file, which the OFX import replaced: nothing calls it | every top-level class of the main code is referenced by another class of the main code (`App` excepted) |
-| ARCH-009 | Baixa | Fácil | `NoticeService` | the notice limits (200, 10,000, 5 words) are bare literals, each written twice: in the check and in its message | each of the three limits is written once, as a named constant, with the same value |
+| ARCH-009 | Baixa | Fácil | `NoticeService` | the notice limits (200, 10,000, 5 words) are bare literals, each written twice: in the check and in its message | in the classes that hold the text limit (10000), none of the three limits is a bare number and no message repeats one; both: full, one: half |
 
 ## 5. CLN (Template R)
 
 | ID | Sev | Diff | Site | Mechanism |
 |---|---|---|---|---|
-| CLN-001 | Média | Moderada | `FinancePages.list` | one method of 80 non-blank lines: the filters, the sort, the table, the filter map and the pager, inlined (the limit declared in the matrix is 45; the reference's longest method has 35) |
-| CLN-007 | Média | Moderada | `BookingService.cancel` | five nested levels instead of guard clauses, the main flow at the bottom (the reference's deepest nesting of `if` is 2) |
-| CLN-002 | Baixa | Fácil | `MobileApi`, `ContentPages` | `FinancePages.enumOf` copied into both, with the same body (the reference has no two methods with the same body) |
+| CLN-001 | Média | Moderada | `FinancePages.list` | one method of 80 non-blank lines: the filters, the sort, the table, the filter map and the pager, inlined (the verifier's limits are 45 useful lines and 45 statements; the reference's longest method has 35 lines, and its most statements are 29) |
+| CLN-007 | Média | Moderada | `BookingService.cancel` | five nested levels instead of guard clauses, the main flow at the bottom (the verifier counts chained decisions, `if` and `switch`, an `else if` on the same level, with a limit of 3: the reference's deepest is 3, a `switch` with an `if` inside, in `Server.admit`) |
+| CLN-002 | Baixa | Fácil | `MobileApi`, `ContentPages` | `FinancePages.enumOf` copied into both, with the same body (the verifier compares bodies with identifiers masked, from three statements on, constructors aside; the reference has no such pair since R5 and R6) |
 | CLN-005 | Baixa | Fácil | `AdminPages` | a block of commented-out code: an old handler that deactivated an account |
 
 ## 6. Decoys (4): `exists: false`
