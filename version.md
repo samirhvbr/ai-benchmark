@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.182`
+**Versão atual:** `0.2.183`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.183` — 2026-10-13 — A generic planting engine plants any instance's flaws from its profile, and plants LEB-300-A's legacy tree byte for byte
+
+- `tools/plant.py PROFILE_DIR REFERENCE_DIR OUT_DIR [--only ID,ID] [--check]`: the engine of LEB-300-A
+  (`instances/LEB-300-A/private/plant/plantar.py`), made generic for the next series (`systems/300-A/README.md §7`, item 3). The
+  edits mean what they meant there: an `old` text must occur exactly once in the file as the earlier edits left it, `None`
+  creates a file, `"*"` replaces it, a `None` replacement deletes it, and `POS` hooks run after every edit. What changed: the
+  profile folder is an argument and goes on `sys.path` (a profile keeps its paths in a module of its own, so no `SRC` is fixed
+  in the engine), `--only` refuses an id the profile does not define, and the messages are in English.
+- `tests/test_plant.py`: one synthetic profile per kind of edit and per refusal, and the equivalence: from LEB-300-A's reference
+  and profile, the engine writes a `src/` identical to that instance's `private/build/legado/src/`, file by file.
+- LEB-300-A's own engine stays in its instance, unchanged: the instance is immutable since its commit.
+- No instance, rule, weight or result changes.
 
 ### `0.2.182` — 2026-10-13 — A review of the new series' documents brings them up to date: what stands before a first run, the reference's size, the spec version and the commit rule
 
