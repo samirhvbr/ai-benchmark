@@ -40,10 +40,6 @@ public record Response(int status, String contentType, byte[] body, List<String[
                 .with("X-Content-Type-Options", "nosniff");
     }
 
-    public static Response text(int status, String contentType, String body) {
-        return new Response(status, contentType, body.getBytes(StandardCharsets.UTF_8), List.of());
-    }
-
     public Response with(String name, String value) {
         if (value.indexOf('\r') >= 0 || value.indexOf('\n') >= 0) throw new IllegalArgumentException("line break in header " + name);
         List<String[]> h = new ArrayList<>(headers);

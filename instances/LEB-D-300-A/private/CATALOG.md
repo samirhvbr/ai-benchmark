@@ -122,8 +122,10 @@ where they have to depart from it, this file changes in the same commit.
 
 ## 9. The reference, before planting
 
-Writing this catalog was also a review of the reference. These corrections are made to `systems/300-A/reference/` first, in a
-commit of their own, with the public suite passing, and both instances are planted on the corrected reference.
+Writing this catalog was also a review of the reference. These corrections were made to `systems/300-A/reference/` first, in a
+commit of their own (0.2.185), with the public suite passing, and both instances are planted on the corrected reference. A
+throwaway test, kept out of every suite, failed on the reference before the commit and passed after it for R1 and R2; R3
+changes no output and R4 removes code nothing calls, so the compiler and the 70 tests are their check.
 
 | # | Where | What was found | Correction |
 |---|---|---|---|

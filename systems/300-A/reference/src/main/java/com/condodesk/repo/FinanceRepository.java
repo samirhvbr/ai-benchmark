@@ -109,12 +109,6 @@ public final class FinanceRepository {
                 FinanceRepository::payment, invoiceId);
     }
 
-    /** Payments that matched no invoice, newest first. */
-    public List<Payment> unmatched(Connection c, int limit) throws SQLException {
-        return Db.list(c, "select id, invoice_id, external_id, source, amount, paid_on, memo from payment where invoice_id is null "
-                + "order by paid_on desc, id desc limit ?", FinanceRepository::payment, limit);
-    }
-
     /** Whether the unit has an open invoice that was due before the given date. */
     public boolean hasOpenDueBefore(Connection c, long unitId, LocalDate date) throws SQLException {
         return Db.one(c, "select exists (select 1 from invoice where unit_id = ? and status = 'OPEN' and due_date < ?) as late",
@@ -125,6 +119,13 @@ public final class FinanceRepository {
     public List<Invoice> openOfUnits(Connection c, Set<Long> unitIds) throws SQLException {
         return Db.list(c, INVOICE + " where i.unit_id = any(?) and i.status = 'OPEN' order by i.due_date, u.label",
                 FinanceRepository::invoice, Db.ids(unitIds));
+    }
+
+    /** How many open invoices of a building were due before the date. */
+    public int countOpenDueBefore(Connection c, long buildingId, LocalDate date) throws SQLException {
+        return Db.one(c, "select count(*) as n from invoice i join unit u on u.id = i.unit_id "
+                        + "where u.building_id = ? and i.status = 'OPEN' and i.due_date < ?",
+                rs -> rs.getInt("n"), buildingId, date).orElse(0);
     }
 
     /** The open invoices of a building that were due before the date, by unit and month. */

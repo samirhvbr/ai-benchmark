@@ -21,7 +21,7 @@ Maven and PostgreSQL, code, comments and screens in English.
   LEB-300-A then serves this system unchanged. Nothing else: the HTTP server is the JDK's (`com.sun.net.httpserver`), XML is the
   JDK's, hashing is the JDK's (PBKDF2), and HTML is built by the code itself.
 - **Size:** level 300 ([`levels/LEVELS.md`](../../levels/LEVELS.md)), so that flaws cross files and the agent has to navigate.
-  The reference has 3,914 lines of main code (3,410 not blank) in 41 files, above the level's 3,000: it has two faces, the
+  The reference has 3,921 lines of main code (3,418 not blank) in 41 files, above the level's 3,000: it has two faces, the
   browser pages and the mobile API, and the security classes need both.
 - **Determinism:** the clock is injected (`java.time.Clock`), every building has a time zone (`America/Sao_Paulo` in the
   fixtures), and nothing depends on the machine's locale or zone.
@@ -61,7 +61,7 @@ Maven and PostgreSQL, code, comments and screens in English.
 - **Payments:** an OFX statement (XML) is imported by an admin; each credit is matched to an invoice by the *our number* in its
   memo. An event from the bank's webhook does the same, signed with HMAC-SHA256 and a secret from the environment. A payment
   that covers the amount due on its date pays the invoice; a smaller one is recorded and the invoice stays open; an unmatched
-  one is kept for the report. Statements and events are idempotent by the bank's id.
+  one is recorded without an invoice. Statements and events are idempotent by the bank's id.
 - **Bookings:** within the area's opening hours, up to its maximum length, no overlap with another active booking of the same
   area, at most two future bookings per unit, and none for a unit with an invoice overdue for more than 30 days. Bookings of
   areas with a fee wait for the manager's confirmation. A resident can cancel up to 48 hours before the start.
@@ -157,9 +157,9 @@ split rounding each share.
       security and maintenance together; the Default statement must not ask for security work, and neither statement exists
 - [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
       disagreements, and each track's weights
-- [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md)), which
-      also lists four corrections to this reference, to be made before either instance is planted
-- [ ] `LEB-D-300-A`: the reference corrections, the planting modules and `public/code/`, the matrix, verifiers, variant cases
+- [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md))
+- [x] The four corrections to this reference that the catalog's review found (its §9), made before either instance is planted
+- [ ] `LEB-D-300-A`: the planting modules and `public/code/`, the matrix, verifiers, variant cases
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)

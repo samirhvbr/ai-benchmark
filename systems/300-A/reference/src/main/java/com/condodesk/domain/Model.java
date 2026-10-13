@@ -46,11 +46,13 @@ public final class Model {
     public record Booking(long id, long areaId, String areaName, long buildingId, long unitId, String unitLabel, long userId,
                           Instant startsAt, Instant endsAt, int guests, BookingStatus status) {}
 
+    /** A notice; {@code publishedOn} is the date of {@code publishedAt} on the building's calendar. */
     public record Notice(long id, long buildingId, String authorName, String title, String body, boolean pinned,
-                         Instant publishedAt) {}
+                         Instant publishedAt, LocalDate publishedOn) {}
 
+    /** A stored document; {@code createdOn} is the date of {@code createdAt} on the building's calendar. */
     public record StoredDocument(long id, long buildingId, Long unitId, DocumentKind kind, String originalName, String storedName,
-                                 String contentType, long sizeBytes, String sourceUrl, Instant createdAt) {}
+                                 String contentType, long sizeBytes, String sourceUrl, Instant createdAt, LocalDate createdOn) {}
 
     /** A page of results and the total number of rows that match. */
     public record Page<T>(java.util.List<T> items, int page, int size, long total) {

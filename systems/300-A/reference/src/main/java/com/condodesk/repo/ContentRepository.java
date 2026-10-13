@@ -17,10 +17,12 @@ import java.util.Set;
 
 /** Notices and documents of the buildings. */
 public final class ContentRepository {
-    private static final String NOTICE = "select n.id, n.building_id, u.name as author_name, n.title, n.body, n.pinned, n.published_at "
+    private static final String NOTICE = "select n.id, n.building_id, u.name as author_name, n.title, n.body, n.pinned, n.published_at, "
+            + "(n.published_at at time zone (select time_zone from building where building.id = n.building_id))::date as published_on "
             + "from notice n join app_user u on u.id = n.author_id";
     private static final String DOCUMENT = "select id, building_id, unit_id, kind, original_name, stored_name, content_type, size_bytes, "
-            + "source_url, created_at from document";
+            + "source_url, created_at, (created_at at time zone (select time_zone from building where building.id = document.building_id))::date "
+            + "as created_on from document";
 
     public long insertNotice(Connection c, long buildingId, long authorId, String title, String body, boolean pinned, Instant now) throws SQLException {
         return Db.insert(c, "insert into notice (building_id, author_id, title, body, pinned, published_at) values (?, ?, ?, ?, ?, ?)",
@@ -75,12 +77,13 @@ public final class ContentRepository {
 
     private static Notice notice(ResultSet rs) throws SQLException {
         return new Notice(rs.getLong("id"), rs.getLong("building_id"), rs.getString("author_name"), rs.getString("title"), rs.getString("body"),
-                rs.getBoolean("pinned"), Db.instant(rs, "published_at"));
+                rs.getBoolean("pinned"), Db.instant(rs, "published_at"), Db.date(rs, "published_on"));
     }
 
     private static StoredDocument document(ResultSet rs) throws SQLException {
         return new StoredDocument(rs.getLong("id"), rs.getLong("building_id"), Db.nullableLong(rs, "unit_id"),
                 DocumentKind.valueOf(rs.getString("kind")), rs.getString("original_name"), rs.getString("stored_name"),
-                rs.getString("content_type"), rs.getLong("size_bytes"), rs.getString("source_url"), Db.instant(rs, "created_at"));
+                rs.getString("content_type"), rs.getLong("size_bytes"), rs.getString("source_url"), Db.instant(rs, "created_at"),
+                Db.date(rs, "created_on"));
     }
 }

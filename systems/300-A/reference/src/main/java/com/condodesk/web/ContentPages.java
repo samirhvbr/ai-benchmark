@@ -76,7 +76,7 @@ final class ContentPages {
         for (StoredDocument d : documents.list(p, building)) {
             b.append("<tr><td><a href=\"/documents/").append(d.id()).append("/download\">").append(esc(d.originalName())).append("</a></td><td>")
                     .append(d.kind()).append("</td><td class=\"num\">").append(d.sizeBytes() / 1024 + 1).append(" KB</td><td>")
-                    .append(d.createdAt().toString(), 0, 10).append("</td><td>").append(esc(d.sourceUrl())).append("</td></tr>");
+                    .append(d.createdOn()).append("</td><td>").append(esc(d.sourceUrl())).append("</td></tr>");
         }
         b.append("</table>");
         if (p.manages(building)) {
@@ -121,7 +121,7 @@ final class ContentPages {
     private static String article(Notice n) {
         String body = esc(n.body()).replaceAll("\\*\\*([^*\\n]+)\\*\\*", "<strong>$1</strong>").replace("\r\n", "\n").replace("\n", "<br>\n");
         return "<article id=\"notice-" + n.id() + "\" class=\"notice" + (n.pinned() ? " pinned" : "") + "\"><h2><a href=\"/notices/" + n.id() + "\">"
-                + esc(n.title()) + "</a></h2><p class=\"meta\">" + esc(n.authorName()) + " · " + n.publishedAt().toString().substring(0, 10)
+                + esc(n.title()) + "</a></h2><p class=\"meta\">" + esc(n.authorName()) + " · " + n.publishedOn()
                 + "</p><div class=\"body\">" + body + "</div></article>\n";
     }
 

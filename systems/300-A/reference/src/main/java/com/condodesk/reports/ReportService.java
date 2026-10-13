@@ -31,6 +31,12 @@ public final class ReportService {
 
     public record MonthCollection(YearMonth month, BigDecimal billed, BigDecimal settled, BigDecimal received, BigDecimal rate) {}
 
+    /** The collection of one year: the year shown, and its billed months. */
+    public record YearCollection(int year, List<MonthCollection> months) {}
+
+    /** The delinquency CSV and the building's date it was taken on. */
+    public record DelinquencyCsv(LocalDate asOf, String text) {}
+
     /** What the first page shows: a resident's open invoices, a manager's pending work, or the admin's buildings. */
     public record Dashboard(int openInvoices, BigDecimal openDue, int overdueInvoices, int pendingBookings, List<BuildingTotals> buildings) {}
 
@@ -70,21 +76,28 @@ public final class ReportService {
         });
     }
 
-    public String delinquencyCsv(Principal p, long buildingId) {
+    public DelinquencyCsv delinquencyCsv(Principal p, long buildingId) {
+        Delinquency report = delinquency(p, buildingId);
         StringBuilder out = new StringBuilder(Csv.row(CSV_HEADER));
-        for (Delinquent d : delinquency(p, buildingId).rows()) {
+        for (Delinquent d : report.rows()) {
             out.append(Csv.row(List.of(d.unit(), d.owners(), d.month().toString(), d.dueDate().toString(), d.amount().toPlainString(),
                     d.amountDue().toPlainString(), String.valueOf(d.daysLate()))));
         }
-        return out.toString();
+        return new DelinquencyCsv(report.asOf(), out.toString());
     }
 
-    /** Per billed month of the year: what was billed, the invoices settled, the money received, and the settled share. */
-    public List<MonthCollection> collection(Principal p, long buildingId, int year) {
+    /**
+     * Per billed month of the year: what was billed, the invoices settled, the money received, and the settled share. Without a
+     * year, the current year on the building's calendar.
+     */
+    public YearCollection collection(Principal p, long buildingId, Integer year) {
         p.requireManager(buildingId);
-        return db.read(c -> reports.monthTotals(c, buildingId, year)).stream()
-                .map(t -> new MonthCollection(t.month(), t.billed(), t.settled(), t.received(), Charges.rate(t.settled(), t.billed())))
-                .toList();
+        return db.read(c -> {
+            int y = year != null ? year : buildings.byId(c, buildingId).orElseThrow(AppException::notFound).dateAt(clock.instant()).getYear();
+            return new YearCollection(y, reports.monthTotals(c, buildingId, y).stream()
+                    .map(t -> new MonthCollection(t.month(), t.billed(), t.settled(), t.received(), Charges.rate(t.settled(), t.billed())))
+                    .toList());
+        });
     }
 
     public Dashboard dashboard(Principal p) {
@@ -107,7 +120,7 @@ public final class ReportService {
     private Dashboard manager(Connection c, long buildingId) throws SQLException {
         Building b = buildings.byId(c, buildingId).orElseThrow();
         LocalDate today = b.dateAt(clock.instant());
-        int overdue = finance.openDueBefore(c, buildingId, today).size();
+        int overdue = finance.countOpenDueBefore(c, buildingId, today);
         return new Dashboard(0, BigDecimal.ZERO, overdue, reports.pendingBookings(c, buildingId, clock.instant()), List.of());
     }
 }

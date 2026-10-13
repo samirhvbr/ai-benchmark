@@ -93,7 +93,7 @@ final class MobileApi {
         JsonNode b = req.json();
         try {
             Booking k = bookings.book(req.principal(), new BookingRequest(number(b, "area_id"), number(b, "unit_id"), LocalDate.parse(text(b, "date")),
-                    LocalTime.parse(text(b, "start")), LocalTime.parse(text(b, "end")), b.has("guests") ? (int) number(b, "guests") : 0));
+                    LocalTime.parse(text(b, "start")), LocalTime.parse(text(b, "end")), b.has("guests") ? smallNumber(b, "guests") : 0));
             return Response.json(201, bookingJson(k));
         } catch (DateTimeParseException e) {
             throw AppException.invalid("date is YYYY-MM-DD; start and end are HH:MM.");
@@ -154,5 +154,12 @@ final class MobileApi {
         JsonNode n = body.get(field);
         if (n == null || !n.isIntegralNumber()) throw AppException.invalid(field + " must be a whole number.");
         return n.asLong();
+    }
+
+    /** A whole number that fits an {@code int}; a larger one is refused, never cut down to its low bits. */
+    private static int smallNumber(JsonNode body, String field) {
+        JsonNode n = body.get(field);
+        if (n == null || !n.isIntegralNumber() || !n.canConvertToInt()) throw AppException.invalid(field + " must be a whole number.");
+        return n.asInt();
     }
 }

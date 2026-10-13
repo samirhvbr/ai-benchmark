@@ -14,7 +14,6 @@ import com.condodesk.web.Server.Gate;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Clock;
 import java.util.Map;
 
 /** Every route of the application, page by page, plus the static files. */
@@ -24,14 +23,14 @@ public final class Routes {
     private Routes() {
     }
 
-    public static void register(Server server, Config config, Clock clock, Sessions sessions, AuthService auth, BillingService billing,
+    public static void register(Server server, Config config, Sessions sessions, AuthService auth, BillingService billing,
                                 PaymentService payments, BookingService bookings, NoticeService notices, DocumentService documents,
                                 ReportService reports) {
         new AccountPages(auth, sessions, reports, config.secureCookies()).register(server);
         new FinancePages(billing, payments, documents).register(server);
         new BookingPages(bookings).register(server);
         new ContentPages(notices, documents).register(server);
-        new ReportPages(reports, clock).register(server);
+        new ReportPages(reports).register(server);
         new AdminPages(auth).register(server);
         new MobileApi(auth, sessions, billing, payments, bookings).register(server);
         server.route("GET", "/static/{name}", Gate.OPEN, Routes::staticFile);

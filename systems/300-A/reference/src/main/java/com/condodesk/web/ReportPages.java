@@ -2,27 +2,23 @@ package com.condodesk.web;
 
 import com.condodesk.domain.AppException;
 import com.condodesk.reports.ReportService;
+import com.condodesk.reports.ReportService.YearCollection;
 import com.condodesk.reports.ReportService.Delinquency;
+import com.condodesk.reports.ReportService.DelinquencyCsv;
 import com.condodesk.reports.ReportService.Delinquent;
 import com.condodesk.reports.ReportService.MonthCollection;
 import com.condodesk.web.Server.Gate;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.util.List;
 
 import static com.condodesk.web.Html.esc;
 
 /** The delinquency report (page and CSV) and the collection of a year. */
 final class ReportPages {
     private final ReportService reports;
-    private final Clock clock;
 
-    ReportPages(ReportService reports, Clock clock) {
+    ReportPages(ReportService reports) {
         this.reports = reports;
-        this.clock = clock;
     }
 
     void register(Server s) {
@@ -49,23 +45,22 @@ final class ReportPages {
 
     private Response delinquencyCsv(Request req) {
         long building = req.building();
-        String csv = reports.delinquencyCsv(req.principal(), building);
-        return Response.download("text/csv; charset=utf-8", "delinquency-" + building + "-" + LocalDate.ofInstant(clock.instant(), ZoneOffset.UTC) + ".csv",
-                csv.getBytes(StandardCharsets.UTF_8));
+        DelinquencyCsv csv = reports.delinquencyCsv(req.principal(), building);
+        return Response.download("text/csv; charset=utf-8", "delinquency-" + building + "-" + csv.asOf() + ".csv",
+                csv.text().getBytes(StandardCharsets.UTF_8));
     }
 
     private Response collection(Request req) {
         long building = req.building();
         Long y = req.queryLong("year");
-        int year = y == null ? LocalDate.ofInstant(clock.instant(), ZoneOffset.UTC).getYear() : y.intValue();
-        if (year < 2000 || year > 2100) throw AppException.invalid("year must be between 2000 and 2100.");
-        List<MonthCollection> rows = reports.collection(req.principal(), building, year);
+        if (y != null && (y < 2000 || y > 2100)) throw AppException.invalid("year must be between 2000 and 2100.");
+        YearCollection collection = reports.collection(req.principal(), building, y == null ? null : y.intValue());
         StringBuilder b = new StringBuilder("<table><tr><th>Month</th><th>Billed</th><th>Settled</th><th>Received</th><th>Settled share</th></tr>");
-        for (MonthCollection m : rows) {
+        for (MonthCollection m : collection.months()) {
             b.append("<tr><td>").append(m.month()).append("</td><td class=\"num\">").append(Html.money(m.billed())).append("</td><td class=\"num\">")
                     .append(Html.money(m.settled())).append("</td><td class=\"num\">").append(Html.money(m.received())).append("</td><td class=\"num\">")
                     .append(m.rate() == null ? "—" : m.rate().toPlainString() + "%").append("</td></tr>");
         }
-        return Response.html(Html.page(req, "Collection " + year, b.append("</table>").toString()));
+        return Response.html(Html.page(req, "Collection " + collection.year(), b.append("</table>").toString()));
     }
 }

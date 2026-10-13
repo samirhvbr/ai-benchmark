@@ -136,13 +136,5 @@ public final class Db {
         public DataAccessException(SQLException cause) {
             super(cause);
         }
-
-        public String sqlState() {
-            return ((SQLException) getCause()).getSQLState();
-        }
-
-        public boolean isUniqueViolation() {
-            return "23505".equals(sqlState());
-        }
     }
 }

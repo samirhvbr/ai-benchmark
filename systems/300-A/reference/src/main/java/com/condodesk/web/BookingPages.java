@@ -62,7 +62,7 @@ final class BookingPages {
 
     private Response book(Request req) {
         Booking k = bookings.book(req.principal(), new BookingRequest(longForm(req, "area"), longForm(req, "unit"), req.formDate("date"),
-                time(req, "start"), time(req, "end"), req.form("guests") == null ? 0 : (int) longForm(req, "guests")));
+                time(req, "start"), time(req, "end"), req.form("guests") == null ? 0 : intForm(req, "guests")));
         String msg = k.status() == BookingStatus.REQUESTED ? "Booking requested; the manager will confirm it." : "Booking confirmed.";
         return Response.redirect(Html.flash("/bookings" + buildingQuery(req), msg));
     }
@@ -88,6 +88,14 @@ final class BookingPages {
     private static long longForm(Request req, String name) {
         try {
             return Long.parseLong(req.requireForm(name));
+        } catch (NumberFormatException e) {
+            throw AppException.invalid(name + " must be a number.");
+        }
+    }
+
+    private static int intForm(Request req, String name) {
+        try {
+            return Integer.parseInt(req.requireForm(name));
         } catch (NumberFormatException e) {
             throw AppException.invalid(name + " must be a number.");
         }

@@ -58,7 +58,7 @@ public final class App {
         ReportService reports = new ReportService(db, buildings, finance, reportRepo, clock);
 
         Server server = new Server(sessions, auth, config.secureCookies(), config.maxUploadBytes());
-        Routes.register(server, config, clock, sessions, auth, billing, payments, bookings, notices, documents, reports);
+        Routes.register(server, config, sessions, auth, billing, payments, bookings, notices, documents, reports);
         return new App(server, config.port());
     }
 

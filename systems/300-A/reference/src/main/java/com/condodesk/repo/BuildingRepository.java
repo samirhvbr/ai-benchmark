@@ -21,11 +21,6 @@ public final class BuildingRepository {
                 BuildingRepository::building, id);
     }
 
-    public List<Building> all(Connection c) throws SQLException {
-        return Db.list(c, "select id, name, address, time_zone, due_day, late_fee_pct, monthly_interest_pct from building order by name, id",
-                BuildingRepository::building);
-    }
-
     public List<Unit> units(Connection c, long buildingId) throws SQLException {
         return Db.list(c, "select id, building_id, label, ideal_fraction from unit where building_id = ? order by label",
                 BuildingRepository::unit, buildingId);
@@ -37,10 +32,6 @@ public final class BuildingRepository {
 
     public List<CommonArea> areas(Connection c, long buildingId) throws SQLException {
         return Db.list(c, AREA + " where building_id = ? order by name", BuildingRepository::area, buildingId);
-    }
-
-    public Optional<CommonArea> area(Connection c, long areaId) throws SQLException {
-        return Db.one(c, AREA + " where id = ?", BuildingRepository::area, areaId);
     }
 
     /** Locks the area's row until the transaction ends, so that bookings of one area are decided one at a time. */

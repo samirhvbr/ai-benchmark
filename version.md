@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.184`
+**Versão atual:** `0.2.185`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.185` — 2026-10-13 — System A's reference is corrected where the review of the LEB-D-300-A catalog found it unclean, before either instance is planted
+
+- **Dates on the building's calendar (R1).** The collection report's default year, the date in the delinquency CSV's file name,
+  a notice's date and a document's "Added" date were the UTC date: from 21:00 in São Paulo they showed the next day (and, on
+  December 31, the next year). `ReportService` now gives the pages the building's date (`YearCollection`, `DelinquencyCsv`), and
+  `Notice.publishedOn` and `StoredDocument.createdOn` come from the database already converted to the building's zone.
+  `ReportPages` no longer needs the clock, and `Routes.register` loses that parameter.
+- **Guests refused beyond an `int` (R2).** The mobile API and the booking form cast the number of guests from `long` to `int`:
+  4,294,967,297 guests became 1 and passed the capacity check. Such a value now answers 400.
+- **A count query for the manager's overdue invoices (R3)**, instead of loading them all to take the list's size.
+- **Six members nothing called (R4)** are removed: `Response.text`, `FinanceRepository.unmatched`, `BuildingRepository.all` and
+  `area`, `DataAccessException.sqlState` and `isUniqueViolation`. The system page's "kept for the report" becomes "recorded without
+  an invoice", which is what the code does.
+- The 70 characterization tests pass. A throwaway test, kept out of every suite, failed on the reference before these changes
+  and passes after them for R1 and R2. Main code: 3,921 lines (3,418 not blank) in 41 files. The manifest does not change: none
+  of these behaviors is part of the contract.
+- `instances/LEB-D-300-A/private/CATALOG.md §9` and `systems/300-A/README.md §9` record the corrections as made.
 
 ### `0.2.184` — 2026-10-13 — LEB-D-300-A has its catalog: 27 maintenance flaws and 4 decoys on CondoDesk, written before any planting code
 
