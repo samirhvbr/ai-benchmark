@@ -33,9 +33,10 @@ Four problems, all visible in this repository's own data.
    are found by 97–100% of the agents; ARCH is worth 200 points and averages 3.7, because its two flaws are almost never found.
    The LEB-300-A aggregate shows the larger instance working: no agent reaches the maximum of ARCH, BUG, PERF or CLN. COMP is the
    exception (14 of 26 agents at its maximum).
-3. **The top is inside the noise of a single agent.** Published per-run totals of LEB-300-A (as of 0.2.152): Claude Sonnet 5.5
-   high 763–897, Claude Opus 5.5 xhigh 822–886, Claude Sonnet 5.5 xhigh 860–911. The spread inside one agent is larger than the
-   gaps between the top agents. One system cannot shrink it: thirty flaws in one project share context and fixes, so they are
+3. **The top is inside the noise of a single agent.** Published per-run totals of LEB-300-A (as of 0.2.180): Claude Opus 5.5
+   xhigh 822–886, Claude Sonnet 5.5 high 855–897, Claude Opus 5.5 high 848–866. The spread inside one agent (18 to 64 points
+   here) is larger than the gaps between the agents in places 2 to 6 (3 to 9 points, from 860 down to 836). One system cannot
+   shrink it: thirty flaws in one project share context and fixes, so they are
    not thirty independent cases.
 4. **The scorer charges one regression twice.** `SPEC.md §6.2` documents it: one broken characterization test turns C4 to
    `none` for every attempted flaw and is charged again as PEN-002 (−20 per test). Recomputing the 92 public LEB-100-A runs with

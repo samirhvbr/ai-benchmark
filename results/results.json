@@ -16961,7 +16961,7 @@
           "agent": "claude-sonnet-5.5-high",
           "score": 855,
           "grade": "Gold",
-          "runs_count": 3,
+          "runs_count": 2,
           "categories": {
             "SEC": 243,
             "ARCH": 153,
@@ -16993,18 +16993,6 @@
               }
             },
             {
-              "run": 2,
-              "total": 763,
-              "cost_usd": 2.5,
-              "wall_minutes": 31.4,
-              "tokens": {
-                "input": 1378,
-                "output": 69891,
-                "cache": 5541187,
-                "total": 5612456
-              }
-            },
-            {
               "run": 3,
               "total": 855,
               "cost_usd": 5.3,
@@ -17024,8 +17012,8 @@
             "reasoning_effort": "high"
           },
           "comment": {
-            "en": "Three runs (897, 763 and 855), so the published score is their median, 855. Security stayed between 239 and 250 and bugs between 129 and 147, but architecture ranged from 133 to 178, performance from 102 to 128 and clean code from 36 to 89. The third run fixed 33 of the 36 planted flaws and reported 27, with no false positive, and its report was rated 45 of 50. One of its changes went beyond what the manifest contracts and cost 25 compatibility points (75, against 75 and 100); it was the only run of the three with no penalty for introducing a new bug (the other two took 15 points each). It took 42 minutes and US$ 5.30, against 43 minutes and US$ 5.18 in the first run and 31 minutes and US$ 2.50 in the second. The same model at xhigh effort scored 860 and 911 in two runs.",
-            "pt_BR": "Três execuções (897, 763 e 855), então a nota publicada é a mediana, 855. A segurança ficou entre 239 e 250 e os bugs entre 129 e 147, mas a arquitetura foi de 133 a 178, o desempenho de 102 a 128 e o código limpo de 36 a 89. A terceira execução corrigiu 33 das 36 falhas plantadas e reportou 27, sem falso positivo, e o relatório teve 45 de 50. Uma das mudanças foi além do que o manifesto contrata e custou 25 pontos de compatibilidade (75, contra 75 e 100); foi a única das três sem penalidade por introduzir um bug novo (as outras duas levaram 15 pontos cada). Levou 42 minutos e US$ 5,30, contra 43 minutos e US$ 5,18 na primeira execução e 31 minutos e US$ 2,50 na segunda. O mesmo modelo em xhigh fez 860 e 911 em duas execuções."
+            "en": "Two runs, 897 and 855, so the published score is the lower one, 855; with two of three runs it is not official and could move. A run filed in between, as run 2, was withdrawn because its session log shows it ran at medium effort and not at high. Security was 250 of 250 in the 897 run and 243 in the 855 run, bugs 147 and 145, architecture 178 and 153, performance 128 and 115, clean code 89 and 79. The 855 run, the published one, fixed 33 of the 36 planted flaws and reported 27, with no false positive, and its report was rated 45 of 50; the 897 run fixed 34, reported 32 and was rated 45 too. Both lost 25 compatibility points (75): the 897 run to a login lockout that answers 429, the 855 run to a change beyond what the manifest contracts; only the 897 run also paid 15 points for a new bug. The 855 run took 42 minutes and US$ 5.30, the 897 run 43 minutes and US$ 5.18. The same model at xhigh effort scored 860 and 911 in two runs.",
+            "pt_BR": "Duas execuções, 897 e 855, então a nota publicada é a menor, 855; com duas de três execuções ela não é oficial e pode mudar. Uma execução arquivada no meio, como a 2, foi retirada porque o log da sessão mostra que ela rodou em esforço medium e não em high. A segurança foi 250 de 250 na execução de 897 e 243 na de 855, os bugs 147 e 145, a arquitetura 178 e 153, o desempenho 128 e 115, o código limpo 89 e 79. A execução de 855, a publicada, corrigiu 33 das 36 falhas plantadas e reportou 27, sem falso positivo, e o relatório teve 45 de 50; a de 897 corrigiu 34, reportou 32 e teve 45 também. As duas perderam 25 pontos de compatibilidade (75): a de 897 por um bloqueio de login que responde 429, a de 855 por uma mudança além do que o manifesto contrata; só a de 897 pagou também 15 pontos por um bug novo. A de 855 levou 42 minutos e US$ 5,30, a de 897 levou 43 minutos e US$ 5,18. O mesmo modelo em xhigh fez 860 e 911 em duas execuções."
           }
         },
         {

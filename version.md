@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.179`
+**Versão atual:** `0.2.180`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.180` — 2026-10-12 — The run of Claude Sonnet 5.5 filed as high that ran at medium is withdrawn: the agent keeps its score, 855, with two runs
+
+- `results/2026/LEB-300-A/aggregate.json`: Claude Sonnet 5.5 at high goes from three runs (897, 763 and 855) to two (897 and 855), still numbered 1 and 3. The published score is the lowest of two, 855, the same number as before because it was the median of three; the agent keeps its place, 3rd, and is no longer official (2/3, PROTOCOL §4). No other agent's score or place moves.
+- **What was wrong.** Run 2 was filed as `high`, but its session log shows it ran at `medium`: before the first message the operator typed `/model` Fable 5.1, `/effort high`, `/model` Sonnet 5.5 and `/effort medium`, and all 40 responses of its main conversation carry `effort: medium` (`tools/auditar-tentativa.py` files it as OPERATOR ERROR). The filing copied the model block of run 1 and compared it with nothing. Every other Claude run, published or held, was checked against its responses the same way, and none differs; the operator's collection tool now refuses a run whose responses carry another effort than the declared one.
+- **Why withdrawn, and why it is not a retry.** A record that is not true to its session log is what `PROTOCOL §4` item 5 withdraws: the folder in the private archive becomes `withdrawn-2` with a `WITHDRAWN.md`, kept for audit and not counted toward the three of item 4, so the agent may run again (its next run is `run-4`). The criterion is the record, never the result: it was the lowest of the agent's three totals, and the same rule would have withdrawn a higher one. It cannot be refiled as a run of the `medium` agent, which already has three.
+- `protocol/PROTOCOL.md` §4 item 5 now covers it: a record that the session log contradicts, in model or in effort, is withdrawn the same way, and the effort of a run is what the client writes on its responses, never the commands typed before the first message.
+- `docs/new-series-design.md` §1 item 3 no longer quotes the withdrawn run: it gives the per-run totals of three agents (Claude Opus 5.5 at xhigh 822–886, Claude Sonnet 5.5 at high 855–897, Claude Opus 5.5 at high 848–866) as of this version, and compares their spread with the gaps between places 2 and 6.
+- The reading of the agent is rewritten for two runs, and says that a run was withdrawn. Aggregate only: no delivery, verdict, mechanical report or flaw list enters `results/`. No public tool, weight, penalty or test changes.
 
 ### `0.2.179` — 2026-10-12 — Spec 1.5.1: the documents call the matrix what it is, the answer key published with its instance, which the bench machines cannot reach
 

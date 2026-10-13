@@ -156,6 +156,11 @@ initial model had done all the work. The record names no cause for the switch an
    once. A withdrawn run that held an agent's best total is withdrawn all the same, so this is not
    the selective retry of item 3. The three runs of LEB-100-A's first batch that were filed before
    session logs were kept are the case (2026-10-04).
+   A record that the session log contradicts fails the same test. The model and the effort of a run are what the client
+   writes on its responses, which the audit (`tools/auditar-tentativa.py`) reads, never what the commands typed before the
+   first message suggest; a run filed under another model or effort than its responses carry is withdrawn the same way,
+   whatever its total. The Claude Sonnet 5.5 run 2 of LEB-300-A, filed as `high` with all 40 of its responses at `medium`,
+   is the case (2026-10-12).
 
 ## 5. Pipeline de avaliação
 
