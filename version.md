@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.188`
+**Versão atual:** `0.2.189`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.189` — 2026-10-13 — LEB-D-300-A plants its four code-quality flaws, each measured against the limit the catalog declares
+
+- `instances/LEB-D-300-A/private/plant/flaws_d_cln.py` plants the CLN rows of the catalog (§5): CLN-001 inlines the filters, the
+  sort headers, the table and the pager into `FinancePages.list`, which grows to 80 non-blank lines against the declared 45 (the
+  helper it no longer calls goes with it); CLN-007 writes `BookingService.cancel` as five nested `if`s; CLN-002 copies
+  `FinancePages.enumOf` into `MobileApi` and `ContentPages` with the same body; and CLN-005 leaves a commented-out handler and
+  route in `AdminPages`.
+- Measured on the planted tree: the longest method has 80 non-blank lines, the deepest nesting of `if` is 5, and three methods
+  share one body; on the reference the same measures give 35, 2 and none. The catalog's "about 75" for CLN-001 becomes 80.
+- With every earlier group the tree compiles and the public suite still fails only on the test that sees BUG-014.
 
 ### `0.2.188` — 2026-10-13 — LEB-D-300-A plants seven of its eight architecture flaws; the god class of ARCH-001 comes last, on its own
 

@@ -75,7 +75,7 @@ where they have to depart from it, this file changes in the same commit.
 
 | ID | Sev | Diff | Site | Mechanism |
 |---|---|---|---|---|
-| CLN-001 | Média | Moderada | `FinancePages.list` | one method of about 75 non-blank lines: the filters, the sort, the table, the filter map and the pager, inlined (the limit declared in the matrix is 45; the reference's longest method has 35) |
+| CLN-001 | Média | Moderada | `FinancePages.list` | one method of 80 non-blank lines: the filters, the sort, the table, the filter map and the pager, inlined (the limit declared in the matrix is 45; the reference's longest method has 35) |
 | CLN-007 | Média | Moderada | `BookingService.cancel` | five nested levels instead of guard clauses, the main flow at the bottom (the reference's deepest nesting of `if` is 2) |
 | CLN-002 | Baixa | Fácil | `MobileApi`, `ContentPages` | `FinancePages.enumOf` copied into both, with the same body (the reference has no two methods with the same body) |
 | CLN-005 | Baixa | Fácil | `AdminPages` | a block of commented-out code: an old handler that deactivated an account |
