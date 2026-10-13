@@ -1,0 +1,16 @@
+Moved out of the public characterization suite because they describe the visible symptom of a planted flaw (CATALOG.md §8).
+
+BUG-014 (a statement is imported whole or not at all): the test below is the reference's. Its first part, a matched line then a
+line without FITID, answers 400 and must record no payment; it leaves the public suite. Its last assertion (a malformed file
+answers 400) stays, as BillingTest.aMalformedStatementIsRefused.
+    @Test
+    void aStatementWithABadLineRecordsNothing() throws Exception {
+        invoice(unitA101, "2026-02", LocalDate.parse("2026-03-10"), "300.00");
+        byte[] statement = ofx(new String[]{"F1", "20260303", "300.00", "PIX " + ourNumberOf(unitA101, "2026-02")},
+                new String[]{"", "20260303", "10.00", "no id"});
+        Browser b = loggedIn(ADMIN);
+        b.get("/admin/statements");
+        assertEquals(400, b.upload("/admin/statements", "statement", "bad.ofx", statement).status());
+        assertEquals(0, count("select count(*) from payment"));
+        assertEquals(400, b.upload("/admin/statements", "statement", "bad.ofx", "<OFX><unclosed>".getBytes()).status());
+    }

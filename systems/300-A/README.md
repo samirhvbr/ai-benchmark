@@ -159,7 +159,9 @@ split rounding each share.
       disagreements, and each track's weights
 - [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md))
 - [x] The four corrections to this reference that the catalog's review found (its §9), made before either instance is planted
-- [ ] `LEB-D-300-A`: the planting modules and `public/code/`, the matrix, verifiers, variant cases
+- [x] `LEB-D-300-A`: the planting modules ([`private/plant/`](../../instances/LEB-D-300-A/private/plant/)) and the planted tree
+      (`public/code/`, `public/manifest.md`), on which the public suite passes
+- [ ] `LEB-D-300-A`: the matrix, verifiers, variant cases
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)

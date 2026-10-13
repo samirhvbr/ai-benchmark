@@ -1,8 +1,10 @@
 # LEB-D-300-A — CondoDesk, Default track
 
-> **Status: in authoring.** No package, no key and no run yet. Every file of this instance is committed here as it is written, the
-> answer key included, and the instance is complete before its first run ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1
-> and 2). The folder exists from the start so that its whole history is public.
+> **Status: in authoring, not runnable.** The planted tree is written (`public/code/`), the matrix and the verifiers are not, so
+> there is no key and no run yet, and `./leb pacote` refuses the instance. Every file of this instance is committed here as it is
+> written, the answer key included, and the instance is complete before its first run
+> ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2). The folder exists from the start so that its whole history is
+> public.
 
 The **Default** instance of system A of the next series ([`docs/new-series-design.md`](../../docs/new-series-design.md),
 `PROPOSED`): everyday maintenance of CondoDesk, a condominium management application in Java 21 with Maven and PostgreSQL.
@@ -23,9 +25,19 @@ The reference itself is described as *no known vulnerabilities within the review
 This instance cannot run yet. What it still needs, from its own files to the evaluator and the task statement of its track, is
 kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
 
-## Layout, once built
+## Layout
 
 ```text
 public/      code/ (the legacy tree: the reference with this profile planted) and manifest.md (the system's)
-private/     the planting profile, the matrix, the verifiers, the variant cases and the runner contract
+private/     CATALOG.md, plant/ (the planting modules), removed-from-public-tests.txt; then the matrix, the verifiers,
+             the variant cases and the runner contract
 ```
+
+`public/code/` is written by the planting modules, never by hand:
+
+```sh
+python3 tools/plant.py instances/LEB-D-300-A/private/plant systems/300-A/reference <empty folder>
+```
+
+followed by removing `.gitignore` and trimming the one public test that `private/removed-from-public-tests.txt` names. The
+public suite (70 tests) passes on it, `SecurityBehaviorTest` included.

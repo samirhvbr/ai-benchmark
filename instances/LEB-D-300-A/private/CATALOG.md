@@ -114,11 +114,13 @@ where they have to depart from it, this file changes in the same commit.
 
 - `BillingTest.aStatementWithABadLineRecordsNothing` loses its first part (a matched line then a line without FITID: 400 and no
   payment), which sees BUG-014. Its second part (a malformed file answers 400) stays.
-- Every other test of the reference passes on the planted tree; the build checks it (Block D of the plan). No test of the
-  reference counts queries, rows or connections, holds a transaction, reads the log, deletes a stored file, runs two
-  applications or bills a unit more than a month late, which is where the probes above look.
-- BUG-003 leaks a connection on each exception thrown inside a read. The public suite throws a few dozen; the build measures
-  the open connections at the end of the suite against the database's limit.
+- Every other test of the reference passes on the planted tree (checked when `public/code/` was written, 0.2.192: 70 of 70
+  with the trimmed test, and the untrimmed one fails there and passes on the reference). No test of the reference counts
+  queries, rows or connections, holds a transaction, reads the log, deletes a stored file, runs two applications or bills a
+  unit more than a month late, which is where the probes above look.
+- BUG-003 leaks a connection on each exception thrown inside a read. Sampled every half second while the public suite ran on
+  the planted tree, the database never held more than 4 connections, against a limit of 200: the driver closes a leaked
+  connection when it is collected. The probe does not rely on that; it counts the closes the wrapped `DataSource` sees.
 
 ## 9. The reference, before planting
 
@@ -146,7 +148,8 @@ because a careful reviewer may reasonably flag them):
 
 ## 10. Planting order
 
-`plant/` holds one module of paths and one module per group, loaded in name order by
-[`tools/plant.py`](../../../tools/plant.py): the bugs, the performance rows, the architecture rows that move code (ARCH-002,
-ARCH-003, ARCH-008, ARCH-013), the small ones (ARCH-004, ARCH-009, ARCH-010) and the CLN rows; then the merge of ARCH-001, last,
-because it moves every row planted in the three classes it merges.
+`plant/` holds `paths.py` and one module per group, loaded in name order by [`tools/plant.py`](../../../tools/plant.py):
+`flaws_a_bugs.py`, `flaws_b_perf.py`, `flaws_c_arch.py` (every ARCH row but ARCH-001), `flaws_d_cln.py`, and `flaws_z_god.py`,
+the merge of ARCH-001, last, because it moves every row planted in the three classes it merges. A repository method that only
+the reference's version of a row used is removed by that row, so that no row leaves dead code behind for ARCH-010's property
+to find.

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.191`
+**Versão atual:** `0.2.192`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.192` — 2026-10-13 — LEB-D-300-A's planted tree is written to public/code/, and its public suite passes on it; no key yet
+
+- `instances/LEB-D-300-A/public/code/` is the output of the five planting modules on the corrected reference (`tools/plant.py`),
+  without `.gitignore`; `public/manifest.md` is the system's manifest, unchanged. Its main code differs from the reference only in
+  the files the catalog's rows touch; `pom.xml` and the test sources are the reference's, but one test.
+- `BillingTest.aStatementWithABadLineRecordsNothing` becomes `aMalformedStatementIsRefused`: its first part sees BUG-014 and leaves
+  the public suite, recorded with its full body in `private/removed-from-public-tests.txt`; its last assertion stays. The
+  untrimmed test fails on the planted tree and passes on the reference.
+- On the planted tree the public suite passes, 70 of 70, `SecurityBehaviorTest` included. Sampled every half second during that
+  run, the database never held more than 4 connections (limit 200), so BUG-003's leak does not disturb the suite; the catalog's
+  §8 says so, and its §10 names the modules as they are.
+- The instance is listed by `./leb instancias` and is not runnable: it has no matrix, verifiers or variant cases yet, and
+  `./leb pacote` refuses it (0.2.191). Its README, the instance index and `systems/300-A/README.md §9` say so.
 
 ### `0.2.191` — 2026-10-13 — `leb pacote` refuses an instance that has its private folder but no matrix: it is still being authored
 
