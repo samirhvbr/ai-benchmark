@@ -1,6 +1,6 @@
 # LEB — LLM Engineering Benchmark
 
-**Especificação Técnica** · Versão **1.5.0** · Status: **Rascunho normativo**
+**Especificação Técnica** · Versão **1.5.1** · Status: **Rascunho normativo**
 
 ---
 
@@ -36,7 +36,7 @@ Corolário central: **reescrever tudo do zero não é engenharia, é fuga** — 
 | `SPEC.md` (este) | Núcleo normativo: pontuação, regras, definições |
 | [`taxonomy/`](taxonomy/) | Catálogo oficial das falhas (SEC, ARCH, PERF, BUG, CLN, COMP) |
 | [`scoring/SCORING.md`](scoring/SCORING.md) | Modelo de pontuação detalhado, critérios e normalização |
-| [`matrix/MATRIX.md`](matrix/MATRIX.md) | **Matriz Oficial de Falhas** — o gabarito oculto (coração do benchmark) |
+| [`matrix/MATRIX.md`](matrix/MATRIX.md) | **Official Failure Matrix**: the answer key, published with its instance and never seen by the agent during a run (the heart of the benchmark) |
 | [`levels/LEVELS.md`](levels/LEVELS.md) | Níveis LEB-100 a LEB-500 |
 | [`protocol/PROTOCOL.md`](protocol/PROTOCOL.md) | Protocolo de execução e reprodutibilidade |
 | [`protocol/TAREFA.md`](protocol/TAREFA.md) | **Tarefa canônica** entregue ao modelo: enunciado neutro + contrato de entrega, igual em toda instância |
@@ -102,9 +102,9 @@ Os critérios são **cumulativos e independentes**: um modelo pode encontrar e e
 
 ---
 
-## 5. Matriz Oficial de Falhas (gabarito oculto)
+## 5. Official Failure Matrix (the answer key)
 
-**Este é o coração do benchmark.** Cada instância LEB possui uma matriz secreta que declara, para cada ID da taxonomia:
+**This is the heart of the benchmark.** Every LEB instance has an answer key, its matrix, which declares for each taxonomy ID:
 
 | ID | Existe no código | Severidade | Pontos | Localização |
 | --- | --- | ---: | ---: | --- |
@@ -117,7 +117,9 @@ A matriz torna a avaliação **objetiva e reproduzível**: verifica-se exatament
 
 Cada falha plantada carrega também uma **dificuldade** (Fácil / Moderada / Difícil / Especialista) — quão difícil é *achar* a falha, ortogonal à severidade. Ela não altera pontos; alimenta só o eixo de descoberta do scorecard (§8.2).
 
-Regras completas de construção, ocultação (hash público, gabarito privado) e correspondência em [`matrix/MATRIX.md`](matrix/MATRIX.md).
+The key is public: it is committed with its instance before the first run (§9, item 8), and every key to come will be too. The
+agent never sees it during a run because runs happen on machines that cannot reach GitHub (README, *Execution environment*).
+The full rules of construction, publication and matching are in [`matrix/MATRIX.md`](matrix/MATRIX.md).
 
 ---
 
@@ -234,6 +236,12 @@ Falta só **executar modelos de verdade** para gerar os primeiros scorecards de 
 ## 10. Versionamento
 
 A spec segue **SemVer**: MAJOR muda pontuação/regras; MINOR adiciona falhas/níveis; PATCH corrige texto. Instâncias são versionadas separadamente (`LEB-200-A v1.2`).
+
+### Release notes for version 1.5.1
+
+- Editorial (PATCH). §1 and §5 no longer call the matrix hidden, secret or private: it is the answer key, public with its
+  instance before the first run, as §9 item 8 says since 1.5.0, and the agent never sees it during a run because the bench
+  machines cannot reach GitHub. `matrix/MATRIX.md` and the README follow. No rule changes.
 
 ### Release notes for version 1.5.0
 

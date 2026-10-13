@@ -33,10 +33,10 @@ toda vez.
 
 ## TL;DR — o ciclo em uma frase
 
-Você entrega ao modelo **só o código legado + o manifesto público + a tarefa
-canônica**; ele devolve **relatório + código alterado + achados estruturados**; você
-mede essa entrega contra um **gabarito secreto** (a Matriz) com o harness + juiz e sai
-um **scorecard de 0 a 1000**. Oficial = **mediana de 3 execuções**.
+You hand the model **only the legacy code + the public manifest + the canonical task**; it returns **a report + the changed
+code + structured findings**; you measure that delivery against the **answer key** (the Matrix, published with the instance and
+never seen by the model during a run) with the harness and the judge, and out comes a **scorecard from 0 to 1000**. Official = the
+**median of 3 runs**.
 
 ```text
    VOCÊ ENTREGA                    O MODELO DEVOLVE               VOCÊ AVALIA
@@ -58,7 +58,9 @@ diz exatamente quais falhas existem, onde, com que severidade, e quais linhas s�
 coração do benchmark** ([SPEC §5](SPEC.md)). Se o modelo vê a matriz, o resultado
 não vale nada.
 
-Por isso a separação **público × privado** ([instances/README.md](instances/README.md)):
+Hence the split between what the model receives and what only the evaluator uses ([instances/README.md](instances/README.md)). Both sides
+are public in this repository from the instance's creation; what keeps the key from the model is that the bench machines cannot
+reach GitHub:
 
 | Pasta / arquivo | Vai para o modelo? | Papel |
 | --- | :---: | --- |

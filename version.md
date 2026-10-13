@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.178`
+**Versão atual:** `0.2.179`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.179` — 2026-10-12 — Spec 1.5.1: the documents call the matrix what it is, the answer key published with its instance, which the bench machines cannot reach
+
+- The owner restated the rule: the answer key, and every key to come, is published on GitHub with its instance, and that is why
+  the bench VMs cannot reach GitHub. Several documents still described the key as hidden, secret or private, from before 1.5.0.
+- `SPEC.md` 1.5.1 (PATCH, editorial): §1 and §5 call the matrix the answer key, public with its instance before the first run, never
+  seen by the agent during a run because the runs happen on machines that cannot reach GitHub; release notes added. No rule
+  changes.
+- `matrix/MATRIX.md` (opening), `README.md` (how it works, the documents table, the LEB-100-A status line, spec 1.5.1),
+  `README_br.md` (the same two passages; its spec version, stale at 1.4.0), `BENCHMARK.md` (the summary and the split between
+  what the model receives and what only the evaluator uses) and `instances/README.md` (the `private/` label) say the same.
 
 ### `0.2.178` — 2026-10-12 — The two instances of system A have their folders in instances/ from now on, before any of their files exist
 

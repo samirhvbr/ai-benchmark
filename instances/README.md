@@ -15,7 +15,7 @@ LEB-<nível>-<letra>/
 ├── characterization/      → testes de caracterização (compatibilidade) ...... PÚBLICO
 │   ├── run.php               harness executável
 │   └── docker-compose.yml    ambiente reprodutível
-└── private/               → GABARITO — nunca vai junto do code/ ............. PRIVADO
+└── private/               → the ANSWER KEY: never in the package; public in this repository from creation
     ├── matrix.json           a Matriz Oficial (schema em ../../matrix/)
     ├── matrix.md             versão legível + notas de avaliação
     └── verify/               roteiro de verificação por falha (exploits, probes)

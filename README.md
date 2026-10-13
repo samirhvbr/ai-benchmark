@@ -4,7 +4,7 @@
 
 🇧🇷 [Versão em português](README_br.md)
 
-**A Software Engineering evaluation standard for LLMs.** Spec version: **1.5.0**.
+**A Software Engineering evaluation standard for LLMs.** Spec version: **1.5.1**.
 
 LEB is not a prompt benchmark and does not measure who writes the prettiest code. It measures **who can evolve a legacy system without breaking it** — finding real flaws, fixing them, preserving compatibility, and explaining decisions like a senior engineer would.
 
@@ -16,7 +16,7 @@ Existing benchmarks measure greenfield code generation or isolated issue-solving
 
 1. The model receives a **real legacy system** (with planted flaws) + the [canonical task](protocol/TAREFA.md) — neutral statement plus delivery format, identical across instances.
 2. It reports, fixes and justifies — without knowing which or how many flaws exist.
-3. The submission is checked against the **[Official Failure Matrix](matrix/MATRIX.md)** — a hidden answer key stating exactly what exists (and what is a decoy). This is what makes the evaluation objective, reproducible and comparable across LLMs: we verify exactly which flaws the model found, fixed, ignored — and which ones it *invented*.
+3. The submission is checked against the **[Official Failure Matrix](matrix/MATRIX.md)** — the answer key, stating exactly what exists (and what is a decoy). It is published here with the instance before any run; the agent under test never sees it, because the runs happen on machines that cannot reach GitHub (*Execution environment* below). This is what makes the evaluation objective, reproducible and comparable across LLMs: we verify exactly which flaws the model found, fixed, ignored — and which ones it *invented*.
 4. Out comes a **[scorecard](scoring/scorecard-template.md)** from 0 to 1000.
 
 | Category | Weight |
@@ -57,7 +57,7 @@ Raw category points are normalized to the official weights, so **every instance 
 | **[SPEC.md](SPEC.md)** | Normative core (RFC-style): scoring, penalties, invariants |
 | [taxonomy/](taxonomy/) | The 85 official failures: [SEC](taxonomy/SEC.md) · [ARCH](taxonomy/ARCH.md) · [PERF](taxonomy/PERF.md) · [BUG](taxonomy/BUG.md) · [CLN](taxonomy/CLN.md) · [COMP](taxonomy/COMP.md) |
 | [scoring/SCORING.md](scoring/SCORING.md) | Criteria per severity, normalization, explanation rubric, grade seals |
-| [matrix/MATRIX.md](matrix/MATRIX.md) | **Official Failure Matrix** — construction, decoys, hash-based concealment |
+| [matrix/MATRIX.md](matrix/MATRIX.md) | **Official Failure Matrix** — construction, decoys, publication with the instance |
 | [levels/LEVELS.md](levels/LEVELS.md) | LEB-100 (~300 lines) → LEB-500 (~20,000 lines) |
 | [protocol/PROTOCOL.md](protocol/PROTOCOL.md) | Canonical statement, S/A modes, 3 runs → median, anti-gaming |
 | [docs/candidate-vm.md](docs/candidate-vm.md) | The machine that runs the agents: reference build, accounts and folders, client profile, snapshots, and what went wrong |
@@ -121,11 +121,12 @@ The rest of the recipe for that machine (toolchain, accounts and folders, how a 
 
 ## Status
 
-- [x] Specification 1.5.0 (this repository) — an instance and its key are public from creation, before the first run; no change to points ([release notes](SPEC.md))
+- [x] Specification 1.5.1 (this repository) — editorial: the matrix is called what it is, the answer key published with its instance, never seen by the agent during a run ([release notes](SPEC.md))
+- [x] Specification 1.5.0 — an instance and its key are public from creation, before the first run; no change to points
 - [x] Specification 1.4.0 — additive and opt-in, no change to points: per-instance runner contract, structural evidence for Template R, whole-word and content leak guard, aggregate publication of active instances, tooling tests ([release notes](SPEC.md))
 - [x] Specification 1.3.0 — canonical task shipped inside the package + delivery contract (`PROTOCOL §2.1–2.2`), calibration + difficulty axis (§8.1–8.2), cost/time block (§8.3), non-scoring
 - [x] **Packager** ([`harness/pack.py`](harness/pack.py)) — builds `code/` + `manifest.md` + an instance-bound [`TAREFA.md`](protocol/TAREFA.md), with leak scanning and a deterministic `package_sha256`
-- [x] First instance: **[LEB-100-A](instances/LEB-100-A/)** v1.1 — PHP legacy code, 13 planted flaws + 2 decoys, private matrix, characterization + verify probes (validated live: characterization 22/22 green on both pristine and fixed code; probes flip PLANTADA→CORRIGIDA)
+- [x] First instance: **[LEB-100-A](instances/LEB-100-A/)** v1.1 — PHP legacy code, 13 planted flaws + 2 decoys, answer key public with the instance, characterization + verify probes (validated live: characterization 22/22 green on both pristine and fixed code; probes flip PLANTADA→CORRIGIDA)
 - [x] Evaluation **harness** ([`harness/`](harness/)) — mechanical pipeline (characterization before/after + probes + difficulty coverage → JSON), stdlib-only, instance-agnostic; validated both ways on LEB-100-A
 - [x] Scorecard **assembler** ([`harness/score.py`](harness/score.py)) + **judge interface** ([`scoring/JUDGE.md`](scoring/JUDGE.md), `judge.schema.json`) — deterministic 1000-pt scorecard from mechanical evidence + judge verdict; validated end-to-end (incl. the mysqli→PDO rewrite scoring 0/Reprovada, and a Gold run at 860)
 - [x] First scored runs — 37 agents on LEB-100-A (92 runs), 26 of them official with three runs each (an official score is the median of three), published in [results/](results/) with every delivery, verdict and scorecard

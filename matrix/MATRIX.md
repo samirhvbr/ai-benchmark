@@ -2,7 +2,13 @@
 
 Normativo. **O coração do benchmark.**
 
-A matriz é o **gabarito oculto** de uma instância LEB: a lista exata de falhas plantadas (e iscas), com severidade, pontos, localização e correção esperada. Ela transforma "avaliar código" — atividade subjetiva — em **conferência objetiva**: quais falhas o modelo encontrou, quais corrigiu corretamente, quais ignorou e quais **inventou**. É o que torna o LEB reproduzível e comparável entre LLMs.
+The matrix is the **answer key** of a LEB instance: the exact list of planted flaws (and decoys), with severity, points,
+location and expected fix. It turns "evaluating code", a subjective activity, into an **objective check**: which flaws the model
+found, which it fixed correctly, which it ignored and which it **invented**. That is what makes LEB reproducible and comparable
+across LLMs.
+
+The key is public. It is committed with its instance before the first run (§4, items 1 and 2), and so is every key to come.
+What keeps it from the agent under test is the run itself: the bench machines cannot reach GitHub.
 
 ---
 

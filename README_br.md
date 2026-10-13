@@ -4,7 +4,7 @@
 
 🇺🇸 [English version](README.md)
 
-**Um padrão de avaliação de Engenharia de Software para LLMs.** Versão da spec: **1.4.0**.
+**Um padrão de avaliação de Engenharia de Software para LLMs.** Versão da spec: **1.5.1**.
 
 O LEB não é um benchmark de prompts e não mede quem escreve o código mais bonito. Ele mede **quem consegue evoluir um sistema legado sem quebrá-lo** — encontrando falhas reais, corrigindo-as, preservando compatibilidade e explicando as decisões como uma engenheira sênior.
 
@@ -16,7 +16,7 @@ Benchmarks existentes medem geração de código do zero ou resolução de issue
 
 1. O modelo recebe um **sistema legado real** (com falhas plantadas) + a [tarefa canônica](protocol/TAREFA.md) — enunciado neutro e formato de entrega, iguais para toda instância.
 2. Ele reporta, corrige e justifica — sem saber quais nem quantas falhas existem.
-3. A entrega é conferida contra a **[Matriz Oficial de Falhas](matrix/MATRIX.md)** — um gabarito oculto que declara exatamente o que existe (e o que é isca). É isso que torna a avaliação objetiva, reproduzível e comparável entre LLMs: verifica-se exatamente quais falhas o modelo encontrou, corrigiu, ignorou — e quais *inventou*.
+3. A entrega é conferida contra a **[Matriz Oficial de Falhas](matrix/MATRIX.md)** — the answer key, stating exactly what exists (and what is a decoy); it is published with the instance before any run, and the agent never sees it, because the runs happen on machines that cannot reach GitHub. É isso que torna a avaliação objetiva, reproduzível e comparável entre LLMs: verifica-se exatamente quais falhas o modelo encontrou, corrigiu, ignorou — e quais *inventou*.
 4. Sai um **[scorecard](scoring/scorecard-template.md)** de 0 a 1000.
 
 | Categoria | Peso |
@@ -57,7 +57,7 @@ Os pontos brutos por categoria são normalizados para os pesos oficiais — **to
 | **[SPEC.md](SPEC.md)** | Núcleo normativo (estilo RFC): pontuação, penalidades, invariantes |
 | [taxonomy/](taxonomy/) | As 85 falhas oficiais: [SEC](taxonomy/SEC.md) · [ARCH](taxonomy/ARCH.md) · [PERF](taxonomy/PERF.md) · [BUG](taxonomy/BUG.md) · [CLN](taxonomy/CLN.md) · [COMP](taxonomy/COMP.md) |
 | [scoring/SCORING.md](scoring/SCORING.md) | Critérios por severidade, normalização, rubrica de explicação, selos |
-| [matrix/MATRIX.md](matrix/MATRIX.md) | **Matriz Oficial de Falhas** — construção, iscas, ocultação por hash |
+| [matrix/MATRIX.md](matrix/MATRIX.md) | **Matriz Oficial de Falhas** — construction, decoys, publication with the instance |
 | [levels/LEVELS.md](levels/LEVELS.md) | LEB-100 (~300 linhas) → LEB-500 (~20.000 linhas) |
 | [protocol/PROTOCOL.md](protocol/PROTOCOL.md) | Enunciado canônico, modos S/A, 3 runs → mediana, anti-gaming |
 | [protocol/TAREFA.md](protocol/TAREFA.md) | A tarefa entregue ao modelo: enunciado neutro + contrato de entrega, igual em toda instância |
