@@ -33,8 +33,9 @@ def char_by_code(fail_when_marker):
     """) % fail_when_marker
 
 
-def verify_script(probes):
-    return "import json\nprint(json.dumps({'probes': json.loads(%r)}))\n" % json.dumps(probes)
+def verify_script(probes, **extra):
+    """A verification runner that prints the probes, plus any other key it is given (decoys, inconclusive)."""
+    return "import json\nprint(json.dumps(dict({'probes': json.loads(%r)}, **json.loads(%r))))\n" % (json.dumps(probes), json.dumps(extra))
 
 
 class RunnerCase(unittest.TestCase):
@@ -127,6 +128,29 @@ class Contract(RunnerCase):
         mech, _ = self.harness()
         self.assertIn({"id": "SEC-001", "unobserved": ["lock inside the JVM"]}, mech["unverified"])
         self.assertEqual(mech["informative_affected"], {"SEC-001": ["Other.method"]})
+
+
+    def test_decoys_are_carried_to_the_report(self):
+        self.declare(char_script(), verify_script([{"id": "SEC-001", "corrigida": True}],
+                                                  decoys=[{"id": "PERF-001", "holds": False, "msg": "the lock was removed"}]))
+        mech, r = self.harness()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(mech["decoys"], [{"id": "PERF-001", "holds": False, "msg": "the lock was removed"}])
+
+    def test_an_inconclusive_verifier_leaves_its_flaw_to_the_judge_with_the_reason(self):
+        self.declare(char_script(), verify_script([{"id": "SEC-001", "corrigida": True}],
+                                                  inconclusive=[{"id": "BUG-001", "msg": "the rendezvous ran out of its ceiling"}]))
+        mech, _ = self.harness()
+        reasons = {u["id"]: u["unobserved"][0] for u in mech["unverified"]}
+        self.assertIn("the rendezvous ran out of its ceiling", reasons["BUG-001"])
+        self.assertNotIn("inconclusive", reasons["ARCH-001"])
+
+    def test_a_decoy_verdict_must_name_a_decoy_and_say_whether_it_holds(self):
+        for bad in ({"id": "SEC-001", "holds": True}, {"id": "PERF-001"}, {"id": "PERF-001", "holds": "yes"}):
+            with self.subTest(decoy=bad):
+                self.declare(char_script(), verify_script([], decoys=[bad]))
+                mech, r = self.harness()
+                self.assertEqual(r.returncode, 3, r.stderr)
 
 
 class Inconclusive(RunnerCase):

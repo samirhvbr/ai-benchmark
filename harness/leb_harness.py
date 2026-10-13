@@ -109,8 +109,9 @@ def load_matrix(inst):
 #
 # Each command runs with cwd = the instance's private/ folder and receives LEB_ENTREGA_DIR (the code folder under test),
 # LEB_INSTANCIA_DIR and LEB_RUN_DIR (a scratch folder). stdout carries one JSON object: for the characterization
-# {"passed": N, "failed": M}; for the verification {"probes": [...]} (scoring/probe-result.schema.json). The exit code of a
-# command does NOT decide regression. Output that cannot be read, a timeout or a crash make the report INCONCLUSIVE
+# {"passed": N, "failed": M}; for the verification {"probes": [...]} (scoring/probe-result.schema.json), optionally with
+# "decoys": [{"id", "holds", "msg"}] (the property each decoy guarantees, still true or not) and "inconclusive": [{"id", "msg"}]
+# (a verifier that could not reach a verdict), both carried into the report. The exit code of a command does NOT decide regression. Output that cannot be read, a timeout or a crash make the report INCONCLUSIVE
 # (exit 3): it is never read as approval and it is never read as regression.
 # ---------------------------------------------------------------------------------------------
 
@@ -173,8 +174,9 @@ def characterization_result(raw):
     return {"passed": obj["passed"], "failed": obj["failed"], "ok": obj["failed"] == 0, "elapsed_s": raw["elapsed_s"]}, None
 
 
-def verification_result(raw, matrix_ids):
-    """The validated list of probes from the verification command, or (None, reason)."""
+def verification_result(raw, matrix_entries):
+    """The validated probes, decoys and inconclusive verdicts of the verification command, or (None, reason)."""
+    matrix_ids = set(e["id"] for e in matrix_entries)
     if raw["timed_out"]:
         return None, "tempo limite esgotado na verificação"
     obj = json_object(raw["out"])
@@ -199,7 +201,17 @@ def verification_result(raw, matrix_ids):
                 return None, "a prova %s declara comprovar %r: só C3 ou R3 podem ser comprovados por evidência mecânica" % (pid, proves)
             if "R3" in proves and not has_result:
                 return None, "a prova %s declara R3 sem `result` full|half|none" % pid
-    return obj["probes"], None
+    decoy_ids = set(e["id"] for e in matrix_entries if not e.get("exists"))
+    decoys = obj.get("decoys", [])
+    if not isinstance(decoys, list):
+        return None, "`decoys` is not a list"
+    for d in decoys:
+        if not (isinstance(d, dict) and d.get("id") in decoy_ids and isinstance(d.get("holds"), bool)):
+            return None, "invalid decoy (it needs a decoy id of the matrix and a boolean `holds`): %r" % (d,)
+    inconclusive = obj.get("inconclusive", [])
+    if not (isinstance(inconclusive, list) and all(isinstance(i, dict) and i.get("id") in matrix_ids for i in inconclusive)):
+        return None, "`inconclusive` must be a list of {id, msg} with ids of the matrix"
+    return {"probes": obj["probes"], "decoys": decoys, "inconclusive": inconclusive}, None
 
 
 def probe_is_fixed(p):
@@ -237,9 +249,10 @@ def main_runner(a, inst, runner, matrix, mpath):
             inconclusive("entrega: " + why)
         print(f"[harness] entrega: {sub_char['passed']} ok / {sub_char['failed']} falhas ({sub_char['elapsed_s']}s)", file=sys.stderr)
         raw = run_runner_command(runner["verificacao"], inst, submission, run_dir, timeout_s)
-        probes_raw, why = verification_result(raw, set(e["id"] for e in matrix["entries"]))
-        if probes_raw is None:
+        verified, why = verification_result(raw, matrix["entries"])
+        if verified is None:
             inconclusive("verificação: " + why)
+        probes_raw = verified["probes"]
         verify_elapsed = raw["elapsed_s"]
 
     regression = sub_char["failed"] > baseline["failed"]
@@ -258,10 +271,15 @@ def main_runner(a, inst, runner, matrix, mpath):
         if p.get("affected"):
             affected[p["id"]] = p["affected"]
     probed = {p["id"] for p in probes}
-    # A planted flaw with no verifier is the judge's alone. The report says so instead of staying silent.
+    why_not = {i["id"]: i.get("msg", "") for i in verified["inconclusive"]}
+    # A planted flaw with no verifier, or whose verifier could not conclude, is the judge's alone. The report says so instead of
+    # staying silent.
     for fid in sorted(planted):
         if fid not in probed:
-            unverified.append({"id": fid, "unobserved": ["sem evidência mecânica: o veredito do juiz decide sozinho"]})
+            reason = "no mechanical evidence: the judge's verdict decides alone"
+            if fid in why_not:
+                reason += " (the verifier was inconclusive: %s)" % why_not[fid]
+            unverified.append({"id": fid, "unobserved": [reason]})
 
     diff = {}
     for p in probes:
@@ -279,6 +297,7 @@ def main_runner(a, inst, runner, matrix, mpath):
         "difficulty_corrected": diff,
         "mechanical_criteria": [{"id": p["id"], "C3_corrigiu": p["corrigida"], "C4_sem_regressao": not regression} for p in probes],
         "unverified": unverified,
+        "decoys": verified["decoys"],
         "informative_affected": affected,
         "pending_judge": [
             "passo 4: matching relatório×matriz (C1/C2 achou/explicou, iscas→PEN-004)",

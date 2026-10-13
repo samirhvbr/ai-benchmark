@@ -149,10 +149,27 @@ Without the file, `leb_harness.py` runs as always (docker compose + PHP). With i
 Each command runs with `private/` as its working directory and receives `LEB_ENTREGA_DIR` (the code under test), `LEB_INSTANCIA_DIR`
 and `LEB_RUN_DIR` (a scratch folder the harness creates and removes). The characterization prints `{"passed": N, "failed": M}`; the verification prints
 `{"probes": [...]}` (`../scoring/probe-result.schema.json`: `id`, `corrigida` and/or `result`, optional `proves`, `unobserved`,
-`affected`). The exit code of a command never decides regression; the report does (the submission fails more than the baseline).
-Anything unreadable (no JSON, an invalid or repeated probe id, a crash, a timeout — the whole process group is killed) makes the report
-`inconclusive` and the harness exit **3**: `leb` says so and `score.py` refuses to score it. A planted flaw with no probe is listed
-under `unverified`.
+`affected`). It may add `"decoys": [{"id", "holds", "msg"}]`, whether the property each decoy guarantees still holds, carried into
+the report as `decoys`, and `"inconclusive": [{"id", "msg"}]`, a verifier that could not reach a verdict, whose reason goes into
+that flaw's `unverified` line. The exit code of a command never decides regression; the report does (the submission fails more
+than the baseline). Anything unreadable (no JSON, an invalid or repeated probe id, a crash, a timeout — the whole process group is
+killed) makes the report `inconclusive` and the harness exit **3**: `leb` says so and `score.py` refuses to score it. A planted
+flaw with no probe is listed under `unverified`.
+
+### The Java systems of the next series (`java/`)
+
+One evaluator serves every Java instance of the series ([`../docs/new-series-design.md`](../docs/new-series-design.md)), so that a
+replicator can evaluate a run with this repository alone:
+
+| Script | What it does |
+| --- | --- |
+| `java/mvn.sh` | Maven in a pinned container, offline against a local repository mounted read-only |
+| `java/dev-db.sh` | a disposable PostgreSQL 16 on an internal network, with names of its own |
+| `java/evaluate.sh characterize\|verify` | assembles the delivery's `src/main` and `migrations/` with the instance's own `pom.xml`, `schema.sql` and public tests (and, to verify, its `private/verify/` sources), builds and runs them, and prints the runner contract's JSON |
+
+What the delivery changed in `pom.xml`, `schema.sql` or `src/test` does not count. A delivery that does not compile fails every
+public test (`"build_failed": true`), and every planted flaw comes out not fixed; a failure of the evaluator itself (no Docker, no
+database) exits 3. An instance's `runner.json` points both commands at `evaluate.sh`.
 
 ## Tests and tools
 

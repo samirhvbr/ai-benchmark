@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.193`
+**Versão atual:** `0.2.194`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.194` — 2026-10-13 — The Java evaluator characterizes and verifies a delivery with the instance's own build, schema and tests
+
+- `harness/java/evaluate.sh characterize|verify [INSTANCE CODE [SELECTOR]]`, shared by every Java instance of the next series:
+  it assembles the delivery's `src/main` and `migrations/` with the instance's own `pom.xml`, `schema.sql` and public tests (and,
+  to verify, the instance's `private/verify/` sources), builds and runs them offline in the pinned container against the
+  disposable database (`mvn.sh`, `dev-db.sh`), and prints the runner contract's JSON. A delivery that does not compile fails
+  every public test and every planted flaw; a failure of the evaluator itself exits 3. LEB-300-A's operator scripts, which did
+  this for that pilot, never reached the repository; this one is public, so a replicator can evaluate a run.
+- `harness/leb_harness.py`: a verification may also report `decoys` (whether the property each decoy guarantees still holds),
+  carried into the mechanical report, and `inconclusive` verdicts, whose reason goes into the `unverified` line of their flaw.
+  Both are validated against the matrix like the probes. The messages added are in English.
+- `tests/test_runner.py`: decoys carried, an inconclusive reason kept, and a malformed decoy refused.
+- `harness/README.md` describes the Java evaluator; `systems/300-A/README.md` checks the evaluator scripts off (§7, §9).
 
 ### `0.2.193` — 2026-10-13 — System A's reference loses two methods written twice, and LEB-D-300-A's public tree is rebuilt by a script
 

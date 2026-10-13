@@ -119,10 +119,10 @@ publishes its scripts with the instances.
    `public/code/`.
 4. Per instance, the matrix generated from the legacy tree, the verifiers, and the variant cases that check each verifier in
    both directions (a right fix is accepted, a partial or wrong one is rejected).
-5. The evaluator's scripts (build, characterization, verification, a disposable database), public and shared by every Java
-   system of the series, in [`harness/java/`](../../harness/java/). The first two are there: `mvn.sh` runs Maven offline in a
-   pinned container, and `dev-db.sh` keeps a disposable PostgreSQL on an internal network, with names of its own so that it
-   never touches another evaluation.
+5. The evaluator's scripts, public and shared by every Java system of the series, in [`harness/java/`](../../harness/java/):
+   `mvn.sh` runs Maven offline in a pinned container, `dev-db.sh` keeps a disposable PostgreSQL on an internal network, with
+   names of its own so that it never touches another evaluation, and `evaluate.sh` characterizes and verifies a delivery with the
+   instance's own build file, schema and public tests ([`harness/README.md`](../../harness/README.md)).
 
 ## 8. Running the tests
 
@@ -152,7 +152,7 @@ split rounding each share.
 - [x] Reference: billing, payments, statements and webhook
 - [x] Reference: bookings, notices, documents, archive, reports, mobile API
 - [x] Characterization tests (70, all passing) and `manifest.md`
-- [ ] Evaluator scripts (build and database done; characterization and verification to come)
+- [x] Evaluator scripts: build, database, characterization and verification (`harness/java/`)
 - [ ] The task statement of each track (design §4.1 and §4.2). `protocol/TAREFA.md` and its versions ask one delivery for
       security and maintenance together; the Default statement must not ask for security work, and neither statement exists
 - [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
