@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.183`
+**Versão atual:** `0.2.184`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.184` — 2026-10-13 — LEB-D-300-A has its catalog: 27 maintenance flaws and 4 decoys on CondoDesk, written before any planting code
+
+- `instances/LEB-D-300-A/private/CATALOG.md`: the planting profile of the Default instance of system A, on paper. ARCH 8, BUG 8,
+  PERF 7, CLN 4, no SEC (LEB-300-A's counts without its security rows), and 4 decoys, 12.9 % of the rows. Each row gives its
+  site in the reference, the mechanism, and the probe (Template C) or the name-independent property (Template R) its verifier
+  will check; the PERF and race probes count commands and rows, or hold a transaction at a gate, through the test hook
+  `TestBase.forTheApp`.
+- Its rules: no row weakens a defense (`SecurityBehaviorTest` stays public and passes on the planted tree, and no row touches an
+  escaping, a check, an allowlist or the parser's configuration); one line, one flaw, with a section on where rows meet; decoys
+  carry taxonomy ids from the start (LEB-300-A's catalog drifted from its matrix on exactly that); one public test loses the part
+  that sees BUG-014.
+- Writing it was also a review of the reference, which found four things to correct before either instance is planted: dates
+  shown in UTC instead of on the building's calendar, a `long` narrowed to `int` for the guests of a booking, a count that loads
+  every overdue invoice, and six members nothing calls. Four patterns are accepted as they are, with their reason, so that a
+  report of one is judged by a rule fixed before any run.
+- `instances/LEB-D-300-A/README.md` gives the profile's counts; `systems/300-A/README.md §9` marks the catalog done and lists what
+  follows. No code, matrix, verifier, rule, weight or result changes.
 
 ### `0.2.183` — 2026-10-13 — A generic planting engine plants any instance's flaws from its profile, and plants LEB-300-A's legacy tree byte for byte
 

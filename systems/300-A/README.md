@@ -157,7 +157,9 @@ split rounding each share.
       security and maintenance together; the Default statement must not ask for security work, and neither statement exists
 - [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
       disagreements, and each track's weights
-- [ ] `LEB-D-300-A`: profile, matrix, verifiers, variant cases
+- [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md)), which
+      also lists four corrections to this reference, to be made before either instance is planted
+- [ ] `LEB-D-300-A`: the reference corrections, the planting modules and `public/code/`, the matrix, verifiers, variant cases
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)

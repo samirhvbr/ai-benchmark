@@ -12,7 +12,7 @@ The **Default** instance of system A of the next series ([`docs/new-series-desig
 | Track | LEB Default: architecture, bugs, performance, code quality and compatibility; no planted vulnerability and no security work in the task |
 | Level | 300 |
 | Built from | [`systems/300-A/`](../../systems/300-A/): the clean reference, its characterization tests and its manifest |
-| Planting profile | maintenance flaws of [`taxonomy/`](../../taxonomy/) (ARCH, BUG, PERF, CLN), with decoys; the catalogue comes first, in `private/` |
+| Planting profile | 27 maintenance flaws of [`taxonomy/`](../../taxonomy/) (ARCH 8, BUG 8, PERF 7, CLN 4) and 4 decoys, catalogued in [`private/CATALOG.md`](private/CATALOG.md) before any planting code |
 | Sibling | [`LEB-S-300-A`](../LEB-S-300-A/), the Security track on the same system |
 
 The reference itself is described as *no known vulnerabilities within the reviewed scope*: its defenses are checked by
