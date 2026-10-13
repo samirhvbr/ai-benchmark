@@ -1,12 +1,12 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.181`
+**Versão atual:** `0.2.182`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
-> ⚠️ A **spec RFC tem versão própria** (hoje `1.4.0`, declarada no `README.md`), e as
-> instâncias também (LEB-100-A `v1.1`). Este arquivo versiona o **repositório**, não a
-> spec — os números são independentes de propósito.
+> ⚠️ The **RFC spec has its own version** (today `1.5.1`, declared in `README.md`), and so
+> do the instances (LEB-100-A `v1.1`). This file versions the **repository**, not the
+> spec: the numbers are independent on purpose.
 
 > Este arquivo é a **fonte da verdade** da versão do projeto: quem precisar exibir ou
 > reportar a versão extrai o **primeiro número semver (`X.Y.Z`)** encontrado aqui.
@@ -39,21 +39,21 @@ Padrão de avaliação de engenharia de software para LLMs (spec RFC, instância
 ## 2. Formato de Commit Obrigatório
 
 ```
-X.Y.Z - Descrição curta em português
+X.Y.Z - Short description in English (US)
 ```
 
-**Regras inegociáveis:**
+**Non-negotiable rules:**
 
-1. A versão **sempre** vem deste `version.md` — bumpe **no mesmo commit** da mudança.
-2. Mensagem em **português**, específica o suficiente para `git log --grep`.
-3. **Proibido** Conventional Commits (`feat:`, `fix:`, `chore:`…) e mensagens vagas
-   ("ajuste", "update", "wip").
-4. Um objetivo por commit.
+1. The version **always** comes from this `version.md`, bumped **in the same commit** as the change.
+2. The message is in **English (US)** (house rule since 2026-09-03; the Portuguese messages
+   already in the log stay), specific enough for `git log --grep`.
+3. Conventional Commits (`feat:`, `fix:`, `chore:`…) and vague messages ("update", "wip")
+   are **forbidden**.
+4. One subject per commit.
 
-> **A skill COMMITTER commita por você neste repo** (existe `.committer.yml` na raiz).
-> Escreva a entrada de changelog abaixo ao concluir a entrega: é **dali** que a
-> mensagem do commit sai, sem custo de modelo. Sem a entrada, a skill cai num
-> fallback que gasta tokens e descreve pior do que você. Detalhe no bloco PS do
+> **Whoever does the work commits it.** The COMMITTER skill is off in this repository
+> (`enabled: false` in `.committer.yml` since 2026-09-03): the agent writes the changelog
+> entry below first, and its heading is the commit subject. Details in the commits block of
 > `CLAUDE.md`.
 
 ---
@@ -61,6 +61,25 @@ X.Y.Z - Descrição curta em português
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.182` — 2026-10-13 — A review of the new series' documents brings them up to date: what stands before a first run, the reference's size, the spec version and the commit rule
+
+- The owner asked whether the runs of `LEB-D-300-A` could start. They cannot: the instance is a README, with no planted tree, key,
+  verifier or package. The review found that the status pages did not say so in full.
+- `systems/300-A/README.md` §9 lists two blockers it did not track: the task statement of each track (`protocol/TAREFA.md` and
+  its versions ask one delivery for security and maintenance together, and design §4.1 forbids asking the Default track for
+  security work) and the evaluator of the new series (design §12 step 2). A closing paragraph says what an instance's first run
+  needs on top of them: a clean package, the whole instance committed and pushed before the run (`matrix/MATRIX.md §4`), and a
+  bench snapshot holding the package.
+- The same page no longer says that the instances do not exist (their folders do, since 0.2.178), and §1 gives the reference's
+  size as it is since the fixes of 0.2.174 and 0.2.175: 3,914 lines of main code, 3,410 not blank, in 41 files (it said 3,887 and
+  3,385).
+- `instances/LEB-D-300-A/README.md` and `instances/LEB-S-300-A/README.md` say that the instance cannot run yet and point at that
+  list, kept in one place.
+- `version.md`: the header gives the spec as 1.5.1 (it said 1.4.0), and §2 states the commit rule in force: the message in
+  English (US) since 2026-09-03, and the agent commits its own work because COMMITTER is off (`enabled: false` in
+  `.committer.yml`). Both passages are now in English.
+- Documents only: no rule, tool, weight, instance file or result changes.
 
 ### `0.2.181` — 2026-10-12 — The second run of Claude Sonnet 5.5 at max is voided because the agent's own Opus 5.5 subagents wrote part of it: the agent is back to 932, with one run
 

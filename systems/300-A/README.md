@@ -1,8 +1,9 @@
 # System 300-A — CondoDesk (condominium management)
 
 > **Status: the reference, its 70 characterization tests and its manifest are written; the planting profiles are next.** The
-> instances `LEB-D-300-A` and `LEB-S-300-A` do not exist yet. This page is the specification the reference was written against;
-> [`manifest.md`](manifest.md) is the contract and wins over this page wherever the two differ.
+> instances [`LEB-D-300-A`](../../instances/LEB-D-300-A/) and [`LEB-S-300-A`](../../instances/LEB-S-300-A/) exist as folders in
+> authoring, with no package, key or run; §9 lists what stands between them and a first run. This page is the specification the
+> reference was written against; [`manifest.md`](manifest.md) is the contract and wins over this page wherever the two differ.
 
 CondoDesk is the back office of a property-management company that runs several condominium buildings for their owners'
 associations. It bills each unit its share of the building's monthly budget, takes payments from the bank, books the common
@@ -20,7 +21,7 @@ Maven and PostgreSQL, code, comments and screens in English.
   LEB-300-A then serves this system unchanged. Nothing else: the HTTP server is the JDK's (`com.sun.net.httpserver`), XML is the
   JDK's, hashing is the JDK's (PBKDF2), and HTML is built by the code itself.
 - **Size:** level 300 ([`levels/LEVELS.md`](../../levels/LEVELS.md)), so that flaws cross files and the agent has to navigate.
-  The reference has 3,887 lines of main code (3,385 not blank) in 41 files, above the level's 3,000: it has two faces, the
+  The reference has 3,914 lines of main code (3,410 not blank) in 41 files, above the level's 3,000: it has two faces, the
   browser pages and the mobile API, and the security classes need both.
 - **Determinism:** the clock is injected (`java.time.Clock`), every building has a time zone (`America/Sao_Paulo` in the
   fixtures), and nothing depends on the machine's locale or zone.
@@ -152,5 +153,13 @@ split rounding each share.
 - [x] Reference: bookings, notices, documents, archive, reports, mobile API
 - [x] Characterization tests (70, all passing) and `manifest.md`
 - [ ] Evaluator scripts (build and database done; characterization and verification to come)
+- [ ] The task statement of each track (design §4.1 and §4.2). `protocol/TAREFA.md` and its versions ask one delivery for
+      security and maintenance together; the Default statement must not ask for security work, and neither statement exists
+- [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
+      disagreements, and each track's weights
 - [ ] `LEB-D-300-A`: profile, matrix, verifiers, variant cases
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
+
+An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
+committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), and a bench snapshot that holds its
+package.

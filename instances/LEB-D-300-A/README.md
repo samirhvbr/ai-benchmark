@@ -18,6 +18,11 @@ The **Default** instance of system A of the next series ([`docs/new-series-desig
 The reference itself is described as *no known vulnerabilities within the reviewed scope*: its defenses are checked by
 `SecurityBehaviorTest`, which stays part of this instance's public tests, so a maintenance change must keep them.
 
+## Before the first run
+
+This instance cannot run yet. What it still needs, from its own files to the evaluator and the task statement of its track, is
+kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
+
 ## Layout, once built
 
 ```text

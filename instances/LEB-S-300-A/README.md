@@ -19,6 +19,11 @@ PostgreSQL, without breaking it.
 The exploit checks are the evaluator's: the reference's `SecurityBehaviorTest` is where they start, and it does not travel with
 this instance's package.
 
+## Before the first run
+
+This instance cannot run yet. What it still needs, from its own files to the evaluator and the task statement of its track, is
+kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
+
 ## Layout, once built
 
 ```text
