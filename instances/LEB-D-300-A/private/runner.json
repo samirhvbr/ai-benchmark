@@ -1,0 +1,7 @@
+{
+  "runner": {
+    "caracterizacao": {"cmd": ["bash", "../../../harness/java/evaluate.sh", "characterize"]},
+    "verificacao": {"cmd": ["bash", "../../../harness/java/evaluate.sh", "verify"]},
+    "timeout_s": 3600
+  }
+}

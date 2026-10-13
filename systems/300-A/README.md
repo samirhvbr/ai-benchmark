@@ -166,6 +166,8 @@ split rounding each share.
 - [x] `LEB-D-300-A`: the verifiers (`private/verify/`), checked in both directions on the planted tree and on the reference
 - [x] `LEB-D-300-A`: the matrix (`private/matrix_rows.py`, written out by `tools/make_matrix.py`)
 - [x] `LEB-D-300-A`: the variant cases (`private/variants/`, run by `tools/variants.py`)
+- [x] `LEB-D-300-A`: its runner contract (`private/runner.json`): `harness/leb_harness.py` characterizes and verifies a delivery
+      end to end
 - [x] `LEB-D-300-A`: its package, built clean by `./leb pacote` (`code/` with the environment notes, `manifest.md`, `TASK.md`)
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 

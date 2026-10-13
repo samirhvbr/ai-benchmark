@@ -31,8 +31,8 @@ kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md
 ```text
 public/      code/ (the legacy tree: the reference with this profile planted) and manifest.md (the system's)
 private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed-from-public-tests.txt, verify/ (the
-             verifiers), matrix_rows.py with matrix.json and matrix.md (the key), variants/ (the control cases); then the
-             runner contract
+             verifiers), matrix_rows.py with matrix.json and matrix.md (the key), variants/ (the control cases), and
+             runner.json (how the harness evaluates a delivery)
 ```
 
 `public/` is derived, never edited by hand. `private/build_public.py` plants the reference with `private/plant/`
@@ -103,3 +103,18 @@ Everything in it is in English, the system's language: the code, the manifest, t
 rendered from [`protocol/tasks/TASK-D-1.0.0.md`](../../protocol/tasks/TASK-D-1.0.0.md) and bound to the matrix by its SHA-256. The
 package is deterministic (55 files); the leak guard finds no text of the matrix in it. A run sends one message,
 [`protocol/tasks/messages-D-1.0.0.json`](../../protocol/tasks/messages-D-1.0.0.json), through the lab's unattended driver.
+
+## Evaluating a delivery
+
+`private/runner.json` points the harness's two steps at the Java evaluator (`harness/java/evaluate.sh`), so the mechanical part of
+an evaluation runs end to end:
+
+```sh
+harness/java/dev-db.sh up
+python3 harness/leb_harness.py --instance LEB-D-300-A --submission <the delivery's code/> --out mechanical.json
+```
+
+About two and a half minutes: the public suite on the planted tree (the baseline) and on the delivery, then the verifiers. On the
+planted tree itself, 0 of 27 rows are fixed; on the reference with the payment index migration, 27 of 27; on a delivery that does
+not compile, all 70 public tests fail (a regression), no row is fixed and every decoy breaks. The judge's steps and the score are
+the new evaluator's, which is not built yet.

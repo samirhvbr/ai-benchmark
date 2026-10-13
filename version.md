@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.201`
+**Versão atual:** `0.2.202`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.202` — 2026-10-13 — LEB-D-300-A declares its runner: the harness evaluates a delivery end to end
+
+- `instances/LEB-D-300-A/private/runner.json` points the characterization and the verification at `harness/java/evaluate.sh`,
+  with a ceiling of an hour.
+- Run through `harness/leb_harness.py` (about two and a half minutes each): the planted tree as its own delivery, 70 of 70 public
+  tests before and after, no regression, 0 of 27 rows fixed, the 4 decoys holding; the reference with the payment index migration,
+  no regression and 27 of 27 fixed; a delivery that does not compile, 70 of 70 public tests failing (a regression), no row fixed
+  and every decoy broken.
+- The instance's README says how to evaluate a delivery; `systems/300-A/README.md §9` checks the runner off. What the mechanical
+  report leaves (the judge and the score) belongs to the evaluator of the new series, still to be built.
 
 ### `0.2.201` — 2026-10-13 — LEB-D-300-A's package builds clean, all in English, with the system's environment notes inside code/
 
