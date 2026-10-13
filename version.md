@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.190`
+**Versão atual:** `0.2.191`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.191` — 2026-10-13 — `leb pacote` refuses an instance that has its private folder but no matrix: it is still being authored
+
+- `harness/pack.py`: an instance with a `private/` folder and no `private/matrix.json` is refused, with a message that says it is
+  still being authored and not runnable (`matrix/MATRIX.md §4`). Until now the packager only warned and went on, binding the
+  package to no key, to no level or version, and to the default task 1.0.0, the full LEB's, which asks for security work. With
+  `LEB-D-300-A`'s planted tree about to land in `public/code/`, `./leb pacote LEB-D-300-A` would have built such a package.
+- Unchanged: a public copy without a `private/` folder still packages with the warning, and `--matrix-sha` or `--instance-id`
+  still packages on purpose. LEB-100-A and LEB-300-A package as before.
+- `tests/test_pack_tarefa.py`: the refusal, the override that bypasses it, and the public copy that still packages.
 
 ### `0.2.190` — 2026-10-13 — LEB-D-300-A plants its god class last: billing, payments and the money rules merged into one FinanceService
 

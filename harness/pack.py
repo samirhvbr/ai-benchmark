@@ -82,6 +82,12 @@ def instance_metadata(inst, args):
         # The instance declares which version of the canonical task it is evaluated against (absent = 1.0.0).
         if not args.task_version and m.get("task_version") is not None:
             meta["TASK_VERSION"] = str(m["task_version"])
+    elif os.path.isdir(inst.private_dir) and not (args.matrix_sha or args.instance_id):
+        # A private/ folder without its matrix is an instance still being authored (MATRIX §4: the key is committed with the
+        # instance, before its first run). Packaging it would hand out a package bound to no key and to the default task.
+        sys.exit("[pack] %s has private/ but no private/matrix.json: the instance is still being authored and is not "
+                 "runnable (matrix/MATRIX.md §4). Pass --matrix-sha or --instance-id only to package a public copy on purpose."
+                 % inst.name)
     elif meta["MATRIZ_SHA256"] == "n/d":
         print("[pack] aviso: private/matrix.json ausente — sem hash de matriz no vínculo "
               "(use --matrix-sha para informá-lo)", file=sys.stderr)

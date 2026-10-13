@@ -56,6 +56,27 @@ class TaskVersions(unittest.TestCase):
             self.assertIn(CLAUSE, tarefa)
             self.assertEqual(re.findall(r"\{\{[A-Z_]+\}\}", tarefa), [], "a placeholder was left unresolved")
 
+    def test_an_instance_with_private_but_no_matrix_is_refused_as_still_being_authored(self):
+        with tempfile.TemporaryDirectory() as t:
+            inst = make_instance(t, layout="split")
+            os.remove(os.path.join(inst, "private", "matrix.json"))
+            r = pack(inst, os.path.join(t, "pkg"))
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("still being authored", r.stderr)
+            self.assertFalse(os.path.exists(os.path.join(t, "pkg", "TAREFA.md")))
+            # An explicit override still packages a public copy, as before.
+            r = pack(inst, os.path.join(t, "pkg"), "--force", "--matrix-sha", "0" * 64)
+            self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_a_public_copy_without_private_still_packages_with_a_warning(self):
+        with tempfile.TemporaryDirectory() as t:
+            inst = make_instance(t, layout="split")
+            import shutil
+            shutil.rmtree(os.path.join(inst, "private"))
+            r = pack(inst, os.path.join(t, "pkg"))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("matrix.json ausente", r.stderr)
+
     def test_an_unknown_version_is_refused(self):
         with tempfile.TemporaryDirectory() as t:
             inst = make_instance(t, matrix=synthetic_matrix([entry("SEC-001")], task_version="9.9.9"))
