@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.199`
+**Versão atual:** `0.2.200`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,23 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.200` — 2026-10-13 — The Default track has its task statement, in English like system A, and the packager writes it as TASK.md
+
+- The owner decided on 2026-10-13 that a package is in one language, the system's own; system A is in English, so its packages
+  are too. `docs/new-series-design.md §2` records it.
+- `protocol/tasks/TASK-D-1.0.0.md`: the Default track's statement. Its canonical paragraph is the full LEB's, with the scope said
+  by what it is (architecture, bugs, performance, code quality, compatibility) and no security work (design §4.1); one session,
+  one budget, no second stage. The deliverables are `code/`, `REPORT.md` and `findings.json`, with the fields in English
+  (`scoring/findings.schema.json`, the counterpart of `achados.schema.json`; its categories are architecture, bug, performance,
+  quality and other). `protocol/tasks/messages-D-1.0.0.json` holds the one message a run sends.
+- `harness/pack.py`: a task version may carry a track prefix (`D-` or `S-`); its template is `protocol/tasks/TASK-<version>.md`,
+  marked `<!-- LEB:TASK version=X -->`, with English placeholders and no execution mode, and it goes into the package as
+  `TASK.md`. The output folder is now made only after the task renders, so a refused package leaves no empty folder behind (one
+  was left in `runs/` while the matrix was written). The full LEB's templates package exactly as before.
+- `tests/test_pack_tarefa.py`: the Default task packaged as `TASK.md` with every placeholder resolved, its text free of security
+  work, a missing or malformed track version refused, and no folder left by a refusal.
+- `systems/300-A/README.md §9`: the Default statement is written; the Security track's is not.
 
 ### `0.2.199` — 2026-10-13 — LEB-D-300-A's verifiers pass 77 control cases: fixes done another way accepted, near misses rejected
 

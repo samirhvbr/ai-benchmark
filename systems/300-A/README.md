@@ -153,8 +153,9 @@ split rounding each share.
 - [x] Reference: bookings, notices, documents, archive, reports, mobile API
 - [x] Characterization tests (70, all passing) and `manifest.md`
 - [x] Evaluator scripts: build, database, characterization and verification (`harness/java/`)
-- [ ] The task statement of each track (design §4.1 and §4.2). `protocol/TAREFA.md` and its versions ask one delivery for
-      security and maintenance together; the Default statement must not ask for security work, and neither statement exists
+- [x] The Default track's task statement, in English like the system: [`protocol/tasks/TASK-D-1.0.0.md`](../../protocol/tasks/TASK-D-1.0.0.md)
+      (design §4.1). It asks for no security work, and the packager writes it into the package as `TASK.md`
+- [ ] The Security track's task statement (design §4.2)
 - [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
       disagreements, and each track's weights
 - [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md))

@@ -65,6 +65,7 @@ Taken by the owner on 2026-10-12.
 | Results over cost | The owner puts the quality of the measurement ahead of its cost. Time in the lab, not money, is the constraint that shapes §10. |
 | Names | `LEB-D-<level>-<letter>` for the Default track and `LEB-S-<level>-<letter>` for the Security track. The same letter is the same reference system. |
 | First system | System A of level 300: a condominium management application, in Java 21 with Maven and PostgreSQL, the toolchain the bench VMs already carry. Its code, comments and screens are in English. |
+| Language of a package | One language for everything a package holds, the system's own (decided by the owner on 2026-10-13). System A is in English, so its packages are too: the task statement (`TASK.md`), the environment notes, and the deliverables (`REPORT.md`, `findings.json`). |
 
 ## 3. Architecture
 
@@ -90,7 +91,9 @@ flowchart TB
 - **The base** is reviewed by people, by static analysis and by its own tests, and is described as *"no known vulnerabilities
   within the reviewed scope"*. No review proves absence, and the wording must not claim it.
 - **The statement** defines the scope by what it is (architecture, bugs, performance, quality, compatibility). It does not ask
-  for security work.
+  for security work. Written: [`protocol/tasks/TASK-D-1.0.0.md`](../protocol/tasks/TASK-D-1.0.0.md), one message and one stage
+  ([`messages-D-1.0.0.json`](../protocol/tasks/messages-D-1.0.0.json)), with the findings index in English
+  ([`scoring/findings.schema.json`](../scoring/findings.schema.json)).
 - **An incidental vulnerability** found later follows an errata rule fixed before any run, independent of who found it and of
   any score. The rule is written in the pilot; its principle: the evaluator confirms it, the instance gets an erratum, and if it
   touches behavior the matrix relies on, the affected rows change for every run alike.

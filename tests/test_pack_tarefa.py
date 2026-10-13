@@ -92,5 +92,44 @@ class TaskVersions(unittest.TestCase):
             self.assertIn("1.1.0", r.stderr)
 
 
+
+class TrackTasks(unittest.TestCase):
+    """The next series' track statements: English templates, named TASK.md in the package (protocol/tasks/TASK-D-1.0.0.md)."""
+
+    def test_an_instance_of_the_default_track_gets_the_english_task_as_task_md(self):
+        with tempfile.TemporaryDirectory() as t:
+            inst = make_instance(t, matrix=synthetic_matrix([entry("BUG-001")], task_version="D-1.0.0"))
+            r = pack(inst, os.path.join(t, "pkg"))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertFalse(os.path.exists(os.path.join(t, "pkg", "TAREFA.md")))
+            task = read_text(t, "pkg", "TASK.md")
+            self.assertIn("version=D-1.0.0", task.splitlines()[0])
+            self.assertIn("| Instance | **LEB-TEST-A** (level LEB-300, version 1.0) |", task)
+            self.assertIn("task D-1.0.0", task)
+            self.assertIn('"instance": "LEB-TEST-A"', task)
+            self.assertEqual(re.findall(r"\{\{[A-Z_]+\}\}", task), [], "a placeholder was left unresolved")
+
+    def test_the_default_statement_asks_for_no_security_work(self):
+        task = read_text(ROOT, "protocol", "tasks", "TASK-D-1.0.0.md").lower()
+        for word in ("security", "vulnerab", "exploit", "attack", "secure"):
+            self.assertNotIn(word, task)
+        self.assertIn("architecture, bugs, performance and code quality", task)
+
+    def test_a_track_version_without_its_template_is_refused_and_leaves_no_folder(self):
+        with tempfile.TemporaryDirectory() as t:
+            inst = make_instance(t, matrix=synthetic_matrix([entry("BUG-001")], task_version="S-9.9.9"))
+            r = pack(inst, os.path.join(t, "pkg"))
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("TASK-S-9.9.9.md", r.stderr)
+            self.assertFalse(os.path.exists(os.path.join(t, "pkg")))
+
+    def test_a_malformed_track_version_is_refused(self):
+        with tempfile.TemporaryDirectory() as t:
+            inst = make_instance(t, matrix=synthetic_matrix([entry("BUG-001")], task_version="X-1.0.0"))
+            r = pack(inst, os.path.join(t, "pkg"))
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("invalid task_version", r.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

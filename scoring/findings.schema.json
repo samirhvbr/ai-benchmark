@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leb.dev/schemas/findings.schema.json",
+  "title": "LEB — the structured findings of a delivery, next series",
+  "description": "The index a delivery of the next series brings with its REPORT.md, as protocol/tasks/TASK-D-1.0.0.md §5 asks: the English counterpart of achados.schema.json, which the full LEB keeps. It feeds the matching of the report against the matrix. Validating it scores nothing and charges nothing: a delivery without it is evaluated the same way, at more work for the judge.",
+  "type": "object",
+  "required": ["findings"],
+  "additionalProperties": false,
+  "properties": {
+    "leb": {
+      "type": "object",
+      "description": "Copied from the header of the TASK.md delivered. A mismatch means the delivery was made against another version of the instance, and the run is not comparable.",
+      "additionalProperties": true,
+      "properties": {
+        "instance": { "type": "string", "examples": ["LEB-D-300-A"] },
+        "instance_version": { "type": "string", "examples": ["1.0"] },
+        "matrix_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$|^n/d$" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "One item per problem reported. No minimum or maximum count: the standard never reveals how many flaws exist.",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "not_changed": {
+      "type": "array",
+      "description": "Explicit decisions not to change something. They feed the EXPL rubric (trade-offs).",
+      "items": {
+        "type": "object",
+        "required": ["what", "why"],
+        "additionalProperties": false,
+        "properties": {
+          "what": { "type": "string" },
+          "why": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": ["id", "file", "line", "category", "severity", "confidence", "mechanism"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The model's own identifier (F1, F2, …), unique in the file and the same as in REPORT.md. NOT a taxonomy id.",
+          "minLength": 1
+        },
+        "title": { "type": "string", "description": "A one-line summary." },
+        "file": { "type": "string", "description": "Path relative to the package, as delivered (e.g. code/src/...).", "minLength": 1 },
+        "line": {
+          "type": "integer",
+          "description": "Line in the original numbering of the file received. Matches the matrix within ±10 lines or by the same function (MATRIX.md §5.2).",
+          "minimum": 1
+        },
+        "line_end": { "type": "integer", "minimum": 1 },
+        "category": {
+          "type": "string",
+          "description": "The neutral vocabulary of the task statement. The judge maps it to the taxonomy: architecture→ARCH, bug→BUG, performance→PERF, quality→CLN; other is anything else, judged as an extra finding.",
+          "enum": ["architecture", "bug", "performance", "quality", "other"]
+        },
+        "severity": {
+          "type": "string",
+          "description": "Corresponds to the matrix's Crítica/Alta/Média/Baixa.",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "confidence": {
+          "type": "integer",
+          "description": "0–100: the declared probability that the problem is real. It feeds the Brier score; it is not part of the 1000 points.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "mechanism": {
+          "type": "string",
+          "description": "Why it fails, concretely, in this code. This is what the judge scores in C2/R2: generic text does not count.",
+          "minLength": 1
+        },
+        "impact": { "type": "string" },
+        "fix": { "type": "string", "description": "What was (or would be) changed." },
+        "fixed": {
+          "type": "boolean",
+          "description": "The model's own statement. The mechanical evidence of the verifiers prevails over it."
+        }
+      }
+    }
+  }
+}

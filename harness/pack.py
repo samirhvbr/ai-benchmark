@@ -42,6 +42,12 @@ PLACEHOLDERS = (
     "MATRIZ_SHA256", "MODO", "TAREFA_VERSAO",
 )
 
+# The next series' track statements (D-x.y.z, S-x.y.z) are written in English and go into the package as TASK.md; their
+# placeholders are named in English and carry no execution mode (every run of the series is agentic and unattended).
+TRACK_TASK = re.compile(r"[DS]-\d+\.\d+\.\d+")
+ENGLISH_PLACEHOLDERS = {"INSTANCE": "INSTANCIA", "LEVEL": "NIVEL", "INSTANCE_VERSION": "VERSAO_INSTANCIA", "LEB_SPEC": "LEB_SPEC",
+                        "MATRIX_SHA256": "MATRIZ_SHA256", "TASK_VERSION": "TAREFA_VERSAO"}
+
 
 def sha256_file(path):
     h = hashlib.sha256()
@@ -96,11 +102,14 @@ def instance_metadata(inst, args):
 
 def task_template(here, task_version):
     """The canonical task file for a version. 1.0.0 stays at protocol/TAREFA.md, untouched since the
-    first published run; later versions live in protocol/tasks/TAREFA-<version>.md."""
-    if not re.fullmatch(r"\d+\.\d+\.\d+", task_version):
-        sys.exit("[pack] task_version inválida: %r (esperado X.Y.Z)" % task_version)
+    first published run; later versions live in protocol/tasks/TAREFA-<version>.md, and the next series'
+    track statements in protocol/tasks/TASK-<D|S>-<version>.md."""
+    if not re.fullmatch(r"([DS]-)?\d+\.\d+\.\d+", task_version):
+        sys.exit("[pack] invalid task_version: %r (expected X.Y.Z, or D-X.Y.Z / S-X.Y.Z for a track of the next series)" % task_version)
     if task_version == DEFAULT_TASK_VERSION:
         path = os.path.join(here, "protocol", "TAREFA.md")
+    elif TRACK_TASK.fullmatch(task_version):
+        path = os.path.join(here, "protocol", "tasks", "TASK-%s.md" % task_version)
     else:
         path = os.path.join(here, "protocol", "tasks", "TAREFA-%s.md" % task_version)
     if not os.path.isfile(path):
@@ -109,19 +118,27 @@ def task_template(here, task_version):
 
 
 def render_tarefa(template_path, meta, mode_label):
+    """The rendered task, its version, and the name it takes in the package: TAREFA.md for the full LEB's templates, TASK.md for
+    the next series' (marker <!-- LEB:TASK version=X -->)."""
     with open(template_path, encoding="utf-8") as f:
         src = f.read()
-    m = re.search(r"<!--\s*LEB:TAREFA\s+versao=([0-9.]+)", src)
+    english = re.search(r"<!--\s*LEB:TASK\s+version=([A-Z0-9.-]+)", src)
+    m = english or re.search(r"<!--\s*LEB:TAREFA\s+versao=([0-9.]+)", src)
     if not m:
-        sys.exit("[pack] protocol/TAREFA.md sem marcador de versão <!-- LEB:TAREFA versao=X -->")
+        sys.exit("[pack] %s has no version marker (<!-- LEB:TAREFA versao=X --> or <!-- LEB:TASK version=X -->)" % template_path)
     values = dict(meta, MODO=mode_label, TAREFA_VERSAO=m.group(1))
     out = src
-    for key in PLACEHOLDERS:
-        out = out.replace("{{%s}}" % key, values[key])
-    leftover = re.findall(r"\{\{([A-Z_]+)\}\}", out)
+    if english:
+        for key, source in ENGLISH_PLACEHOLDERS.items():
+            out = out.replace("{{%s}}" % key, values[source])
+    else:
+        for key in PLACEHOLDERS:
+            out = out.replace("{{%s}}" % key, values[key])
+    name = "TASK.md" if english else "TAREFA.md"
+    leftover = re.findall(r"\{\{([A-Z_0-9]+)\}\}", out)
     if leftover:
-        sys.exit("[pack] placeholder não resolvido em TAREFA.md: %s" % ", ".join(sorted(set(leftover))))
-    return out, m.group(1)
+        sys.exit("[pack] unresolved placeholder in %s: %s" % (name, ", ".join(sorted(set(leftover)))))
+    return out, m.group(1), name
 
 
 COMMENT_LEADER = re.compile(r"^\s*(?://+|/\*+|\*+/?|#+|--+|%+|;+)\s*")
@@ -239,6 +256,16 @@ def main():
     if a.mode == "A" and not a.turnos:
         sys.exit("[pack] modo A exige --turnos N (o orçamento é parâmetro obrigatório do run)")
 
+    mode_label = ("S (turno único: 1 prompt → 1 resposta)" if a.mode == "S"
+                  else "A (agêntico · orçamento de %d turnos)" % a.turnos)
+    meta = instance_metadata(inst, a)
+    tarefa_path = a.tarefa or task_template(here, meta["TASK_VERSION"])
+    tarefa, tarefa_version, task_name = render_tarefa(tarefa_path, meta, mode_label)
+    if tarefa_version != meta["TASK_VERSION"]:
+        sys.exit("[pack] a instância declara a tarefa %s, mas %s é a versão %s"
+                 % (meta["TASK_VERSION"], os.path.relpath(tarefa_path, here), tarefa_version))
+
+    # The output folder is made only once the task is known to render: a refused package leaves nothing behind.
     default_out = a.out is None
     out = os.path.abspath(a.out or os.path.join(instances.runs_dir(here), inst.name, "pacote"))
     if os.path.exists(out):
@@ -250,18 +277,9 @@ def main():
         shutil.rmtree(out)
     os.makedirs(out)
 
-    mode_label = ("S (turno único: 1 prompt → 1 resposta)" if a.mode == "S"
-                  else "A (agêntico · orçamento de %d turnos)" % a.turnos)
-    meta = instance_metadata(inst, a)
-    tarefa_path = a.tarefa or task_template(here, meta["TASK_VERSION"])
-    tarefa, tarefa_version = render_tarefa(tarefa_path, meta, mode_label)
-    if tarefa_version != meta["TASK_VERSION"]:
-        sys.exit("[pack] a instância declara a tarefa %s, mas %s é a versão %s"
-                 % (meta["TASK_VERSION"], os.path.relpath(tarefa_path, here), tarefa_version))
-
     shutil.copytree(code_dir, os.path.join(out, "code"))
     shutil.copy2(manifest, os.path.join(out, "manifest.md"))
-    with open(os.path.join(out, "TAREFA.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(out, task_name), "w", encoding="utf-8") as f:
         f.write(tarefa)
 
     matrix = None
