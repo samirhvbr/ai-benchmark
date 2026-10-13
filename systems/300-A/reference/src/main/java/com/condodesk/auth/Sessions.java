@@ -2,15 +2,11 @@ package com.condodesk.auth;
 
 import com.condodesk.db.Db;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.HexFormat;
 import java.util.Optional;
 
 /**
@@ -39,7 +35,7 @@ public final class Sessions {
     /** The live session of a token, touched; an expired one is removed. */
     public Optional<Session> resolve(String token) {
         if (token == null || token.isEmpty()) return Optional.empty();
-        String idHash = sha256(token);
+        String idHash = Passwords.sha256Hex(token);
         Instant now = clock.instant();
         return db.tx(c -> {
             Optional<Instant> lastSeen = Db.one(c, "select last_seen_at from user_session where id_hash = ?",
@@ -66,7 +62,7 @@ public final class Sessions {
     }
 
     public void logout(String token) {
-        db.tx(c -> Db.update(c, "delete from user_session where id_hash = ?", sha256(token)));
+        db.tx(c -> Db.update(c, "delete from user_session where id_hash = ?", Passwords.sha256Hex(token)));
     }
 
     public String cookie(String token, boolean secure) {
@@ -80,14 +76,14 @@ public final class Sessions {
     public String issueApiToken(long userId) {
         String token = randomToken();
         db.tx(c -> Db.insert(c, "insert into api_token (user_id, token_hash, created_at) values (?, ?, ?)",
-                userId, sha256(token), clock.instant()));
+                userId, Passwords.sha256Hex(token), clock.instant()));
         return token;
     }
 
     /** The user of a mobile API token. */
     public Optional<Long> resolveApiToken(String token) {
         if (token == null || token.isEmpty()) return Optional.empty();
-        String hash = sha256(token);
+        String hash = Passwords.sha256Hex(token);
         return db.tx(c -> {
             Optional<Long> user = Db.one(c, "select user_id from api_token where token_hash = ?", rs -> rs.getLong("user_id"), hash);
             if (user.isPresent()) Db.update(c, "update api_token set last_used_at = ? where token_hash = ?", clock.instant(), hash);
@@ -97,7 +93,7 @@ public final class Sessions {
 
     private Issued create(Long userId) {
         String token = randomToken();
-        Session s = new Session(sha256(token), userId, randomToken());
+        Session s = new Session(Passwords.sha256Hex(token), userId, randomToken());
         Instant now = clock.instant();
         db.tx(c -> Db.update(c, "insert into user_session (id_hash, user_id, csrf_token, created_at, last_seen_at) values (?, ?, ?, ?, ?)",
                 s.idHash(), userId, s.csrfToken(), now, now));
@@ -108,13 +104,5 @@ public final class Sessions {
         byte[] b = new byte[32];
         RANDOM.nextBytes(b);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(b);
-    }
-
-    static String sha256(String text) {
-        try {
-            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(text.getBytes(StandardCharsets.UTF_8)));
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
-        }
     }
 }

@@ -88,7 +88,8 @@ public final class Passwords {
         }
     }
 
-    private static String sha256Hex(String text) {
+    /** The hex SHA-256 of a text: the imported accounts' hash, and how session and API tokens are stored. */
+    static String sha256Hex(String text) {
         try {
             return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(text.getBytes(StandardCharsets.UTF_8)));
         } catch (GeneralSecurityException e) {

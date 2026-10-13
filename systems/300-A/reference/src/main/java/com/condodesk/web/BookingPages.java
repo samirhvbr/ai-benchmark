@@ -94,11 +94,9 @@ final class BookingPages {
     }
 
     private static int intForm(Request req, String name) {
-        try {
-            return Integer.parseInt(req.requireForm(name));
-        } catch (NumberFormatException e) {
-            throw AppException.invalid(name + " must be a number.");
-        }
+        long value = longForm(req, name);
+        if (value != (int) value) throw AppException.invalid(name + " must be a number.");
+        return (int) value;
     }
 
     private static LocalTime time(Request req, String name) {

@@ -127,7 +127,9 @@ where they have to depart from it, this file changes in the same commit.
 Writing this catalog was also a review of the reference. These corrections were made to `systems/300-A/reference/` first, in a
 commit of their own (0.2.185), with the public suite passing, and both instances are planted on the corrected reference. A
 throwaway test, kept out of every suite, failed on the reference before the commit and passed after it for R1 and R2; R3
-changes no output and R4 removes code nothing calls, so the compiler and the 70 tests are their check.
+changes no output and R4 removes code nothing calls, so the compiler and the 70 tests are their check. R5 and R6 came later
+(0.2.193), when CLN-002's verifier, run on the reference, found two method bodies written twice; they change no behavior, and
+the 70 tests and the verifiers, in both directions, are their check.
 
 | # | Where | What was found | Correction |
 |---|---|---|---|
@@ -135,6 +137,8 @@ changes no output and R4 removes code nothing calls, so the compiler and the 70 
 | R2 | `MobileApi.book`, `BookingPages.book` | `guests` is narrowed from `long` to `int` with a cast: 4,294,967,297 guests become 1 and pass the capacity check | a value outside `int` answers 400 |
 | R3 | `ReportService.manager` | the manager's count of overdue invoices loads them all to count them | a count query (the planted PERF-009 restores the load) |
 | R4 | `Response.text`, `FinanceRepository.unmatched`, `BuildingRepository.all`, `BuildingRepository.area`, `Db.DataAccessException.sqlState` and `isUniqueViolation` | members nothing calls | removed |
+| R5 | `Passwords.sha256Hex`, `Sessions.sha256` | the same SHA-256 helper written twice in `auth` | one helper, `Passwords.sha256Hex`, which `Sessions` calls |
+| R6 | `BookingPages.intForm` | a copy of `longForm` with `Integer.parseInt` (written by R2) | it reads the number through `longForm` and refuses a value outside `int` |
 
 Accepted as they are, with their reason (a report of one of them is judged on its merits, as an extra finding; none is a decoy,
 because a careful reviewer may reasonably flag them):

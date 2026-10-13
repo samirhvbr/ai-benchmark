@@ -21,7 +21,7 @@ Maven and PostgreSQL, code, comments and screens in English.
   LEB-300-A then serves this system unchanged. Nothing else: the HTTP server is the JDK's (`com.sun.net.httpserver`), XML is the
   JDK's, hashing is the JDK's (PBKDF2), and HTML is built by the code itself.
 - **Size:** level 300 ([`levels/LEVELS.md`](../../levels/LEVELS.md)), so that flaws cross files and the agent has to navigate.
-  The reference has 3,921 lines of main code (3,418 not blank) in 41 files, above the level's 3,000: it has two faces, the
+  The reference has 3,908 lines of main code (3,406 not blank) in 41 files, above the level's 3,000: it has two faces, the
   browser pages and the mobile API, and the security classes need both.
 - **Determinism:** the clock is injected (`java.time.Clock`), every building has a time zone (`America/Sao_Paulo` in the
   fixtures), and nothing depends on the machine's locale or zone.

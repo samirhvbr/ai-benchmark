@@ -29,15 +29,18 @@ kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md
 
 ```text
 public/      code/ (the legacy tree: the reference with this profile planted) and manifest.md (the system's)
-private/     CATALOG.md, plant/ (the planting modules), removed-from-public-tests.txt; then the matrix, the verifiers,
-             the variant cases and the runner contract
+private/     CATALOG.md, plant/ (the planting modules), build_public.py, removed-from-public-tests.txt; then the matrix,
+             the verifiers, the variant cases and the runner contract
 ```
 
-`public/code/` is written by the planting modules, never by hand:
+`public/` is derived, never edited by hand. `private/build_public.py` plants the reference with `private/plant/`
+(`tools/plant.py`), removes `.gitignore`, trims the one public test that `private/removed-from-public-tests.txt` names, and copies
+the system's manifest:
 
 ```sh
-python3 tools/plant.py instances/LEB-D-300-A/private/plant systems/300-A/reference <empty folder>
+python3 instances/LEB-D-300-A/private/build_public.py            # rewrites public/
+python3 instances/LEB-D-300-A/private/build_public.py --check    # a fresh build must equal public/, byte for byte
 ```
 
-followed by removing `.gitignore` and trimming the one public test that `private/removed-from-public-tests.txt` names. The
-public suite (70 tests) passes on it, `SecurityBehaviorTest` included.
+`tests/test_leb_d_300_a.py` runs the check. The public suite (70 tests) passes on `public/code/`, `SecurityBehaviorTest`
+included.

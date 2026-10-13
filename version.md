@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.192`
+**Versão atual:** `0.2.193`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.193` — 2026-10-13 — System A's reference loses two methods written twice, and LEB-D-300-A's public tree is rebuilt by a script
+
+- `systems/300-A/reference/`: the SHA-256 helper was written twice in `auth` (`Passwords.sha256Hex` and `Sessions.sha256`);
+  `Sessions` now calls `Passwords.sha256Hex` (R5). `BookingPages.intForm` was a copy of `longForm` with `Integer.parseInt`,
+  written by R2 in 0.2.185; it now reads the number through `longForm` and refuses a value outside `int` (R6). Both were found by
+  the verifier of CLN-002 (duplicated method bodies), run on the reference while the verifiers were written; a clean reference
+  must not hold the flaw a row plants. No behavior changes: the 70 tests pass. Main code: 3,908 lines (3,406 not blank) in 41
+  files.
+- `instances/LEB-D-300-A/private/build_public.py` rebuilds `public/` from the reference and the planting profile: it plants,
+  removes `.gitignore`, trims the one public test the catalog names (§8) and copies the manifest. `--check` builds in a temporary
+  folder and compares byte for byte. Before this change it reproduced the committed `public/` except for the three files R5 and
+  R6 touch; `public/` is now its output, and the public suite passes on it, 70 of 70.
+- `tests/test_leb_d_300_a.py` runs the check, so `public/` cannot drift from the reference and the profile.
+- The catalog's §9 lists R5 and R6; the instance's README gives the script as the way `public/` is made.
 
 ### `0.2.192` — 2026-10-13 — LEB-D-300-A's planted tree is written to public/code/, and its public suite passes on it; no key yet
 
