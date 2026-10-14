@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.202`
+**Versão atual:** `0.2.203`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.203` — 2026-10-14 — The evaluator of the new series is specified, with the decisions it needs from the owner
+
+- New `docs/new-series-evaluator.md` (`PROPOSED`), step 2 of the design's order of work, for the Default track first: the three stages
+  (mechanical, two independent blind judges with a person settling disagreements, arithmetic), the **regression rule** (a regression
+  is a group of characterization tests guarding one contract; it is charged once, on the fix that broke it, or as PEN-002 once per group
+  when no fix of a planted row did; no more C4 on every flaw plus −20 per test), the arithmetic with the owner's draft weights (ARCH 283 ·
+  BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50), partial deliveries scored like any other, the scorecard v2 and the files to build.
+- Section 10 lists six decisions with the author's proposal (the group is a contract; the judges attribute a regression; COMP keeps its
+  documented double charge; PEN-002 stays at −20 once per group; a person settles every disagreement; the weights stay the draft). None is
+  frozen until the owner confirms it, and none can change after the instance's first run without a new version of the instance.
+- `systems/300-A/README.md` section 9 splits the evaluator item into its pieces, the first one ticked; the design's status line points to the
+  specification. Nothing in the full LEB changes: `harness/score.py`, `scoring/SCORING.md` and every published result stay as they are.
+  No code and no test change: the 141 tests are unchanged.
 
 ### `0.2.202` — 2026-10-13 — LEB-D-300-A declares its runner: the harness evaluates a delivery end to end
 

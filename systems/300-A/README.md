@@ -158,7 +158,13 @@ split rounding each share.
       (design §4.1). It asks for no security work, and the packager writes it into the package as `TASK.md`
 - [ ] The Security track's task statement (design §4.2)
 - [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
-      disagreements, and each track's weights
+      disagreements, and each track's weights. Specified in [`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md)
+      (`PROPOSED`, its section 10 waits for the owner); built in the order of its section 9:
+  - [x] the specification
+  - [ ] the failed test names in the mechanical report, and the regression groups of this system
+  - [ ] the scorer (`harness/score_v2.py`) and the scorecard v2 schema
+  - [ ] two judges per delivery, the disagreement list and the review command
+  - [ ] the tests that prove it
 - [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md))
 - [x] The four corrections to this reference that the catalog's review found (its §9), made before either instance is planted
 - [x] `LEB-D-300-A`: the planting modules ([`private/plant/`](../../instances/LEB-D-300-A/private/plant/)) and the planted tree

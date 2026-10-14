@@ -3,7 +3,7 @@
 > **Status: `PROPOSED`.** The design was decided by the owner on 2026-10-12, and it is not normative. Step 1 of §12 is done: the
 > audit (`tools/auditar-tentativa.py`), the profile with its preflight (`tools/perfil-candidato.py`), the pin probed on a bench
 > VM and the unattended run. Step 3 has started: the first reference system is specified and being written
-> ([`systems/`](../systems/)). Step 2 is not built.
+> ([`systems/`](../systems/)). Step 2 is specified in [`new-series-evaluator.md`](new-series-evaluator.md) and not yet built.
 > It changes nothing in LEB-100-A or in the LEB-300-A pilot: their results stay as published, as the *full LEB* series. The
 > normative texts of the new series (spec, protocol, scoring, levels) are written after the pilot of §12 has validated the
 > process, and they replace nothing of the full LEB's.
