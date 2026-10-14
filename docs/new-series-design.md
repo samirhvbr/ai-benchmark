@@ -327,8 +327,8 @@ interval width needs.
    tools), and the unattended run (§10), which passed a smoke case. Step 1 is done.
 2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop. Specified in
    [`new-series-evaluator.md`](new-series-evaluator.md) and built for the Default track: the scorer (`harness/score_v2.py`), the two
-   judges' review (`tools/judge_review.py`) and the statistics (`tools/estatisticas.py`). What remains is the owner's confirmation of
-   the decisions of its section 10, which must come before the first instance is frozen.
+   judges' review (`tools/judge_review.py`) and the statistics (`tools/estatisticas.py`). The owner confirmed
+   the decisions of its section 10 on 2026-10-14, all as proposed; they freeze with the first instance.
 3. **Pilot:** 3 reference systems × 2 tracks × a panel of configurations × 5 runs. It validates the process, calibrates the
    weights and measures the variance. Started on 2026-10-12 with the specification of system A
    ([`systems/300-A/`](../systems/300-A/)), whose authoring status is kept on that page.

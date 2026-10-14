@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.212`
+**Versão atual:** `0.2.213`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.213` — 2026-10-14 — The owner confirmed the six scoring decisions of the new series' evaluator, all as proposed
+
+- `docs/new-series-evaluator.md` section 10 records the owner's answers of 2026-10-14: the regression group is a contract (63 groups for system A), the
+  judges attribute a regression to its fix and a person takes the disagreements, COMP keeps its double charge, PEN-002 is −20 once per unattributed group,
+  a person settles every disagreement between the two judges (the owner added that another agent may be asked to review one as well, when it helps; the
+  decision stays with the person), and the Default weights stay as drafted until the development set has run. The page's status goes from `PROPOSED` to
+  `ACTIVE`. The scorer, the weights file and every test are unchanged: they already implemented these answers.
+- `systems/300-A/README.md` section 9 and `docs/new-series-design.md` section 12 stop saying that the evaluator waits for the owner. What is still open
+  before the first run: the snapshot of the environment on the bench VMs, the proof on a bench VM, and the first case. Documents only.
 
 ### `0.2.212` — 2026-10-14 — LEB-D-300-A needs no new Maven cache on the bench VMs: its 213 files are the ones they already hold
 

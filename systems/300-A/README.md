@@ -159,7 +159,7 @@ split rounding each share.
 - [ ] The Security track's task statement (design §4.2)
 - [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
       disagreements, and each track's weights. Specified in [`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md)
-      (`PROPOSED`, its section 10 waits for the owner); built in the order of its section 9:
+      (`ACTIVE`: the owner confirmed its section 10 on 2026-10-14); built in the order of its section 9:
   - [x] the specification
   - [x] the failed test names in the mechanical report, and the regression groups of this system
   - [x] the scorer (`harness/score_v2.py`), the Default track's weights (`scoring/tracks/default.json`), the scorecard v2 schema and
@@ -185,6 +185,6 @@ split rounding each share.
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
-committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), the owner's confirmation of the decisions in
-[`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md) section 10, and a bench snapshot that holds its **environment** (the
+committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), the decisions in
+[`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md) section 10 (confirmed by the owner on 2026-10-14), and a bench snapshot that holds its **environment** (the
 toolchain, the test database, the offline Maven cache): the lab puts the package in at each case.

@@ -1,10 +1,11 @@
 # The evaluator of the new series — specification
 
-> **Status: `PROPOSED`.** It implements step 2 of [`new-series-design.md`](new-series-design.md) section 12 and section 8 of
+> **Status: `ACTIVE`.** The owner confirmed the six decisions of section 10 on 2026-10-14, all as proposed; they freeze with
+> the first instance's first run. It implements step 2 of [`new-series-design.md`](new-series-design.md) section 12 and section 8 of
 > that page. Written on 2026-10-14, for the **Default** track first (LEB-D-300-A); the Security track gets its own section when
 > its first instance is authored. Nothing here changes the full LEB: `harness/score.py`, `scoring/SCORING.md` and every
-> published result stay as they are. The numbers marked **proposed** are the author's defaults with their reasons, listed in
-> section 10 for the owner to confirm before the instance is frozen. The weights are the owner's draft of design 4.1.
+> published result stay as they are. The numbers marked **proposed** were the author's defaults with their reasons; section 10 records the
+> owner's answer to each. The weights are the owner's draft of design 4.1.
 
 ## 1. What it is
 
@@ -166,21 +167,27 @@ files. An attempt filed as *lab failure* or *operator error* is not scored; it i
 The judges' prompts and the anonymizing step are lab material (they name the lab's folders), and live with the lab's private
 tools; what they must produce is fixed here and in the schemas.
 
-## 10. Decisions for the owner
+## 10. Decisions of the owner
 
-Each has the author's proposal. Nothing below is frozen until it is confirmed, and none of it can change after the instance's first
-run without a new version of the instance (`matrix/MATRIX.md` section 4).
+Each item keeps the author's proposal and records the owner's answer of 2026-10-14. All six were confirmed as proposed. Nothing
+below changes after the instance's first run without a new version of the instance (`matrix/MATRIX.md` section 4).
 
 1. **The regression group is a contract, not a test class.** Proposed: groups by manifest clause, authored with the instance
    (63 for the 70 tests of system A: most tests guard a contract of their own, and only the ones that guard the same contract
    share a group, such as the four of the browser login flow). The alternative, one group per test class (six), is coarser
    than the owner's principle.
+   **Owner, 2026-10-14: Confirmed: groups by manifest clause.**
 2. **Who attributes a regression to a fix.** Proposed: the judges (they see the diff), the mechanical stage only finds the
    groups; a disagreement goes to the person. The alternative, a mechanical attribution by reverting each fix, is not
    generally possible.
+   **Owner, 2026-10-14: Confirmed: the judges attribute, a person takes the disagreements.**
 3. **COMP keeps its double charge.** Proposed: yes, as documented and intentional in `SCORING.md` section 5. Removing it is a
    scoring change of the same kind as problem 4 and deserves its own look at the data.
+   **Owner, 2026-10-14: Confirmed: the double charge stays.**
 4. **PEN-002 is −20, once per unattributed group.** Proposed: the full LEB's amount, now charged once per behavior.
+   **Owner, 2026-10-14: Confirmed: −20, once per group.**
 5. **A person settles every disagreement; the second judge costs one more judging pass per delivery.** Proposed: yes; the
    expected number of disagreements per delivery is measured in the pilot and reported with it.
+   **Owner, 2026-10-14: Confirmed. The owner added that another agent may be asked to review a disagreement as well, when it helps; the decision stays with the person.**
 6. **The Default weights are the draft of design 4.1**, unchanged until the development set has run.
+   **Owner, 2026-10-14: Confirmed: the weights stay as drafted until the development set has run.**
