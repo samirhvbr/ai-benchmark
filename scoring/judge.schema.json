@@ -96,6 +96,42 @@
         "PEN-003": { "type": "integer", "minimum": 0, "description": "reescreveu sem necessidade (−25)" }
       }
     },
-    "cost_time": { "type": "object", "description": "opcional; repassado ao scorecard (SCORING §9.3)" }
+    "cost_time": { "type": "object", "description": "opcional; repassado ao scorecard (SCORING §9.3)" },
+    "regressions": {
+      "type": "array",
+      "description": "New series only (docs/new-series-evaluator.md §4–5), read by harness/score_v2.py: for each regression group the mechanical stage found broken, the planted row whose fix broke it, or null when no fix did (the group then costs PEN-002 once). Optional here: every LEB-100-A and LEB-300-A verdict still validates.",
+      "items": {
+        "type": "object",
+        "required": ["group", "caused_by"],
+        "properties": {
+          "group": { "type": "string", "description": "a group id of the instance's regression_groups.json, or BUILD" },
+          "caused_by": { "type": ["string", "null"], "pattern": "^(SEC|ARCH|PERF|BUG|CLN)-\\d{3}(\\.[a-z])?$" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "description": "New series only: present in the SETTLED verdict built by tools/judge_review.py from two judges' verdicts. Every disagreement and how it was decided; empty `disagreements` when the judges agreed on everything.",
+      "required": ["judges", "disagreements"],
+      "properties": {
+        "judges": { "type": "integer", "minimum": 2 },
+        "disagreements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item", "decision", "reason", "decided_by"],
+            "properties": {
+              "item": { "type": "string", "description": "what differed, e.g. ARCH-001.C3, PEN-003, comp_violations, regression:RG-01, EXPL.causa_raiz" },
+              "judge_a": {},
+              "judge_b": {},
+              "decision": {},
+              "reason": { "type": "string" },
+              "decided_by": { "type": "string", "description": "a person; the rule is that a person decides" }
+            }
+          }
+        }
+      }
+    }
   }
 }

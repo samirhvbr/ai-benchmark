@@ -1,0 +1,710 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leb.dev/schemas/scorecard-v2.schema.json",
+  "title": "LEB Scorecard v2",
+  "description": "Machine-readable result of one delivery of the new series (docs/new-series-evaluator.md §7), made by harness/score_v2.py. The scorecard of scoring/scorecard.schema.json with the scorer, the track, the outcome, the regression groups and the review of the judges, and with the category weights read from the track (scoring/tracks/<track>.json) instead of the full LEB table.",
+  "type": "object",
+  "required": [
+    "leb_spec",
+    "scorer",
+    "track",
+    "outcome",
+    "model",
+    "instance",
+    "matrix_sha256",
+    "protocol",
+    "categories",
+    "regressions",
+    "penalties",
+    "total"
+  ],
+  "properties": {
+    "leb_spec": {
+      "type": "string"
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        }
+      }
+    },
+    "instance": {
+      "type": "string",
+      "examples": [
+        "LEB-200-A v1.0"
+      ]
+    },
+    "matrix_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "mode",
+        "date"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "S",
+            "A"
+          ]
+        },
+        "turn_budget": {
+          "type": "integer"
+        },
+        "temperature": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "runs": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "optional in the new series: a scorecard is one delivery, the repeats are separate scorecards"
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Uma entrada por linha da matriz avaliada",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "points_earned",
+          "points_possible"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "criteria": {
+            "type": "object",
+            "description": "Pontos por critério: C1..C5 ou R1..R4",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "points_earned": {
+            "type": "number"
+          },
+          "points_possible": {
+            "type": "number"
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Confiança 0–100 auto-reportada pelo modelo para este achado. Ausente se o modelo não reportou esta linha (falso negativo). Não pontua; alimenta calibration (SCORING §9.1)"
+          },
+          "evidence": {
+            "type": "object",
+            "description": "Present only when a structural verifier brought evidence for this flaw's R3 (a ceiling, never a floor): R3 = the evidence, judge_R3 = what the judge gave, applied_R3 = the lower of the two.",
+            "required": [
+              "R3",
+              "judge_R3",
+              "applied_R3"
+            ],
+            "properties": {
+              "R3": {
+                "enum": [
+                  "full",
+                  "half",
+                  "none"
+                ]
+              },
+              "judge_R3": {
+                "enum": [
+                  "full",
+                  "half",
+                  "none"
+                ]
+              },
+              "applied_R3": {
+                "enum": [
+                  "full",
+                  "half",
+                  "none"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Informative, copied from the matrix; scores nothing."
+          },
+          "informative_affected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Informative, copied from the matrix or the mechanical report; scores nothing."
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "categories": {
+      "type": "object",
+      "required": [
+        "COMP",
+        "EXPL"
+      ],
+      "properties": {
+        "SEC": {
+          "$ref": "#/$defs/normalizedCategory"
+        },
+        "ARCH": {
+          "$ref": "#/$defs/normalizedCategory"
+        },
+        "BUG": {
+          "$ref": "#/$defs/normalizedCategory"
+        },
+        "PERF": {
+          "$ref": "#/$defs/normalizedCategory"
+        },
+        "CLN": {
+          "$ref": "#/$defs/normalizedCategory"
+        },
+        "COMP": {
+          "type": "object",
+          "required": [
+            "score",
+            "max",
+            "violations"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "violations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "count",
+                  "deduction"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^COMP-\\d{3}$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "deduction": {
+                    "type": "integer"
+                  },
+                  "detail": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "EXPL": {
+          "type": "object",
+          "required": [
+            "score",
+            "max",
+            "rubric"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "rubric": {
+              "type": "object",
+              "required": [
+                "clareza",
+                "precisao",
+                "causa_raiz",
+                "priorizacao",
+                "trade_offs"
+              ],
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10
+              }
+            }
+          }
+        }
+      },
+      "description": "Only the categories the track weighs: ARCH, BUG, PERF, CLN for the Default track; SEC for the Security track; COMP and EXPL in both."
+    },
+    "penalties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "count",
+          "deduction"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^PEN-\\d{3}$"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "deduction": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "extra_findings": {
+      "type": "array",
+      "description": "Achados reais fora da matriz (0 pontos; candidatos à próxima versão da instância)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "calibration": {
+      "type": "object",
+      "description": "Métrica INFORMATIVA de calibração sobre os achados reportados (confiança × acerto). NÃO entra no TOTAL. Ver SCORING.md §9.1.",
+      "properties": {
+        "reported_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "nº de achados reportados com confiança"
+        },
+        "brier": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "média de (confiança/100 − acerto)²; acerto=1 se casa falha plantada, 0 se isca/inexistente. Menor = melhor calibrado"
+        },
+        "high_conf_false_positive_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "fração dos achados com confiança ≥80 que eram falso-positivo"
+        },
+        "bins": {
+          "type": "array",
+          "description": "Diagrama de confiabilidade: confiança agrupada × taxa de acerto",
+          "items": {
+            "type": "object",
+            "required": [
+              "range",
+              "count",
+              "hit_rate"
+            ],
+            "properties": {
+              "range": {
+                "type": "string",
+                "examples": [
+                  "0-20",
+                  "21-40",
+                  "41-60",
+                  "61-80",
+                  "81-100"
+                ]
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mean_confidence": {
+                "type": "number"
+              },
+              "hit_rate": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "difficulty_breakdown": {
+      "type": "object",
+      "description": "Cobertura por dificuldade (INFORMATIVO, não pontua). Ver SCORING.md §9.2.",
+      "properties": {
+        "levels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "difficulty",
+              "planted",
+              "detected",
+              "corrected"
+            ],
+            "properties": {
+              "difficulty": {
+                "type": "string",
+                "enum": [
+                  "Fácil",
+                  "Moderada",
+                  "Difícil",
+                  "Especialista"
+                ]
+              },
+              "planted": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "detected": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "achou (C1/R1 ≥ metade)"
+              },
+              "corrected": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "corrigiu pleno (C3/R3)"
+              }
+            }
+          }
+        },
+        "discovery_index": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "detecção ponderada por dificuldade (pesos Fácil1·Moderada2·Difícil3·Especialista4); informativo"
+        }
+      }
+    },
+    "dimension_breakdown": {
+      "type": "array",
+      "description": "Coverage per cross-cutting dimension (INFORMATIVE, scores nothing). Present only when the matrix declares `dimensions`.",
+      "items": {
+        "type": "object",
+        "required": [
+          "dimension",
+          "planted",
+          "detected",
+          "corrected"
+        ],
+        "properties": {
+          "dimension": {
+            "type": "string"
+          },
+          "planted": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "detected": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "corrected": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "decoy_breakdown": {
+      "type": "array",
+      "description": "Decoys by kind (INFORMATIVE; the penalty is still PEN-004). Present only when the matrix declares `decoy_kind`.",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "decoys",
+          "reported"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "diagnostico",
+              "intervencao"
+            ]
+          },
+          "decoys": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reported": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "cost_time": {
+      "type": "object",
+      "description": "Cost and time of the MODEL'S RUN (not the harness), copied from the client's own usage summary. INFORMATIVE, not part of the TOTAL. See SCORING.md §9.3.",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "the client summary the numbers were copied from, e.g. \"Claude Code /cost\"; kept as printed in custo.txt"
+        },
+        "elapsed_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "the model's working time as the client reports it (e.g. Claude Code 'Total duration (API)'); never the wall-clock, which includes the operator's waits; null when the client reports only wall-clock"
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "seconds"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "seconds": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "tokens": {
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "output": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cache": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "output_tokens_per_second": {
+          "type": "number",
+          "minimum": 0
+        },
+        "usd_estimate": {
+          "type": "number",
+          "minimum": 0,
+          "description": "derivado: tokens × tabela de preços do provedor"
+        },
+        "finish_reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "examples": [
+            "ok",
+            "timeout",
+            "error"
+          ]
+        }
+      }
+    },
+    "total": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "grade": {
+      "type": "string",
+      "enum": [
+        "Platinum",
+        "Gold",
+        "Silver",
+        "Bronze",
+        "Reprovada"
+      ]
+    },
+    "scorer": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "score_v2"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "track": {
+      "type": "string",
+      "enum": [
+        "default",
+        "security"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "blocked",
+        "budget_exhausted"
+      ],
+      "description": "How the attempt ended (design 6.2). A blocked or exhausted attempt is scored on the folder it left; the statistics read this field to tell the quality score from the expected score per scheduled attempt."
+    },
+    "regressions": {
+      "type": "array",
+      "description": "One entry per regression group found broken (a group of characterization tests that guard one contract). charged_to is the planted row whose C4/R4 pays for it (deduction 0), or null when no attempted fix did and PEN-002 is charged once (deduction −20).",
+      "items": {
+        "type": "object",
+        "required": [
+          "group",
+          "tests_failed",
+          "charged_to",
+          "deduction"
+        ],
+        "properties": {
+          "group": {
+            "type": "string"
+          },
+          "tests_failed": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "tests of the group that failed; for BUILD (the delivery does not build), the tests the runner could name"
+          },
+          "charged_to": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deduction": {
+            "type": "integer",
+            "maximum": 0
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "description": "New series only: present in the SETTLED verdict built by tools/judge_review.py from two judges' verdicts. Every disagreement and how it was decided; empty `disagreements` when the judges agreed on everything.",
+      "required": [
+        "judges",
+        "disagreements"
+      ],
+      "properties": {
+        "judges": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "disagreements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "item",
+              "decision",
+              "reason",
+              "decided_by"
+            ],
+            "properties": {
+              "item": {
+                "type": "string",
+                "description": "what differed, e.g. ARCH-001.C3, PEN-003, comp_violations, regression:RG-01, EXPL.causa_raiz"
+              },
+              "judge_a": {},
+              "judge_b": {},
+              "decision": {},
+              "reason": {
+                "type": "string"
+              },
+              "decided_by": {
+                "type": "string",
+                "description": "a person; the rule is that a person decides"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "normalizedCategory": {
+      "type": "object",
+      "required": [
+        "raw_earned",
+        "raw_possible",
+        "score",
+        "max"
+      ],
+      "properties": {
+        "raw_earned": {
+          "type": "number"
+        },
+        "raw_possible": {
+          "type": "number"
+        },
+        "score": {
+          "type": "integer",
+          "description": "round(raw_earned/raw_possible × max)"
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        }
+      }
+    }
+  }
+}

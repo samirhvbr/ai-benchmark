@@ -161,8 +161,9 @@ split rounding each share.
       disagreements, and each track's weights. Specified in [`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md)
       (`PROPOSED`, its section 10 waits for the owner); built in the order of its section 9:
   - [x] the specification
-  - [ ] the failed test names in the mechanical report, and the regression groups of this system
-  - [ ] the scorer (`harness/score_v2.py`) and the scorecard v2 schema
+  - [x] the failed test names in the mechanical report, and the regression groups of this system
+  - [x] the scorer (`harness/score_v2.py`), the Default track's weights (`scoring/tracks/default.json`), the scorecard v2 schema and
+        the verdict's `regressions` and `review` fields; `./leb scorecard` picks it for `LEB-D-*` and `LEB-S-*`
   - [ ] two judges per delivery, the disagreement list and the review command
   - [ ] the tests that prove it
 - [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md))

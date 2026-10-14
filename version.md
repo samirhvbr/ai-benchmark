@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.205`
+**Versão atual:** `0.2.206`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.206` — 2026-10-14 — The new series has its scorer: one charge per regression, with the weights of the track
+
+- New `harness/score_v2.py`, deterministic like `score.py` and built on it: it takes the instance's regression groups, the mechanical report (now
+  with the names of the failed tests) and the settled verdict. A regression is a group of characterization tests; it is charged **once**, to the `C4`
+  (Template C) or `R4` (Template R) of the attempted row the verdict names, or as PEN-002 (−20) once per group when no attempted fix earns the charge
+  (unattributed, not attempted, or already earning nothing in that criterion). A build failure is one unattributed regression. A failed test in no
+  group, a runner that fails tests without naming them, and an attribution to a group that did not break, to a decoy, or twice, are errors.
+- New `scoring/tracks/default.json`: the owner's draft weights (ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50), PEN-002 per group. A
+  matrix row of a category the track does not weigh is refused. `--outcome` records `completed`, `blocked` or `budget_exhausted`; a partial delivery
+  is scored like any other.
+- New `scoring/scorecard-v2.schema.json` (scorer, track, outcome, regressions, review; category maxima from the track). `scoring/judge.schema.json` gains
+  the optional `regressions` and `review`, so every published verdict still validates.
+- 34 new tests (`tests/test_score_v2.py`): per-row points equal to `score.py` without failures, the one-charge cases, the refusals, the arithmetic of
+  LEB-D-300-A's own matrix and groups (a perfect model scores 1000, one that does nothing keeps COMP), and the schemas. The specification's build
+  table and the system's checklist are updated; the recomputation of the 92 LEB-100-A runs is dropped from the plan (no groups exist for it).
 
 ### `0.2.205` — 2026-10-14 — The full LEB scorer exposes its calibration and difficulty blocks, for the new scorer to share
 

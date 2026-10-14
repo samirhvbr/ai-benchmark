@@ -158,10 +158,10 @@ files. An attempt filed as *lab failure* or *operator error* is not scored; it i
 | --- | --- | --- |
 | Failed test names | `harness/java/evaluate.sh`, `harness/leb_harness.py` | the report gains `failed_tests` |
 | Regression groups | `instances/LEB-D-300-A/private/regression_groups.json` | 63 groups for the 70 public tests, by manifest clause (the 20 `SecurityBehaviorTest` defenses are a group each); `tests/test_regression_groups.py` checks that every public test is in exactly one |
-| The scorer | `harness/score_v2.py`, `scoring/scorecard-v2.schema.json` | `harness/score.py` stays and still reproduces the 92 published LEB-100-A totals |
+| The scorer | `harness/score_v2.py`, `scoring/tracks/default.json`, `scoring/scorecard-v2.schema.json` | built (0.2.205). `harness/score.py` stays and still reproduces the 92 published LEB-100-A totals; the two share its COMP table, base points and informative blocks |
 | Verdicts and review | `scoring/judge.schema.json`, `scoring/JUDGE.md` addendum, `tools/judge_review.py` | two judges, disagreements, the person's decisions |
 | Statistics | `tools/estatisticas.py` (design sections 9 and 11) | written last, needed at the end of the pilot |
-| Tests | `tests/test_score_v2.py` | golden scorecards from the variant cases, the planted tree as the baseline, the reference as full marks, the recomputation of the 92 LEB-100-A runs (old rule against new) |
+| Tests | `tests/test_score_v2.py` | built (0.2.205): the one-charge cases on a synthetic matrix, the refusals, the arithmetic of the real instance (a perfect model scores 1000, one that does nothing keeps COMP), the operator wiring and the schemas. The variant cases (Docker) prove the verifiers. The recomputation of the 92 LEB-100-A runs was dropped: that instance has no regression groups, and `test_historico` keeps proving `score.py` against them |
 
 The judges' prompts and the anonymizing step are lab material (they name the lab's folders), and live with the lab's private
 tools; what they must produce is fixed here and in the schemas.
