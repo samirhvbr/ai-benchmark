@@ -40,7 +40,7 @@ delivery, the transcripts and the evidence of the run.
 | PostgreSQL | 17.11 from the distribution, on `127.0.0.1:5432`. The packages accept 16 or newer; the evaluator runs on 16 and the package says so | `pg_isready`, `psql --version` |
 | Other | Python 3.13 (for `etapas.py`), GNU tar and coreutils, curl | |
 
-The three VMs are identical in all of this. Each instance's own `code/AMBIENTE.md` lists the toolchain it needs; the table is what is installed. The versions come from the
+The three VMs are identical in all of this. Each instance's own environment note (`code/AMBIENTE.md`, or `code/ENVIRONMENT.md` in the new series) lists the toolchain it needs; the table is what is installed. The versions come from the
 distribution and drift, so record them for every run with a read-only diagnostic: identity and clock, CPU, memory and disk, toolchain versions, the local PostgreSQL, Maven
 settings and cache, and whether Maven Central is reachable. It writes only to standard output and needs no sudo.
 

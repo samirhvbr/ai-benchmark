@@ -177,8 +177,14 @@ split rounding each share.
 - [x] `LEB-D-300-A`: its runner contract (`private/runner.json`): `harness/leb_harness.py` characterizes and verifies a delivery
       end to end
 - [x] `LEB-D-300-A`: its package, built clean by `./leb pacote` (`code/` with the environment notes, `manifest.md`, `TASK.md`)
+- [x] `LEB-D-300-A`: its offline Maven cache. CondoDesk resolves to the **same 213 files** (identical SHA-256 list) as the cache the bench VMs
+      already hold from the LEB-300-A pilot, so the VMs need no new cache. Rebuilt and proved on the workstation on 2026-10-14: `mvn -o clean verify` runs
+      the 70 public tests in 58 s on a network with no route out, and an empty cache fails
+- [ ] `LEB-D-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4): `check-environment.sh` says the
+      environment is ready and `mvn -o test` passes 70 tests. It writes to a VM, so it waits for the owner's word
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
-committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), and a bench snapshot that holds its
-package.
+committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), the owner's confirmation of the decisions in
+[`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md) section 10, and a bench snapshot that holds its **environment** (the
+toolchain, the test database, the offline Maven cache): the lab puts the package in at each case.

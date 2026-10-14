@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.211`
+**Versão atual:** `0.2.212`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.212` — 2026-10-14 — LEB-D-300-A needs no new Maven cache on the bench VMs: its 213 files are the ones they already hold
+
+- CondoDesk's dependencies resolve to the same 213 jar and pom files, with identical SHA-256, as the offline cache the bench VMs received for the LEB-300-A
+  pilot (same dependency set, only the project name differs), so the VMs' snapshots already hold what the new instance's evaluator-compatible build needs.
+  The cache was rebuilt with strict checksums and proved on the workstation: `mvn -o clean verify` passes the 70 public tests in 58 seconds on a network with
+  no route out, with the controls (the network really cannot reach Maven Central, an empty cache really fails offline).
+- `systems/300-A/README.md` section 9 records the cache, adds the proof on a bench VM (a write to a VM, waiting for the owner) and says the first run needs
+  the owner's confirmation of the evaluator's decisions and a snapshot of the **environment**, the lab putting the package in at each case.
+  `docs/candidate-vm.md` names `code/ENVIRONMENT.md` next to `code/AMBIENTE.md`. Documents only.
 
 ### `0.2.211` — 2026-10-14 — The judges get the regression groups a delivery broke, by the scorer's own rule
 
