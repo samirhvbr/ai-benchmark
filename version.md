@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.213`
+**Versão atual:** `0.2.214`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.214` — 2026-10-14 — The bench VMs hold the environment of the new series, and LEB-D-300-A's package is proved on one
+
+- The four bench VMs were cleaned of the Claude Code install session's residue (`limpar-vm.sh`, credentials hashed before and after and unchanged) and each
+  received the snapshot `leb-d-300-a` (Claude Code 2.1.295, the test database, the offline Maven cache, no package), after passing `conferir-vm.sh` with no `FAIL`.
+  The private lab driver gained a `snapshot` command that makes that check a precondition.
+- The proof of `docs/candidate-vm.md` section 5, step 4, on a throwaway copy of the clean package on bench1: the 56 files match their hash list, the package's
+  environment check says it is ready, and `mvn -o test` passes 70 tests with no failures. It took 345 s on the VM against 58 s on the workstation, which is what
+  a candidate's own run of the public suite costs. The copy is removed and the VM is still clean afterwards. `systems/300-A/README.md` section 9 records both.
+  Documents only.
 
 ### `0.2.213` — 2026-10-14 — The owner confirmed the six scoring decisions of the new series' evaluator, all as proposed
 

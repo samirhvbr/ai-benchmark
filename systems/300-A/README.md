@@ -180,8 +180,13 @@ split rounding each share.
 - [x] `LEB-D-300-A`: its offline Maven cache. CondoDesk resolves to the **same 213 files** (identical SHA-256 list) as the cache the bench VMs
       already hold from the LEB-300-A pilot, so the VMs need no new cache. Rebuilt and proved on the workstation on 2026-10-14: `mvn -o clean verify` runs
       the 70 public tests in 58 s on a network with no route out, and an empty cache fails
-- [ ] `LEB-D-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4): `check-environment.sh` says the
-      environment is ready and `mvn -o test` passes 70 tests. It writes to a VM, so it waits for the owner's word
+- [x] the bench snapshot of the **environment**, `leb-d-300-a`, on the four bench VMs (2026-10-14): Claude Code 2.1.295, the test database and the offline Maven
+      cache, no package, taken after `limpar-vm.sh` (the credentials untouched, hashed before and after) with every VM passing `conferir-vm.sh` with no `FAIL`;
+      the lab's `snapshot` command refuses to shut a VM down unless it passes that check
+- [x] `LEB-D-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4), on bench1 (2026-10-14): the package's 56 files
+      match their hash list, `check-environment.sh` says `environment ready`, and `mvn -o test` passes **70 tests, 0 failures**, in **345 s** (the workstation takes 58 s).
+      The copy and the tarball are removed, the tests leave no schema in `leb_dev`, and the VM still passes `conferir-vm.sh`. An agent that runs the whole suite
+      spends about six minutes of its budget each time
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
