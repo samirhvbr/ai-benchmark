@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.204`
+**Versão atual:** `0.2.205`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.205` — 2026-10-14 — The full LEB scorer exposes its calibration and difficulty blocks, for the new scorer to share
+
+- `harness/score.py`: the calibration block (Brier score, overconfidence, discovery index) and the difficulty block move out of `main()` into
+  `calibration_block()` and `difficulty_block()`, so the scorer of the new series builds the same informative blocks from the same code instead of a
+  copy. No behavior change: the scorecards it writes are byte for byte what they were, and the 95 historical runs still reproduce
+  (`tests/test_historico.py`).
 
 ### `0.2.204` — 2026-10-14 — The Java evaluator names the failed tests, and LEB-D-300-A has its regression groups
 

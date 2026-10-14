@@ -63,6 +63,32 @@ def load(path):
         return json.load(f)
 
 
+def calibration_block(calib):
+    """The calibration block of the scorecard (SCORING §9.1) from the (confidence, hit) pairs of the reported findings, or None."""
+    if not calib:
+        return None
+    brier = round(sum((c / 100 - o) ** 2 for c, o in calib) / len(calib), 3)
+    hi = [(c, o) for c, o in calib if c >= 80]
+    hi_fp = round(sum(1 for c, o in hi if o == 0) / len(hi), 3) if hi else 0
+    bins = []
+    for lo, hi_ in ((81, 100), (61, 80), (41, 60), (21, 40), (0, 20)):
+        grp = [(c, o) for c, o in calib if lo <= c <= hi_]
+        if grp:
+            bins.append({"range": f"{lo}-{hi_}", "count": len(grp),
+                         "mean_confidence": round(sum(c for c, _ in grp) / len(grp), 1),
+                         "hit_rate": round(sum(o for _, o in grp) / len(grp), 3)})
+    return {"reported_count": len(calib), "brier": brier, "high_conf_false_positive_rate": hi_fp, "bins": bins}
+
+
+def difficulty_block(diff_stat):
+    """The difficulty breakdown of the scorecard (SCORING §9.2) from {difficulty: {planted, detected, corrected}}."""
+    num = sum(DIFF_WEIGHT.get(d, 0) * s["detected"] for d, s in diff_stat.items())
+    den = sum(DIFF_WEIGHT.get(d, 0) * s["planted"] for d, s in diff_stat.items())
+    return {"levels": [{"difficulty": d, "planted": s["planted"], "detected": s["detected"], "corrected": s["corrected"]}
+                       for d, s in sorted(diff_stat.items())],
+            "discovery_index": round(100 * num / den, 1) if den else 0}
+
+
 def main():
     ap = argparse.ArgumentParser(description="Montador do scorecard LEB (passo 7)")
     ap.add_argument("--matrix", required=True)
@@ -241,30 +267,9 @@ def main():
     grade = ("Platinum" if total >= 900 else "Gold" if total >= 750 else
              "Silver" if total >= 600 else "Bronze" if total >= 400 else "Reprovada")
 
-    # calibração (§9.1)
-    calibration = None
-    if calib:
-        brier = round(sum((c / 100 - o) ** 2 for c, o in calib) / len(calib), 3)
-        hi = [(c, o) for c, o in calib if c >= 80]
-        hi_fp = round(sum(1 for c, o in hi if o == 0) / len(hi), 3) if hi else 0
-        bins = []
-        for lo, hi_ in ((81, 100), (61, 80), (41, 60), (21, 40), (0, 20)):
-            grp = [(c, o) for c, o in calib if lo <= c <= hi_]
-            if grp:
-                bins.append({"range": f"{lo}-{hi_}", "count": len(grp),
-                             "mean_confidence": round(sum(c for c, _ in grp) / len(grp), 1),
-                             "hit_rate": round(sum(o for _, o in grp) / len(grp), 3)})
-        calibration = {"reported_count": len(calib), "brier": brier,
-                       "high_conf_false_positive_rate": hi_fp, "bins": bins}
-
-    # dificuldade (§9.2)
-    num = sum(DIFF_WEIGHT.get(d, 0) * s["detected"] for d, s in diff_stat.items())
-    den = sum(DIFF_WEIGHT.get(d, 0) * s["planted"] for d, s in diff_stat.items())
-    difficulty_breakdown = {
-        "levels": [{"difficulty": d, "planted": s["planted"], "detected": s["detected"],
-                    "corrected": s["corrected"]} for d, s in sorted(diff_stat.items())],
-        "discovery_index": round(100 * num / den, 1) if den else 0,
-    }
+    # calibração (§9.1) e dificuldade (§9.2)
+    calibration = calibration_block(calib)
+    difficulty_breakdown = difficulty_block(diff_stat)
 
     scorecard = {
         "leb_spec": matrix.get("leb_spec"),
