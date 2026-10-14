@@ -132,3 +132,36 @@ python3 harness/score.py \
 O montador aplica SCORING §1 (pontos por critério), §4 (normalização), §5 (COMP), §7 (TOTAL),
 §8 (selo), §9.1 (Brier) e §9.2 (dificuldade) — tudo determinístico. PEN-002 (regressão) e o C4
 saem do relatório mecânico; PEN-004 sai dos `false_positives`.
+
+## The new series (LEB-D-*, LEB-S-*): two judges, regression attribution, a person settles
+
+Normative for the instances scored by [`harness/score_v2.py`](../harness/score_v2.py); the specification is
+[`docs/new-series-evaluator.md`](../docs/new-series-evaluator.md) section 4. Everything above stays as it is: steps 4 and 5 are
+done as written, with two differences.
+
+**Two judges, independent.** Each delivery is judged twice, from the same prompts and the same anonymized folder, and the judges
+never see each other's verdict, the scorecard, the agent's identity or the other categories. Each writes a complete verdict
+(`planted`, `false_positives`, `comp_violations`, `penalties`, `expl_rubric`, `regressions`) that validates against
+[`judge.schema.json`](judge.schema.json).
+
+**Regressions (new).** The mechanical report names the *regression groups* that broke: a group of characterization tests that guard
+one contract. For each one, `regressions` gives the planted row whose fix broke it, or `null` when no fix of a planted row did (a
+change outside the matrix, an extra finding's fix, a rewrite). Attribute a group to a row only when the delivery's diff shows that
+row's fix changing the behavior the group guards; when in doubt, `null`. The scorer charges the group once, never twice: to that
+row's `C4` (Template C) or `R4` (Template R) if the row was attempted and earns something there, and otherwise as PEN-002. A build
+failure is always `null`. The judge no longer fills `C4`: it comes from the regressions.
+
+**Settling.** [`tools/judge_review.py`](../tools/judge_review.py) compares the two verdicts. What they agree on stays as it is and is
+never reopened. Every difference is listed (a criterion, `reported`, a `confidence` transcribed differently, a false positive, a
+COMP violation, a PEN count, a regression attribution, an EXPL dimension more than two points apart) and **a person decides each
+one, writing the reason and their name**; the decision is recorded in the settled verdict's `review` block and copied to the
+scorecard. A disagreement never takes the average and a delivery with an undecided one is not scored. An EXPL dimension at most two
+points apart is not a disagreement: it is noise on an ordinal scale, and the settled value is the mean rounded down.
+
+```sh
+python3 tools/judge_review.py compare judge-a.json judge-b.json --out disagreements.json   # lists them, with empty decision slots
+# the person fills decision / reason / decided_by in disagreements.json, then:
+python3 tools/judge_review.py settle  judge-a.json judge-b.json --decisions disagreements.json --out settled.json
+python3 harness/score_v2.py --track default --matrix .../matrix.json --groups .../regression_groups.json \
+    --mechanical mecanico.json --judge settled.json --out scorecard.json      # or ./leb scorecard <instance> <run> --veredito settled.json
+```

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.207`
+**Versão atual:** `0.2.208`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.208` — 2026-10-14 — Two judges per delivery: `tools/judge_review.py` lists their disagreements and a person settles each one
+
+- New `tools/judge_review.py`: `compare` takes two verdicts (both validated against `scoring/judge.schema.json`, about the same delivery and model)
+  and lists every difference — a criterion, `reported`, a `confidence`, a false positive, a COMP violation, a PEN count, a regression attribution, an
+  EXPL dimension more than two points apart — with empty decision slots; `settle` writes the settled verdict only when a person has decided every one,
+  with the reason and their name, and records them in its `review` block. What the judges agree on is never reopened and a disagreement never takes
+  the average; an EXPL dimension at most two points apart is the mean rounded down. A decision of the wrong shape, one about an item that is not a
+  disagreement, or one without a reason or a name is refused.
+- `scoring/JUDGE.md` gains the new series' section (two independent judges, how to attribute a regression, settling); the specification notes the EXPL
+  tolerance and marks the piece built. 16 new tests (`tests/test_judge_review.py`), one of them feeding a settled verdict to `harness/score_v2.py`.
+  Nothing in the full LEB changes.
 
 ### `0.2.207` — 2026-10-14 — `./leb scorecard` picks the scorer of the new series by the instance's name
 

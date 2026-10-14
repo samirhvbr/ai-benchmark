@@ -63,7 +63,7 @@ verdict, the scorecard, the agent's identity or the other categories.
 
 **A disagreement** is any of: a row where the two verdicts differ in any criterion; a `comp_violations` or a PEN call present in
 one and not in the other; a regression attributed to different rows (or to a row by one and to none by the other); an EXPL
-dimension more than two points apart. The settled verdict is built by `tools/judge_review.py`: it takes what both judges agree
+dimension more than two points apart (up to two points is noise on an ordinal scale, and the settled value is the mean rounded down). The settled verdict is built by `tools/judge_review.py`: it takes what both judges agree
 on, lists the disagreements in a file, and writes the person's decision for each one, with the reason, into the settled verdict's
 `review` block. **An agreement is never reopened** and a disagreement never takes the average: a person decides, or the delivery
 is not scored.
@@ -159,7 +159,7 @@ files. An attempt filed as *lab failure* or *operator error* is not scored; it i
 | Failed test names | `harness/java/evaluate.sh`, `harness/leb_harness.py` | the report gains `failed_tests` |
 | Regression groups | `instances/LEB-D-300-A/private/regression_groups.json` | 63 groups for the 70 public tests, by manifest clause (the 20 `SecurityBehaviorTest` defenses are a group each); `tests/test_regression_groups.py` checks that every public test is in exactly one |
 | The scorer | `harness/score_v2.py`, `scoring/tracks/default.json`, `scoring/scorecard-v2.schema.json` | built (0.2.205). `harness/score.py` stays and still reproduces the 92 published LEB-100-A totals; the two share its COMP table, base points and informative blocks |
-| Verdicts and review | `scoring/judge.schema.json`, `scoring/JUDGE.md` addendum, `tools/judge_review.py` | two judges, disagreements, the person's decisions |
+| Verdicts and review | `scoring/judge.schema.json`, `scoring/JUDGE.md` addendum, `tools/judge_review.py` | built (0.2.208): `compare` lists the disagreements with empty decision slots, `settle` refuses while one is undecided and writes the settled verdict with its `review`; `tests/test_judge_review.py` |
 | Statistics | `tools/estatisticas.py` (design sections 9 and 11) | written last, needed at the end of the pilot |
 | Tests | `tests/test_score_v2.py` | built (0.2.205): the one-charge cases on a synthetic matrix, the refusals, the arithmetic of the real instance (a perfect model scores 1000, one that does nothing keeps COMP), the operator wiring and the schemas. The variant cases (Docker) prove the verifiers. The recomputation of the 92 LEB-100-A runs was dropped: that instance has no regression groups, and `test_historico` keeps proving `score.py` against them |
 
