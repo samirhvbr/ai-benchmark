@@ -237,6 +237,15 @@ def cmd_avaliar(a):
 
 # ------------------------------------------------------------------ scorecard
 
+NEW_SERIES_TRACKS = {"D": "default", "S": "security"}  # LEB-D-300-A -> scoring/tracks/default.json
+
+
+def new_series_track(name):
+    """The track of an instance of the new series (LEB-D-*, LEB-S-*), or None for the full LEB's instances (LEB-100-A, LEB-300-A)."""
+    m = re.match(r"^LEB-([DS])-\d+-[A-Z]$", name)
+    return NEW_SERIES_TRACKS[m.group(1)] if m else None
+
+
 def cmd_scorecard(a):
     inst = instancia(a.instancia)
     nome = inst.name
@@ -249,9 +258,22 @@ def cmd_scorecard(a):
         sys.exit("[leb] esta instância não tem private/matrix.json — sem gabarito não há scorecard")
 
     card = os.path.join(saida, "scorecard.json")
-    cmd = [sys.executable, os.path.join("harness", "score.py"),
-           "--matrix", rel(matriz), "--mechanical", rel(mech),
-           "--judge", os.path.abspath(a.veredito), "--out", rel(card)]
+    track = new_series_track(nome)
+    if track:
+        # The new series (docs/new-series-evaluator.md): tracks, regression groups, one charge per regression.
+        groups = os.path.join(inst.root, "private", "regression_groups.json")
+        if not os.path.exists(groups):
+            sys.exit("[leb] %s has no private/regression_groups.json: the new series' scorer cannot charge regressions without it" % nome)
+        cmd = [sys.executable, os.path.join("harness", "score_v2.py"), "--track", track, "--groups", rel(groups),
+               "--outcome", a.outcome,
+               "--matrix", rel(matriz), "--mechanical", rel(mech),
+               "--judge", os.path.abspath(a.veredito), "--out", rel(card)]
+    else:
+        if a.outcome != "completed":
+            sys.exit("[leb] --outcome belongs to the new series (LEB-D-*, LEB-S-*); %s is scored by harness/score.py" % nome)
+        cmd = [sys.executable, os.path.join("harness", "score.py"),
+               "--matrix", rel(matriz), "--mechanical", rel(mech),
+               "--judge", os.path.abspath(a.veredito), "--out", rel(card)]
     if a.custo:
         cmd += ["--cost", os.path.abspath(a.custo)]
     rodar(cmd)
@@ -320,6 +342,8 @@ def main():
     p.add_argument("run")
     p.add_argument("--veredito", required=True, help="JSON do juiz (scoring/judge.schema.json)")
     p.add_argument("--custo", help="JSON com o bloco cost_time (opcional)")
+    p.add_argument("--outcome", choices=["completed", "blocked", "budget_exhausted"], default="completed",
+                   help="how the attempt ended (new series only; a blocked or exhausted attempt is scored on the folder it left)")
     p.set_defaults(fn=cmd_scorecard)
 
     p = sub.add_parser("estado", help="o que já foi montado, avaliado e pontuado")

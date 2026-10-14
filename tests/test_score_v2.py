@@ -323,6 +323,22 @@ class TheRealInstance(unittest.TestCase):
         self.assertEqual([(r["group"], r["tests_failed"]) for r in card["regressions"]], [(group["id"], len(group["tests"]))])
 
 
+class OperatorWiring(unittest.TestCase):
+    """./leb scorecard picks the scorer by the instance: LEB-D-* and LEB-S-* are the new series, everything else the full LEB."""
+
+    @classmethod
+    def setUpClass(cls):
+        from importlib.machinery import SourceFileLoader
+        cls.leb = SourceFileLoader("leb_operator", os.path.join(ROOT, "leb")).load_module()
+
+    def test_the_track_of_an_instance_comes_from_its_name(self):
+        self.assertEqual(self.leb.new_series_track("LEB-D-300-A"), "default")
+        self.assertEqual(self.leb.new_series_track("LEB-S-300-A"), "security")
+        self.assertEqual(self.leb.new_series_track("LEB-D-300-B"), "default")
+        for full_leb in ("LEB-100-A", "LEB-300-A", "LEB-TEST-A", "LEB-D-300", "LEB-X-300-A"):
+            self.assertIsNone(self.leb.new_series_track(full_leb), full_leb)
+
+
 class Schemas(unittest.TestCase):
     def test_the_scorecards_of_every_case_above_validate_against_the_v2_schema(self):
         schema = read_json(os.path.join(ROOT, "scoring", "scorecard-v2.schema.json"))

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.206`
+**Versão atual:** `0.2.207`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.207` — 2026-10-14 — `./leb scorecard` picks the scorer of the new series by the instance's name
+
+- `./leb scorecard` runs `harness/score_v2.py` for an instance named `LEB-D-<n>-<x>` (Default track) or `LEB-S-<n>-<x>` (Security track), passing the
+  instance's `private/regression_groups.json`, and `harness/score.py` for every other instance, exactly as before. A new-series instance without
+  regression groups is refused. `--outcome completed|blocked|budget_exhausted` records how the attempt ended; the full LEB's instances refuse it.
+- 1 new test (`new_series_track`: the track comes from the name and nothing in the full LEB changes track).
 
 ### `0.2.206` — 2026-10-14 — The new series has its scorer: one charge per regression, with the weights of the track
 
