@@ -388,6 +388,36 @@ class TheRealEvaluatorOutput(unittest.TestCase):
         self.assertLess(card["total"], 1000)
 
 
+class BrokenGroupsForTheJudges(unittest.TestCase):
+    """tools/broken_groups.py lists, by the scorer's own rule, the groups the judges must attribute."""
+
+    def broken(self, mech_doc):
+        import json as _json
+        with tempfile.TemporaryDirectory() as t:
+            write_json(os.path.join(t, "m.json"), mech_doc)
+            write_json(os.path.join(t, "g.json"), dict(GROUPS, groups=[dict(g, contract="the contract of " + g["id"]) for g in GROUPS["groups"]]))
+            r = run_py(os.path.join(ROOT, "tools", "broken_groups.py"), "--mechanical", os.path.join(t, "m.json"), "--groups", os.path.join(t, "g.json"))
+            return (_json.loads(r.stdout)["broken"] if r.returncode == 0 else None), r.returncode, r.stderr
+
+    def test_nothing_broken_is_an_empty_list(self):
+        self.assertEqual(self.broken(mech())[0], [])
+
+    def test_the_groups_with_a_new_failure_are_listed_with_their_contract_and_failed_tests(self):
+        got, rc, err = self.broken(mech(["A#one", "B#one"], baseline_failed=BASE_FAILED))
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(got, [{"group": "RG-01", "contract": "the contract of RG-01", "failed_tests": ["A#one"]},
+                               {"group": "RG-02", "contract": "the contract of RG-02", "failed_tests": ["B#one"]}])
+
+    def test_a_build_failure_is_the_build_group(self):
+        got, rc, err = self.broken(mech(build_failed=True))
+        self.assertEqual((rc, [g["group"] for g in got]), (0, ["BUILD"]))
+
+    def test_a_failed_test_in_no_group_is_refused_here_too(self):
+        got, rc, err = self.broken(mech(["Q#stranger"]))
+        self.assertNotEqual(rc, 0)
+        self.assertIn("no regression group", err)
+
+
 class OperatorWiring(unittest.TestCase):
     """./leb scorecard picks the scorer by the instance: LEB-D-* and LEB-S-* are the new series, everything else the full LEB."""
 

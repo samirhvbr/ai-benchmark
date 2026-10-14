@@ -151,6 +151,13 @@ row's fix changing the behavior the group guards; when in doubt, `null`. The sco
 row's `C4` (Template C) or `R4` (Template R) if the row was attempted and earns something there, and otherwise as PEN-002. A build
 failure is always `null`. The judge no longer fills `C4`: it comes from the regressions.
 
+**PEN-003 applies.** The Default task (`protocol/tasks/TASK-D-1.0.0.md`) says "do not rewrite the system, evolve it" and allows creating, splitting,
+moving and renaming files, so the section "PEN-003 when the task is 1.1.0 or later" is the rule for these instances, with its six elements and its
+calibration cases.
+
+**The groups to attribute.** [`tools/broken_groups.py`](../tools/broken_groups.py) lists, from the mechanical report, the groups the delivery broke, with
+the contract each guards and the failed tests; the judge attributes exactly those.
+
 **Settling.** [`tools/judge_review.py`](../tools/judge_review.py) compares the two verdicts. What they agree on stays as it is and is
 never reopened. Every difference is listed (a criterion, `reported`, a `confidence` transcribed differently, a false positive, a
 COMP violation, a PEN count, a regression attribution, an EXPL dimension more than two points apart) and **a person decides each

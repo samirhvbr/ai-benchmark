@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.210`
+**Versão atual:** `0.2.211`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.211` — 2026-10-14 — The judges get the regression groups a delivery broke, by the scorer's own rule
+
+- New `tools/broken_groups.py`: from the mechanical report and the instance's regression groups it lists the groups the delivery broke, each with the
+  contract it guards and the failed tests (`BUILD` when the delivery does not build), using the scorer's own function so the judges and `harness/score_v2.py`
+  see the same groups. A failed test in no group is refused here too. The judges attribute exactly the listed groups in their verdicts' `regressions`.
+- `scoring/JUDGE.md`'s section on the new series says that PEN-003 applies to these instances (the Default task says "evolve it" and allows moving and
+  creating files) and points to the tool. 4 new tests in `tests/test_score_v2.py`. The judges' prompts for LEB-D-300-A are lab material and live with the
+  lab's private tools.
 
 ### `0.2.210` — 2026-10-14 — The new scorer is proved on the real evaluator's output: the planted tree scores 100, the reference 1000
 
