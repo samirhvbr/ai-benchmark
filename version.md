@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.208`
+**Versão atual:** `0.2.209`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.209` — 2026-10-14 — The statistics of the new series: quality, completion and expected score per scheduled attempt, with their intervals
+
+- New `tools/estatisticas.py` (design sections 9 and 11). `collect` reads `<configuration>/<system>/run-<n>/` folders (a scorecard v2 and an optional
+  `attempt.json`) into attempt records; `report` gives, per configuration and track, the quality of the evaluable deliveries, the completion rate with its
+  consistency (the share of systems whose attempts all completed), the expected score per scheduled attempt (a blocked or exhausted attempt counts with
+  the score of the folder it left), the outcomes counted apart (blocks split into at the start and during the work, switches, reruns), and the variance
+  split between systems and runs with the number of systems a target interval needs; `compare` gives the paired difference of two configurations by
+  system and run. Intervals are a seeded percentile bootstrap over systems and, inside each, over its attempts. A counted attempt without a score, a
+  blocked one that does not say where it fell, and a duplicate are errors.
+- The design's order of work and the specification's build table say what is built. 16 new tests (`tests/test_estatisticas.py`). Nothing in the full
+  LEB changes.
 
 ### `0.2.208` — 2026-10-14 — Two judges per delivery: `tools/judge_review.py` lists their disagreements and a person settles each one
 

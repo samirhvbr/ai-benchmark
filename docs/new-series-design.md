@@ -316,12 +316,19 @@ one file) passed on a bench VM: preflight, a 13-second session on the pinned mod
   for example ±25 points), instead of being fixed in advance.
 - **Intervals:** bootstrap over systems and runs; paired differences between configurations.
 
+`tools/estatisticas.py` computes these figures (section 9) from the attempts of a configuration: percentile bootstrap over systems and, inside each,
+over its attempts, seeded; paired differences by system and run; the variance split between systems and runs, and the number of systems a target
+interval width needs.
+
 ## 12. Order of work
 
 1. **Traceability and lab automation:** the pin, the preflight, the audit, the unattended run. Built: the audit (0.2.155) and
    the profile with its preflight (0.2.156), the pin probed on a bench VM (§6.1; 0.2.160 and 0.2.161 carry what it taught the
    tools), and the unattended run (§10), which passed a smoke case. Step 1 is done.
-2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop.
+2. **The evaluator of the new series:** the regression rule, blind judging and the human review loop. Specified in
+   [`new-series-evaluator.md`](new-series-evaluator.md) and built for the Default track: the scorer (`harness/score_v2.py`), the two
+   judges' review (`tools/judge_review.py`) and the statistics (`tools/estatisticas.py`). What remains is the owner's confirmation of
+   the decisions of its section 10, which must come before the first instance is frozen.
 3. **Pilot:** 3 reference systems × 2 tracks × a panel of configurations × 5 runs. It validates the process, calibrates the
    weights and measures the variance. Started on 2026-10-12 with the specification of system A
    ([`systems/300-A/`](../systems/300-A/)), whose authoring status is kept on that page.
