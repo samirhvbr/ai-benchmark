@@ -323,6 +323,71 @@ class TheRealInstance(unittest.TestCase):
         self.assertEqual([(r["group"], r["tests_failed"]) for r in card["regressions"]], [(group["id"], len(group["tests"]))])
 
 
+class TheRealEvaluatorOutput(unittest.TestCase):
+    """The mechanical reports `harness/leb_harness.py` wrote for LEB-D-300-A on the planted tree and on the reference taken as a delivery
+    (tests/fixtures/leb-d-300-a/, produced with Docker on 2026-10-14 and checked in so CI needs none): the shape the real runner gives is
+    the shape the scorer reads. A fixture is a golden of the matrix it was made against; when the matrix changes the hash check says so and the
+    fixtures are made again:
+
+        python3 harness/leb_harness.py --instance instances/LEB-D-300-A --submission <folder> --out mech.json
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import hashlib
+        private = os.path.join(ROOT, "instances", "LEB-D-300-A", "private")
+        with open(os.path.join(private, "matrix.json"), "rb") as f:
+            cls.matrix_sha = hashlib.sha256(f.read()).hexdigest()
+        cls.matrix = read_json(os.path.join(private, "matrix.json"))
+        cls.groups = read_json(os.path.join(private, "regression_groups.json"))
+        cls.planted = [e for e in cls.matrix["entries"] if e.get("exists")]
+        fixtures = os.path.join(ROOT, "tests", "fixtures", "leb-d-300-a")
+        cls.planted_report = read_json(os.path.join(fixtures, "mech-planted.json"))
+        cls.reference_report = read_json(os.path.join(fixtures, "mech-reference.json"))
+
+    def verdict(self, word, expl):
+        planted = []
+        for e in self.planted:
+            keys = ("C1", "C2", "C3", "C5") if e["template"] == "C" else ("R1", "R2", "R3", "R4")
+            planted.append(judged(e["id"], reported=(word == "full"), **{k: word for k in keys}))
+        v = synthetic_verdict(planted)
+        v["model"], v["protocol"] = {"name": "x", "version": "1"}, {"mode": "A", "date": "2026-10-14"}
+        v["expl_rubric"] = {k: expl for k in v["expl_rubric"]}
+        return v
+
+    def score(self, report, verdict_doc):
+        card, rc, err = score2(report, verdict_doc, matrix=self.matrix, groups=self.groups)
+        self.assertEqual(rc, 0, err)
+        return card
+
+    def test_the_fixtures_were_made_against_this_matrix(self):
+        for report in (self.planted_report, self.reference_report):
+            self.assertEqual(report["matrix_sha256"], self.matrix_sha, "the matrix changed: make the fixtures again (see the class docstring)")
+            self.assertEqual(sorted(p["id"] for p in report["probes"]), sorted(e["id"] for e in self.planted))
+
+    def test_the_planted_tree_with_a_judge_that_claims_every_fix_earns_no_fix_and_keeps_conduct(self):
+        card = self.score(self.planted_report, self.verdict("full", 10))
+        for f in card["findings"]:
+            fix, quality = ("C3", ("C4", "C5")) if f["template"] == "C" else ("R3", ("R4",))
+            self.assertEqual(f["criteria"][fix], 0, f["id"])
+            for q in quality:
+                self.assertEqual(f["criteria"][q], 0, (f["id"], q))
+        self.assertEqual((card["categories"]["COMP"]["score"], card["regressions"], card["penalties"]), (100, [], []))
+
+    def test_the_planted_tree_with_a_judge_that_found_nothing_scores_the_conduct_category_alone(self):
+        card = self.score(self.planted_report, self.verdict("none", 0))
+        self.assertEqual((card["total"], card["grade"]), (100, "Reprovada"))
+
+    def test_the_reference_with_a_perfect_verdict_scores_the_whole_thousand(self):
+        card = self.score(self.reference_report, self.verdict("full", 10))
+        self.assertEqual((card["total"], card["grade"], card["regressions"], card["penalties"]), (1000, "Platinum", [], []))
+
+    def test_the_reference_with_a_judge_that_found_nothing_still_gets_the_mechanical_credit(self):
+        card = self.score(self.reference_report, self.verdict("none", 0))
+        self.assertGreater(card["total"], 100)  # C3 of every Template C row and the structural R3 evidence are the harness's, not the judge's
+        self.assertLess(card["total"], 1000)
+
+
 class OperatorWiring(unittest.TestCase):
     """./leb scorecard picks the scorer by the instance: LEB-D-* and LEB-S-* are the new series, everything else the full LEB."""
 

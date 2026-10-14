@@ -1,0 +1,488 @@
+{
+ "leb_spec": "1.5.1",
+ "instance": "LEB-D-300-A v1.0",
+ "matrix_sha256": "45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9",
+ "submission": "instances/LEB-D-300-A/public/code (the planted tree)",
+ "generated_by": "leb_harness.py — pipeline mecânico (PROTOCOL §5 passos 1-3,6), runner da instância",
+ "timing_s": {
+  "characterization_baseline": 59.7,
+  "characterization_submission": 58.1,
+  "probes": 28.1,
+  "total": 145.9
+ },
+ "characterization": {
+  "baseline": {
+   "passed": 70,
+   "failed": 0,
+   "ok": true,
+   "elapsed_s": 59.7,
+   "failed_tests": []
+  },
+  "submission": {
+   "passed": 70,
+   "failed": 0,
+   "ok": true,
+   "elapsed_s": 58.1,
+   "failed_tests": []
+  },
+  "regression": false
+ },
+ "probes": [
+  {
+   "id": "ARCH-001",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "the billing run is done by [FinanceService] and the settlement by [FinanceService], sharing [FinanceService]; the budget split (RoundingMode.FLOOR) is in [FinanceService], and [FinanceService] reach the database",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-002",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "classes of the HTTP layer that reach the database directly: [ReportPages, Routes]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-003",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "classes that hold both SQL on the notice table and the notice limits: [NoticeService]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-004",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "the late fee is computed in [FinanceService, ReportService] and the interest in [FinanceService, ReportService]: the rule is written more than once",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-008",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "cycles between packages: [[billing, repo, reports]]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-009",
+   "difficulty": "Fácil",
+   "corrigida": false,
+   "msg": "in the classes that hold the notice limits [NoticeService]: bare limits [NoticeService:200, NoticeService:10000, NoticeService:5], messages that repeat a limit [NoticeService: \"The title is required and has at most 200 characters.\", NoticeService: \"The text is required and has at most 10000 characters.\", NoticeService: \"Search with at most 5 words.\"]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-010",
+   "difficulty": "Fácil",
+   "corrigida": false,
+   "msg": "top-level classes that no other class of the main code references: [CnabParser]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "ARCH-013",
+   "difficulty": "Especialista",
+   "corrigida": false,
+   "msg": "with a second application on an empty database in the same JVM, a resident of the first logs in to the first: 401 (expected 201, and its token in the first database: false), and to the second: 401 (expected 401); static fields that hold a data source, a database helper or a clock: [Db.dataSource]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "BUG-003",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "50 requests for another unit's invoice answered 404 each; the application opened 150 connections and closed 100 (expected as many closed as opened)",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-006",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "at 2026-03-04T01:00Z (March 3 in São Paulo), 30 days late: 409 (expected 201), 31 days late: 409 (expected 409); at 12:00Z (March 4 in São Paulo), 31 days late: 409 (expected 409); the JVM is in Tokyo",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-007",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "310.00 for an invoice of 300.00: PARTIAL, invoice OPEN (expected PAID, PAID); 399.99 then 50.00 for one of 400.00: PARTIAL then PARTIAL, invoice OPEN (expected PARTIAL, PAID, PAID)",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-010",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "the archive of two documents answered 200 (expected 200); with one stored file deleted it answered 200 (expected an error, not 200)",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-011",
+   "difficulty": "Especialista",
+   "corrigida": false,
+   "msg": "a unit holding one upcoming booking sent two requests, for two areas, held together at the insert: answers [201, 201], upcoming bookings 3 (expected [201, 409] and 2; 2 of the 2 reached the insert)",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-013",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "an invoice of 300.00 due 2026-01-10, read on 2026-03-04: the API says amount_due 308.20 and days_late 22 (expected 311.30 and 53); the invoice page shows them: false; the delinquency CSV line: Apt 101,Ana Owner,2025-12,2026-01-10,300.00,308.20,22",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-014",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "a matched line then a line without FITID: 400, 1 payments recorded (expected 400 and 0); a matched line then a line the database refuses: 500, 2 payments recorded (expected an error and 0); both invoices PAID and PAID (expected OPEN); the first matched line alone afterwards: 200, invoice PAID (expected 200, PAID)",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "BUG-015",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "the download of a document whose file is gone answered 500 with incident ef555def, without the cause; a log record with that incident carries the exception and its stack: false; the process output carries the incident, the exception and its stack: false",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "CLN-001",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "the longest method has 80 useful lines (FinancePages.list; limit 45) and the one with most statements has 65 (FinancePages.list; limit 45)",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "CLN-002",
+   "difficulty": "Fácil",
+   "corrigida": false,
+   "msg": "repeated bodies: [[ContentPages.enumOf, FinancePages.enumOf, MobileApi.enumOf]]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "CLN-005",
+   "difficulty": "Fácil",
+   "corrigida": false,
+   "msg": "6 comment lines look like code: [AdminPages:22 s.route(\"POST\", \"/admin/users/{id}/deactivate\", Gate.BROWSER, this::deactivate);, AdminPages:50 private Response deactivate(Request req) {, AdminPages:51 long id = req.id();, AdminPages:52 auth.deactivate(req.principal(), id);, AdminPages:53 return Response.redirect(Html.flash(\"/admin/users\", \"Account \" + id + \" deactivated.\"));, AdminPages:54 }]",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "CLN-007",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "the deepest chain of nested decisions has 5 levels (BookingService.cancel); the limit is 3",
+   "result": "none",
+   "proves": [
+    "R3"
+   ]
+  },
+  {
+   "id": "PERF-001",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "commands per request: 10 with 3 late invoices and 37 with 30, each of a unit with an owner of its own (they should be the same); the report lists every owner: true",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "PERF-003",
+   "difficulty": "Fácil",
+   "corrigida": false,
+   "msg": "rows read for one page of 20: 43 with 40 matching invoices, 403 with 400, and 403 for the second page (they should be the same); the page still says \"400 invoices.\": true; the second page has 20 other invoices: true",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "PERF-006",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "no index leads on payment(invoice_id) after schema.sql and the migrations",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "PERF-009",
+   "difficulty": "Fácil",
+   "corrigida": false,
+   "msg": "rows read for the manager's dashboard: 8 with 3 overdue invoices and 305 with 300 (they should be the same); it still says 300 overdue: true",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "PERF-010",
+   "difficulty": "Difícil",
+   "corrigida": false,
+   "msg": "open invoices of Maple Court on the admin's dashboard: 0 before a billing run of its 3 units and 0 after it (expected 0 and 3)",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "PERF-012",
+   "difficulty": "Especialista",
+   "corrigida": false,
+   "msg": "processor time of the application for the user list: 68 ms with 4,000 accounts and 926 ms with 16,000, a ratio of 13.6 (linear is 4; the limit is 8); the list still shows every account with its unit: true",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  },
+  {
+   "id": "PERF-015",
+   "difficulty": "Moderada",
+   "corrigida": false,
+   "msg": "while an event for one invoice was held inside its transaction, an event for another invoice waits for a lock (expected: answered); afterwards both answered 200 and 200, both invoices paid: true",
+   "result": "none",
+   "proves": [
+    "C3"
+   ]
+  }
+ ],
+ "difficulty_corrected": {
+  "Difícil": {
+   "probed": 7,
+   "corrected": 0
+  },
+  "Moderada": {
+   "probed": 11,
+   "corrected": 0
+  },
+  "Fácil": {
+   "probed": 6,
+   "corrected": 0
+  },
+  "Especialista": {
+   "probed": 3,
+   "corrected": 0
+  }
+ },
+ "mechanical_criteria": [
+  {
+   "id": "ARCH-001",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-002",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-003",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-004",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-008",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-009",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-010",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "ARCH-013",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-003",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-006",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-007",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-010",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-011",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-013",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-014",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "BUG-015",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "CLN-001",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "CLN-002",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "CLN-005",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "CLN-007",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-001",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-003",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-006",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-009",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-010",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-012",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  },
+  {
+   "id": "PERF-015",
+   "C3_corrigiu": false,
+   "C4_sem_regressao": true
+  }
+ ],
+ "unverified": [],
+ "decoys": [
+  {
+   "id": "ARCH-014",
+   "holds": true,
+   "msg": "25 invoices: 20 then 5 (expected 20 and 5); 12 notices: 10 then 2 (expected 10 and 2)"
+  },
+  {
+   "id": "BUG-010.b",
+   "holds": true,
+   "msg": "a truncated statement, one with a mismatched tag and an unclosed one: [400, 400, 400], payments recorded 0 (expected 400 for each and none)"
+  },
+  {
+   "id": "BUG-013.b",
+   "holds": true,
+   "msg": "100.00 over fractions 0.333333, 0.333333, 0.333334: [33.33, 33.33, 33.34] (expected 33.33, 33.33, 33.34); 1000.01 over 0.30, 0.30, 0.40: [300.00, 300.00, 400.01] (expected 300.00, 300.00, 400.01)"
+  },
+  {
+   "id": "PERF-015.b",
+   "holds": true,
+   "msg": "two units asked for the same slot, held together at the insert: answers [201, 409], bookings of the slot 1 (expected [201, 409] and 1)"
+  }
+ ],
+ "informative_affected": {},
+ "pending_judge": [
+  "passo 4: matching relatório×matriz (C1/C2 achou/explicou, iscas→PEN-004)",
+  "passo 5: rubrica EXPL às cegas",
+  "COMP: atribuição fina de violação de superfície",
+  "calibração (Brier) — depende dos achados reportados (passo 4)",
+  "normalização final e TOTAL/1000 (SCORING §4/§7)"
+ ]
+}

@@ -165,7 +165,8 @@ split rounding each share.
   - [x] the scorer (`harness/score_v2.py`), the Default track's weights (`scoring/tracks/default.json`), the scorecard v2 schema and
         the verdict's `regressions` and `review` fields; `./leb scorecard` picks it for `LEB-D-*` and `LEB-S-*`
   - [x] two judges per delivery, the disagreement list and the review command (`tools/judge_review.py`, `scoring/JUDGE.md`)
-  - [ ] the tests that prove it
+  - [x] the tests that prove it: the one-charge cases, the arithmetic of this system's matrix, and the real evaluator's reports of the planted tree
+        (100 with a judge that found nothing) and of the reference (1000 with a perfect verdict) kept as fixtures
 - [x] `LEB-D-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-D-300-A/private/CATALOG.md))
 - [x] The four corrections to this reference that the catalog's review found (its §9), made before either instance is planted
 - [x] `LEB-D-300-A`: the planting modules ([`private/plant/`](../../instances/LEB-D-300-A/private/plant/)) and the planted tree

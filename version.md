@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.209`
+**Versão atual:** `0.2.210`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.210` — 2026-10-14 — The new scorer is proved on the real evaluator's output: the planted tree scores 100, the reference 1000
+
+- `harness/leb_harness.py` ran on LEB-D-300-A's planted tree and on the reference taken as a delivery (with its payment-index migration), 2.5 minutes each.
+  Their mechanical reports are kept as fixtures (`tests/fixtures/leb-d-300-a/`), so CI proves without Docker that the shape the real runner writes is the shape
+  `harness/score_v2.py` reads: the planted tree with a judge that found nothing scores 100 (conduct only), and with a judge that claims every fix still earns
+  no fix (the probes and the structural evidence override the judge, `C4`/`C5`/`R4` follow); the reference with a perfect verdict scores 1000, with a judge
+  that found nothing it keeps the harness's own credit.
+- 5 new tests in `tests/test_score_v2.py`. A fixture is a golden of the matrix it was made against: a check of the matrix hash fails when the matrix changes
+  and says how to make the fixtures again. The system's checklist ticks the tests item, so the evaluator's specification is built end to end for the Default
+  track; what stays is the owner's confirmation of the section 10 decisions.
 
 ### `0.2.209` — 2026-10-14 — The statistics of the new series: quality, completion and expected score per scheduled attempt, with their intervals
 
