@@ -171,7 +171,15 @@ def characterization_result(raw):
     obj = json_object(raw["out"])
     if not obj or not all(isinstance(obj.get(k), int) and not isinstance(obj.get(k), bool) and obj[k] >= 0 for k in ("passed", "failed")):
         return None, "a caracterização não emitiu {\"passed\": N, \"failed\": M}: " + (raw["err"].strip()[-200:] or raw["out"].strip()[-200:])
-    return {"passed": obj["passed"], "failed": obj["failed"], "ok": obj["failed"] == 0, "elapsed_s": raw["elapsed_s"]}, None
+    result = {"passed": obj["passed"], "failed": obj["failed"], "ok": obj["failed"] == 0, "elapsed_s": raw["elapsed_s"]}
+    # The names of the failed tests, when the runner gives them (the Java evaluator does): the regression rule of the new series
+    # (docs/new-series-evaluator.md) charges a regression once per group of tests, so it needs the names, not only the count.
+    names = obj.get("failed_tests")
+    if isinstance(names, list) and all(isinstance(n, str) for n in names):
+        result["failed_tests"] = names
+    if obj.get("build_failed") is True:  # the delivery does not compile: every public test fails (one regression, not seventy)
+        result["build_failed"] = True
+    return result, None
 
 
 def verification_result(raw, matrix_entries):

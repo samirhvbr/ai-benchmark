@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.203`
+**Versão atual:** `0.2.204`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.204` — 2026-10-14 — The Java evaluator names the failed tests, and LEB-D-300-A has its regression groups
+
+- `harness/java/evaluate.sh characterize` reports `failed_tests` (`Class#method`) next to the counts, read from the Surefire reports by the new
+  `harness/java/test_names.py`; a delivery that does not build names every public test, with `build_failed`. `harness/leb_harness.py` carries
+  `failed_tests` and `build_failed` into the mechanical report's `characterization`; a runner that gives no names still works as before.
+- `instances/LEB-D-300-A/private/regression_groups.json`: 63 groups for the 70 public tests, by manifest clause (the 20 `SecurityBehaviorTest` defenses
+  are a group each, the four tests of the browser login flow share one). This is the unit of the new regression rule: a group with a failed test is one
+  regression, charged once (`docs/new-series-evaluator.md` section 5).
+- The specification says what happens when the fix a regression is attributed to earned nothing in `C4/R4` anyway: the charge becomes PEN-002, so a
+  regression is never free. 6 new tests (`tests/test_regression_groups.py`: the names from Surefire XML and from sources, the harness pass-through, and the
+  groups covering every public test exactly once). No scorer changes yet: `harness/score.py` and every published result stay as they are.
 
 ### `0.2.203` — 2026-10-14 — The evaluator of the new series is specified, with the decisions it needs from the owner
 

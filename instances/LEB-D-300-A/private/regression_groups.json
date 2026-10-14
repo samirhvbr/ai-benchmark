@@ -1,0 +1,455 @@
+{
+  "instance": "LEB-D-300-A",
+  "version": "1.0",
+  "about": "Regression groups of the new series (docs/new-series-evaluator.md section 5): every public characterization test is in exactly one group, a group is the set of tests that guard one contract, and a group with at least one failed test is one regression, charged once.",
+  "groups": [
+    {
+      "id": "RG-ACC-01",
+      "contract": "manifest 2: browser login and logout, the login page, the way back after login",
+      "tests": [
+        "AccountTest#theLoginPageGivesASessionAndAForm",
+        "AccountTest#aPageAsksForLoginAndComesBackAfterIt",
+        "AccountTest#aWrongPasswordShowsTheFormAgain",
+        "AccountTest#logoutEndsTheSession"
+      ]
+    },
+    {
+      "id": "RG-ACC-02",
+      "contract": "manifest 2: the e-mail of an account is not case sensitive",
+      "tests": [
+        "AccountTest#theEmailIsNotCaseSensitive"
+      ]
+    },
+    {
+      "id": "RG-ACC-03",
+      "contract": "manifest 2: an inactive account cannot log in",
+      "tests": [
+        "AccountTest#anInactiveAccountCannotLogIn"
+      ]
+    },
+    {
+      "id": "RG-ACC-04",
+      "contract": "manifest 2: a session ends after thirty idle minutes",
+      "tests": [
+        "AccountTest#aSessionEndsAfterThirtyIdleMinutes"
+      ]
+    },
+    {
+      "id": "RG-ACC-05",
+      "contract": "manifest 2: the dashboard shows each role its own summary",
+      "tests": [
+        "AccountTest#theDashboardShowsEachRoleItsOwnSummary"
+      ]
+    },
+    {
+      "id": "RG-ACC-06",
+      "contract": "manifest 2: a password change keeps the password policy",
+      "tests": [
+        "AccountTest#thePasswordChangeKeepsThePolicy"
+      ]
+    },
+    {
+      "id": "RG-ACC-07",
+      "contract": "manifest 2: an admin creates a resident who can log in",
+      "tests": [
+        "AccountTest#anAdminCreatesAResidentWhoCanLogIn"
+      ]
+    },
+    {
+      "id": "RG-ACC-08",
+      "contract": "manifest 3: the mobile app gets a token and its user",
+      "tests": [
+        "AccountTest#theMobileAppGetsATokenAndItsUser"
+      ]
+    },
+    {
+      "id": "RG-ACC-09",
+      "contract": "manifest 3: the errors of the API are JSON",
+      "tests": [
+        "AccountTest#errorsOfTheApiAreJson"
+      ]
+    },
+    {
+      "id": "RG-BIL-01",
+      "contract": "manifest 4.1: the budget is split by fraction and adds up exactly, the leftover cents go to the largest remainders",
+      "tests": [
+        "BillingTest#theBudgetIsSplitByFractionAndAddsUpExactly",
+        "BillingTest#leftoverCentsGoToTheLargestRemaindersThenByLabel"
+      ]
+    },
+    {
+      "id": "RG-BIL-02",
+      "contract": "manifest 4.1: a month is billed once, due on the due day of the next month",
+      "tests": [
+        "BillingTest#aMonthIsBilledOnceDueOnTheDueDayOfTheNextMonth"
+      ]
+    },
+    {
+      "id": "RG-BIL-03",
+      "contract": "manifest 4.1: only an admin runs the billing",
+      "tests": [
+        "BillingTest#onlyAnAdminRunsTheBilling"
+      ]
+    },
+    {
+      "id": "RG-BIL-04",
+      "contract": "manifest 2: each role lists its own invoices and a resident does not see other units' invoices",
+      "tests": [
+        "BillingTest#eachRoleListsItsOwnInvoices",
+        "BillingTest#residentsDoNotSeeOtherUnitsInvoices"
+      ]
+    },
+    {
+      "id": "RG-BIL-05",
+      "contract": "manifest 2: the invoice list filters, sorts and pages",
+      "tests": [
+        "BillingTest#theListFiltersSortsAndPages"
+      ]
+    },
+    {
+      "id": "RG-BIL-06",
+      "contract": "manifest 4.2: the late fee and the pro rata interest after the due date, and what a late payment must cover",
+      "tests": [
+        "BillingTest#anInvoiceCostsTheLateFeeAndProRataInterestAfterItsDueDate",
+        "BillingTest#aLatePaymentMustCoverFeeAndInterest"
+      ]
+    },
+    {
+      "id": "RG-BIL-07",
+      "contract": "manifest 4.2: lateness is counted on the building's calendar",
+      "tests": [
+        "BillingTest#lateIsCountedOnTheBuildingsCalendar"
+      ]
+    },
+    {
+      "id": "RG-BIL-08",
+      "contract": "manifest 4.3: a payment by hand settles when it covers the amount due",
+      "tests": [
+        "BillingTest#aPaymentByHandSettlesWhenItCoversTheAmountDue"
+      ]
+    },
+    {
+      "id": "RG-BIL-09",
+      "contract": "manifest 4.3: a bank statement settles matched invoices, is idempotent, and a malformed one is refused",
+      "tests": [
+        "BillingTest#aStatementSettlesMatchedInvoicesAndIsIdempotent",
+        "BillingTest#aMalformedStatementIsRefused"
+      ]
+    },
+    {
+      "id": "RG-BIL-10",
+      "contract": "manifest 3 and 4.3: the bank's webhook settles and ignores repeats",
+      "tests": [
+        "BillingTest#theBanksWebhookSettlesAndIgnoresRepeats"
+      ]
+    },
+    {
+      "id": "RG-BIL-11",
+      "contract": "manifest 5.1: the delinquency report lists what is late with what it costs today",
+      "tests": [
+        "BillingTest#theDelinquencyReportListsWhatIsLateWithWhatItCostsToday"
+      ]
+    },
+    {
+      "id": "RG-BIL-12",
+      "contract": "manifest 2: the collection report gives each month its settled share",
+      "tests": [
+        "BillingTest#theCollectionReportGivesEachMonthItsSettledShare"
+      ]
+    },
+    {
+      "id": "RG-BIL-13",
+      "contract": "manifest 3: the mobile app lists the resident's invoices",
+      "tests": [
+        "BillingTest#theMobileAppListsTheResidentsInvoices"
+      ]
+    },
+    {
+      "id": "RG-BOK-01",
+      "contract": "manifest 4.4: a free area is confirmed and a paid one waits for the manager",
+      "tests": [
+        "BookingTest#aFreeAreaIsConfirmedAndAPaidOneWaitsForTheManager"
+      ]
+    },
+    {
+      "id": "RG-BOK-02",
+      "contract": "manifest 4.4: the list shows the building's local times",
+      "tests": [
+        "BookingTest#theListShowsTheBuildingsLocalTimes"
+      ]
+    },
+    {
+      "id": "RG-BOK-03",
+      "contract": "manifest 4.4: overlapping bookings are refused and adjacent ones accepted",
+      "tests": [
+        "BookingTest#overlappingBookingsAreRefusedAndAdjacentOnesAccepted"
+      ]
+    },
+    {
+      "id": "RG-BOK-04",
+      "contract": "manifest 4.4: the area's rules are checked",
+      "tests": [
+        "BookingTest#theAreasRulesAreChecked"
+      ]
+    },
+    {
+      "id": "RG-BOK-05",
+      "contract": "manifest 4.4: a unit holds at most two upcoming bookings",
+      "tests": [
+        "BookingTest#aUnitHoldsAtMostTwoUpcomingBookings"
+      ]
+    },
+    {
+      "id": "RG-BOK-06",
+      "contract": "manifest 4.4: a unit with an invoice overdue for more than thirty days cannot book",
+      "tests": [
+        "BookingTest#aUnitWithAnInvoiceOverdueForMoreThanThirtyDaysCannotBook"
+      ]
+    },
+    {
+      "id": "RG-BOK-07",
+      "contract": "manifest 4.4: residents cancel up to forty-eight hours before and the manager later",
+      "tests": [
+        "BookingTest#residentsCancelUpToFortyEightHoursBeforeAndTheManagerLater"
+      ]
+    },
+    {
+      "id": "RG-BOK-08",
+      "contract": "manifest 4.4: residents book only for their own units in their own building",
+      "tests": [
+        "BookingTest#residentsBookOnlyForTheirOwnUnitsInTheirOwnBuilding"
+      ]
+    },
+    {
+      "id": "RG-BOK-09",
+      "contract": "manifest 4.4: concurrent requests for the same slot leave one booking",
+      "tests": [
+        "BookingTest#concurrentRequestsForTheSameSlotLeaveOneBooking"
+      ]
+    },
+    {
+      "id": "RG-BOK-10",
+      "contract": "manifest 3: the mobile app books, lists and cancels",
+      "tests": [
+        "BookingTest#theMobileAppBooksListsAndCancels"
+      ]
+    },
+    {
+      "id": "RG-CON-01",
+      "contract": "manifest 4.5: a notice keeps its line breaks and bold",
+      "tests": [
+        "ContentTest#aNoticeKeepsItsLineBreaksAndBold"
+      ]
+    },
+    {
+      "id": "RG-CON-02",
+      "contract": "manifest 4.5: the search wants every word and shows pinned notices first",
+      "tests": [
+        "ContentTest#theSearchWantsEveryWordAndShowsPinnedNoticesFirst"
+      ]
+    },
+    {
+      "id": "RG-CON-03",
+      "contract": "manifest 4.5: the board is paged",
+      "tests": [
+        "ContentTest#theBoardIsPaged"
+      ]
+    },
+    {
+      "id": "RG-CON-04",
+      "contract": "manifest 4.5: each building sees only its own notices",
+      "tests": [
+        "ContentTest#eachBuildingSeesOnlyItsOwnNotices"
+      ]
+    },
+    {
+      "id": "RG-CON-05",
+      "contract": "manifest 4.5: a manager uploads a document that residents download",
+      "tests": [
+        "ContentTest#aManagerUploadsADocumentThatResidentsDownload"
+      ]
+    },
+    {
+      "id": "RG-CON-06",
+      "contract": "manifest 4.5: a payment proof that only the unit and the manager see",
+      "tests": [
+        "ContentTest#aResidentSendsAPaymentProofThatOnlyTheUnitAndTheManagerSee"
+      ]
+    },
+    {
+      "id": "RG-CON-07",
+      "contract": "manifest 4.5: uploads are checked by content and size",
+      "tests": [
+        "ContentTest#uploadsAreCheckedByContentAndSize"
+      ]
+    },
+    {
+      "id": "RG-CON-08",
+      "contract": "manifest 4.5: residents do not upload building documents",
+      "tests": [
+        "ContentTest#residentsDoNotUploadBuildingDocuments"
+      ]
+    },
+    {
+      "id": "RG-CON-09",
+      "contract": "manifest 4.5: a document is fetched from an approved site",
+      "tests": [
+        "ContentTest#aDocumentIsFetchedFromAnApprovedSite"
+      ]
+    },
+    {
+      "id": "RG-CON-10",
+      "contract": "manifest 5.2: the archive holds every document and an index",
+      "tests": [
+        "ContentTest#theArchiveHoldsEveryDocumentAndAnIndex"
+      ]
+    },
+    {
+      "id": "RG-STA-01",
+      "contract": "manifest 2: the script and the stylesheet are served",
+      "tests": [
+        "StaticFilesTest#theScriptAndTheStylesheetAreServed"
+      ]
+    },
+    {
+      "id": "RG-SEC-001",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: queries never take the sort or the filters as SQL",
+      "tests": [
+        "SecurityBehaviorTest#sec001TheSortAndTheFiltersAreNeverSql"
+      ]
+    },
+    {
+      "id": "RG-SEC-002",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: stored text is escaped",
+      "tests": [
+        "SecurityBehaviorTest#sec002StoredTextIsEscaped"
+      ]
+    },
+    {
+      "id": "RG-SEC-003",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: reflected text is escaped",
+      "tests": [
+        "SecurityBehaviorTest#sec003ReflectedTextIsEscaped"
+      ]
+    },
+    {
+      "id": "RG-SEC-004",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: the script only writes text",
+      "tests": [
+        "SecurityBehaviorTest#sec004TheScriptOnlyWritesText"
+      ]
+    },
+    {
+      "id": "RG-SEC-005",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: a form without its token is refused",
+      "tests": [
+        "SecurityBehaviorTest#sec005AFormWithoutItsTokenIsRefused"
+      ]
+    },
+    {
+      "id": "RG-SEC-006",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: a stored file is read only from its own folder",
+      "tests": [
+        "SecurityBehaviorTest#sec006AStoredFileIsReadOnlyFromItsOwnFolder"
+      ]
+    },
+    {
+      "id": "RG-SEC-007",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: headers carry no line breaks",
+      "tests": [
+        "SecurityBehaviorTest#sec007HeadersCarryNoLineBreaks"
+      ]
+    },
+    {
+      "id": "RG-SEC-008",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: CSV cells that look like formulas are neutralized",
+      "tests": [
+        "SecurityBehaviorTest#sec008CsvCellsThatLookLikeFormulasAreNeutralized"
+      ]
+    },
+    {
+      "id": "RG-SEC-009",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: the archive label never reaches a shell",
+      "tests": [
+        "SecurityBehaviorTest#sec009TheArchiveLabelNeverReachesAShell"
+      ]
+    },
+    {
+      "id": "RG-SEC-010",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: a statement with a doctype is refused",
+      "tests": [
+        "SecurityBehaviorTest#sec010AStatementWithADoctypeIsRefused"
+      ]
+    },
+    {
+      "id": "RG-SEC-011",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: documents come only from approved hosts",
+      "tests": [
+        "SecurityBehaviorTest#sec011DocumentsComeOnlyFromApprovedHosts"
+      ]
+    },
+    {
+      "id": "RG-SEC-012",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: after login only local paths are followed",
+      "tests": [
+        "SecurityBehaviorTest#sec012AfterLoginOnlyLocalPathsAreFollowed"
+      ]
+    },
+    {
+      "id": "RG-SEC-013",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: login starts a new session",
+      "tests": [
+        "SecurityBehaviorTest#sec013LoginStartsANewSession"
+      ]
+    },
+    {
+      "id": "RG-SEC-014",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: passwords are stored salted and slow",
+      "tests": [
+        "SecurityBehaviorTest#sec014PasswordsAreStoredSaltedAndSlow"
+      ]
+    },
+    {
+      "id": "RG-SEC-015",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: the webhook secret comes from the configuration",
+      "tests": [
+        "SecurityBehaviorTest#sec015TheWebhookSecretComesFromTheConfiguration"
+      ]
+    },
+    {
+      "id": "RG-SEC-016",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: residents cannot do the manager's work",
+      "tests": [
+        "SecurityBehaviorTest#sec016ResidentsCannotDoTheManagersWork"
+      ]
+    },
+    {
+      "id": "RG-SEC-017",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: things of other units and buildings are hidden",
+      "tests": [
+        "SecurityBehaviorTest#sec017ThingsOfOtherUnitsAndBuildingsAreHidden"
+      ]
+    },
+    {
+      "id": "RG-SEC-018",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: uploads are checked and served as attachments",
+      "tests": [
+        "SecurityBehaviorTest#sec018UploadsAreCheckedAndServedAsAttachments"
+      ]
+    },
+    {
+      "id": "RG-SEC-019",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: failed logins lock the account and the address",
+      "tests": [
+        "SecurityBehaviorTest#sec019FailedLoginsLockTheAccountAndTheAddress"
+      ]
+    },
+    {
+      "id": "RG-SEC-020",
+      "contract": "the reference's defense kept by SecurityBehaviorTest: errors and responses show no internals",
+      "tests": [
+        "SecurityBehaviorTest#sec020ErrorsAndResponsesShowNoInternals"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,8 @@
 # Without the directories it reads the runner contract's LEB_INSTANCIA_DIR and LEB_ENTREGA_DIR (harness/leb_harness.py).
 # TEST_SELECTOR narrows the verification to some verifiers (Surefire's -Dtest, e.g. 'V02_ConcurrencyTest#bug011*').
 # stdout carries one JSON object, everything else goes to stderr:
-#   characterize  {"passed": N, "failed": M}, plus "build_failed": true when the delivery does not compile (every public test fails)
+#   characterize  {"passed": N, "failed": M, "failed_tests": ["Class#method", ...]}, plus "build_failed": true when the delivery does not
+#                 compile (every public test fails, and all of them are named); the names feed the regression rule of the new series
 #   verify        {"probes": [...], "decoys": [...], "inconclusive": [...]}; probes follow scoring/probe-result.schema.json
 # LEB_KEEP_WORK=1 keeps the assembled project for a look afterwards.
 # Exit status 3 means the evaluator itself failed (no Docker, no database, an unreadable result): never read it as a verdict.
@@ -40,11 +41,13 @@ MAVEN_STATUS=$?
 set -e
 tail -n 40 "$WORK/maven.log" >&2
 
-python3 -I - "$MODE" "$WORK" "$PUB" "$INST/private/matrix.json" "$MAVEN_STATUS" <<'PY'
+python3 -I - "$MODE" "$WORK" "$PUB" "$INST/private/matrix.json" "$MAVEN_STATUS" "$HERE" <<'PY'
 import glob, json, os, re, sys
 import xml.etree.ElementTree as ET
 
-mode, work, pub, matrix_path, status = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5])
+mode, work, pub, matrix_path, status, here = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5]), sys.argv[6]
+sys.path.insert(0, here)
+import test_names
 log = open(os.path.join(work, "maven.log"), encoding="utf-8", errors="replace").read()
 build_failed = "COMPILATION ERROR" in log or (status != 0 and not os.path.isdir(os.path.join(work, "target", "classes")))
 reports = glob.glob(os.path.join(work, "target", "surefire-reports", "TEST-*.xml"))
@@ -55,10 +58,8 @@ if status != 0 and not build_failed and not reports:
 
 if mode == "characterize":
     if build_failed:
-        total = 0
-        for path in glob.glob(os.path.join(pub, "src", "test", "**", "*.java"), recursive=True):
-            total += len(re.findall(r"@Test\b", open(path, encoding="utf-8").read()))
-        print(json.dumps({"passed": 0, "failed": total, "build_failed": True}))
+        names = test_names.source_test_names(os.path.join(pub, "src", "test"))
+        print(json.dumps({"passed": 0, "failed": len(names), "failed_tests": names, "build_failed": True}))
         sys.exit(0)
     passed = failed = 0
     for path in reports:
@@ -66,7 +67,7 @@ if mode == "characterize":
         n, f, e, s = (int(suite.get(k, 0)) for k in ("tests", "failures", "errors", "skipped"))
         failed += f + e
         passed += n - f - e - s
-    print(json.dumps({"passed": passed, "failed": failed}))
+    print(json.dumps({"passed": passed, "failed": failed, "failed_tests": test_names.failed_test_names(reports)}))
     sys.exit(0)
 
 probes, decoys, inconclusive = [], [], []
