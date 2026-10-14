@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.214`
+**Versão atual:** `0.2.215`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.215` — 2026-10-14 — LEB-D-300-A is frozen: its matrix and package hashes are the ones the first run will cite
+
+- `systems/300-A/README.md` section 9 records the freeze at commit `73eb0f8`: `matrix_sha256` `45c09ae1…` and `package_sha256` `71dfeb7c…`, both reproduced by
+  `./leb pacote LEB-D-300-A` (the package is rebuilt byte for byte), with nothing of the instance, harness, scoring or tools changed since 0.2.211. The evaluator's
+  parent line is ticked: its five parts were done. The first case is named (Claude Haiku 5.5, effort high, 90 minutes, five runs). Documents only.
 
 ### `0.2.214` — 2026-10-14 — The bench VMs hold the environment of the new series, and LEB-D-300-A's package is proved on one
 

@@ -157,7 +157,7 @@ split rounding each share.
 - [x] The Default track's task statement, in English like the system: [`protocol/tasks/TASK-D-1.0.0.md`](../../protocol/tasks/TASK-D-1.0.0.md)
       (design §4.1). It asks for no security work, and the packager writes it into the package as `TASK.md`
 - [ ] The Security track's task statement (design §4.2)
-- [ ] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
+- [x] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
       disagreements, and each track's weights. Specified in [`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md)
       (`ACTIVE`: the owner confirmed its section 10 on 2026-10-14); built in the order of its section 9:
   - [x] the specification
@@ -188,6 +188,10 @@ split rounding each share.
       The copy and the tarball are removed, the tests leave no schema in `leb_dev`, and the VM still passes `conferir-vm.sh`. An agent that runs the whole suite
       spends about six minutes of its budget each time
 - [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
+- [x] `LEB-D-300-A` **frozen on 2026-10-14**, at commit `73eb0f8` (0.2.214; nothing of the instance, harness, scoring or tools has changed since `2d19483`, 0.2.211):
+      `matrix_sha256` `45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9` and `package_sha256`
+      `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` (`./leb pacote LEB-D-300-A` rebuilds both). The first case is Claude Haiku 5.5 at
+      effort `high`, 90 minutes, five runs, two blind judges per delivery. From the first run on, any change is a new version of the instance
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
 committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), the decisions in
