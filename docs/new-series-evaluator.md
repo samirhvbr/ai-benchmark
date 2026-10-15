@@ -69,6 +69,12 @@ on, lists the disagreements in a file, and writes the person's decision for each
 `review` block. **An agreement is never reopened** and a disagreement never takes the average: a person decides, or the delivery
 is not scored.
 
+A decision is bound to what it decided. `compare --out` writes the SHA-256 of the two verdict files and, for each disagreement, the
+two values the judges gave; the person fills in `decision`, `reason` and `decided_by` and touches nothing else. `settle` refuses a
+decisions file made for other verdict files, or for other judge values, even when the item names match: a name alone would apply a
+decision to a disagreement it never saw. The extra findings of the two judges (real flaws outside the key, worth nothing) are listed once
+each, and one that the settled verdict calls a false positive is dropped from them.
+
 ## 5. The regression rule: one behavior, one charge
 
 **Problem.** Today one broken test costs three things at once: C4 for every attempted flaw, the −20 of PEN-002, and nothing
@@ -146,6 +152,14 @@ never enter the total.
 `scoring/judge.schema.json` gains an optional `regressions` array in the verdict and a `review` object in the settled verdict.
 Both are optional there, so every published LEB-100-A and LEB-300-A verdict still validates.
 
+**What the scorer refuses** (`harness/verdict_check.py`; it stops before any arithmetic, because a score from the wrong inputs looks
+exactly like a right one): a mechanical report or a verdict whose `matrix_sha256` is not the SHA-256 of the matrix file it was given
+(or that carries none); a verdict of another instance or regression groups of another instance; a verdict that was not settled (no
+`review`, fewer than two judges, a disagreement without a decision, a reason or a person's name); and a verdict the schema leaves
+too open: a row twice or not planted, a criterion the row's template does not have, `half` on a binary criterion (C4, C5, R4), a
+false positive or a regression group listed twice, a COMP rule the SPEC does not have, a rubric outside 0-10. A report that counts
+failed characterization tests and names none (or the reverse) is refused too: the regression rule works on names.
+
 ## 8. Partial deliveries and outcomes
 
 Every attempt that leaves a work folder is evaluated by the same stages, whatever its outcome. A *blocked* attempt, or one whose
@@ -157,11 +171,12 @@ files. An attempt filed as *lab failure* or *operator error* is not scored; it i
 
 | Piece | File | Notes |
 | --- | --- | --- |
-| Failed test names | `harness/java/evaluate.sh`, `harness/leb_harness.py` | the report gains `failed_tests` |
+| Failed test names | `harness/java/evaluate.sh`, `harness/leb_harness.py` | the report gains `failed_tests`. A regression is a test that fails in the delivery and not in the pristine instance, by name, never by count (0.2.216). Only a compiler diagnostic makes a build the delivery's failure; any other Maven run that did not finish ends the evaluation with exit status 3, INCONCLUSIVE, and is never a score (`harness/java/build_status.py`) |
 | Regression groups | `instances/LEB-D-300-A/private/regression_groups.json` | 63 groups for the 70 public tests, by manifest clause (the 20 `SecurityBehaviorTest` defenses are a group each); `tests/test_regression_groups.py` checks that every public test is in exactly one |
 | The scorer | `harness/score_v2.py`, `scoring/tracks/default.json`, `scoring/scorecard-v2.schema.json` | built (0.2.205). `harness/score.py` stays and still reproduces the 92 published LEB-100-A totals; the two share its COMP table, base points and informative blocks |
 | Verdicts and review | `scoring/judge.schema.json`, `scoring/JUDGE.md` addendum, `tools/judge_review.py` | built (0.2.208): `compare` lists the disagreements with empty decision slots, `settle` refuses while one is undecided and writes the settled verdict with its `review`; `tests/test_judge_review.py` |
 | Statistics | `tools/estatisticas.py` (design sections 9 and 11) | built (0.2.209): `collect` reads the run folders, `report` gives per configuration and track the quality of the evaluable deliveries, the completion rate with its consistency, the expected score per scheduled attempt, the outcomes counted apart and the variance split with the sizing it implies; `compare` gives the paired difference with its interval. Percentile bootstrap over systems and runs, seeded; `tests/test_estatisticas.py` |
+| Input checks | `harness/verdict_check.py` | built (0.2.216), used by `score_v2.py` and `judge_review.py`; `tests/test_score_v2.py`, `tests/test_judge_review.py` |
 | Tests | `tests/test_score_v2.py` | built (0.2.205): the one-charge cases on a synthetic matrix, the refusals, the arithmetic of the real instance (a perfect model scores 1000, one that does nothing keeps COMP), the operator wiring and the schemas. The variant cases (Docker) prove the verifiers. The recomputation of the 92 LEB-100-A runs was dropped: that instance has no regression groups, and `test_historico` keeps proving `score.py` against them |
 
 The judges' prompts and the anonymizing step are lab material (they name the lab's folders), and live with the lab's private

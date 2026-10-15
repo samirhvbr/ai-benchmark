@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.219`
+**Versão atual:** `0.2.220`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.220` — 2026-10-15 — The evaluator spec and the instance README say what the tools now check
+
+- `docs/new-series-evaluator.md` records the checks of 0.2.216 to 0.2.219: what the scorer refuses (section 7), that a review decision is bound to the two verdict
+  files and the judge values (section 4), that a regression is a test failing in the delivery and not in the baseline by name, and that only a compiler diagnostic
+  makes a build the delivery's failure (section 9, which also lists `verdict_check.py`).
+- `instances/LEB-D-300-A/README.md` no longer says the new evaluator is not built: it points to the spec and to `./leb scorecard`, and says a Maven run that fails for
+  any other reason ends INCONCLUSIVE. Documents only.
 
 ### `0.2.219` — 2026-10-15 — A review decision is bound to the two verdicts it decided, and an extra finding is never also a false positive
 

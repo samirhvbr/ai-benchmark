@@ -116,5 +116,9 @@ python3 harness/leb_harness.py --instance LEB-D-300-A --submission <the delivery
 
 About two and a half minutes: the public suite on the planted tree (the baseline) and on the delivery, then the verifiers. On the
 planted tree itself, 0 of 27 rows are fixed; on the reference with the payment index migration, 27 of 27; on a delivery that does
-not compile, all 70 public tests fail (a regression), no row is fixed and every decoy breaks. The judge's steps and the score are
-the new evaluator's, which is not built yet.
+not compile, all 70 public tests fail (a regression), no row is fixed and every decoy breaks. A Maven run that fails for any other
+reason (Docker, the database, the offline cache) is not the delivery's verdict: the evaluation ends INCONCLUSIVE (exit status 3).
+
+The judge's steps and the score are the new series' evaluator, described in
+[`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md): two blind judges per delivery, a person settles every disagreement
+(`tools/judge_review.py`), and `./leb scorecard LEB-D-300-A` scores the settled verdict (`harness/score_v2.py`, track `default`).
