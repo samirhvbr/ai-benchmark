@@ -8,7 +8,9 @@ a disagreement never takes the average and an agreement is never reopened. The o
 at most two points apart: that is noise on an ordinal scale, not a disagreement, and the settled value is the mean rounded down.
 
     python3 tools/judge_review.py compare A.json B.json [--out disagreements.json]
-        lists the disagreements and writes them with empty decision slots; the person fills `decision`, `reason`, `decided_by`
+        lists the disagreements and writes them with empty decision slots, and the SHA-256 of the two verdict files; the person fills
+        `decision`, `reason`, `decided_by` and leaves everything else as it is (a decision is bound to those two files and to the values
+        the judges gave: a file made for other verdicts, or edited since, settles nothing)
     python3 tools/judge_review.py settle A.json B.json [--decisions disagreements.json] --out settled.json
         refuses while a disagreement has no decision (or the decisions name an item that is not a disagreement); otherwise writes the
         settled verdict, validated against scoring/judge.schema.json, with the `review` block that scorecard v2 carries
@@ -35,6 +37,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "harness"))
 from jsonschema_lite import validate  # noqa: E402
+import verdict_check  # noqa: E402
 
 SCHEMA = os.path.join(ROOT, "scoring", "judge.schema.json")
 VERDICTS = ("full", "half", "none")
@@ -54,6 +57,9 @@ def load_verdict(path):
         errors = validate(verdict, json.load(f))
     if errors:
         die("%s is not a valid verdict: %s" % (path, "; ".join(errors[:5])))
+    problems = verdict_check.structure_problems(verdict)
+    if problems:
+        die("%s is not a valid verdict: %s" % (path, "; ".join(problems[:5])))
     return verdict
 
 
@@ -164,10 +170,17 @@ def decided(entry):
     return bool(str(entry.get("reason") or "").strip()) and bool(str(entry.get("decided_by") or "").strip())
 
 
-def apply_decisions(disagreements, decisions_doc):
-    """Join the disagreements with the person's decisions. Returns (review entries, settled positions, problems)."""
+def apply_decisions(disagreements, decisions_doc, verdict_hashes=None):
+    """Join the disagreements with the person's decisions. Returns (review entries, settled positions, problems).
+
+    A decision is bound to what it decided: the decisions file must say which two verdict files it was made for (their SHA-256, as `compare`
+    wrote them), and each decision must carry the values the two judges gave for that item. A file made for other verdicts, or edited since,
+    cannot settle these: matching by the name of the item alone would apply a decision to a disagreement it never saw."""
     by_item = {d["item"]: d for d in (decisions_doc or {}).get("disagreements", [])}
     problems = []
+    if decisions_doc is not None and verdict_hashes is not None and decisions_doc.get("verdicts_sha256") != verdict_hashes:
+        problems.append("the decisions file was not made for these two verdicts (its verdicts_sha256 is %s, these files are %s): "
+                        "run `compare --out` again and decide on its output" % (json.dumps(decisions_doc.get("verdicts_sha256")), json.dumps(verdict_hashes)))
     for item in by_item:
         if item not in {d["item"] for d in disagreements}:
             problems.append("the decisions name %s, which is not a disagreement of these two verdicts" % item)
@@ -176,6 +189,10 @@ def apply_decisions(disagreements, decisions_doc):
         given = by_item.get(d["item"])
         if not given or not decided(given) or "decision" not in given:
             problems.append("no decision for %s (judge A: %s, judge B: %s)" % (d["item"], json.dumps(d["judge_a"]), json.dumps(d["judge_b"])))
+            continue
+        if "judge_a" not in given or "judge_b" not in given or given["judge_a"] != d["judge_a"] or given["judge_b"] != d["judge_b"]:
+            problems.append("the decision for %s was made for other judge values (A: %s, B: %s); these verdicts say A: %s, B: %s" % (
+                d["item"], json.dumps(given.get("judge_a")), json.dumps(given.get("judge_b")), json.dumps(d["judge_a"]), json.dumps(d["judge_b"])))
             continue
         error = check_decision(d["item"], given["decision"])
         if error:
@@ -199,6 +216,21 @@ def excerpt(a, b, fid):
             if p["id"] == fid and p.get("report_excerpt"):
                 return p["report_excerpt"]
     return None
+
+
+def merge_extras(a, b, false_positives):
+    """The real findings outside the matrix that either judge listed, once each (same words, any spacing or case), minus any the settled
+    verdict calls a false positive: one finding is never both a thing that exists and a thing that does not."""
+    def norm(text):
+        return " ".join(text.split()).casefold()
+    rejected = {norm(f["reported_as"]) for f in false_positives}
+    out, seen = [], set()
+    for text in list(a.get("extra_findings", [])) + list(b.get("extra_findings", [])):
+        key = norm(text)
+        if key not in seen and key not in rejected:
+            seen.add(key)
+            out.append(text)
+    return out
 
 
 def build(a, b, values, review):
@@ -230,7 +262,7 @@ def build(a, b, values, review):
             detail = next((v.get("detail") for src in (a, b) for v in src.get("comp_violations", []) if v["id"] == item[5:] and v.get("detail")), "")
             comp.append({"id": item[5:], "count": values[item], **({"detail": detail} if detail else {})})
     regressions = [{"group": i.split(":", 1)[1], "caused_by": values[i]} for i in sorted(values) if i.startswith("regression:")]
-    extra = list(dict.fromkeys(list(a.get("extra_findings", [])) + list(b.get("extra_findings", []))))
+    extra = merge_extras(a, b, false_positives)
     settled = {
         "instance": first(a, b, "instance"), "matrix_sha256": first(a, b, "matrix_sha256"), "model": first(a, b, "model"),
         "protocol": first(a, b, "protocol"),
@@ -272,9 +304,11 @@ def main():
     va, vb = load_verdict(a.judge_a), load_verdict(a.judge_b)
     same_delivery(va, vb)
     disagreements, agreed = compare(va, vb)
+    verdict_hashes = {"judge_a": verdict_check.file_sha256(a.judge_a), "judge_b": verdict_check.file_sha256(a.judge_b)}
 
     if a.cmd == "compare":
-        doc = {"judges": 2, "disagreements": [dict(d, decision=None, reason="", decided_by="") for d in disagreements]}
+        doc = {"judges": 2, "verdicts_sha256": verdict_hashes,
+               "disagreements": [dict(d, decision=None, reason="", decided_by="") for d in disagreements]}
         if a.out:
             with open(a.out, "w", encoding="utf-8") as f:
                 json.dump(doc, f, ensure_ascii=False, indent=2)
@@ -288,7 +322,7 @@ def main():
     if a.decisions:
         with open(a.decisions, encoding="utf-8") as f:
             decisions = json.load(f)
-    entries, settled_positions, problems = apply_decisions(disagreements, decisions)
+    entries, settled_positions, problems = apply_decisions(disagreements, decisions, verdict_hashes if decisions is not None else None)
     if problems:
         die("the verdict cannot be settled yet:\n  - " + "\n  - ".join(problems))
     values = dict(agreed)

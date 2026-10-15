@@ -57,7 +57,19 @@ class ReviewCase(unittest.TestCase):
         self.assertEqual(rc, 0, err)
         return doc["disagreements"]
 
-    def settle(self, a, b, decisions=None):
+    def settle(self, a, b, decisions=None, bind=True):
+        """Settle with the person's decisions. A person decides on what `compare --out` wrote, which already carries the verdicts' hashes and the
+        judges' values; the tests write only the decision, so `bind` copies the rest from a real compare (a test of the binding says bind=False)."""
+        if decisions is not None and bind:
+            doc, rc, _, err = self.run_.call("compare", a, b)
+            self.assertEqual(rc, 0, err)
+            current = {d["item"]: d for d in doc["disagreements"]}
+            decisions = copy.deepcopy(decisions)
+            decisions.setdefault("verdicts_sha256", doc["verdicts_sha256"])
+            for entry in decisions.get("disagreements", []):
+                if entry.get("item") in current:
+                    entry.setdefault("judge_a", current[entry["item"]]["judge_a"])
+                    entry.setdefault("judge_b", current[entry["item"]]["judge_b"])
         return self.run_.call("settle", a, b, decisions)
 
     @staticmethod
@@ -176,6 +188,94 @@ class Disagreements(ReviewCase):
         self.assertEqual(settled["regressions"], [{"group": "RG-01", "caused_by": None}])
         _, rc, _, err = self.settle(a, b, {"disagreements": [self.decision("regression:RG-01", "bug-1")]})
         self.assertNotEqual(rc, 0)
+
+
+class DecisionsAreBound(ReviewCase):
+    """A decision belongs to the two verdict files and the judge values it was made for: matching by the name of the item alone would apply
+    it to a disagreement it never saw."""
+
+    def disagreeing(self):
+        a, b = judge("a"), judge("b")
+        row(b, "BUG-001")["criteria"]["C2"] = "half"
+        return a, b
+
+    def test_compare_writes_the_hash_of_both_verdicts(self):
+        a, b = self.disagreeing()
+        doc, rc, _, err = self.run_.call("compare", a, b)
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(set(doc["verdicts_sha256"]), {"judge_a", "judge_b"})
+        for h in doc["verdicts_sha256"].values():
+            self.assertRegex(h, "^[a-f0-9]{64}$")
+
+    def test_a_decision_made_for_other_judge_values_is_refused(self):
+        a, b = self.disagreeing()
+        stale = dict(self.decision("BUG-001.C2", "full"), judge_a="none", judge_b="half")
+        _, rc, _, err = self.settle(a, b, {"disagreements": [stale]})
+        self.assertNotEqual(rc, 0)
+        self.assertIn("other judge values", err)
+
+    def test_a_decision_that_does_not_say_which_values_it_judged_is_refused(self):
+        a, b = self.disagreeing()
+        _, rc, _, err = self.settle(a, b, {"disagreements": [self.decision("BUG-001.C2", "full")]}, bind=False)
+        self.assertNotEqual(rc, 0)
+        self.assertIn("verdicts_sha256", err)
+        doc, _, _, _ = self.run_.call("compare", a, b)
+        bare = {"verdicts_sha256": doc["verdicts_sha256"], "disagreements": [self.decision("BUG-001.C2", "full")]}
+        _, rc, _, err = self.settle(a, b, bare, bind=False)
+        self.assertNotEqual(rc, 0)
+        self.assertIn("other judge values", err)
+
+    def test_decisions_made_for_two_other_verdict_files_are_refused_even_when_the_item_name_matches(self):
+        a, b = self.disagreeing()
+        doc, rc, _, err = self.run_.call("compare", a, b)
+        doc["disagreements"][0].update(decision="full", reason="the report names the cause", decided_by="the owner")
+        b2 = copy.deepcopy(b)
+        b2["judge"] = {"type": "llm", "id": "another judge"}   # the same disagreement, another file
+        _, rc, _, err = self.run_.call("settle", a, b2, doc)
+        self.assertNotEqual(rc, 0)
+        self.assertIn("not made for these two verdicts", err)
+
+    def test_the_file_compare_wrote_and_the_person_filled_in_settles(self):
+        a, b = self.disagreeing()
+        doc, rc, _, err = self.run_.call("compare", a, b)
+        doc["disagreements"][0].update(decision="half", reason="only for the happy path", decided_by="the owner")
+        settled, rc, _, err = self.run_.call("settle", a, b, doc)
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(row(settled, "BUG-001")["criteria"]["C2"], "half")
+
+
+class ExtraFindings(ReviewCase):
+    def test_the_extras_of_both_judges_are_listed_once_each_whatever_the_spacing_or_case(self):
+        a, b = judge("a"), judge("b")
+        a["extra_findings"] = ["The OFX parser accepts any root element", "Billing references are fixed width"]
+        b["extra_findings"] = ["the ofx  parser accepts any root element", "A third thing"]
+        settled, rc, _, err = self.settle(a, b)
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(settled["extra_findings"], ["The OFX parser accepts any root element", "Billing references are fixed width", "A third thing"])
+
+    def test_a_finding_the_settled_verdict_calls_a_false_positive_is_not_also_an_extra(self):
+        a, b = judge("a"), judge("b")
+        for v in (a, b):
+            v["false_positives"] = [{"reported_as": "Billing references are fixed width", "is_isca": False}]
+        a["extra_findings"] = ["billing references are  fixed width", "The OFX parser accepts any root element"]
+        settled, rc, _, err = self.settle(a, b)
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(settled["extra_findings"], ["The OFX parser accepts any root element"])
+        self.assertEqual([f["reported_as"] for f in settled["false_positives"]], ["Billing references are fixed width"])
+
+
+class StructureAtTheDoor(ReviewCase):
+    def test_a_verdict_with_half_on_a_binary_criterion_or_a_repeated_row_is_refused_at_compare(self):
+        a, b = judge("a"), judge("b")
+        row(b, "BUG-001")["criteria"]["C5"] = "half"
+        _, rc, _, err = self.run_.call("compare", a, b)
+        self.assertNotEqual(rc, 0)
+        self.assertIn("binary", err)
+        b = judge("b")
+        b["planted"].append(copy.deepcopy(row(b, "BUG-001")))
+        _, rc, _, err = self.run_.call("compare", a, b)
+        self.assertNotEqual(rc, 0)
+        self.assertIn("appears twice", err)
 
 
 class Explanation(ReviewCase):

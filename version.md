@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.218`
+**Versão atual:** `0.2.219`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.219` — 2026-10-15 — A review decision is bound to the two verdicts it decided, and an extra finding is never also a false positive
+
+- Found by the same external review. `tools/judge_review.py settle` matched the person's decisions to disagreements by the name of the item alone, so a decisions file
+  made for other verdicts, or for other judge values, settled these. `compare` now writes the SHA-256 of the two verdict files, and `settle` refuses a decisions file
+  made for others, and any decision that does not carry the two judge values it was made for. Nothing changes for the person: he fills `decision`, `reason` and
+  `decided_by` in the file `compare --out` wrote.
+- The extra findings of the two judges were joined without looking at the false positives: one finding could end up both an extra (real, outside the key) and a false
+  positive (not real). They are listed once each, whatever the spacing or case, and one the settled verdict calls a false positive is dropped from them. Extras still
+  score nothing and cost nothing.
+- Each verdict is checked for structure when `compare` or `settle` loads it (the same checks as the scorer, without the matrix), so a judge's `half` on a binary
+  criterion or a repeated row is found when the judges' files are compared and not when the score is computed.
+  `tests/test_judge_review.py` has the binding, the extras and the structure cases (8 cases; all but the round trip of the file `compare` wrote fail on the
+  previous tool).
 
 ### `0.2.218` — 2026-10-15 — The scorer refuses inputs that are not the key's own, not settled, or malformed
 
