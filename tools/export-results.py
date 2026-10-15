@@ -52,6 +52,10 @@ import instances as instances_lib  # noqa: E402  (the resolver shared with leb, 
 import jsonschema_lite  # noqa: E402
 import pack as pack_lib  # noqa: E402  (the leak-marker rules of the package guard)
 
+_stats_spec = importlib.util.spec_from_file_location("leb_estatisticas", os.path.join(ROOT, "tools", "estatisticas.py"))
+estatisticas = importlib.util.module_from_spec(_stats_spec)  # the figures of design section 9, computed the one way
+_stats_spec.loader.exec_module(estatisticas)
+
 RESULTS = os.path.join(ROOT, "results")
 REPO_URL = "https://github.com/samirhvbr/ai-benchmark"
 
@@ -78,6 +82,12 @@ DIFFICULTY_ORDER = ["Fácil", "Moderada", "Difícil", "Especialista"]
 # PROTOCOL §4: an official result is three independent runs. A fourth would be the
 # retry that §4 item 3 forbids, so it is refused rather than published.
 MAX_RUNS = 3
+
+# docs/new-series-design.md 6.3: a case of the new series is five scheduled runs, all counted, and its figures are the estimate of
+# those five with their interval, not the lower median of three (section 9).
+SERIES_RUNS = 5
+GRADE_FLOORS = (("Platinum", 900), ("Gold", 750), ("Silver", 600), ("Bronze", 400))   # the table of harness/score_v2.py; below the last, Reprovada
+BOOTSTRAP_DRAWS, BOOTSTRAP_SEED = 2000, 1
 
 # The day each instance's answer key became public (MATRIX §4). It lives here and never
 # in matrix.json, whose SHA-256 is the published commitment and must not change.
@@ -619,6 +629,8 @@ def build_aggregate(inst, matrix, runs, root, edition=None):
     its category scores, the cost, the time and the tokens. Nothing about any flaw."""
     if not runs:
         sys.exit("[export] no evaluated run of %s under %s" % (inst.name, root))
+    if any(r["card"].get("track") for r in runs):
+        return build_aggregate_series(inst, matrix, runs, root, edition)
     first = runs[0]
     for r in runs:
         for what, got, want in (("matrix_sha256", r["card"].get("matrix_sha256"), first["card"].get("matrix_sha256")),
@@ -662,6 +674,116 @@ def build_aggregate(inst, matrix, runs, root, edition=None):
             "level": matrix["level"], "leb_spec": matrix["leb_spec"], "task_version": str(matrix.get("task_version") or "1.0.0"),
             "matrix_sha256": first["card"]["matrix_sha256"], "package_sha256": first["meta"]["package_sha256"],
             "mode": first["meta"]["mode"], "turn_budget": first["meta"].get("turn_budget"), "agents": agents}
+
+
+def grade_of(total):
+    return next((name for name, floor in GRADE_FLOORS if total >= floor), "Reprovada")
+
+
+def check_series_runs(where, agent_runs, base):
+    """The scheduled runs of one configuration of the new series: numbered from 1 with no gap, except where a lab-failure-<n> folder holds
+    the number (an attempt the lab lost, rerun under design 6.2, never scored), at most five, and no two with the same report."""
+    numbers = [x["run"] for x in agent_runs]
+    failed = {int(m.group(1)) for m in (re.fullmatch(r"lab-failure-(\d+)", d) for d in os.listdir(os.path.join(base, where))) if m}
+    expected = [n for n in range(1, len(numbers) + len(failed) + 1) if n not in failed]
+    if numbers != expected:
+        sys.exit("[export] %s has %s: runs are numbered run-1 to run-N with no gap, except where a lab-failure-<n> folder holds the number"
+                 % (where, ", ".join("run-%d" % n for n in numbers)))
+    if len(numbers) > SERIES_RUNS:
+        sys.exit("[export] %s has %d runs; a case of the new series is %d scheduled runs (design 6.3)" % (where, len(numbers), SERIES_RUNS))
+    reports = {}
+    for x in agent_runs:
+        if x["meta"].get("run") != x["run"]:
+            sys.exit("[export] %s/run-%d: run.json says run %s" % (where, x["run"], x["meta"].get("run")))
+        report = os.path.join(x["dir"], "entrega", "REPORT.md")
+        if os.path.exists(report):
+            with open(report, "rb") as f:
+                digest = hashlib.sha256(f.read()).hexdigest()
+            if digest in reports:
+                sys.exit("[export] %s: run-%d has the same REPORT.md as run-%d — a resend, not a new run" % (where, x["run"], reports[digest]))
+            reports[digest] = x["run"]
+    return len(failed)
+
+
+def build_aggregate_series(inst, matrix, runs, root, edition=None):
+    """The aggregate of an instance of the new series: per configuration, the estimate of its runs with the interval, the completion, the
+    expected score per scheduled attempt and the outcomes counted apart (design section 9). Nothing about any flaw."""
+    first = runs[0]
+    for r in runs:
+        for what, got, want in (("matrix_sha256", r["card"].get("matrix_sha256"), first["card"].get("matrix_sha256")),
+                                ("track", r["card"].get("track"), first["card"].get("track")),
+                                ("package_sha256", r["meta"].get("package_sha256"), first["meta"].get("package_sha256")),
+                                ("mode", r["meta"].get("mode"), first["meta"].get("mode")),
+                                ("budget_minutes", r["meta"].get("budget_minutes"), first["meta"].get("budget_minutes"))):
+            if got != want:
+                sys.exit("[export] %s/%s/run-%d: %s is %r, the first run says %r — runs of one instance share them"
+                         % (inst.name, r["agent"], r["run"], what, got, want))
+    system = inst.name.rsplit("-", 1)[1]
+    by_agent = {}
+    for r in sorted(runs, key=lambda x: (x["agent"], x["run"])):
+        by_agent.setdefault(r["agent"], []).append(r)
+    side = {}
+    for name in ("comments", "notes"):
+        path = os.path.join(root, inst.name, name + ".json")
+        side[name] = load(path) if os.path.exists(path) else {}
+    unknown = sorted(set(side["comments"]) - set(by_agent))
+    if unknown:
+        sys.exit("[export] %s names no agent: %s" % (os.path.join(root, inst.name, "comments.json"), ", ".join(unknown)))
+
+    def mean_of(values, digits):
+        values = [v for v in values if v is not None]
+        return round(sum(values) / len(values), digits) if values else None
+
+    agents = []
+    for agent, agent_runs in by_agent.items():
+        failures = check_series_runs("%s/%s" % (inst.name, agent), agent_runs, root)
+        attempts = [{"configuration": agent, "track": x["card"]["track"], "system": system, "run": x["run"],
+                     "outcome": x["meta"].get("outcome") or x["card"].get("outcome") or "completed", "blocked_at": x["meta"].get("blocked_at"),
+                     "score": x["card"]["total"]} for x in agent_runs]
+        for i, a in enumerate(attempts, 1):
+            estatisticas.check_attempt(a, "%s/%s attempt #%d" % (inst.name, agent, i))
+        rep = estatisticas.report_for(attempts, BOOTSTRAP_DRAWS, BOOTSTRAP_SEED, 25.0, SERIES_RUNS)
+        quality, expected = rep["quality_of_evaluable_deliveries"], rep["expected_score_per_scheduled_attempt"]
+        if quality is None:
+            sys.exit("[export] %s/%s has no completed run: there is no quality to publish" % (inst.name, agent))
+        totals = sorted(x["card"]["total"] for x in agent_runs)
+        score = int(round(quality["mean"]))
+        cats = {c: [x["card"]["categories"][c]["score"] for x in agent_runs] for c in first["card"]["categories"]}
+        times = lambda x: wall_minutes(x["meta"])  # noqa: E731
+        costs = lambda x: (x["meta"].get("cost_time") or {}).get("usd_estimate")  # noqa: E731
+        token_rows = [tokens_of(x["meta"]) for x in agent_runs]
+        completion = rep["completion"]
+        entry = {"agent": agent, "score": score, "grade": grade_of(score), "runs_count": len(agent_runs),
+                 "categories": {c: int(round(sum(v) / len(v))) for c, v in cats.items()},
+                 "category_max": {c: first["card"]["categories"][c]["max"] for c in cats},
+                 "cost_usd": mean_of([costs(x) for x in agent_runs], 2), "wall_minutes": mean_of([times(x) for x in agent_runs], 1),
+                 "tokens": ({k: int(round(sum(t[k] for t in token_rows) / len(token_rows))) for k in ("input", "output", "cache", "total")}
+                            if all(token_rows) else None),
+                 "statistics": {"scheduled": rep["scheduled"], "quality": quality, "expected_per_scheduled_attempt": expected,
+                                "completion": {"rate": completion["rate"], "completed": completion["completed"], "scheduled": completion["scheduled"],
+                                               "systems_all_completed": completion["all_attempts_completed_on"]["systems"],
+                                               "systems": completion["all_attempts_completed_on"]["of"]},
+                                "outcomes": {k: rep["outcomes"][k] for k in ("completed", "blocked", "blocked_at_the_start", "blocked_during_the_work",
+                                                                            "budget_exhausted", "switched")},
+                                "lab_failures_rerun": failures,
+                                "median": int(statistics.median_low(totals)), "min": totals[0], "max": totals[-1]},
+                 "runs": [{"run": x["run"], "total": x["card"]["total"], "grade": x["card"]["grade"], "cost_usd": costs(x), "wall_minutes": times(x),
+                           "tokens": tokens_of(x["meta"])} for x in agent_runs]}
+        block = agent_runs[0]["meta"].get("model") or {}
+        entry["model"] = {k: block[k] for k in ("name", "id", "provider", "reasoning_effort", "client_mode") if block.get(k)}
+        if agent in side["comments"]:
+            entry["comment"] = side["comments"][agent]
+        agents.append(entry)
+    agents.sort(key=lambda e: (-e["score"], e["agent"]))
+    year = edition or max(r["meta"]["evaluated_on"] for r in runs)[:4]
+    agg = {"publication": "aggregate", "edition": year, "instance": matrix["instance"], "version": str(matrix["version"]), "level": matrix["level"],
+           "leb_spec": matrix["leb_spec"], "task_version": re.sub(r"^[A-Z]-", "", str(matrix.get("task_version") or "1.0.0")),
+           "matrix_sha256": first["card"]["matrix_sha256"], "package_sha256": first["meta"]["package_sha256"], "mode": first["meta"]["mode"],
+           "turn_budget": first["meta"].get("turn_budget"), "budget_minutes": first["meta"].get("budget_minutes"), "track": first["card"]["track"],
+           "agents": agents}
+    if side["notes"]:
+        agg["notes"] = side["notes"]
+    return agg
 
 
 def refuse_unclean_aggregate(agg, matrix, inst):
@@ -709,8 +831,46 @@ def check_public_tree():
     return problems
 
 
+def render_series_section(agg, w):
+    w("## %s · %s v%s (%s track, mode %s, %s minutes) — aggregate only" % (agg["edition"], agg["instance"], agg["version"], agg["track"].capitalize(),
+                                                                           agg["mode"], agg.get("budget_minutes")))
+    w("")
+    w("This instance is **active**. While it is, only the figures below are published: no per-flaw result, no verdict, no delivery.")
+    w("")
+    w("| # | Agent | Estimate | 95% interval | Grade | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |")
+    w("| ---: | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |")
+    for i, e in enumerate(agg["agents"], 1):
+        st = e["statistics"]
+        w("| %d | `%s` | **%d** | %s to %s | %s | %s | %d/%d (%s) |" % (
+            i, e["agent"], e["score"], format(st["quality"]["low"], ".0f"), format(st["quality"]["high"], ".0f"), e["grade"],
+            " | ".join(str(e["categories"][c]) for c in ("ARCH", "BUG", "PERF", "CLN", "COMP", "EXPL")),
+            st["completion"]["completed"], st["scheduled"], " · ".join(str(r["total"]) for r in e["runs"])))
+    w("")
+    maxima = next(iter(agg["agents"]))["category_max"]
+    w("Maximum per column: %s → %d. The estimate is the mean of the completed runs and the interval is a 95%% percentile bootstrap over systems and runs"
+      % (" · ".join("%s %d" % (c, maxima[c]) for c in ("ARCH", "BUG", "PERF", "CLN", "COMP", "EXPL")), sum(maxima.values())))
+    w("(design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.")
+    for e in agg["agents"]:
+        st = e["statistics"]
+        w("")
+        w("`%s`: completion %d of %d scheduled attempts; expected score per scheduled attempt %.1f (%.1f to %.1f); blocked %d, budget exhausted %d, switched %d; "
+          "lab failures rerun %d; median %d, lowest %d, highest %d."
+          % (e["agent"], st["completion"]["completed"], st["scheduled"], st["expected_per_scheduled_attempt"]["mean"], st["expected_per_scheduled_attempt"]["low"],
+             st["expected_per_scheduled_attempt"]["high"], st["outcomes"]["blocked"], st["outcomes"]["budget_exhausted"], st["outcomes"]["switched"],
+             st["lab_failures_rerun"], st["median"], st["min"], st["max"]))
+    if agg.get("notes"):
+        w("")
+        w(agg["notes"]["en"])
+    w("")
+    w("Matrix SHA-256 `%s` · package SHA-256 `%s`." % (agg["matrix_sha256"], agg.get("package_sha256", "n/d")))
+    w("")
+
+
 def render_aggregate_sections(aggregates, w):
     for agg in aggregates:
+        if agg.get("track"):
+            render_series_section(agg, w)
+            continue
         w("## %s · %s v%s (mode %s, %s turns) — aggregate only" % (agg["edition"], agg["instance"], agg["version"], agg["mode"], agg["turn_budget"]))
         w("")
         w("This instance is **active**. While it is, only the totals below are published: no per-flaw result, no verdict, no delivery.")

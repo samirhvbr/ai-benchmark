@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.223`
+**Versão atual:** `0.2.224`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.224` — 2026-10-15 — The exporter publishes the aggregate of an instance of the new series: the estimate of its five runs with the interval, the completion and the outcomes
+
+- `tools/export-results.py --publish-aggregate` now knows the new series. When the scorecards of an active instance carry a `track`, the aggregate is one entry per configuration with the
+  figures of `docs/new-series-design.md` section 9, computed by `tools/estatisticas.py` (the same function, so the two cannot disagree): the mean of the completed runs with its 95% percentile
+  bootstrap interval (2000 draws, seed 1), the completion rate and the systems on which every attempt completed, the expected score per scheduled attempt, the outcomes counted apart (blocked at
+  the start and during the work, budget exhausted, switched), the lab failures rerun, and the median, lowest and highest run. The score published is the mean rounded and its grade is that
+  score's, by the same table as the scorer. The lower median of three stays for LEB-100 and LEB-300, whose aggregates are byte for byte what they were.
+- The private archive of a case keeps `run-<n>/` folders as before and `lab-failure-<n>/` for an attempt the lab lost (design 6.2): it holds the number, is not scored, and is counted. The
+  exporter refuses a gap without it, a sixth run, two runs with the same `REPORT.md`, and runs of one case that do not share the matrix, the package, the mode and the budget.
+- `scoring/publicacao-agregada.schema.json` accepts it: `SEC` is no longer required (the Default track has none), up to five runs, and the new optional `track`, `budget_minutes`, `notes`,
+  `category_max`, `statistics` and a grade per run. The leak guard reads the new text fields like the old ones. `results/README.md` renders a series section.
+- Nine tests (337 in all) on a synthetic series instance: the figures equal `estatisticas`' for the same attempts, the numbering and sixth-run refusals, the duplicate report, a blocked
+  attempt counting in the expected score and not in the quality, and a flaw id in the notes refused. `docs/new-series-evaluator.md` section 9 lists the piece.
 
 ### `0.2.223` — 2026-10-15 — LEB-D-300-A is version 1.1: its key says what the verifiers now check, and its hashes are the ones the evaluation will cite
 

@@ -6,6 +6,7 @@ import io
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 import unittest
@@ -309,6 +310,167 @@ class PublicTree(ExportCase):
         for extra in ({"flaws": []}, {"per_flaw": {}}, {"judge_rationale": "x"}):
             self.assertNotEqual(validate({**agg, **extra}, schema), [], extra)
         self.assertNotEqual(validate({**agg, "agents": [{**agg["agents"][0], "flaws": []}]}, schema), [])
+
+
+class SeriesPublishing(unittest.TestCase):
+    """An instance of the new series (its scorecards carry a `track`): the aggregate is the estimate of the five runs with its interval, the
+    completion and the outcomes (docs/new-series-design.md section 9), and a lab failure holds its run number without being scored."""
+
+    INSTANCE = "LEB-TEST-D-300-A"
+    SCORES = (524, 533, 580, 561, 536)
+    MAXIMA = {"ARCH": 283, "BUG": 213, "PERF": 213, "CLN": 141, "COMP": 100, "EXPL": 50}
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.t = self._tmp.name
+        self.priv = os.path.join(self.t, "private-archive")
+        self._old = {k: os.environ.pop(k, None) for k in ("LEB_PRIVATE_RESULTS", "LEB_RUNS_DIR", "LEB_INSTANCES_PATH")}
+        os.environ["LEB_PRIVATE_RESULTS"] = self.priv
+        from helpers import make_instance
+        make_published_tree(self.t, open_matrix(), [("open-agent", 1, open_verdict())], name="LEB-TEST-B")
+        make_instance(self.t, self.INSTANCE, matrix=synthetic_matrix([entry("BUG-041", "Alta", "Difícil")], instance=self.INSTANCE, level=300,
+                                                                      publication="aggregate", task_version="D-1.0.0", leb_spec="1.5.1", version="1.1"))
+        self.archive = os.path.join(self.priv, self.INSTANCE, "claude-test-high")
+
+    def tearDown(self):
+        for k, v in self._old.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+        self._tmp.cleanup()
+
+    def run_folder(self, number, total, report=None, package="b" * 64, outcome="completed", cost=1.0):
+        d = os.path.join(self.archive, "run-%d" % number)
+        os.makedirs(os.path.join(d, "entrega"))
+        spread = {"ARCH": 0.3, "BUG": 0.4, "PERF": 0.2, "CLN": 0.0, "COMP": 0.0, "EXPL": 0.1}
+        cats = {c: {"score": int(round(total * spread[c])) if c != "COMP" else 100, "max": m} for c, m in self.MAXIMA.items()}
+        write_json(os.path.join(d, "scorecard.json"), {"track": "default", "outcome": outcome, "total": total, "matrix_sha256": "a" * 64,
+                                                       "grade": "Bronze", "categories": cats})
+        write_json(os.path.join(d, "run.json"), {
+            "run": number, "mode": "A", "turn_budget": None, "budget_minutes": 90, "package_sha256": package, "evaluated_on": "2026-10-15",
+            "outcome": outcome, "model": {"name": "Claude Test", "id": "claude-test", "provider": "Test", "reasoning_effort": "high"},
+            "session": {"started": "2026-10-15T10:00:00+00:00", "ended": "2026-10-15T10:30:00+00:00"},
+            "cost_time": {"usd_estimate": cost, "tokens": {"input": 100, "output": 1000, "cache": 9000, "total": 10100}}})
+        write_json(os.path.join(d, "mecanico.json"), {})
+        write_json(os.path.join(d, "veredito.json"), {})
+        with open(os.path.join(d, "entrega", "REPORT.md"), "w", encoding="utf-8") as f:
+            f.write(report or "report of run %d\n" % number)
+        return d
+
+    def build(self, numbers=(1, 3, 4, 5, 6), failed=(2,)):
+        for n, total in zip(numbers, self.SCORES):
+            self.run_folder(n, total)
+        for n in failed:
+            os.makedirs(os.path.join(self.archive, "lab-failure-%d" % n))
+
+    def export(self, *args):
+        mod = load_exporter(self.t)
+        err = io.StringIO()
+        old_argv = sys.argv
+        sys.argv = ["export-results.py", *args]
+        code = 0
+        try:
+            with contextlib.redirect_stderr(err):
+                mod.main()
+        except SystemExit as e:
+            code = e.code if isinstance(e.code, int) else 1
+            if isinstance(e.code, str):
+                err.write(e.code)
+        finally:
+            sys.argv = old_argv
+        return code, err.getvalue()
+
+    def publish(self):
+        self.build()
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertEqual(code, 0, err)
+        return read_json(os.path.join(self.t, "results", "2026", self.INSTANCE, "aggregate.json"))
+
+    def test_the_aggregate_is_the_estimate_of_the_runs_and_validates(self):
+        agg = self.publish()
+        self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
+        self.assertEqual((agg["track"], agg["task_version"], agg["budget_minutes"], agg["turn_budget"]), ("default", "1.0.0", 90, None))
+        e = agg["agents"][0]
+        self.assertEqual((e["score"], e["grade"], e["runs_count"]), (round(sum(self.SCORES) / 5), "Bronze", 5))
+        st = e["statistics"]
+        self.assertEqual((st["quality"]["mean"], st["quality"]["systems"], st["scheduled"]), (round(sum(self.SCORES) / 5, 1), 1, 5))
+        self.assertLessEqual(st["quality"]["low"], st["quality"]["mean"])
+        self.assertGreaterEqual(st["quality"]["high"], st["quality"]["mean"])
+        self.assertEqual(st["quality"], st["expected_per_scheduled_attempt"])  # every attempt completed
+        self.assertEqual((st["completion"]["rate"], st["completion"]["systems_all_completed"]), (1.0, 1))
+        self.assertEqual((st["median"], st["min"], st["max"], st["lab_failures_rerun"]), (536, 524, 580, 1))
+        self.assertEqual([r["run"] for r in e["runs"]], [1, 3, 4, 5, 6])
+        self.assertEqual(e["category_max"], self.MAXIMA)
+        self.assertEqual(list(e["categories"]), list(self.MAXIMA))  # no SEC on the Default track
+        self.assertEqual(e["wall_minutes"], 30.0)
+        self.assertEqual(e["tokens"]["total"], 10100)
+
+    def test_the_readme_and_results_json_carry_the_series_additively(self):
+        agg = self.publish()
+        readme = read_text(self.t, "results", "README.md")
+        self.assertIn("%s v1.1 (Default track, mode A, 90 minutes) — aggregate only" % self.INSTANCE, readme)
+        self.assertIn("| 1 | `claude-test-high` | **%d** |" % agg["agents"][0]["score"], readme)
+        self.assertEqual(read_json(os.path.join(self.t, "results", "results.json"))["aggregate_instances"], [agg])
+        self.assertEqual(self.export("--check")[0], 0)
+        self.assertEqual(self.export("--publish-aggregate", self.INSTANCE, "--check")[0], 0)
+
+    def test_the_figures_are_the_ones_estatisticas_gives_for_the_same_attempts(self):
+        agg = self.publish()
+        mod = load_exporter(self.t)
+        attempts = [{"configuration": "claude-test-high", "track": "default", "system": "A", "run": n, "outcome": "completed", "blocked_at": None, "score": s}
+                    for n, s in zip((1, 3, 4, 5, 6), self.SCORES)]
+        want = mod.estatisticas.report_for(attempts, 2000, 1, 25.0, 5)["quality_of_evaluable_deliveries"]
+        self.assertEqual(agg["agents"][0]["statistics"]["quality"], want)
+
+    def test_a_gap_in_the_run_numbers_needs_a_lab_failure_folder(self):
+        self.build(failed=())
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("lab-failure", err)
+        self.assertFalse(os.path.exists(os.path.join(self.t, "results", "2026", self.INSTANCE)))
+
+    def test_a_sixth_run_is_refused(self):
+        self.build(failed=())
+        self.run_folder(2, 500)
+        self.run_folder(7, 500)
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("5 scheduled runs", err)
+
+    def test_the_same_report_filed_twice_is_one_delivery(self):
+        self.build()
+        shutil.copyfile(os.path.join(self.archive, "run-1", "entrega", "REPORT.md"), os.path.join(self.archive, "run-3", "entrega", "REPORT.md"))
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("same REPORT.md", err)
+
+    def test_runs_of_one_case_share_the_package(self):
+        self.build()
+        write_json(os.path.join(self.archive, "run-4", "run.json"),
+                   {**read_json(os.path.join(self.archive, "run-4", "run.json")), "package_sha256": "c" * 64})
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("package_sha256", err)
+
+    def test_a_blocked_attempt_enters_the_expected_score_and_not_the_quality(self):
+        self.build()
+        d = os.path.join(self.archive, "run-6")
+        meta = read_json(os.path.join(d, "run.json"))
+        card = read_json(os.path.join(d, "scorecard.json"))
+        write_json(os.path.join(d, "run.json"), {**meta, "outcome": "blocked", "blocked_at": "work"})
+        write_json(os.path.join(d, "scorecard.json"), {**card, "outcome": "blocked"})
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertEqual(code, 0, err)
+        st = read_json(os.path.join(self.t, "results", "2026", self.INSTANCE, "aggregate.json"))["agents"][0]["statistics"]
+        self.assertEqual((st["outcomes"]["completed"], st["outcomes"]["blocked"], st["outcomes"]["blocked_during_the_work"]), (4, 1, 1))
+        self.assertEqual(st["quality"]["n"], 4)
+        self.assertEqual(st["expected_per_scheduled_attempt"]["n"], 5)
+        self.assertEqual(st["completion"]["rate"], 0.8)
+
+    def test_a_flaw_id_in_the_notes_is_refused(self):
+        self.build()
+        write_json(os.path.join(self.priv, self.INSTANCE, "notes.json"), {"en": "the race of BUG-041 was not fixed", "pt_BR": "x"})
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("BUG-041", err)
 
 
 class PublishedOutputs(unittest.TestCase):
