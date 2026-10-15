@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.217`
+**Versão atual:** `0.2.218`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.218` — 2026-10-15 — The scorer refuses inputs that are not the key's own, not settled, or malformed
+
+- Found by the same external review. `score_v2.py` copied `matrix_sha256` from the mechanical report, never compared it with the matrix it was given, and scored any
+  verdict that passed the schema, including one judge's unsettled verdict, a row judged twice (the later silently overwrote the earlier), a criterion the row's
+  template does not have, or `half` on a binary criterion. A score from the wrong inputs looks exactly like a right one.
+- The new `harness/verdict_check.py` runs before any arithmetic: the report's and the verdict's `matrix_sha256` must be the SHA-256 of the matrix file (the verdict's
+  `instance`, when it has one, and the regression groups' instance must agree); the verdict must be settled (a `review` with at least two judges, every disagreement
+  decided by a person with a reason); the verdict must follow `scoring/judge.schema.json` (the scorer did not validate it before) and be well formed: rows planted
+  and unique, criteria of the row's template, `half` only where the criterion allows it, no false positive or regression group twice, only the SPEC's COMP rules.
+- `tests/test_score_v2.py` binds its synthetic documents to the matrix file it writes and has 19 cases (`InputsAreChecked`), all refusals but one (the bare instance name is accepted); every refusal fails on the previous
+  scorer. A delivery's own hash is not part of the binding: the judges never see it, and the anonymized folder is made from one run directory.
 
 ### `0.2.217` — 2026-10-15 — A regression is a test that fails in the delivery and not in the baseline, by name and never by count
 

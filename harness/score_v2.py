@@ -26,6 +26,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import score as v1  # noqa: E402  the full LEB's scorer: the base points, the COMP table and the informative blocks are shared
+import verdict_check  # noqa: E402  the checks on the inputs: identity, settled review, structure
+from jsonschema_lite import validate  # noqa: E402
 
 SCORER = {"name": "score_v2", "version": "1.0.0"}
 OUTCOMES = ("completed", "blocked", "budget_exhausted")
@@ -102,6 +104,16 @@ def main():
     matrix, mech, judge, groups_doc = v1.load(a.matrix), v1.load(a.mechanical), v1.load(a.judge), v1.load(a.groups)
     if mech.get("inconclusive"):
         die("the mechanical report is INCONCLUSIVE (%s): there is no measurement to score" % mech.get("inconclusive_reason", "no reason"))
+
+    # ---- the inputs, before any arithmetic: a score from the wrong documents looks exactly like a right one
+    with open(os.path.join(os.path.dirname(HERE), "scoring", "judge.schema.json"), encoding="utf-8") as f:
+        schema_errors = validate(judge, json.load(f))
+    problems = (verdict_check.identity_problems(matrix, verdict_check.file_sha256(a.matrix), mech, judge, groups_doc)
+                + verdict_check.settled_problems(judge)
+                + ["the verdict does not follow scoring/judge.schema.json: " + e for e in schema_errors]
+                + verdict_check.structure_problems(judge, matrix))
+    if problems:
+        die("the inputs cannot be scored:\n  - " + "\n  - ".join(problems))
 
     planted = {e["id"]: e for e in matrix["entries"] if e.get("exists")}
     iscas = {e["id"] for e in matrix["entries"] if not e.get("exists")}

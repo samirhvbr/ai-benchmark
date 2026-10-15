@@ -2,6 +2,7 @@
 the scorecard v2 and the judge schema addendum. Synthetic matrix, groups and verdicts; the real instance is checked in test_regression_groups.
 """
 
+import hashlib
 import os
 import tempfile
 import unittest
@@ -53,10 +54,25 @@ def verdict(regressions=None, r4="full", attempt_arch=True, penalties=None, **ex
     return v
 
 
-def score2(mech_doc, verdict_doc, matrix=MATRIX, groups=GROUPS, track="default", outcome=None, script=None):
+SETTLED = {"judges": 2, "disagreements": []}
+
+
+def score2(mech_doc, verdict_doc, matrix=MATRIX, groups=GROUPS, track="default", outcome=None, script=None, bind=("mech", "verdict", "review"),
+           verdict_instance=None):
+    """Score with the real score_v2.py. The scorer ties its three documents to the matrix FILE (its SHA-256) and wants a settled verdict, so
+    `bind` says which of those the helper fills in; a test of the checks themselves leaves some out."""
     with tempfile.TemporaryDirectory() as t:
         paths = {n: os.path.join(t, n + ".json") for n in ("matrix", "mech", "verdict", "groups", "card")}
-        for name, doc in (("matrix", matrix), ("mech", mech_doc), ("verdict", verdict_doc), ("groups", groups)):
+        write_json(paths["matrix"], matrix)
+        with open(paths["matrix"], "rb") as f:
+            sha = hashlib.sha256(f.read()).hexdigest()
+        if "mech" in bind:
+            mech_doc = dict(mech_doc, matrix_sha256=sha)
+        if "verdict" in bind:
+            verdict_doc = dict(verdict_doc, matrix_sha256=sha, instance=verdict_instance or matrix["instance"])
+        if "review" in bind and "review" not in verdict_doc:
+            verdict_doc = dict(verdict_doc, review=SETTLED)
+        for name, doc in (("mech", mech_doc), ("verdict", verdict_doc), ("groups", groups)):
             write_json(paths[name], doc)
         args = ["--track", track, "--matrix", paths["matrix"], "--groups", paths["groups"], "--mechanical", paths["mech"],
                 "--judge", paths["verdict"], "--out", paths["card"]]
@@ -239,6 +255,125 @@ class Refusals(unittest.TestCase):
     def test_a_row_of_a_category_the_track_does_not_weigh_is_an_error(self):
         matrix = synthetic_matrix(MATRIX["entries"] + [entry("SEC-001", "Alta", template="C")])
         self.assert_refused(score2(mech(), verdict(), matrix=matrix), "SEC-001", "does not weigh")
+
+
+class InputsAreChecked(unittest.TestCase):
+    """The scorer is a function of three documents and stops when they are not the right ones: a score from the wrong inputs looks exactly
+    like a right one (harness/verdict_check.py)."""
+
+    def refused(self, mech_doc, verdict_doc, *needles, **kw):
+        card, rc, err = score2(mech_doc, verdict_doc, **kw)
+        self.assertNotEqual(rc, 0, "the scorer accepted it")
+        self.assertIsNone(card)
+        self.assertIn("the inputs cannot be scored", err)
+        for needle in needles:
+            self.assertIn(needle, err)
+
+    # -- identity
+    def test_a_mechanical_report_made_against_another_matrix_is_refused(self):
+        self.refused(dict(mech(), matrix_sha256="1" * 64), verdict(), "mechanical report", "another matrix", bind=("verdict", "review"))
+
+    def test_a_verdict_made_against_another_matrix_is_refused(self):
+        self.refused(mech(), dict(verdict(), matrix_sha256="2" * 64), "verdict", "another matrix", bind=("mech", "review"))
+
+    def test_a_verdict_or_report_that_names_no_matrix_is_refused(self):
+        no_hash = verdict()
+        no_hash.pop("matrix_sha256")
+        self.refused(mech(), no_hash, "verdict carries no matrix_sha256", bind=("mech", "review"))
+        bare = mech()
+        bare.pop("matrix_sha256")
+        self.refused(bare, verdict(), "mechanical report carries no matrix_sha256", bind=("verdict", "review"))
+
+    def test_a_verdict_about_another_instance_is_refused(self):
+        self.refused(mech(), verdict(), "LEB-OTHER-A", verdict_instance="LEB-OTHER-A")
+
+    def test_the_bare_instance_name_and_the_labelled_one_are_both_accepted(self):
+        for name in ("LEB-TEST-A", "LEB-TEST-A v1.0"):
+            card, rc, err = score2(mech(), verdict(), verdict_instance=name)
+            self.assertEqual(rc, 0, err)
+
+    def test_regression_groups_of_another_instance_are_refused(self):
+        self.refused(mech(), verdict(), "regression groups", groups=dict(GROUPS, instance="LEB-OTHER-A", version="1.0"))
+
+    # -- settled
+    def test_a_verdict_nobody_settled_is_refused(self):
+        v = verdict()
+        self.refused(mech(), v, "not settled", bind=("mech", "verdict"))
+
+    def test_a_single_judge_is_refused(self):
+        self.refused(mech(), verdict(review={"judges": 1, "disagreements": []}), "fewer than two judges")
+
+    def test_a_disagreement_nobody_decided_is_refused(self):
+        undecided = {"item": "BUG-001.C2", "judge_a": "full", "judge_b": "half", "decision": "full", "reason": "", "decided_by": ""}
+        self.refused(mech(), verdict(review={"judges": 2, "disagreements": [undecided]}), "BUG-001.C2", "by a person with a reason")
+        missing = {"item": "BUG-001.C2", "judge_a": "full", "judge_b": "half", "reason": "r", "decided_by": "the owner"}
+        self.refused(mech(), verdict(review={"judges": 2, "disagreements": [missing]}), "BUG-001.C2", "no decision")
+
+    def test_a_null_decision_is_a_decision_where_null_means_something(self):
+        d = {"item": "regression:RG-01", "judge_a": "BUG-001", "judge_b": None, "decision": None, "reason": "no fix caused it", "decided_by": "the owner"}
+        card, rc, err = score2(mech(["A#one"]), verdict([{"group": "RG-01", "caused_by": None}], review={"judges": 2, "disagreements": [d]}))
+        self.assertEqual(rc, 0, err)
+        d = dict(d, item="BUG-001.C2")
+        self.refused(mech(), verdict(review={"judges": 2, "disagreements": [d]}), "BUG-001.C2", "no decision")
+
+    # -- structure
+    def test_a_row_judged_twice_is_refused(self):
+        v = verdict()
+        v["planted"].append(judged("BUG-001", C1="none"))
+        self.refused(mech(), v, "BUG-001 appears twice")
+
+    def test_a_row_that_is_not_planted_is_refused(self):
+        v = verdict()
+        v["planted"].append(judged("BUG-900", C1="full"))  # a decoy
+        self.refused(mech(), v, "BUG-900", "not a planted row")
+        v = verdict()
+        v["planted"].append(judged("BUG-777", C1="full"))
+        self.refused(mech(), v, "BUG-777", "not a planted row")
+
+    def test_a_criterion_the_rows_template_does_not_have_is_refused(self):
+        v = verdict()
+        v["planted"][0]["criteria"]["R3"] = "full"      # BUG-001 is Template C
+        self.refused(mech(), v, "BUG-001", "R3")
+        v = verdict()
+        v["planted"][2]["criteria"]["C3"] = "full"      # ARCH-001 is Template R
+        self.refused(mech(), v, "ARCH-001", "C3")
+        v = verdict()
+        v["planted"][0]["criteria"]["C9"] = "full"
+        self.refused(mech(), v, "C9")
+
+    def test_half_on_a_binary_criterion_is_refused(self):
+        for index, name in ((0, "C5"), (0, "C4"), (2, "R4")):
+            v = verdict()
+            v["planted"][index]["criteria"][name] = "half"
+            self.refused(mech(), v, name, "binary")
+
+    def test_a_value_that_is_not_full_half_or_none_is_refused(self):
+        v = verdict()
+        v["planted"][0]["criteria"]["C1"] = "most"
+        self.refused(mech(), v, "BUG-001.C1")
+
+    def test_a_false_positive_or_a_regression_listed_twice_is_refused(self):
+        v = verdict()
+        v["false_positives"] = [{"reported_as": "BUG-900", "is_isca": True}, {"reported_as": "BUG-900", "is_isca": True}]
+        self.refused(mech(), v, "false positive BUG-900 appears twice")
+
+    def test_a_comp_rule_the_spec_does_not_know_is_refused(self):
+        v = verdict()
+        v["comp_violations"] = [{"id": "COMP-099", "count": 1}]
+        self.refused(mech(), v, "COMP-099")
+
+    def test_a_rubric_out_of_range_or_a_bad_penalty_is_refused(self):
+        v = verdict()
+        v["expl_rubric"]["clareza"] = 11
+        self.refused(mech(), v, "judge.schema.json")
+        v = verdict()
+        v["penalties"] = {"PEN-003": -1}
+        self.refused(mech(), v, "judge.schema.json")
+
+    def test_extra_findings_must_be_texts(self):
+        v = verdict()
+        v["extra_findings"] = ["a real extra", 7]
+        self.refused(mech(), v, "extra_findings")
 
 
 class RegressionByName(unittest.TestCase):
