@@ -109,7 +109,7 @@ class V07_ResourcesTest extends VBase {
         synchronized (records) {
             for (LogRecord rec : records) {
                 String text = String.valueOf(rec.getMessage()) + " " + java.util.Arrays.toString(rec.getParameters());
-                if (text.contains(incident) && (rec.getThrown() != null || text.contains("NoSuchFileException") && text.contains("\tat "))) inRecord = true;
+                if (text.contains(incident) && (carriesTheCause(rec.getThrown()) || text.contains("NoSuchFileException") && text.contains("\tat "))) inRecord = true;
             }
         }
         String console = printed.toString(StandardCharsets.UTF_8);
@@ -117,6 +117,16 @@ class V07_ResourcesTest extends VBase {
         boolean inConsole = at >= 0 && console.contains("NoSuchFileException") && console.contains("\tat ");
         boolean ok = generic && (inRecord || inConsole);
         Verdict.fixed("BUG-015", ok, "the download of a document whose file is gone answered 500 with incident " + incident + (generic ? ", without the cause" : ", WITH the cause")
-                + "; a log record with that incident carries the exception and its stack: " + inRecord + "; the process output carries the incident, the exception and its stack: " + inConsole);
+                + "; a log record with that incident carries the exception of the missing file, itself or as the cause of what was thrown: " + inRecord
+                + "; the process output carries the incident, the exception and its stack: " + inConsole);
+    }
+
+    /** The failure's own exception is the missing file's, itself or somewhere down the chain of causes (a wrapper that dropped it carries nothing). */
+    private static boolean carriesTheCause(Throwable thrown) {
+        Throwable t = thrown;
+        for (int hops = 0; t != null && hops < 20; hops++, t = t.getCause()) {
+            if (t instanceof java.nio.file.NoSuchFileException) return true;
+        }
+        return false;
     }
 }

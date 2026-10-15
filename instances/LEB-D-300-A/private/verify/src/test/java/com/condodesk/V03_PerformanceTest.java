@@ -83,9 +83,17 @@ class V03_PerformanceTest extends VBase {
         ok(a, "/admin/billing");
         R run = a.post("/admin/billing", "building", String.valueOf(buildingA), "month", "2026-04", "budget", "900.00");
         if (run.status() != 303) throw refused("POST /admin/billing", run);
-        int after = openOnTheAdminsDashboard(ok(a, "/").body());
-        Verdict.fixed("PERF-010", before == 0 && after == 3, "open invoices of Maple Court on the admin's dashboard: " + before + " before a billing run of its 3 units and "
-                + after + " after it (expected 0 and 3)");
+        int afterBilling = openOnTheAdminsDashboard(ok(a, "/").body());
+        // what an invoice stops being open for is a payment: the manager registers one in full, and the dashboard must follow it too
+        long invoice = ((Number) value("select min(i.id) from invoice i join unit u on u.id = i.unit_id where u.building_id = ? and i.month = '2026-04'", buildingA)).longValue();
+        String amount = ((java.math.BigDecimal) value("select amount from invoice where id = ?", invoice)).toPlainString();
+        Browser m = loggedIn(MANAGER_A);
+        ok(m, "/invoices/" + invoice);
+        R paid = m.post("/invoices/" + invoice + "/payments", "amount", amount, "paid_on", "2026-03-04");
+        if (paid.status() != 303) throw refused("POST /invoices/" + invoice + "/payments", paid);
+        int afterPayment = openOnTheAdminsDashboard(ok(a, "/").body());
+        Verdict.fixed("PERF-010", before == 0 && afterBilling == 3 && afterPayment == 2, "open invoices of Maple Court on the admin's dashboard: " + before
+                + " before a billing run of its 3 units, " + afterBilling + " after it and " + afterPayment + " after the manager registered the full payment of one of them (expected 0, 3 and 2)");
     }
 
     @Test

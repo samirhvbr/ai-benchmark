@@ -30,6 +30,7 @@ LIMIT_OFFSET = '''        long total = Db.one(c, "select count(*) as n from invo
         return new Page<>(items, page, size, total);'''
 INVOICE_LINK = '            b.append("<td><a href=\\"/invoices/").append(i.id()).append("\\">").append(esc(i.unitLabel())).append("</a></td>");'
 INVOICE_LINK_RESTYLED = '            b.append("<td class=\\"unit\\"><a class=\\"inv\\" href=\'/invoices/").append(i.id()).append("\'>").append(esc(i.unitLabel())).append("</a></td>");'
+TOTALS = "        if (buildingTotals == null) buildingTotals = reports.buildingTotals(c);\n        return buildingTotals;"
 WEBHOOK = "    public synchronized Outcome webhook(byte[] body, String signature) {"
 SETTLE_HOOK = '        return db.tx(c -> settle(c, PaymentSource.WEBHOOK, "hook:" + eventId, ourNumber, amount, paidOn, null));'
 
@@ -80,6 +81,24 @@ CASES = [
     dict(target="PERF-010", name="perf010-computed-per-request", kind="alternative", expect="fixed",
          edits=[(REPORTS, "        if (buildingTotals == null) buildingTotals = reports.buildingTotals(c);\n        return buildingTotals;",
                  "        return reports.buildingTotals(c);")]),
+    dict(target="PERF-010", name="perf010-cache-keyed-by-invoice-count", kind="wrong", expect="not_fixed",
+         edits=[(REPORTS, TOTALS, '''        long invoices = Db.one(c, "select count(*) as n from invoice", rs -> rs.getLong("n")).orElse(0L);
+        if (buildingTotals == null || invoices != totalsInvoices) {
+            buildingTotals = reports.buildingTotals(c);
+            totalsInvoices = invoices;
+        }
+        return buildingTotals;'''),
+                (REPORTS, "    private List<BuildingTotals> buildingTotals;", "    private List<BuildingTotals> buildingTotals;\n    private long totalsInvoices = -1;")],
+         note="refreshed when invoices are billed, never when one is paid: right after the billing run, wrong after a payment"),
+    dict(target="PERF-010", name="perf010-cache-keyed-by-open-invoices", kind="alternative", expect="fixed",
+         edits=[(REPORTS, TOTALS, '''        long open = Db.one(c, "select count(*) as n from invoice where status = 'OPEN'", rs -> rs.getLong("n")).orElse(0L);
+        if (buildingTotals == null || open != totalsOpen) {
+            buildingTotals = reports.buildingTotals(c);
+            totalsOpen = open;
+        }
+        return buildingTotals;'''),
+                (REPORTS, "    private List<BuildingTotals> buildingTotals;", "    private List<BuildingTotals> buildingTotals;\n    private long totalsOpen = -1;")],
+         note="a cache that follows what the dashboard shows, through billing and payment alike"),
     dict(target="PERF-010", name="perf010-cache-that-expires", kind="wrong", expect="not_fixed",
          edits=[(REPORTS, "        if (buildingTotals == null) buildingTotals = reports.buildingTotals(c);",
                  "        if (buildingTotals == null || totalsAt.plusSeconds(60).isBefore(clock.instant())) {\n"

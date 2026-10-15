@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.221`
+**Versão atual:** `0.2.222`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.222` — 2026-10-15 — LEB-D-300-A's PERF-010 check follows a payment, and its BUG-015 check asks for the cause
+
+- The same review. PERF-010 asked only that the admin's dashboard show the 3 invoices of a billing run made after it was first read (0 → 3), so a cache refreshed when invoices
+  are billed, and never when one is paid, passed. The check now has the manager register the full payment of one of the three invoices (`POST /invoices/{id}/payments`) and
+  expects the dashboard to show 2 (0 → 3 → 2). BUG-015 accepted any log record of the incident whose exception was not null, including a wrapper that dropped the cause; it
+  now needs the missing file's `NoSuchFileException` itself or somewhere down the chain of causes (at most 20 links), or the exception and its stack in the text of the record
+  or of the process output as before.
+- Four control cases: a PERF-010 cache keyed by the number of invoices (follows billing, not payment) is not a fix, and one keyed by the number of open invoices is; a BUG-015
+  record that carries a wrapper without the cause is not a fix, and one whose wrapper carries it is. On the earlier verifiers the first and the third were accepted wrongly;
+  the other two give the same verdict on both. The control set is 83 cases.
 
 ### `0.2.221` — 2026-10-15 — LEB-D-300-A's verifiers read where a link points and what a row says, not the bytes of the markup
 
