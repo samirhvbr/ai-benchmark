@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.220`
+**Versão atual:** `0.2.221`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.221` — 2026-10-15 — LEB-D-300-A's verifiers read where a link points and what a row says, not the bytes of the markup
+
+- Found by the external review of the key and kept for the version that follows the first deliveries (nothing was scored yet, and none of the changes comes from a score).
+  `V03_PerformanceTest` matched `<a href="/invoices/N">`, `<td>Maple Court</td><td>3</td><td>0</td>` and `<td>…</td><td>RESIDENT</td>…<td>Apt 101</td>` byte for byte, and
+  `V06_DecoyTest` counted `<td><a href="/invoices/N">`. The manifest says what a page shows and the public tests pin only a few rows (the notice article's id and class, a row
+  of the monthly totals, a booking row), none of these, so a delivery that restyled a table, or split the 80-line `FinancePages.list` (CLN-001) and rebuilt its rows, could have
+  been judged on its tags: PERF-003, PERF-010, PERF-012 and the ARCH-014 decoy could read "not fixed" or "broken" for a correct delivery.
+- The invoice link is found by where it points (`href` with either quote, any attributes, up to the closing quote, `?` or `#`), counted by distinct invoice, and a dashboard
+  or user-list row is found in the text of the page (tags and scripts out, white space collapsed): the building's name followed by its units and its open invoices, an
+  account's email followed by its role and its unit, never reaching the next account. The notice count keeps its article id, which a public test pins.
+- Two control cases: the PERF-003 fix with restyled invoice links (single quotes, classes) must be fixed, and the ARCH-014 decoy with the same restyle must hold. Both were
+  run on the verifiers as they were and fail there (not fixed, broken), and pass now, with the public suite still at 70 of 70. The control set is 79 cases; the rest of the
+  version 1.1 (PERF-010, BUG-015, the catalog's proof, the matrix) follows.
 
 ### `0.2.220` — 2026-10-15 — The evaluator spec and the instance README say what the tools now check
 

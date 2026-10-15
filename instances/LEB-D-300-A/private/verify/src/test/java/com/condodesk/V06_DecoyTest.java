@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -46,15 +48,16 @@ class V06_DecoyTest extends VBase {
                 + m + " (expected 300.00, 300.00, 400.01)");
     }
 
-    private static int occurrences(Pattern p, String text) {
-        Matcher m = p.matcher(text);
-        int n = 0;
-        while (m.find()) n++;
-        return n;
+    /** How many different things the page lists: an invoice by the invoice its link points to, a notice by its id (the public tests pin the article's id and class). */
+    private static int distinct(Pattern p, String page) {
+        Set<String> seen = new HashSet<>();
+        Matcher m = p.matcher(page);
+        while (m.find()) seen.add(m.group(1));
+        return seen.size();
     }
 
-    private static final Pattern INVOICE_ROW = Pattern.compile("<td><a href=\"/invoices/\\d+\">");
-    private static final Pattern NOTICE = Pattern.compile("<article id=\"notice-\\d+\"");
+    private static final Pattern INVOICE_ROW = V03_PerformanceTest.INVOICE_LINK;
+    private static final Pattern NOTICE = Pattern.compile("<article id=\"notice-(\\d+)\"");
 
     @Test
     @Verifies({"ARCH-014"})
@@ -65,11 +68,11 @@ class V06_DecoyTest extends VBase {
                     buildingA, managerA, "Notice " + i, Instant.parse("2026-03-01T12:00:00Z").plusSeconds(i));
         }
         Browser a = loggedIn(ADMIN);
-        int invoices1 = occurrences(INVOICE_ROW, ok(a, "/invoices?building=" + buildingA).body());
-        int invoices2 = occurrences(INVOICE_ROW, ok(a, "/invoices?building=" + buildingA + "&page=2").body());
+        int invoices1 = distinct(INVOICE_ROW, ok(a, "/invoices?building=" + buildingA).body());
+        int invoices2 = distinct(INVOICE_ROW, ok(a, "/invoices?building=" + buildingA + "&page=2").body());
         Browser m = loggedIn(MANAGER_A);
-        int notices1 = occurrences(NOTICE, ok(m, "/notices").body());
-        int notices2 = occurrences(NOTICE, ok(m, "/notices?page=2").body());
+        int notices1 = distinct(NOTICE, ok(m, "/notices").body());
+        int notices2 = distinct(NOTICE, ok(m, "/notices?page=2").body());
         boolean holds = invoices1 == 20 && invoices2 == 5 && notices1 == 10 && notices2 == 2;
         Verdict.decoy("ARCH-014", holds, "25 invoices: " + invoices1 + " then " + invoices2 + " (expected 20 and 5); 12 notices: " + notices1 + " then " + notices2 + " (expected 10 and 2)");
     }

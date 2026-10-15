@@ -7,6 +7,7 @@ REPORT_REPO = "repo/ReportRepository.java"
 FINANCE_REPO = "repo/FinanceRepository.java"
 FINANCE = "billing/FinanceService.java"
 USERS = "repo/UserRepository.java"
+FINANCE_PAGES = "web/FinancePages.java"
 
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "public", "code", "schema.sql"), encoding="utf-8") as f:
     SCHEMA = f.read()
@@ -22,6 +23,13 @@ NESTED = '''        List<Listed> out = new ArrayList<>();
             for (Residence r : residences) {
                 if (r.userId() == u.id()) labels.add(r.label());
             }'''
+LIMIT_OFFSET = '''        long total = Db.one(c, "select count(*) as n from invoice i join unit u on u.id = i.unit_id" + where, rs -> rs.getLong("n"), args.toArray()).orElse(0L);
+        args.add(size);
+        args.add((long) (page - 1) * size);
+        List<Invoice> items = Db.list(c, INVOICE + where + " order by " + order + " limit ? offset ?", FinanceRepository::invoice, args.toArray());
+        return new Page<>(items, page, size, total);'''
+INVOICE_LINK = '            b.append("<td><a href=\\"/invoices/").append(i.id()).append("\\">").append(esc(i.unitLabel())).append("</a></td>");'
+INVOICE_LINK_RESTYLED = '            b.append("<td class=\\"unit\\"><a class=\\"inv\\" href=\'/invoices/").append(i.id()).append("\'>").append(esc(i.unitLabel())).append("</a></td>");'
 WEBHOOK = "    public synchronized Outcome webhook(byte[] body, String signature) {"
 SETTLE_HOOK = '        return db.tx(c -> settle(c, PaymentSource.WEBHOOK, "hook:" + eventId, ourNumber, amount, paidOn, null));'
 
@@ -58,11 +66,10 @@ CASES = [
 
     # ---- PERF-003: the page in the query
     dict(target="PERF-003", name="perf003-limit-offset-and-count", kind="alternative", expect="fixed",
-         edits=[(FINANCE_REPO, SEARCH_TAIL, '''        long total = Db.one(c, "select count(*) as n from invoice i join unit u on u.id = i.unit_id" + where, rs -> rs.getLong("n"), args.toArray()).orElse(0L);
-        args.add(size);
-        args.add((long) (page - 1) * size);
-        List<Invoice> items = Db.list(c, INVOICE + where + " order by " + order + " limit ? offset ?", FinanceRepository::invoice, args.toArray());
-        return new Page<>(items, page, size, total);''')]),
+         edits=[(FINANCE_REPO, SEARCH_TAIL, LIMIT_OFFSET)]),
+    dict(target="PERF-003", name="perf003-limit-offset-restyled-links", kind="alternative", expect="fixed",
+         edits=[(FINANCE_REPO, SEARCH_TAIL, LIMIT_OFFSET), (FINANCE_PAGES, INVOICE_LINK, INVOICE_LINK_RESTYLED)],
+         note="the same fix by a delivery that also restyled the invoice links (single quotes, classes): the verifier reads where a link points, not its bytes"),
     dict(target="PERF-003", name="perf003-limit-without-offset", kind="wrong", expect="not_fixed",
          edits=[(FINANCE_REPO, SEARCH_TAIL, '''        long total = Db.one(c, "select count(*) as n from invoice i join unit u on u.id = i.unit_id" + where, rs -> rs.getLong("n"), args.toArray()).orElse(0L);
         List<Invoice> items = Db.list(c, INVOICE + where + " order by " + order + " limit " + size, FinanceRepository::invoice, args.toArray());

@@ -4,6 +4,9 @@ FINANCE = "billing/FinanceService.java"
 OFX = "billing/OfxParser.java"
 BOOKING = "booking/BookingService.java"
 BUILDINGS = "repo/BuildingRepository.java"
+FINANCE_PAGES = "web/FinancePages.java"
+INVOICE_LINK = '            b.append("<td><a href=\\"/invoices/").append(i.id()).append("\\">").append(esc(i.unitLabel())).append("</a></td>");'
+INVOICE_LINK_RESTYLED = '            b.append("<td class=\\"unit\\"><a class=\\"inv\\" href=\'/invoices/").append(i.id()).append("\'>").append(esc(i.unitLabel())).append("</a></td>");'
 OFX_CATCH = "        } catch (SAXException | IOException | NumberFormatException | DateTimeParseException e) {\n            throw invalid();"
 
 CASES = [
@@ -19,6 +22,9 @@ CASES = [
     # ---- ARCH-014: the contracted page sizes
     dict(target="ARCH-014", name="arch014-renamed", kind="decoy", expect="holds",
          edits=[(FINANCE, lambda t: t.replace("PAGE_SIZE", "INVOICES_PER_PAGE"))]),
+    dict(target="ARCH-014", name="arch014-invoice-links-restyled", kind="decoy", expect="holds",
+         edits=[(FINANCE_PAGES, INVOICE_LINK, INVOICE_LINK_RESTYLED)],
+         note="the page sizes hold after a delivery restyled the invoice rows (single quotes, classes): the verifier counts the invoices a page links to, not their tags"),
     dict(target="ARCH-014", name="arch014-another-size", kind="decoy", expect="broken",
          edits=[(FINANCE, "public static final int PAGE_SIZE = 20;", "public static final int PAGE_SIZE = 25;")]),
 

@@ -52,7 +52,8 @@ class V03_PerformanceTest extends VBase {
                 + "; the second page has 20 other invoices: " + paged);
     }
 
-    private static final Pattern INVOICE_LINK = Pattern.compile("<a href=\"/invoices/(\\d+)\">");
+    /** A link to one invoice, found by where it points: the quotes, the other attributes and the cell around it are the page's own. */
+    static final Pattern INVOICE_LINK = Pattern.compile("href\\s*=\\s*[\"']/invoices/(\\d+)(?=[\"'?#])", Pattern.CASE_INSENSITIVE);
 
     private static Set<String> invoiceIds(String page) {
         Set<String> out = new HashSet<>();
@@ -61,10 +62,16 @@ class V03_PerformanceTest extends VBase {
         return out;
     }
 
-    private static final Pattern BUILDING_ROW = Pattern.compile("<td>Maple Court</td><td>(\\d+)</td><td>(\\d+)</td>");
+    /** The text a reader sees: the tags of the page and its scripts and styles left out, the white space collapsed. */
+    static String textOf(String page) {
+        return page.replaceAll("(?is)<(script|style)\\b.*?</\\1>", " ").replaceAll("(?s)<[^>]*>", " ").replace("&nbsp;", " ").replaceAll("\\s+", " ");
+    }
+
+    /** A building on the admin's dashboard is its name, its units and its open invoices, in that order; the markup around them is the page's own. */
+    private static final Pattern BUILDING_ROW = Pattern.compile("Maple Court (\\d+) (\\d+)\\b");
 
     private static int openOnTheAdminsDashboard(String page) {
-        Matcher m = BUILDING_ROW.matcher(page);
+        Matcher m = BUILDING_ROW.matcher(textOf(page));
         return m.find() ? Integer.parseInt(m.group(2)) : -1;
     }
 
@@ -120,11 +127,14 @@ class V03_PerformanceTest extends VBase {
         ok(a, "/admin/users");
         long large = cpuOf(a, "/admin/users");
         String page = ok(a, "/admin/users").body();
-        boolean listsAll = Pattern.compile("listed-15993@many\\.test</td><td>RESIDENT</td><td>\\d+</td><td>Apt 101</td>").matcher(page).find();
+        boolean listsAll = USER_ROW.matcher(textOf(page)).find();
         double ratio = (double) large / Math.max(1, small);
         Verdict.fixed("PERF-012", ratio < MAX_RATIO && listsAll, String.format("processor time of the application for the user list: %d ms with 4,000 accounts and %d ms with 16,000, "
                 + "a ratio of %.1f (linear is 4; the limit is %.0f); the list still shows every account with its unit: %s", small, large, ratio, MAX_RATIO, listsAll));
     }
+
+    /** An account on the list is its email, its role and its unit, with whatever else the row shows between them (never the next account's). */
+    private static final Pattern USER_ROW = Pattern.compile("listed-15993@many\\.test(?: (?!listed-)\\S+){0,5}? Apt 101\\b");
 
     /** Accounts number from..to, each a tenant of Apt 101 of Maple Court, so that every account has one residency. */
     private void accounts(int from, int n) throws Exception {
