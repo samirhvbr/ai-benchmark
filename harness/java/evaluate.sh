@@ -11,7 +11,8 @@
 #                 compile (every public test fails, and all of them are named); the names feed the regression rule of the new series
 #   verify        {"probes": [...], "decoys": [...], "inconclusive": [...]}; probes follow scoring/probe-result.schema.json
 # LEB_KEEP_WORK=1 keeps the assembled project for a look afterwards.
-# Exit status 3 means the evaluator itself failed (no Docker, no database, an unreadable result): never read it as a verdict.
+# Exit status 3 means the evaluator itself failed (no Docker, no database, a Maven run that did not finish without a compiler diagnostic of
+# the delivery, an unreadable result): never read it as a verdict (harness/java/build_status.py).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 MODE="${1:?usage: evaluate.sh characterize|verify [INSTANCE_DIR [CODE_DIR [TEST_SELECTOR]]]}"
@@ -47,14 +48,18 @@ import xml.etree.ElementTree as ET
 
 mode, work, pub, matrix_path, status, here = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5]), sys.argv[6]
 sys.path.insert(0, here)
+import build_status
 import test_names
 log = open(os.path.join(work, "maven.log"), encoding="utf-8", errors="replace").read()
-build_failed = "COMPILATION ERROR" in log or (status != 0 and not os.path.isdir(os.path.join(work, "target", "classes")))
 reports = glob.glob(os.path.join(work, "target", "surefire-reports", "TEST-*.xml"))
 
-if status != 0 and not build_failed and not reports:
-    print("[evaluate] Maven failed before any test ran, and not on the delivery's code (exit %d): see the log above" % status, file=sys.stderr)
+# Only a compiler diagnostic makes the delivery's build its own failure; any other failed run is the evaluator's (build_status.py).
+outcome = build_status.classify(log, status)
+if outcome == build_status.EVALUATOR_FAILED:
+    print("[evaluate] Maven did not finish (exit %d) and not on a compiler diagnostic of the delivery's code: the evaluation failed, "
+          "it is not a verdict; see the log above" % status, file=sys.stderr)
     sys.exit(3)
+build_failed = outcome == build_status.DELIVERY_DOES_NOT_COMPILE
 
 if mode == "characterize":
     if build_failed:

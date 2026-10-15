@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.215`
+**Versão atual:** `0.2.216`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.216` — 2026-10-15 — A Maven run that did not finish is the evaluation's failure, not a delivery's score
+
+- Found by an external review of the key (made at 0.2.213). `harness/java/evaluate.sh` called a delivery's build failed when Maven exited non-zero and
+  `target/classes` did not exist. A Docker, database, offline-cache or plugin-resolution failure of the evaluator happens before any compilation, so it was scored as
+  a delivery that fails all 70 public tests, and the exit-3 branch ("the evaluator failed, never read it as a verdict") could not be reached for it.
+- The new `harness/java/build_status.py` decides: only a compiler diagnostic (`COMPILATION ERROR`, `Compilation failure`) is the delivery's own build failure. The
+  tests run with `-Dmaven.test.failure.ignore=true`, so any other non-zero status is a run that did not finish, and it now ends with exit status 3, INCONCLUSIVE, even
+  when a forked JVM left some Surefire reports behind (a partial set of reports is not a result).
+- Checked against the real container on the planted tree: an empty offline cache ends with exit 3; a delivery with a syntax error is `build_failed` with 70 failing
+  tests; the unchanged tree passes 70 of 70. `tests/test_build_status.py` covers the log shapes without Docker.
 
 ### `0.2.215` — 2026-10-14 — LEB-D-300-A is frozen: its matrix and package hashes are the ones the first run will cite
 
