@@ -1,28 +1,28 @@
 {
  "leb_spec": "1.5.1",
- "instance": "LEB-D-300-A v1.0",
- "matrix_sha256": "45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9",
+ "instance": "LEB-D-300-A v1.1",
+ "matrix_sha256": "9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce",
  "submission": "systems/300-A/reference + migrations/001_payment_invoice_index.sql (the reference taken as a delivery)",
  "generated_by": "leb_harness.py — pipeline mecânico (PROTOCOL §5 passos 1-3,6), runner da instância",
  "timing_s": {
-  "characterization_baseline": 58.3,
-  "characterization_submission": 58.8,
-  "probes": 23.3,
-  "total": 140.5
+  "characterization_baseline": 60.7,
+  "characterization_submission": 60.4,
+  "probes": 24.4,
+  "total": 145.5
  },
  "characterization": {
   "baseline": {
    "passed": 70,
    "failed": 0,
    "ok": true,
-   "elapsed_s": 58.3,
+   "elapsed_s": 60.7,
    "failed_tests": []
   },
   "submission": {
    "passed": 70,
    "failed": 0,
    "ok": true,
-   "elapsed_s": 58.8,
+   "elapsed_s": 60.4,
    "failed_tests": []
   },
   "regression": false
@@ -234,7 +234,7 @@
    "id": "BUG-015",
    "difficulty": "Moderada",
    "corrigida": true,
-   "msg": "the download of a document whose file is gone answered 500 with incident d41d0736, without the cause; a log record with that incident carries the exception and its stack: true; the process output carries the incident, the exception and its stack: false [proven: the record that carries a 500's incident id carries the exception and its stack too (or the process output carries all three), and the response stays generic; not proven: log destinations the evaluator does not capture (a file, a structured logger); other internal errors than a missing stored file]",
+   "msg": "the download of a document whose file is gone answered 500 with incident 12b2304c, without the cause; a log record with that incident carries the exception of the missing file, itself or as the cause of what was thrown: true; the process output carries the incident, the exception and its stack: false [proven: the record that carries a 500's incident id carries the exception and its stack too (or the process output carries all three), and the response stays generic; not proven: log destinations the evaluator does not capture (a file, a structured logger); other internal errors than a missing stored file]",
    "result": "full",
    "proves": [
     "C3"
@@ -354,7 +354,7 @@
    "id": "PERF-010",
    "difficulty": "Difícil",
    "corrigida": true,
-   "msg": "open invoices of Maple Court on the admin's dashboard: 0 before a billing run of its 3 units and 3 after it (expected 0 and 3) [proven: the admin's dashboard shows the open invoices of a billing run made after it was first shown; not proven: whether a cache with an expiry, if any, is acceptable (the judge reads it)]",
+   "msg": "open invoices of Maple Court on the admin's dashboard: 0 before a billing run of its 3 units, 3 after it and 2 after the manager registered the full payment of one of them (expected 0, 3 and 2) [proven: the admin's dashboard shows the open invoices of a billing run made after it was first shown; not proven: whether a cache with an expiry, if any, is acceptable (the judge reads it)]",
    "result": "full",
    "proves": [
     "C3"
@@ -367,7 +367,7 @@
    "id": "PERF-012",
    "difficulty": "Especialista",
    "corrigida": true,
-   "msg": "processor time of the application for the user list: 12 ms with 4,000 accounts and 23 ms with 16,000, a ratio of 1.9 (linear is 4; the limit is 8); the list still shows every account with its unit: true [proven: the processor time of the user list grows by less than 8 times from 4,000 to 16,000 accounts; not proven: absolute time; a quadratic loop whose constant is too small to show at 16,000 accounts (one that stops at the first match); other quadratic code]",
+   "msg": "processor time of the application for the user list: 11 ms with 4,000 accounts and 23 ms with 16,000, a ratio of 2.1 (linear is 4; the limit is 8); the list still shows every account with its unit: true [proven: the processor time of the user list grows by less than 8 times from 4,000 to 16,000 accounts; not proven: absolute time; a quadratic loop whose constant is too small to show at 16,000 accounts (one that stops at the first match); other quadratic code]",
    "result": "full",
    "proves": [
     "C3"

@@ -8,7 +8,7 @@ HEADER = {
     "leb_spec": "1.5.1",
     "instance": "LEB-D-300-A",
     "level": 300,
-    "version": "1.0",
+    "version": "1.1",
     "language": "java21-maven-postgresql",
     "task_version": "D-1.0.0",
     "publication": "aggregate",
@@ -221,7 +221,8 @@ DECOYS = [
     decoy("BUG-013.b", "diagnostico", "billing/FinanceService.java", r"divide\(fractions, 12, RoundingMode\.HALF_EVEN\)",
           "money rounded half-even",
           "The quotient at 12 decimals is an intermediate value: each share is floored and the leftover cents go to the largest "
-          "remainders, so the invoices add up to the budget exactly, and the rounding of the 12th decimal never moves a floor."),
+          "remainders, so the invoices add up to the budget exactly. The rounding of the 12th decimal moves neither a floor nor the "
+          "order of the remainders while the fractions add up to far less than a million, as a building's do."),
     decoy("ARCH-014", "diagnostico", "billing/FinanceService.java", r"public static final int PAGE_SIZE = 20;",
           "hard-coded configuration",
           "Twenty invoices and ten notices per page are the contract of the manifest, not a setting."),

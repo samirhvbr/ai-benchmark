@@ -1,11 +1,10 @@
 # LEB-D-300-A — CondoDesk, Default track
 
-> **Status: in authoring, not runnable.** The planted tree (`public/code/`), the verifiers, the matrix, the variant cases and the
-> task statement are written, and `./leb pacote` builds the package. What is left before a first run (the evaluator of the new
-> series and a bench snapshot holding the package) is in [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status). Every file of this instance is committed here as it is
-> written, the answer key included, and the instance is complete before its first run
-> ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2). The folder exists from the start so that its whole history is
-> public.
+> **Status: version 1.1, in its first runs.** Version 1.0 was frozen on 2026-10-14; version 1.1 revised the verifiers on 2026-10-15,
+> before any delivery went through them (see [Versions](#versions)). Every file of this instance is committed here as it is
+> written, the answer key included ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), so that its whole history is
+> public. What the instance needed to run, from its files to the evaluator and the bench snapshot, is ticked in
+> [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
 
 The **Default** instance of system A of the next series ([`docs/new-series-design.md`](../../docs/new-series-design.md),
 `PROPOSED`): everyday maintenance of CondoDesk, a condominium management application in Java 21 with Maven and PostgreSQL.
@@ -21,10 +20,40 @@ The **Default** instance of system A of the next series ([`docs/new-series-desig
 The reference itself is described as *no known vulnerabilities within the reviewed scope*: its defenses are checked by
 `SecurityBehaviorTest`, which stays part of this instance's public tests, so a maintenance change must keep them.
 
-## Before the first run
+## Versions
 
-This instance cannot run yet. What it still needs, from its own files to the evaluator and the task statement of its track, is
-kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
+| Version | Date | `matrix_sha256` | What it is |
+| --- | --- | --- | --- |
+| 1.0 | 2026-10-14 | `45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9` | Frozen at commit `73eb0f8` (0.2.215), with `package_sha256` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` |
+| 1.1 | 2026-10-15 | `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce` | The verifiers hardened; the package differs from 1.0 in four lines of `TASK.md` (below), `package_sha256` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` |
+
+An external review of the key, received before the first run, found places where a verifier judged a delivery by something the
+manifest does not contract, or accepted less than it claimed. Its tooling findings were fixed in 0.2.216 to 0.2.220 without touching
+the key. Version 1.1 is the rest, made **after the first deliveries were produced and before any of them went through the
+verifiers**: the mechanical stage had not been run on any delivery when the key was changed, and each change below comes from the review and
+from a control case, not from a delivery's score.
+
+- **Markup.** `V03` and `V06` read the pages' HTML bytes (`<td><a href="/invoices/N">`, a dashboard row of `<td>` cells, a user-list
+  row). The manifest says what a page shows, not its tags, and the public tests pin only a few (the notice article's id and class, a
+  row of the monthly totals, a booking row), none of these. A delivery that restyled a table, or split the 80-line
+  `FinancePages.list` (CLN-001) and rebuilt its rows, could have been judged on its markup. They now read where an invoice link points
+  (any quotes, any attributes) and the text of a dashboard row or a user-list row.
+- **PERF-010.** The dashboard of the admin is checked after a billing run (0 → 3) and now also after the manager registers the full
+  payment of one of the invoices (3 → 2). A cache invalidated only by billing passed the first and fails the second.
+- **BUG-015.** The log record must carry the missing file's exception itself, or as a cause somewhere down the chain of the exception
+  that was logged. Any non-null exception used to pass, including a wrapper that dropped the cause.
+- **BUG-013.b.** The catalog's proof that the 12th-decimal rounding is harmless argued the floors only. It now also covers the order of
+  the leftover cents, and states its bound (the fractions of a building add up to about 1, the proof holds far beyond that).
+- **Controls.** Six new cases in `private/variants/` (83 in all): the PERF-003 fix with restyled invoice links, a PERF-010 cache that
+  follows billing only and one that follows the open invoices, a BUG-015 wrapper with and without its cause, and the ARCH-014 decoy
+  with restyled invoice rows. Each was run against the verifiers of 1.0 as well, to see that the change is what tells it apart.
+- **Left as they were.** ARCH-003 and ARCH-009 (an existing control already accepts named constants, and their mechanical result is a
+  ceiling, so only a false rejection would matter); the extras the reference code brings (billing reference widths, the OFX root),
+  which are known extras for the judges.
+
+The package of 1.1 is the package of 1.0 with the instance version and the matrix hash rewritten in `TASK.md` (each appears twice, four lines
+in all; the other 54 files are byte for byte the same): the planted tree, the manifest, the public tests and the task statement are the same, so a delivery produced on the 1.0 package is a delivery of 1.1's task and is
+evaluated with 1.1's key.
 
 ## Layout
 
@@ -77,7 +106,7 @@ python3 tools/make_matrix.py instances/LEB-D-300-A --check    # the committed ma
 ## Variant cases
 
 A verifier that has only seen the planted tree and the reference has not shown that it can tell a fix from a near miss.
-`private/variants/` holds 77 control cases, each a few exact edits on `public/code/` (or on the reference): fixes written another
+`private/variants/` holds 83 control cases, each a few exact edits on `public/code/` (or on the reference): fixes written another
 way, which the verifier of their row must accept; partial and wrong fixes, which it must reject; and changes to the decoys, which
 keep their property or break it. `tools/variants.py` builds each case, runs its row's verifier through the Java evaluator and
 compares the verdict; with `--characterize` it also runs the public tests on every case that should pass, so an "alternative" that

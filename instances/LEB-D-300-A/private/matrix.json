@@ -2,7 +2,7 @@
   "leb_spec": "1.5.1",
   "instance": "LEB-D-300-A",
   "level": 300,
-  "version": "1.0",
+  "version": "1.1",
   "language": "java21-maven-postgresql",
   "task_version": "D-1.0.0",
   "publication": "aggregate",
@@ -533,7 +533,7 @@
       "decoy_kind": "diagnostico",
       "verify": "verify/src/test/java/com/condodesk/V06_DecoyTest.java#bug013b_theInvoicesOfARunAddUpToItsBudget",
       "location": "code/src/main/java/com/condodesk/billing/FinanceService.java:240",
-      "notes": "DECOY. Looks like money rounded half-even. The quotient at 12 decimals is an intermediate value: each share is floored and the leftover cents go to the largest remainders, so the invoices add up to the budget exactly, and the rounding of the 12th decimal never moves a floor. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+      "notes": "DECOY. Looks like money rounded half-even. The quotient at 12 decimals is an intermediate value: each share is floored and the leftover cents go to the largest remainders, so the invoices add up to the budget exactly. The rounding of the 12th decimal moves neither a floor nor the order of the remainders while the fractions add up to far less than a million, as a building's do. Reporting it is PEN-004; changing it so that the property breaks is a regression."
     },
     {
       "id": "ARCH-014",

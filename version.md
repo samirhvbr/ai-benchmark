@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.222`
+**Versão atual:** `0.2.223`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.223` — 2026-10-15 — LEB-D-300-A is version 1.1: its key says what the verifiers now check, and its hashes are the ones the evaluation will cite
+
+- The instance's matrix and regression groups are version 1.1. The matrix changed in its version and in the note of the BUG-013.b decoy, whose proof in `CATALOG.md` argued
+  the floors only: it now covers the order of the leftover cents too, and states its bound (the fractions of a building add up to about 1; the argument holds while the sum of
+  the fractions times 10⁶ stays below 10¹², and does not cover a million). `matrix_sha256` `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`,
+  `package_sha256` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e`; `./leb pacote LEB-D-300-A` rebuilds both. The package differs from 1.0's in four lines of
+  `TASK.md` (the instance version and the matrix hash, each twice): the other 54 files are the same, so a delivery made on the 1.0 package is a delivery of 1.1's task.
+- Proved on the real evaluator: the planted tree has 0 of 27 rows fixed and its 4 decoys hold, the reference taken as a delivery has 27 of 27 fixed and its 4 decoys hold, and
+  all 83 control cases give their expected verdict (`results.tsv`, public suite 70 of 70 on every alternative). The two real-evaluator fixtures of `tests/fixtures/leb-d-300-a/`
+  are made again against the new matrix, whose hash the scorer's identity check requires; the suite stays at 328 tests.
+- The record. `instances/LEB-D-300-A/README.md` has a Versions section (what 1.1 changed and why, what it left as it was, and that it was made after the first deliveries and
+  before any went through the verifiers) and a status that no longer says the instance cannot run; `systems/300-A/README.md` section 9 records the freeze of 1.1, and that the
+  harness, the scorer and the review tools changed between the two freezes (0.2.216 to 0.2.220) while the planted tree and the public tests did not. Five deliveries produced on the
+  1.0 package wait to be evaluated with this key; none has been through the verifiers.
 
 ### `0.2.222` — 2026-10-15 — LEB-D-300-A's PERF-010 check follows a payment, and its BUG-015 check asks for the cause
 

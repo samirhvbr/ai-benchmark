@@ -192,6 +192,13 @@ split rounding each share.
       `matrix_sha256` `45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9` and `package_sha256`
       `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` (`./leb pacote LEB-D-300-A` rebuilds both). The first case is Claude Haiku 5.5 at
       effort `high`, 90 minutes, five runs, two blind judges per delivery. From the first run on, any change is a new version of the instance
+- [x] `LEB-D-300-A` **version 1.1, 2026-10-15**: the verifiers hardened after an external review of the key, made after the first deliveries were produced and before
+      any of them went through the verifiers (what changed and why: [`instances/LEB-D-300-A/README.md`](../../instances/LEB-D-300-A/README.md#versions)).
+      `matrix_sha256` `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce` and `package_sha256`
+      `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` (`./leb pacote LEB-D-300-A` rebuilds both). The package differs from 1.0 in four lines of
+      `TASK.md` (the instance version and the matrix hash, each twice) and nothing else. The harness, the scorer and the review tools changed between the two freezes
+      (0.2.216 to 0.2.220: the Maven failure rule, regression by test name, the scorer's input checks, review decisions bound to the verdicts); the matrix changed
+      only in its version and in the note of the BUG-013.b decoy, and the planted tree and the public tests did not change. All 83 control cases give their expected verdict, the planted tree has 0 of 27 rows fixed and the reference 27 of 27
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
 committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), the decisions in
