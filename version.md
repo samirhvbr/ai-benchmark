@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.224`
+**Versão atual:** `0.2.225`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.225` — 2026-10-15 — LEB-D-300-A's first case, Claude Haiku 5.5 at high effort, is published as an aggregate: 547 over five runs, Bronze
+
+- The first case of the new series. Claude Haiku 5.5 at effort `high` (Claude Code 2.1.295, 90 minutes, one message through the lab's unattended driver) made five runs that
+  completed: 524, 533, 580, 561 and 536. Published as `results/2026/LEB-D-300-A/aggregate.json`: mean **547**, 95% interval 530 to 565, grade Bronze (the whole interval is inside
+  Bronze, and so is every run), completion 5 of 5, expected score per scheduled attempt 546.8 (the same, since every attempt completed), one lab failure rerun, about US$ 1.13 and
+  27 minutes a run. Category means: ARCH 96 of 283, BUG 173 of 213, PERF 125 of 213, CLN 10 of 141, COMP 100 of 100, EXPL 42 of 50. The interval comes from one system, so it
+  reflects the variation among that system's runs only: the variance between systems and the sizing wait for more systems.
+- How it was produced, for the record. The five runs received the 1.0 package and were evaluated with the 1.1 key (the notes of the aggregate say so, in English and Portuguese). Each
+  delivery went through the mechanical stage (public suite 70 of 70 on all five, no regression group broken, no decoy broken), then two blind judges on Claude Opus 5.5 for the
+  matching and two for the explanation, with the delivery anonymized (no run, no model). The judges disagreed on 7 items in 2 of the 5 deliveries and agreed on every
+  other item; the owner settled each of the 7 on 2026-10-15. Costs and times are the client's own (`resultado.json`).
+- The record. The public aggregate carries no flaw, verdict or delivery (the instance is active); the instance README has a Results section and `systems/300-A/README.md`
+  section 9 ticks the first case. The private archive of the runs, the judges' folders and the review decisions stay with the lab.
 
 ### `0.2.224` — 2026-10-15 — The exporter publishes the aggregate of an instance of the new series: the estimate of its five runs with the interval, the completion and the outcomes
 

@@ -18325,6 +18325,170 @@
           }
         }
       ]
+    },
+    {
+      "publication": "aggregate",
+      "edition": "2026",
+      "instance": "LEB-D-300-A",
+      "version": "1.1",
+      "level": 300,
+      "leb_spec": "1.5.1",
+      "task_version": "1.0.0",
+      "matrix_sha256": "9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce",
+      "package_sha256": "71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4",
+      "mode": "A",
+      "turn_budget": null,
+      "budget_minutes": 90,
+      "track": "default",
+      "agents": [
+        {
+          "agent": "claude-haiku-5.5-high",
+          "score": 547,
+          "grade": "Bronze",
+          "runs_count": 5,
+          "categories": {
+            "ARCH": 96,
+            "BUG": 173,
+            "PERF": 125,
+            "CLN": 10,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 1.13,
+          "wall_minutes": 26.6,
+          "tokens": {
+            "input": 139,
+            "output": 139944,
+            "cache": 12593514,
+            "total": 12733597
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 546.8,
+              "low": 530.0,
+              "high": 565.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 546.8,
+              "low": 530.0,
+              "high": 565.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 536,
+            "min": 524,
+            "max": 580
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 524,
+              "grade": "Bronze",
+              "cost_usd": 1.33,
+              "wall_minutes": 23.3,
+              "tokens": {
+                "input": 164,
+                "output": 148822,
+                "cache": 15861688,
+                "total": 16010674
+              }
+            },
+            {
+              "run": 3,
+              "total": 533,
+              "grade": "Bronze",
+              "cost_usd": 1.22,
+              "wall_minutes": 21.3,
+              "tokens": {
+                "input": 162,
+                "output": 135142,
+                "cache": 14449384,
+                "total": 14584688
+              }
+            },
+            {
+              "run": 4,
+              "total": 580,
+              "grade": "Bronze",
+              "cost_usd": 1.11,
+              "wall_minutes": 30.5,
+              "tokens": {
+                "input": 122,
+                "output": 148464,
+                "cache": 11606551,
+                "total": 11755137
+              }
+            },
+            {
+              "run": 5,
+              "total": 561,
+              "grade": "Bronze",
+              "cost_usd": 1.0,
+              "wall_minutes": 30.3,
+              "tokens": {
+                "input": 114,
+                "output": 145303,
+                "cache": 9650206,
+                "total": 9795623
+              }
+            },
+            {
+              "run": 6,
+              "total": 536,
+              "grade": "Bronze",
+              "cost_usd": 0.99,
+              "wall_minutes": 27.6,
+              "tokens": {
+                "input": 134,
+                "output": 121988,
+                "cache": 11399740,
+                "total": 11521862
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Haiku 5.5",
+            "id": "claude-haiku-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "Five runs between 524 and 580, mean 547 with a 95% interval of 530 to 565, all Bronze. All five completed inside the 90-minute budget, at about US$ 1.13 and 27 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (173 of 213 on average), then performance (125 of 213) and architecture (96 of 283); clean code scored 10 of 141 on average, with two runs at 0. The reports were rated 41 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest.",
+            "pt_BR": "Cinco execuções entre 524 e 580, média 547 com intervalo de 95% de 530 a 565, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,13 e 27 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (173 de 213 em média), depois desempenho (125 de 213) e arquitetura (96 de 283); código limpo teve 10 de 141 em média, com duas execuções em 0. Os relatórios tiveram de 41 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto."
+          }
+        }
+      ],
+      "notes": {
+        "en": "The five runs received the package of version 1.0 of this instance, whose task statement names the key of that version, and were evaluated with the key of version 1.1: version 1.1 hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them, and its package differs from 1.0 only in the four lines of the task statement that name the version and the key. Every file of both versions is public on GitHub. A sixth attempt, the second, was lost by the lab before the model answered, was not scored, and was rerun.",
+        "pt_BR": "As cinco execuções receberam o pacote da versão 1.0 desta instância, cujo enunciado cita o gabarito dessa versão, e foram avaliadas com o gabarito da versão 1.1: a versão 1.1 endureceu os verificadores (lê o que uma página diz e para onde um link aponta em vez do seu markup, acompanha um pagamento numa verificação de cache e pede a causa num registro de erro) antes de qualquer entrega passar por eles, e o pacote dela difere do da 1.0 só nas quatro linhas do enunciado que citam a versão e o gabarito. Todo arquivo das duas versões é público no GitHub. Uma sexta tentativa, a segunda, foi perdida pelo laboratório antes de o modelo responder, não foi pontuada e foi refeita."
+      }
     }
   ]
 }

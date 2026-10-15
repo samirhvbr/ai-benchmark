@@ -1,7 +1,7 @@
 # LEB-D-300-A — CondoDesk, Default track
 
-> **Status: version 1.1, in its first runs.** Version 1.0 was frozen on 2026-10-14; version 1.1 revised the verifiers on 2026-10-15,
-> before any delivery went through them (see [Versions](#versions)). Every file of this instance is committed here as it is
+> **Status: version 1.1, first case done.** Version 1.0 was frozen on 2026-10-14; version 1.1 revised the verifiers on 2026-10-15,
+> before any delivery went through them (see [Versions](#versions)); the first case's aggregate is published (see [Results](#results)). Every file of this instance is committed here as it is
 > written, the answer key included ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), so that its whole history is
 > public. What the instance needed to run, from its files to the evaluator and the bench snapshot, is ticked in
 > [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
@@ -54,6 +54,13 @@ from a control case, not from a delivery's score.
 The package of 1.1 is the package of 1.0 with the instance version and the matrix hash rewritten in `TASK.md` (each appears twice, four lines
 in all; the other 54 files are byte for byte the same): the planted tree, the manifest, the public tests and the task statement are the same, so a delivery produced on the 1.0 package is a delivery of 1.1's task and is
 evaluated with 1.1's key.
+
+## Results
+
+While the instance is active only its aggregate is published ([`results/2026/LEB-D-300-A/aggregate.json`](../../results/2026/LEB-D-300-A/aggregate.json), and the
+section of [`results/README.md`](../../results/README.md)): no per-flaw result, no verdict, no delivery. The first case is Claude Haiku 5.5 at effort `high`: five runs of 90
+minutes at most, on the 1.0 package and evaluated with the 1.1 key, scored 524, 533, 580, 561 and 536 (mean 547, 95% interval 530 to 565, all Bronze), at about US$ 1.13 and 27
+minutes a run. The interval comes from one system only, so it reflects the variation among that system's runs.
 
 ## Layout
 

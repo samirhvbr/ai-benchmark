@@ -199,6 +199,9 @@ split rounding each share.
       `TASK.md` (the instance version and the matrix hash, each twice) and nothing else. The harness, the scorer and the review tools changed between the two freezes
       (0.2.216 to 0.2.220: the Maven failure rule, regression by test name, the scorer's input checks, review decisions bound to the verdicts); the matrix changed
       only in its version and in the note of the BUG-013.b decoy, and the planted tree and the public tests did not change. All 83 control cases give their expected verdict, the planted tree has 0 of 27 rows fixed and the reference 27 of 27
+- [x] `LEB-D-300-A` **first case, 2026-10-15**: Claude Haiku 5.5 at effort `high`, 90 minutes, five scheduled runs (a sixth attempt, the second, was a lab failure and was rerun).
+      All five completed on the 1.0 package and were evaluated with the 1.1 key, judged blind by two judges each, and a person settled the disagreements. Published as an aggregate
+      only ([`results/2026/LEB-D-300-A/aggregate.json`](../../results/2026/LEB-D-300-A/aggregate.json)): mean **547**, 95% interval 530 to 565, runs 524 to 580, all Bronze
 
 An instance's first run needs every item above, its package built clean by `./leb pacote`, the whole instance (key included)
 committed and pushed ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), the decisions in
