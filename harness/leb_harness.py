@@ -222,6 +222,14 @@ def verification_result(raw, matrix_entries):
     return {"probes": obj["probes"], "decoys": decoys, "inconclusive": inconclusive}, None
 
 
+def regressed(baseline, submission):
+    """Did the delivery break something the pristine instance passes? By test NAME when the runner gives the names (a delivery that fixes
+    one failing test of the baseline and breaks another has the same count and a regression); by count when it does not (the PHP instances)."""
+    if "failed_tests" in submission:
+        return bool(submission.get("build_failed")) or bool(set(submission["failed_tests"]) - set(baseline.get("failed_tests") or []))
+    return submission["failed"] > baseline["failed"]
+
+
 def probe_is_fixed(p):
     return p["corrigida"] if isinstance(p.get("corrigida"), bool) else p.get("result") == "full"
 
@@ -263,7 +271,7 @@ def main_runner(a, inst, runner, matrix, mpath):
         probes_raw = verified["probes"]
         verify_elapsed = raw["elapsed_s"]
 
-    regression = sub_char["failed"] > baseline["failed"]
+    regression = regressed(baseline, sub_char)
     probes, unverified, affected = [], [], {}
     for p in probes_raw:
         entry = planted.get(p["id"], {})

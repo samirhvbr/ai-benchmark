@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.216`
+**Versão atual:** `0.2.217`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.217` — 2026-10-15 — A regression is a test that fails in the delivery and not in the baseline, by name and never by count
+
+- Found by the same external review. `score_v2.broken_groups` looked for regressions only when the delivery's failed count was greater than the pristine
+  instance's, and `leb_harness` set the mechanical `regression` flag the same way. A delivery that fixes one failing baseline test and breaks another has the same
+  count and was not seen. Both now compare the sets of failed test names (`score_v2.newly_failed`, `leb_harness.regressed`); a runner that gives no names (the PHP
+  instances) is still compared by count.
+- The baseline of LEB-D-300-A has no failing test (70 of 70, measured again today), so no score changes: this closes a latent hole before a baseline with a known
+  failure can open it.
+- A report that counts failed characterization tests and names none, or names failed tests and counts none, is refused: the one-charge rule works on names.
+  `tests/test_score_v2.py` (`RegressionByName`) has the swap case, the baseline failure that still fails, both contradictions, and the harness function.
 
 ### `0.2.216` — 2026-10-15 — A Maven run that did not finish is the evaluation's failure, not a delivery's score
 

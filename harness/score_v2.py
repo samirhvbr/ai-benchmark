@@ -47,6 +47,17 @@ def load_track(name):
     return track
 
 
+def newly_failed(base, sub):
+    """The test names that fail in the delivery and not in the pristine instance, or None when the runner gave no names. The comparison is
+    by NAME, never by count: a delivery that fixes one failing test of the baseline and breaks another has the same count and a regression."""
+    names = sub.get("failed_tests")
+    if names is None:
+        return None
+    if not (isinstance(names, list) and all(isinstance(n, str) for n in names)):
+        die("the delivery's failed_tests is not a list of test names")
+    return sorted(set(names) - set(base.get("failed_tests") or []))
+
+
 def broken_groups(mech, groups_doc):
     """{group id: [failed test names]} of the groups with a test that failed in the delivery and not in the pristine instance.
     A delivery that does not build is one regression, `BUILD`, never one per test."""
@@ -54,14 +65,19 @@ def broken_groups(mech, groups_doc):
     sub, base = char.get("submission") or {}, char.get("baseline") or {}
     if sub.get("build_failed"):
         return {"BUILD": list(sub.get("failed_tests") or [])}
-    if not (sub.get("failed") or 0) > (base.get("failed") or 0):
+    failed = sub.get("failed") or 0
+    new = newly_failed(base, sub)
+    if new is None:
+        if failed:
+            die("a characterization test failed and the runner did not name it: the one-charge rule needs the names (failed_tests)")
         return {}
-    names = sub.get("failed_tests")
-    if not names:
-        die("a characterization test failed and the runner did not name it: the one-charge rule needs the names (failed_tests)")
+    if failed and not sub["failed_tests"]:
+        die("the runner counts %d failed characterization test(s) and names none: the one-charge rule needs the names (failed_tests)" % failed)
+    if not failed and sub["failed_tests"]:
+        die("the runner names failed characterization tests but counts none (failed = 0): the report contradicts itself")
     group_of = {t: g["id"] for g in groups_doc["groups"] for t in g["tests"]}
     out = {}
-    for name in sorted(set(names) - set(base.get("failed_tests") or [])):
+    for name in new:
         if name not in group_of:
             die("the failed test %s is in no regression group of the instance" % name)
         out.setdefault(group_of[name], []).append(name)

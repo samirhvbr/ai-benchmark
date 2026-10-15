@@ -241,6 +241,58 @@ class Refusals(unittest.TestCase):
         self.assert_refused(score2(mech(), verdict(), matrix=matrix), "SEC-001", "does not weigh")
 
 
+class RegressionByName(unittest.TestCase):
+    """A regression is a test that fails in the delivery and not in the pristine instance, by NAME: the count says nothing when the delivery
+    fixed one baseline failure and broke another."""
+
+    def swapped(self):
+        m = mech()
+        m["characterization"]["baseline"] = {"passed": 4, "failed": 1, "ok": False, "failed_tests": ["Z#knownFailure"]}
+        m["characterization"]["submission"] = {"passed": 4, "failed": 1, "ok": False, "failed_tests": ["A#one"]}
+        return m
+
+    def test_fixing_a_baseline_failure_and_breaking_another_test_is_a_regression(self):
+        card, rc, err = score2(self.swapped(), verdict())
+        self.assertEqual(rc, 0, err)
+        self.assertEqual([(r["group"], r["tests_failed"]) for r in card["regressions"]], [("RG-01", 1)])
+        self.assertEqual(pen(card, "PEN-002")["count"], 1)
+
+    def test_a_baseline_failure_that_still_fails_is_not_charged(self):
+        m = mech()
+        m["characterization"]["baseline"] = {"passed": 4, "failed": 1, "ok": False, "failed_tests": ["A#one"]}
+        m["characterization"]["submission"] = {"passed": 4, "failed": 1, "ok": False, "failed_tests": ["A#one"]}
+        card, rc, err = score2(m, verdict())
+        self.assertEqual((rc, card["regressions"]), (0, []), err)
+
+    def test_the_report_that_counts_failures_and_names_none_is_refused(self):
+        m = mech(["A#one"])
+        m["characterization"]["submission"]["failed_tests"] = []
+        card, rc, err = score2(m, verdict())
+        self.assertNotEqual(rc, 0)
+        self.assertIn("names none", err)
+
+    def test_the_report_that_names_failures_and_counts_none_is_refused(self):
+        m = mech()
+        m["characterization"]["submission"]["failed_tests"] = ["A#one"]
+        card, rc, err = score2(m, verdict())
+        self.assertNotEqual(rc, 0)
+        self.assertIn("contradicts itself", err)
+
+    def test_the_harness_flags_the_swap_too(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("leb_harness_for_test", os.path.join(ROOT, "harness", "leb_harness.py"))
+        harness = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(harness)
+        base = {"passed": 4, "failed": 1, "failed_tests": ["Z#knownFailure"]}
+        self.assertTrue(harness.regressed(base, {"passed": 4, "failed": 1, "failed_tests": ["A#one"]}))
+        self.assertFalse(harness.regressed(base, {"passed": 4, "failed": 1, "failed_tests": ["Z#knownFailure"]}))
+        self.assertFalse(harness.regressed(base, {"passed": 5, "failed": 0, "failed_tests": []}))
+        self.assertTrue(harness.regressed({"passed": 5, "failed": 0, "failed_tests": []}, {"passed": 0, "failed": 5, "failed_tests": ["A#one"], "build_failed": True}))
+        # a runner that gives no names (the PHP instances) is compared by count, as before
+        self.assertTrue(harness.regressed({"passed": 5, "failed": 0}, {"passed": 4, "failed": 1}))
+        self.assertFalse(harness.regressed({"passed": 4, "failed": 1}, {"passed": 4, "failed": 1}))
+
+
 class TracksAndOutcomes(unittest.TestCase):
     def test_the_weights_come_from_the_track_file_and_add_up_to_a_thousand(self):
         track = read_json(TRACK_FILE)
