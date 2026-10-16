@@ -62,6 +62,23 @@ section of [`results/README.md`](../../results/README.md)): no per-flaw result, 
 minutes at most, on the 1.0 package and evaluated with the 1.1 key, scored 524, 533, 580, 561 and 536 (mean 547, 95% interval 530 to 565, all Bronze), at about US$ 1.13 and 27
 minutes a run. The interval comes from one system only, so it reflects the variation among that system's runs.
 
+## Known limits of version 1.1
+
+The external review that led to version 1.1 had 27 findings. Version 1.1 and the tooling versions before it dealt with the ones that could judge a delivery by something the manifest does not contract
+or accept less than it claimed. The rest are verifier limits that the owner accepted as limits of this version on 2026-10-15; each is read by the judges, who take the mechanical result of an
+architecture or clean-code row as a ceiling, and none changes without a new version of the instance (`matrix/MATRIX.md` section 4). They are kept here so that a score is read with them, and so that
+version 1.2, which is for cases run after it and does not re-score the first case, starts from the list.
+
+- **What the structure measures.** The measures read the main code under `com.condodesk` only, so a different root is not seen; a nested class counts as its outer class; a transactional helper used by
+  two features counts as a responsibility they share; the second implementation of a rule counts when it is in another class, not when it is in another method of the same one; "every class is
+  referenced by another" does not tell a used class from two dead ones that cite each other; two method bodies are equal when their types, names and comments are erased, which can flag a pair that
+  differ only in a type and miss a copy with a changed comment; and a block of code turned into a Javadoc comment is not read as commented-out code.
+- **What the performance checks measure.** The delinquency report is measured after an unmeasured request, so a cache could hide a query per owner; the second page of the invoice list is checked for
+  20 distinct invoices, not for being the continuation of the first; the payment index is checked for its leading column, not for being a valid index over every row; the processor time of the user
+  list is sampled from the threads alive before and after the request; the wait of a second webhook is correlated to any thread waiting, not to the one holding the lock; and the instrumentation that
+  recognizes a booking's insert depends on how the SQL is written.
+- **Constants in ARCH-003 and ARCH-009** (left as they were in version 1.1, see Versions): extracting the limits to a class makes the SQL and the numbers appear in different classes even when they are used together.
+
 ## Layout
 
 ```text

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.225`
+**Versão atual:** `0.2.226`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.226` — 2026-10-15 — LEB-D-300-A's README lists the known limits of version 1.1, which the owner accepted for the first case
+
+- The part of the external review that version 1.1 did not take on is recorded in `instances/LEB-D-300-A/README.md` as the known limits of 1.1: what the structure measures (the root package, nested
+  classes, shared helpers, a second implementation in the same class, mutually referencing dead classes, bodies compared with types and names erased, code turned into Javadoc) and what the performance
+  checks measure (an unmeasured request before the delinquency measure, the second page checked for 20 distinct invoices, the payment index checked for its leading column, sampled processor time,
+  the wait correlated to any thread, an insert recognized by its spelling), with ARCH-003 and ARCH-009 as they were. The owner accepted them on 2026-10-15 as limits of this version; the judges read
+  them, none changes without a new version, and version 1.2 is for cases run after it, with the first case not re-scored.
+- A check of the five deliveries of the first case against these limits, done by reading them and changing nothing: none moved packages, split the finance class, kept two formulas for the amount due, added
+  a cache or a thread, doubled an offset or added an index other than a plain one, so those limits did not touch a score; one limit, the comparison of bodies with types erased, flagged a pair of
+  methods a fix of another row had made alike in one delivery, which the judge noted. The published aggregate stays as it is.
 
 ### `0.2.225` — 2026-10-15 — LEB-D-300-A's first case, Claude Haiku 5.5 at high effort, is published as an aggregate: 547 over five runs, Bronze
 
