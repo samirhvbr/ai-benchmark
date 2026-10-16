@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.228`
+**Versão atual:** `0.2.229`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.229` — 2026-10-16 — A Codex CLI session can be audited like a Claude Code one: who answered, under which permissions, and how it ended
+
+- `tools/auditar-codex.py` reads the rollout logs Codex writes (`~/.codex/sessions`) and gives the same outcomes as `tools/auditar-tentativa.py`: the model, effort, approval policy and sandbox of every turn of
+  the main thread and of every thread the agent spawned; the user messages against the declared text; interrupted turns; errors, reroutes and safeguard events by the type they are written under; the tokens of each
+  thread. A turn on another model (or a reroute) is a switch, a profile other than the declared one is an operator error, an error that ends the session is a lab failure, and the lab's `--stopped-by` makes
+  a budget stop. It was run on the real log of a LEB-300-A pilot session (Codex 0.159.3) and gave `completed`, and `operator error` when the declared model, effort or permissions did not match. The shape of an
+  error, a reroute or a safeguard event has not been seen in a real log yet, so those are recognized by their type name, and anything unknown is counted and changes nothing. 18 tests (356 in all).
+- `docs/new-series-design.md` section 6.1 records the Codex profile: the model on the command line with the audit as proof, the permission exception (the bypass flag is the only unattended way, required and recorded
+  in each attempt), an API key for authentication, and tokens without cost. It is not proved on a bench VM yet; the lab's driver for it is private and was only dry-run.
 
 ### `0.2.228` — 2026-10-16 — LEB-D-300-A's second case, Claude Sonnet 5.5 at xhigh effort, is published as an interim aggregate: 785 over three of five runs, Gold
 

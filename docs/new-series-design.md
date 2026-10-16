@@ -184,6 +184,23 @@ A **case** is one system × one track × one agent configuration. It runs 5 time
   customization triggers a flag.
 - **One message, one stage, one budget** (turns, agent time, cost) per attempt.
 
+#### Codex CLI as the client
+
+Built on 2026-10-16 (`tools/auditar-codex.py`, and the lab's `laboratorio-codex.py`), not yet proved on a bench VM. The same case (one message, one budget, the
+same package) runs under the same rules, with what is the client's own replaced:
+
+- **The pin is the command line, and the proof is the audit.** Codex has no managed policy that restricts the models: `codex exec -m <model> -c
+  model_reasoning_effort=<effort>` starts the case, and the audit of the rollout logs says which model answered each turn, in the main thread and in every thread
+  the agent spawned (`source.subagent`), at which effort, under which approval policy and sandbox. A turn on another model, or a `reroute` event, is a switch.
+- **Permissions are the one exception to §6.1's "no case runs with permissions bypassed".** Codex's default sandbox cannot reach the local PostgreSQL the tests need, and
+  `codex exec` has no auto mode with a classifier; the only unattended way is `--dangerously-bypass-approvals-and-sandbox` (approval never, no sandbox), on a disposable
+  VM. The lab requires `--permissions bypass` and the audit checks every turn ran under it, so the exception is recorded in each attempt and published with the
+  result of every Codex configuration.
+- **Authentication is an API key**, as Claude Code's is a long-lived token: a stored ChatGPT login holds a refresh token that a rollback brings back already spent.
+  The key lives in a 600 file on the workstation, goes to the VM over ssh's stdin into a tmpfs file the client's shell reads and deletes, and the evidence is scanned for it.
+- **Cost and time.** The rollout log has tokens and no cost and no model time, so the cost of a Codex attempt is an estimate from the provider's price table, labeled as
+  one, and its time is the session's.
+
 ### 6.2 Outcomes
 
 Every attempt ends in exactly one of these, and every one is published:
@@ -345,7 +362,8 @@ interval width needs.
   score of §9).
 - The errata rule in detail.
 - The grade seals with uncertainty.
-- Other clients (Codex, OpenCode): the same traceability applies, and their own fallback mechanisms are checked in the lab.
+- Other clients: the same traceability applies. Codex has its profile and audit (§6.1, "Codex CLI as the client"), to be proved on a bench VM; OpenCode (DeepSeek, Qwen, GLM, Kimi
+  and the others the full LEB ran through it) is next, and its own fallback mechanisms are checked in the lab.
 
 ## Sources
 
