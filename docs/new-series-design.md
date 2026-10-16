@@ -205,7 +205,7 @@ same package) runs under the same rules, with what is the client's own replaced:
 
 #### OpenCode as the client
 
-Built on 2026-10-16 (`tools/auditar-opencode.py`, and the lab's `laboratorio-opencode.py`), not yet proved on a bench VM. OpenCode is the client of 27 of the 49 agents the
+Built on 2026-10-16 (`tools/auditar-opencode.py`, and the lab's `laboratorio-opencode.py`) and proved the same day on a bench VM, by a smoke on MiniMax-M3 that completed end to end before any case. OpenCode is the client of 27 of the 49 agents the
 benchmark covers (LEB-100-A and LEB-300-A ran them by hand), so this is the lane that opens the series to other vendors. The same case (one message, one budget, the same
 package) runs under the same rules, with what is the client's own replaced:
 
@@ -218,7 +218,11 @@ package) runs under the same rules, with what is the client's own replaced:
 - **Authentication is a credential the lab hands over, not what the snapshot happens to hold.** The provider keys live in one 600 file on the workstation
   (`~/.config/leb-lab/opencode-keys`, a `provider=key` line each, `provider` being the id OpenCode gives it: `deepseek`, `openrouter`, `novita-ai`...). For a case the lab sends
   only the line of the provider that case uses, over ssh's stdin into a tmpfs file, and the runner's login file is written from it before the client starts. A login the snapshot
-  kept is removed first and its provider names are recorded, so the key that answered is the lab's. The login file is never collected, and the evidence is scanned for the key.
+  kept is removed first and its provider names are recorded, so the key that answered is the lab's (the snapshots carry the operator's own API logins for nine providers; for a
+  case whose key is not in the lab's file, `--auth stored` keeps only that provider's entry from the snapshot and removes the other eight). The login file is never collected, and the
+  evidence is scanned for the key: on the VM, where the key never leaves, and over a pipe.
+- **The message goes in on stdin.** `opencode run` joins its arguments and wraps any argument that holds a space in double quotes, so a message given as an argument reaches the
+  model between quotes (seen in the first smoke); a message piped in is appended as it is, and the audit compares what the record kept with the declared text.
 - **Cost and time.** The record has tokens and a cost, which is the client's own price-table estimate and is labeled as one, and no model time; the time is the session's.
 - **The provider is part of the configuration.** The same model can be reached through the vendor's own API or through a gateway (OpenRouter, Novita AI, the Kilo Code
   gateway), and what comes back can differ. A run records its provider as `served_by`, and a gateway's run is a different agent from the vendor's own API.

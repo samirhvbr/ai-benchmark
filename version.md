@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.234`
+**Versão atual:** `0.2.235`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.235` — 2026-10-16 — The OpenCode lane is proved on a bench VM by a smoke on MiniMax-M3, and the design says how the client's login and message are handed over
+
+- `docs/new-series-design.md`, "OpenCode as the client": the lane ran end to end on a bench VM (restore, preflight, the key handed over, `opencode run`, collection, audit) with a smoke on MiniMax-M3 at the `thinking`
+  variant, and the audit reported `completed`. The section now says what the first runs showed: the snapshots carry the operator's own API logins for nine providers, which the lab removes for a case so that the key
+  that answered is the one it handed over (or, with `--auth stored`, keeps only the case's provider); and the message goes in on stdin, because `opencode run` wraps any argument that holds a space in double quotes
+  (the first smoke's audit caught it: the record kept the text between quotes).
 
 ### `0.2.234` — 2026-10-16 — An OpenCode session can be audited like a Claude Code or a Codex one: who answered, at which effort and agent, and how it ended
 
