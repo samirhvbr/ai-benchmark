@@ -62,9 +62,11 @@ section of [`results/README.md`](../../results/README.md)): no per-flaw result, 
 minutes at most, on the 1.0 package and evaluated with the 1.1 key, scored 524, 533, 580, 561 and 536 (mean 547, 95% interval 530 to 565, all Bronze), at about US$ 1.13 and 27
 minutes a run. The interval comes from one system only, so it reflects the variation among that system's runs.
 
-The second case is Claude Sonnet 5.5 at effort `xhigh`, on the package of version 1.1 (the task statement is the same, and the package differs from 1.0's only in the four lines that name the version and the key),
-evaluated with the same key. Its aggregate is interim: three of its five runs are done, 750, 771 and 835 (mean 785, all Gold, at about US$ 6.05 and 36 minutes a run), and the other two are to be made, one of them to
-replace an attempt lost when the operator stopped its machine. With three runs the interval is the range of the runs.
+The next three cases ran on the package of version 1.1 (the task statement is the same, and the package differs from 1.0's only in the four lines that name the version and the key) and were evaluated with the same key,
+five runs of 90 minutes at most each: Claude Sonnet 5.5 at effort `xhigh` scored 785, 752, 772, 836 and 781 (mean 785, 95% interval 764 to 812, all Gold, at about US$ 5.78 and 35 minutes a run; an attempt lost when the
+operator stopped its machine was rerun and counts as lost); Claude Sonnet 5.5 at `high` scored 707, 734, 702, 694 and 730 (mean 713, interval 700 to 728, all Silver, about US$ 2.29 and 20 minutes); Claude Opus 5.5 at `high`
+scored 716, 812, 625, 712 and 793 (mean 732, interval 677 to 789, two Gold and three Silver, about US$ 3.97 and 22 minutes). Every delivery was judged blind by two judges and a person settled the disagreements; the folders
+the judges read carry no name of a model, an effort or a vendor.
 
 ## Known limits of version 1.1
 

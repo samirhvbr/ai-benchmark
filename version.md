@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.230`
+**Versão atual:** `0.2.231`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.231` — 2026-10-16 — LEB-D-300-A's cases of Claude Sonnet 5.5 at xhigh and high and of Claude Opus 5.5 at high are published with their five runs: 785, 713 and 732
+
+- Three cases of the new series, each of five runs (Claude Code 2.1.295, 90 minutes, the 1.1 package, the 1.1 key), replace the interim aggregate of the second case. Claude Sonnet 5.5 at `xhigh`: 785, 752, 772, 836 and
+  781, mean **785** with a 95% interval of 764 to 812, all Gold, about US$ 5.78 and 35 minutes a run. Claude Sonnet 5.5 at `high`: 707, 734, 702, 694 and 730, mean **713**, interval 700 to 728, all Silver, about US$ 2.29
+  and 20 minutes. Claude Opus 5.5 at `high`: 716, 812, 625, 712 and 793, mean **732**, interval 677 to 789, two Gold and three Silver, about US$ 3.97 and 22 minutes. No regression group was broken in any run and
+  compatibility is 100 in all fifteen; the penalties are in the written readings (four runs of Sonnet `high` and one of Sonnet `xhigh` lost 5 points for reporting a sound piece of code as a flaw, one run of Opus lost 15 for a
+  new defect of its own). The attempt of Sonnet `xhigh` that the operator stopped 28 seconds in is the `lab-failure-1` marker of its archive, so its rerun is numbered 5 and the fifth scheduled run 6.
+- The second case's three interim runs were scored again: the first judging folder of that case carried the model's name in its parent folder, which the judges could read, so that case was judged again under neutral
+  folders, as the other two were from the start (only the explanation score of three runs moved, by 1 or 2 points). Every delivery had two blind judges for the matching and two for the explanation, and a person settled each disagreement on
+  2026-10-16: one run of Sonnet `xhigh` moves by 8 points (the finding on the notice service's read query is credited, as in the seven earlier deliveries that had one), the others move nothing. The decisions also set two
+  working rules: the quality criteria of a row nobody tried to fix are `none` (the scorer zeroes them anyway), and a false positive that two judges wrote under two spellings counts once. The instance README names the cases.
 
 ### `0.2.230` — 2026-10-16 — The Codex profile records the owner's acceptance of the permission exception and how the lab authenticates the client
 
