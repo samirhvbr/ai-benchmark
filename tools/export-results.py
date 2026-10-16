@@ -712,7 +712,6 @@ def build_aggregate_series(inst, matrix, runs, root, edition=None):
     for r in runs:
         for what, got, want in (("matrix_sha256", r["card"].get("matrix_sha256"), first["card"].get("matrix_sha256")),
                                 ("track", r["card"].get("track"), first["card"].get("track")),
-                                ("package_sha256", r["meta"].get("package_sha256"), first["meta"].get("package_sha256")),
                                 ("mode", r["meta"].get("mode"), first["meta"].get("mode")),
                                 ("budget_minutes", r["meta"].get("budget_minutes"), first["meta"].get("budget_minutes"))):
             if got != want:
@@ -722,6 +721,13 @@ def build_aggregate_series(inst, matrix, runs, root, edition=None):
     by_agent = {}
     for r in sorted(runs, key=lambda x: (x["agent"], x["run"])):
         by_agent.setdefault(r["agent"], []).append(r)
+    # The package is the one a configuration's runs received: the runs of one case share it, and two cases of the instance may differ (the first
+    # case ran on the package of version 1.0, a later one on the package of 1.1, which differs from it in the lines that name the version).
+    for agent, agent_runs in by_agent.items():
+        for r in agent_runs:
+            if r["meta"].get("package_sha256") != agent_runs[0]["meta"].get("package_sha256"):
+                sys.exit("[export] %s/%s/run-%d: package_sha256 is %r, the first run of this agent says %r — runs of one case share it"
+                         % (inst.name, agent, r["run"], r["meta"].get("package_sha256"), agent_runs[0]["meta"].get("package_sha256")))
     side = {}
     for name in ("comments", "notes"):
         path = os.path.join(root, inst.name, name + ".json")
@@ -753,7 +759,7 @@ def build_aggregate_series(inst, matrix, runs, root, edition=None):
         costs = lambda x: (x["meta"].get("cost_time") or {}).get("usd_estimate")  # noqa: E731
         token_rows = [tokens_of(x["meta"]) for x in agent_runs]
         completion = rep["completion"]
-        entry = {"agent": agent, "score": score, "grade": grade_of(score), "runs_count": len(agent_runs),
+        entry = {"agent": agent, "score": score, "grade": grade_of(score), "runs_count": len(agent_runs), "package_sha256": agent_runs[0]["meta"]["package_sha256"],
                  "categories": {c: int(round(sum(v) / len(v))) for c, v in cats.items()},
                  "category_max": {c: first["card"]["categories"][c]["max"] for c in cats},
                  "cost_usd": mean_of([costs(x) for x in agent_runs], 2), "wall_minutes": mean_of([times(x) for x in agent_runs], 1),
@@ -778,9 +784,12 @@ def build_aggregate_series(inst, matrix, runs, root, edition=None):
     year = edition or max(r["meta"]["evaluated_on"] for r in runs)[:4]
     agg = {"publication": "aggregate", "edition": year, "instance": matrix["instance"], "version": str(matrix["version"]), "level": matrix["level"],
            "leb_spec": matrix["leb_spec"], "task_version": re.sub(r"^[A-Z]-", "", str(matrix.get("task_version") or "1.0.0")),
-           "matrix_sha256": first["card"]["matrix_sha256"], "package_sha256": first["meta"]["package_sha256"], "mode": first["meta"]["mode"],
+           "matrix_sha256": first["card"]["matrix_sha256"], "mode": first["meta"]["mode"],
            "turn_budget": first["meta"].get("turn_budget"), "budget_minutes": first["meta"].get("budget_minutes"), "track": first["card"]["track"],
            "agents": agents}
+    packages = {e["package_sha256"] for e in agents}
+    if len(packages) == 1:   # one package for every case: the instance says it; otherwise each configuration does
+        agg["package_sha256"] = packages.pop()
     if side["notes"]:
         agg["notes"] = side["notes"]
     return agg
@@ -862,7 +871,10 @@ def render_series_section(agg, w):
         w("")
         w(agg["notes"]["en"])
     w("")
-    w("Matrix SHA-256 `%s` · package SHA-256 `%s`." % (agg["matrix_sha256"], agg.get("package_sha256", "n/d")))
+    if agg.get("package_sha256"):
+        w("Matrix SHA-256 `%s` · package SHA-256 `%s`." % (agg["matrix_sha256"], agg["package_sha256"]))
+    else:
+        w("Matrix SHA-256 `%s`; the package each configuration received: %s." % (agg["matrix_sha256"], " · ".join("`%s` `%s`" % (e["agent"], e["package_sha256"]) for e in agg["agents"])))
     w("")
 
 

@@ -450,6 +450,23 @@ class SeriesPublishing(unittest.TestCase):
         self.assertNotEqual(code, 0)
         self.assertIn("package_sha256", err)
 
+    def test_two_cases_may_differ_in_package_and_the_instance_then_names_none(self):
+        self.build()
+        first = self.archive
+        self.archive = os.path.join(self.priv, self.INSTANCE, "claude-other-xhigh")
+        for n, total in ((1, 700), (2, 720), (3, 740), (4, 760), (5, 780)):
+            self.run_folder(n, total, package="c" * 64, report="other report of run %d\n" % n)
+        self.archive = first
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertEqual(code, 0, err)
+        agg = read_json(os.path.join(self.t, "results", "2026", self.INSTANCE, "aggregate.json"))
+        self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
+        self.assertNotIn("package_sha256", agg)
+        self.assertEqual({e["agent"]: e["package_sha256"] for e in agg["agents"]}, {"claude-test-high": "b" * 64, "claude-other-xhigh": "c" * 64})
+        self.assertEqual([e["agent"] for e in agg["agents"]], ["claude-other-xhigh", "claude-test-high"])  # 740 above 547
+        self.assertIn("the package each configuration received", read_text(self.t, "results", "README.md"))
+        self.assertEqual(self.export("--check")[0], 0)
+
     def test_a_blocked_attempt_enters_the_expected_score_and_not_the_quality(self):
         self.build()
         d = os.path.join(self.archive, "run-6")

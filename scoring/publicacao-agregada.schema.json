@@ -437,7 +437,7 @@
               "lab_failures_rerun": {
                 "type": "integer",
                 "minimum": 0,
-                "description": "Attempts that failed in the lab, were not scored and were rerun under the rule of design 6.2."
+                "description": "Attempts lost to the lab or to the operator before the model could deliver, not scored and rerun under the rule of design 6.2."
               },
               "median": {
                 "type": "integer",
@@ -456,6 +456,11 @@
               }
             },
             "additionalProperties": false
+          },
+          "package_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "New series: the package this configuration's runs received. The instance's own package_sha256 is present only when every configuration received the same one."
           }
         },
         "additionalProperties": false

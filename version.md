@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.226`
+**Versão atual:** `0.2.227`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.227` — 2026-10-16 — The aggregate of the new series keeps the package each configuration received, and counts attempts lost to the operator with those lost to the lab
+
+- `build_aggregate_series` no longer asks every run of the instance to share one package: the runs of one case share it, and two cases may differ, since the first case ran on the package of version 1.0 and the
+  second on the package of 1.1 (they differ in the four lines of `TASK.md` that name the version and the key). Each configuration carries its `package_sha256`; the instance carries one only when every
+  configuration received the same, and the README section lists them per configuration otherwise. The matrix, the track, the mode and the budget are still shared by every run.
+- `lab_failures_rerun` now says what it counts: attempts lost to the lab or to the operator before the model could deliver, not scored and rerun (design 6.2 treats the two alike). A `lab-failure-<n>` folder
+  holds the number of any such attempt. One test (338 in all): two configurations with different packages publish, the instance names none, each carries its own, and they order by score.
 
 ### `0.2.226` — 2026-10-15 — LEB-D-300-A's README lists the known limits of version 1.1, which the owner accepted for the first case
 
