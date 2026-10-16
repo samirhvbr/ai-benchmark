@@ -26,7 +26,7 @@ def meta(sid=MAIN, source="exec", ts=None):
     return {"timestamp": ts or at(0), "type": "session_meta", "payload": {"id": sid, "session_id": sid, "source": source, "cli_version": "0.159.3", "originator": "codex_exec"}}
 
 
-def turn(minute, model=REQ, effort="xhigh", approval="never", sandbox="danger-full-access", done=True, message=None, tokens=1000):
+def turn(minute, model=REQ, effort="xhigh", approval="never", sandbox="danger-full-access", done=True, message=None, tokens=1000, error=None):
     ev = [{"timestamp": at(minute), "type": "event_msg", "payload": {"type": "task_started", "turn_id": "t%d" % minute}}]
     if message is not None:
         ev.append({"timestamp": at(minute), "type": "event_msg", "payload": {"type": "item_completed", "item": {"type": "UserMessage", "content": [{"type": "Text", "text": message}]}}})
@@ -34,7 +34,8 @@ def turn(minute, model=REQ, effort="xhigh", approval="never", sandbox="danger-fu
     ev.append({"timestamp": at(minute, 30), "type": "event_msg", "payload": {"type": "token_count", "info": {"total_token_usage": {
         "input_tokens": tokens, "cached_input_tokens": tokens // 2, "output_tokens": 100, "reasoning_output_tokens": 40, "total_tokens": tokens + 100}}}})
     if done:
-        ev.append({"timestamp": at(minute, 40), "type": "event_msg", "payload": {"type": "task_complete", "turn_id": "t%d" % minute, "last_agent_message": "done"}})
+        ev.append({"timestamp": at(minute, 40), "type": "event_msg", "payload": {"type": "task_complete", "turn_id": "t%d" % minute, "last_agent_message": None if error else "done",
+                                                                                  **({"error": {"message": error}} if error else {})}})
     return ev
 
 
@@ -139,6 +140,17 @@ class Outcomes(Case):
         r, rep = self.audit()
         self.assertEqual(rep["outcome"], "lab failure")
         self.assertIn("stream closed", rep["detail"])
+
+    def test_a_turn_that_completed_with_an_error_is_a_lab_failure(self):
+        # seen in a real log: the API refused the model and the turn still ended in a task_complete, with no last message and an `error`
+        refusal = '{"type":"error","status":400,"error":{"type":"invalid_request_error","message":"The model is not supported when using Codex with a ChatGPT account."}}'
+        self.log("main", [meta()] + turn(1, message=MESSAGE, error=refusal))
+        r, rep = self.audit()
+        self.assertEqual((r.returncode, rep["outcome"]), (1, "lab failure"))
+        self.assertIn("not supported", rep["detail"])
+        self.log("main", [meta()] + turn(1, message=MESSAGE, error=refusal) + turn(2, message=None))
+        r, rep = self.audit()
+        self.assertEqual(rep["outcome"], "completed", "a later turn that completes cleanly ends the session well")
 
     def test_a_safeguard_event_with_no_turn_after_it_is_blocked(self):
         self.log("main", [meta()] + turn(1, message=MESSAGE, done=False) + event(1, "safety_check", detail="flagged"))

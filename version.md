@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.232`
+**Versão atual:** `0.2.233`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.233` — 2026-10-16 — The Codex audit reads a turn that ends in a `task_complete` with an error as a lab failure, so a model the account cannot use no longer looks like a completed run
+
+- `tools/auditar-codex.py`: the first real failure of the Codex lab showed the shape the audit had only guessed. Asked for `gpt-5.5`, the client got `400 The 'gpt-5.5' model is not supported when using Codex with a
+  ChatGPT account`, ran 7 seconds with zero tokens, and the rollout log still closed the turn with a `task_complete` that has `last_agent_message` null and an `error`. The audit counted that `task_complete` as a turn
+  that completed and reported `completed`. It now keeps the error of a `task_complete` and, when it is the last thing the main thread did (no later turn completed cleanly), reports a lab failure with the message.
+  The two refused attempts are kept as `lab-failure` folders in the private archive and are not scored. One test pins the real event shape (and that a later clean turn ends the session well). 19 tests in the file, 357 in the suite.
 
 ### `0.2.232` — 2026-10-16 — LEB-D-300-A's Codex cases are published as interim aggregates, three of five runs each: GPT-6-astra 706, GPT-6.1-sol 699, GPT-5.6-terra 420
 

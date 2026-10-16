@@ -23,7 +23,7 @@ The outcome is the first of these that applies:
   blocked           the main thread ended on a safeguard event and no turn followed
   budget exhausted  the lab stopped the client when the declared budget ran out (--stopped-by budget)
   inconclusive      no turn at all, or the session was cut mid-work and the lab gave no reason
-  completed         the main thread's last turn completed (a `task_complete`) and nothing above applies
+  completed         the main thread's last turn completed (a `task_complete` with no `error`) and nothing above applies
 
     python3 tools/auditar-codex.py SESSIONS --requested gpt-6.1-sol --effort xhigh --permissions bypass --message msg.txt --json
 
@@ -155,8 +155,18 @@ def thread_of(path):
                     t["tokens"] = info["total_token_usage"]
             elif et == "task_started":
                 t["started_turns"] += 1
+                t["last_turn_error"] = None
             elif et == "task_complete":
                 t["completed"] += 1
+                # A turn the client could not run still ends in a task_complete, with `last_agent_message` null and an `error` (seen on 2026-10-16: the API refused the
+                # model, "not supported when using Codex with a ChatGPT account"): it is a session that ended on an error, not one that completed.
+                if p.get("error"):
+                    err = p["error"]
+                    msg = (err.get("message") if isinstance(err, dict) else str(err)) or ""
+                    t["last_turn_error"] = {"type": "task_complete", "at": ts, "message": str(msg)[:200]}
+                    t["errors"].append(t["last_turn_error"])
+                else:
+                    t["last_turn_error"] = None
             elif et == "item_completed":
                 item = p.get("item") or {}
                 if item.get("type") == "UserMessage":
@@ -228,7 +238,7 @@ def audit(sessions, requested, allow_more=(), messages=(), effort=None, permissi
     if any("reroute" in f["type"] for t in threads for f in t["flags"]):
         find("switched", "the client rerouted a request to another model")
     last = main["last_event"]
-    ended_on_error = bool(main["errors"]) and (last is not None and (last[1] in ERROR_EVENTS or main["completed"] < main["started_turns"]))
+    ended_on_error = bool(main["errors"]) and (last is not None and (last[1] in ERROR_EVENTS or main["completed"] < main["started_turns"] or bool(main.get("last_turn_error"))))
     if stopped_by == "lab":
         find("lab failure", "the lab stopped the client for a reason of its own")
     elif ended_on_error:
