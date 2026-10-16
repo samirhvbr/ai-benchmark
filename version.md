@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.235`
+**Versão atual:** `0.2.236`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.236` — 2026-10-16 — The OpenCode audit takes the client's own name `default` for a model's effort as the declared `default`
+
+- `tools/auditar-opencode.py`: the gate smokes of the next OpenCode models showed that a model with effort variants but no declared one (`--effort default`) records the variant `default`, not no variant,
+  and the audit called that an effort other than the declared one. `default` and no variant are now the same declared effort; any other variant against `--effort default`, or `default` against another
+  declared effort, is still an operator error. One test pins both ways (35 in the file, 392 in the suite).
 
 ### `0.2.235` — 2026-10-16 — The OpenCode lane is proved on a bench VM by a smoke on MiniMax-M3, and the design says how the client's login and message are handed over
 

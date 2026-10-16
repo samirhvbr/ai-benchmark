@@ -31,7 +31,7 @@ The outcome is the first of these that applies:
     python3 tools/auditar-opencode.py RECORD --provider deepseek --requested deepseek-flash --effort high --message msg.txt --json
 
 RECORD is opencode.db, or a folder holding exactly one (the runner's ~/.local/share/opencode, or the tree collected from it). A model matches an
-allowed `provider/model` exactly. A model with no effort setting is declared with --effort default.
+allowed `provider/model` exactly. A model with no effort setting is declared with --effort default (its messages then carry no variant, or the client's own name `default`).
 
 Exit 0: completed. Exit 1: any other outcome. Exit 2: inconclusive, or a path or an argument could not be used.
 
@@ -194,8 +194,10 @@ def audit(record, provider, requested, allow_more=(), messages=(), effort=None, 
         elif chosen != (provider, requested):
             find("operator error", "the session was created on %s/%s, not on the requested %s/%s" % (chosen[0], chosen[1], provider, requested))
         want = None if effort in (None, "default") else effort
+        # a model that offers no setting records no variant, or the client's own name for it ("default"): both are the declared `default`
+        same = (lambda v: v in (None, "default")) if want is None else (lambda v: v == want)
         if effort is not None:
-            wrong = sorted({str(a["variant"]) for a in asst if a["variant"] != want} | ({str(root["model"]["variant"])} if root["model"]["variant"] != want else set()))
+            wrong = sorted({str(a["variant"]) for a in asst if not same(a["variant"])} | ({str(root["model"]["variant"])} if not same(root["model"]["variant"]) else set()))
             if wrong:
                 find("operator error", "effort %s, not the declared %s" % (", ".join(wrong), effort))
         if agent:

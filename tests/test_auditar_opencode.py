@@ -167,6 +167,14 @@ class Outcomes(Case):
         r, rep = self.audit("--effort", "high", "--message", self.msg)
         self.assertEqual(rep["outcome"], "operator error")
 
+    def test_the_clients_own_name_default_is_the_declared_default(self):
+        build(self.rec, [session(model={"id": REQ, "providerID": PROV, "variant": "default"},
+                                 messages=[user(), assistant(1, variant="default"), assistant(2, variant="default", finish="stop")])])
+        r, rep = self.audit("--effort", "default", "--message", self.msg)
+        self.assertEqual(rep["outcome"], "completed", rep)
+        r, rep = self.audit("--effort", "high", "--message", self.msg)
+        self.assertEqual(rep["outcome"], "operator error")
+
     def test_another_agent_than_the_declared_one_is_an_operator_error(self):
         build(self.rec, [session(messages=[user(), assistant(1, agent="plan"), assistant(2, agent="plan", finish="stop")])])
         r, rep = self.standard()
