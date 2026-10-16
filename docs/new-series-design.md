@@ -203,6 +203,26 @@ same package) runs under the same rules, with what is the client's own replaced:
 - **Cost and time.** The rollout log has tokens and no cost and no model time, so the cost of a Codex attempt is an estimate from the provider's price table, labeled as
   one, and its time is the session's.
 
+#### OpenCode as the client
+
+Built on 2026-10-16 (`tools/auditar-opencode.py`, and the lab's `laboratorio-opencode.py`), not yet proved on a bench VM. OpenCode is the client of 27 of the 49 agents the
+benchmark covers (LEB-100-A and LEB-300-A ran them by hand), so this is the lane that opens the series to other vendors. The same case (one message, one budget, the same
+package) runs under the same rules, with what is the client's own replaced:
+
+- **The pin is the command line, and the proof is the audit.** `opencode run -m <provider>/<model> --variant <effort>` starts the case. OpenCode's own record says who
+  answered: its database (`opencode.db`) holds the provider, the model, the effort variant and the agent of every assistant message, in the root session and in every session
+  the agent spawned, and its log names the model of every request the client made, the auxiliary one that titles the session included. A message or a request on another
+  model is a switch. The effort is the client's *variant*; a model that offers none is declared `default`.
+- **Permissions need no exception.** OpenCode has no sandbox, and its default agent (`build`) allows the tools without asking; the VM is the sandbox. The audit counts the
+  permission decisions the log writes (allow, ask, deny), so a prompt or a denial would show.
+- **Authentication is a credential the lab hands over, not what the snapshot happens to hold.** The provider keys live in one 600 file on the workstation
+  (`~/.config/leb-lab/opencode-keys`, a `provider=key` line each, `provider` being the id OpenCode gives it: `deepseek`, `openrouter`, `novita-ai`...). For a case the lab sends
+  only the line of the provider that case uses, over ssh's stdin into a tmpfs file, and the runner's login file is written from it before the client starts. A login the snapshot
+  kept is removed first and its provider names are recorded, so the key that answered is the lab's. The login file is never collected, and the evidence is scanned for the key.
+- **Cost and time.** The record has tokens and a cost, which is the client's own price-table estimate and is labeled as one, and no model time; the time is the session's.
+- **The provider is part of the configuration.** The same model can be reached through the vendor's own API or through a gateway (OpenRouter, Novita AI, the Kilo Code
+  gateway), and what comes back can differ. A run records its provider as `served_by`, and a gateway's run is a different agent from the vendor's own API.
+
 ### 6.2 Outcomes
 
 Every attempt ends in exactly one of these, and every one is published:

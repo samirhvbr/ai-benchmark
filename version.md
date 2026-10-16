@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.233`
+**Versão atual:** `0.2.234`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.234` — 2026-10-16 — An OpenCode session can be audited like a Claude Code or a Codex one: who answered, at which effort and agent, and how it ended
+
+- `tools/auditar-opencode.py` reads what OpenCode keeps of a session: its SQLite database (`opencode.db`: the sessions, and for each message the provider, model, effort variant, agent, finish reason and error, with the tokens and
+  the cost the client recorded) and the log folder beside it (the model of every request, the auxiliary one that titles the session included, and the permission decisions). It gives the outcomes of the Claude Code and Codex
+  audits: operator error (another model, effort or agent than the declared one, another message, an interrupted turn the lab did not cause), switched (a model outside the allowed `provider/model` list answered or was requested,
+  in the root session or in one it spawned), lab failure (the session ended on an error, such as a refused key or an unknown model), blocked, budget exhausted and inconclusive. It reads a copy of the database and writes
+  nothing. Before the tests were written it was run on a real record of the LEB-300-A pilot (DeepSeek V4.1 Flash: 100 assistant messages, 101 requests, completed).
+- `tests/test_auditar_opencode.py`: 34 tests on synthetic records in the shapes OpenCode 1.18.33 wrote; the `APIError` and `MessageAbortedError` errors are the two seen in real records. 391 in the suite.
+- `docs/new-series-design.md` gains "OpenCode as the client": the pin is the command line and the proof is the audit, the client needs no permission exception, the provider keys are a credential the lab hands over from one
+  600 file on the workstation, and the provider is part of the configuration. The lab's driver is private and has not been proved on a bench VM yet.
 
 ### `0.2.233` — 2026-10-16 — The Codex audit reads a turn that ends in a `task_complete` with an error as a lab failure, so a model the account cannot use no longer looks like a completed run
 
