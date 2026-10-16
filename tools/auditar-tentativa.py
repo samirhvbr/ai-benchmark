@@ -27,7 +27,9 @@ The outcome is the first of these that applies:
                     an interruption; more operator messages than declared, or a message that differs from the declared text
   switched          a model outside the allowed set answered, in the main conversation or in a subagent
   lab failure       the session ended on an API error, or the lab stopped the client for a reason of its own (--stopped-by lab)
-  blocked           the main conversation hit a safeguard stop and the allowed models made no tool call after the last one
+  blocked           the main conversation hit a safeguard stop and the allowed models made no tool call after the last one; or the
+                    session ended on the safeguard's refusal of a message (an API error written with stop_reason "refusal"),
+                    which is a stop and not an API fault
   budget exhausted  the lab stopped the client when the declared budget ran out (--stopped-by budget)
   inconclusive      no response at all; the session was cut mid-work and the lab gave no reason; or a response carries work of a
                     kind this audit does not know (a server-side tool, an advisor call), which may be another model's
@@ -148,7 +150,10 @@ def parse(path, main):
             model = m.get("model") or ""
             if not model or model == "<synthetic>":
                 if e.get("isApiErrorMessage"):
-                    t["api_errors"].append({"at": ts, "line": n, "error": str(e.get("error") or ""), "text": first_text(m)[:160]})
+                    # A safeguard that refuses a message outright (no response at all, so nothing to carry stop_reason "refusal") is written as this
+                    # kind of message, with stop_reason "refusal" and the text "<model>'s safeguards flagged this message": it is the safeguard's stop, not an API fault.
+                    t["api_errors"].append({"at": ts, "line": n, "error": str(e.get("error") or ""), "text": first_text(m)[:160],
+                                            "refusal": m.get("stop_reason") == "refusal"})
                     t["last"] = ("api error", n)
                 continue
             key = m.get("id") or e.get("requestId") or "line-%d" % n
@@ -422,7 +427,11 @@ def audit(session, requested, allow_more=(), messages=(), allow_commands=(), eff
 
     if ended_how == "api error":
         err = main["api_errors"][-1]
-        find("lab failure", "the session ended on an API error (%s) at %s" % (err["error"] or "no code", err["at"]))
+        if err.get("refusal"):
+            find("blocked", "the session ended on a safeguard's refusal of a message (%s) at %s, with no model left to continue and no tool call after it"
+                 % (err["error"] or "no code", err["at"]))
+        else:
+            find("lab failure", "the session ended on an API error (%s) at %s" % (err["error"] or "no code", err["at"]))
     if stopped_by == "lab":
         find("lab failure", "the lab stopped the client")
     if main_stops and not main_stops[-1]["recovered"]:

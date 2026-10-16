@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.236`
+**Versão atual:** `0.2.237`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.237` — 2026-10-16 — A Claude Code session that ends on the safeguard's refusal of a message is blocked, not a lab failure
+
+- `tools/auditar-tentativa.py`: the first attempt of Claude Fable 5.1 at `xhigh` in the Default track ended 13 seconds after its first message: the safeguard stopped the response, the client retried once
+  with its note, and the second request was refused outright. With no response to carry `stop_reason: "refusal"`, the client writes that refusal as a `<synthetic>` API-error message (still with
+  `stop_reason: "refusal"`, the text "...safeguards flagged this message"), and the audit read any session ending on such a message as a lab failure, which would have allowed a rerun and hidden that
+  the model's own safeguard stopped the task. A session that ends on a refusal of that kind is now **blocked** (the design's outcome for a safeguard stop with no model left to continue and no tool
+  call after it); any other API error at the end is still a lab failure. One test pins both ways (21 in the file, 393 in the suite). No published result changes: every earlier Claude attempt ended on
+  its own or on a different error.
 
 ### `0.2.236` — 2026-10-16 — The OpenCode audit takes the client's own name `default` for a model's effort as the declared `default`
 

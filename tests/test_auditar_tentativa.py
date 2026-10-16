@@ -80,6 +80,13 @@ def api_error(ts, error="authentication_failed"):
                          "content": [{"type": "text", "text": "Login expired · Please run /login"}]}}]
 
 
+def refusal_error(ts):
+    """The safeguard refuses a message outright: no response, only the client's synthetic error message, with stop_reason "refusal"."""
+    return [{"type": "assistant", "timestamp": ts, "isApiErrorMessage": True, "error": "invalid_request",
+             "message": {"model": "<synthetic>", "role": "assistant", "stop_reason": "refusal",
+                         "content": [{"type": "text", "text": "API Error: Fable 5.1's safeguards flagged this message"}]}}]
+
+
 def turn_end(ts, ms=120000):
     return [{"type": "system", "subtype": "turn_duration", "timestamp": ts, "durationMs": ms, "messageCount": 9}]
 
@@ -262,6 +269,18 @@ class Audit(unittest.TestCase):
         self.assertEqual((code, rep["outcome"]), (1, "lab failure"))
         self.assertIn("authentication_failed", self.findings(rep, "lab failure")[0])
         self.assertEqual(rep["summary"]["responses"], 0, "a <synthetic> message is not a response")
+
+    def test_a_session_that_ends_on_the_safeguards_refusal_of_a_message_is_blocked_not_a_lab_failure(self):
+        # seen on 2026-10-16: Fable 5.1 at xhigh, the first message flagged, the client's one "continue" retry flagged again, the session over in 13 seconds
+        events = start() + notice(at(1, 4)) + stop_note(at(1, 4)) + refusal_error(at(1, 6)) + turn_end(at(1, 7), 700)
+        code, rep, _ = self.audit(self.session(events))
+        self.assertEqual((code, rep["outcome"]), (1, "blocked"))
+        self.assertIn("safeguard", self.findings(rep, "blocked")[0])
+        self.assertEqual(self.findings(rep, "lab failure"), [], "the refusal is a stop, not an API fault")
+        self.assertEqual(rep["summary"]["responses"], 0, "a <synthetic> message is still not a response")
+        # an API error that is not a refusal stays a lab failure
+        code, rep, _ = self.audit(self.session(start() + api_error(at(1, 5)) + turn_end(at(1, 6), 700), sid="99999999-2222-3333-4444-555555555555"))
+        self.assertEqual((code, rep["outcome"]), (1, "lab failure"))
 
     def test_a_session_cut_mid_work_needs_the_reason_from_the_lab(self):
         cut = start() + response("m1", at(2)) + tool_result(at(2, 5)) + response("m2", at(3))
