@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.229`
+**Versão atual:** `0.2.230`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.230` — 2026-10-16 — The Codex profile records the owner's acceptance of the permission exception and how the lab authenticates the client
+
+- `docs/new-series-design.md` section 6.1 ("Codex CLI as the client"): the owner accepted on 2026-10-16 that a Codex case runs with approvals and sandbox bypassed (the only unattended way, on a disposable
+  VM, required and recorded in each attempt and published with the result of each Codex configuration). Authentication is a credential the lab hands over through `codex login --with-access-token` (an API
+  key with `--with-api-key`), the twin of Claude Code's long-lived token, instead of an API key alone: the owner's access to OpenAI is a ChatGPT account like the one Claude Code uses, not pay-as-you-go. The stored login stays
+  a fallback inside the client's refresh window. No code changes.
 
 ### `0.2.229` — 2026-10-16 — A Codex CLI session can be audited like a Claude Code one: who answered, under which permissions, and how it ended
 

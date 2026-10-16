@@ -195,9 +195,11 @@ same package) runs under the same rules, with what is the client's own replaced:
 - **Permissions are the one exception to §6.1's "no case runs with permissions bypassed".** Codex's default sandbox cannot reach the local PostgreSQL the tests need, and
   `codex exec` has no auto mode with a classifier; the only unattended way is `--dangerously-bypass-approvals-and-sandbox` (approval never, no sandbox), on a disposable
   VM. The lab requires `--permissions bypass` and the audit checks every turn ran under it, so the exception is recorded in each attempt and published with the
-  result of every Codex configuration.
-- **Authentication is an API key**, as Claude Code's is a long-lived token: a stored ChatGPT login holds a refresh token that a rollback brings back already spent.
-  The key lives in a 600 file on the workstation, goes to the VM over ssh's stdin into a tmpfs file the client's shell reads and deletes, and the evidence is scanned for it.
+  result of every Codex configuration. **Owner, 2026-10-16: accepted.**
+- **Authentication is a credential the lab hands over, never the VM's stored login**, as Claude Code's is a long-lived token: a stored ChatGPT login holds a refresh
+  token that a rollback brings back already spent. Codex has the twin of `claude setup-token`: `codex login --with-access-token` reads an access token from stdin
+  (an API key goes the same way with `--with-api-key`). The token lives in a 600 file on the workstation, goes to the VM over ssh's stdin into a tmpfs file the runner feeds to
+  `codex login` before the case and deletes, and the evidence is scanned for it. The stored login stays a fallback for a case or two inside the client's refresh window.
 - **Cost and time.** The rollout log has tokens and no cost and no model time, so the cost of a Codex attempt is an estimate from the provider's price table, labeled as
   one, and its time is the session's.
 
