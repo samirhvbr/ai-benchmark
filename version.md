@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.227`
+**Versão atual:** `0.2.228`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.228` — 2026-10-16 — LEB-D-300-A's second case, Claude Sonnet 5.5 at xhigh effort, is published as an interim aggregate: 785 over three of five runs, Gold
+
+- The second case of the new series. Claude Sonnet 5.5 at effort `xhigh` (Claude Code 2.1.295, 90 minutes, the 1.1 package) has three of its five runs done and evaluated with the 1.1 key: 750, 771 and 835,
+  mean **785** with an interval of 750 to 835 (with three runs it is the range of the runs), Gold, completion 3 of 3, about US$ 6.05 and 36 minutes a run, no regression group broken, 100 in compatibility.
+  Category means: ARCH 182 of 283, BUG 197 of 213, PERF 175 of 213, CLN 89 of 141, COMP 100, EXPL 44 of 50. It is published as interim, which its written reading says, because the other two runs are to be made:
+  an attempt of run 1 was lost when the operator stopped its machine 28 seconds in, which counts as lost and is not scored, and run 5 had not been started. The figures will move.
+- Evaluated like the first case: the mechanical stage on each delivery (70 of 70 public tests, no decoy broken, no regression), then two blind judges on Claude Opus 5.5 for the matching and two for the explanation,
+  with the delivery anonymized under letters that hide the run and the model. The judges agreed on every item of two deliveries and disagreed on one of the third, which the owner settled on 2026-10-16: it moves no
+  score. The instance README names the second case, and the notes of the aggregate say which package each case received.
 
 ### `0.2.227` — 2026-10-16 — The aggregate of the new series keeps the package each configuration received, and counts attempts lost to the operator with those lost to the lab
 

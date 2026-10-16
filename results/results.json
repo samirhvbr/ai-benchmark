@@ -18335,17 +18335,135 @@
       "leb_spec": "1.5.1",
       "task_version": "1.0.0",
       "matrix_sha256": "9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce",
-      "package_sha256": "71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4",
       "mode": "A",
       "turn_budget": null,
       "budget_minutes": 90,
       "track": "default",
       "agents": [
         {
+          "agent": "claude-sonnet-5.5-xhigh",
+          "score": 785,
+          "grade": "Gold",
+          "runs_count": 3,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 182,
+            "BUG": 197,
+            "PERF": 175,
+            "CLN": 89,
+            "COMP": 100,
+            "EXPL": 44
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 6.05,
+          "wall_minutes": 35.5,
+          "tokens": {
+            "input": 152,
+            "output": 136980,
+            "cache": 17170279,
+            "total": 17307411
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 785.3,
+              "low": 750.0,
+              "high": 835.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 785.3,
+              "low": 750.0,
+              "high": 835.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 771,
+            "min": 750,
+            "max": 835
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 750,
+              "grade": "Gold",
+              "cost_usd": 6.78,
+              "wall_minutes": 35.6,
+              "tokens": {
+                "input": 160,
+                "output": 141611,
+                "cache": 20075194,
+                "total": 20216965
+              }
+            },
+            {
+              "run": 3,
+              "total": 771,
+              "grade": "Gold",
+              "cost_usd": 5.03,
+              "wall_minutes": 38.4,
+              "tokens": {
+                "input": 132,
+                "output": 129761,
+                "cache": 13064915,
+                "total": 13194808
+              }
+            },
+            {
+              "run": 4,
+              "total": 835,
+              "grade": "Gold",
+              "cost_usd": 6.33,
+              "wall_minutes": 32.4,
+              "tokens": {
+                "input": 164,
+                "output": 139567,
+                "cache": 18370729,
+                "total": 18510460
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 750 and 835, mean 785, all Gold. The interval is the range of the three, since a bootstrap of three runs has nothing else to draw. Compatibility was kept in every run (100), no regression group was broken, and the reports were rated 43 to 44 of 50. Bug fixing was the strongest area (197 of 213 on average), then performance (175 of 213), architecture (182 of 283) and clean code (89 of 141). The runs took 32 to 38 minutes at about US$ 6.05 each. Two runs are still to be made, one of them to replace an attempt lost when the operator stopped its machine, so the figures will move. It is one system, so the interval cannot say how the configuration does across systems.",
+            "pt_BR": "Três execuções de um caso de cinco, entre 750 e 835, média 785, todas Gold. O intervalo é a amplitude das três, já que um bootstrap de três execuções não tem de onde mais sortear. A compatibilidade foi mantida em todas (100), nenhum grupo de regressão foi quebrado e os relatórios tiveram de 43 a 44 de 50. Corrigir bugs foi a área mais forte (197 de 213 em média), depois desempenho (175 de 213), arquitetura (182 de 283) e código limpo (89 de 141). As execuções levaram de 32 a 38 minutos, por cerca de US$ 6.05 cada. Faltam duas execuções, uma delas para repor uma tentativa perdida quando o operador desligou a máquina, então os números vão mudar. É um sistema só, então o intervalo não diz como a configuração se sai em vários sistemas."
+          }
+        },
+        {
           "agent": "claude-haiku-5.5-high",
           "score": 547,
           "grade": "Bronze",
           "runs_count": 5,
+          "package_sha256": "71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4",
           "categories": {
             "ARCH": 96,
             "BUG": 173,
@@ -18486,8 +18604,8 @@
         }
       ],
       "notes": {
-        "en": "The five runs received the package of version 1.0 of this instance, whose task statement names the key of that version, and were evaluated with the key of version 1.1: version 1.1 hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them, and its package differs from 1.0 only in the four lines of the task statement that name the version and the key. Every file of both versions is public on GitHub. A sixth attempt, the second, was lost by the lab before the model answered, was not scored, and was rerun.",
-        "pt_BR": "As cinco execuções receberam o pacote da versão 1.0 desta instância, cujo enunciado cita o gabarito dessa versão, e foram avaliadas com o gabarito da versão 1.1: a versão 1.1 endureceu os verificadores (lê o que uma página diz e para onde um link aponta em vez do seu markup, acompanha um pagamento numa verificação de cache e pede a causa num registro de erro) antes de qualquer entrega passar por eles, e o pacote dela difere do da 1.0 só nas quatro linhas do enunciado que citam a versão e o gabarito. Todo arquivo das duas versões é público no GitHub. Uma sexta tentativa, a segunda, foi perdida pelo laboratório antes de o modelo responder, não foi pontuada e foi refeita."
+        "en": "The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1. Each task statement names the key of its own version, and the two packages differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many.",
+        "pt_BR": "O primeiro caso, o Claude Haiku 5.5, recebeu o pacote da versão 1.0 desta instância, e os casos seguintes recebem o pacote da versão 1.1. Cada enunciado cita o gabarito da sua própria versão, e os dois pacotes diferem só nas quatro linhas que citam a versão e o gabarito. Toda execução é avaliada com o gabarito da versão 1.1, que endureceu os verificadores (lê o que uma página diz e para onde um link aponta em vez do seu markup, acompanha um pagamento numa verificação de cache e pede a causa num registro de erro) antes de qualquer entrega passar por eles. Todo arquivo das duas versões é público no GitHub. Uma tentativa perdida antes de o modelo poder entregar, para o laboratório ou para o operador, não é pontuada e é refeita; cada configuração mostra quantas houve."
       }
     }
   ]
