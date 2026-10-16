@@ -68,6 +68,11 @@ operator stopped its machine was rerun and counts as lost); Claude Sonnet 5.5 at
 scored 716, 812, 625, 712 and 793 (mean 732, interval 677 to 789, two Gold and three Silver, about US$ 3.97 and 22 minutes). Every delivery was judged blind by two judges and a person settled the disagreements; the folders
 the judges read carry no name of a model, an effort or a vendor.
 
+Three Codex CLI cases are published as interim aggregates, three of their five runs each, on the package of version 1.1 and with the same key: GPT-6-astra at `xhigh` scored 672, 739 and 706 (mean 706, Silver), GPT-6.1-sol at
+`xhigh` scored 685, 718 and 695 (mean 699, Silver) and GPT-5.6-terra at `xhigh` scored 418, 384 and 457 (mean 420, Bronze); two runs of each are still to be made. They ran with the client's approvals and sandbox bypassed,
+the one exception the series makes to its rule against that (design section 6.1), recorded in every attempt and shown as the `permissions bypassed` mode of the model on the sites; the client's log keeps tokens and no
+cost, so their cost is in tokens.
+
 ## Known limits of version 1.1
 
 The external review that led to version 1.1 had 27 findings. Version 1.1 and the tooling versions before it dealt with the ones that could judge a delivery by something the manifest does not contract

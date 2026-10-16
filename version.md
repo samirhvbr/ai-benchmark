@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.231`
+**Versão atual:** `0.2.232`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.232` — 2026-10-16 — LEB-D-300-A's Codex cases are published as interim aggregates, three of five runs each: GPT-6-astra 706, GPT-6.1-sol 699, GPT-5.6-terra 420
+
+- Three cases of the Codex CLI (0.159.3, 90 minutes, the 1.1 package, the 1.1 key, effort `xhigh`) with three runs each, judged like the Claude cases (the mechanical stage, then two blind judges for the matching and two for the
+  explanation under neutral folders, and a person settling the disagreements). GPT-6-astra: 672, 739 and 706, mean **706**, Silver, about 4.6 million tokens and 24 minutes a run, one run lost 15 points for a new defect of
+  its own. GPT-6.1-sol: 685, 718 and 695, mean **699**, Silver, about 6.7 million tokens and 25 minutes, every run lost 5 points for reporting a sound piece of code as a flaw and one lost 15 for a new defect. GPT-5.6-terra:
+  418, 384 and 457, mean **420**, Bronze (two Bronze and one Reprovada), about 3.9 million tokens and 13 minutes, far fewer rows reported and fixed than the other two. The interval is the range of the three runs and the
+  readings say that two runs of each are still to be made, so the figures will move.
+- The exception of the design (section 6.1) is published with the results: the Codex cases ran with the client's approvals and sandbox bypassed, the only unattended way to run it, on a disposable machine, and the audit
+  checked every turn ran under it. It is in the notes of the aggregate, in each configuration's reading and in `model.client_mode` (`permissions bypassed`), which the sites show next to the effort. The client's log keeps
+  no cost, so `cost_usd` is empty and the cost is the token counts (`run.json` records the source). The archive of a Codex run also records `permissions`. Disagreements between the judges that were only the same false
+  positive written under two spellings, or a quality criterion of a row nobody tried to fix, were settled by the rules the owner accepted on 2026-10-16 and recorded as such.
 
 ### `0.2.231` — 2026-10-16 — LEB-D-300-A's cases of Claude Sonnet 5.5 at xhigh and high and of Claude Opus 5.5 at high are published with their five runs: 785, 713 and 732
 

@@ -117,7 +117,10 @@ This instance is **active**. While it is, only the figures below are published: 
 | 1 | `claude-sonnet-5.5-xhigh` | **785** | 764 to 812 | Gold | 176 | 202 | 176 | 88 | 100 | 45 | 5/5 (752 · 772 · 836 · 785 · 781) |
 | 2 | `claude-opus-5.5-high` | **732** | 677 to 789 | Silver | 166 | 173 | 173 | 79 | 100 | 44 | 5/5 (716 · 812 · 625 · 712 · 793) |
 | 3 | `claude-sonnet-5.5-high` | **713** | 700 to 728 | Silver | 138 | 199 | 173 | 66 | 100 | 41 | 5/5 (707 · 734 · 702 · 694 · 730) |
-| 4 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
+| 4 | `gpt-6-astra-xhigh` | **706** | 672 to 739 | Silver | 132 | 209 | 177 | 50 | 100 | 43 | 3/3 (672 · 739 · 706) |
+| 5 | `gpt-6.1-sol-xhigh` | **699** | 685 to 718 | Silver | 140 | 209 | 183 | 35 | 100 | 42 | 3/3 (685 · 718 · 695) |
+| 6 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
+| 7 | `gpt-5.6-terra-xhigh` | **420** | 384 to 457 | Bronze | 54 | 160 | 66 | 0 | 100 | 39 | 3/3 (418 · 384 · 457) |
 
 Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -128,8 +131,14 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `claude-sonnet-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 713.4 (699.8 to 727.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 707, lowest 694, highest 734.
 
+`gpt-6-astra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 705.7 (672.0 to 739.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 706, lowest 672, highest 739.
+
+`gpt-6.1-sol-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 699.3 (685.0 to 718.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 695, lowest 685, highest 718.
+
 `claude-haiku-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 546.8 (530.0 to 565.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 536, lowest 524, highest 580.
 
-The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1. Each task statement names the key of its own version, and the two packages differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many.
+`gpt-5.6-terra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 419.7 (384.0 to 457.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 418, lowest 384, highest 457.
 
-Matrix SHA-256 `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`; the package each configuration received: `claude-sonnet-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-opus-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-haiku-5.5-high` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4`.
+The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1. Each task statement names the key of its own version, and the two packages differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. The Codex cases ran with the client's approvals and sandbox bypassed, the one exception to the series' rule against it (it is the only unattended way to run that client, on a disposable machine, and every turn is checked); the client's log keeps no cost, so their cost is in tokens.
+
+Matrix SHA-256 `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`; the package each configuration received: `claude-sonnet-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-opus-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-haiku-5.5-high` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` · `gpt-5.6-terra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e`.

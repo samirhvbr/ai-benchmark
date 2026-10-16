@@ -18773,6 +18773,244 @@
           }
         },
         {
+          "agent": "gpt-6-astra-xhigh",
+          "score": 706,
+          "grade": "Silver",
+          "runs_count": 3,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 132,
+            "BUG": 209,
+            "PERF": 177,
+            "CLN": 50,
+            "COMP": 100,
+            "EXPL": 43
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 23.6,
+          "tokens": {
+            "input": 157927,
+            "output": 41308,
+            "cache": 4412800,
+            "total": 4612036
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 705.7,
+              "low": 672.0,
+              "high": 739.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 705.7,
+              "low": 672.0,
+              "high": 739.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 706,
+            "min": 672,
+            "max": 739
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 672,
+              "grade": "Silver",
+              "cost_usd": null,
+              "wall_minutes": 17.9,
+              "tokens": {
+                "input": 164357,
+                "output": 32454,
+                "cache": 3284224,
+                "total": 3481035
+              }
+            },
+            {
+              "run": 2,
+              "total": 739,
+              "grade": "Silver",
+              "cost_usd": null,
+              "wall_minutes": 29.0,
+              "tokens": {
+                "input": 154308,
+                "output": 51411,
+                "cache": 4330880,
+                "total": 4536599
+              }
+            },
+            {
+              "run": 3,
+              "total": 706,
+              "grade": "Silver",
+              "cost_usd": null,
+              "wall_minutes": 23.8,
+              "tokens": {
+                "input": 155117,
+                "output": 40060,
+                "cache": 5623296,
+                "total": 5818473
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-6-astra",
+            "id": "gpt-6-astra",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 672 and 739, mean 706 (the interval, 672 to 739, is the range of the three), all Silver. All three completed inside the 90-minute budget, about 4.6 million tokens and 24 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (209 of 213 on average), then performance (177 of 213), architecture (132 of 283) and clean code (50 of 141). The reports were rated 42 to 43 of 50. Penalties: run 2 lost 15 points for a new defect introduced by its own change. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other two are still to be made, so the figures will move. It ran with the client's approvals and sandbox bypassed, the series' one exception (see the notes).",
+            "pt_BR": "Três execuções de um caso de cinco, entre 672 e 739, média 706 (o intervalo, de 672 a 739, é a amplitude das três), todas Silver. As três terminaram dentro do orçamento de 90 minutos, por cerca de 4,6 milhões de tokens e 24 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (209 de 213 em média), depois desempenho (177 de 213), arquitetura (132 de 283) e código limpo (50 de 141). Os relatórios tiveram de 42 a 43 de 50. Penalidades: a execução 2 perdeu 15 pontos por um defeito novo introduzido pela própria mudança. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam duas execuções, então os números vão mudar. Rodou com as aprovações e o sandbox do cliente desligados, a única exceção da série (veja as notas)."
+          }
+        },
+        {
+          "agent": "gpt-6.1-sol-xhigh",
+          "score": 699,
+          "grade": "Silver",
+          "runs_count": 3,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 140,
+            "BUG": 209,
+            "PERF": 183,
+            "CLN": 35,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 24.9,
+          "tokens": {
+            "input": 190811,
+            "output": 60198,
+            "cache": 6441728,
+            "total": 6692738
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 699.3,
+              "low": 685.0,
+              "high": 718.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 699.3,
+              "low": 685.0,
+              "high": 718.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 695,
+            "min": 685,
+            "max": 718
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 685,
+              "grade": "Silver",
+              "cost_usd": null,
+              "wall_minutes": 27.1,
+              "tokens": {
+                "input": 199369,
+                "output": 63001,
+                "cache": 5985664,
+                "total": 6248034
+              }
+            },
+            {
+              "run": 2,
+              "total": 718,
+              "grade": "Silver",
+              "cost_usd": null,
+              "wall_minutes": 25.1,
+              "tokens": {
+                "input": 183910,
+                "output": 62123,
+                "cache": 8613376,
+                "total": 8859409
+              }
+            },
+            {
+              "run": 3,
+              "total": 695,
+              "grade": "Silver",
+              "cost_usd": null,
+              "wall_minutes": 22.6,
+              "tokens": {
+                "input": 189155,
+                "output": 55471,
+                "cache": 4726144,
+                "total": 4970770
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-6.1-sol",
+            "id": "gpt-6.1-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 685 and 718, mean 699 (the interval, 685 to 718, is the range of the three), all Silver. All three completed inside the 90-minute budget, about 6.7 million tokens and 25 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (209 of 213 on average), then performance (183 of 213), architecture (140 of 283) and clean code (35 of 141). The reports were rated 41 to 43 of 50. Penalties: run 1 lost 15 points for a new defect introduced by its own change; runs 1, 2 and 3 lost 5 points each for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other two are still to be made, so the figures will move. It ran with the client's approvals and sandbox bypassed, the series' one exception (see the notes).",
+            "pt_BR": "Três execuções de um caso de cinco, entre 685 e 718, média 699 (o intervalo, de 685 a 718, é a amplitude das três), todas Silver. As três terminaram dentro do orçamento de 90 minutos, por cerca de 6,7 milhões de tokens e 25 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (209 de 213 em média), depois desempenho (183 de 213), arquitetura (140 de 283) e código limpo (35 de 141). Os relatórios tiveram de 41 a 43 de 50. Penalidades: a execução 1 perdeu 15 pontos por um defeito novo introduzido pela própria mudança; as execuções 1, 2 e 3 perderam 5 pontos cada por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam duas execuções, então os números vão mudar. Rodou com as aprovações e o sandbox do cliente desligados, a única exceção da série (veja as notas)."
+          }
+        },
+        {
           "agent": "claude-haiku-5.5-high",
           "score": 547,
           "grade": "Bronze",
@@ -18915,11 +19153,130 @@
             "en": "Five runs between 524 and 580, mean 547 with a 95% interval of 530 to 565, all Bronze. All five completed inside the 90-minute budget, at about US$ 1.13 and 27 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (173 of 213 on average), then performance (125 of 213) and architecture (96 of 283); clean code scored 10 of 141 on average, with two runs at 0. The reports were rated 41 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest.",
             "pt_BR": "Cinco execuções entre 524 e 580, média 547 com intervalo de 95% de 530 a 565, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,13 e 27 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (173 de 213 em média), depois desempenho (125 de 213) e arquitetura (96 de 283); código limpo teve 10 de 141 em média, com duas execuções em 0. Os relatórios tiveram de 41 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto."
           }
+        },
+        {
+          "agent": "gpt-5.6-terra-xhigh",
+          "score": 420,
+          "grade": "Bronze",
+          "runs_count": 3,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 54,
+            "BUG": 160,
+            "PERF": 66,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 39
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 12.6,
+          "tokens": {
+            "input": 169688,
+            "output": 25988,
+            "cache": 3656789,
+            "total": 3852465
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 419.7,
+              "low": 384.0,
+              "high": 457.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 419.7,
+              "low": 384.0,
+              "high": 457.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 418,
+            "min": 384,
+            "max": 457
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 418,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 15.8,
+              "tokens": {
+                "input": 164437,
+                "output": 31195,
+                "cache": 3657728,
+                "total": 3853360
+              }
+            },
+            {
+              "run": 2,
+              "total": 384,
+              "grade": "Reprovada",
+              "cost_usd": null,
+              "wall_minutes": 7.1,
+              "tokens": {
+                "input": 172620,
+                "output": 21952,
+                "cache": 2962176,
+                "total": 3156748
+              }
+            },
+            {
+              "run": 3,
+              "total": 457,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 15.0,
+              "tokens": {
+                "input": 172006,
+                "output": 24816,
+                "cache": 4350464,
+                "total": 4547286
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-terra",
+            "id": "gpt-5.6-terra",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 384 and 457, mean 420 (the interval, 384 to 457, is the range of the three), two Bronze and one Reprovada. All three completed inside the 90-minute budget, about 3.9 million tokens and 13 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (160 of 213 on average), then performance (66 of 213), architecture (54 of 283) and clean code (0 of 141). The reports were rated 39 to 40 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other two are still to be made, so the figures will move. It ran with the client's approvals and sandbox bypassed, the series' one exception (see the notes).",
+            "pt_BR": "Três execuções de um caso de cinco, entre 384 e 457, média 420 (o intervalo, de 384 a 457, é a amplitude das três), duas Bronze e uma Reprovada. As três terminaram dentro do orçamento de 90 minutos, por cerca de 3,9 milhões de tokens e 13 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (160 de 213 em média), depois desempenho (66 de 213), arquitetura (54 de 283) e código limpo (0 de 141). Os relatórios tiveram de 39 a 40 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam duas execuções, então os números vão mudar. Rodou com as aprovações e o sandbox do cliente desligados, a única exceção da série (veja as notas)."
+          }
         }
       ],
       "notes": {
-        "en": "The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1. Each task statement names the key of its own version, and the two packages differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many.",
-        "pt_BR": "O primeiro caso, o Claude Haiku 5.5, recebeu o pacote da versão 1.0 desta instância, e os casos seguintes recebem o pacote da versão 1.1. Cada enunciado cita o gabarito da sua própria versão, e os dois pacotes diferem só nas quatro linhas que citam a versão e o gabarito. Toda execução é avaliada com o gabarito da versão 1.1, que endureceu os verificadores (lê o que uma página diz e para onde um link aponta em vez do seu markup, acompanha um pagamento numa verificação de cache e pede a causa num registro de erro) antes de qualquer entrega passar por eles. Todo arquivo das duas versões é público no GitHub. Uma tentativa perdida antes de o modelo poder entregar, para o laboratório ou para o operador, não é pontuada e é refeita; cada configuração mostra quantas houve."
+        "en": "The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1. Each task statement names the key of its own version, and the two packages differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. The Codex cases ran with the client's approvals and sandbox bypassed, the one exception to the series' rule against it (it is the only unattended way to run that client, on a disposable machine, and every turn is checked); the client's log keeps no cost, so their cost is in tokens.",
+        "pt_BR": "O primeiro caso, o Claude Haiku 5.5, recebeu o pacote da versão 1.0 desta instância, e os casos seguintes recebem o pacote da versão 1.1. Cada enunciado cita o gabarito da sua própria versão, e os dois pacotes diferem só nas quatro linhas que citam a versão e o gabarito. Toda execução é avaliada com o gabarito da versão 1.1, que endureceu os verificadores (lê o que uma página diz e para onde um link aponta em vez do seu markup, acompanha um pagamento numa verificação de cache e pede a causa num registro de erro) antes de qualquer entrega passar por eles. Todo arquivo das duas versões é público no GitHub. Uma tentativa perdida antes de o modelo poder entregar, para o laboratório ou para o operador, não é pontuada e é refeita; cada configuração mostra quantas houve. Os casos do Codex rodaram com as aprovações e o sandbox do cliente desligados, a única exceção da série à regra contra isso (é o único jeito de rodar esse cliente sem operador, numa máquina descartável, e cada turno é conferido); o log do cliente não guarda custo, então o custo deles é em tokens."
       }
     }
   ]
