@@ -158,6 +158,13 @@ A **case** is one system × one track × one agent configuration. It runs 5 time
   - No `fallbackModel` chain (the fallback on overload), the advisor off (`CLAUDE_CODE_DISABLE_ADVISOR_TOOL` in the policy's
     `env`), and `switchModelsOnFlag: false`, so that a pin that failed would pause the main conversation instead of switching.
   - The declared effort as `effortLevel` (low to xhigh). `max` is not a settings value and is passed at launch.
+  - **Client mode `ultracode`** (Claude Code's multi-agent mode; the lab runs it since 2026-10-16, its first case is Claude Sonnet 5.5 at `max`). It is not an effort (`--effort`
+    takes low to max): it is switched on inside the session by the command `/effort ultracode` ("Ultracode on (this session only) ... Effort stays max"), which is what the LEB-100-A
+    run did by hand. In print mode that command can be the first of two streamed user messages (`--input-format stream-json`), so the lab sends one file with the command and then the
+    fixed message, keeps the stream (`resultado.jsonl`) and its final result event, and declares the command to the audit (`--allow-command effort`). The command costs nothing and takes
+    no turn; the record carries `client_mode: ultracode`, and the mode makes the agent a different one from the same model at the same effort. Proved on a bench VM by a smoke (the
+    session said "Ultracode on", used no workflow on a one-file task, and the audit counted the one declared message and the one declared command). The budget stays the case's 90 minutes:
+    the LEB-100-A run took 8 hours and 68 subagents, so this mode can end as *budget exhausted*.
   - The managed file must be readable by the runner: a policy the client cannot read is skipped without notice.
   - **A policy from the claude.ai console outranks the file** and, by default, replaces it whole. No file check sees it: in the
     lab, `/status` must name `Enterprise managed settings (file)` as the setting source, with no `Skipped sources`, and
@@ -186,8 +193,8 @@ A **case** is one system × one track × one agent configuration. It runs 5 time
 
 #### Codex CLI as the client
 
-Built on 2026-10-16 (`tools/auditar-codex.py`, and the lab's `laboratorio-codex.py`), not yet proved on a bench VM. The same case (one message, one budget, the
-same package) runs under the same rules, with what is the client's own replaced:
+Built on 2026-10-16 (`tools/auditar-codex.py`, and the lab's `laboratorio-codex.py`) and proved the same day on the bench VMs: smokes on three models, then the cases of the Default
+track (more than thirty attempts so far). The same case (one message, one budget, the same package) runs under the same rules, with what is the client's own replaced:
 
 - **The pin is the command line, and the proof is the audit.** Codex has no managed policy that restricts the models: `codex exec -m <model> -c
   model_reasoning_effort=<effort>` starts the case, and the audit of the rollout logs says which model answered each turn, in the main thread and in every thread
@@ -202,6 +209,11 @@ same package) runs under the same rules, with what is the client's own replaced:
   `codex login` before the case and deletes, and the evidence is scanned for it. The stored login stays a fallback for a case or two inside the client's refresh window.
 - **Cost and time.** The rollout log has tokens and no cost and no model time, so the cost of a Codex attempt is an estimate from the provider's price table, labeled as
   one, and its time is the session's.
+- **`ultra` is the client's multi-agent effort.** `-c model_reasoning_effort=ultra` starts a session in which the main agent spawns subagents on the same model (three in
+  each of the first four attempts of 2026-10-16, as in the LEB-100-A runs at `ultra`). Each spawned thread has its own rollout log: the audit reads all of them, checks the model of every
+  turn like the main thread's, and the tokens of the attempt are the sum over the threads (the subagents start from a copy of the parent's context, so cached input repeats). A client
+  that runs agents in parallel sizes its work to the machine, so the machine is part of the run: the bench VMs (20 vCPUs, 15.6 GiB) are the machine of the LEB-100-A runs at `ultra`,
+  and the lab records it in every attempt (`execution_host`). The effort is a plain effort of the model, filed as `ultra`, not a client mode.
 
 #### OpenCode as the client
 
@@ -248,6 +260,10 @@ expected score of §9, and may also be read as a separate partial profile.
 work folder it left is identical to the package, so the agent changed nothing before the stop, and as *blocked during the work*
 otherwise. The first says that the task itself trips the safeguard for that configuration; the second, that the work led there.
 The lab compares every attempt's folder with its package, so the split needs no judgment.
+
+A safeguard can also refuse a message outright, with no response at all: the client then writes the refusal as an API-error message that still carries `stop_reason: "refusal"`, and
+the session ends there (Claude Fable 5.1 at `xhigh`, 2026-10-16, 13 seconds after the first message). That is a stop, not an API fault, so it is *blocked* (since 0.2.237) and, with the
+work folder untouched, *blocked at the start*; it is not a lab failure and it is not rerun by the lab.
 
 The audit (§7) decides the outcome from the transcripts, with the lab's word for a budget it stopped. When the record cannot be
 attributed (no response, a session cut with no reason from the lab, work of a kind the audit does not know) it says

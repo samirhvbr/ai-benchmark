@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.237`
+**Versão atual:** `0.2.238`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.238` — 2026-10-16 — The design says how the lab runs Codex at `ultra` and Claude Code in `ultracode`, and what a refused first message is
+
+- `docs/new-series-design.md`: three additions, each proved on a bench VM the same day. §6.1, "Codex CLI as the client": the lane is proved (smokes on three models, then more than thirty attempts), and `ultra` is the
+  client's multi-agent effort: the main agent spawns subagents on the same model (three in each of the first four attempts, as in LEB-100-A), the audit reads every thread's rollout log and sums the tokens,
+  and the machine (the bench VMs' 20 vCPUs and 15.6 GiB, the machine of the LEB-100-A runs at `ultra`) is part of the run and recorded as `execution_host`. §6.1, the managed policy: Claude Code's `ultracode` mode
+  is not an effort level but a command inside the session (`/effort ultracode`, "Ultracode on (this session only) ... Effort stays max"); in print mode it is the first of two streamed user messages, declared to
+  the audit as a command, recorded as `client_mode: ultracode`, with the case's 90-minute budget unchanged (the LEB-100-A run took 8 hours). §6.2: a safeguard's outright refusal of a message is a stop, so *blocked*
+  (*blocked at the start* with the work folder untouched), as 0.2.237 made the audit read it. No tool, test or result changes.
 
 ### `0.2.237` — 2026-10-16 — A Claude Code session that ends on the safeguard's refusal of a message is blocked, not a lab failure
 
