@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.240`
+**Versão atual:** `0.2.241`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.241` — 2026-10-17 — The design says what the OpenCode lane does about permissions, the served model and the logins it hands over
+
+- `docs/new-series-design.md`, §6.1 "OpenCode as the client": the bullet that said the lane needs no permission exception is replaced by what the lab does since 2026-10-16 (`--auto`, the owner's acceptance, the audit counting
+  the decisions, `client_mode: permissions auto-approved` for a configuration whose every run used it); a new bullet says the lab proves the served model with a probe before the run and what a stored login lacks; and the
+  authentication bullet says the snapshots do not hold the same logins on every VM, so the key file is the route that works on all of them. No tool, test or result changes.
 
 ### `0.2.240` — 2026-10-17 — The OpenCode cases that ran with `--auto` carry it as their client mode, and the results README says "attempt" for one
 

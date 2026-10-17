@@ -225,14 +225,22 @@ package) runs under the same rules, with what is the client's own replaced:
   answered: its database (`opencode.db`) holds the provider, the model, the effort variant and the agent of every assistant message, in the root session and in every session
   the agent spawned, and its log names the model of every request the client made, the auxiliary one that titles the session included. A message or a request on another
   model is a switch. The effort is the client's *variant*; a model that offers none is declared `default`.
-- **Permissions need no exception.** OpenCode has no sandbox, and its default agent (`build`) allows the tools without asking; the VM is the sandbox. The audit counts the
-  permission decisions the log writes (allow, ask, deny), so a prompt or a denial would show.
+- **Permissions: the client's default at first, `--auto` since 2026-10-16.** OpenCode has no sandbox, and its default agent (`build`) allows the tools without asking; the VM is the
+  sandbox. In `opencode run` the client auto-rejects a permission request it would otherwise ask, and a rejection halts the agent's loop (the first MiniMax-M3 attempt ended that
+  way, on a write under `/tmp`), so the lab runs a case with `--auto`, which approves every request not explicitly denied. The owner accepted it on 2026-10-16, as for Codex's
+  bypass, and the notes of the aggregate name it as an exception to the rule against bypassing approvals. The audit counts the permission decisions the log writes (allow, ask,
+  deny), the record carries the mode, and a configuration whose every run ran with `--auto` has `client_mode: permissions auto-approved`, which the sites show next to the effort.
+  The two earliest attempts that were scored (DeepSeek V4.1 Flash at `high`, and the second MiniMax-M3 run) ran with the default and carry no mode.
 - **Authentication is a credential the lab hands over, not what the snapshot happens to hold.** The provider keys live in one 600 file on the workstation
   (`~/.config/leb-lab/opencode-keys`, a `provider=key` line each, `provider` being the id OpenCode gives it: `deepseek`, `openrouter`, `novita-ai`...). For a case the lab sends
   only the line of the provider that case uses, over ssh's stdin into a tmpfs file, and the runner's login file is written from it before the client starts. A login the snapshot
   kept is removed first and its provider names are recorded, so the key that answered is the lab's (the snapshots carry the operator's own API logins for nine providers; for a
-  case whose key is not in the lab's file, `--auth stored` keeps only that provider's entry from the snapshot and removes the other eight). The login file is never collected, and the
-  evidence is scanned for the key: on the VM, where the key never leaves, and over a pipe.
+  case whose key is not in the lab's file, `--auth stored` keeps only that provider's entry from the snapshot and removes the other eight; the snapshots do not hold the same logins
+  on every VM, so the key file is the route that works on all of them). The login file is never collected, and the evidence is scanned for the key: on the VM, where the key never
+  leaves, and over a pipe.
+- **The served model is proved before the run.** A provider may accept an id it does not serve (the MiniMax API answered "MiniMax-M3.1" with MiniMax-M3). Since 2026-10-16 the lab sends
+  one tiny request with the case's own key before the run and requires the provider's answer to name the model that was asked for, with the upstream OpenRouter reports for a gateway;
+  a case on a stored login has no such proof, and its record says so.
 - **The message goes in on stdin.** `opencode run` joins its arguments and wraps any argument that holds a space in double quotes, so a message given as an argument reaches the
   model between quotes (seen in the first smoke); a message piped in is appended as it is, and the audit compares what the record kept with the declared text.
 - **Cost and time.** The record has tokens and a cost, which is the client's own price-table estimate and is labeled as one, and no model time; the time is the session's.
