@@ -68,10 +68,16 @@ operator stopped its machine was rerun and counts as lost); Claude Sonnet 5.5 at
 scored 716, 812, 625, 712 and 793 (mean 732, interval 677 to 789, two Gold and three Silver, about US$ 3.97 and 22 minutes). Every delivery was judged blind by two judges and a person settled the disagreements; the folders
 the judges read carry no name of a model, an effort or a vendor.
 
-Three Codex CLI cases are published as interim aggregates, three of their five runs each, on the package of version 1.1 and with the same key: GPT-6-astra at `xhigh` scored 672, 739 and 706 (mean 706, Silver), GPT-6.1-sol at
-`xhigh` scored 685, 718 and 695 (mean 699, Silver) and GPT-5.6-terra at `xhigh` scored 418, 384 and 457 (mean 420, Bronze); two runs of each are still to be made. They ran with the client's approvals and sandbox bypassed,
-the one exception the series makes to its rule against that (design section 6.1), recorded in every attempt and shown as the `permissions bypassed` mode of the model on the sites; the client's log keeps tokens and no
-cost, so their cost is in tokens.
+The Codex CLI cases ran on the package of version 1.1 and with the same key. At `xhigh`, GPT-6-astra scored 672, 739, 706, 735 and 776 (mean 726, one Gold and four Silver) and GPT-5.6-terra 418, 384, 457, 440 and 407
+(mean 421, Bronze), five runs each; GPT-6.1-sol scored 685, 718 and 695 (mean 699, Silver), GPT-5.6-sol 531, 519 and 606 (mean 552) and GPT-6-luna 408, 458 and 499 (mean 455, Bronze), three of their five runs each. At the
+`ultra` effort, the client's multi-agent effort (a main agent and subagents on the same model, all their tokens counted), GPT-6-astra scored 690 in one run and GPT-6.1-sol 648 and 622 (mean 635). They ran with the client's
+approvals and sandbox bypassed, an exception the series makes to its rule against that (design section 6.1), recorded in every attempt and shown as the `permissions bypassed` mode of the model on the sites; the client's
+log keeps tokens and no cost, so their cost is in tokens.
+
+The OpenCode cases, run on the same package and key, are published with the runs that are settled: Kimi K3 at `max` scored 526 and 499 (mean 512), DeepSeek V4.1 Flash at `max` 487 and 512 (mean 500) and at `high` 422 and 483
+(mean 452), MiniMax-M3 at `thinking` 291 and 275 (mean 283, Reprovada; its first attempt was lost when the client halted after rejecting a permission request, and was rerun), and GLM-5.3 at `max` (541) and
+DeepSeek V4 Pro at `max` (498) with one run each. The first OpenCode cases ran with the client's default permissions and the later ones with its auto-approval flag, which approves every request not explicitly denied (design
+section 6.1); the audit counts every decision. The cost is the client's own estimate. Claude Opus 5.5 at `xhigh` scored 831 in one run (Gold, about US$ 7.47 and 37 minutes). Every delivery was judged blind as above.
 
 ## Known limits of version 1.1
 

@@ -114,31 +114,64 @@ This instance is **active**. While it is, only the figures below are published: 
 
 | # | Agent | Estimate | 95% interval | Grade | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 1 | `claude-sonnet-5.5-xhigh` | **785** | 764 to 812 | Gold | 176 | 202 | 176 | 88 | 100 | 45 | 5/5 (752 · 772 · 836 · 785 · 781) |
-| 2 | `claude-opus-5.5-high` | **732** | 677 to 789 | Silver | 166 | 173 | 173 | 79 | 100 | 44 | 5/5 (716 · 812 · 625 · 712 · 793) |
-| 3 | `claude-sonnet-5.5-high` | **713** | 700 to 728 | Silver | 138 | 199 | 173 | 66 | 100 | 41 | 5/5 (707 · 734 · 702 · 694 · 730) |
-| 4 | `gpt-6-astra-xhigh` | **706** | 672 to 739 | Silver | 132 | 209 | 177 | 50 | 100 | 43 | 3/3 (672 · 739 · 706) |
-| 5 | `gpt-6.1-sol-xhigh` | **699** | 685 to 718 | Silver | 140 | 209 | 183 | 35 | 100 | 42 | 3/3 (685 · 718 · 695) |
-| 6 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
-| 7 | `gpt-5.6-terra-xhigh` | **420** | 384 to 457 | Bronze | 54 | 160 | 66 | 0 | 100 | 39 | 3/3 (418 · 384 · 457) |
+| 1 | `claude-opus-5.5-xhigh` | **831** | 831 to 831 | Gold | 214 | 195 | 186 | 91 | 100 | 45 | 1/1 (831) |
+| 2 | `claude-sonnet-5.5-xhigh` | **785** | 764 to 812 | Gold | 176 | 202 | 176 | 88 | 100 | 45 | 5/5 (752 · 772 · 836 · 785 · 781) |
+| 3 | `claude-opus-5.5-high` | **732** | 677 to 789 | Silver | 166 | 173 | 173 | 79 | 100 | 44 | 5/5 (716 · 812 · 625 · 712 · 793) |
+| 4 | `gpt-6-astra-xhigh` | **726** | 698 to 754 | Silver | 150 | 209 | 183 | 46 | 100 | 43 | 5/5 (672 · 739 · 706 · 735 · 776) |
+| 5 | `claude-sonnet-5.5-high` | **713** | 700 to 728 | Silver | 138 | 199 | 173 | 66 | 100 | 41 | 5/5 (707 · 734 · 702 · 694 · 730) |
+| 6 | `gpt-6.1-sol-xhigh` | **699** | 685 to 718 | Silver | 140 | 209 | 183 | 35 | 100 | 42 | 3/3 (685 · 718 · 695) |
+| 7 | `gpt-6-astra-ultra` | **690** | 690 to 690 | Silver | 146 | 209 | 199 | 0 | 100 | 41 | 1/1 (690) |
+| 8 | `gpt-6.1-sol-ultra` | **635** | 622 to 648 | Silver | 89 | 209 | 199 | 0 | 100 | 43 | 2/2 (648 · 622) |
+| 9 | `gpt-5.6-sol-xhigh` | **552** | 519 to 606 | Bronze | 57 | 203 | 149 | 0 | 100 | 43 | 3/3 (531 · 519 · 606) |
+| 10 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
+| 11 | `glm-5.3-max` | **541** | 541 to 541 | Bronze | 89 | 159 | 131 | 20 | 100 | 42 | 1/1 (541) |
+| 12 | `moonshot-kimi-k3-max` | **512** | 499 to 526 | Bronze | 101 | 166 | 104 | 0 | 100 | 42 | 2/2 (526 · 499) |
+| 13 | `deepseek-v4.1-flash-max` | **500** | 487 to 512 | Bronze | 85 | 144 | 134 | 0 | 100 | 44 | 2/2 (487 · 512) |
+| 14 | `deepseek-v4-pro-max` | **498** | 498 to 498 | Bronze | 89 | 173 | 95 | 0 | 100 | 41 | 1/1 (498) |
+| 15 | `gpt-6-luna-xhigh` | **455** | 408 to 499 | Bronze | 54 | 187 | 78 | 0 | 100 | 39 | 3/3 (408 · 458 · 499) |
+| 16 | `deepseek-v4.1-flash-high` | **452** | 422 to 483 | Bronze | 61 | 148 | 98 | 5 | 100 | 41 | 2/2 (422 · 483) |
+| 17 | `gpt-5.6-terra-xhigh` | **421** | 398 to 442 | Bronze | 53 | 162 | 67 | 0 | 100 | 40 | 5/5 (418 · 384 · 457 · 440 · 407) |
+| 18 | `minimax-m3-thinking` | **283** | 275 to 291 | Reprovada | 16 | 80 | 54 | 20 | 85 | 36 | 2/2 (291 · 275) |
 
 Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
+
+`claude-opus-5.5-xhigh`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 831.0 (831.0 to 831.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 831, lowest 831, highest 831.
 
 `claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 785.2 (764.0 to 812.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 781, lowest 752, highest 836.
 
 `claude-opus-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 731.6 (676.8 to 789.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 716, lowest 625, highest 812.
 
-`claude-sonnet-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 713.4 (699.8 to 727.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 707, lowest 694, highest 734.
+`gpt-6-astra-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 725.6 (698.0 to 753.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 735, lowest 672, highest 776.
 
-`gpt-6-astra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 705.7 (672.0 to 739.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 706, lowest 672, highest 739.
+`claude-sonnet-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 713.4 (699.8 to 727.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 707, lowest 694, highest 734.
 
 `gpt-6.1-sol-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 699.3 (685.0 to 718.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 695, lowest 685, highest 718.
 
+`gpt-6-astra-ultra`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 690.0 (690.0 to 690.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 690, lowest 690, highest 690.
+
+`gpt-6.1-sol-ultra`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 635.0 (622.0 to 648.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 622, lowest 622, highest 648.
+
+`gpt-5.6-sol-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 552.0 (519.0 to 606.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 531, lowest 519, highest 606.
+
 `claude-haiku-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 546.8 (530.0 to 565.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 536, lowest 524, highest 580.
 
-`gpt-5.6-terra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 419.7 (384.0 to 457.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 418, lowest 384, highest 457.
+`glm-5.3-max`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 541.0 (541.0 to 541.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 541, lowest 541, highest 541.
 
-The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1. Each task statement names the key of its own version, and the two packages differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. The Codex cases ran with the client's approvals and sandbox bypassed, the one exception to the series' rule against it (it is the only unattended way to run that client, on a disposable machine, and every turn is checked); the client's log keeps no cost, so their cost is in tokens.
+`moonshot-kimi-k3-max`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 512.5 (499.0 to 526.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 499, lowest 499, highest 526.
 
-Matrix SHA-256 `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`; the package each configuration received: `claude-sonnet-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-opus-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-haiku-5.5-high` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` · `gpt-5.6-terra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e`.
+`deepseek-v4.1-flash-max`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 499.5 (487.0 to 512.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 487, lowest 487, highest 512.
+
+`deepseek-v4-pro-max`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 498.0 (498.0 to 498.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 498, lowest 498, highest 498.
+
+`gpt-6-luna-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 455.0 (408.0 to 499.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 458, lowest 408, highest 499.
+
+`deepseek-v4.1-flash-high`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 452.5 (422.0 to 483.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 422, lowest 422, highest 483.
+
+`gpt-5.6-terra-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 421.2 (397.6 to 442.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 418, lowest 384, highest 457.
+
+`minimax-m3-thinking`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 283.0 (275.0 to 291.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 275, lowest 275, highest 291.
+
+The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1; the two differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. Two clients ran with an exception to the series' rule against bypassing approvals, on a disposable machine with every decision counted: Codex with approvals and sandbox bypassed, OpenCode with its auto-approval flag (its first cases used the default permissions). Codex keeps no cost, so its cost is in tokens; OpenCode's cost is the client's own estimate. Codex ultra is the client's multi-agent effort.
+
+Matrix SHA-256 `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`; the package each configuration received: `claude-opus-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-opus-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-ultra` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-ultra` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-5.6-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-haiku-5.5-high` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` · `glm-5.3-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `moonshot-kimi-k3-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4.1-flash-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4-pro-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-luna-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4.1-flash-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-5.6-terra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `minimax-m3-thinking` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e`.

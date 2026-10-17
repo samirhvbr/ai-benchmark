@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.238`
+**Versão atual:** `0.2.239`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.239` — 2026-10-17 — LEB-D-300-A's aggregate grows to 18 configurations: the Codex and OpenCode cases settled so far and Claude Opus 5.5 at `xhigh`
+
+- The Codex cases at `xhigh` now have their runs: GPT-6-astra five (672, 739, 706, 735 and 776, mean **726**, one Gold and four Silver) and GPT-5.6-terra five (418, 384, 457, 440 and 407, mean **421**, Bronze),
+  and, new, three each of GPT-5.6-sol (531, 519 and 606, mean **552**) and GPT-6-luna (408, 458 and 499, mean **455**); GPT-6.1-sol keeps its three published runs (**699**). At `ultra`, the client's multi-agent effort
+  (a main agent and three subagents on the same model in these attempts, the tokens of all of them counted): GPT-6-astra one run (**690**) and GPT-6.1-sol two (648 and 622, mean **635**), about 11 and 18 million
+  tokens and 15 minutes a run.
+- The first OpenCode cases (OpenCode 1.18.33, 90 minutes, the 1.1 package and key, each model served by its own vendor's API; the lab's probe proved the served model id before every run except the first three attempts,
+  DeepSeek V4.1 Flash at `high` and the second MiniMax-M3 run, which ran before the probe existed): Kimi K3 at `max` 526 and
+  499 (mean **512**), DeepSeek V4.1 Flash at `max` 487 and 512 (mean **500**) and at `high` 422 and 483 (mean **452**), MiniMax-M3 at `thinking` 291 and 275 (mean **283**, Reprovada; its first attempt was lost
+  when the client halted after rejecting a permission request, and counts as lost), and one run each of GLM-5.3 at `max` (**541**) and DeepSeek V4 Pro at `max` (**498**). The first two cases ran with the client's
+  default permissions and the later ones with `--auto`, which approves every request not explicitly denied (the owner accepted it on 2026-10-16, as for Codex's bypass); the audit counted the decisions of every run.
+  The cost is the client's own estimate. Claude Opus 5.5 at `xhigh`: one run, **831** (Gold, about US$ 7.47 and 37 minutes, the Claude Code 2.1.295 profile of the earlier Claude cases).
+- Every delivery was judged blind like the earlier cases (the mechanical stage, two matching judges and two blind explanation judges under neutral folders); the disagreements there were settled by the rules the owner
+  accepted on 2026-10-16 (the same false positive written under two spellings counts once; the quality criteria of a row nobody tried to fix are not compared). A run that waits for a person to settle a disagreement
+  between the judges stays out of the table until then, which is why GLM-5.3, DeepSeek V4 Pro and GPT-6-astra at `ultra` carry one run and GPT-6.1-sol at `xhigh` three.
+- The readings of the Codex configurations were rewritten from their new numbers, and the notes of the aggregate now name the exception for OpenCode next to Codex's, the client's own cost estimate and what `ultra` is.
+  Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.238` — 2026-10-16 — The design says how the lab runs Codex at `ultra` and Claude Code in `ultracode`, and what a refused first message is
 
