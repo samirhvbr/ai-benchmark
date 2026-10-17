@@ -122,16 +122,21 @@ This instance is **active**. While it is, only the figures below are published: 
 | 6 | `gpt-6.1-sol-xhigh` | **699** | 685 to 718 | Silver | 140 | 209 | 183 | 35 | 100 | 42 | 3/3 (685 · 718 · 695) |
 | 7 | `gpt-6-astra-ultra` | **690** | 690 to 690 | Silver | 146 | 209 | 199 | 0 | 100 | 41 | 1/1 (690) |
 | 8 | `gpt-6.1-sol-ultra` | **635** | 622 to 648 | Silver | 89 | 209 | 199 | 0 | 100 | 43 | 2/2 (648 · 622) |
-| 9 | `gpt-5.6-sol-xhigh` | **552** | 519 to 606 | Bronze | 57 | 203 | 149 | 0 | 100 | 43 | 3/3 (531 · 519 · 606) |
-| 10 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
-| 11 | `glm-5.3-max` | **541** | 541 to 541 | Bronze | 89 | 159 | 131 | 20 | 100 | 42 | 1/1 (541) |
-| 12 | `moonshot-kimi-k3-max` | **512** | 499 to 526 | Bronze | 101 | 166 | 104 | 0 | 100 | 42 | 2/2 (526 · 499) |
-| 13 | `deepseek-v4.1-flash-max` | **500** | 487 to 512 | Bronze | 85 | 144 | 134 | 0 | 100 | 44 | 2/2 (487 · 512) |
-| 14 | `deepseek-v4-pro-max` | **498** | 498 to 498 | Bronze | 89 | 173 | 95 | 0 | 100 | 41 | 1/1 (498) |
-| 15 | `gpt-6-luna-xhigh` | **455** | 408 to 499 | Bronze | 54 | 187 | 78 | 0 | 100 | 39 | 3/3 (408 · 458 · 499) |
-| 16 | `deepseek-v4.1-flash-high` | **452** | 422 to 483 | Bronze | 61 | 148 | 98 | 5 | 100 | 41 | 2/2 (422 · 483) |
-| 17 | `gpt-5.6-terra-xhigh` | **421** | 398 to 442 | Bronze | 53 | 162 | 67 | 0 | 100 | 40 | 5/5 (418 · 384 · 457 · 440 · 407) |
-| 18 | `minimax-m3-thinking` | **283** | 275 to 291 | Reprovada | 16 | 80 | 54 | 20 | 85 | 36 | 2/2 (291 · 275) |
+| 9 | `grok-4.7` | **603** | 579 to 627 | Silver | 121 | 202 | 140 | 0 | 100 | 42 | 2/2 (627 · 579) |
+| 10 | `gpt-5.6-sol-xhigh` | **552** | 519 to 606 | Bronze | 57 | 203 | 149 | 0 | 100 | 43 | 3/3 (531 · 519 · 606) |
+| 11 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
+| 12 | `glm-5.3-max` | **541** | 541 to 541 | Bronze | 89 | 159 | 131 | 20 | 100 | 42 | 1/1 (541) |
+| 13 | `moonshot-kimi-k3-high` | **538** | 499 to 578 | Bronze | 111 | 166 | 108 | 10 | 100 | 43 | 2/2 (578 · 499) |
+| 14 | `moonshot-kimi-k3-max` | **512** | 499 to 526 | Bronze | 101 | 166 | 104 | 0 | 100 | 42 | 2/2 (526 · 499) |
+| 15 | `deepseek-v4.1-flash-max` | **500** | 487 to 512 | Bronze | 85 | 144 | 134 | 0 | 100 | 44 | 2/2 (487 · 512) |
+| 16 | `deepseek-v4-pro-max` | **498** | 498 to 498 | Bronze | 89 | 173 | 95 | 0 | 100 | 41 | 1/1 (498) |
+| 17 | `deepseek-v4-flash-0731-max` | **463** | 432 to 494 | Bronze | 77 | 134 | 126 | 0 | 85 | 41 | 2/2 (494 · 432) |
+| 18 | `gemini-3.7-flash-high` | **455** | 446 to 464 | Bronze | 50 | 146 | 122 | 0 | 100 | 36 | 2/2 (464 · 446) |
+| 19 | `gpt-6-luna-xhigh` | **455** | 408 to 499 | Bronze | 54 | 187 | 78 | 0 | 100 | 39 | 3/3 (408 · 458 · 499) |
+| 20 | `deepseek-v4.1-flash-high` | **452** | 422 to 483 | Bronze | 61 | 148 | 98 | 5 | 100 | 41 | 2/2 (422 · 483) |
+| 21 | `gpt-5.6-terra-xhigh` | **421** | 398 to 442 | Bronze | 53 | 162 | 67 | 0 | 100 | 40 | 5/5 (418 · 384 · 457 · 440 · 407) |
+| 22 | `deepseek-v4-flash-0731-high` | **357** | 357 to 357 | Reprovada | 20 | 101 | 95 | 0 | 100 | 41 | 1/1 (357) |
+| 23 | `minimax-m3-thinking` | **283** | 275 to 291 | Reprovada | 16 | 80 | 54 | 20 | 85 | 36 | 2/2 (291 · 275) |
 
 Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -152,11 +157,15 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `gpt-6.1-sol-ultra`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 635.0 (622.0 to 648.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 622, lowest 622, highest 648.
 
+`grok-4.7`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 603.0 (579.0 to 627.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 579, lowest 579, highest 627.
+
 `gpt-5.6-sol-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 552.0 (519.0 to 606.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 531, lowest 519, highest 606.
 
 `claude-haiku-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 546.8 (530.0 to 565.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 536, lowest 524, highest 580.
 
 `glm-5.3-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 541.0 (541.0 to 541.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 541, lowest 541, highest 541.
+
+`moonshot-kimi-k3-high`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 538.5 (499.0 to 578.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 2; median 499, lowest 499, highest 578.
 
 `moonshot-kimi-k3-max`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 512.5 (499.0 to 526.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 499, lowest 499, highest 526.
 
@@ -164,14 +173,20 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `deepseek-v4-pro-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 498.0 (498.0 to 498.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 498, lowest 498, highest 498.
 
+`deepseek-v4-flash-0731-max`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 463.0 (432.0 to 494.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 432, lowest 432, highest 494.
+
+`gemini-3.7-flash-high`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 455.0 (446.0 to 464.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 446, lowest 446, highest 464.
+
 `gpt-6-luna-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 455.0 (408.0 to 499.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 458, lowest 408, highest 499.
 
 `deepseek-v4.1-flash-high`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 452.5 (422.0 to 483.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 422, lowest 422, highest 483.
 
 `gpt-5.6-terra-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 421.2 (397.6 to 442.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 418, lowest 384, highest 457.
 
+`deepseek-v4-flash-0731-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 357.0 (357.0 to 357.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 357, lowest 357, highest 357.
+
 `minimax-m3-thinking`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 283.0 (275.0 to 291.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 275, lowest 275, highest 291.
 
 The first case, Claude Haiku 5.5, received the package of version 1.0 of this instance, and the cases after it receive the package of version 1.1; the two differ only in the four lines that name the version and the key. Every run is evaluated with the key of version 1.1, which hardened the verifiers (it reads what a page says and where a link points instead of its markup, follows a payment in one cache check and asks for the cause in one error record) before any delivery went through them. Every file of both versions is public on GitHub. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. Two clients ran with an exception to the series' rule against bypassing approvals, on a disposable machine with every decision counted: Codex with approvals and sandbox bypassed, OpenCode with its auto-approval flag (its first cases used the default permissions). Codex keeps no cost, so its cost is in tokens; OpenCode's cost is the client's own estimate. Codex ultra is the client's multi-agent effort.
 
-Matrix SHA-256 `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`; the package each configuration received: `claude-opus-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-opus-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-ultra` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-ultra` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-5.6-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-haiku-5.5-high` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` · `glm-5.3-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `moonshot-kimi-k3-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4.1-flash-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4-pro-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-luna-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4.1-flash-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-5.6-terra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `minimax-m3-thinking` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e`.
+Matrix SHA-256 `9bd0c169e420927d8e0aadd87f30789b4cf6e60a2db49999c450c7f86f2207ce`; the package each configuration received: `claude-opus-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-opus-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-sonnet-5.5-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-astra-ultra` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6.1-sol-ultra` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `grok-4.7` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-5.6-sol-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `claude-haiku-5.5-high` `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` · `glm-5.3-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `moonshot-kimi-k3-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `moonshot-kimi-k3-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4.1-flash-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4-pro-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4-flash-0731-max` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gemini-3.7-flash-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-6-luna-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4.1-flash-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `gpt-5.6-terra-xhigh` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `deepseek-v4-flash-0731-high` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e` · `minimax-m3-thinking` `3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e`.

@@ -75,7 +75,10 @@ approvals and sandbox bypassed, an exception the series makes to its rule agains
 log keeps tokens and no cost, so their cost is in tokens.
 
 The OpenCode cases, run on the same package and key, are published with the runs that are settled: Kimi K3 at `max` scored 526 and 499 (mean 512), DeepSeek V4.1 Flash at `max` 487 and 512 (mean 500) and at `high` 422 and 483
-(mean 452), MiniMax-M3 at `thinking` 291 and 275 (mean 283, Reprovada; its first attempt was lost when the client halted after rejecting a permission request, and was rerun), and GLM-5.3 at `max` (541) and
+(mean 452), Kimi K3 at `high` 578 and 499 (mean 538; its first two attempts were lost when the Moonshot account ran out of credit, and were rerun on another account), Grok 4.7 at `high` 627 and 579 (mean 603, Silver) and
+Gemini 3.7 Flash at `high` 464 and 446 (mean 455), both reached through OpenRouter, whose only upstreams for those two models are xAI's and Google's own, DeepSeek V4 Flash (its 0731 version, served by Novita AI as in the first
+series) at `max` 494 and 432 (mean 463; one attempt failed its preflight, on a VM whose snapshot held no Novita login, and was rerun) and at `high` 357 in one run (the client names no `xhigh` for it, and DeepSeek treats `xhigh`
+as `max`), MiniMax-M3 at `thinking` 291 and 275 (mean 283, Reprovada; its first attempt was lost when the client halted after rejecting a permission request, and was rerun), and GLM-5.3 at `max` (541) and
 DeepSeek V4 Pro at `max` (498) with one run each. The first OpenCode cases ran with the client's default permissions and the later ones with its auto-approval flag, which approves every request not explicitly denied (design
 section 6.1); the audit counts every decision. The cost is the client's own estimate. Claude Opus 5.5 at `xhigh` scored 831 in one run (Gold, about US$ 7.47 and 37 minutes). Every delivery was judged blind as above.
 

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.241`
+**Versão atual:** `0.2.242`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.242` — 2026-10-17 — LEB-D-300-A's aggregate adds Gemini 3.7 Flash, Grok 4.7, Kimi K3 at `high` and DeepSeek V4 Flash 0731: 23 configurations
+
+- Five OpenCode configurations (OpenCode 1.18.33, 90 minutes, the 1.1 package and key, `--auto`, every delivery judged blind by two matching and two explanation judges): Grok 4.7 at `high` 627 and 579 (mean **603**, one Silver and one Bronze),
+  Kimi K3 at `high` 578 and 499 (mean **538**), Gemini 3.7 Flash at `high` 464 and 446 (mean **455**), DeepSeek V4 Flash 0731 at `max` 494 and 432 (mean **463**) and at `high` 357 (one run, **357**, Reprovada).
+  Grok and Gemini were reached through OpenRouter, whose endpoints for those models are the vendors' own (xAI; Google); DeepSeek V4 Flash 0731 through Novita AI, the host of the first series. The client's catalog no longer lists the generic
+  `deepseek/deepseek-v4-flash` the first series ran, and names no `xhigh` for the 0731 version, so the table's `xhigh` ran as `max` (DeepSeek treats `xhigh` as `max`).
+- Lost attempts, published as markers: two Kimi K3 attempts at `high` (the Moonshot account ran out of credit, HTTP 429, and the attempts were rerun as runs 3 and 4 on another account) and one DeepSeek V4 Flash attempt at `max` (its
+  preflight failed on a VM whose snapshot held no Novita login; it was rerun with the lab's key). A second run of V4 Flash at `high` waits for a person to settle a classification disagreement and is not in the table.
+  The disagreements the judges had were settled by the rules the owner accepted on 2026-10-16 (the same false positive written under two spellings counts once; the quality criteria of a row nobody tried to fix are not compared).
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.241` — 2026-10-17 — The design says what the OpenCode lane does about permissions, the served model and the logins it hands over
 
