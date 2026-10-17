@@ -136,7 +136,7 @@ This instance is **active**. While it is, only the figures below are published: 
 Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
 
-`claude-opus-5.5-xhigh`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 831.0 (831.0 to 831.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 831, lowest 831, highest 831.
+`claude-opus-5.5-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 831.0 (831.0 to 831.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 831, lowest 831, highest 831.
 
 `claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 785.2 (764.0 to 812.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 781, lowest 752, highest 836.
 
@@ -148,7 +148,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `gpt-6.1-sol-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 699.3 (685.0 to 718.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 695, lowest 685, highest 718.
 
-`gpt-6-astra-ultra`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 690.0 (690.0 to 690.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 690, lowest 690, highest 690.
+`gpt-6-astra-ultra`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 690.0 (690.0 to 690.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 690, lowest 690, highest 690.
 
 `gpt-6.1-sol-ultra`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 635.0 (622.0 to 648.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 622, lowest 622, highest 648.
 
@@ -156,13 +156,13 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `claude-haiku-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 546.8 (530.0 to 565.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 536, lowest 524, highest 580.
 
-`glm-5.3-max`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 541.0 (541.0 to 541.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 541, lowest 541, highest 541.
+`glm-5.3-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 541.0 (541.0 to 541.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 541, lowest 541, highest 541.
 
 `moonshot-kimi-k3-max`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 512.5 (499.0 to 526.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 499, lowest 499, highest 526.
 
 `deepseek-v4.1-flash-max`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 499.5 (487.0 to 512.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 487, lowest 487, highest 512.
 
-`deepseek-v4-pro-max`: completion 1 of 1 scheduled attempts; expected score per scheduled attempt 498.0 (498.0 to 498.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 498, lowest 498, highest 498.
+`deepseek-v4-pro-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 498.0 (498.0 to 498.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 498, lowest 498, highest 498.
 
 `gpt-6-luna-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 455.0 (408.0 to 499.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 458, lowest 408, highest 499.
 

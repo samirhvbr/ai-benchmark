@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.239`
+**Versão atual:** `0.2.240`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.240` — 2026-10-17 — The OpenCode cases that ran with `--auto` carry it as their client mode, and the results README says "attempt" for one
+
+- Four configurations of the aggregate (Kimi K3, DeepSeek V4.1 Flash, GLM-5.3 and DeepSeek V4 Pro, all at `max`) ran every attempt with `opencode run --auto`, which approves every permission request that is not explicitly denied
+  (the owner accepted it on 2026-10-16, as for Codex's bypass). Their model block now says `client_mode: permissions auto-approved`, so the sites show it next to the effort as they show Codex's `permissions bypassed`.
+  A configuration that ran with the client's default permissions, or with both (MiniMax-M3), carries no mode and says so in its reading. The archive script sets the mode by itself when every run of an OpenCode configuration ran with `--auto`.
+- `tools/export-results.py` writes "1 of 1 scheduled attempt" where it wrote "attempts", in the README's line of each configuration. No score, run or flaw changes.
 
 ### `0.2.239` — 2026-10-17 — LEB-D-300-A's aggregate grows to 18 configurations: the Codex and OpenCode cases settled so far and Claude Opus 5.5 at `xhigh`
 

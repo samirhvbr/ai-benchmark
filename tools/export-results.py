@@ -862,9 +862,9 @@ def render_series_section(agg, w):
     for e in agg["agents"]:
         st = e["statistics"]
         w("")
-        w("`%s`: completion %d of %d scheduled attempts; expected score per scheduled attempt %.1f (%.1f to %.1f); blocked %d, budget exhausted %d, switched %d; "
+        w("`%s`: completion %d of %d scheduled attempt%s; expected score per scheduled attempt %.1f (%.1f to %.1f); blocked %d, budget exhausted %d, switched %d; "
           "lab failures rerun %d; median %d, lowest %d, highest %d."
-          % (e["agent"], st["completion"]["completed"], st["scheduled"], st["expected_per_scheduled_attempt"]["mean"], st["expected_per_scheduled_attempt"]["low"],
+          % (e["agent"], st["completion"]["completed"], st["scheduled"], "" if st["scheduled"] == 1 else "s", st["expected_per_scheduled_attempt"]["mean"], st["expected_per_scheduled_attempt"]["low"],
              st["expected_per_scheduled_attempt"]["high"], st["outcomes"]["blocked"], st["outcomes"]["budget_exhausted"], st["outcomes"]["switched"],
              st["lab_failures_rerun"], st["median"], st["min"], st["max"]))
     if agg.get("notes"):
