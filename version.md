@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.242`
+**Versão atual:** `0.2.243`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.243` — 2026-10-18 — LEB-D-300-A's aggregate adds Claude Sonnet 5.5 at `max` and more runs of GPT-6.1-sol at `ultra` and Claude Opus 5.5 at `xhigh`: 24 configurations
+
+- One new configuration and two that grow (Claude Code 2.1.295 and Codex CLI 0.159.3, 90 minutes, the 1.1 package and key, every delivery judged blind by two matching and two explanation judges): Claude Sonnet 5.5 at `max`:
+  one run, **793** (Gold; US$ 24.05 and 68 minutes); GPT-6.1-sol at `ultra`: runs 3 and 4, 634 and 639, join 648 and 622 (four runs, mean **636**, interval 625 to 644, all Silver); Claude Opus 5.5 at `xhigh`: run 2, 847, joins 831
+  (two runs, mean **839**, Gold). The judges agreed on every item of these four runs. The 95% interval of a configuration is the range of its runs up to three runs and a percentile bootstrap from four.
+- Runs judged and not in the table wait for a person to settle a point (a classification, or one rule of the scoring), and so do the runs that follow one of them, because the exporter wants no gap in the numbering of a configuration;
+  they enter when settled.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.242` — 2026-10-17 — LEB-D-300-A's aggregate adds Gemini 3.7 Flash, Grok 4.7, Kimi K3 at `high` and DeepSeek V4 Flash 0731: 23 configurations
 
