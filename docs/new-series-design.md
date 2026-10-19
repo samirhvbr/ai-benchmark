@@ -207,6 +207,14 @@ track (more than thirty attempts so far). The same case (one message, one budget
   token that a rollback brings back already spent. Codex has the twin of `claude setup-token`: `codex login --with-access-token` reads an access token from stdin
   (an API key goes the same way with `--with-api-key`). The token lives in a 600 file on the workstation, goes to the VM over ssh's stdin into a tmpfs file the runner feeds to
   `codex login` before the case and deletes, and the evidence is scanned for it. The stored login stays a fallback for a case or two inside the client's refresh window.
+- **What the Codex and Claude cases actually ran on.** Every Codex case so far ran on the VM's stored login (`auth` in each run's record says so): the access-token login was tried on 2026-10-18 and
+  the client (codex-cli 0.159.3) refused the token it was given ("agent identity JWT payload is not valid JSON"), and a stored login is spent for good on a VM once the client has to refresh it
+  ("refresh token was already used", a 401 at the first request, which the audit files as a lab failure and a queue answers by dropping that VM). Claude Code's first configurations ran on the
+  subscription's long-lived token; from 2026-10-18 a Claude case can also run on an Anthropic API key (`--api-key`, or `--api-key-from NAME` for a named line of the lab's key file), billed to the
+  account's API credit and recorded as `auth: Anthropic API key`. The model, the client and the case are the same, only who pays differs, and a configuration's comment says which of its runs used the key.
+- **One lab process per VM.** The lab driver takes an exclusive lock file for the VM (`laboratorio/vm-<VM>.lock`) before it touches Proxmox and keeps it until the case ends, so two queues, a probe and a
+  person can never start on the same VM: a second claimant stops at once ("claimed by another lab process") and tries another VM or again later. Before it existed, two processes took the same VM in the same
+  second twice on 2026-10-18 and each case failed at power-on, with no model call and no number spent.
 - **Cost and time.** The rollout log has tokens and no cost and no model time, so the cost of a Codex attempt is an estimate from the provider's price table, labeled as
   one, and its time is the session's.
 - **`ultra` is the client's multi-agent effort.** `-c model_reasoning_effort=ultra` starts a session in which the main agent spawns subagents on the same model (three in

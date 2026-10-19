@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.243`
+**Versão atual:** `0.2.244`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.244` — 2026-10-19 — LEB-D-300-A's aggregate adds Kimi K2.7 Code (two variants) and Claude Sonnet 5.5 at `medium`, and grows four configurations: 27 configurations
+
+- Three new configurations: Kimi K2.7 Code at its default effort, two runs, 425 and 394 (mean **410**); Kimi K2.7 Code `highspeed`, one run, **323**; Claude Sonnet 5.5 at `medium`, one run, **535**. The Kimi cases ran through Moonshot's own
+  API (OpenCode 1.18.33, `--auto`); the Sonnet case ran on an Anthropic API key, billed to API credit, where the earlier Claude configurations ran on a subscription token (the model, the client and the case are the same: each configuration's comment says it).
+- Four configurations that grow: GPT-6.1-sol at `ultra` to five runs (mean **638**), GPT-6-luna at `xhigh` to five (**455**), Claude Opus 5.5 at `xhigh` to three (**830**; run 3 on the API key) and DeepSeek V4.1 Flash at `max` to four (**538**).
+  The judges agreed on every item of the new runs but for the twin false positives and the quality criteria of rows nobody tried to fix, which the rules the owner accepted on 2026-10-16 settle.
+- The design document says what the Codex and Claude cases ran on (every Codex case on the VM's stored login; the Claude cases on the subscription token or, from 2026-10-18, an API key) and that the lab driver locks a VM for the whole case.
+- Runs judged and not in the table wait for a person to settle a point and enter when settled. Aggregate and design text only: no flaw, verdict or delivery.
 
 ### `0.2.243` — 2026-10-18 — LEB-D-300-A's aggregate adds Claude Sonnet 5.5 at `max` and more runs of GPT-6.1-sol at `ultra` and Claude Opus 5.5 at `xhigh`: 24 configurations
 
