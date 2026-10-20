@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.244`
+**Versão atual:** `0.2.245`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.245` — 2026-10-20 — LEB-D-300-A's aggregate adds DeepSeek V4 Pro at `high` and grows four configurations: 28 configurations
+
+- One new configuration: DeepSeek V4 Pro at `high`, two runs, 321 and 353 (mean **337**), through DeepSeek's own API (OpenCode 1.18.33, `--auto`).
+- Four configurations that grow: Gemini 3.7 Flash at `high` to five runs (mean **451**), GPT-5.6-sol at `xhigh` to five (**540**), Claude Sonnet 5.5 at `max` to three (**802**; runs 2 and 3 on the API key, billed to API credit) and
+  DeepSeek V4.1 Flash at `max` to five (**549**). The judges agreed on every item of the new runs but for the twin false positives and the quality criteria of rows nobody tried to fix, which the rules the owner accepted on 2026-10-16 settle.
+- Runs judged and not in the table wait for a person to settle a point (a false positive against an extra finding, a penalty, a category) and enter when settled; a configuration with a gap in its run numbers waits with them. Two runs of
+  the ultracode mode ended on the 90-minute budget without a report and are not a configuration. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.244` — 2026-10-19 — LEB-D-300-A's aggregate adds Kimi K2.7 Code (two variants) and Claude Sonnet 5.5 at `medium`, and grows four configurations: 27 configurations
 
