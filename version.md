@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.246`
+**Versão atual:** `0.2.247`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.247` — 2026-10-22 — LEB-D-300-A's aggregate adds GPT-5.6-luna at `xhigh` and grows four configurations: 30 configurations
+
+- One new configuration: GPT-5.6-luna at `xhigh`, five runs, 356, 417, 440, 418 and 369 (mean **400**, Bronze), on Codex CLI with approvals and sandbox bypassed, the series' one exception for that client. One attempt was lost to the lab and stays as a
+  lab-failure marker.
+- Four configurations grow: Claude Sonnet 5.5 at `medium` goes from one run to five (mean 535 to **560**, 535 · 538 · 590 · 614 · 525); DeepSeek V4.1 Flash at `high` from two runs to five (452 to **519**, 422 · 483 · 547 · 568 · 575);
+  MiniMax M3.1 Flash at `high` from one run to three (543 to **497**, 543 · 437 · 510, still through OpenRouter's free variant); DeepSeek V4 Flash 0731 at `high` from one run to two (357 to **372**, 357 · 387).
+- The owner settled the held disagreements of these runs on 2026-10-22: a finding that at least one judge confirms is real counts as an extra finding, not a false positive (no total moves under either reading), and the one compatibility charge he had
+  ruled out for the first MiniMax run on 2026-10-21 is not charged in that configuration's other runs either (runs 3 and 6 gain 30 points each). The decisions are in the private record.
+- Runs that still wait for a person to settle a point stay out of the table, and so does any configuration whose run numbers would then have a gap. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.246` — 2026-10-21 — LEB-D-300-A's aggregate adds MiniMax M3.1 Flash at `high`, through OpenRouter's free variant: 29 configurations
 

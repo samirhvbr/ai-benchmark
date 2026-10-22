@@ -19617,6 +19617,150 @@
           }
         },
         {
+          "agent": "claude-sonnet-5.5-medium",
+          "score": 560,
+          "grade": "Bronze",
+          "runs_count": 5,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 85,
+            "BUG": 183,
+            "PERF": 119,
+            "CLN": 38,
+            "COMP": 100,
+            "EXPL": 40
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 1.21,
+          "wall_minutes": 16.6,
+          "tokens": {
+            "input": 47,
+            "output": 21353,
+            "cache": 1951234,
+            "total": 1972634
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 560.4,
+              "low": 531.6,
+              "high": 593.4
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 560.4,
+              "low": 531.6,
+              "high": 593.4
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 538,
+            "min": 525,
+            "max": 614
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 535,
+              "grade": "Bronze",
+              "cost_usd": 1.74,
+              "wall_minutes": 21.3,
+              "tokens": {
+                "input": 54,
+                "output": 20493,
+                "cache": 2276388,
+                "total": 2296935
+              }
+            },
+            {
+              "run": 2,
+              "total": 538,
+              "grade": "Bronze",
+              "cost_usd": 1.12,
+              "wall_minutes": 15.3,
+              "tokens": {
+                "input": 46,
+                "output": 18981,
+                "cache": 1901723,
+                "total": 1920750
+              }
+            },
+            {
+              "run": 3,
+              "total": 590,
+              "grade": "Bronze",
+              "cost_usd": 1.4,
+              "wall_minutes": 14.7,
+              "tokens": {
+                "input": 58,
+                "output": 30542,
+                "cache": 2602063,
+                "total": 2632663
+              }
+            },
+            {
+              "run": 4,
+              "total": 614,
+              "grade": "Silver",
+              "cost_usd": 1.06,
+              "wall_minutes": 13.0,
+              "tokens": {
+                "input": 40,
+                "output": 20974,
+                "cache": 1552655,
+                "total": 1573669
+              }
+            },
+            {
+              "run": 5,
+              "total": 525,
+              "grade": "Bronze",
+              "cost_usd": 0.71,
+              "wall_minutes": 18.7,
+              "tokens": {
+                "input": 36,
+                "output": 15776,
+                "cache": 1423340,
+                "total": 1439152
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "medium"
+          },
+          "comment": {
+            "en": "Five runs between 525 and 614, mean 560 with a 95% interval of 532 to 593, one Silver and four Bronze. All five completed inside the 90-minute budget, at about US$ 1.21 and 17 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (183 of 213 on average), then performance (119 of 213), architecture (85 of 283) and clean code (38 of 141). The reports were rated 39 to 42 of 50. Penalties: runs 1, 2, 3 and 4 lost 5 points each for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. Every run ran on an Anthropic API key, billed to API credit, where the first Claude configurations ran on a subscription token; the model and the client are the same.",
+            "pt_BR": "Cinco execuções entre 525 e 614, média 560 com intervalo de 95% de 532 a 593, uma Silver e quatro Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,21 e 17 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (183 de 213 em média), depois desempenho (119 de 213), arquitetura (85 de 283) e código limpo (38 de 141). Os relatórios tiveram de 39 a 42 de 50. Penalidades: as execuções 1, 2, 3 e 4 perderam 5 pontos cada por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API, onde as primeiras configurações do Claude rodaram com um token de assinatura; o modelo e o cliente são os mesmos."
+          }
+        },
+        {
           "agent": "deepseek-v4.1-flash-max",
           "score": 549,
           "grade": "Bronze",
@@ -19903,99 +20047,6 @@
           "comment": {
             "en": "Five runs between 524 and 580, mean 547 with a 95% interval of 530 to 565, all Bronze. All five completed inside the 90-minute budget, at about US$ 1.13 and 27 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (173 of 213 on average), then performance (125 of 213) and architecture (96 of 283); clean code scored 10 of 141 on average, with two runs at 0. The reports were rated 41 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest.",
             "pt_BR": "Cinco execuções entre 524 e 580, média 547 com intervalo de 95% de 530 a 565, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,13 e 27 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (173 de 213 em média), depois desempenho (125 de 213) e arquitetura (96 de 283); código limpo teve 10 de 141 em média, com duas execuções em 0. Os relatórios tiveram de 41 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto."
-          }
-        },
-        {
-          "agent": "minimax-m3.1-flash-free-high",
-          "score": 543,
-          "grade": "Bronze",
-          "runs_count": 1,
-          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
-          "categories": {
-            "ARCH": 77,
-            "BUG": 144,
-            "PERF": 181,
-            "CLN": 0,
-            "COMP": 100,
-            "EXPL": 41
-          },
-          "category_max": {
-            "ARCH": 283,
-            "BUG": 213,
-            "PERF": 213,
-            "CLN": 141,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": 0.0,
-          "wall_minutes": 60.4,
-          "tokens": {
-            "input": 212781,
-            "output": 37501,
-            "cache": 13110318,
-            "total": 13420055
-          },
-          "statistics": {
-            "scheduled": 1,
-            "quality": {
-              "n": 1,
-              "systems": 1,
-              "mean": 543.0,
-              "low": 543.0,
-              "high": 543.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 1,
-              "systems": 1,
-              "mean": 543.0,
-              "low": 543.0,
-              "high": 543.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 1,
-              "scheduled": 1,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 1,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 0,
-            "median": 543,
-            "min": 543,
-            "max": 543
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 543,
-              "grade": "Bronze",
-              "cost_usd": 0.0,
-              "wall_minutes": 60.4,
-              "tokens": {
-                "input": 212781,
-                "output": 37501,
-                "cache": 13110318,
-                "total": 13420055
-              }
-            }
-          ],
-          "model": {
-            "name": "MiniMax M3.1 Flash",
-            "id": "minimax-m3.1-flash",
-            "provider": "MiniMax",
-            "reasoning_effort": "high",
-            "client_mode": "permissions auto-approved"
-          },
-          "comment": {
-            "en": "One run of a case of five scored 543 (Bronze). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 60 minutes, and it did not break a behavior the public tests protect (compatibility 100). Performance was the strongest area (181 of 213), then bug fixing (144 of 213), architecture (77 of 283) and clean code (0 of 141). The report was rated 41 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. Four more runs of this configuration have been made and are not published yet, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant of the model, whose only endpoint is MiniMax's own, so the run cost nothing.",
-            "pt_BR": "Uma execução de um caso de cinco fez 543 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 60 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Desempenho foi a área mais forte (181 de 213), depois corrigir bugs (144 de 213), arquitetura (77 de 283) e código limpo (0 de 141). O relatório teve 41 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Mais quatro execuções desta configuração já foram feitas e ainda não foram publicadas, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do modelo no OpenRouter, cujo único endpoint é o da própria MiniMax; a run não custou nada."
           }
         },
         {
@@ -20343,18 +20394,18 @@
           }
         },
         {
-          "agent": "claude-sonnet-5.5-medium",
-          "score": 535,
+          "agent": "deepseek-v4.1-flash-high",
+          "score": 519,
           "grade": "Bronze",
-          "runs_count": 1,
+          "runs_count": 5,
           "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
           "categories": {
-            "ARCH": 89,
-            "BUG": 173,
-            "PERF": 109,
-            "CLN": 30,
+            "ARCH": 69,
+            "BUG": 176,
+            "PERF": 131,
+            "CLN": 2,
             "COMP": 100,
-            "EXPL": 39
+            "EXPL": 41
           },
           "category_max": {
             "ARCH": 283,
@@ -20364,39 +20415,39 @@
             "COMP": 100,
             "EXPL": 50
           },
-          "cost_usd": 1.74,
-          "wall_minutes": 21.3,
+          "cost_usd": 0.09,
+          "wall_minutes": 29.7,
           "tokens": {
-            "input": 54,
-            "output": 20493,
-            "cache": 2276388,
-            "total": 2296935
+            "input": 116028,
+            "output": 21978,
+            "cache": 7562266,
+            "total": 7751682
           },
           "statistics": {
-            "scheduled": 1,
+            "scheduled": 5,
             "quality": {
-              "n": 1,
+              "n": 5,
               "systems": 1,
-              "mean": 535.0,
-              "low": 535.0,
-              "high": 535.0
+              "mean": 519.0,
+              "low": 464.8,
+              "high": 566.6
             },
             "expected_per_scheduled_attempt": {
-              "n": 1,
+              "n": 5,
               "systems": 1,
-              "mean": 535.0,
-              "low": 535.0,
-              "high": 535.0
+              "mean": 519.0,
+              "low": 464.8,
+              "high": 566.6
             },
             "completion": {
               "rate": 1.0,
-              "completed": 1,
-              "scheduled": 1,
+              "completed": 5,
+              "scheduled": 5,
               "systems_all_completed": 1,
               "systems": 1
             },
             "outcomes": {
-              "completed": 1,
+              "completed": 5,
               "blocked": 0,
               "blocked_at_the_start": 0,
               "blocked_during_the_work": 0,
@@ -20404,34 +20455,86 @@
               "switched": 0
             },
             "lab_failures_rerun": 0,
-            "median": 535,
-            "min": 535,
-            "max": 535
+            "median": 547,
+            "min": 422,
+            "max": 575
           },
           "runs": [
             {
               "run": 1,
-              "total": 535,
+              "total": 422,
               "grade": "Bronze",
-              "cost_usd": 1.74,
-              "wall_minutes": 21.3,
+              "cost_usd": 0.06,
+              "wall_minutes": 24.1,
               "tokens": {
-                "input": 54,
-                "output": 20493,
-                "cache": 2276388,
-                "total": 2296935
+                "input": 109633,
+                "output": 16899,
+                "cache": 4437376,
+                "total": 4591197
+              }
+            },
+            {
+              "run": 2,
+              "total": 483,
+              "grade": "Bronze",
+              "cost_usd": 0.07,
+              "wall_minutes": 26.4,
+              "tokens": {
+                "input": 115400,
+                "output": 19969,
+                "cache": 6239744,
+                "total": 6412664
+              }
+            },
+            {
+              "run": 3,
+              "total": 547,
+              "grade": "Bronze",
+              "cost_usd": 0.11,
+              "wall_minutes": 26.5,
+              "tokens": {
+                "input": 119615,
+                "output": 27797,
+                "cache": 11974528,
+                "total": 12187963
+              }
+            },
+            {
+              "run": 4,
+              "total": 568,
+              "grade": "Bronze",
+              "cost_usd": 0.12,
+              "wall_minutes": 52.2,
+              "tokens": {
+                "input": 123676,
+                "output": 27570,
+                "cache": 11133184,
+                "total": 11365925
+              }
+            },
+            {
+              "run": 5,
+              "total": 575,
+              "grade": "Bronze",
+              "cost_usd": 0.07,
+              "wall_minutes": 19.3,
+              "tokens": {
+                "input": 111815,
+                "output": 17657,
+                "cache": 4026496,
+                "total": 4200659
               }
             }
           ],
           "model": {
-            "name": "Claude Sonnet 5.5",
-            "id": "claude-sonnet-5-5",
-            "provider": "Anthropic",
-            "reasoning_effort": "medium"
+            "name": "DeepSeek V4.1 Flash",
+            "id": "deepseek-flash",
+            "provider": "DeepSeek",
+            "reasoning_effort": "high"
           },
           "comment": {
-            "en": "One run of a case of five scored 535 (Bronze). It completed inside the 90-minute budget, at about US$ 1.74 and 21 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (173 of 213), then performance (109 of 213), architecture (89 of 283) and clean code (30 of 141). The report was rated 39 of 50. Penalties: run 1 lost 5 points for reporting something that is not a flaw. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran on an Anthropic API key, billed to API credit, where the first Claude configurations ran on a subscription token; the model and the client are the same.",
-            "pt_BR": "Uma execução de um caso de cinco fez 535 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 1,74 e 21 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (173 de 213), depois desempenho (109 de 213), arquitetura (89 de 283) e código limpo (30 de 141). O relatório teve 39 de 50. Penalidades: a execução 1 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com uma chave de API da Anthropic, paga com crédito de API, onde as primeiras configurações do Claude rodaram com um token de assinatura; o modelo e o cliente são os mesmos."
+            "en": "Five runs between 422 and 575, mean 519 with a 95% interval of 465 to 567, all Bronze. All five completed inside the 90-minute budget, at about US$ 0.09 (the client's own estimate) and 30 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (176 of 213 on average), then performance (131 of 213), architecture (69 of 283) and clean code (2 of 141). The reports were rated 40 to 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. Some runs ran with the client's default permissions and some with its auto-approval flag (see the notes).",
+            "pt_BR": "Cinco execuções entre 422 e 575, média 519 com intervalo de 95% de 465 a 567, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,09 (estimativa do próprio cliente) e 30 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (176 de 213 em média), depois desempenho (131 de 213), arquitetura (69 de 283) e código limpo (2 de 141). Os relatórios tiveram de 40 a 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Algumas execuções rodaram com as permissões padrão do cliente e outras com o seu sinalizador de aprovação automática (veja as notas)."
           }
         },
         {
@@ -20631,6 +20734,125 @@
           "comment": {
             "en": "One run of a case of five scored 498 (Bronze). It completed inside the 90-minute budget, at about US$ 0.30 (the client's own estimate) and 32 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (173 of 213), then performance (95 of 213), architecture (89 of 283) and clean code (0 of 141). The report was rated 41 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
             "pt_BR": "Uma execução de um caso de cinco fez 498 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,30 (estimativa do próprio cliente) e 32 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (173 de 213), depois desempenho (95 de 213), arquitetura (89 de 283) e código limpo (0 de 141). O relatório teve 41 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+          }
+        },
+        {
+          "agent": "minimax-m3.1-flash-free-high",
+          "score": 497,
+          "grade": "Bronze",
+          "runs_count": 3,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 72,
+            "BUG": 137,
+            "PERF": 136,
+            "CLN": 10,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 52.4,
+          "tokens": {
+            "input": 585301,
+            "output": 37282,
+            "cache": 11574429,
+            "total": 12249878
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 496.7,
+              "low": 437.0,
+              "high": 543.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 496.7,
+              "low": 437.0,
+              "high": 543.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 3,
+            "median": 510,
+            "min": 437,
+            "max": 543
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 543,
+              "grade": "Bronze",
+              "cost_usd": 0.0,
+              "wall_minutes": 60.4,
+              "tokens": {
+                "input": 212781,
+                "output": 37501,
+                "cache": 13110318,
+                "total": 13420055
+              }
+            },
+            {
+              "run": 3,
+              "total": 437,
+              "grade": "Bronze",
+              "cost_usd": 0.0,
+              "wall_minutes": 55.5,
+              "tokens": {
+                "input": 823674,
+                "output": 40875,
+                "cache": 13144151,
+                "total": 14061915
+              }
+            },
+            {
+              "run": 6,
+              "total": 510,
+              "grade": "Bronze",
+              "cost_usd": 0.0,
+              "wall_minutes": 41.2,
+              "tokens": {
+                "input": 719448,
+                "output": 33469,
+                "cache": 8468817,
+                "total": 9267664
+              }
+            }
+          ],
+          "model": {
+            "name": "MiniMax M3.1 Flash",
+            "id": "minimax-m3.1-flash",
+            "provider": "MiniMax",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 437 and 543, mean 497 (the interval, 437 to 543, is the range of the three), all Bronze. All three completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 52 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (137 of 213 on average), then performance (136 of 213), architecture (72 of 283) and clean code (10 of 141). The reports were rated 41 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. Two more runs of this configuration have been made and are not published yet, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant of the model, whose only endpoint is MiniMax's own, so the run cost nothing.",
+            "pt_BR": "Três execuções de um caso de cinco, entre 437 e 543, média 497 (o intervalo, de 437 a 543, é a amplitude das três), todas Bronze. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 52 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (137 de 213 em média), depois desempenho (136 de 213), arquitetura (72 de 283) e código limpo (10 de 141). Os relatórios tiveram de 41 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Mais duas execuções desta configuração já foram feitas e ainda não foram publicadas, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do modelo no OpenRouter, cujo único endpoint é o da própria MiniMax; a run não custou nada."
           }
         },
         {
@@ -20882,111 +21104,6 @@
           "comment": {
             "en": "Five runs between 408 and 499, mean 455 with a 95% interval of 427 to 482, all Bronze. All five completed inside the 90-minute budget, about 2.4 million tokens and 7 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (181 of 213 on average), then performance (81 of 213), architecture (57 of 283) and clean code (0 of 141). The reports were rated 37 to 41 of 50. Penalties: runs 2, 3 and 4 lost 5 points each for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
             "pt_BR": "Cinco execuções entre 408 e 499, média 455 com intervalo de 95% de 427 a 482, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de 2,4 milhões de tokens e 7 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (181 de 213 em média), depois desempenho (81 de 213), arquitetura (57 de 283) e código limpo (0 de 141). Os relatórios tiveram de 37 a 41 de 50. Penalidades: as execuções 2, 3 e 4 perderam 5 pontos cada por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
-          }
-        },
-        {
-          "agent": "deepseek-v4.1-flash-high",
-          "score": 452,
-          "grade": "Bronze",
-          "runs_count": 2,
-          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
-          "categories": {
-            "ARCH": 61,
-            "BUG": 148,
-            "PERF": 98,
-            "CLN": 5,
-            "COMP": 100,
-            "EXPL": 41
-          },
-          "category_max": {
-            "ARCH": 283,
-            "BUG": 213,
-            "PERF": 213,
-            "CLN": 141,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": 0.07,
-          "wall_minutes": 25.2,
-          "tokens": {
-            "input": 112516,
-            "output": 18434,
-            "cache": 5338560,
-            "total": 5501930
-          },
-          "statistics": {
-            "scheduled": 2,
-            "quality": {
-              "n": 2,
-              "systems": 1,
-              "mean": 452.5,
-              "low": 422.0,
-              "high": 483.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 2,
-              "systems": 1,
-              "mean": 452.5,
-              "low": 422.0,
-              "high": 483.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 2,
-              "scheduled": 2,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 2,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 0,
-            "median": 422,
-            "min": 422,
-            "max": 483
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 422,
-              "grade": "Bronze",
-              "cost_usd": 0.06,
-              "wall_minutes": 24.1,
-              "tokens": {
-                "input": 109633,
-                "output": 16899,
-                "cache": 4437376,
-                "total": 4591197
-              }
-            },
-            {
-              "run": 2,
-              "total": 483,
-              "grade": "Bronze",
-              "cost_usd": 0.07,
-              "wall_minutes": 26.4,
-              "tokens": {
-                "input": 115400,
-                "output": 19969,
-                "cache": 6239744,
-                "total": 6412664
-              }
-            }
-          ],
-          "model": {
-            "name": "DeepSeek V4.1 Flash",
-            "id": "deepseek-flash",
-            "provider": "DeepSeek",
-            "reasoning_effort": "high"
-          },
-          "comment": {
-            "en": "Two runs of a case of five, between 422 and 483, mean 452 (the interval, 422 to 483, is the range of the two), all Bronze. Both completed inside the 90-minute budget, at about US$ 0.07 (the client's own estimate) and 25 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (148 of 213 on average), then performance (98 of 213), architecture (61 of 283) and clean code (5 of 141). The reports were rated 40 to 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other three are still to be made, so the figures will move.",
-            "pt_BR": "Duas execuções de um caso de cinco, entre 422 e 483, média 452 (o intervalo, de 422 a 483, é a amplitude das duas), todas Bronze. As duas terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,07 (estimativa do próprio cliente) e 25 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (148 de 213 em média), depois desempenho (98 de 213), arquitetura (61 de 283) e código limpo (5 de 141). Os relatórios tiveram de 40 a 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam três execuções, então os números vão mudar."
           }
         },
         {
@@ -21386,18 +21503,18 @@
           }
         },
         {
-          "agent": "deepseek-v4-flash-0731-high",
-          "score": 357,
-          "grade": "Reprovada",
-          "runs_count": 1,
+          "agent": "gpt-5.6-luna-xhigh",
+          "score": 400,
+          "grade": "Bronze",
+          "runs_count": 5,
           "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
           "categories": {
-            "ARCH": 20,
-            "BUG": 101,
-            "PERF": 95,
+            "ARCH": 46,
+            "BUG": 159,
+            "PERF": 68,
             "CLN": 0,
-            "COMP": 100,
-            "EXPL": 41
+            "COMP": 89,
+            "EXPL": 39
           },
           "category_max": {
             "ARCH": 283,
@@ -21407,39 +21524,184 @@
             "COMP": 100,
             "EXPL": 50
           },
-          "cost_usd": 0.28,
-          "wall_minutes": 22.9,
+          "cost_usd": null,
+          "wall_minutes": 13.5,
           "tokens": {
-            "input": 171741,
-            "output": 17662,
-            "cache": 5150976,
-            "total": 5365098
+            "input": 213032,
+            "output": 31172,
+            "cache": 8459008,
+            "total": 8703211
           },
           "statistics": {
-            "scheduled": 1,
+            "scheduled": 5,
             "quality": {
-              "n": 1,
+              "n": 5,
               "systems": 1,
-              "mean": 357.0,
-              "low": 357.0,
-              "high": 357.0
+              "mean": 400.0,
+              "low": 371.0,
+              "high": 426.6
             },
             "expected_per_scheduled_attempt": {
-              "n": 1,
+              "n": 5,
               "systems": 1,
-              "mean": 357.0,
-              "low": 357.0,
-              "high": 357.0
+              "mean": 400.0,
+              "low": 371.0,
+              "high": 426.6
             },
             "completion": {
               "rate": 1.0,
-              "completed": 1,
-              "scheduled": 1,
+              "completed": 5,
+              "scheduled": 5,
               "systems_all_completed": 1,
               "systems": 1
             },
             "outcomes": {
-              "completed": 1,
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 417,
+            "min": 356,
+            "max": 440
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 356,
+              "grade": "Reprovada",
+              "cost_usd": null,
+              "wall_minutes": 13.3,
+              "tokens": {
+                "input": 179254,
+                "output": 32136,
+                "cache": 4985472,
+                "total": 5196862
+              }
+            },
+            {
+              "run": 2,
+              "total": 417,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 13.4,
+              "tokens": {
+                "input": 354290,
+                "output": 25563,
+                "cache": 10321408,
+                "total": 10701261
+              }
+            },
+            {
+              "run": 3,
+              "total": 440,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 10.1,
+              "tokens": {
+                "input": 173980,
+                "output": 34013,
+                "cache": 4332800,
+                "total": 4540793
+              }
+            },
+            {
+              "run": 4,
+              "total": 418,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 12.9,
+              "tokens": {
+                "input": 168086,
+                "output": 32075,
+                "cache": 9943808,
+                "total": 10143969
+              }
+            },
+            {
+              "run": 6,
+              "total": 369,
+              "grade": "Reprovada",
+              "cost_usd": null,
+              "wall_minutes": 18.0,
+              "tokens": {
+                "input": 189548,
+                "output": 32072,
+                "cache": 12711552,
+                "total": 12933172
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-luna",
+            "id": "gpt-5.6-luna",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Five runs between 356 and 440, mean 400 with a 95% interval of 371 to 427, three Bronze and two Reprovada. All five completed inside the 90-minute budget, about 8.7 million tokens and 14 minutes each (the log keeps no cost), and compatibility was between 70 and 100. Bug fixing was the strongest area (159 of 213 on average), then performance (68 of 213), architecture (46 of 283) and clean code (0 of 141). The reports were rated 38 to 40 of 50. Penalties: run 3 lost 5 points for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
+            "pt_BR": "Cinco execuções entre 356 e 440, média 400 com intervalo de 95% de 371 a 427, três Bronze e duas Reprovada. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de 8,7 milhões de tokens e 14 minutos cada (o log não guarda custo), e a compatibilidade ficou entre 70 e 100. Corrigir bugs foi a área mais forte (159 de 213 em média), depois desempenho (68 de 213), arquitetura (46 de 283) e código limpo (0 de 141). Os relatórios tiveram de 38 a 40 de 50. Penalidades: a execução 3 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
+          }
+        },
+        {
+          "agent": "deepseek-v4-flash-0731-high",
+          "score": 372,
+          "grade": "Reprovada",
+          "runs_count": 2,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 12,
+            "BUG": 119,
+            "PERF": 100,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.31,
+          "wall_minutes": 24.6,
+          "tokens": {
+            "input": 181882,
+            "output": 19276,
+            "cache": 5880832,
+            "total": 6112130
+          },
+          "statistics": {
+            "scheduled": 2,
+            "quality": {
+              "n": 2,
+              "systems": 1,
+              "mean": 372.0,
+              "low": 357.0,
+              "high": 387.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 2,
+              "systems": 1,
+              "mean": 372.0,
+              "low": 357.0,
+              "high": 387.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 2,
+              "scheduled": 2,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 2,
               "blocked": 0,
               "blocked_at_the_start": 0,
               "blocked_during_the_work": 0,
@@ -21449,7 +21711,7 @@
             "lab_failures_rerun": 0,
             "median": 357,
             "min": 357,
-            "max": 357
+            "max": 387
           },
           "runs": [
             {
@@ -21464,6 +21726,19 @@
                 "cache": 5150976,
                 "total": 5365098
               }
+            },
+            {
+              "run": 2,
+              "total": 387,
+              "grade": "Reprovada",
+              "cost_usd": 0.34,
+              "wall_minutes": 26.3,
+              "tokens": {
+                "input": 192024,
+                "output": 20889,
+                "cache": 6610688,
+                "total": 6859161
+              }
             }
           ],
           "model": {
@@ -21474,8 +21749,8 @@
             "client_mode": "permissions auto-approved"
           },
           "comment": {
-            "en": "One run of a case of five scored 357 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.28 (the client's own estimate) and 23 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (101 of 213), then performance (95 of 213), architecture (20 of 283) and clean code (0 of 141). The report was rated 41 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was served by Novita AI, the host the first series used for this model, in its 0731 version.",
-            "pt_BR": "Uma execução de um caso de cinco fez 357 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,28 (estimativa do próprio cliente) e 23 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (101 de 213), depois desempenho (95 de 213), arquitetura (20 de 283) e código limpo (0 de 141). O relatório teve 41 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi servido pela Novita AI, a hospedeira que a primeira série usou para este modelo, na versão 0731."
+            "en": "Two runs of a case of five, between 357 and 387, mean 372 (the interval, 357 to 387, is the range of the two), all Reprovada. Both completed inside the 90-minute budget, at about US$ 0.31 (the client's own estimate) and 25 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (119 of 213 on average), then performance (100 of 213), architecture (12 of 283) and clean code (0 of 141). The reports were rated 41 to 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other three are still to be made, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was served by Novita AI, the host the first series used for this model, in its 0731 version.",
+            "pt_BR": "Duas execuções de um caso de cinco, entre 357 e 387, média 372 (o intervalo, de 357 a 387, é a amplitude das duas), todas Reprovada. As duas terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,31 (estimativa do próprio cliente) e 25 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (119 de 213 em média), depois desempenho (100 de 213), arquitetura (12 de 283) e código limpo (0 de 141). Os relatórios tiveram de 41 a 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam três execuções, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi servido pela Novita AI, a hospedeira que a primeira série usou para este modelo, na versão 0731."
           }
         },
         {
