@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.245`
+**Versão atual:** `0.2.246`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.246` — 2026-10-21 — LEB-D-300-A's aggregate adds MiniMax M3.1 Flash at `high`, through OpenRouter's free variant: 29 configurations
+
+- One new configuration: MiniMax M3.1 Flash at `high`, one run, **543** (Bronze), through OpenRouter's free variant of the model (`minimax/minimax-m3.1-flash:free`), whose only endpoint is MiniMax's own (OpenCode 1.18.33, `--auto`). The free
+  variant is free in practice: the account's credit usage did not move across nine attempts.
+- The two blind judges disagreed on eight items of that run (a compatibility charge for the same wrong day count, a bug row and two false positives); the owner settled them on 2026-10-21 by taking the second judge's reading (543, against 509 for the
+  first), and the decisions are in the private record.
+- Four more runs of this configuration were made and are not in the table: they wait for a person to settle a point, and a configuration with a gap in its run numbers waits with them. Four attempts ended within seconds on the provider's
+  `Unexpected server error`, before the model could act; they were not scored and stay as lab-failure markers. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.245` — 2026-10-20 — LEB-D-300-A's aggregate adds DeepSeek V4 Pro at `high` and grows four configurations: 28 configurations
 

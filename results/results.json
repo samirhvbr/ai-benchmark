@@ -19906,6 +19906,99 @@
           }
         },
         {
+          "agent": "minimax-m3.1-flash-free-high",
+          "score": 543,
+          "grade": "Bronze",
+          "runs_count": 1,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 77,
+            "BUG": 144,
+            "PERF": 181,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 41
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 60.4,
+          "tokens": {
+            "input": 212781,
+            "output": 37501,
+            "cache": 13110318,
+            "total": 13420055
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 543.0,
+              "low": 543.0,
+              "high": 543.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 543.0,
+              "low": 543.0,
+              "high": 543.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 543,
+            "min": 543,
+            "max": 543
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 543,
+              "grade": "Bronze",
+              "cost_usd": 0.0,
+              "wall_minutes": 60.4,
+              "tokens": {
+                "input": 212781,
+                "output": 37501,
+                "cache": 13110318,
+                "total": 13420055
+              }
+            }
+          ],
+          "model": {
+            "name": "MiniMax M3.1 Flash",
+            "id": "minimax-m3.1-flash",
+            "provider": "MiniMax",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five scored 543 (Bronze). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 60 minutes, and it did not break a behavior the public tests protect (compatibility 100). Performance was the strongest area (181 of 213), then bug fixing (144 of 213), architecture (77 of 283) and clean code (0 of 141). The report was rated 41 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. Four more runs of this configuration have been made and are not published yet, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant of the model, whose only endpoint is MiniMax's own, so the run cost nothing.",
+            "pt_BR": "Uma execução de um caso de cinco fez 543 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 60 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Desempenho foi a área mais forte (181 de 213), depois corrigir bugs (144 de 213), arquitetura (77 de 283) e código limpo (0 de 141). O relatório teve 41 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Mais quatro execuções desta configuração já foram feitas e ainda não foram publicadas, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do modelo no OpenRouter, cujo único endpoint é o da própria MiniMax; a run não custou nada."
+          }
+        },
+        {
           "agent": "glm-5.3-max",
           "score": 541,
           "grade": "Bronze",
