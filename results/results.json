@@ -18460,15 +18460,15 @@
         },
         {
           "agent": "claude-sonnet-5.5-max",
-          "score": 802,
+          "score": 820,
           "grade": "Gold",
-          "runs_count": 3,
+          "runs_count": 4,
           "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
           "categories": {
-            "ARCH": 177,
+            "ARCH": 186,
             "BUG": 209,
-            "PERF": 187,
-            "CLN": 84,
+            "PERF": 189,
+            "CLN": 91,
             "COMP": 100,
             "EXPL": 45
           },
@@ -18480,39 +18480,39 @@
             "COMP": 100,
             "EXPL": 50
           },
-          "cost_usd": 22.41,
-          "wall_minutes": 70.9,
+          "cost_usd": 23.09,
+          "wall_minutes": 73.7,
           "tokens": {
-            "input": 362,
-            "output": 558080,
-            "cache": 64737340,
-            "total": 65295782
+            "input": 364,
+            "output": 566355,
+            "cache": 67563467,
+            "total": 68130186
           },
           "statistics": {
-            "scheduled": 3,
+            "scheduled": 4,
             "quality": {
-              "n": 3,
+              "n": 4,
               "systems": 1,
-              "mean": 801.7,
-              "low": 785.0,
-              "high": 827.0
+              "mean": 819.8,
+              "low": 789.0,
+              "high": 853.8
             },
             "expected_per_scheduled_attempt": {
-              "n": 3,
+              "n": 4,
               "systems": 1,
-              "mean": 801.7,
-              "low": 785.0,
-              "high": 827.0
+              "mean": 819.8,
+              "low": 789.0,
+              "high": 853.8
             },
             "completion": {
               "rate": 1.0,
-              "completed": 3,
-              "scheduled": 3,
+              "completed": 4,
+              "scheduled": 4,
               "systems_all_completed": 1,
               "systems": 1
             },
             "outcomes": {
-              "completed": 3,
+              "completed": 4,
               "blocked": 0,
               "blocked_at_the_start": 0,
               "blocked_during_the_work": 0,
@@ -18522,7 +18522,7 @@
             "lab_failures_rerun": 0,
             "median": 793,
             "min": 785,
-            "max": 827
+            "max": 874
           },
           "runs": [
             {
@@ -18563,6 +18563,19 @@
                 "cache": 73322704,
                 "total": 73896914
               }
+            },
+            {
+              "run": 4,
+              "total": 874,
+              "grade": "Gold",
+              "cost_usd": 25.13,
+              "wall_minutes": 82.1,
+              "tokens": {
+                "input": 370,
+                "output": 591179,
+                "cache": 76041848,
+                "total": 76633397
+              }
             }
           ],
           "model": {
@@ -18572,8 +18585,8 @@
             "reasoning_effort": "max"
           },
           "comment": {
-            "en": "Three runs of a case of five, between 785 and 827, mean 802 (the interval, 785 to 827, is the range of the three), all Gold. All three completed inside the 90-minute budget, at about US$ 22.41 and 71 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (209 of 213 on average), then performance (187 of 213), architecture (177 of 283) and clean code (84 of 141). The reports were rated 44 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other two are still to be made, so the figures will move. Runs 2, 3 ran on an Anthropic API key, billed to API credit, the other on a subscription token; the model and the client are the same.",
-            "pt_BR": "Três execuções de um caso de cinco, entre 785 e 827, média 802 (o intervalo, de 785 a 827, é a amplitude das três), todas Gold. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 22,41 e 71 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (209 de 213 em média), depois desempenho (187 de 213), arquitetura (177 de 283) e código limpo (84 de 141). Os relatórios tiveram de 44 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam duas execuções, então os números vão mudar. As execuções 2, 3 rodouram com uma chave de API da Anthropic, paga com crédito de API, e as outras com um token de assinatura; o modelo e o cliente são os mesmos."
+            "en": "Four runs of a case of five, between 785 and 874, mean 820 with a 95% interval of 789 to 854, all Gold. All four completed inside the 90-minute budget, at about US$ 23.09 and 74 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (209 of 213 on average), then performance (189 of 213), architecture (186 of 283) and clean code (91 of 141). The reports were rated 44 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The fifth run is still to be made, so the figures will move. Runs 2, 3, 4 ran on an Anthropic API key, billed to API credit, the other on a subscription token; the model and the client are the same.",
+            "pt_BR": "Quatro execuções de um caso de cinco, entre 785 e 874, média 820 com intervalo de 95% de 789 a 854, todas Gold. As quatro terminaram dentro do orçamento de 90 minutos, por cerca de US$ 23,09 e 74 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (209 de 213 em média), depois desempenho (189 de 213), arquitetura (186 de 283) e código limpo (91 de 141). Os relatórios tiveram de 44 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Falta a quinta execução, então os números vão mudar. As execuções 2, 3, 4 rodaram com uma chave de API da Anthropic, paga com crédito de API, e a outra com um token de assinatura; o modelo e o cliente são os mesmos."
           }
         },
         {
