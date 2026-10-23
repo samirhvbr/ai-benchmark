@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.248`
+**Versão atual:** `0.2.249`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.249` — 2026-10-23 — LEB-D-300-A's aggregate adds GPT-6.1-sol at `high` and grows two configurations: 31 configurations
+
+- One new configuration: GPT-6.1-sol at `high`, five runs, 694, 607, 641, 691 and 674 (mean **661**, Silver), on Codex CLI with approvals and sandbox bypassed. One attempt was lost to the lab and stays as a lab-failure marker.
+- Two configurations grow: GPT-6-astra at `ultra` goes from one run to five (mean 690 to **698**, 690 · 629 · 690 · 749 · 734, all Silver) and GPT-6.1-sol at `xhigh` from three runs to five (699 to **684**,
+  685 · 718 · 695 · 650 · 670, all Silver). A sixth astra `ultra` run stays out of the table until a person decides what a configuration with more than five runs shows.
+- The owner settled the one point that had held three of these runs back, on 2026-10-23: a new defect that no characterization test covers is charged PEN-001 (SPEC 6.2) when the two judges differ about it. In these runs it is the browser
+  passwords no longer trimmed before hashing: astra `ultra` run 2 (644 to **629**), sol `xhigh` run 4 (665 to **650**) and sol `high` run 1 (709 to **694**). The decision is in the private record.
+- Runs that still wait for a person to settle a point stay out of the table, and so does any configuration whose run numbers would then have a gap. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.248` — 2026-10-22 — LEB-D-300-A's aggregate grows Claude Sonnet 5.5 at `max` to four runs: 30 configurations
 
