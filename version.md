@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.250`
+**Versão atual:** `0.2.251`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.251` — 2026-10-23 — LEB-300-A's aggregate adds Claude Haiku 5.5 at `high` and closes three runs for three more agents: 28 agents
+
+- One new agent: Claude Haiku 5.5 at `high`, three runs (777, 770 and 713; published score the median, **770**, Gold), so it is official from the start.
+- Three agents go to three runs and become official: Claude Opus 5.5 at `high` (two runs to three, 848 · 866 · 866, median **866**), Claude Sonnet 5.5 at `max` (one run to three, 932 · 863 · 886, median **886**) and Claude Sonnet 5.5 at `high`
+  (two runs to three, 897 · 855 · 811, median **855**; the withdrawn run 2 of that agent stays withdrawn). All Gold.
+- The new runs are the same task as the published ones: the package of freeze piloto-2 (7e35825a, the one every published run of this instance ran on), scored against the matrix c42c8287, the two stages in one session, no operator reply, and the evaluator tree of the freeze
+  (the repository at 0.2.167: harness, JUDGE.md, matrix schema). They were made in an unattended lab for two-stage runs instead of by hand: the model was pinned by the candidate profile's managed policy with no fallback, the session was audited
+  (tools/auditar-tentativa.py) with both messages declared, and the stage 1 delivery was kept at the boundary. One matching judge and one blind EXPL judge per run, as for the earlier runs of the instance. The run notes say all of this.
+- Claude Fable 5.1 at `medium` is not in the table: every one of its 36 attempts at this task's fixed first message ended on the model's own safeguard before any work, so no run exists to score.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.250` — 2026-10-23 — LEB-D-300-A's aggregate grows Claude Sonnet 5.5 at `max` to five runs: 31 configurations
 

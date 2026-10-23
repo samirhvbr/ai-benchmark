@@ -16841,25 +16841,25 @@
       "agents": [
         {
           "agent": "claude-sonnet-5.5-max",
-          "score": 932,
-          "grade": "Platinum",
-          "runs_count": 1,
+          "score": 886,
+          "grade": "Gold",
+          "runs_count": 3,
           "categories": {
             "SEC": 250,
-            "ARCH": 178,
-            "BUG": 134,
-            "PERF": 140,
-            "CLN": 89,
+            "ARCH": 150,
+            "BUG": 137,
+            "PERF": 134,
+            "CLN": 71,
             "COMP": 100,
-            "EXPL": 41
+            "EXPL": 44
           },
-          "cost_usd": 10.75,
-          "wall_minutes": 92.5,
+          "cost_usd": 13.1,
+          "wall_minutes": 66.1,
           "tokens": {
-            "input": 1390,
-            "output": 550255,
-            "cache": 15124592,
-            "total": 15676237
+            "input": 122,
+            "output": 496801,
+            "cache": 25293464,
+            "total": 25790387
           },
           "runs": [
             {
@@ -16873,6 +16873,30 @@
                 "cache": 15124592,
                 "total": 15676237
               }
+            },
+            {
+              "run": 2,
+              "total": 863,
+              "cost_usd": 16.57,
+              "wall_minutes": 73.5,
+              "tokens": {
+                "input": 144,
+                "output": 637617,
+                "cache": 25936320,
+                "total": 26574081
+              }
+            },
+            {
+              "run": 3,
+              "total": 886,
+              "cost_usd": 13.1,
+              "wall_minutes": 66.1,
+              "tokens": {
+                "input": 122,
+                "output": 496801,
+                "cache": 25293464,
+                "total": 25790387
+              }
             }
           ],
           "model": {
@@ -16882,8 +16906,79 @@
             "reasoning_effort": "max"
           },
           "comment": {
-            "en": "On a single run: security 250 of 250, architecture 178 of 200, bugs 134 of 150, performance 140 of 150 and clean code 89 of 100, with the contract untouched (compatibility 100) and no penalty. It is the highest score of any run so far, above the 911 of the same model at xhigh effort, whose published score is 860 over two runs. It fixed 34 of the 36 planted flaws and reported 31, with one false positive, and its report was rated 41 of 50. One check of the verifier did not register a fix that reads correct; it counts as not fixed, which costs 8 points. The session took 93 minutes, without the 16 minutes the operator took between the two stages, for US$ 10.75. A second run was voided: in it the agent launched four reviewer subagents on Claude Opus 5.5 of its own accord, and they wrote 122 of its 543 responses, so it does not count as a run of Claude Sonnet 5.5. One run of three: it is not official and could move.",
-            "pt_BR": "Com uma execução só: segurança 250 de 250, arquitetura 178 de 200, bugs 134 de 150, desempenho 140 de 150 e código limpo 89 de 100, com o contrato intacto (compatibilidade 100) e sem penalidade. É a maior nota de qualquer execução até agora, acima dos 911 do mesmo modelo em xhigh, cuja nota publicada é 860 em duas execuções. Corrigiu 34 das 36 falhas plantadas e reportou 31, com um falso positivo, e o relatório teve 41 de 50. Uma verificação do avaliador não registrou uma correção que parece certa; ela conta como não corrigida, o que custa 8 pontos. A sessão levou 93 minutos, sem os 16 minutos que o operador levou entre as duas etapas, por US$ 10,75. Uma segunda execução foi anulada: nela o agente lançou por conta própria quatro subagentes revisores no Claude Opus 5.5, e eles escreveram 122 das 543 respostas, então ela não conta como execução do Claude Sonnet 5.5. Uma execução de três: não é oficial e pode mudar."
+            "en": "Three runs (932, 863 and 886), so the published score is their median, 886, 69 points between the best and the worst, Platinum, Gold and Gold. Security 250, 232 and 250 of 250, architecture 178, 156 and 150 of 200, bugs 134, 139 and 137 of 150, performance 140, 134 and 134 of 150 and clean code 89, 82 and 71 of 100, in the order of the runs. Compatibility was 100, 75 and 100: run 2 lost 25 points (COMP-008, a change to the public contract). No penalty was charged. The reports covered 31, 30 and 27 of the 36 planted flaws and the code fixed 34, 31 and 32, with 1, 0 and 0 false positives and 22, 22 and 15 extra findings; the reports were rated 41, 45 and 44 of 50. The sessions took 93, 73 and 66 minutes for US$ 10.75, 16.57 and 13.10. For comparison, the same model at medium effort scored 717 (3 runs); the same model at high effort scored 855 (3 runs); the same model at xhigh effort scored 860 (2 runs).",
+            "pt_BR": "Três execuções (932, 863 e 886), então a nota publicada é a mediana, 886, com 69 pontos de diferença entre a melhor e a pior, Platinum, Gold e Gold. Segurança 250, 232 e 250 de 250, arquitetura 178, 156 e 150 de 200, bugs 134, 139 e 137 de 150, desempenho 140, 134 e 134 de 150 e código limpo 89, 82 e 71 de 100, na ordem das execuções. A compatibilidade foi 100, 75 e 100: a execução 2 perdeu 25 pontos (COMP-008, uma mudança no contrato público). Nenhuma penalidade foi cobrada. Os relatórios cobriram 31, 30 e 27 das 36 falhas plantadas e o código corrigiu 34, 31 e 32, com 1, 0 e 0 falsos positivos e 22, 22 e 15 achados extras; os relatórios tiveram 41, 45 e 44 de 50. As sessões levaram 93, 73 e 66 minutos por US$ 10,75, 16,57 e 13,10. Para comparar, o mesmo modelo em esforço medium fez 717 (3 execuções); o mesmo modelo em esforço high fez 855 (3 execuções); o mesmo modelo em esforço xhigh fez 860 (2 execuções)."
+          }
+        },
+        {
+          "agent": "claude-opus-5.5-high",
+          "score": 866,
+          "grade": "Gold",
+          "runs_count": 3,
+          "categories": {
+            "SEC": 229,
+            "ARCH": 153,
+            "BUG": 147,
+            "PERF": 124,
+            "CLN": 71,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "cost_usd": 7.57,
+          "wall_minutes": 50.1,
+          "tokens": {
+            "input": 1832,
+            "output": 135000,
+            "cache": 13004371,
+            "total": 13141203
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 848,
+              "cost_usd": 8.77,
+              "wall_minutes": 56.3,
+              "tokens": {
+                "input": 1450,
+                "output": 148633,
+                "cache": 16974538,
+                "total": 17124621
+              }
+            },
+            {
+              "run": 2,
+              "total": 866,
+              "cost_usd": 7.57,
+              "wall_minutes": 50.1,
+              "tokens": {
+                "input": 1832,
+                "output": 135000,
+                "cache": 13004371,
+                "total": 13141203
+              }
+            },
+            {
+              "run": 3,
+              "total": 866,
+              "cost_usd": 7.97,
+              "wall_minutes": 43.3,
+              "tokens": {
+                "input": 92,
+                "output": 130598,
+                "cache": 8575765,
+                "total": 8706455
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Opus 5.5",
+            "id": "claude-opus-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "Three runs (848, 866 and 866), so the published score is their median, 866, 18 points between the best and the worst, all Gold. Security 232, 229 and 229 of 250, architecture 153, 153 and 150 of 200, bugs 137, 147 and 147 of 150, performance 134, 124 and 128 of 150 and clean code 71, 71 and 68 of 100, in the order of the runs. Compatibility was 75, 100 and 100: run 1 lost 25 points (COMP-008, a change to the public contract). No penalty was charged. The reports covered 28, 27 and 27 of the 36 planted flaws and the code fixed 32, 33 and 33, with 2, 0 and 0 false positives and 23, 26 and 18 extra findings; the reports were rated 46, 42 and 44 of 50. The sessions took 56, 50 and 43 minutes for US$ 8.77, 7.57 and 7.97. For comparison, the same model at xhigh effort scored 845 (3 runs).",
+            "pt_BR": "Três execuções (848, 866 e 866), então a nota publicada é a mediana, 866, com 18 pontos de diferença entre a melhor e a pior, todas Gold. Segurança 232, 229 e 229 de 250, arquitetura 153, 153 e 150 de 200, bugs 137, 147 e 147 de 150, desempenho 134, 124 e 128 de 150 e código limpo 71, 71 e 68 de 100, na ordem das execuções. A compatibilidade foi 75, 100 e 100: a execução 1 perdeu 25 pontos (COMP-008, uma mudança no contrato público). Nenhuma penalidade foi cobrada. Os relatórios cobriram 28, 27 e 27 das 36 falhas plantadas e o código corrigiu 32, 33 e 33, com 2, 0 e 0 falsos positivos e 23, 26 e 18 achados extras; os relatórios tiveram 46, 42 e 44 de 50. As sessões levaram 56, 50 e 43 minutos por US$ 8,77, 7,57 e 7,97. Para comparar, o mesmo modelo em esforço xhigh fez 845 (3 execuções)."
           }
         },
         {
@@ -16949,7 +17044,7 @@
           "agent": "claude-sonnet-5.5-high",
           "score": 855,
           "grade": "Gold",
-          "runs_count": 2,
+          "runs_count": 3,
           "categories": {
             "SEC": 243,
             "ARCH": 153,
@@ -16991,6 +17086,18 @@
                 "cache": 11635966,
                 "total": 11814435
               }
+            },
+            {
+              "run": 4,
+              "total": 811,
+              "cost_usd": 4.65,
+              "wall_minutes": 40.9,
+              "tokens": {
+                "input": 120,
+                "output": 116889,
+                "cache": 9329232,
+                "total": 9446241
+              }
             }
           ],
           "model": {
@@ -17000,67 +17107,8 @@
             "reasoning_effort": "high"
           },
           "comment": {
-            "en": "Two runs, 897 and 855, so the published score is the lower one, 855; with two of three runs it is not official and could move. A run filed in between, as run 2, was withdrawn because its session log shows it ran at medium effort and not at high. Security was 250 of 250 in the 897 run and 243 in the 855 run, bugs 147 and 145, architecture 178 and 153, performance 128 and 115, clean code 89 and 79. The 855 run, the published one, fixed 33 of the 36 planted flaws and reported 27, with no false positive, and its report was rated 45 of 50; the 897 run fixed 34, reported 32 and was rated 45 too. Both lost 25 compatibility points (75): the 897 run to a login lockout that answers 429, the 855 run to a change beyond what the manifest contracts; only the 897 run also paid 15 points for a new bug. The 855 run took 42 minutes and US$ 5.30, the 897 run 43 minutes and US$ 5.18. The same model at xhigh effort scored 860 and 911 in two runs.",
-            "pt_BR": "Duas execuções, 897 e 855, então a nota publicada é a menor, 855; com duas de três execuções ela não é oficial e pode mudar. Uma execução arquivada no meio, como a 2, foi retirada porque o log da sessão mostra que ela rodou em esforço medium e não em high. A segurança foi 250 de 250 na execução de 897 e 243 na de 855, os bugs 147 e 145, a arquitetura 178 e 153, o desempenho 128 e 115, o código limpo 89 e 79. A execução de 855, a publicada, corrigiu 33 das 36 falhas plantadas e reportou 27, sem falso positivo, e o relatório teve 45 de 50; a de 897 corrigiu 34, reportou 32 e teve 45 também. As duas perderam 25 pontos de compatibilidade (75): a de 897 por um bloqueio de login que responde 429, a de 855 por uma mudança além do que o manifesto contrata; só a de 897 pagou também 15 pontos por um bug novo. A de 855 levou 42 minutos e US$ 5,30, a de 897 levou 43 minutos e US$ 5,18. O mesmo modelo em xhigh fez 860 e 911 em duas execuções."
-          }
-        },
-        {
-          "agent": "claude-opus-5.5-high",
-          "score": 848,
-          "grade": "Gold",
-          "runs_count": 2,
-          "categories": {
-            "SEC": 232,
-            "ARCH": 153,
-            "BUG": 137,
-            "PERF": 134,
-            "CLN": 71,
-            "COMP": 75,
-            "EXPL": 46
-          },
-          "cost_usd": 8.77,
-          "wall_minutes": 56.3,
-          "tokens": {
-            "input": 1450,
-            "output": 148633,
-            "cache": 16974538,
-            "total": 17124621
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 848,
-              "cost_usd": 8.77,
-              "wall_minutes": 56.3,
-              "tokens": {
-                "input": 1450,
-                "output": 148633,
-                "cache": 16974538,
-                "total": 17124621
-              }
-            },
-            {
-              "run": 2,
-              "total": 866,
-              "cost_usd": 7.57,
-              "wall_minutes": 50.1,
-              "tokens": {
-                "input": 1832,
-                "output": 135000,
-                "cache": 13004371,
-                "total": 13141203
-              }
-            }
-          ],
-          "model": {
-            "name": "Claude Opus 5.5",
-            "id": "claude-opus-5-5",
-            "provider": "Anthropic",
-            "reasoning_effort": "high"
-          },
-          "comment": {
-            "en": "Two runs, 18 points apart (848 and 866), with the same shape: 232 and 229 of 250 in security, 153 of 200 in architecture in both, 137 and 147 of 150 in bugs, 134 and 124 of 150 in performance and 71 of 100 in clean code in both, with no penalty. The first lost 25 compatibility points for one change that contradicts the manifest: a repeated idempotency key from a different user got a 422 where the manifest says the original response comes back. The second kept the contract whole (compatibility 100). The first cost US$ 8.77 in 56 minutes, the second US$ 7.57 in 50, without the operator's wait between the two stages. The same model at xhigh effort scored 886 and 822. Two runs of three: not official, and the published score is the lower of the two.",
-            "pt_BR": "Duas execuções, 18 pontos de diferença (848 e 866), com o mesmo perfil: 232 e 229 de 250 em segurança, 153 de 200 em arquitetura nas duas, 137 e 147 de 150 em bugs, 134 e 124 de 150 em desempenho e 71 de 100 em código limpo nas duas, sem penalidade. A primeira perdeu 25 pontos de compatibilidade por uma mudança que contradiz o manifesto: uma chave de idempotência repetida por outro usuário recebeu 422, onde o manifesto diz que a resposta original volta. A segunda manteve o contrato inteiro (compatibilidade 100). A primeira custou US$ 8,77 em 56 minutos, a segunda US$ 7,57 em 50, sem a espera do operador entre as duas etapas. O mesmo modelo em xhigh fez 886 e 822. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+            "en": "Three runs (897, 855 and 811), so the published score is their median, 855, 86 points between the best and the worst, all Gold. Security 250, 243 and 229 of 250, architecture 178, 153 and 117 of 200, bugs 147, 145 and 145 of 150, performance 128, 115 and 121 of 150 and clean code 89, 79 and 54 of 100, in the order of the runs. Compatibility was 75, 75 and 100: run 1 lost 25 points (COMP-008, a change to the public contract); run 3 lost 25 points (COMP-008, a change to the public contract). Penalties: run 1 lost 15 points for a new defect introduced by its own change (PEN-001). The reports covered 32, 27 and 23 of the 36 planted flaws and the code fixed 34, 33 and 31, with 0, 0 and 0 false positives and 21, 18 and 12 extra findings; the reports were rated 45, 45 and 45 of 50. The sessions took 43, 43 and 41 minutes for US$ 5.18, 5.30 and 4.65. For comparison, the same model at medium effort scored 717 (3 runs); the same model at xhigh effort scored 860 (2 runs); the same model at max effort scored 886 (3 runs).",
+            "pt_BR": "Três execuções (897, 855 e 811), então a nota publicada é a mediana, 855, com 86 pontos de diferença entre a melhor e a pior, todas Gold. Segurança 250, 243 e 229 de 250, arquitetura 178, 153 e 117 de 200, bugs 147, 145 e 145 de 150, desempenho 128, 115 e 121 de 150 e código limpo 89, 79 e 54 de 100, na ordem das execuções. A compatibilidade foi 75, 75 e 100: a execução 1 perdeu 25 pontos (COMP-008, uma mudança no contrato público); a execução 3 perdeu 25 pontos (COMP-008, uma mudança no contrato público). Penalidades: a execução 1 perdeu 15 pontos por um defeito novo introduzido pela própria mudança (PEN-001). Os relatórios cobriram 32, 27 e 23 das 36 falhas plantadas e o código corrigiu 34, 33 e 31, com 0, 0 e 0 falsos positivos e 21, 18 e 12 achados extras; os relatórios tiveram 45, 45 e 45 de 50. As sessões levaram 43, 43 e 41 minutos por US$ 5,18, 5,30 e 4,65. Para comparar, o mesmo modelo em esforço medium fez 717 (3 execuções); o mesmo modelo em esforço xhigh fez 860 (2 execuções); o mesmo modelo em esforço max fez 886 (3 execuções)."
           }
         },
         {
@@ -17332,6 +17380,77 @@
           "comment": {
             "en": "On a single run: security 232 of 250, bugs 147 of 150, performance 70 of 150, architecture 142 of 200 and 46 of 100 in clean code, with the contract untouched (compatibility 100) and no penalty. It fixed 30 of the 36 planted flaws and reported 21 of them, with no false positive; ten of the fixes were never reported as findings of their own (several sat bundled inside another finding), so they count only for the code. The report was rated 42 of 50, weakest on prioritisation, because effort is not weighed. The session took 33 minutes, without the 127 minutes the operator took between the two stages, and used about 7.1 million tokens; Codex keeps no cost. The same model at xhigh effort scored 800 and at ultra 797. One run of three: it is not official and could move.",
             "pt_BR": "Com uma execução só: segurança 232 de 250, bugs 147 de 150, desempenho 70 de 150, arquitetura 142 de 200 e 46 de 100 em código limpo, com o contrato intacto (compatibilidade 100) e sem penalidade. Corrigiu 30 das 36 falhas plantadas e reportou 21 delas, sem falso positivo; dez das correções nunca foram reportadas como achados próprios (várias estavam agrupadas dentro de outro achado), e por isso valem só pelo código. O relatório teve 42 de 50, com a nota mais baixa em priorização, porque o esforço não é pesado. A sessão levou 33 minutos, sem os 127 minutos que o operador levou entre as duas etapas, e usou cerca de 7,1 milhões de tokens; o Codex não registra custo. O mesmo modelo em xhigh fez 800 e em ultra 797. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
+          "agent": "claude-haiku-5.5-high",
+          "score": 770,
+          "grade": "Gold",
+          "runs_count": 3,
+          "categories": {
+            "SEC": 236,
+            "ARCH": 119,
+            "BUG": 121,
+            "PERF": 115,
+            "CLN": 64,
+            "COMP": 75,
+            "EXPL": 40
+          },
+          "cost_usd": 1.8,
+          "wall_minutes": 34.7,
+          "tokens": {
+            "input": 146,
+            "output": 241442,
+            "cache": 17252949,
+            "total": 17494537
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 777,
+              "cost_usd": 2.07,
+              "wall_minutes": 40.1,
+              "tokens": {
+                "input": 126,
+                "output": 312281,
+                "cache": 21117926,
+                "total": 21430333
+              }
+            },
+            {
+              "run": 2,
+              "total": 770,
+              "cost_usd": 1.8,
+              "wall_minutes": 34.7,
+              "tokens": {
+                "input": 146,
+                "output": 241442,
+                "cache": 17252949,
+                "total": 17494537
+              }
+            },
+            {
+              "run": 3,
+              "total": 713,
+              "cost_usd": 1.56,
+              "wall_minutes": 35.8,
+              "tokens": {
+                "input": 156,
+                "output": 239411,
+                "cache": 16719134,
+                "total": 16958701
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Haiku 5.5",
+            "id": "claude-haiku-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "high"
+          },
+          "comment": {
+            "en": "Three runs (777, 770 and 713), so the published score is their median, 770, 64 points between the best and the worst, Gold, Gold and Silver. Security 236, 236 and 246 of 250, architecture 125, 119 and 86 of 200, bugs 121, 121 and 121 of 150, performance 134, 115 and 128 of 150 and clean code 21, 64 and 14 of 100, in the order of the runs. Compatibility was 100, 75 and 75: run 2 lost 25 points (COMP-008, a change to the public contract); run 3 lost 25 points (COMP-008, a change to the public contract). No penalty was charged. The reports covered 27, 26 and 23 of the 36 planted flaws and the code fixed 26, 28 and 26, with 1, 0 and 1 false positives and 20, 19 and 21 extra findings; the reports were rated 40, 40 and 43 of 50. The sessions took 40, 35 and 36 minutes for US$ 2.07, 1.80 and 1.56. For comparison, the same model at xhigh effort scored 732 (3 runs). Claude Haiku 4.5 scored 242 on the same task.",
+            "pt_BR": "Três execuções (777, 770 e 713), então a nota publicada é a mediana, 770, com 64 pontos de diferença entre a melhor e a pior, Gold, Gold e Silver. Segurança 236, 236 e 246 de 250, arquitetura 125, 119 e 86 de 200, bugs 121, 121 e 121 de 150, desempenho 134, 115 e 128 de 150 e código limpo 21, 64 e 14 de 100, na ordem das execuções. A compatibilidade foi 100, 75 e 75: a execução 2 perdeu 25 pontos (COMP-008, uma mudança no contrato público); a execução 3 perdeu 25 pontos (COMP-008, uma mudança no contrato público). Nenhuma penalidade foi cobrada. Os relatórios cobriram 27, 26 e 23 das 36 falhas plantadas e o código corrigiu 26, 28 e 26, com 1, 0 e 1 falsos positivos e 20, 19 e 21 achados extras; os relatórios tiveram 40, 40 e 43 de 50. As sessões levaram 40, 35 e 36 minutos por US$ 2,07, 1,80 e 1,56. Para comparar, o mesmo modelo em esforço xhigh fez 732 (3 execuções). O Claude Haiku 4.5 fez 242 na mesma tarefa."
           }
         },
         {
