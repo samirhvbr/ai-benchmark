@@ -115,7 +115,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | # | Agent | Estimate | 95% interval | Grade | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | 1 | `claude-opus-5.5-xhigh` | **830** | 813 to 847 | Gold | 198 | 204 | 189 | 98 | 100 | 45 | 3/3 (831 · 847 · 813) |
-| 2 | `claude-sonnet-5.5-max` | **820** | 789 to 854 | Gold | 186 | 209 | 189 | 91 | 100 | 45 | 4/4 (793 · 785 · 827 · 874) |
+| 2 | `claude-sonnet-5.5-max` | **826** | 797 to 855 | Gold | 190 | 209 | 193 | 89 | 100 | 45 | 5/5 (793 · 785 · 827 · 874 · 849) |
 | 3 | `claude-sonnet-5.5-xhigh` | **785** | 764 to 812 | Gold | 176 | 202 | 176 | 88 | 100 | 45 | 5/5 (752 · 772 · 836 · 785 · 781) |
 | 4 | `claude-opus-5.5-high` | **732** | 677 to 789 | Silver | 166 | 173 | 173 | 79 | 100 | 44 | 5/5 (716 · 812 · 625 · 712 · 793) |
 | 5 | `gpt-6-astra-xhigh` | **726** | 698 to 754 | Silver | 150 | 209 | 183 | 46 | 100 | 43 | 5/5 (672 · 739 · 706 · 735 · 776) |
@@ -151,7 +151,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `claude-opus-5.5-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 830.3 (813.0 to 847.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 831, lowest 813, highest 847.
 
-`claude-sonnet-5.5-max`: completion 4 of 4 scheduled attempts; expected score per scheduled attempt 819.8 (789.0 to 853.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 793, lowest 785, highest 874.
+`claude-sonnet-5.5-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 825.6 (796.6 to 854.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 827, lowest 785, highest 874.
 
 `claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 785.2 (764.0 to 812.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 781, lowest 752, highest 836.
 

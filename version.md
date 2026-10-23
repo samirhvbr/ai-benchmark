@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.249`
+**Versão atual:** `0.2.250`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.250` — 2026-10-23 — LEB-D-300-A's aggregate grows Claude Sonnet 5.5 at `max` to five runs: 31 configurations
+
+- Claude Sonnet 5.5 at `max` goes from four runs to five: the new run scored **849** (Gold) and the mean moves from 820 to **826** (runs 1 to 5: 793, 785, 827, 874, 849; all Gold). The judges' differences on the new run fell under the standing
+  rules the owner accepted on 2026-10-16 (R4/C5 of a row nobody tried to fix), so no person had to settle a point. It ran in Claude Code on an Anthropic API key, like runs 2 to 4.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.249` — 2026-10-23 — LEB-D-300-A's aggregate adds GPT-6.1-sol at `high` and grows two configurations: 31 configurations
 
