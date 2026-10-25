@@ -166,6 +166,11 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
   proves what each one guarantees, on both trees (`holds` true twice). `matrix_rows.py` declares the 24 rows and 6 decoys, `tools/make_matrix.py` writes `matrix.json` and `matrix.md` from them and from `public/code/`
   (24 flaws, 6 decoys, 200 base points: Crítica 9 x 10, Alta 10 x 8, Média 5 x 6), and `tests/test_leb_s_300_a.py` checks that the public tree and the matrix are what the profile gives.
 
+- **The instance around the key (2026-10-25).** `protocol/tasks/TASK-S-1.0.0.md` (the Security statement, English like the Default's: the attack and its variations must stop and legitimate use must survive, a decoy reported costs;
+  `findings.json` gains the category `security`), `protocol/tasks/messages-S-1.0.0.json` (the one message of a run, the Default's words), `scoring/tracks/security.json` (SEC 850 · COMP 100 · EXPL 50, still a draft),
+  `private/runner.json` (the Default's, unchanged) and `private/regression_groups.json` (45 groups for the 51 public tests, derived from the Default's). `./leb pacote LEB-S-300-A` builds the package: 56 files, the
+  leak guard passes. Left before the first run: the variant cases, the proof on a bench VM, the external review of the key and the freeze.
+
 ## 10. Decisions
 
 **Decided by the owner on 2026-10-25** (answers to four questions, each with the option recommended here):

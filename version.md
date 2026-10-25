@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.259`
+**Versão atual:** `0.2.260`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.260` — 2026-10-25 — LEB-S-300-A can be packaged: the Security task statement, its weights, its runner contract and its regression groups
+
+- `protocol/tasks/TASK-S-1.0.0.md` is the statement of the Security track, in English like the Default's: find and fix vulnerabilities, a fix counts when the attack and its obvious variations stop and the legitimate use survives, code that looks risky but is safe is not a vulnerability and reporting it costs; `findings.json` gains the category `security`. `protocol/tasks/messages-S-1.0.0.json` holds the one message of a run.
+- `scoring/tracks/security.json` declares the weights SEC 850 · COMP 100 · EXPL 50 (the design's draft) and the PEN-002 charge; `instances/LEB-S-300-A/private/runner.json` and `regression_groups.json` complete the evaluator's inputs (45 groups for the 51 public tests, derived from the Default's groups and covered by the repository's test).
+- `./leb pacote LEB-S-300-A` builds the package, 56 files, and the leak guard passes. The SEC-013 comment of the planted tree is made neutral. The repository's tests pass (396).
+- Not yet: the variant cases, the proof on a bench VM, the external review of the key and the freeze. Nothing is frozen.
 
 ### `0.2.259` — 2026-10-25 — LEB-S-300-A's answer key: the six decoys, the matrix of 24 flaws and 6 decoys, and the test that keeps it derived
 

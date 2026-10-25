@@ -28,7 +28,7 @@ FLAWS = [
          "        if (previousToken != null) logout(previousToken);\n"
          "        return create(userId);\n"
          "    }\n",
-         "    /** Logs the user in: the browser keeps its session, which now belongs to the user. */\n"
+         "    /** Logs the user in. */\n"
          "    public Issued login(String previousToken, long userId) {\n"
          "        Optional<Session> kept = resolve(previousToken);\n"
          "        if (kept.isPresent()) {\n"

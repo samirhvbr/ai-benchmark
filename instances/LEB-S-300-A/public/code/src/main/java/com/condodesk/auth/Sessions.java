@@ -55,7 +55,7 @@ public final class Sessions {
         return create(null);
     }
 
-    /** Logs the user in: the browser keeps its session, which now belongs to the user. */
+    /** Logs the user in. */
     public Issued login(String previousToken, long userId) {
         Optional<Session> kept = resolve(previousToken);
         if (kept.isPresent()) {

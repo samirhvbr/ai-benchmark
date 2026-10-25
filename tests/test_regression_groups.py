@@ -93,5 +93,20 @@ class InstanceGroups(unittest.TestCase):
             self.assertTrue(g["tests"], g["id"])
 
 
+class SecurityInstanceGroups(unittest.TestCase):
+    """LEB-S-300-A's own groups: every test of its public suite is in exactly one group."""
+
+    def test_the_groups_cover_exactly_the_public_tests_once_each(self):
+        groups = read_json(os.path.join(ROOT, "instances", "LEB-S-300-A", "private", "regression_groups.json"))["groups"]
+        mapped = [t for g in groups for t in g["tests"]]
+        public = test_names.source_test_names(os.path.join(ROOT, "instances", "LEB-S-300-A", "public", "code", "src", "test"))
+        self.assertEqual(sorted(mapped), sorted(public))
+        self.assertEqual(len(mapped), len(set(mapped)), "a test is in two groups")
+        self.assertEqual(len({g["id"] for g in groups}), len(groups), "a group id is repeated")
+        for g in groups:
+            self.assertTrue(g["contract"].strip(), g["id"])
+            self.assertTrue(g["tests"], g["id"])
+
+
 if __name__ == "__main__":
     unittest.main()
