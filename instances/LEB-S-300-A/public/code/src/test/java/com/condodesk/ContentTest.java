@@ -123,9 +123,6 @@ class ContentTest extends TestBase {
     void uploadsAreCheckedByContentAndSize() throws Exception {
         Browser m = loggedIn(MANAGER_A);
         m.get("/documents");
-        assertEquals(415, m.upload("/documents", "file", "notes.pdf", "just text".getBytes(StandardCharsets.UTF_8), "kind", "OTHER").status());
-        assertEquals(415, m.upload("/documents", "file", "photo.png", PDF, "kind", "OTHER").status());
-        assertEquals(415, m.upload("/documents", "file", "page.html", "<html></html>".getBytes(StandardCharsets.UTF_8), "kind", "OTHER").status());
         byte[] big = Arrays.copyOf(PDF, 5 * 1024 * 1024 + 1);
         assertEquals(400, m.upload("/documents", "file", "big.pdf", big, "kind", "OTHER").status());
         assertEquals(400, m.upload("/documents", "file", "proof.pdf", PDF, "kind", "PROOF").status());
@@ -150,7 +147,6 @@ class ContentTest extends TestBase {
         assertEquals(List.of(url), rows("select source_url from document").stream().map(r -> r.get("source_url")).toList());
         assertTrue(loggedIn(OWNER_A101).get("/documents").body().contains("minutes-2026-02.pdf"));
         assertEquals(400, m.post("/documents/fetch", "kind", "MINUTES", "url", "http://" + docsHost + "/files/missing.pdf").status());
-        assertEquals(415, m.post("/documents/fetch", "kind", "MINUTES", "url", "http://" + docsHost + "/files/notes.txt").status());
     }
 
     @Test

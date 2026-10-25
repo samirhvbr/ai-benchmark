@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.257`
+**Versão atual:** `0.2.258`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.258` — 2026-10-25 — LEB-S-300-A plants its last eight rows (SQL, path, command, XML, fetch, password, upload): all 24 are planted and verified
+
+- Planted: SEC-001 (an unchecked sort in `ORDER BY`), SEC-001.b (a notice search word in the SQL text), SEC-006 (the old viewer's link without a containment check), SEC-009 (a shell command that holds the archive label), SEC-010 (an XML parser with DOCTYPE and external entities on), SEC-011 (a fetch that follows redirects), SEC-014 (unsalted SHA-256 for new passwords, the old hashes never upgraded) and SEC-018 (a blocklist instead of a check by content, and pages served inline).
+- A second S-only correction, CORR-S2, puts the old viewer's route on the instance's clean tree with its check (the reference has no such route), and `build_public.py` adds its line to the public manifest, so a fix that removes the route is a change of the public contract.
+- All 24 rows are proved in both directions: `none` on the planted tree, `full` on the clean tree. The public suite on the planted tree passes, 51 of 51, after trimming five security assertions from `BillingTest` and `ContentTest` and removing eighteen `SecurityBehaviorTest` methods; `sec006` and `sec007` stay.
+- Not yet: the six decoys, the matrix, the variant cases, the task statement and the package. Nothing is frozen.
 
 ### `0.2.257` — 2026-10-25 — LEB-S-300-A plants six output and request rows (stored and reflected XSS, DOM XSS, CSRF, CSV injection) with their verifiers
 

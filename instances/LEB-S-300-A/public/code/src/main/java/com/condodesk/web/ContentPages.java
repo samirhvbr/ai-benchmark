@@ -34,6 +34,7 @@ final class ContentPages {
         s.route("POST", "/documents", Gate.BROWSER, this::upload);
         s.route("POST", "/documents/fetch", Gate.BROWSER, this::fetch);
         s.route("GET", "/documents/{id}/download", Gate.BROWSER, this::download);
+        s.route("GET", "/documents/raw", Gate.BROWSER, this::raw);
         s.route("POST", "/documents/archive", Gate.BROWSER, this::archive);
     }
 
@@ -109,7 +110,14 @@ final class ContentPages {
 
     private Response download(Request req) {
         Download d = documents.download(req.principal(), req.id());
-        return Response.download(d.document().contentType(), d.document().originalName(), d.bytes());
+        String type = d.document().contentType();
+        if (type.startsWith("text/") || type.contains("svg")) return new Response(200, type, d.bytes(), java.util.List.of());
+        return Response.download(type, d.document().originalName(), d.bytes());
+    }
+
+    private Response raw(Request req) {
+        byte[] bytes = documents.raw(req.principal(), req.building(), req.query("file"));
+        return Response.download("application/octet-stream", "document", bytes);
     }
 
     private Response archive(Request req) {

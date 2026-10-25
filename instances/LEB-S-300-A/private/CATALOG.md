@@ -46,10 +46,10 @@ and where they have to depart from it this file changes in the same commit.
 
 | ID | Sev | Diff | Site | The planted weakness | Reference attack and variations | A fix must keep |
 |---|---|---|---|---|---|---|
-| SEC-006 | Crítica | Difícil | `DocumentService`, `ContentPages` (a route added by the profile: `GET /documents/raw?file=`, the old viewer's link) | the route resolves `file` under the building's folder with no containment check and checks only that the caller belongs to the building | `file=../<other building id>/<stored name>` reads another building's document; `file=../../../../etc/passwd`; variations: backslashes, `%2e%2e%2f`, an absolute path | the route for the caller's own documents; download by id |
+| SEC-006 | Crítica | Difícil | `DocumentService`, `ContentPages` (the old viewer's link, `GET /documents/raw?file=`, a route the profile adds to the clean tree too as CORR-S2, with its line in the public manifest) | the route resolves `file` under the building's folder with no containment check and checks only that the caller belongs to the building | `file=../<other building id>/<stored name>` reads another building's document; `file=../../../../etc/passwd`; variations: backslashes, `%2e%2e%2f`, an absolute path | the route for the caller's own documents; download by id |
 | SEC-009 | Crítica | Difícil | `Archiver.tarGz`, `DocumentService.archive` | the archive is built by `sh -c` with the label inside a `--transform` option, and the label pattern is gone | `label=x';touch /tmp/leb-pwned;'`, `$(...)`, a backtick form, a newline; the verifier looks for the file the command would create | the label as the archive's name and folder (letters, digits, dot, dash, underscore, 40 characters), the `index.csv`, a non-zero `tar` status as an error |
 | SEC-010 | Alta | Moderada | `OfxParser.factory` | the DTD and external entities are enabled (the four features and `FEATURE_SECURE_PROCESSING` are gone) | an OFX with `<!DOCTYPE ... SYSTEM "file:///etc/hostname">` whose entity is the `MEMO` of a credit: the payment's memo holds the file; variations: a parameter entity, an `xi:include` | a valid statement, with its idempotency by bank id |
-| SEC-011 | Alta | Difícil | `UrlFetcher` | redirects are followed and the allowlist test is a suffix test on the host | the approved host answers 302 to an internal address (the verifier runs both servers); `approved.host.evil.example`; variations: a port form, userinfo | an approved host, with its port when the list has one; the size and type limits |
+| SEC-011 | Alta | Difícil | `UrlFetcher` | redirects are followed (the reference's `Redirect.NEVER`), so an approved site can send the fetch inside. A suffix test on the host was considered and dropped: no attack on it can be made to run without a real name to resolve | the approved host answers 302 to an internal address (the verifier runs both servers); the internal address itself and a userinfo trick must stay refused | an approved host, with its port when the list has one; the size and type limits |
 | SEC-005 | Alta | Moderada | `Server.admit` | a multipart request skips the CSRF check | a form post from another origin to `/documents` (upload) and `/invoices/{id}/proof` with the victim's cookie and no token; variations: the statement import | every form of the application with its token; the header `X-CSRF-Token` |
 | SEC-012 | Média | Fácil | `AccountPages.safeNext` | only a leading `/` is required: `//host`, `/\host` and control characters are accepted | `next=//evil.example/`; variations: `/\evil.example`, `/%09/evil.example`, `/\t/evil.example` | a local path with its query (`next=/invoices?month=2026-03`) |
 
@@ -106,7 +106,7 @@ and where they have to depart from it this file changes in the same commit.
 
 The 20 tests of `SecurityBehaviorTest` each check one defense of §5 of the system's README. On the planted tree, the tests of the classes below fail and leave this instance's public suite
 (`private/removed-from-public-tests.txt`, with their reasons): sec001, sec002, sec003, sec004, sec005, sec006, sec008, sec009, sec010, sec011, sec012, sec013, sec014, sec015,
-sec016, sec017, sec018, sec019, sec020. Only `sec007` stays. The 50 characterization tests of the other five classes stay, and they are the contracts of the "A fix must keep" column.
+sec016, sec017, sec018, sec019, sec020, except sec006, which checks the generated stored names and never meets SEC-006's route. `sec006` and `sec007` stay. The 50 characterization tests of the other five classes stay, and they are the contracts of the "A fix must keep" column.
 
 A characterization test of the other five classes can hold a security assertion beside its own behavior; the planted tree fails it, and only that part is trimmed (`build_public.py`'s
 `TRIMS`, recorded in `removed-from-public-tests.txt`). The first batch found two: `BillingTest#residentsDoNotSeeOtherUnitsInvoices` (all of it is SEC-017's) and the last three lines of
@@ -156,6 +156,11 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
 - **Batch 3 (2026-10-25): SEC-002, SEC-002.b, SEC-003, SEC-004, SEC-005, SEC-008.** `plant/flaws_d_output.py` (and SEC-005 in `flaws_b_requests.py`); verifiers `S04_OutputTest` and `sec005` in `S02_RequestsTest`.
   SEC-004 is the structural check of `app.js` (the owner's decision): a sink fed by a variable is `none`, one fed through a cleansing call is `half` for the judge to read, none is `full`. Proved both ways:
   sixteen rows `none` on the planted tree, `full` on the clean one. Public suite on the planted tree: 57 of 57 (five more `SecurityBehaviorTest` methods leave it, no characterization test needed a trim).
+
+- **Batch 4 (2026-10-25): SEC-001, SEC-001.b, SEC-006, SEC-009, SEC-010, SEC-011, SEC-014, SEC-018.** `plant/flaws_e_injection.py`, `flaws_f_files_net.py`, `flaws_g_passwords.py`; verifiers `S05_InjectionTest`,
+  `S06_FilesTest`, `S07_PasswordsTest`. SEC-006 needed a second S-only correction, CORR-S2: the old viewer's route exists on the clean tree with its containment check (and in the public manifest), and the row removes the check.
+  **All 24 rows are planted and proved both ways: `none` on the planted tree, `full` on the clean tree.** Public suite on the planted tree: 51 of 51, after five trims of security assertions in `BillingTest` and `ContentTest`
+  (`removed-from-public-tests.txt`). Left: the six decoys, the matrix, the variant cases, the task statement, the package.
 
 ## 10. Decisions
 

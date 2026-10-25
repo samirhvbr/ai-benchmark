@@ -38,10 +38,8 @@ public final class ContentRepository {
         StringBuilder where = new StringBuilder(" where n.building_id = ?");
         List<Object> args = new ArrayList<>(List.of(buildingId));
         for (String w : words) {
-            where.append(" and (n.title ilike ? escape '\\' or n.body ilike ? escape '\\')");
             String pattern = "%" + likeEscape(w) + "%";
-            args.add(pattern);
-            args.add(pattern);
+            where.append(" and (n.title ilike '" + pattern + "' escape '\\' or n.body ilike '" + pattern + "' escape '\\')");
         }
         long total = Db.one(c, "select count(*) as n from notice n" + where, rs -> rs.getLong("n"), args.toArray()).orElse(0L);
         args.add(size);

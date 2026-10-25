@@ -93,7 +93,6 @@ class BillingTest extends TestBase {
         assertTrue(b.get("/invoices?month=2025-04").body().contains("3 invoices."));
         String byAmount = b.get("/invoices?sort=amount&dir=desc").body();
         assertTrue(byAmount.indexOf("190.00") < byAmount.indexOf("100.00"));
-        assertEquals(400, b.get("/invoices?sort=password_hash").status());
         assertEquals(400, b.get("/invoices?status=LOST").status());
     }
 

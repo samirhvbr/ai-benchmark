@@ -50,7 +50,6 @@ final class FinancePages {
         InvoiceStatus status = enumOf(InvoiceStatus.class, req.query("status"));
         YearMonth month = monthOf(req.query("month"));
         String sort = req.query("sort");
-        if (sort != null && !FinanceRepository.SORTS.containsKey(sort)) throw AppException.invalid("Unknown sort: " + sort);
         boolean desc = "desc".equals(req.query("dir"));
         Long building = p.isAdmin() ? req.queryLong("building") : null;
         Page<Invoice> page = billing.list(p, building, status, month, sort, desc, req.page());

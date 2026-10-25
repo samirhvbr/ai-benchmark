@@ -21,6 +21,22 @@ final class Coverage {
     }
 
     static final Map<String, Item> OF = Map.ofEntries(
+        Map.entry("SEC-001", new Item("a sort made of a condition on another table gives the same order and the same status whether the condition is true or false, the four sort keys still sort both ways, and an unknown key is not a server error",
+                new String[] {"other injection vectors in the invoice list (the filters are bound)", "a time-based extraction"})),
+        Map.entry("SEC-001.b", new Item("a search word that closes the string and adds a condition gives the same results whether the condition is true or false, and plain searches (one word, two words, a literal percent sign) still work",
+                new String[] {"a second-order injection through a stored notice", "an extraction by errors this payload does not trigger"})),
+        Map.entry("SEC-006", new Item("through the old viewer's link, a manager reads neither another building's file, nor a file outside the storage (relative and absolute paths), and still reads the building's own file; a missing name answers 404",
+                new String[] {"encodings other than the ones the HTTP client sends", "symbolic links inside the storage folder"})),
+        Map.entry("SEC-009", new Item("four archive labels that would run a command (after a semicolon, in $( ), in backticks, on a new line) run none, and a plain label and no label still give their archives",
+                new String[] {"a file name that reads as an option (the stored names are generated)", "other uses of a shell"})),
+        Map.entry("SEC-010", new Item("a statement whose XML reads a local file through an external entity or an external DTD stores nothing of it, and a valid statement still settles its invoice",
+                new String[] {"XInclude and other parsers of the application (the webhook is JSON)", "a billion-laughs expansion"})),
+        Map.entry("SEC-011", new Item("a fetch does not follow an approved site's redirect to an internal one, refuses the internal address itself and the userinfo trick, and still fetches from the approved site",
+                new String[] {"a rebinding of the approved name to an inside address", "schemes other than http and https"})),
+        Map.entry("SEC-014", new Item("two accounts created with one password are stored salted and slow and differ, a changed password is stored so, an account imported from the old system is upgraded at its next login, and every login keeps working",
+                new String[] {"the number of iterations beyond the 600,000 the reference uses", "the password policy"})),
+        Map.entry("SEC-018", new Item("an uploaded .html and .svg with a script are refused or served as attachments, and a PDF, a PNG and a JPEG still upload and download as attachments under their names",
+                new String[] {"other ways to get a page onto the application's origin", "a PDF that carries a script"})),
         Map.entry("SEC-002", new Item("a notice title and an author's name that carry markup reach a resident's pages as text, and the notice's bold and line breaks still apply",
                 new String[] {"the title in the page's <title> and heading (the page builder escapes them)", "other stored text (the account name in the page header)"})),
         Map.entry("SEC-002.b", new Item("a payment proof named with markup reaches the manager's document list as text, and plain names are still links",

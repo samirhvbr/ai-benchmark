@@ -21,7 +21,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Reads the transactions of a bank statement in OFX 2 (XML). Documents with a DTD are refused. */
+/** Reads the transactions of a bank statement in OFX 2 (XML). */
 public final class OfxParser {
 
     /** One statement line. {@code amount} is positive for a credit. */
@@ -60,12 +60,6 @@ public final class OfxParser {
 
     private static DocumentBuilderFactory factory() throws ParserConfigurationException {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-        f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        f.setFeature("http://xml.org/sax/features/external-general-entities", false);
-        f.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-        f.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        f.setXIncludeAware(false);
-        f.setExpandEntityReferences(false);
         return f;
     }
 

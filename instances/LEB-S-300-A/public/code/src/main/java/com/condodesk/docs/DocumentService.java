@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
  */
 public final class DocumentService {
     private static final Map<String, String> TYPES = Map.of("pdf", "application/pdf", "png", "image/png", "jpg", "image/jpeg", "jpeg", "image/jpeg");
+    private static final java.util.Set<String> BLOCKED = java.util.Set.of("php", "jsp", "exe", "sh", "bat", "js");
     private static final Pattern LABEL = Pattern.compile("[A-Za-z0-9._-]{1,40}");
     private static final int MAX_NAME = 120;
 
@@ -99,12 +100,22 @@ public final class DocumentService {
         }
     }
 
+    /** The old viewer's link: a stored file by its name, in the building's folder. */
+    public byte[] raw(Principal p, long buildingId, String fileName) {
+        if (!p.belongsTo(buildingId)) throw AppException.notFound();
+        if (fileName == null) throw AppException.invalid("file is required.");
+        try {
+            return Files.readAllBytes(root.resolve(String.valueOf(buildingId)).resolve(fileName));
+        } catch (IOException e) {
+            throw AppException.notFound();
+        }
+    }
+
     /** Every document of a building in one tar.gz, with an index of their original names. */
     public Archive archive(Principal p, long buildingId, String label) {
         p.requireManager(buildingId);
         Building b = db.read(c -> buildings.byId(c, buildingId)).orElseThrow(AppException::notFound);
         String name = label == null ? "documents-" + b.dateAt(clock.instant()) : label;
-        if (!LABEL.matcher(name).matches()) throw AppException.invalid("The label may have letters, digits, dot, dash and underscore only.");
         List<StoredDocument> docs = db.read(c -> content.documents(c, buildingId, null));
         StringBuilder index = new StringBuilder(Csv.row(List.of("file", "name", "kind", "created_at")));
         List<String> files = new ArrayList<>();
@@ -114,7 +125,7 @@ public final class DocumentService {
         }
         try {
             Path dir = Files.createDirectories(root.resolve(String.valueOf(buildingId)));
-            byte[] bytes = archiver.tarGz(dir, files, index.toString());
+            byte[] bytes = archiver.tarGz(dir, files, index.toString(), name);
             db.tx(c -> {
                 audit.record(c, p.userId(), "archive", b.name() + " " + docs.size() + " documents", clock.instant());
                 return null;
@@ -130,8 +141,9 @@ public final class DocumentService {
         if (data.length > maxBytes) throw AppException.invalid("The file is larger than " + (maxBytes / (1024 * 1024)) + " MB.");
         String name = cleanName(fileName);
         String ext = name.contains(".") ? name.substring(name.lastIndexOf('.') + 1).toLowerCase(Locale.ROOT) : "";
-        String type = sniff(data);
-        if (type == null || !type.equals(TYPES.get(ext))) throw AppException.unsupported("Only PDF, PNG and JPEG files are accepted.");
+        String sniffed = sniff(data);
+        if (BLOCKED.contains(ext)) throw AppException.unsupported("That kind of file is not accepted.");
+        String type = sniffed != null ? sniffed : ext.equals("html") || ext.equals("htm") ? "text/html" : ext.equals("svg") ? "image/svg+xml" : "application/octet-stream";
         String stored = UUID.randomUUID() + "." + ext;
         Path path = pathOf(buildingId, stored);
         try {

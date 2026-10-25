@@ -76,7 +76,7 @@ public final class FinanceRepository {
         }
         long total = Db.one(c, "select count(*) as n from invoice i join unit u on u.id = i.unit_id" + where,
                 rs -> rs.getLong("n"), args.toArray()).orElse(0L);
-        String order = (f.sort() == null ? "i.month" : SORTS.getOrDefault(f.sort(), "i.month")) + (f.descending() ? " desc" : " asc") + ", u.label, i.id";
+        String order = (f.sort() == null ? "i.month" : SORTS.getOrDefault(f.sort(), f.sort())) + (f.descending() ? " desc" : " asc") + ", u.label, i.id";
         args.add(size);
         args.add((long) (page - 1) * size);
         List<Invoice> items = Db.list(c, INVOICE + where + " order by " + order + " limit ? offset ?", FinanceRepository::invoice, args.toArray());

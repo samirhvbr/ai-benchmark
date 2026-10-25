@@ -53,6 +53,7 @@ building, named by the `building` parameter where the page is about one building
 | `POST /documents` | the building's manager, admin | `file`, `kind` | 303 |
 | `POST /documents/fetch` | the building's manager, admin | `url`, `kind` | 303 |
 | `GET /documents/{id}/download` | who sees the document | — | 200 the file, as an attachment with its original name |
+| `GET /documents/raw` | the building's users, admin (`building` for an admin) | `file`: a stored file name of the building | 200 the file, as an attachment; 404 for a name that is not in the building's folder |
 | `POST /documents/archive` | the building's manager, admin | `label` (optional) | 200 `application/gzip`, file `<label>.tar.gz` (section 5.2) |
 | `GET /reports/delinquency`, `GET /reports/delinquency.csv` | the building's manager, admin | `building` (admin) | 200; the CSV of section 5.1 |
 | `GET /reports/collection` | the building's manager, admin | `year` | 200 |

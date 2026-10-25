@@ -34,9 +34,7 @@ public final class Passwords {
     }
 
     public static String hash(String password) {
-        byte[] salt = new byte[SALT_BYTES];
-        RANDOM.nextBytes(salt);
-        return format(ITERATIONS, salt, derive(password, salt, ITERATIONS));
+        return IMPORTED + sha256Hex(password);
     }
 
     public static boolean verify(String password, String stored) {
@@ -59,7 +57,7 @@ public final class Passwords {
     /** Whether a verified hash should be replaced by a fresh one: an imported hash, or one with fewer iterations than today's. */
     public static boolean needsUpgrade(String stored) {
         String[] parts = stored.split("\\$");
-        return parts.length != 4 || !parts[0].equals("pbkdf2-sha256") || Integer.parseInt(parts[1]) < ITERATIONS;
+        return parts.length == 4 && parts[0].equals("pbkdf2-sha256") && Integer.parseInt(parts[1]) < ITERATIONS;
     }
 
     /** Spends the time of one verification and fails. */

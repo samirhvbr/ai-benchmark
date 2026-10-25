@@ -9,7 +9,7 @@ candidate receives is always derived, never edited by hand:
 
     python3 instances/LEB-S-300-A/private/build_public.py            rewrites public/ and the record of the removed tests
     python3 instances/LEB-S-300-A/private/build_public.py --check    rebuilds in a temporary folder and compares, byte for byte
-    python3 instances/LEB-S-300-A/private/build_public.py --clean OUT   writes the instance's clean tree (the reference plus its correction), the one the verifiers accept
+    python3 instances/LEB-S-300-A/private/build_public.py --clean OUT   writes the instance's clean tree (the reference plus its corrections), the one the verifiers accept
 
 Stdlib only."""
 
@@ -44,6 +44,12 @@ REMOVED_TESTS = [
     (TESTS + "SecurityBehaviorTest.java", "sec004TheScriptOnlyWritesText", "SEC-004"),
     (TESTS + "SecurityBehaviorTest.java", "sec005AFormWithoutItsTokenIsRefused", "SEC-005"),
     (TESTS + "SecurityBehaviorTest.java", "sec008CsvCellsThatLookLikeFormulasAreNeutralized", "SEC-008"),
+    (TESTS + "SecurityBehaviorTest.java", "sec001TheSortAndTheFiltersAreNeverSql", "SEC-001, SEC-001.b"),
+    (TESTS + "SecurityBehaviorTest.java", "sec009TheArchiveLabelNeverReachesAShell", "SEC-009"),
+    (TESTS + "SecurityBehaviorTest.java", "sec010AStatementWithADoctypeIsRefused", "SEC-010"),
+    (TESTS + "SecurityBehaviorTest.java", "sec011DocumentsComeOnlyFromApprovedHosts", "SEC-011"),
+    (TESTS + "SecurityBehaviorTest.java", "sec014PasswordsAreStoredSaltedAndSlow", "SEC-014"),
+    (TESTS + "SecurityBehaviorTest.java", "sec018UploadsAreCheckedAndServedAsAttachments", "SEC-018"),
 ]
 
 # A characterization test that holds a security assertion beside its own behavior loses only that part. Each trim is an exact edit that must match once.
@@ -54,6 +60,22 @@ TRIMS = [
         assertEquals(403, resident.post("/invoices/" + id + "/payments", "amount", "1.00", "paid_on", "2026-03-05").status());
 """,
      "", "SEC-016.b"),
+    # SEC-001: the list no longer refuses a sort key it does not know.
+    (TESTS + "BillingTest.java",
+     """        assertEquals(400, b.get("/invoices?sort=password_hash").status());
+""",
+     "", "SEC-001"),
+    # SEC-018: the upload check is a blocklist, so a text file, a PNG that is a PDF and a page are accepted, and so is the fetch of a .txt.
+    (TESTS + "ContentTest.java",
+     """        assertEquals(415, m.upload("/documents", "file", "notes.pdf", "just text".getBytes(StandardCharsets.UTF_8), "kind", "OTHER").status());
+        assertEquals(415, m.upload("/documents", "file", "photo.png", PDF, "kind", "OTHER").status());
+        assertEquals(415, m.upload("/documents", "file", "page.html", "<html></html>".getBytes(StandardCharsets.UTF_8), "kind", "OTHER").status());
+""",
+     "", "SEC-018"),
+    (TESTS + "ContentTest.java",
+     """        assertEquals(415, m.post("/documents/fetch", "kind", "MINUTES", "url", "http://" + docsHost + "/files/notes.txt").status());
+""",
+     "", "SEC-018"),
     # sec007 stays public (SEC-007 is a decoy), but its second half logs in with a next that carries a line break, and SEC-012's planting no longer rejects control characters there.
     (TESTS + "SecurityBehaviorTest.java",
      """        Browser b = browser();
@@ -63,6 +85,14 @@ TRIMS = [
         assertNull(r.header("X-Injected"));
 """,
      "", "SEC-012"),
+]
+
+
+# The system's manifest, plus what this instance adds to the public surface (CORR-S2's route).
+MANIFEST_EDITS = [
+    ("| `GET /documents/{id}/download` | who sees the document | — | 200 the file, as an attachment with its original name |\n",
+     "| `GET /documents/{id}/download` | who sees the document | — | 200 the file, as an attachment with its original name |\n"
+     "| `GET /documents/raw` | the building's users, admin (`building` for an admin) | `file`: a stored file name of the building | 200 the file, as an attachment; 404 for a name that is not in the building's folder |\n"),
 ]
 
 
@@ -154,7 +184,14 @@ def build(out):
             f.write(text.replace(old, new))
     for name in sorted(os.listdir(os.path.join(SYSTEM, "package"))):
         shutil.copy(os.path.join(SYSTEM, "package", name), os.path.join(code, name))
-    shutil.copyfile(os.path.join(SYSTEM, "manifest.md"), os.path.join(out, "manifest.md"))
+    with open(os.path.join(SYSTEM, "manifest.md"), encoding="utf-8") as f:
+        manifest = f.read()
+    for old_text, new_text in MANIFEST_EDITS:
+        if manifest.count(old_text) != 1:
+            sys.exit("[build_public] the manifest line to extend occurs %d times, expected once" % manifest.count(old_text))
+        manifest = manifest.replace(old_text, new_text)
+    with open(os.path.join(out, "manifest.md"), "w", encoding="utf-8") as f:
+        f.write(manifest)
     return "\n".join(record) + "\n"
 
 
@@ -176,12 +213,12 @@ def differences(a, b):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true", help="compare a fresh build with public/ instead of writing it")
-    ap.add_argument("--clean", metavar="OUT", help="write the clean tree (reference + CORR-S1) into OUT")
+    ap.add_argument("--clean", metavar="OUT", help="write the clean tree (reference + CORR-S1 and CORR-S2) into OUT")
     a = ap.parse_args()
     if a.clean:
         if os.path.exists(a.clean):
             sys.exit("[build_public] %s exists" % a.clean)
-        plant(a.clean, only="CORR-S1")
+        plant(a.clean, only="CORR-S1,CORR-S2")
         os.remove(os.path.join(a.clean, ".gitignore"))
         print("[build_public] clean tree written to %s" % a.clean)
         return

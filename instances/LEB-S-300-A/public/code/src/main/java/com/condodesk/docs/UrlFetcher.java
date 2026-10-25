@@ -15,7 +15,7 @@ import java.util.Set;
 
 /**
  * Downloads a document a manager points to. Only hosts on the configured allowlist are contacted (an entry is a host, or
- * host:port), redirects are not followed, and the body is cut at the upload limit.
+ * host:port), and the body is cut at the upload limit.
  */
 public final class UrlFetcher {
 
@@ -24,7 +24,7 @@ public final class UrlFetcher {
     private final Set<String> allowedHosts;
     private final int maxBytes;
     private final HttpClient client = HttpClient.newBuilder()
-            .followRedirects(HttpClient.Redirect.NEVER)
+            .followRedirects(HttpClient.Redirect.NORMAL)
             .connectTimeout(Duration.ofSeconds(5))
             .build();
 
