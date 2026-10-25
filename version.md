@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.251`
+**Versão atual:** `0.2.252`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.252` — 2026-10-25 — The queue gains the LEB-S-300-A plan, starting with MiniMax M3.1 and M3
+
+- New document in the queue: `.continue/leb-s-300-a.md`. The owner ordered the Security track to start, with MiniMax M3.1 and MiniMax M3 as the first cases, after the work already queued.
+- It lists what already exists (the reference system, the series evaluator, `taxonomy/SEC.md`, the bench environment), what is missing in the order of its dependencies (profile catalog, planting, exploit verifiers, matrix and weights, variant cases, task statement, package, freeze, judges) and the open questions for the owner.
+- Nothing of the instance exists yet: no package, no key, no run. The document leaves the queue when the instance is complete and frozen and its first cases are run, judged and published.
 
 ### `0.2.251` — 2026-10-23 — LEB-300-A's aggregate adds Claude Haiku 5.5 at `high` and closes three runs for three more agents: 28 agents
 
