@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.252`
+**Versão atual:** `0.2.253`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.253` — 2026-10-25 — LEB-S-300-A's catalog drafts 24 vulnerabilities in 19 classes and 6 decoys, for the owner's review
+
+- New document: `instances/LEB-S-300-A/private/CATALOG.md`, the planting profile of the Security track on paper, written before any planting code as LEB-D-300-A's was. 24 planted rows (Crítica 9, Alta 10, Média 5; Fácil 9, Moderada 8, Difícil 7) and 6 decoys, with the site of each, the weakness planted, the reference attack and its variations, and what a fix must keep working.
+- One finding: the JDK 21 HTTP server refuses a CR or LF in a header value (tried with OpenJDK 21.0.12), so header injection (SEC-007) cannot be planted on this stack; the class is kept as a decoy and the reference's own test of it stays public.
+- It also lists what the verifiers need that the Default track's did not (a JavaScript engine for the DOM XSS row, servers started by the verifier), the borderline patterns of the reference to decide before planting (PBKDF2 at 100,000 iterations first: 27 ms a hash against 110 ms at 600,000, measured), and the open questions for the owner.
+- `instances/LEB-S-300-A/README.md` and `systems/300-A/README.md §9` point to it; the repository's queue item for the track records it. Nothing is planted, verified or frozen.
 
 ### `0.2.252` — 2026-10-25 — The queue gains the LEB-S-300-A plan, starting with MiniMax M3.1 and M3
 

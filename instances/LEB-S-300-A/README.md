@@ -24,6 +24,9 @@ this instance's package.
 This instance cannot run yet. What it still needs, from its own files to the evaluator and the task statement of its track, is
 kept in one place: [`systems/300-A/README.md §9`](../../systems/300-A/README.md#9-authoring-status).
 
+Written so far: the planting profile on paper, [`private/CATALOG.md`](private/CATALOG.md) (a draft of 2026-10-25 for the owner's review:
+24 planted vulnerabilities in 19 classes and 6 decoys; SEC-007 is not plantable on this stack, and the catalog says why).
+
 ## Layout, once built
 
 ```text

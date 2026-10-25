@@ -187,7 +187,8 @@ split rounding each share.
       match their hash list, `check-environment.sh` says `environment ready`, and `mvn -o test` passes **70 tests, 0 failures**, in **345 s** (the workstation takes 58 s).
       The copy and the tarball are removed, the tests leave no schema in `leb_dev`, and the VM still passes `conferir-vm.sh`. An agent that runs the whole suite
       spends about six minutes of its budget each time
-- [ ] `LEB-S-300-A`: profile, matrix, exploit verifiers, variant cases
+- [x] `LEB-S-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-S-300-A/private/CATALOG.md)), a draft for the owner's review
+- [ ] `LEB-S-300-A`: planting, matrix, exploit verifiers, variant cases
 - [x] `LEB-D-300-A` **frozen on 2026-10-14**, at commit `73eb0f8` (0.2.214; nothing of the instance, harness, scoring or tools has changed since `2d19483`, 0.2.211):
       `matrix_sha256` `45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9` and `package_sha256`
       `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` (`./leb pacote LEB-D-300-A` rebuilds both). The first case is Claude Haiku 5.5 at

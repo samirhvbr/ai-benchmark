@@ -17,6 +17,11 @@ rodado, sido julgados e publicados. Reescrever ou mover este documento não o ti
 - O ambiente das VMs: o snapshot `leb-d-300-a` (Claude Code, banco de teste, cache Maven offline de 213 arquivos) serve ao mesmo sistema, sem pacote.
 - O laboratório de runs sem operador (`operador/laboratorio.py`, `laboratorio-opencode`): os casos do MiniMax entram por ele.
 
+## Já existe desde 2026-10-25
+
+- `instances/LEB-S-300-A/private/CATALOG.md`: o rascunho do perfil (24 vulnerabilidades em 19 classes, 6 iscas), esperando a revisão do Samir. Achado do rascunho: o servidor
+  HTTP do JDK 21 recusa CR/LF em cabeçalho, então a classe SEC-007 não é plantável nesta pilha e fica só como isca.
+
 ## O que falta (a lista do §9 de `systems/300-A/README.md`, na ordem do que depende do quê)
 
 1. **Catálogo do perfil** (`instances/LEB-S-300-A/private/CATALOG.md`): que classes de `SEC` entram, em que lugar da referência, em que
