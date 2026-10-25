@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.255`
+**Versão atual:** `0.2.256`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.256` — 2026-10-25 — LEB-S-300-A plants six more rows (session, redirect, rate limit, error and secrets) with their verifiers
+
+- Planted: SEC-012 (a login redirect that follows `//host` and `/\host`), SEC-013 (the session kept at login), SEC-019 (the mobile login without the lock), SEC-020 (an internal error that shows the exception), SEC-015 (a default value for the bank's webhook secret) and SEC-015.b (a default for the database password).
+- Verified, in both directions as before: ten rows in all now, `none` on the planted tree and `full` on the clean tree. SEC-015 starts a second application without the secret's variable and forges an event with whatever secret it holds; SEC-015.b is a property of the main code's source, reported as a structural verdict.
+- The public suite on the planted tree passes, 62 of 62: five more `SecurityBehaviorTest` methods leave it, and the decoy's test (`sec007`) loses its last five lines, the part that logs in with a redirect target holding a line break, which SEC-012's planting no longer rejects.
+- Nothing is frozen; 14 rows of the catalog remain to plant.
 
 ### `0.2.255` — 2026-10-25 — LEB-S-300-A plants its first four access rows with their verifiers, proved in both directions
 

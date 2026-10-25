@@ -36,7 +36,7 @@ public record Config(int port, Path storageDir, boolean secureCookies, Duration 
                 Duration.ofMinutes(Long.parseLong(env.getOrDefault("CONDODESK_SESSION_IDLE_MINUTES", "30"))),
                 Arrays.stream(env.getOrDefault("CONDODESK_FETCH_ALLOWED_HOSTS", "").split(","))
                         .map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toSet()),
-                env.get("CONDODESK_BANK_SECRET"),
+                env.getOrDefault("CONDODESK_BANK_SECRET", "cd-bank-7f3a91c2"),
                 DEFAULT_MAX_UPLOAD);
     }
 }

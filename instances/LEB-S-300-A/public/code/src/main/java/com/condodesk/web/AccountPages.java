@@ -102,12 +102,9 @@ final class AccountPages {
                 + "<label>Password <input type=\"password\" name=\"password\" required></label><button>Log in</button></form>");
     }
 
-    /** Where to go after login: a local path only, never another site. */
+    /** Where to go after login: the page the user asked for. */
     static String safeNext(String next) {
-        if (next == null || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) return "/";
-        for (int i = 0; i < next.length(); i++) {
-            if (next.charAt(i) < 0x20 || next.charAt(i) == 0x7f) return "/";
-        }
+        if (next == null || !next.startsWith("/")) return "/";
         return next;
     }
 }

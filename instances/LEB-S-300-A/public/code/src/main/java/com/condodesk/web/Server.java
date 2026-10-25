@@ -117,7 +117,7 @@ public final class Server {
         } catch (Exception e) {
             String incident = HexFormat.of().formatHex(randomBytes(4));
             LOG.log(Level.SEVERE, "incident " + incident + " on " + ex.getRequestMethod() + " " + path, e);
-            resp = failure(route, req, path, 500, "internal_error", "Something went wrong (incident " + incident + ").");
+            resp = failure(route, req, path, 500, "internal_error", "Something went wrong (incident " + incident + "): " + e);
         }
         write(ex, route, resp, extra);
     }

@@ -76,7 +76,7 @@ public final class App {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setUrl(env.getOrDefault("CONDODESK_DB_URL", "jdbc:postgresql://127.0.0.1:5432/condodesk"));
         ds.setUser(env.getOrDefault("CONDODESK_DB_USER", "condodesk"));
-        ds.setPassword(env.get("CONDODESK_DB_PASSWORD"));
+        ds.setPassword(env.getOrDefault("CONDODESK_DB_PASSWORD", "condodesk-prod-2023"));
         int port = create(Config.fromEnvironment(env), ds, Clock.systemUTC()).start();
         System.out.println("CondoDesk listening on port " + port);
     }

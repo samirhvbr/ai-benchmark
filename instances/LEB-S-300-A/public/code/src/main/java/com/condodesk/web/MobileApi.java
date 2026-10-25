@@ -52,7 +52,7 @@ final class MobileApi {
 
     private Response token(Request req) {
         JsonNode body = req.json();
-        Principal p = auth.authenticate(text(body, "email"), text(body, "password"), req.clientAddress());
+        Principal p = auth.authenticate(text(body, "email"), text(body, "password"), req.clientAddress(), false);
         return Response.json(201, Map.of("token", sessions.issueApiToken(p.userId())));
     }
 

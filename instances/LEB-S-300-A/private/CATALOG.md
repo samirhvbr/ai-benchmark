@@ -149,6 +149,10 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
   `verify/.../S01_AccessTest.java`, proved in both directions: on the planted tree each attack works (verdict `none`, the legitimate use still works), on the clean tree (reference plus CORR-S1,
   `build_public.py --clean`) each is closed (verdict `full`). The public suite on the planted tree: 67 of 67.
 
+- **Batch 2 (2026-10-25): SEC-012, SEC-013, SEC-015, SEC-015.b, SEC-019, SEC-020.** `plant/flaws_b_requests.py` and `plant/flaws_c_secrets.py`; verifiers `S02_RequestsTest` and `S03_SecretsTest`
+  (SEC-015.b by a property of the source, `Verdict.structure`). Proved both ways: ten rows `none` on the planted tree, `full` on the clean one. Public suite on the planted tree: 62 of 62; the decoy's
+  own test `sec007` stays public but loses its last five lines (a login with a `next` that carries a line break), which SEC-012's planting no longer rejects.
+
 ## 10. Decisions
 
 **Decided by the owner on 2026-10-25** (answers to four questions, each with the option recommended here):

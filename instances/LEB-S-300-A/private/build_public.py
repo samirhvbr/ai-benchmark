@@ -34,6 +34,11 @@ REMOVED_TESTS = [
     (TESTS + "SecurityBehaviorTest.java", "sec016ResidentsCannotDoTheManagersWork", "SEC-016, SEC-016.b"),
     (TESTS + "SecurityBehaviorTest.java", "sec017ThingsOfOtherUnitsAndBuildingsAreHidden", "SEC-017, SEC-017.b"),
     (TESTS + "BillingTest.java", "residentsDoNotSeeOtherUnitsInvoices", "SEC-017"),
+    (TESTS + "SecurityBehaviorTest.java", "sec012AfterLoginOnlyLocalPathsAreFollowed", "SEC-012"),
+    (TESTS + "SecurityBehaviorTest.java", "sec013LoginStartsANewSession", "SEC-013"),
+    (TESTS + "SecurityBehaviorTest.java", "sec015TheWebhookSecretComesFromTheConfiguration", "SEC-015"),
+    (TESTS + "SecurityBehaviorTest.java", "sec019FailedLoginsLockTheAccountAndTheAddress", "SEC-019"),
+    (TESTS + "SecurityBehaviorTest.java", "sec020ErrorsAndResponsesShowNoInternals", "SEC-020"),
 ]
 
 # A characterization test that holds a security assertion beside its own behavior loses only that part. Each trim is an exact edit that must match once.
@@ -44,6 +49,15 @@ TRIMS = [
         assertEquals(403, resident.post("/invoices/" + id + "/payments", "amount", "1.00", "paid_on", "2026-03-05").status());
 """,
      "", "SEC-016.b"),
+    # sec007 stays public (SEC-007 is a decoy), but its second half logs in with a next that carries a line break, and SEC-012's planting no longer rejects control characters there.
+    (TESTS + "SecurityBehaviorTest.java",
+     """        Browser b = browser();
+        b.get("/login");
+        R r = b.post("/login", "email", OWNER_A101, "password", PASSWORD, "next", "/invoices\\r\\nX-Injected: 1");
+        assertEquals("/", r.location());
+        assertNull(r.header("X-Injected"));
+""",
+     "", "SEC-012"),
 ]
 
 

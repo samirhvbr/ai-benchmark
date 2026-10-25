@@ -55,9 +55,13 @@ public final class Sessions {
         return create(null);
     }
 
-    /** Logs the user in on a brand-new session; the session the browser had before is dropped. */
+    /** Logs the user in: the browser keeps its session, which now belongs to the user. */
     public Issued login(String previousToken, long userId) {
-        if (previousToken != null) logout(previousToken);
+        Optional<Session> kept = resolve(previousToken);
+        if (kept.isPresent()) {
+            db.tx(c -> Db.update(c, "update user_session set user_id = ? where id_hash = ?", userId, kept.get().idHash()));
+            return new Issued(previousToken, new Session(kept.get().idHash(), userId, kept.get().csrfToken()));
+        }
         return create(userId);
     }
 

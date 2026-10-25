@@ -33,17 +33,22 @@ public final class AuthService {
 
     /** The principal of the account, or 401 with the same message whatever was wrong; 429 while the account or address is locked. */
     public Principal authenticate(String email, String password, String address) {
+        return authenticate(email, password, address, true);
+    }
+
+    /** As above; {@code counted} says whether failures are counted and a lock is honoured. */
+    public Principal authenticate(String email, String password, String address, boolean counted) {
         if (email == null || email.isBlank() || password == null) throw invalidCredentials();
-        throttle.check(email, address);
+        if (counted) throttle.check(email, address);
         Optional<User> user = db.read(c -> users.byEmail(c, email));
         boolean ok = user.isPresent() && user.get().active()
                 ? Passwords.verify(password, user.get().passwordHash())
                 : Passwords.verifyNothing(password);
         if (!ok) {
-            throttle.failure(email, address);
+            if (counted) throttle.failure(email, address);
             throw invalidCredentials();
         }
-        throttle.success(email);
+        if (counted) throttle.success(email);
         long id = user.get().id();
         boolean upgrade = Passwords.needsUpgrade(user.get().passwordHash());
         db.tx(c -> {
