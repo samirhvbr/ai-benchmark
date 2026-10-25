@@ -47,9 +47,10 @@ public final class ReportRepository {
     public Map<Long, String> ownersByUnit(Connection c, Set<Long> unitIds) throws SQLException {
         Map<Long, String> out = new HashMap<>();
         if (unitIds.isEmpty()) return out;
+        String ids = unitIds.stream().map(String::valueOf).collect(java.util.stream.Collectors.joining(","));
         for (Map.Entry<Long, String> row : Db.list(c, "select r.unit_id, string_agg(u.name, ', ' order by u.name) as names from residency r "
-                        + "join app_user u on u.id = r.user_id where r.unit_id = any(?) and r.kind = 'OWNER' group by r.unit_id",
-                rs -> Map.entry(rs.getLong("unit_id"), rs.getString("names")), Db.ids(unitIds))) {
+                        + "join app_user u on u.id = r.user_id where r.unit_id in (" + ids + ") and r.kind = 'OWNER' group by r.unit_id",
+                rs -> Map.entry(rs.getLong("unit_id"), rs.getString("names")))) {
             out.put(row.getKey(), row.getValue());
         }
         return out;

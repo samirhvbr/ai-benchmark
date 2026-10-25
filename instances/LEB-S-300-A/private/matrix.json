@@ -1,0 +1,590 @@
+{
+  "leb_spec": "1.5.1",
+  "instance": "LEB-S-300-A",
+  "level": 300,
+  "version": "1.0",
+  "language": "java21-maven-postgresql",
+  "task_version": "S-1.0.0",
+  "publication": "aggregate",
+  "public_surface": {
+    "symbols": [
+      "com.condodesk.App.create(Config,DataSource,Clock):App",
+      "com.condodesk.App.start():int",
+      "com.condodesk.App.stop():void",
+      "com.condodesk.App.main(String[]):void",
+      "com.condodesk.Config(int port,Path storageDir,boolean secureCookies,Duration sessionIdle,Set<String> fetchAllowedHosts,String bankSecret,int maxUploadBytes)",
+      "com.condodesk.Config.fromEnvironment(Map<String,String>):Config",
+      "com.condodesk.Config.DEFAULT_MAX_UPLOAD:int"
+    ],
+    "routes": [
+      "DELETE /api/bookings/{id}",
+      "GET /",
+      "GET /account",
+      "GET /admin/billing",
+      "GET /admin/statements",
+      "GET /admin/users",
+      "GET /api/bookings",
+      "GET /api/invoices",
+      "GET /api/invoices/{id}",
+      "GET /api/me",
+      "GET /bookings",
+      "GET /documents",
+      "GET /documents/raw",
+      "GET /documents/{id}/download",
+      "GET /invoices",
+      "GET /invoices/{id}",
+      "GET /login",
+      "GET /notices",
+      "GET /notices/{id}",
+      "GET /reports/collection",
+      "GET /reports/delinquency",
+      "GET /reports/delinquency.csv",
+      "GET /static/{name}",
+      "POST /account/password",
+      "POST /admin/billing",
+      "POST /admin/statements",
+      "POST /admin/users",
+      "POST /api/bookings",
+      "POST /api/tokens",
+      "POST /api/webhooks/bank",
+      "POST /bookings",
+      "POST /bookings/{id}/cancel",
+      "POST /bookings/{id}/confirm",
+      "POST /documents",
+      "POST /documents/archive",
+      "POST /documents/fetch",
+      "POST /invoices/{id}/payments",
+      "POST /invoices/{id}/proof",
+      "POST /login",
+      "POST /logout",
+      "POST /notices"
+    ],
+    "db_schema": [
+      "building(id,name,address,time_zone,due_day,late_fee_pct,monthly_interest_pct)",
+      "unit(id,building_id,label,ideal_fraction)",
+      "app_user(id,email,name,role,building_id,password_hash,active,created_at)",
+      "residency(user_id,unit_id,kind)",
+      "user_session(id_hash,user_id,csrf_token,created_at,last_seen_at)",
+      "api_token(id,user_id,token_hash,created_at,last_used_at)",
+      "login_throttle(key,failures,window_start,locked_until)",
+      "billing_run(id,building_id,month,budget,created_by,created_at)",
+      "invoice(id,run_id,unit_id,month,due_date,amount,our_number,status,paid_on)",
+      "payment(id,invoice_id,external_id,source,amount,paid_on,memo,created_at)",
+      "common_area(id,building_id,name,opens,closes,max_hours,capacity,fee)",
+      "booking(id,area_id,unit_id,user_id,starts_at,ends_at,guests,status,created_at)",
+      "notice(id,building_id,author_id,title,body,pinned,published_at)",
+      "document(id,building_id,unit_id,kind,original_name,stored_name,content_type,size_bytes,source_url,uploaded_by,created_at)",
+      "audit_log(id,at,user_id,action,detail)"
+    ],
+    "artifacts": [
+      "delinquency CSV: UTF-8, CRLF, RFC 4180; header unit,owners,month,due_date,amount,amount_due,days_late",
+      "document archive: tar.gz with index.csv (file,name,kind,created_at) and every document under its stored name"
+    ]
+  },
+  "entries": [
+    {
+      "id": "SEC-001",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/repo/FinanceRepository.java:79",
+      "evidence": "The invoice list's sort parameter is read as SQL: a sort made of a condition on another table orders the list differently, or fails, depending on that condition, which lets a logged-in user read data of other tables one bit at a time.",
+      "expected_fix": "Sort only by the four keys the manifest names (a closed list of columns), and refuse or ignore any other value without it reaching the SQL text.",
+      "verify": "verify/src/test/java/com/condodesk/S05_InjectionTest.java#sec001_theSortIsNeverSql",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier sends two sorts that differ only in a condition on app_user, by ordering and by a division by zero, and requires the same response to both; the four keys must still sort both ways. Binding is impossible for a column name: an allowlist is the fix.",
+      "dimensions": [
+        "injecao"
+      ]
+    },
+    {
+      "id": "SEC-001.b",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/repo/ContentRepository.java:42",
+      "evidence": "A word of the notice search that closes the string and adds a condition changes which notices come back, depending on a condition on another table.",
+      "expected_fix": "Bind each search pattern as a parameter, keeping the escaping of the LIKE wildcards, so that a quote is only a character of the word.",
+      "verify": "verify/src/test/java/com/condodesk/S05_InjectionTest.java#sec001b_aSearchWordIsNeverSql",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier's payload avoids spaces (the search splits on them) and underscores (the wildcard escaping would alter them). A fix that rejects words with a quote is accepted by the attack probe but fails the legitimate probe only if it refuses ordinary words; an apostrophe in a real word should keep working.",
+      "dimensions": [
+        "injecao"
+      ]
+    },
+    {
+      "id": "SEC-002",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/ContentPages.java:132",
+      "evidence": "A notice whose title carries markup, and a manager whose name does, reach every resident's notice pages as markup, so a manager can run script in a resident's session.",
+      "expected_fix": "Escape the title and the author's name where the notice is written, keeping the line breaks and **bold** that the body gets after escaping.",
+      "verify": "verify/src/test/java/com/condodesk/S04_OutputTest.java#sec002_aStoredNoticeIsEscaped",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The same page builder escapes the page's own title and heading; only the notice block is open.",
+      "dimensions": [
+        "saida"
+      ]
+    },
+    {
+      "id": "SEC-002.b",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/ContentPages.java:78",
+      "evidence": "A payment proof named with markup, sent by a resident, reaches the manager's document list as markup, so a resident can run script in a manager's session.",
+      "expected_fix": "Escape the document's name and its source address where the list is written.",
+      "verify": "verify/src/test/java/com/condodesk/S04_OutputTest.java#sec002b_aDocumentNameIsEscaped",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The name survives the upload's own cleaning, which removes directory parts and control characters only.",
+      "dimensions": [
+        "saida"
+      ]
+    },
+    {
+      "id": "SEC-003",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/ContentPages.java:48",
+      "evidence": "The line that repeats a notice search term writes it as markup, so a crafted link runs script in the visitor's session.",
+      "expected_fix": "Escape the term where it is repeated, as the search box next to it already does.",
+      "verify": "verify/src/test/java/com/condodesk/S04_OutputTest.java#sec003_aSearchTermIsEscapedWhereItIsRepeated",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Only the results line is open; the search field's value is escaped.",
+      "dimensions": [
+        "saida"
+      ]
+    },
+    {
+      "id": "SEC-004",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/resources/static/app.js:17",
+      "evidence": "The message a redirect passes in the address is written into the page as markup by the page script, so a crafted link runs script.",
+      "expected_fix": "Write the message as text, not as markup.",
+      "verify": "verify/src/test/java/com/condodesk/S04_OutputTest.java#sec004_noValueFromTheUrlReachesAnHtmlSink",
+      "proves": [
+        "C3"
+      ],
+      "notes": "No engine here runs the script: the verifier reads it, and reports a sink fed through a cleansing call as half, for the judge.",
+      "dimensions": [
+        "saida"
+      ]
+    },
+    {
+      "id": "SEC-005",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/Server.java:155",
+      "evidence": "An upload (a document, a payment proof, a bank statement) posted from another site with the victim's session cookie and no token is accepted.",
+      "expected_fix": "Check the form's token on every state-changing request of the browser side, multipart ones included.",
+      "verify": "verify/src/test/java/com/condodesk/S02_RequestsTest.java#sec005_anUploadWithoutItsTokenIsRefused",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The token is also accepted in a header; the forms send it as a field.",
+      "dimensions": [
+        "sessao"
+      ]
+    },
+    {
+      "id": "SEC-008",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/reports/Csv.java:17",
+      "evidence": "A cell that starts with plus, minus, at or a tab reaches the CSV files as a formula for a spreadsheet; only one that starts with an equals sign is neutralized.",
+      "expected_fix": "Neutralize every cell whose first character can start a formula (=, +, -, @, tab, carriage return), without changing the rest of the format.",
+      "verify": "verify/src/test/java/com/condodesk/S04_OutputTest.java#sec008_aCellThatLooksLikeAFormulaIsNeutralized",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The archive's index.csv uses the same cell writer.",
+      "dimensions": [
+        "saida"
+      ]
+    },
+    {
+      "id": "SEC-006",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/docs/DocumentService.java:108",
+      "evidence": "The old viewer's link reads a file by a name the caller chooses, and a name that climbs out of the building's folder (or an absolute path) returns another building's document or a file outside the storage.",
+      "expected_fix": "Resolve the name, normalize it and require it to stay inside the building's folder, answering 404 otherwise; the route and its answers for the building's own files stay.",
+      "verify": "verify/src/test/java/com/condodesk/S06_FilesTest.java#sec006_theViewersLinkStaysInTheBuildingsFolder",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The route is in the public manifest: removing it is a change of the contract. Looking the file up by its document id would also close it, if the route's contract is kept.",
+      "dimensions": [
+        "arquivos"
+      ]
+    },
+    {
+      "id": "SEC-009",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/docs/Archiver.java:23",
+      "evidence": "The archive's label reaches a shell command: a label with a semicolon, a command substitution, backticks or a new line makes the server run a command of the caller's choice.",
+      "expected_fix": "Run tar with an argument vector and no shell, and keep refusing a label outside letters, digits, dot, dash and underscore (40 characters at most).",
+      "verify": "verify/src/test/java/com/condodesk/S06_FilesTest.java#sec009_theArchiveLabelNeverReachesAShell",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The verifier looks for the files the commands would create; a label that is merely refused with 400 passes.",
+      "dimensions": [
+        "processos"
+      ]
+    },
+    {
+      "id": "SEC-010",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/OfxParser.java:62",
+      "evidence": "A bank statement whose XML declares an external entity or an external DTD gets the server to read a local file and store its text in a payment's memo.",
+      "expected_fix": "Turn off DOCTYPE processing and external entities in the existing parser, and keep the statement import as it is for valid files.",
+      "verify": "verify/src/test/java/com/condodesk/S06_FilesTest.java#sec010_aStatementCannotReadFilesThroughItsXml",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The JDK's own default is the vulnerable one; the fix is the parser's configuration, not a different library.",
+      "dimensions": [
+        "parsers"
+      ]
+    },
+    {
+      "id": "SEC-011",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/docs/UrlFetcher.java:27",
+      "evidence": "A document fetched from an approved site can be a redirect to an address inside the network, and the server then fetches and stores what is there.",
+      "expected_fix": "Do not follow redirects (or check every hop against the allowlist), and keep refusing hosts that are not on it.",
+      "verify": "verify/src/test/java/com/condodesk/S06_FilesTest.java#sec011_aFetchNeverFollowsAnApprovedSiteToAnInternalOne",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The test site already serves a redirect to an internal server.",
+      "dimensions": [
+        "rede"
+      ]
+    },
+    {
+      "id": "SEC-012",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/AccountPages.java:107",
+      "evidence": "After login the visitor can be sent to another site: an address that starts with two slashes, or a slash and a backslash, is followed.",
+      "expected_fix": "Follow only a local path: one slash, then not a slash or a backslash, and no control characters; otherwise go to the home page.",
+      "verify": "verify/src/test/java/com/condodesk/S02_RequestsTest.java#sec012_afterLoginOnlyALocalPathIsFollowed",
+      "proves": [
+        "C3"
+      ],
+      "notes": "A local path with its query still has to be followed.",
+      "dimensions": [
+        "sessao"
+      ]
+    },
+    {
+      "id": "SEC-013",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/auth/Sessions.java:62",
+      "evidence": "A session cookie obtained before login keeps working after the victim logs in with it, so whoever planted it is logged in as the victim.",
+      "expected_fix": "Start a new session at login: a new identifier (and token) and the old one dropped.",
+      "verify": "verify/src/test/java/com/condodesk/S02_RequestsTest.java#sec013_loginStartsANewSession",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Logout and the idle expiry must keep working.",
+      "dimensions": [
+        "sessao"
+      ]
+    },
+    {
+      "id": "SEC-014",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/auth/Passwords.java:37",
+      "evidence": "A new or changed password is stored as an unsalted fast hash, and accounts imported from the old system keep theirs after logging in.",
+      "expected_fix": "Store new passwords with the salted slow hash the system already has, and upgrade an imported hash when its owner logs in; do not invalidate imported passwords.",
+      "verify": "verify/src/test/java/com/condodesk/S07_PasswordsTest.java#sec014_passwordsAreStoredSaltedAndSlowAndTheOldOnesAreUpgraded",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Invalidating every imported password at once is a break of compatibility (COMP-003), not a fix.",
+      "dimensions": [
+        "credenciais"
+      ]
+    },
+    {
+      "id": "SEC-015",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/Config.java:39",
+      "evidence": "With the bank secret's variable unset, the configuration holds a secret written in the code and the webhook accepts events signed with it.",
+      "expected_fix": "Read the secret from the environment only: unset means no secret, and the webhook answers that it is not configured.",
+      "verify": "verify/src/test/java/com/condodesk/S03_SecretsTest.java#sec015_theBankSecretHasNoDefault",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The manifest says the variable is unset by default.",
+      "dimensions": [
+        "segredos"
+      ]
+    },
+    {
+      "id": "SEC-015.b",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/App.java:79",
+      "evidence": "The database password has a value written in the code that the program uses when the variable is unset.",
+      "expected_fix": "Read the password from the environment only, with no literal default.",
+      "verify": "verify/src/test/java/com/condodesk/S03_SecretsTest.java#sec015b_theDatabasePasswordHasNoDefault",
+      "proves": [
+        "C3"
+      ],
+      "notes": "A property of the source, reported as a structural verdict.",
+      "dimensions": [
+        "segredos"
+      ]
+    },
+    {
+      "id": "SEC-016",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/auth/AuthService.java:84",
+      "evidence": "A resident or a manager can create an account, an administrator's included, by posting the admin form.",
+      "expected_fix": "Require the admin role at the start of the account creation, answering 403 to anyone else.",
+      "verify": "verify/src/test/java/com/condodesk/S01_AccessTest.java#sec016_onlyAnAdminCreatesAccounts",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The admin's own creation of accounts must keep working.",
+      "dimensions": [
+        "autorizacao"
+      ]
+    },
+    {
+      "id": "SEC-016.b",
+      "exists": true,
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "points": 8,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/PaymentService.java:104",
+      "evidence": "A resident can register a payment by hand on an invoice, their own or another building's, and settle it.",
+      "expected_fix": "Require the building's manager (or an admin) before registering a payment by hand.",
+      "verify": "verify/src/test/java/com/condodesk/S01_AccessTest.java#sec016b_onlyAManagerRegistersAPaymentByHand",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The manager's registration must keep working.",
+      "dimensions": [
+        "autorizacao"
+      ]
+    },
+    {
+      "id": "SEC-017",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/billing/BillingService.java:85",
+      "evidence": "Any logged-in user can read any invoice by its number, another unit's or another building's, on the page and in the mobile API.",
+      "expected_fix": "Check that the caller lives in the invoice's unit or manages its building, answering 404 otherwise.",
+      "verify": "verify/src/test/java/com/condodesk/S01_AccessTest.java#sec017_anInvoiceIsReadOnlyByWhoseItIs",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The same service answers the page and the API, so one fix closes both.",
+      "dimensions": [
+        "autorizacao"
+      ]
+    },
+    {
+      "id": "SEC-017.b",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Moderada",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/docs/DocumentService.java:94",
+      "evidence": "Any logged-in user can download any document by its number: another unit's payment proof or another building's minutes.",
+      "expected_fix": "Check that the caller may see the document (its unit's residents and the building's managers for a proof, the building's members for a building document), answering 404 otherwise.",
+      "verify": "verify/src/test/java/com/condodesk/S01_AccessTest.java#sec017b_aDocumentIsDownloadedOnlyByWhoMaySeeIt",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The building archive has its own manager check and is not part of this row.",
+      "dimensions": [
+        "autorizacao"
+      ]
+    },
+    {
+      "id": "SEC-018",
+      "exists": true,
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "points": 10,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/docs/DocumentService.java:145",
+      "evidence": "A page or an image of markup can be uploaded as a document and is served back as a page, so an uploaded file runs script in the application's origin.",
+      "expected_fix": "Accept only PDF, PNG and JPEG by their content and serve every download as an attachment.",
+      "verify": "verify/src/test/java/com/condodesk/S06_FilesTest.java#sec018_anUploadIsNeverServedAsAPage",
+      "proves": [
+        "C3"
+      ],
+      "notes": "Either layer closes the attack: refusing the type at upload, or serving every file as an attachment.",
+      "dimensions": [
+        "arquivos"
+      ]
+    },
+    {
+      "id": "SEC-019",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/auth/AuthService.java:42",
+      "evidence": "The mobile login accepts any number of wrong passwords without slowing down or locking, so an account's password can be guessed there.",
+      "expected_fix": "Count failures and honour the lock on the mobile login as the browser's does (429 while locked).",
+      "verify": "verify/src/test/java/com/condodesk/S02_RequestsTest.java#sec019_theMobileLoginIsLockedLikeTheBrowsers",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The browser's lock must stay.",
+      "dimensions": [
+        "abuso"
+      ]
+    },
+    {
+      "id": "SEC-020",
+      "exists": true,
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "points": 6,
+      "template": "C",
+      "location": "code/src/main/java/com/condodesk/web/Server.java:120",
+      "evidence": "An internal error's answer shows the exception, including paths of the server's disk, instead of only an incident number.",
+      "expected_fix": "Answer an internal error with the generic message and its incident number, and keep the detail in the log.",
+      "verify": "verify/src/test/java/com/condodesk/S02_RequestsTest.java#sec020_anInternalErrorShowsNoInternals",
+      "proves": [
+        "C3"
+      ],
+      "notes": "The incident id must stay in the message and the log.",
+      "dimensions": [
+        "exposicao"
+      ]
+    },
+    {
+      "id": "SEC-001.c",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/S08_DecoyTest.java#sec001c_theOwnersOfLateUnitsAreStillListed",
+      "location": "code/src/main/java/com/condodesk/repo/ReportRepository.java:52",
+      "notes": "DECOY. Looks like SQL built by joining ids. The ids are numbers read from the database for the report, never text from a request. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "SEC-003.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/S08_DecoyTest.java#sec003b_anErrorPageEscapesWhatItRepeats",
+      "location": "code/src/main/java/com/condodesk/web/Html.java:71",
+      "notes": "DECOY. Looks like a request's text repeated in an error page. The message is escaped when the page is written, so markup in it is shown as text. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "SEC-007.b",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/S08_DecoyTest.java#sec007b_aDownloadKeepsItsExactNameAndNoLineBreak",
+      "location": "code/src/main/java/com/condodesk/web/Response.java:51",
+      "notes": "DECOY. Looks like a header built from a file name the user chose. Control characters are removed, the name is escaped for the header's two forms, and the HTTP server refuses a line break in any header. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "SEC-015.c",
+      "exists": false,
+      "decoy_kind": "diagnostico",
+      "verify": "verify/src/test/java/com/condodesk/S08_DecoyTest.java#sec015c_theDummyPasswordIsNeverACredential",
+      "location": "code/src/main/java/com/condodesk/auth/Passwords.java:31",
+      "notes": "DECOY. Looks like a password written in the source. It is hashed once so that a login for a missing account takes as long as one for a wrong password; no login accepts it. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "SEC-016.c",
+      "exists": false,
+      "decoy_kind": "intervencao",
+      "verify": "verify/src/test/java/com/condodesk/S08_DecoyTest.java#sec016c_theOpenRoutesAreTheLoginAndTheSignedWebhook",
+      "location": "code/src/main/java/com/condodesk/web/MobileApi.java:50",
+      "notes": "DECOY. Looks like an open route that changes data. The route is open to the bank, not to sessions, and every event must carry a valid signature of the shared secret; adding a session check would break the bank's calls. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    },
+    {
+      "id": "SEC-017.c",
+      "exists": false,
+      "decoy_kind": "intervencao",
+      "verify": "verify/src/test/java/com/condodesk/S08_DecoyTest.java#sec017c_theBuildingParameterIsAnAdminsAndOnlyAnAdmins",
+      "location": "code/src/main/java/com/condodesk/web/Request.java:95",
+      "notes": "DECOY. Looks like an object chosen by a request parameter. The parameter is read for an admin only; everyone else gets their own building whatever the request says. Reporting it is PEN-004; changing it so that the property breaks is a regression."
+    }
+  ]
+}

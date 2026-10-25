@@ -162,6 +162,10 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
   **All 24 rows are planted and proved both ways: `none` on the planted tree, `full` on the clean tree.** Public suite on the planted tree: 51 of 51, after five trims of security assertions in `BillingTest` and `ContentTest`
   (`removed-from-public-tests.txt`). Left: the six decoys, the matrix, the variant cases, the task statement, the package.
 
+- **Decoys and the matrix (2026-10-25).** SEC-001.c is planted (`plant/flaws_h_decoys.py`: the owners' query joins unit ids it read from the database); the other five decoys are code the reference already holds. `S08_DecoyTest`
+  proves what each one guarantees, on both trees (`holds` true twice). `matrix_rows.py` declares the 24 rows and 6 decoys, `tools/make_matrix.py` writes `matrix.json` and `matrix.md` from them and from `public/code/`
+  (24 flaws, 6 decoys, 200 base points: Crítica 9 x 10, Alta 10 x 8, Média 5 x 6), and `tests/test_leb_s_300_a.py` checks that the public tree and the matrix are what the profile gives.
+
 ## 10. Decisions
 
 **Decided by the owner on 2026-10-25** (answers to four questions, each with the option recommended here):

@@ -9,7 +9,7 @@ final class Coverage {
 
     record Item(String proves, String[] doesNotProve) {}
 
-    static final Set<String> DECOYS = Set.of();
+    static final Set<String> DECOYS = Set.of("SEC-001.c", "SEC-003.b", "SEC-007.b", "SEC-015.c", "SEC-016.c", "SEC-017.c");
     static final Set<String> STRUCTURAL = Set.of("SEC-004", "SEC-015.b");
 
     static boolean isDecoy(String id) {

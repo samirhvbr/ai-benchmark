@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.258`
+**Versão atual:** `0.2.259`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.259` — 2026-10-25 — LEB-S-300-A's answer key: the six decoys, the matrix of 24 flaws and 6 decoys, and the test that keeps it derived
+
+- The sixth decoy that needs code is planted (SEC-001.c, an `IN` list of ids the report reads from the database); `S08_DecoyTest` proves, on both trees, the property each of the six decoys guarantees.
+- `private/matrix_rows.py` is the key row by row (location by anchor, evidence as a symptom, expected fix, notes, the verifier that writes each verdict) and `tools/make_matrix.py` turns it into `private/matrix.json` and `matrix.md`: 24 planted flaws and 6 decoys, 200 base points, every row Template C.
+- `tests/test_leb_s_300_a.py` checks that the public tree is what the reference and the profile give and that the matrix is what its rows and files give; the repository's tests pass (395).
+- Not yet: the variant cases, the runner contract, the Security track's weights and task statement, the package, the proof on a bench VM. Nothing is frozen.
 
 ### `0.2.258` — 2026-10-25 — LEB-S-300-A plants its last eight rows (SQL, path, command, XML, fetch, password, upload): all 24 are planted and verified
 
