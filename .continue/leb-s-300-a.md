@@ -42,10 +42,14 @@ rodado, sido julgados e publicados. Reescrever ou mover este documento não o ti
 MiniMax M3.1 e MiniMax M3, pelo OpenCode, cada um com cinco runs de 90 minutos e dois juízes cegos por entrega, nas mesmas regras do LEB-D
 (a mensagem fixa, nenhuma resposta do operador, auditoria da sessão). Depois dos dois, o Samir decide os próximos modelos.
 
-## Perguntas para o Samir (nenhuma está decidida)
+## Decidido pelo Samir em 2026-10-25 (AskUserQuestion)
 
-- Pesos: confirmar SEC 850 · COMP 100 · EXPL 50 (rascunho do desenho).
-- Tamanho do perfil: proponho uns 24 pontos plantados em 16 a 20 classes, mais umas 6 iscas, para ficar comparável ao D (27 plantadas).
-- Rotas: o M3.1 pela variante gratuita do OpenRouter, como no D, ou pela chave do plano da MiniMax? O M3 pela chave do plano, como no D?
-- Cinco runs por modelo (como o D) ou três (como o LEB-300-A)?
-- Revisão externa da chave antes de congelar, como a do D 1.1?
+- Perfil de 24 plantadas + 6 iscas.
+- SEC-004 por checagem estrutural do `app.js`.
+- PBKDF2 em 600 mil iterações, como correção só do S (primeiro módulo do perfil; a referência compartilhada não muda, porque o D está congelado).
+- Cinco runs por modelo no primeiro caso (MiniMax M3.1 e M3).
+
+## Ainda proposta minha, sem resposta dele
+
+- Pesos SEC 850 · COMP 100 · EXPL 50; as rotas do D (M3.1 pela variante gratuita do OpenRouter, M3 pela chave do plano); SEC-007 só como isca;
+  revisão externa da chave antes de congelar.

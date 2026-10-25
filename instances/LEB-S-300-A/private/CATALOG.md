@@ -1,6 +1,6 @@
 # LEB-S-300-A catalog (the planting profile on paper)
 
-**Draft of 2026-10-25, for the owner's review. Nothing is planted, verified or frozen yet.**
+**Draft of 2026-10-25, for the owner's review. Nothing is planted, verified or frozen yet. The owner decided four points on 2026-10-25 (§10); the rest of §10 is still my proposal.**
 
 24 planted vulnerabilities + 6 decoys: 30 rows, decoys 20.0 % (the top of the 10-20 % of [`matrix/MATRIX.md §3`](../../../matrix/MATRIX.md)).
 Classes of [`taxonomy/SEC.md`](../../../taxonomy/SEC.md): 19 of the 20 are planted; SEC-007 is not, and §3 says why. By severity: Crítica 9,
@@ -110,8 +110,8 @@ sec016, sec017, sec018, sec019, sec020. Only `sec007` stays. The 50 characteriza
 
 ## 7. What the verifiers need that no verifier of LEB-D-300-A needed
 
-- **A browser's JavaScript engine for SEC-004.** The evaluator's container has none. Options, to decide before planting: (a) a property check on `app.js` (no value from the URL
-  reaches `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `eval` or `Function`), as a structural row; (b) drop the row and plant SEC-003 twice. Recommended: (a).
+- **A browser's JavaScript engine for SEC-004.** The evaluator's container has none. **Decided by the owner (2026-10-25): a property check on `app.js`** (no value from the URL
+  reaches `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `eval` or `Function`), as a structural row. The options not taken were dropping the row (and planting SEC-003 twice) and adding a JavaScript engine to the evaluator.
 - **A property check on the source for SEC-015.b** (no string literal as the default of a secret setting), as LEB-D-300-A did for its structural rows.
 - **Servers started by the verifier**: the approved host and the internal host of SEC-011, and a file-writing probe for SEC-009.
 - **The reference's own tests as the legitimate-use probes**: every "A fix must keep" cell is one of its 50 remaining tests or a probe added to the verifier.
@@ -123,7 +123,7 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
 
 | Pattern | Proposal |
 |---|---|
-| PBKDF2 at 100,000 iterations (current guidance for HMAC-SHA256 is much higher) | raise to 600,000 in the reference (measured 2026-10-25 on the workstation with JDK 21: 27 ms a hash at 100,000, 110 ms at 600,000, so a login stays well under a second); SEC-014's fix is then judged against it |
+| PBKDF2 at 100,000 iterations (current guidance for HMAC-SHA256 is much higher) | **decided by the owner on 2026-10-25: raise to 600,000** (measured on the workstation with JDK 21: 27 ms a hash at 100,000, 110 ms at 600,000, so a login stays well under a second); SEC-014's fix is judged against it. It is made as the profile's **first module**, an S-only correction (`Passwords.ITERATIONS` and the `$100000$` of the reference's `sec014` test), **not an edit of `systems/300-A/reference/`**: LEB-D-300-A is frozen and its `build_public.py --check` rebuilds its public tree from the reference byte for byte. The clean tree of this instance, the one the verifiers must accept in their passing direction, is the reference plus this correction |
 | Browser sessions have an idle expiry and no absolute lifetime | accept: the manifest says idle expiry only |
 | Mobile API tokens never expire | accept: the manifest says so; a report of it is a design remark, not a planted row |
 | No `Content-Security-Policy` and no `Strict-Transport-Security` | accept: not a class of the taxonomy; a report of it is an extra finding, not a false positive |
@@ -139,10 +139,19 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
 5. SEC-001, SEC-001.b, SEC-014 (the rows with the most care for the legitimate-use probes).
 6. SEC-006, SEC-009, SEC-010, SEC-011, SEC-018 (new code and the verifiers that start servers or processes).
 
-## 10. Open questions for the owner
+## 10. Decisions
 
-1. The size: 24 planted + 6 decoys (this draft), or fewer?
-2. SEC-007 as a decoy only, because of the JDK server (§3). Agreed?
-3. SEC-004: structural property check (recommended) or drop it?
-4. The §8 proposals, one by one (the PBKDF2 iterations first).
-5. The five questions of `.continue/leb-s-300-a.md` (weights, routes of the MiniMax models, runs per model, external review before freezing).
+**Decided by the owner on 2026-10-25** (answers to four questions, each with the option recommended here):
+
+1. **Size: 24 planted + 6 decoys** (the other options were 20 + 5 and 16 + 4).
+2. **SEC-004: a structural property check on `app.js`** (the other options were dropping the row, or adding a JavaScript engine to the evaluator).
+3. **PBKDF2: 600,000 iterations**, as the S-only correction of §8.
+4. **Five runs per model** in the first case (MiniMax M3.1 and MiniMax M3).
+
+**Still my proposal, not confirmed by the owner** (taken as the working default until he says otherwise):
+
+- SEC-007 stays a decoy only (§3).
+- Weights SEC 850 · COMP 100 · EXPL 50, the draft of the design.
+- The routes of the D series: MiniMax M3.1 through OpenRouter's free variant, MiniMax M3 through the plan key.
+- The five other borderline patterns of §8 are accepted.
+- An external review of the key after the verifiers exist and before the freeze, as the 1.1 of LEB-D-300-A had.

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.253`
+**Versão atual:** `0.2.254`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.254` — 2026-10-25 — LEB-S-300-A's catalog records the owner's four decisions: 24 + 6 rows, a structural check for the DOM XSS row, PBKDF2 at 600,000, five runs per model
+
+- The owner chose, from the options of the draft: the full profile of 24 planted vulnerabilities and 6 decoys; a structural property check on `app.js` for SEC-004; PBKDF2 at 600,000 iterations; five runs per model for the first case (MiniMax M3.1 and MiniMax M3).
+- The PBKDF2 raise is an S-only correction, the first module of the profile, and the shared reference is not edited: LEB-D-300-A is frozen and its `build_public.py --check` rebuilds its public tree from the reference byte for byte. The instance's clean tree is the reference plus that correction.
+- The catalog now separates what the owner decided from what is still a proposal (SEC-007 as a decoy only, the weights, the routes of the D series, the other borderline patterns, the external review of the key). The queue item records the same.
 
 ### `0.2.253` — 2026-10-25 — LEB-S-300-A's catalog drafts 24 vulnerabilities in 19 classes and 6 decoys, for the owner's review
 
