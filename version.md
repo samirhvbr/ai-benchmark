@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.254`
+**Versão atual:** `0.2.255`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.255` — 2026-10-25 — LEB-S-300-A plants its first four access rows with their verifiers, proved in both directions
+
+- The planting profile of the Security track starts: `private/plant/` holds the PBKDF2 correction of the owner's decision (CORR-S1, the first module, the shared reference untouched) and the first four planted rows, SEC-016 and SEC-016.b (a missing admin and manager check) and SEC-017 and SEC-017.b (a missing visibility check on an invoice and on a document).
+- `private/build_public.py` derives `public/` from the reference and the profile (`--check` compares byte for byte, `--clean` writes the instance's clean tree) and removes or trims the public tests that see a planted flaw, keeping their text in `private/removed-from-public-tests.txt`: two methods of `SecurityBehaviorTest`, one of `BillingTest` and three lines of another.
+- `private/verify/` holds the verifier framework (the verdict writer and its annotations, copied from the Default track's) and `S01_AccessTest`. Each row is proved both ways: on the planted tree its attack works and the legitimate use still does (`none`), on the clean tree the attack is refused and the legitimate use works (`full`). The public suite passes on the planted tree, 67 of 67. The repository's own tests pass (393).
+- Nothing is frozen; 20 rows of the catalog remain to plant and verify.
 
 ### `0.2.254` — 2026-10-25 — LEB-S-300-A's catalog records the owner's four decisions: 24 + 6 rows, a structural check for the DOM XSS row, PBKDF2 at 600,000, five runs per model
 

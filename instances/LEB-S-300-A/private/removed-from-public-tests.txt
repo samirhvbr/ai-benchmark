@@ -1,0 +1,65 @@
+Public tests removed from LEB-S-300-A's public suite, because the planted tree fails them (CATALOG.md section 6).
+One block per method: the file, the method, the rows whose planting it sees, then its text as the reference has it (after CORR-S1).
+
+=== src/test/java/com/condodesk/SecurityBehaviorTest.java :: sec016ResidentsCannotDoTheManagersWork :: SEC-016, SEC-016.b
+    @Test
+    void sec016ResidentsCannotDoTheManagersWork() throws Exception {
+        long bookingId = insert("insert into booking (area_id, unit_id, user_id, starts_at, ends_at, guests, status, created_at) "
+                + "values (?, ?, ?, '2026-03-07 15:00Z', '2026-03-07 17:00Z', 1, 'REQUESTED', now()) returning id", partyRoom, unitA101, ownerA101);
+        Browser ana = loggedIn(OWNER_A101);
+        ana.get("/notices");
+        assertEquals(403, ana.post("/notices", "title", "t", "body", "b").status());
+        assertEquals(403, ana.post("/bookings/" + bookingId + "/confirm").status());
+        assertEquals(403, ana.post("/documents/fetch", "kind", "OTHER", "url", "http://" + docsHost + "/files/minutes-2026-02.pdf").status());
+        assertEquals(403, ana.get("/reports/delinquency").status());
+        assertEquals(403, ana.get("/reports/collection").status());
+        assertEquals(403, ana.get("/admin/users").status());
+        assertEquals(403, ana.get("/admin/statements").status());
+        Browser m = loggedIn(MANAGER_A);
+        assertEquals(403, m.get("/admin/users").status());
+        m.get("/admin/statements");
+        assertEquals(403, m.upload("/admin/statements", "statement", "s.ofx", ofx()).status());
+        assertEquals(0, count("select count(*) from notice"));
+        assertEquals("REQUESTED", value("select status from booking where id = ?", bookingId));
+    }
+
+=== src/test/java/com/condodesk/SecurityBehaviorTest.java :: sec017ThingsOfOtherUnitsAndBuildingsAreHidden :: SEC-017, SEC-017.b
+    @Test
+    void sec017ThingsOfOtherUnitsAndBuildingsAreHidden() throws Exception {
+        long inv = invoice(unitA101, "2026-02", LocalDate.parse("2026-03-10"), "300.00");
+        Browser ana = loggedIn(OWNER_A101);
+        ana.get("/invoices/" + inv);
+        ana.upload("/invoices/" + inv + "/proof", "file", "proof.pdf", PDF);
+        long doc = (Long) value("select id from document");
+        long booking = insert("insert into booking (area_id, unit_id, user_id, starts_at, ends_at, guests, status, created_at) "
+                + "values (?, ?, ?, '2026-03-09 15:00Z', '2026-03-09 17:00Z', 1, 'CONFIRMED', now()) returning id", barbecue, unitA101, ownerA101);
+        Browser bruno = loggedIn(TENANT_A102);
+        assertEquals(404, bruno.get("/invoices/" + inv).status());
+        assertEquals(404, bruno.get("/documents/" + doc + "/download").status());
+        bruno.get("/bookings");
+        assertEquals(404, bruno.post("/bookings/" + booking + "/cancel").status());
+        Browser mia = loggedIn(MANAGER_B);
+        assertEquals(404, mia.get("/invoices/" + inv).status());
+        assertEquals(404, mia.get("/documents/" + doc + "/download").status());
+        assertFalse(mia.get("/invoices?building=" + buildingA).body().contains("Apt 101"));
+        String token = token(TENANT_A102);
+        assertEquals(404, api("GET", "/api/invoices/" + inv, token, null).status());
+        assertEquals(404, api("DELETE", "/api/bookings/" + booking, token, null).status());
+        assertEquals("CONFIRMED", value("select status from booking where id = ?", booking));
+    }
+
+=== src/test/java/com/condodesk/BillingTest.java :: residentsDoNotSeeOtherUnitsInvoices :: SEC-017
+    @Test
+    void residentsDoNotSeeOtherUnitsInvoices() throws Exception {
+        long other = invoice(unitA102, "2026-01", LocalDate.parse("2026-02-10"), "300.00");
+        assertEquals(404, loggedIn(OWNER_A101).get("/invoices/" + other).status());
+        assertEquals(404, api("GET", "/api/invoices/" + other, token(OWNER_A101), null).status());
+        assertEquals(200, loggedIn(MANAGER_A).get("/invoices/" + other).status());
+        assertEquals(404, loggedIn(MANAGER_B).get("/invoices/" + other).status());
+    }
+
+=== src/test/java/com/condodesk/BillingTest.java :: trimmed :: SEC-016.b
+        Browser resident = loggedIn(OWNER_A101);
+        resident.get("/invoices/" + id);
+        assertEquals(403, resident.post("/invoices/" + id + "/payments", "amount", "1.00", "paid_on", "2026-03-05").status());
+

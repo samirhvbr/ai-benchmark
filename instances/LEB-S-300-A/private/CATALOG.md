@@ -108,6 +108,10 @@ The 20 tests of `SecurityBehaviorTest` each check one defense of §5 of the syst
 (`private/removed-from-public-tests.txt`, with their reasons): sec001, sec002, sec003, sec004, sec005, sec006, sec008, sec009, sec010, sec011, sec012, sec013, sec014, sec015,
 sec016, sec017, sec018, sec019, sec020. Only `sec007` stays. The 50 characterization tests of the other five classes stay, and they are the contracts of the "A fix must keep" column.
 
+A characterization test of the other five classes can hold a security assertion beside its own behavior; the planted tree fails it, and only that part is trimmed (`build_public.py`'s
+`TRIMS`, recorded in `removed-from-public-tests.txt`). The first batch found two: `BillingTest#residentsDoNotSeeOtherUnitsInvoices` (all of it is SEC-017's) and the last three lines of
+`BillingTest#aPaymentByHandSettlesWhenItCoversTheAmountDue` (SEC-016.b's). Each batch is proved by running the public suite on the planted tree: every remaining test must pass.
+
 ## 7. What the verifiers need that no verifier of LEB-D-300-A needed
 
 - **A browser's JavaScript engine for SEC-004.** The evaluator's container has none. **Decided by the owner (2026-10-25): a property check on `app.js`** (no value from the URL
@@ -138,6 +142,12 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
 4. SEC-002, SEC-002.b, SEC-003, SEC-004, SEC-008, SEC-005 (output and requests).
 5. SEC-001, SEC-001.b, SEC-014 (the rows with the most care for the legitimate-use probes).
 6. SEC-006, SEC-009, SEC-010, SEC-011, SEC-018 (new code and the verifiers that start servers or processes).
+
+## 9b. Progress (updated with each batch)
+
+- **Batch 1 (2026-10-25): CORR-S1, SEC-016, SEC-016.b, SEC-017, SEC-017.b.** Planted by `plant/flaws_00_correction.py` and `plant/flaws_a_access.py`; verified by
+  `verify/.../S01_AccessTest.java`, proved in both directions: on the planted tree each attack works (verdict `none`, the legitimate use still works), on the clean tree (reference plus CORR-S1,
+  `build_public.py --clean`) each is closed (verdict `full`). The public suite on the planted tree: 67 of 67.
 
 ## 10. Decisions
 
