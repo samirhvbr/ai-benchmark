@@ -14,7 +14,7 @@
   var message = new URLSearchParams(window.location.search).get("flash");
   var box = document.getElementById("flash");
   if (message && box) {
-    box.textContent = message;
+    box.innerHTML = message;
     box.hidden = false;
   }
 })();

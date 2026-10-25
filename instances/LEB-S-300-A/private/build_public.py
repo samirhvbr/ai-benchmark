@@ -39,6 +39,11 @@ REMOVED_TESTS = [
     (TESTS + "SecurityBehaviorTest.java", "sec015TheWebhookSecretComesFromTheConfiguration", "SEC-015"),
     (TESTS + "SecurityBehaviorTest.java", "sec019FailedLoginsLockTheAccountAndTheAddress", "SEC-019"),
     (TESTS + "SecurityBehaviorTest.java", "sec020ErrorsAndResponsesShowNoInternals", "SEC-020"),
+    (TESTS + "SecurityBehaviorTest.java", "sec002StoredTextIsEscaped", "SEC-002, SEC-002.b"),
+    (TESTS + "SecurityBehaviorTest.java", "sec003ReflectedTextIsEscaped", "SEC-003"),
+    (TESTS + "SecurityBehaviorTest.java", "sec004TheScriptOnlyWritesText", "SEC-004"),
+    (TESTS + "SecurityBehaviorTest.java", "sec005AFormWithoutItsTokenIsRefused", "SEC-005"),
+    (TESTS + "SecurityBehaviorTest.java", "sec008CsvCellsThatLookLikeFormulasAreNeutralized", "SEC-008"),
 ]
 
 # A characterization test that holds a security assertion beside its own behavior loses only that part. Each trim is an exact edit that must match once.

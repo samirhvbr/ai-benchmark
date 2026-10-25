@@ -21,6 +21,18 @@ final class Coverage {
     }
 
     static final Map<String, Item> OF = Map.ofEntries(
+        Map.entry("SEC-002", new Item("a notice title and an author's name that carry markup reach a resident's pages as text, and the notice's bold and line breaks still apply",
+                new String[] {"the title in the page's <title> and heading (the page builder escapes them)", "other stored text (the account name in the page header)"})),
+        Map.entry("SEC-002.b", new Item("a payment proof named with markup reaches the manager's document list as text, and plain names are still links",
+                new String[] {"the source URL of a fetched document", "the name in a download's headers"})),
+        Map.entry("SEC-003", new Item("two search terms that carry markup do not come back as markup, and a plain search still finds its notice and repeats its term",
+                new String[] {"the login page's error and its email field", "other pages that repeat a parameter"})),
+        Map.entry("SEC-004", new Item("no variable reaches an HTML sink of the page script (a cleansing call in front of one is reported as half, for the judge to read)",
+                new String[] {"that the script behaves, which no engine here runs", "other scripts than static/app.js"})),
+        Map.entry("SEC-005", new Item("a document upload, a payment proof and a bank statement posted with the session cookie and no token are refused (403) and store nothing, and an upload with its token still works",
+                new String[] {"posts that are not multipart (the other forms have their own test in the public suite)", "the token's secrecy"})),
+        Map.entry("SEC-008", new Item("owner names that start with =, +, -, @ or a tab reach the delinquency CSV neutralized, commas and quotes are still quoted, and a name with an equals sign inside is untouched",
+                new String[] {"the building archive's index.csv (the same cell writer)", "a carriage return in the first position"})),
         Map.entry("SEC-012", new Item("after a login, next=//evil.example/, /\\evil.example, a tab-led path and three slashes all end on a local path, and a local path with its query is still followed",
                 new String[] {"other redirects of the application (they take only constant paths)", "a scheme-relative form this list does not carry"})),
         Map.entry("SEC-013", new Item("a cookie planted before login is refused after the victim's login, the victim's cookie changes at login, and logout still ends the session",

@@ -14,7 +14,7 @@ public final class Csv {
 
     static String cell(String value) {
         String v = value == null ? "" : value;
-        if (!v.isEmpty() && "=+-@\t\r".indexOf(v.charAt(0)) >= 0) v = "'" + v;
+        if (!v.isEmpty() && v.charAt(0) == '=') v = "'" + v;
         if (v.contains(",") || v.contains("\"") || v.contains("\n") || v.contains("\r")) v = "\"" + v.replace("\"", "\"\"") + "\"";
         return v;
     }

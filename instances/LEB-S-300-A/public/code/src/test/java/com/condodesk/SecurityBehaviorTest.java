@@ -35,53 +35,6 @@ class SecurityBehaviorTest extends TestBase {
     }
 
     @Test
-    void sec002StoredTextIsEscaped() throws Exception {
-        Browser m = loggedIn(MANAGER_A);
-        m.get("/notices");
-        m.post("/notices", "title", SCRIPT, "body", "<img src=x onerror=alert(1)> **<b>bold</b>**");
-        update("update app_user set name = ? where id = ?", "<b onmouseover=alert(1)>Ana</b>", ownerA101);
-        String page = loggedIn(OWNER_A101).get("/notices").body();
-        assertFalse(page.contains(SCRIPT) || page.contains("<img src=x") || page.contains("<b>bold"));
-        assertTrue(page.contains("&lt;script&gt;alert(1)&lt;/script&gt;") && page.contains("<strong>&lt;b&gt;bold&lt;/b&gt;</strong>"));
-        assertTrue(loggedIn(OWNER_A101).get("/").body().contains("&lt;b onmouseover=alert(1)&gt;Ana&lt;/b&gt;"));
-    }
-
-    @Test
-    void sec003ReflectedTextIsEscaped() throws Exception {
-        String page = loggedIn(OWNER_A101).get("/notices?q=" + enc(SCRIPT)).body();
-        assertFalse(page.contains(SCRIPT));
-        assertTrue(page.contains("value=\"&lt;script&gt;alert(1)&lt;/script&gt;\""));
-        Browser b = browser();
-        b.get("/login");
-        String login = b.post("/login", "email", "\"><script>alert(1)</script>", "password", "x", "next", "\"><svg onload=alert(1)>").body();
-        assertFalse(login.contains(SCRIPT) || login.contains("<svg"));
-        assertFalse(loggedIn(OWNER_A101).get("/invoices?sort=" + enc(SCRIPT)).body().contains(SCRIPT));
-    }
-
-    @Test
-    void sec004TheScriptOnlyWritesText() throws Exception {
-        String js = browser().get("/static/app.js").body();
-        assertFalse(js.contains("innerHTML") || js.contains("outerHTML") || js.contains("document.write") || js.contains("eval("));
-        assertTrue(js.contains("textContent"));
-    }
-
-    @Test
-    void sec005AFormWithoutItsTokenIsRefused() throws Exception {
-        Browser b = loggedIn(OWNER_A101);
-        Map<String, String> noToken = new LinkedHashMap<>(Map.of("current", PASSWORD, "password", "another-long-one"));
-        assertEquals(403, b.postForm("/account/password", noToken).status());
-        noToken.put("_csrf", "forged");
-        assertEquals(403, b.postForm("/account/password", noToken).status());
-        Browser other = loggedIn(TENANT_A102);
-        noToken.put("_csrf", other.csrf);
-        assertEquals(403, b.postForm("/account/password", noToken).status());
-        Browser fresh = browser();
-        fresh.get("/login");
-        assertEquals(403, fresh.postForm("/login", Map.of("email", OWNER_A101, "password", PASSWORD)).status());
-        browser().login(OWNER_A101, PASSWORD);   // the password did not change
-    }
-
-    @Test
     void sec006AStoredFileIsReadOnlyFromItsOwnFolder() throws Exception {
         Browser m = loggedIn(MANAGER_A);
         m.get("/documents");
@@ -107,17 +60,6 @@ class SecurityBehaviorTest extends TestBase {
         R d = m.get("/documents/" + id + "/download");
         assertNull(d.header("X-Injected"));
         assertFalse(d.header("Content-Disposition").contains("\r") || d.header("Content-Disposition").contains("\n"));
-    }
-
-    @Test
-    void sec008CsvCellsThatLookLikeFormulasAreNeutralized() throws Exception {
-        update("update app_user set name = ? where id = ?", "=HYPERLINK(\"http://x.test\",\"pay\")", ownerA101);
-        update("update app_user set name = ? where id = ?", "@SUM(1+1)", ownerA201);
-        invoice(unitA101, "2026-01", LocalDate.parse("2026-02-17"), "300.00");
-        invoice(unitA201, "2026-01", LocalDate.parse("2026-02-17"), "400.00");
-        String csv = loggedIn(MANAGER_A).get("/reports/delinquency.csv").body();
-        assertTrue(csv.contains("Apt 101,\"'=HYPERLINK(\"\"http://x.test\"\",\"\"pay\"\")\",2026-01"), csv);
-        assertTrue(csv.contains("Apt 201,'@SUM(1+1),2026-01"), csv);
     }
 
     @Test

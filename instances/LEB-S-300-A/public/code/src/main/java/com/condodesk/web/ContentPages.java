@@ -44,7 +44,7 @@ final class ContentPages {
         Page<Notice> page = notices.search(p, building, q, req.page());
         StringBuilder b = new StringBuilder("<form method=\"get\" action=\"/notices\">").append(hiddenBuilding(req, building))
                 .append("<input type=\"search\" name=\"q\" value=\"").append(esc(q)).append("\"><button>Search</button></form>");
-        if (q != null) b.append("<p class=\"results\">").append(page.total()).append(" notices for “").append(esc(q)).append("”</p>");
+        if (q != null) b.append("<p class=\"results\">").append(page.total()).append(" notices for “").append(q).append("”</p>");
         for (Notice n : page.items()) b.append(article(n));
         Map<String, String> filters = new LinkedHashMap<>();
         filters.put("building", p.isAdmin() ? String.valueOf(building) : null);
@@ -74,9 +74,9 @@ final class ContentPages {
         long building = req.building();
         StringBuilder b = new StringBuilder("<table><tr><th>Name</th><th>Kind</th><th>Size</th><th>Added</th><th>From</th></tr>");
         for (StoredDocument d : documents.list(p, building)) {
-            b.append("<tr><td><a href=\"/documents/").append(d.id()).append("/download\">").append(esc(d.originalName())).append("</a></td><td>")
+            b.append("<tr><td><a href=\"/documents/").append(d.id()).append("/download\">").append(d.originalName()).append("</a></td><td>")
                     .append(d.kind()).append("</td><td class=\"num\">").append(d.sizeBytes() / 1024 + 1).append(" KB</td><td>")
-                    .append(d.createdOn()).append("</td><td>").append(esc(d.sourceUrl())).append("</td></tr>");
+                    .append(d.createdOn()).append("</td><td>").append(d.sourceUrl() == null ? "" : d.sourceUrl()).append("</td></tr>");
         }
         b.append("</table>");
         if (p.manages(building)) {
@@ -121,7 +121,7 @@ final class ContentPages {
     private static String article(Notice n) {
         String body = esc(n.body()).replaceAll("\\*\\*([^*\\n]+)\\*\\*", "<strong>$1</strong>").replace("\r\n", "\n").replace("\n", "<br>\n");
         return "<article id=\"notice-" + n.id() + "\" class=\"notice" + (n.pinned() ? " pinned" : "") + "\"><h2><a href=\"/notices/" + n.id() + "\">"
-                + esc(n.title()) + "</a></h2><p class=\"meta\">" + esc(n.authorName()) + " · " + n.publishedOn()
+                + n.title() + "</a></h2><p class=\"meta\">" + n.authorName() + " · " + n.publishedOn()
                 + "</p><div class=\"body\">" + body + "</div></article>\n";
     }
 

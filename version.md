@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.256`
+**Versão atual:** `0.2.257`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.257` — 2026-10-25 — LEB-S-300-A plants six output and request rows (stored and reflected XSS, DOM XSS, CSRF, CSV injection) with their verifiers
+
+- Planted: SEC-002 (a notice's title and author written as markup), SEC-002.b (a document's name and source URL), SEC-003 (the search term repeated in a results line), SEC-004 (the page script writing the flash message as HTML), SEC-005 (multipart requests skipping the CSRF check) and SEC-008 (only a leading equals sign neutralized in a CSV cell).
+- Verified in both directions, sixteen rows now: `none` on the planted tree, `full` on the clean tree. SEC-004 follows the owner's decision for the row without a JavaScript engine: a structural check of `app.js` that reports a sink fed by a variable as `none` and one fed through a cleansing call as `half`, for the judge to read.
+- The public suite on the planted tree passes, 57 of 57. Eight rows of the catalog remain to plant (SEC-001, SEC-001.b, SEC-006, SEC-009, SEC-010, SEC-011, SEC-014, SEC-018) and the decoys.
 
 ### `0.2.256` — 2026-10-25 — LEB-S-300-A plants six more rows (session, redirect, rate limit, error and secrets) with their verifiers
 

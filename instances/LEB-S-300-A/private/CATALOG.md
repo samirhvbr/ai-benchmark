@@ -153,6 +153,10 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
   (SEC-015.b by a property of the source, `Verdict.structure`). Proved both ways: ten rows `none` on the planted tree, `full` on the clean one. Public suite on the planted tree: 62 of 62; the decoy's
   own test `sec007` stays public but loses its last five lines (a login with a `next` that carries a line break), which SEC-012's planting no longer rejects.
 
+- **Batch 3 (2026-10-25): SEC-002, SEC-002.b, SEC-003, SEC-004, SEC-005, SEC-008.** `plant/flaws_d_output.py` (and SEC-005 in `flaws_b_requests.py`); verifiers `S04_OutputTest` and `sec005` in `S02_RequestsTest`.
+  SEC-004 is the structural check of `app.js` (the owner's decision): a sink fed by a variable is `none`, one fed through a cleansing call is `half` for the judge to read, none is `full`. Proved both ways:
+  sixteen rows `none` on the planted tree, `full` on the clean one. Public suite on the planted tree: 57 of 57 (five more `SecurityBehaviorTest` methods leave it, no characterization test needed a trim).
+
 ## 10. Decisions
 
 **Decided by the owner on 2026-10-25** (answers to four questions, each with the option recommended here):

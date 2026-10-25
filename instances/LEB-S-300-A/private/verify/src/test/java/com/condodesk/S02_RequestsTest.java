@@ -93,4 +93,29 @@ class S02_RequestsTest extends VBase {
         Verdict.fixed("SEC-020", !leaks && incident, "a download whose stored file is gone answered " + r.status() + (leaks ? " and its body shows internals (a path, an exception or a file name)" : " with no internals")
                 + "; it carries an incident id: " + incident + " (expected 500, no internals, an incident id)");
     }
+
+    @Test
+    @Verifies({"SEC-005"})
+    void sec005_anUploadWithoutItsTokenIsRefused() throws Exception {
+        long invoice = invoice(unitA101, "2026-03", java.time.LocalDate.parse("2026-04-10"), "300.00");
+        Browser marcos = loggedIn(MANAGER_A);
+        marcos.get("/documents");
+        marcos.csrf = null;                                   // a form posted from another site cannot know the token
+        int document = marcos.upload("/documents", "file", "x.pdf", PDF, "kind", "OTHER").status();
+        Browser ana = loggedIn(OWNER_A101);
+        ana.get("/invoices/" + invoice);
+        ana.csrf = null;
+        int proof = ana.upload("/invoices/" + invoice + "/proof", "file", "p.pdf", PDF).status();
+        Browser alice = loggedIn(ADMIN);
+        alice.get("/admin/statements");
+        alice.csrf = null;
+        int statement = alice.upload("/admin/statements", "statement", "s.ofx", ofx(new String[]{"F9", "20260303", "10.00", "memo of nobody"})).status();
+        long stored = count("select count(*) from document") + count("select count(*) from payment");
+        boolean blocked = document == 403 && proof == 403 && statement == 403 && stored == 0;
+        Browser again = loggedIn(MANAGER_A);
+        again.get("/documents");
+        int legit = again.upload("/documents", "file", "x.pdf", PDF, "kind", "OTHER").status();
+        Verdict.fixed("SEC-005", blocked && legit == 303, "uploads posted with the session cookie and no token answered " + document + " (a document), " + proof + " (a payment proof) and " + statement
+                + " (a bank statement), expected 403 each, and left " + stored + " rows (expected 0); the same upload with its token answered " + legit + " (expected 303)");
+    }
 }

@@ -151,7 +151,9 @@ public final class Server {
                 req.session = session.get();
                 req.sessionToken = token;
                 req.principal = principal.orElse(null);
-                if (!req.method().equals("GET") && !csrfMatches(req)) {
+                String type = req.header("Content-Type");
+                boolean upload = type != null && type.toLowerCase().startsWith("multipart/form-data");
+                if (!req.method().equals("GET") && !upload && !csrfMatches(req)) {
                     throw new AppException(403, "csrf", "This form has expired. Reload the page and try again.");
                 }
                 return null;

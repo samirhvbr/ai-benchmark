@@ -61,6 +61,14 @@ FLAWS = [
          "auth.authenticate(text(body, \"email\"), text(body, \"password\"), req.clientAddress());",
          "auth.authenticate(text(body, \"email\"), text(body, \"password\"), req.clientAddress(), false);"),
     ]),
+    # A multipart request skips the CSRF check: the uploads (a document, a payment proof, a bank statement) can be posted from another site.
+    ("SEC-005", [
+        (SRC + "web/Server.java",
+         "                if (!req.method().equals(\"GET\") && !csrfMatches(req)) {\n",
+         "                String type = req.header(\"Content-Type\");\n"
+         "                boolean upload = type != null && type.toLowerCase().startsWith(\"multipart/form-data\");\n"
+         "                if (!req.method().equals(\"GET\") && !upload && !csrfMatches(req)) {\n"),
+    ]),
     # An internal error answers with the exception's text and class as well as the incident id.
     ("SEC-020", [
         (SRC + "web/Server.java",
