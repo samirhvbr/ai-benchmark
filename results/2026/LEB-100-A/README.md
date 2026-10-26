@@ -1203,7 +1203,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ### Runs of 2026-10-26
 
-Ten deliveries were scored on this date (four agents: three with three runs each, one with a single run), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
+Eleven deliveries were scored on this date (five agents: three with three runs each, two with a single run), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
 judge per delivery, both Claude Opus subagents. The matching judge was also given a digest of the rulings this instance had already applied, each with the README line it comes from, so that the
 new deliveries were judged as the earlier ones were.
 
@@ -1224,6 +1224,7 @@ carried the folder of another instance, which the lab removed before the package
 | **OI** | GPT-6.1-sol, `high`, run 2 | 637 |
 | **MO** | GPT-6.1-sol, `high`, run 3 | 727 |
 | **LI** | Claude Sonnet 5.5, `high`, run 1 | 795 |
+| **XT** | Claude Opus 5.5, `high`, run 1 | 733 |
 
 - **Claude Sonnet 5.5 at `medium` (YJ, SE, KD): 667, Silver, 6th, a new agent.** Its runs scored 718, 667 and 645, so the published score is the lower median. They are the three fastest runs of the
   instance: 70 to 84 seconds, five or six responses, US$ 0.17 to 0.19 each. It fixed 7 or 8 of the 13 flaws every time: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR
@@ -1253,6 +1254,15 @@ carried the folder of another instance, which the lab removed before the package
   - Compatibility stayed at 100 and no penalty was charged: the new code adds no defect, the listing and the web CSV are filtered to the client's own tickets while technicians and callers without a session
     still get every ticket (enforcement, not COMP-003), the SLA average stays global, and all 22 characterization checks stayed green. The file-handle leak is named only as a sub-item of the finding about the
     shared export file (C1 at half). Twelve extra findings score nothing. Its report scored 45 of 50.
+- **Claude Opus 5.5 at `high` (XT): 733, Silver, 6th, one run so far.** Like the Sonnet 5.5 run above it is the first of the three runs an official score needs, so the row reads 1/3. It ran in 6.3 minutes
+  and 0.87 million tokens, US$ 1.14 by the client's count, and fixed 8 of the 13 flaws: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR (SEC-017), the hardcoded secrets
+  (SEC-015), the division by zero, the file-handle leak and the N+1 query. It escaped the search term on the utf8mb4 connection instead of binding it, and the probe confirms the injection gone.
+  - It reported the CSV formula injection (SEC-008) and the MD5 passwords (SEC-014) and left both as they were, on purpose, so security is 211 of 250 as for the Sonnet 5.5 run, and it named the dispatcher's
+    mixed responsibilities without refactoring it (architecture 50; the magic numbers, ARCH-009, are mentioned nowhere). It also named the four levels of nested ifs (CLN-007) and left them, so clean code is 38
+    of 100 where the Sonnet 5.5 run flattened them (100). The same model scores 717 at `xhigh`.
+  - Compatibility stayed at 100 and no penalty was charged: the new code adds no defect, the listing and the web CSV are filtered to the client's own tickets while technicians and callers without a session
+    still get every ticket (enforcement, not COMP-003), the SLA average stays global, and all 22 characterization checks stayed green. The file-handle leak is named only as an item of the finding about the
+    on-disk export file (C1 at half). Ten extra findings score nothing. Its report scored 45 of 50.
 
 ## Runs withdrawn for an incomplete record
 

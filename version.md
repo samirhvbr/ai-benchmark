@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.268`
+**Versão atual:** `0.2.269`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.269` — 2026-10-26 — results/ adds Claude Opus 5.5 at `high` to LEB-100-A: one run (733), Silver, 6th
+
+- Claude Opus 5.5 at `high` joins LEB-100-A with one run, **733**, Silver: made through the unattended lab on the owner's Anthropic API key (Claude Code 2.1.295, auto permission mode, one message, no operator
+  reply) and judged blind like the others (label XT): one matching judge and one blind EXPL judge, both Claude Opus subagents. It fixes 8 of the 13 flaws in 6.3 minutes and US$ 1.14: security 211 of 250 (the
+  CSV formula injection and the MD5 passwords are reported and left on purpose), architecture 50, clean code 38 (the nested ifs are named, not flattened), compatibility 100 with no penalty, explanation 45 of 50.
+- One run is not official (PROTOCOL §4): the table reads 1/3. The instance notes gain the row and the agent's bullet, and the saturation test its new figures (42 agents, 103 runs).
 
 ### `0.2.268` — 2026-10-26 — results/ adds Claude Sonnet 5.5 at `high` to LEB-100-A: one run (795), Gold, 3rd
 
