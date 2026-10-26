@@ -1203,7 +1203,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ### Runs of 2026-10-26
 
-Nine deliveries were scored on this date (three agents, three runs each), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
+Ten deliveries were scored on this date (four agents: three with three runs each, one with a single run), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
 judge per delivery, both Claude Opus subagents. The matching judge was also given a digest of the rulings this instance had already applied, each with the README line it comes from, so that the
 new deliveries were judged as the earlier ones were.
 
@@ -1223,6 +1223,7 @@ carried the folder of another instance, which the lab removed before the package
 | **DF** | GPT-6.1-sol, `high`, run 1 | 626 |
 | **OI** | GPT-6.1-sol, `high`, run 2 | 637 |
 | **MO** | GPT-6.1-sol, `high`, run 3 | 727 |
+| **LI** | Claude Sonnet 5.5, `high`, run 1 | 795 |
 
 - **Claude Sonnet 5.5 at `medium` (YJ, SE, KD): 667, Silver, 6th, a new agent.** Its runs scored 718, 667 and 645, so the published score is the lower median. They are the three fastest runs of the
   instance: 70 to 84 seconds, five or six responses, US$ 0.17 to 0.19 each. It fixed 7 or 8 of the 13 flaws every time: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR
@@ -1243,6 +1244,15 @@ carried the folder of another instance, which the lab removed before the package
   average covers (COMP-003, −30, charged to SEC-017's C5), as GPT-6.1-sol at `xhigh` did in each of its runs; compatibility is 70 in all three.
   - The third run also fixed the CSV formula injection and flattened the nested ifs (CLN-007 full), and shipped two test files of its own (`tests/regressao.php`, `tests/test_http.py`), kept as delivered, as
     GPT-6-astra's `.validacao` was. The first two runs reported SEC-008 and left it. Architecture is 0 in all three. Its reports scored 45, 46 and 44 of 50, the best explanations of the three agents.
+- **Claude Sonnet 5.5 at `high` (LI): 795, Gold, 3rd, one run so far.** It is the first of the three runs an official score needs (PROTOCOL §4), so the row reads 1/3. It ran in 4.5 minutes and 0.82 million
+  tokens, US$ 0.51 by the client's count. It fixed 9 of the 13 flaws: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR (SEC-017), the hardcoded secrets (SEC-015), the division by
+  zero, the file-handle leak, the N+1 query and the nested ifs (CLN-007).
+  - It reported the CSV formula injection (SEC-008) and the MD5 passwords (SEC-014) and left both as they were, on purpose, the second with a migration plan, so neither earns a fix: security is 211 of 250,
+    where the same model scores 250 at `xhigh` and at `max`. Architecture is 50: it names the dispatcher's mixed responsibilities and what they cost (ARCH-002) without refactoring it, and the magic numbers
+    (ARCH-009) are mentioned nowhere. The same model scores 809 at `xhigh`, 807 at `max` and 667 at `medium`.
+  - Compatibility stayed at 100 and no penalty was charged: the new code adds no defect, the listing and the web CSV are filtered to the client's own tickets while technicians and callers without a session
+    still get every ticket (enforcement, not COMP-003), the SLA average stays global, and all 22 characterization checks stayed green. The file-handle leak is named only as a sub-item of the finding about the
+    shared export file (C1 at half). Twelve extra findings score nothing. Its report scored 45 of 50.
 
 ## Runs withdrawn for an incomplete record
 
