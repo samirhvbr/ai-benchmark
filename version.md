@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.266`
+**Versão atual:** `0.2.267`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.267` — 2026-10-26 — LEB-D-300-A's aggregate adds Gemini 4 Argon and Gemma 4 31B, both at `high`: 33 configurations
+
+- Two new configurations, both through OpenRouter in the OpenCode client with the auto-approval flag: Gemini 4 Argon at `high` (two runs, 736 and 682, mean **709**, Silver; three attempts lost to the lab or to a
+  one-response output limit stay as lab-failure markers and will be rerun) and Gemma 4 31B at `high` (three runs, 192, 240 and 196, mean **209**, Reprovada). The client's catalog defines no `thinking` variant for
+  Gemma 4 31B, so it ran at `high`, the closest it offers.
+- Only the runs whose numbering is whole and whose open points are closed are in: Gemma 4 31B's fourth run waits on a decision about two judges' readings and its fifth waits behind it, so the table shows its
+  first three runs, and the figures will move when they enter.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.266` — 2026-10-26 — LEB-300-A's aggregate adds Claude Sonnet 5.5 at xhigh's third run (849): the agent is official at 860
 
