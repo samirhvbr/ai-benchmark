@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.261`
+**Versão atual:** `0.2.262`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.262` — 2026-10-26 — LEB-300-A's aggregate adds GPT-6-astra at `ultra` and brings six GPT configurations to three runs: 29 agents
+
+- One new agent: GPT-6-astra at `ultra`, three runs (715, 781 and 721; published score the median, **721**, Silver), so it is official from the start.
+- Six agents of Codex CLI go to three runs and are official: GPT-6.1-sol at `xhigh` (800, 830 and 789, median **800**, Gold), GPT-6.1-sol at `ultra` (797, 702 and 791, median **791**, Gold; it was 797 on one run),
+  GPT-6.1-sol at `high` (779, 682 and 793, median **779**, Gold), GPT-6-astra at `xhigh` (717, 729 and 680, median **717**, Silver), GPT-5.6-luna at `xhigh` (638, 512 and 618, median **618**, Silver; it was 512 on two
+  runs, the lower) and GPT-6-luna at `xhigh` (471, 612 and 630, median **612**, Silver; it was 471 on one run).
+- The new runs are the same task as the published ones: the package of freeze piloto-2 (7e35825a), scored against the matrix c42c8287, the two stages in one session, no operator reply, in the unattended lab for Codex
+  (the model and effort pinned on the command line and audited from the session log). One matching judge and one blind EXPL judge per run, as for the earlier runs of the instance.
+- Four attempts the lab lost are not runs: two ended on `401` (the stored login had expired) seconds after they started, one ended on `401` after four minutes with no model call, and one finished stage 1 and
+  ended on the vendor's "model is at capacity" error in stage 2. Each is filed as a `withdrawn-<n>` folder (`PROTOCOL §4` item 5), kept in the private archive, not published and not counted toward the three.
+- GPT-5.6-sol at `xhigh` is not in the table yet: two of its three runs are scored (631 and 635) and the third is waiting on a decision about its evaluation, which ran past the evaluator's time limit.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.261` — 2026-10-25 — LEB-S-300-A's variant cases: 69 control cases show its verifiers tell a fix from a near miss
 
