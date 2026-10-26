@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.260`
+**Versão atual:** `0.2.261`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,12 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.261` — 2026-10-25 — LEB-S-300-A's variant cases: 69 control cases show its verifiers tell a fix from a near miss
+
+- `instances/LEB-S-300-A/private/variants/` declares 69 cases on the planted tree: 35 fixes written another way, 19 partial and 8 wrong fixes, and 7 changes to the decoys. `tools/variants.py` runs them with the instance's own evaluator; all behave as declared (`results.tsv`, 0 unexpected).
+- What they changed in the verifiers: the sort row refuses a word blocklist (a plain expression must not be taken as SQL) and the notice search row refuses a fix that strips apostrophes (a word with one must still be found); the access, CSRF and upload rows accept any 4xx refusal, the manifest names 400, 401, 403 and 404; and a step the candidate's system refuses while a scenario is being prepared becomes that system's failure, with a verdict, not a missing one.
+- Not yet: the proof on a bench VM, the external review of the key and the freeze. Nothing is frozen.
 
 ### `0.2.260` — 2026-10-25 — LEB-S-300-A can be packaged: the Security task statement, its weights, its runner contract and its regression groups
 

@@ -12,6 +12,11 @@ abstract class VBase extends TestBase {
         return s == null ? "" : s.length() > 300 ? s.substring(0, 300) + "…" : s;
     }
 
+    /** A refusal the manifest names: 400, 401, 403 or 404 (any 4xx a request can be refused with). */
+    static boolean denied(int status) {
+        return status >= 400 && status < 500;
+    }
+
     /** GET as the browser, requiring 200. */
     R ok(Browser b, String path) throws Exception {
         R r = b.get(path);

@@ -171,6 +171,10 @@ so that a report of one is judged by a rule fixed in advance (as §9 of LEB-D-30
   `private/runner.json` (the Default's, unchanged) and `private/regression_groups.json` (45 groups for the 51 public tests, derived from the Default's). `./leb pacote LEB-S-300-A` builds the package: 56 files, the
   leak guard passes. Left before the first run: the variant cases, the proof on a bench VM, the external review of the key and the freeze.
 
+- **Variant cases (2026-10-25).** `private/variants/` holds 69 control cases run by `tools/variants.py` on the planted tree: 35 fixes written another way (accepted), 19 partial fixes and 8 wrong ones (rejected), and 7 changes to the
+  decoys (kept or broken as each says), all as expected (`results.tsv`, 0 unexpected). They found three things in the verifiers, all corrected: SEC-001 and SEC-001.b had to refuse a word blocklist and a quote-stripping fix; the access
+  and CSRF rows accept any 4xx refusal, not only the reference's 403 or 404; and a preparatory step the candidate's system refuses is now the system's failure (a verdict), not a missing verdict.
+
 ## 10. Decisions
 
 **Decided by the owner on 2026-10-25** (answers to four questions, each with the option recommended here):

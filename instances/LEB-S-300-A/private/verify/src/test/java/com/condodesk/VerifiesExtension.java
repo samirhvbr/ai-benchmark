@@ -24,6 +24,6 @@ final class VerifiesExtension implements TestExecutionExceptionHandler {
     static boolean theSystemRefusedTheScenario(Throwable t) {
         if (!(t instanceof IllegalStateException) || t.getCause() != null) return false;
         String m = String.valueOf(t.getMessage());
-        return m.matches("(?s)^(login of .* failed: .*|token for .* failed: .*|\\S+ answered \\d{3}: .*)$");
+        return m.matches("(?s)^(login of .* failed: .*|token for .* failed: .*|.+ answered \\d{3}: .*)$");
     }
 }

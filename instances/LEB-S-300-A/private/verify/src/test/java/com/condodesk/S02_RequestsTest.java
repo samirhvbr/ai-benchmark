@@ -111,11 +111,11 @@ class S02_RequestsTest extends VBase {
         alice.csrf = null;
         int statement = alice.upload("/admin/statements", "statement", "s.ofx", ofx(new String[]{"F9", "20260303", "10.00", "memo of nobody"})).status();
         long stored = count("select count(*) from document") + count("select count(*) from payment");
-        boolean blocked = document == 403 && proof == 403 && statement == 403 && stored == 0;
+        boolean blocked = denied(document) && denied(proof) && denied(statement) && stored == 0;
         Browser again = loggedIn(MANAGER_A);
         again.get("/documents");
         int legit = again.upload("/documents", "file", "x.pdf", PDF, "kind", "OTHER").status();
         Verdict.fixed("SEC-005", blocked && legit == 303, "uploads posted with the session cookie and no token answered " + document + " (a document), " + proof + " (a payment proof) and " + statement
-                + " (a bank statement), expected 403 each, and left " + stored + " rows (expected 0); the same upload with its token answered " + legit + " (expected 303)");
+                + " (a bank statement), expected a refusal each, and left " + stored + " rows (expected 0); the same upload with its token answered " + legit + " (expected 303)");
     }
 }
