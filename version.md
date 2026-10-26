@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.263`
+**Versão atual:** `0.2.264`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.264` — 2026-10-26 — results/ adds GPT-6-luna at xhigh as a new agent: three runs (633, 643, 655), official at 643, 10th
+
+- `gpt-6-luna-xhigh/run-1..3` (TV, DV, PR): 633, 643 and 655, Silver; the published score is the middle one, **643**, 10th, official from the start. Made through the unattended lab (Codex CLI 0.159.3, the
+  VM's stored ChatGPT login, approvals and sandbox off as the lab records for Codex, one message and no operator reply): 5 to 7 minutes and 0.67 to 1.07 million tokens each (the log keeps no cost).
+- 9 or 10 of the 13 flaws fixed per run, security 228, 224 and 250 of 250 (the third run closes all seven security flaws), compatibility 100, explanation 40 to 41 of 50. The first and third runs lose one
+  PEN-001 each (−15): the CSV formula guard also runs on the technician column and turns the `-` of an unassigned ticket into `'-`. The file-handle leak is fixed without being reported in all three; architecture
+  and clean code are 0.
+- Instance notes: the section "Runs of 2026-10-26" gains the three labels and the agent's bullet. `comments.json` gains the agent's reading. `tests/test_saturacao.py` follows the published figures (39 agents, 98 runs).
 
 ### `0.2.263` — 2026-10-26 — results/ adds Claude Sonnet 5.5 at medium as a new agent: three runs (718, 667, 645), official at 667, 6th
 

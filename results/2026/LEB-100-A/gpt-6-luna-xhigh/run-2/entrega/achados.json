@@ -1,0 +1,157 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes acessavam chamados de terceiros",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "As rotas web listavam sem filtrar usuario_id, carregavam qualquer ID em ver e exportavam todos os chamados sem aplicar a regra de visibilidade.",
+      "impacto": "Um cliente autenticado podia ler detalhes e exportar dados de chamados de outros clientes, enumerando IDs sequenciais.",
+      "correcao": "Adicionei listagem e exportação web escopadas ao dono do chamado, verificação de propriedade no detalhe e mantive acesso amplo para técnicos.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL injection no filtro por título",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "O valor de busca era concatenado ao SQL dentro do padrão LIKE, permitindo que aspas e fragmentos SQL alterassem a consulta.",
+      "impacto": "Usuários autenticados podiam manipular a consulta e obter resultados não pretendidos.",
+      "correcao": "Substituí a concatenação por statement preparado e bind do termo de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Segredos de produção embutidos na configuração",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "A senha do banco e a chave SMTP eram literais no código; DB_PASS ainda tinha fallback para o segredo fixo.",
+      "impacto": "Uma cópia ou backup exposto revela credenciais reutilizáveis, e implantações sem variável de ambiente continuavam usando o fallback.",
+      "correcao": "Removi os valores literais e passei a ler DB_PASS e SMTP_API_KEY do ambiente, usando string vazia quando ausentes.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "XSS refletido no termo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "O termo da query era inserido sem escape no atributo value e no texto de resultados, permitindo que uma URL especialmente montada executasse marcação/script no navegador autenticado.",
+      "impacto": "Script na origem do painel poderia agir com a sessão da vítima e acessar dados permitidos àquela conta.",
+      "correcao": "Escapei os dois pontos de saída com htmlspecialchars, ENT_QUOTES, ENT_SUBSTITUTE e UTF-8, e descartei valores que não sejam strings.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Hashes de senha MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 16,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação comparava MD5 da senha com hashes rápidos e sem salt. O schema entregue usava CHAR(32), insuficiente para password_hash.",
+      "impacto": "Após vazamento do banco, senhas fracas podem ser recuperadas offline e usadas para acessar contas ou serviços onde foram reutilizadas.",
+      "correcao": "Passei a verificar password_hash e atualizar MD5 legado após login válido quando a coluna tem capacidade; alterei schema.sql para VARCHAR(255). Instalações existentes precisam executar ALTER TABLE usuarios MODIFY senha VARCHAR(255) NOT NULL antes da migração automática.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "ID de sessão não era renovado após login",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A sessão anônima era iniciada antes da autenticação e seu ID continuava o mesmo após o login, permitindo fixação caso o atacante conseguisse impor um ID conhecido.",
+      "impacto": "Um atacante que conhecesse o ID usado pela vítima poderia reaproveitar a sessão autenticada.",
+      "correcao": "Ativei modo estrito, configurei atributos seguros para o cookie e regenerei o ID após autenticação.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Exportação gravava dados em arquivo temporário compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Cada export sobrescrevia o mesmo caminho e depois o lia; pedidos concorrentes podiam interferir no conteúdo e o CSV permanecia no disco após a resposta.",
+      "impacto": "Exportações simultâneas podiam cruzar dados, e a cópia persistente ampliava a exposição dependendo das permissões e configuração do diretório.",
+      "correcao": "Passei a gravar diretamente na saída HTTP, sem arquivo compartilhado, e apliquei o escopo de visibilidade na rota web.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Divisão por zero sem tempos de resposta",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando a consulta não encontrava minutos_resposta, qtd ficava zero e a função calculava soma / qtd.",
+      "impacto": "A página podia terminar com DivisionByZeroError em PHP 8 quando não havia respostas registradas.",
+      "correcao": "A função retorna 0.0 para conjunto vazio, preservando assinatura e tipo de retorno.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Consulta N+1 ao buscar nomes de técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "O laço de chamados chamava tecnicoNome, que executava uma consulta adicional por linha; a exportação repetia o padrão.",
+      "impacto": "A listagem e exportação executavam 1+N consultas, elevando latência e carga conforme o número de chamados aumentava.",
+      "correcao": "Usei LEFT JOIN para carregar o nome do técnico junto com cada consulta da listagem e exportação.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas públicas, conexão mysqli, rotas, rótulos de status, HTML declarado e formato do CSV.",
+      "porque": "O manifesto declara esses pontos como contrato para consumidores externos."
+    },
+    {
+      "o_que": "O comportamento amplo das funções públicas de listagem, detalhe e exportação quando chamadas diretamente por rotinas internas.",
+      "porque": "A visibilidade foi aplicada nas rotas web, preservando o uso interno existente das assinaturas públicas."
+    },
+    {
+      "o_que": "A aceitação temporária de hashes MD5 de contas antigas.",
+      "porque": "A autenticação precisa continuar funcionando durante a migração; após ampliar a coluna, um login válido atualiza o hash para password_hash."
+    },
+    {
+      "o_que": "A migração DDL de uma base já em produção com senha CHAR(32).",
+      "porque": "O pacote não fornece uma conexão de banco para aplicar DDL; a coluna precisa ser ampliada antes de hashes modernos poderem ser gravados sem truncamento."
+    },
+    {
+      "o_que": "A constante EXPORT_DIR em config.php.",
+      "porque": "O painel deixou de usá-la, mas outro script que inclua config.php pode depender dela."
+    }
+  ]
+}

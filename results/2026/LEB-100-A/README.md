@@ -1203,12 +1203,12 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ### Runs of 2026-10-26
 
-Three deliveries were scored on this date (one agent, three runs each), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
+Six deliveries were scored on this date (two agents, three runs each), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
 judge per delivery, both Claude Opus subagents. The matching judge was also given a digest of the rulings this instance had already applied, each with the README line it comes from, so that the
 new deliveries were judged as the earlier ones were.
 
-They differ from every run above in how they were made: through the unattended lab, not by hand. Each got the fixed first message once, in a single non-interactive session (`claude -p` in Claude Code 2.1.295) that ran to its own end
-under a 90-minute cap, so no operator reply was possible and none was needed (`operator_replies` 0). Claude Code ran in its auto permission mode on the owner's Anthropic API key, and `run.json` carries the cost the client counted. Every run was made as the unprivileged user `leb` on a machine of 20 vCPUs and 15.6 GiB (`bench1` to `bench3`) restored from its snapshot minutes before, with PHP 8.4.26 and MariaDB
+They differ from every run above in how they were made: through the unattended lab, not by hand. Each got the fixed first message once, in a single non-interactive session (`claude -p` in Claude Code 2.1.295, `codex exec` in Codex CLI 0.159.3) that ran to its own end
+under a 90-minute cap, so no operator reply was possible and none was needed (`operator_replies` 0). Claude Code ran in its auto permission mode on the owner's Anthropic API key, and `run.json` carries the cost the client counted; Codex ran with approvals and the sandbox off, the lab's recorded exception for it, and its log keeps no cost. Every run was made as the unprivileged user `leb` on a machine of 20 vCPUs and 15.6 GiB (`bench1` to `bench3`) restored from its snapshot minutes before, with PHP 8.4.26 and MariaDB
 11.8.6 installed and GitHub blocked as in *Execution environment*, and the package of every earlier run (`34e38bc5…a15f`, byte for byte) as the only instance folder in `/srv`: the snapshots still
 carried the folder of another instance, which the lab removed before the package went in.
 
@@ -1217,6 +1217,9 @@ carried the folder of another instance, which the lab removed before the package
 | **YJ** | Claude Sonnet 5.5, `medium`, run 1 | 718 |
 | **SE** | Claude Sonnet 5.5, `medium`, run 2 | 667 |
 | **KD** | Claude Sonnet 5.5, `medium`, run 3 | 645 |
+| **TV** | GPT-6-luna, `xhigh`, run 1 | 633 |
+| **DV** | GPT-6-luna, `xhigh`, run 2 | 643 |
+| **PR** | GPT-6-luna, `xhigh`, run 3 | 655 |
 
 - **Claude Sonnet 5.5 at `medium` (YJ, SE, KD): 667, Silver, 6th, a new agent.** Its runs scored 718, 667 and 645, so the published score is the lower median. They are the three fastest runs of the
   instance: 70 to 84 seconds, five or six responses, US$ 0.17 to 0.19 each. It fixed 7 or 8 of the 13 flaws every time: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR
@@ -1226,6 +1229,12 @@ carried the folder of another instance, which the lab removed before the package
   - Compatibility stayed at 100 and no penalty was charged: the SLA average stays global, the web CSV is filtered to the client's own tickets while technicians and callers without a session still get every
     ticket (enforcement, not COMP-003), and all 22 characterization checks stayed green. The file-handle leak is named only inside the finding about the shared export file in each run (C1 at half, as for
     the other deliveries that do the same). Seven extra findings per run score nothing. Its reports scored 39, 42 and 41 of 50.
+- **GPT-6-luna at `xhigh` (TV, DV, PR): 643, Silver, 10th, a new agent.** Its runs scored 633, 643 and 655, so the published score is the middle one. It ran in Codex CLI 0.159.3 in 5 to 7 minutes and
+  0.67 to 1.07 million tokens, the log keeping no cost. It fixed 9 or 10 of the 13 flaws, the most of the three agents added on this date: security reaches 228, 224 and 250 of 250 (the third run fixed all
+  seven security flaws, the CSV formula injection and the MD5 passwords among them), and the file-handle leak was fixed without being reported in all three (a silent fix: the fix scores, the finding does not).
+  - Compatibility stayed at 100 and all 22 characterization checks stayed green in every run. The first and third runs each lost one PEN-001 (−15): the CSV formula guard also runs on the technician column
+    and turns the `-` shown for a ticket with no technician into `'-`, the call already made for four earlier deliveries. Architecture and clean code are 0 in all three runs; its reports scored 41, 40 and
+    41 of 50.
 
 ## Runs withdrawn for an incomplete record
 

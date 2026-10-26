@@ -1,0 +1,163 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Rotas web não isolam chamados pelo cliente proprietário",
+      "arquivo": "code/index.php",
+      "linha": 45,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "As rotas de lista, detalhe e exportação chamavam consultas sem filtro por usuario_id, apesar de a sessão conter uid e papel.",
+      "impacto": "Um cliente autenticado podia consultar chamados, descrições e dados de outros clientes por busca, ID direto ou CSV.",
+      "correcao": "Adicionei variantes escopadas para lista, detalhe e exportação web; clientes recebem apenas seus chamados e técnicos mantêm acesso integral.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca por título concatena entrada diretamente no SQL",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro busca era interpolado dentro da cláusula LIKE e podia incluir aspas e operadores SQL.",
+      "impacto": "Um usuário autenticado podia alterar a consulta executada durante a busca.",
+      "correcao": "A busca agora usa parâmetro preparado e preserva curingas LIKE percentuais e sublinhado.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Senha do banco e chave SMTP estão embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Os valores literais de DB_PASS e SMTP_API_KEY eram distribuídos junto com os arquivos da aplicação.",
+      "impacto": "Quem obtiver o pacote pode tentar acessar o banco ou o serviço SMTP com credenciais de produção ainda válidas.",
+      "correcao": "Removi os segredos literais e passei a carregá-los das variáveis de ambiente DB_PASS e SMTP_API_KEY; as credenciais expostas precisam ser rotacionadas.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Termo de busca é refletido sem escape no HTML",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O valor de busca era inserido diretamente no atributo value e no texto da página.",
+      "impacto": "Um link preparado podia executar JavaScript na sessão autenticada de quem o abrisse.",
+      "correcao": "Validei o tipo do parâmetro e apliquei escape HTML explícito com UTF-8 antes de renderizá-lo.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Exportação grava CSV persistente em caminho compartilhado",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 94,
+      "mecanismo": "Cada exportação sobrescrevia /var/www/painel/tmp/chamados.csv e deixava o conteúdo no disco; requisições concorrentes reutilizavam o mesmo arquivo.",
+      "impacto": "Os dados exportados podiam persistir, ser expostos se o diretório for servido pelo site ou sofrer interferência entre requisições.",
+      "correcao": "O CSV agora é emitido diretamente em php://output sem arquivo persistente, mantendo cabeçalho e ordenação do contrato.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Senhas são armazenadas com MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 17,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A autenticação calcula MD5 e o esquema armazena o resultado em CHAR(32), permitindo tentativa offline rápida de senhas após vazamento do banco.",
+      "impacto": "Senhas fracas ou reutilizadas podem ser recuperadas e usadas em outros serviços.",
+      "correcao": "Não alterado: uma migração segura requer ampliar a coluna e migrar usuários existentes; isso está documentado em Decisões.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "ID da sessão não era renovado após autenticação",
+      "arquivo": "code/index.php",
+      "linha": 23,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O usuário era adicionado à sessão anônima existente sem regenerar o identificador após o login.",
+      "impacto": "Em cenário de fixação de sessão, um atacante que conhecesse o ID anterior poderia reutilizá-lo após a vítima autenticar.",
+      "correcao": "Regenero e invalido o ID anterior da sessão após login válido.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Média de resposta divide por zero sem amostras",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Com todos os minutos_resposta nulos, qtd permanece zero e a função divide a soma por zero.",
+      "impacto": "A renderização do painel pode falhar quando ainda não existem respostas registradas.",
+      "correcao": "Uso AVG no banco e retorno 0.0 quando o resultado não contém amostras.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Listagem e CSV fazem consultas N+1 para obter técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Para cada chamado retornado, tecnicoNome executava outra consulta, tanto na lista quanto no loop de exportação.",
+      "impacto": "A carga no banco e a latência cresciam linearmente com a quantidade de chamados exibidos ou exportados.",
+      "correcao": "Usei LEFT JOIN para carregar os nomes dos técnicos na mesma consulta de chamados, inclusive na exportação.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Campos textuais do CSV podem ser interpretados como fórmulas",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 93,
+      "mecanismo": "fputcsv protege delimitadores, mas títulos ou nomes começando por caracteres de fórmula continuam sendo interpretados por planilhas ao abrir o arquivo.",
+      "impacto": "Um campo malicioso pode executar fórmula ou carregar referência externa no programa de planilha do destinatário.",
+      "correcao": "Prefixo com apóstrofo valores textuais iniciados por caracteres de fórmula, inclusive após controles e espaços ASCII.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "O algoritmo MD5 e a coluna senha CHAR(32).",
+      "porque": "Hashes modernos não cabem na coluna atual; atualizar apenas o PHP poderia truncá-los. É necessária migração coordenada do esquema e dos usuários existentes."
+    },
+    {
+      "o_que": "Os rótulos atuais de status e prioridade e a constante EXPORT_DIR.",
+      "porque": "Os rótulos fazem parte da compatibilidade dos consumidores; EXPORT_DIR foi mantida definida para não remover configuração que scripts internos possam usar, embora o export web não a utilize mais."
+    },
+    {
+      "o_que": "A rotação das credenciais que estavam expostas no código.",
+      "porque": "O código passou a receber os valores do ambiente; a rotação precisa ser feita nos serviços do banco e SMTP."
+    }
+  ]
+}

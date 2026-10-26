@@ -150,5 +150,9 @@
   "claude-sonnet-5.5-medium": {
     "en": "The three fastest runs of the instance, a minute and a half and under US$ 0.20 each, for 667. It fixes both injections and the XSS, the session, the IDOR, the division by zero and the N+1 query, and keeps compatibility at 100 in all three runs. It reports the CSV formula injection and the MD5 passwords and leaves both, and touches nothing in architecture; the same model scores 809 at xhigh.",
     "pt_BR": "Os três runs mais rápidos da instância, um minuto e meio e menos de US$ 0,20 cada, para 667. Corrige as duas injeções e o XSS, a sessão, o IDOR, a divisão por zero e o N+1, e mantém a compatibilidade em 100 nos três runs. Reporta a injeção de fórmula no CSV e o MD5 e deixa os dois como estão, e não mexe em arquitetura; o mesmo modelo marca 809 em xhigh."
+  },
+  "gpt-6-luna-xhigh": {
+    "en": "Fixes 9 or 10 of the 13 flaws, and in its third run all seven security flaws, the CSV formula injection and the MD5 passwords among them (250 of 250). Two runs lose 15 points because the CSV guard rewrites the empty technician cell as '-, the file-handle leak is fixed without being reported, and nothing is done on architecture or clean code. Compatibility stays at 100.",
+    "pt_BR": "Corrige 9 ou 10 das 13 falhas e, no terceiro run, as sete de segurança, incluindo a injeção de fórmula no CSV e o MD5 (250 de 250). Dois runs perdem 15 pontos porque o filtro do CSV reescreve a célula vazia do técnico como '-, o vazamento de file handle é corrigido sem ser reportado e nada é feito em arquitetura nem em código limpo. A compatibilidade fica em 100."
   }
 }
