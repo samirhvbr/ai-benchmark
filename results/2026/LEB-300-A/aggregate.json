@@ -157,7 +157,7 @@
       "agent": "claude-sonnet-5.5-xhigh",
       "score": 860,
       "grade": "Gold",
-      "runs_count": 2,
+      "runs_count": 3,
       "categories": {
         "SEC": 250,
         "ARCH": 156,
@@ -199,6 +199,18 @@
             "cache": 9421853,
             "total": 9688084
           }
+        },
+        {
+          "run": 3,
+          "total": 849,
+          "cost_usd": 8.14,
+          "wall_minutes": 57.4,
+          "tokens": {
+            "input": 134,
+            "output": 258037,
+            "cache": 18359976,
+            "total": 18618147
+          }
         }
       ],
       "model": {
@@ -208,8 +220,8 @@
         "reasoning_effort": "xhigh"
       },
       "comment": {
-        "en": "Two runs 51 points apart (860 and 911). The second is the highest single run of any agent so far: security 232 of 250, architecture 183 of 200, bugs 147 of 150, performance 144 of 150 and clean code 89 of 100, against 250, 156, 139, 140 and 57 in the first. In both runs one change went beyond what the manifest contracts and cost 25 compatibility points (75). The second run fixed 34 of the 36 planted flaws and reported 33, with no false positive, and its report was rated 41 of 50. The sessions took 42 and 43 minutes for US$ 6.58 and US$ 6.12. The same model at high effort has a median of 855 over three runs. Two runs of three: not official, and the published score is the lower of the two.",
-        "pt_BR": "Duas execuções a 51 pontos uma da outra (860 e 911). A segunda é a maior execução individual de qualquer agente até agora: segurança 232 de 250, arquitetura 183 de 200, bugs 147 de 150, desempenho 144 de 150 e código limpo 89 de 100, contra 250, 156, 139, 140 e 57 na primeira. Nas duas, uma mudança foi além do que o manifesto contrata e custou 25 pontos de compatibilidade (75). A segunda execução corrigiu 34 das 36 falhas plantadas e reportou 33, sem falso positivo, e o relatório teve 41 de 50. As sessões levaram 42 e 43 minutos por US$ 6,58 e US$ 6,12. O mesmo modelo em esforço high tem mediana de 855 em três execuções. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+        "en": "Three runs of 860, 911 and 849, so the published score is the middle one, 860, and the agent is now official. The second run is still the highest single run of any agent (911, Platinum). The third fixed 34 of the 36 planted flaws but paid 50 compatibility points for two changes beyond what the manifest contracts, a login lockout that answers 429 and a narrower scope for the idempotency key, against one change in each of the first two (75). Security 232 to 250, architecture 156 to 183, explanation 41 to 43, US$ 6.12 to 8.14 per run. The same model has a median of 855 at high and 886 at max.",
+        "pt_BR": "Três execuções de 860, 911 e 849: a nota publicada é a do meio, 860, e o agente agora é oficial. A segunda continua sendo a maior execução individual de qualquer agente (911, Platinum). A terceira corrigiu 34 das 36 falhas plantadas, mas pagou 50 pontos de compatibilidade por duas mudanças além do que o manifesto contrata, um bloqueio de login que responde 429 e um escopo mais estreito da chave de idempotência, contra uma mudança em cada uma das duas primeiras (75). Segurança de 232 a 250, arquitetura de 156 a 183, explicação de 41 a 43, de US$ 6,12 a US$ 8,14 por execução. O mesmo modelo tem mediana de 855 em high e 886 em max."
       }
     },
     {

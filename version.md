@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.265`
+**Versão atual:** `0.2.266`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.266` — 2026-10-26 — LEB-300-A's aggregate adds Claude Sonnet 5.5 at xhigh's third run (849): the agent is official at 860
+
+- `claude-sonnet-5.5-xhigh` goes from two runs to three (860, 911 and 849): its published score stays **860**, Gold, and it is now official. The third run was made in the unattended lab on the owner's Anthropic
+  API key (Claude Code 2.1.295, the two stages in one session, no operator reply) on the same package (freeze piloto-2, 7e35825a) and matrix (c42c8287) as the others, and judged like them: one matching judge and
+  one blind EXPL judge. It scores 849: security 239, architecture 164, bugs 139, performance 134, clean code 82, compatibility 50 (two changes beyond what the manifest contracts, COMP-008 twice) and explanation 41.
+- GPT-5.6-sol at `xhigh` is still not in the table: its runs 2, 4 and 5 are scored (631, 635 and 686), but run 3 waits on a decision about its evaluation and the exporter wants the numbering without a gap.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.265` — 2026-10-26 — results/ adds GPT-6.1-sol at high as a new agent: three runs (626, 637, 727), official at 637, 12th
 
