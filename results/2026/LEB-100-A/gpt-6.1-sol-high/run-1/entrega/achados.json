@@ -1,0 +1,193 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL na busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados concatena busca entre aspas no LIKE. Uma aspa fecha o literal e permite acrescentar OR ou UNION; o comentário SQL elimina o restante da expressão. A conexão da aplicação pode ler usuarios, portanto a falha alcança também hashes de senha.",
+      "impacto": "Um cliente autenticado consegue ler dados fora dos resultados da busca e extrair dados da tabela de usuários com as permissões do usuário do banco.",
+      "correcao": "Substituí a concatenação por prepare/bind_param no LIKE. O filtro de visibilidade é aplicado separadamente. Mantive os curingas % e _ do LIKE para preservar o comportamento de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Ausência de isolamento entre clientes nas leituras de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 151,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados, verChamado, mediaResposta e exportarCsv consultam chamados sem restringir usuario_id. index.php lê uid/papel nas linhas originais 38–39, mas não os usa para autorizar as consultas. Alterar ver permite consultar diretamente um chamado de outro cliente; listagem e CSV já expõem todos.",
+      "impacto": "Clientes conseguem ler títulos, descrições, atribuições e datas de outros clientes, inclusive por download. A média também inclui registros fora do escopo autorizado.",
+      "correcao": "Centralizei o predicado de visibilidade na biblioteca e o apliquei às quatro leituras: cliente recebe somente seu usuario_id; técnico recebe todos; identidade incompleta ou papel inválido recebe nenhum. Detalhe não autorizado retorna null, com a mesma mensagem de chamado inexistente. Chamadas internas sem identidade de sessão conservam o escopo global legado; index.php continua exigindo login antes de qualquer rota.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido em dois contextos da busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro busca é concatenado sem escape no atributo value delimitado por aspas duplas e no texto do parágrafo de resultados. Aspas podem encerrar o atributo; tags inseridas no parâmetro tornam-se HTML executável.",
+      "impacto": "Um link de busca preparado por terceiro pode executar JavaScript na origem do painel quando aberto por um usuário autenticado, permitindo ler dados e realizar requisições com sua sessão.",
+      "correcao": "Codifiquei busca com htmlspecialchars usando ENT_QUOTES | ENT_SUBSTITUTE e UTF-8 nos dois pontos de saída. Tornei explícitos os mesmos parâmetros nas saídas textuais de título, descrição e técnico. A consulta recebe o texto original, sem escape HTML.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Credenciais identificadas como produção embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS possui fallback literal descrito como senha de produção e SMTP_API_KEY é uma constante literal. Uma cópia do pacote ou acesso ao repositório revela esses valores, e a aplicação reutiliza o fallback quando a variável de senha não está configurada.",
+      "impacto": "Se os valores ainda forem válidos, quem obtiver o código pode tentar acessar o banco ou utilizar a integração SMTP. A validade externa dessas credenciais não foi testada.",
+      "correcao": "Removi os dois valores do código: DB_PASS e SMTP_API_KEY vêm do ambiente, mantendo os nomes das constantes. DB_PASS distingue variável ausente de senha vazia explicitamente configurada. A conexão também trata mysqli_sql_exception com resposta genérica. A implantação deve fornecer as credenciais e revogar/rotacionar as antigas; remoção do fonte não revoga segredos já divulgados.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senhas armazenadas e verificadas com MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 19,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5 da senha e compara diretamente com usuarios.senha. schema.sql:7 limita a coluna a CHAR(32), e seed.sql armazena MD5 das senhas. Não há salt individual nem custo adaptativo; a mesma senha produz o mesmo hash e permite tentativas offline rápidas.",
+      "impacto": "Uma cópia do banco, inclusive obtida por F1 no original, permite testar dicionários de senha sem limitação pelo servidor e pode resultar em tomada de contas.",
+      "correcao": "Não alterado nesta entrega. Proponho ampliar a coluna para VARCHAR(255), usar password_hash/password_verify e manter verificação MD5 apenas na transição, com rehash após login válido ou redefinição de senha. Isso exige migração coordenada do banco já existente e política para contas que não voltam a entrar; trocar somente a função ou schema de instalação não migra produção.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Identificador de sessão mantido após autenticação",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 25,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O login preenche uid e papel na sessão iniciada antes da autenticação sem renovar seu identificador. Um identificador válido previamente conhecido por um atacante continua identificando a sessão depois que a vítima entra. O código também depende dos padrões externos para proteção do cookie.",
+      "impacto": "Se o atacante conseguir fixar um identificador conhecido no navegador da vítima, pode reutilizá-lo após o login para acessar a conta. A ausência de flags explícitas enfraquece a proteção do cookie em instalações com padrões permissivos.",
+      "correcao": "Adicionei session_regenerate_id(true) antes de gravar a identidade, modo estrito, somente cookies, HttpOnly e SameSite=Lax. Secure é ativado quando o servidor informa HTTPS, preservando execução HTTP local. Em terminação TLS por proxy, o servidor deve informar HTTPS corretamente.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Exportações compartilham arquivo previsível e persistente",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Toda chamada abre EXPORT_DIR/chamados.csv com modo w e só depois o relê com readfile. Duas requisições podem truncar ou sobrescrever o mesmo caminho entre gravação e leitura, produzindo conteúdo misturado ou de outra requisição. O arquivo persiste após a resposta em um diretório sob /var/www/painel; eventual acesso estático depende da configuração do servidor.",
+      "impacto": "Downloads podem ficar truncados ou entregar dados de outra exportação. Com escopos por cliente, a corrida pode furar o isolamento. Se o diretório estiver publicado, o arquivo persistente ainda pode ser obtido fora do fluxo autenticado.",
+      "correcao": "Usei php://temp exclusivo por chamada, com limite de 2 MiB em memória e transbordo para temporário privado. A resposta é enviada pelo próprio stream, sem caminho estável; finally libera resultado e stream, e falhas de preparação/gravação são sinalizadas. A consulta do CSV usa resultado não bufferizado. EXPORT_DIR foi mantida como constante, mas não é mais usada pelo exportador.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Valores de CSV podem ser interpretados como fórmulas",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Título e nome de técnico são passados diretamente a fputcsv. O quoting CSV protege delimitadores, mas não muda o valor da célula: conteúdo como =1+1 permanece iniciando por = após a leitura do arquivo e pode ser interpretado como fórmula por uma planilha.",
+      "impacto": "Se alguém puder cadastrar conteúdo nesses campos e um operador abrir o download numa planilha que interprete fórmulas, pode induzir cálculo, links ou acesso externo conforme os recursos e configurações da planilha. Não há rota de edição desses campos no pacote; a exploração depende da origem dos dados e do consumidor.",
+      "correcao": "Não alterado nesta entrega. Prefixar apóstrofo ou modificar células altera os valores entregues às integrações de CSV. É necessário definir política de consumo, como importação explícita de colunas como texto ou um modo separado para planilhas, antes de modificar o formato atual.",
+      "corrigido": false
+    },
+    {
+      "id": "F9",
+      "titulo": "Média divide por zero quando não há respostas",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "mediaResposta só incrementa qtd para registros com minutos_resposta não nulo, mas divide soma por qtd sem verificar se existe algum. Base vazia ou todos os tempos nulos deixam qtd em zero. Além disso, todos os tempos são transferidos ao PHP apenas para obter um agregado.",
+      "impacto": "No PHP 8, DivisionByZeroError interrompe a listagem. O mesmo caso ocorreria para Bruno após restringir corretamente o escopo, pois seus chamados de exemplo ainda não têm resposta. Em bases grandes, a implementação original também transfere e percorre dados desnecessários.",
+      "correcao": "Substituí a acumulação por AVG no banco e converti resultado nulo para 0.0. Mantive a exclusão de tempos nulos e o escopo de visibilidade. A expressão usa um literal aproximado para preservar a precisão float da divisão anterior, evitando o arredondamento decimal de AVG sobre inteiros.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Consultas adicionais por chamado para nome de técnico",
+      "arquivo": "code/lib.php",
+      "linha": 85,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "O laço de listarChamados chama tecnicoNome, que executa SELECT para cada tecnico_id não nulo, inclusive para IDs repetidos. exportarCsv repete o padrão nas linhas originais 136–137. São uma consulta principal mais uma por chamado atribuído.",
+      "impacto": "O número de viagens ao banco cresce com os chamados listados ou exportados, aumentando latência e carga mesmo quando poucos técnicos se repetem.",
+      "correcao": "Usei LEFT JOIN com usuarios e COALESCE para resolver tecnico_nome na própria consulta de listagem e exportação. Mantive a chave tecnico_nome, o marcador - para ausência de técnico e a função tecnicoNome com sua assinatura existente.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Parâmetros em formato de array causam erro ou coerção indevida",
+      "arquivo": "code/index.php",
+      "linha": 21,
+      "linha_fim": 73,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 100,
+      "mecanismo": "PHP permite parâmetros como login[]=ana e busca[]=x. index.php passa esses arrays diretamente às funções tipadas como string, causando TypeError. ver[]=101 também chega ao cast de inteiro de um array, que não representa o ID textual enviado.",
+      "impacto": "Requisições malformadas podem causar HTTP 500 em login ou listagem e comportamento inesperado no detalhe, em vez de uma rejeição controlada.",
+      "correcao": "Validei que login/senha POST e busca/ver/export GET sejam strings quando presentes; outros tipos recebem HTTP 400 antes das chamadas. Os nomes e o comportamento dos parâmetros escalares foram preservados.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "MD5 e coluna CHAR(32) não foram migrados (F5).",
+      "porque": "Uma migração segura exige DDL no banco existente, verificação dupla temporária e política de atualização/redefinição. Alterar só arquivos de instalação não atualiza a base em produção. O risco permanece explicitamente aberto."
+    },
+    {
+      "o_que": "Não prefixei valores de CSV para neutralizar fórmulas (F8).",
+      "porque": "A transformação altera o conteúdo consumido por integrações. A política de importação como texto ou de um modo específico para planilhas precisa ser definida; o risco permanece aberto."
+    },
+    {
+      "o_que": "Chamadas internas à biblioteca sem identidade de sessão mantêm acesso global.",
+      "porque": "As assinaturas não recebem usuário e são usadas por exportação noturna, relatório e faturamento. Preservar esse uso evita exigir uma sessão web artificial. index.php exige autenticação; sessões com identidade válida recebem escopo e identidades incompletas ou inválidas são negadas."
+    },
+    {
+      "o_que": "Assinaturas, mysqli, nomes e caminhos dos cinco arquivos, schema e seed foram preservados.",
+      "porque": "São a base de compatibilidade do pacote. A intervenção ficou nas consultas, validação, saída, sessão e configuração, sem reescrever a aplicação ou adicionar dependências."
+    },
+    {
+      "o_que": "Rótulos de status e prioridade, ordem das colunas HTML, rotas e curingas LIKE foram mantidos.",
+      "porque": "São valores ou comportamentos consumidos externamente. A complexidade de rotuloPrioridade não demonstra por si só uma falha; seus casos de fronteira foram caracterizados."
+    },
+    {
+      "o_que": "Não adicionei paginação, novas rotas, persistência do CSV nem uma nova camada de arquitetura.",
+      "porque": "Isso ampliaria o escopo e poderia mudar o conjunto de resultados ou a forma de integração. O caminho de arquivo persistente não faz parte do manifesto; a constante EXPORT_DIR foi conservada."
+    },
+    {
+      "o_que": "Não revoguei segredos em serviços externos nem removi arquivos históricos de produção.",
+      "porque": "O pacote contém somente código e dados de exemplo; não há acesso confirmado aos serviços ou ao diretório implantado. A correção remove o uso dos segredos embutidos e a geração do arquivo compartilhado, mas a implantação deve rotacionar credenciais e eliminar CSVs históricos."
+    }
+  ]
+}

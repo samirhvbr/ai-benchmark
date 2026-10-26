@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.264`
+**Versão atual:** `0.2.265`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.265` — 2026-10-26 — results/ adds GPT-6.1-sol at high as a new agent: three runs (626, 637, 727), official at 637, 12th
+
+- `gpt-6.1-sol-high/run-1..3` (DF, OI, MO): 626, 637 and 727, Silver; the published score is the middle one, **637**, 12th, official from the start; the third run, 727, is the best of the nine deliveries of this
+  date. Made through the unattended lab (Codex CLI 0.159.3, the VM's stored ChatGPT login, approvals and sandbox off as the lab records for Codex, one message and no operator reply): 9 to 11 minutes and
+  0.64 to 0.70 million tokens each (the log keeps no cost).
+- It scoped the SLA average to the logged-in client in all three runs (COMP-003, −30, charged to SEC-017's C5), as GPT-6.1-sol at xhigh did in each of its runs, so compatibility is 70. The third run also fixed
+  the CSV formula injection and the nested ifs and shipped two test files of its own, kept as delivered. Explanation 44 to 46 of 50; architecture 0.
+- Instance notes: the section "Runs of 2026-10-26" gains the last three labels and the agent's bullet. `comments.json` gains the agent's reading. `tests/test_saturacao.py` follows the published figures
+  (40 agents, 101 runs).
 
 ### `0.2.264` — 2026-10-26 — results/ adds GPT-6-luna at xhigh as a new agent: three runs (633, 643, 655), official at 643, 10th
 

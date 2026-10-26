@@ -154,5 +154,9 @@
   "gpt-6-luna-xhigh": {
     "en": "Fixes 9 or 10 of the 13 flaws, and in its third run all seven security flaws, the CSV formula injection and the MD5 passwords among them (250 of 250). Two runs lose 15 points because the CSV guard rewrites the empty technician cell as '-, the file-handle leak is fixed without being reported, and nothing is done on architecture or clean code. Compatibility stays at 100.",
     "pt_BR": "Corrige 9 ou 10 das 13 falhas e, no terceiro run, as sete de segurança, incluindo a injeção de fórmula no CSV e o MD5 (250 de 250). Dois runs perdem 15 pontos porque o filtro do CSV reescreve a célula vazia do técnico como '-, o vazamento de file handle é corrigido sem ser reportado e nada é feito em arquitetura nem em código limpo. A compatibilidade fica em 100."
+  },
+  "gpt-6.1-sol-high": {
+    "en": "The best explanations of the three agents added on 2026-10-26 (44 to 46 of 50) and the best single run among them, 727, which also fixes the CSV formula injection and flattens the nested ifs. In all three runs it scopes the SLA average to the logged-in client, a contracted value changed (−30), as the same model did at xhigh; architecture stays at 0.",
+    "pt_BR": "As melhores explicações dos três agentes adicionados em 26/10/2026 (44 a 46 de 50) e o melhor run entre eles, 727, que também corrige a injeção de fórmula no CSV e desfaz os ifs aninhados. Nos três runs restringe a média de SLA ao cliente logado, um valor contratado alterado (−30), como o mesmo modelo fez em xhigh; a arquitetura fica em 0."
   }
 }

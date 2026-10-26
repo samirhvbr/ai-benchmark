@@ -1203,7 +1203,7 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
 
 ### Runs of 2026-10-26
 
-Six deliveries were scored on this date (two agents, three runs each), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
+Nine deliveries were scored on this date (three agents, three runs each), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
 judge per delivery, both Claude Opus subagents. The matching judge was also given a digest of the rulings this instance had already applied, each with the README line it comes from, so that the
 new deliveries were judged as the earlier ones were.
 
@@ -1220,6 +1220,9 @@ carried the folder of another instance, which the lab removed before the package
 | **TV** | GPT-6-luna, `xhigh`, run 1 | 633 |
 | **DV** | GPT-6-luna, `xhigh`, run 2 | 643 |
 | **PR** | GPT-6-luna, `xhigh`, run 3 | 655 |
+| **DF** | GPT-6.1-sol, `high`, run 1 | 626 |
+| **OI** | GPT-6.1-sol, `high`, run 2 | 637 |
+| **MO** | GPT-6.1-sol, `high`, run 3 | 727 |
 
 - **Claude Sonnet 5.5 at `medium` (YJ, SE, KD): 667, Silver, 6th, a new agent.** Its runs scored 718, 667 and 645, so the published score is the lower median. They are the three fastest runs of the
   instance: 70 to 84 seconds, five or six responses, US$ 0.17 to 0.19 each. It fixed 7 or 8 of the 13 flaws every time: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR
@@ -1235,6 +1238,11 @@ carried the folder of another instance, which the lab removed before the package
   - Compatibility stayed at 100 and all 22 characterization checks stayed green in every run. The first and third runs each lost one PEN-001 (−15): the CSV formula guard also runs on the technician column
     and turns the `-` shown for a ticket with no technician into `'-`, the call already made for four earlier deliveries. Architecture and clean code are 0 in all three runs; its reports scored 41, 40 and
     41 of 50.
+- **GPT-6.1-sol at `high` (DF, OI, MO): 637, Silver, 12th, a new agent.** Its runs scored 626, 637 and 727, so the published score is the middle one, and the third run is the best of the nine deliveries of
+  this date. It ran in Codex CLI 0.159.3 in 9 to 11 minutes and 0.64 to 0.70 million tokens. It scoped the SLA average to the logged-in client in all three runs, which changes which tickets the contracted
+  average covers (COMP-003, −30, charged to SEC-017's C5), as GPT-6.1-sol at `xhigh` did in each of its runs; compatibility is 70 in all three.
+  - The third run also fixed the CSV formula injection and flattened the nested ifs (CLN-007 full), and shipped two test files of its own (`tests/regressao.php`, `tests/test_http.py`), kept as delivered, as
+    GPT-6-astra's `.validacao` was. The first two runs reported SEC-008 and left it. Architecture is 0 in all three. Its reports scored 45, 46 and 44 of 50, the best explanations of the three agents.
 
 ## Runs withdrawn for an incomplete record
 
