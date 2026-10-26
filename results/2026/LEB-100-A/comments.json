@@ -146,5 +146,9 @@
   "nex-n2.5-pro-high": {
     "en": "Too slow to finish three runs: 10h 03min and 19h 35min, and a third voided after more than 21 hours when the operator's connection failed, so it stays at two and publishes the lower. Both runs were strong on security and both broke the contract: the first made every function return nothing without a logged-in user (8 checks, −160, 317), the second made the CSV export throw for a caller that has already printed output (3 checks, 428).",
     "pt_BR": "Lento demais para fechar três runs: 10h 03min e 19h 35min, e um terceiro anulado depois de mais de 21 horas, quando a conexão do operador caiu; fica com dois e publica o menor. Os dois runs foram fortes em segurança e os dois quebraram o contrato: o primeiro fez toda função não devolver nada sem usuário logado (8 checagens, −160, 317), o segundo fez a exportação CSV lançar exceção para quem já imprimiu saída (3 checagens, 428)."
+  },
+  "claude-sonnet-5.5-medium": {
+    "en": "The three fastest runs of the instance, a minute and a half and under US$ 0.20 each, for 667. It fixes both injections and the XSS, the session, the IDOR, the division by zero and the N+1 query, and keeps compatibility at 100 in all three runs. It reports the CSV formula injection and the MD5 passwords and leaves both, and touches nothing in architecture; the same model scores 809 at xhigh.",
+    "pt_BR": "Os três runs mais rápidos da instância, um minuto e meio e menos de US$ 0,20 cada, para 667. Corrige as duas injeções e o XSS, a sessão, o IDOR, a divisão por zero e o N+1, e mantém a compatibilidade em 100 nos três runs. Reporta a injeção de fórmula no CSV e o MD5 e deixa os dois como estão, e não mexe em arquitetura; o mesmo modelo marca 809 em xhigh."
   }
 }

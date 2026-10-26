@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.262`
+**Versão atual:** `0.2.263`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.263` — 2026-10-26 — results/ adds Claude Sonnet 5.5 at medium as a new agent: three runs (718, 667, 645), official at 667, 6th
+
+- `claude-sonnet-5.5-medium/run-1..3` (YJ, SE, KD): 718, 667 and 645, Silver; the published score is the lower median, **667**, 6th, official from the start. Made through the unattended lab (Claude Code 2.1.295
+  on the owner's Anthropic API key, auto permission mode, one message and no operator reply), not by hand like the earlier runs of the instance: 70 to 84 seconds and US$ 0.17 to 0.19 each, the three fastest
+  runs of the instance.
+- 7 or 8 of the 13 flaws fixed per run, compatibility 100, no penalty, explanation 39 to 42 of 50. It reports the CSV formula injection and the MD5 passwords in all three runs and leaves both as they are;
+  architecture 0.
+- Judged like the others: one matching judge and one blind EXPL judge per delivery, the matching judge also given a digest of the rulings already applied to the instance.
+- Instance notes: a new section, "Runs of 2026-10-26" (how the lab runs differ from the earlier ones, the table of labels, one bullet). `comments.json` gains the agent's reading.
 
 ### `0.2.262` — 2026-10-26 — LEB-300-A's aggregate adds GPT-6-astra at `ultra` and brings six GPT configurations to three runs: 29 agents
 

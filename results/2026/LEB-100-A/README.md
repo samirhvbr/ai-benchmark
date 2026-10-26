@@ -1201,6 +1201,32 @@ all ten runs; the legacy code still scores 22/22 with every probe PLANTADA.
     multi-agent Sonnet attempt had. The model never received the message. It is in
     `claude-fable-5.1-xhigh/void-3/`, and Fable still needs its third run.
 
+### Runs of 2026-10-26
+
+Three deliveries were scored on this date (one agent, three runs each), judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL
+judge per delivery, both Claude Opus subagents. The matching judge was also given a digest of the rulings this instance had already applied, each with the README line it comes from, so that the
+new deliveries were judged as the earlier ones were.
+
+They differ from every run above in how they were made: through the unattended lab, not by hand. Each got the fixed first message once, in a single non-interactive session (`claude -p` in Claude Code 2.1.295) that ran to its own end
+under a 90-minute cap, so no operator reply was possible and none was needed (`operator_replies` 0). Claude Code ran in its auto permission mode on the owner's Anthropic API key, and `run.json` carries the cost the client counted. Every run was made as the unprivileged user `leb` on a machine of 20 vCPUs and 15.6 GiB (`bench1` to `bench3`) restored from its snapshot minutes before, with PHP 8.4.26 and MariaDB
+11.8.6 installed and GitHub blocked as in *Execution environment*, and the package of every earlier run (`34e38bc5…a15f`, byte for byte) as the only instance folder in `/srv`: the snapshots still
+carried the folder of another instance, which the lab removed before the package went in.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **YJ** | Claude Sonnet 5.5, `medium`, run 1 | 718 |
+| **SE** | Claude Sonnet 5.5, `medium`, run 2 | 667 |
+| **KD** | Claude Sonnet 5.5, `medium`, run 3 | 645 |
+
+- **Claude Sonnet 5.5 at `medium` (YJ, SE, KD): 667, Silver, 6th, a new agent.** Its runs scored 718, 667 and 645, so the published score is the lower median. They are the three fastest runs of the
+  instance: 70 to 84 seconds, five or six responses, US$ 0.17 to 0.19 each. It fixed 7 or 8 of the 13 flaws every time: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR
+  (SEC-017), the division by zero, the file-handle leak and the N+1 query; one run also took the hardcoded secrets out (SEC-015) and another flattened the nested ifs (CLN-007).
+  - It reported the CSV formula injection (SEC-008) and the MD5 passwords (SEC-014) in all three runs and left both as they were, on purpose, so neither earns a fix. Security is 190 to 211 of 250 where
+    the same model scores 250 at `xhigh` and at `max`, and architecture is 0: none of the three names the dispatcher or the magic numbers. The same model scores 809 at `xhigh` and 807 at `max`.
+  - Compatibility stayed at 100 and no penalty was charged: the SLA average stays global, the web CSV is filtered to the client's own tickets while technicians and callers without a session still get every
+    ticket (enforcement, not COMP-003), and all 22 characterization checks stayed green. The file-handle leak is named only inside the finding about the shared export file in each run (C1 at half, as for
+    the other deliveries that do the same). Seven extra findings per run score nothing. Its reports scored 39, 42 and 41 of 50.
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and
