@@ -84,8 +84,8 @@ This instance is **active**. While it is, only the totals below are published: n
 | # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
 | 1 | `claude-sonnet-5.5-max` | **886** | Gold | 250 | 150 | 137 | 134 | 71 | 100 | 44 | 3/3 (932 · 863 · 886) |
-| 2 | `claude-sonnet-5.5-max-ultracode` | **878** | Gold | 250 | 164 | 139 | 144 | 64 | 75 | 42 | 1/3 |
-| 3 | `claude-opus-5.5-high` | **866** | Gold | 229 | 153 | 147 | 124 | 71 | 100 | 42 | 3/3 (848 · 866 · 866) |
+| 2 | `claude-opus-5.5-high` | **866** | Gold | 229 | 153 | 147 | 124 | 71 | 100 | 42 | 3/3 (848 · 866 · 866) |
+| 3 | `claude-sonnet-5.5-max-ultracode` | **866** | Gold | 250 | 156 | 139 | 134 | 71 | 75 | 41 | 3/3 (878 · 866 · 836) |
 | 4 | `claude-sonnet-5.5-xhigh` | **860** | Gold | 250 | 156 | 139 | 140 | 57 | 75 | 43 | 3/3 (860 · 911 · 849) |
 | 5 | `claude-sonnet-5.5-high` | **855** | Gold | 243 | 153 | 145 | 115 | 79 | 75 | 45 | 3/3 (897 · 855 · 811) |
 | 6 | `claude-opus-5.5-xhigh` | **845** | Gold | 232 | 153 | 139 | 131 | 71 | 75 | 44 | 3/3 (886 · 822 · 845) |

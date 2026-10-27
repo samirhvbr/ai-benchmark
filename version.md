@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.270`
+**Versão atual:** `0.2.271`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.271` — 2026-10-27 — LEB-300-A's aggregate adds runs 2 and 3 of Claude Sonnet 5.5 at `max` in ultracode mode: three runs (878, 866, 836), official at 866, Gold
+
+- `claude-sonnet-5.5-max-ultracode` goes from one run to three: **878**, **866** and **836**, all Gold, so its published score is the median, **866**, and the agent is now official (3rd, level with `claude-opus-5.5-high`).
+  Runs 2 and 3 were made the same way as run 1 (Claude Code 2.1.295, `/effort ultracode` first, the two stage messages in one session, the owner's personal Claude subscription), on the same package and matrix, and judged like it:
+  one matching judge and one blind EXPL judge, both Claude Opus subagents. Run 2 scores 866: security 250, architecture 156, bugs 139, performance 134, clean code 71, compatibility 75 (a login lockout that answers 429,
+  COMP-008) and explanation 41. Run 3 scores 836: security 243, architecture 128, bugs 139, performance 134, clean code 71, compatibility 75 (a login lockout that answers 401, COMP-008) and explanation 46.
+- Run 2 ended on the pool's budget: the lab stopped the client at the 180-minute wall-clock cut, 62 minutes into stage 2, so it is scored on the folder it left, and it has no cost recorded (its figures are the tokens of the
+  transcripts). Run 3 took 133 minutes and US$ 27.82 by the client's own estimate. The three runs used 59, 10 and 13 subagents of the same model; run 3 had one safety stop in a subagent, from which the session recovered.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.270` — 2026-10-27 — LEB-300-A's aggregate adds Claude Sonnet 5.5 at `max` in Claude Code's multi-agent mode: one run (878), Gold, 2nd
 

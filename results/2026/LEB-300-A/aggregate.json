@@ -83,54 +83,6 @@
       }
     },
     {
-      "agent": "claude-sonnet-5.5-max-ultracode",
-      "score": 878,
-      "grade": "Gold",
-      "runs_count": 1,
-      "categories": {
-        "SEC": 250,
-        "ARCH": 164,
-        "BUG": 139,
-        "PERF": 144,
-        "CLN": 64,
-        "COMP": 75,
-        "EXPL": 42
-      },
-      "cost_usd": 30.42,
-      "wall_minutes": 108.2,
-      "tokens": {
-        "input": 932,
-        "output": 1078570,
-        "cache": 55936656,
-        "total": 57016158
-      },
-      "runs": [
-        {
-          "run": 1,
-          "total": 878,
-          "cost_usd": 30.42,
-          "wall_minutes": 108.2,
-          "tokens": {
-            "input": 932,
-            "output": 1078570,
-            "cache": 55936656,
-            "total": 57016158
-          }
-        }
-      ],
-      "model": {
-        "name": "Claude Sonnet 5.5",
-        "id": "claude-sonnet-5-5",
-        "provider": "Anthropic",
-        "reasoning_effort": "max",
-        "client_mode": "ultracode"
-      },
-      "comment": {
-        "en": "On a single run, in Claude Code's multi-agent mode (ultracode): security 250 of 250, architecture 164 of 200, bugs 139 of 150, performance 144 of 150 and 64 of 100 in clean code, with no penalty. It fixed 34 of the 36 planted flaws, its report named 28 of the 36, and the report was rated 42 of 50. It lost 25 compatibility points for one security change beyond what the manifest contracts: after 10 failed logins from one address, or 100 from any, the login refuses even the right password for 15 minutes. The charge is a judgment call, since the earlier charges for a login lockout were for ones that answer 429 and this one answers 401, a status the manifest lists. The agent ran 4 workflows with 59 subagents, all on the same model, in 108 minutes and US$ 30.42 by the client's own estimate. One run of three: it is not official and could move.",
-        "pt_BR": "Com uma execução só, no modo multiagente do Claude Code (ultracode): segurança 250 de 250, arquitetura 164 de 200, bugs 139 de 150, desempenho 144 de 150 e 64 de 100 em código limpo, sem penalidade. Corrigiu 34 das 36 falhas plantadas, o relatório apontou 28 das 36 e teve 42 de 50. Perdeu 25 pontos de compatibilidade por uma mudança de segurança além do que o manifesto contrata: depois de 10 logins errados de um mesmo endereço, ou 100 de qualquer um, o login recusa até a senha certa por 15 minutos. A cobrança é uma decisão de julgamento: as anteriores por bloqueio de login foram para os que respondem 429, e este responde 401, um status que o manifesto lista. O agente rodou 4 workflows com 59 subagentes, todos no mesmo modelo, em 108 minutos e US$ 30,42 pela estimativa do próprio cliente. Uma execução de três: não é oficial e pode mudar."
-      }
-    },
-    {
       "agent": "claude-opus-5.5-high",
       "score": 866,
       "grade": "Gold",
@@ -199,6 +151,78 @@
       "comment": {
         "en": "Three runs (848, 866 and 866), so the published score is their median, 866, 18 points between the best and the worst, all Gold. Security 232, 229 and 229 of 250, architecture 153, 153 and 150 of 200, bugs 137, 147 and 147 of 150, performance 134, 124 and 128 of 150 and clean code 71, 71 and 68 of 100, in the order of the runs. Compatibility was 75, 100 and 100: run 1 lost 25 points (COMP-008, a change to the public contract). No penalty was charged. The reports covered 28, 27 and 27 of the 36 planted flaws and the code fixed 32, 33 and 33, with 2, 0 and 0 false positives and 23, 26 and 18 extra findings; the reports were rated 46, 42 and 44 of 50. The sessions took 56, 50 and 43 minutes for US$ 8.77, 7.57 and 7.97. For comparison, the same model at xhigh effort scored 845 (3 runs).",
         "pt_BR": "Três execuções (848, 866 e 866), então a nota publicada é a mediana, 866, com 18 pontos de diferença entre a melhor e a pior, todas Gold. Segurança 232, 229 e 229 de 250, arquitetura 153, 153 e 150 de 200, bugs 137, 147 e 147 de 150, desempenho 134, 124 e 128 de 150 e código limpo 71, 71 e 68 de 100, na ordem das execuções. A compatibilidade foi 75, 100 e 100: a execução 1 perdeu 25 pontos (COMP-008, uma mudança no contrato público). Nenhuma penalidade foi cobrada. Os relatórios cobriram 28, 27 e 27 das 36 falhas plantadas e o código corrigiu 32, 33 e 33, com 2, 0 e 0 falsos positivos e 23, 26 e 18 achados extras; os relatórios tiveram 46, 42 e 44 de 50. As sessões levaram 56, 50 e 43 minutos por US$ 8,77, 7,57 e 7,97. Para comparar, o mesmo modelo em esforço xhigh fez 845 (3 execuções)."
+      }
+    },
+    {
+      "agent": "claude-sonnet-5.5-max-ultracode",
+      "score": 866,
+      "grade": "Gold",
+      "runs_count": 3,
+      "categories": {
+        "SEC": 250,
+        "ARCH": 156,
+        "BUG": 139,
+        "PERF": 134,
+        "CLN": 71,
+        "COMP": 75,
+        "EXPL": 41
+      },
+      "cost_usd": null,
+      "wall_minutes": 179.0,
+      "tokens": {
+        "input": 618,
+        "output": 506633,
+        "cache": 67698918,
+        "total": 68206169
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 878,
+          "cost_usd": 30.42,
+          "wall_minutes": 108.2,
+          "tokens": {
+            "input": 932,
+            "output": 1078570,
+            "cache": 55936656,
+            "total": 57016158
+          }
+        },
+        {
+          "run": 2,
+          "total": 866,
+          "cost_usd": null,
+          "wall_minutes": 179.0,
+          "tokens": {
+            "input": 618,
+            "output": 506633,
+            "cache": 67698918,
+            "total": 68206169
+          }
+        },
+        {
+          "run": 3,
+          "total": 836,
+          "cost_usd": 27.82,
+          "wall_minutes": 133.5,
+          "tokens": {
+            "input": 656,
+            "output": 906672,
+            "cache": 59993597,
+            "total": 60900925
+          }
+        }
+      ],
+      "model": {
+        "name": "Claude Sonnet 5.5",
+        "id": "claude-sonnet-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "max",
+        "client_mode": "ultracode"
+      },
+      "comment": {
+        "en": "Three runs (878, 866 and 836), so the published score is their median, 866, 42 points between the best and the worst, all Gold. Security 250, 250 and 243 of 250, architecture 164, 156 and 128 of 200, bugs 139 in all three of 150, performance 144, 134 and 134 of 150 and clean code 64, 71 and 71 of 100, in the order of the runs. Every run lost 25 compatibility points (75): a login lockout that refuses the right password for 15 minutes, answering 429 in run 2 and 401 in runs 1 and 3. No penalty was charged. The reports covered 28, 29 and 30 of the 36 planted flaws and the code fixed 34, 32 and 30, with 1, 0 and 0 false positives and 33, 35 and 37 extra findings; the reports were rated 42, 41 and 46 of 50. This is Claude Code's multi-agent mode (ultracode): 59, 10 and 13 subagents of the same model. The sessions took 108, 179 and 133 minutes; run 2 was stopped at the 180-minute pool during the second stage, so it is scored on the folder it left and has no cost recorded (US$ 30.42 and 27.82 for the others). The same model at max effort without the mode scored 886 in about 66 minutes.",
+        "pt_BR": "Três execuções (878, 866 e 836), então a nota publicada é a mediana, 866, com 42 pontos de diferença entre a melhor e a pior, todas Gold. Segurança 250, 250 e 243 de 250, arquitetura 164, 156 e 128 de 200, bugs 139 nas três de 150, desempenho 144, 134 e 134 de 150 e código limpo 64, 71 e 71 de 100, na ordem das execuções. Todas perderam 25 pontos de compatibilidade (75): um bloqueio de login que recusa a senha certa por 15 minutos, respondendo 429 na execução 2 e 401 nas execuções 1 e 3. Nenhuma penalidade foi cobrada. Os relatórios cobriram 28, 29 e 30 das 36 falhas plantadas e o código corrigiu 34, 32 e 30, com 1, 0 e 0 falsos positivos e 33, 35 e 37 achados extras; os relatórios tiveram 42, 41 e 46 de 50. É o modo multiagente do Claude Code (ultracode): 59, 10 e 13 subagentes do mesmo modelo. As sessões levaram 108, 179 e 133 minutos; a execução 2 foi parada no pool de 180 minutos durante a segunda etapa, então é pontuada pela pasta que deixou e não tem custo registrado (US$ 30,42 e 27,82 nas outras). O mesmo modelo em esforço max sem o modo fez 886 em cerca de 66 minutos."
       }
     },
     {
