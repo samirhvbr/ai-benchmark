@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.271`
+**Versão atual:** `0.2.272`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.272` — 2026-10-27 — docs/model-safeguards.md records that Claude Fable 5.1's own safeguards stop the benchmark's tasks, with the count of blocked attempts per instance
+
+- New page `docs/model-safeguards.md`: what the stop looks like (an API error with `stop_reason: refusal`, about two seconds after the first message, before any response, so the work folder equals the package), how
+  the benchmark counts it (*blocked at the start* in the Default track; no outcome of its own in LEB-300-A and LEB-100-A, where a configuration with no completed run has no row) and the record so far: LEB-300-A at
+  `medium` 60 of 60 attempts blocked (36 on 2026-10-23 through an API key, 24 on 2026-10-27 through a Claude subscription token), LEB-D-300-A 8 of 11 at `high`, 3 of 8 at `medium` and the second attempt at `xhigh`,
+  and the two LEB-100-A runs voided in September and October after a mid-session stop. It also lists what is not known (which part of the task trips the safeguard; whether it changes over time).
+- `docs/new-series-design.md` points to it from the paragraph on refusals. No score, result file or protocol rule changes.
 
 ### `0.2.271` — 2026-10-27 — LEB-300-A's aggregate adds runs 2 and 3 of Claude Sonnet 5.5 at `max` in ultracode mode: three runs (878, 866, 836), official at 866, Gold
 

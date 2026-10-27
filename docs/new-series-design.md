@@ -279,7 +279,8 @@ The lab compares every attempt's folder with its package, so the split needs no 
 
 A safeguard can also refuse a message outright, with no response at all: the client then writes the refusal as an API-error message that still carries `stop_reason: "refusal"`, and
 the session ends there (Claude Fable 5.1 at `xhigh`, 2026-10-16, 13 seconds after the first message). That is a stop, not an API fault, so it is *blocked* (since 0.2.237) and, with the
-work folder untouched, *blocked at the start*; it is not a lab failure and it is not rerun by the lab.
+work folder untouched, *blocked at the start*; it is not a lab failure and it is not rerun by the lab. The count of Claude Fable 5.1's blocked attempts, instance by instance, is kept in
+`docs/model-safeguards.md`.
 
 The audit (§7) decides the outcome from the transcripts, with the lab's word for a budget it stopped. When the record cannot be
 attributed (no response, a session cut with no reason from the lab, work of a kind the audit does not know) it says
