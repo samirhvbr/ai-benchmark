@@ -1245,7 +1245,7 @@ carried the folder of another instance, which the lab removed before the package
   average covers (COMP-003, −30, charged to SEC-017's C5), as GPT-6.1-sol at `xhigh` did in each of its runs; compatibility is 70 in all three.
   - The third run also fixed the CSV formula injection and flattened the nested ifs (CLN-007 full), and shipped two test files of its own (`tests/regressao.php`, `tests/test_http.py`), kept as delivered, as
     GPT-6-astra's `.validacao` was. The first two runs reported SEC-008 and left it. Architecture is 0 in all three. Its reports scored 45, 46 and 44 of 50, the best explanations of the three agents.
-- **Claude Sonnet 5.5 at `high` (LI): 795, Gold, 3rd, one run so far.** It is the first of the three runs an official score needs (PROTOCOL §4), so the row reads 1/3. It ran in 4.5 minutes and 0.82 million
+- **Claude Sonnet 5.5 at `high`, run 1 (LI): 795, Gold, 3rd on its own.** It was the first of the three runs an official score needs (PROTOCOL §4); the other two are in *Runs of 2026-10-27*, and the published score is 747. It ran in 4.5 minutes and 0.82 million
   tokens, US$ 0.51 by the client's count. It fixed 9 of the 13 flaws: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR (SEC-017), the hardcoded secrets (SEC-015), the division by
   zero, the file-handle leak, the N+1 query and the nested ifs (CLN-007).
   - It reported the CSV formula injection (SEC-008) and the MD5 passwords (SEC-014) and left both as they were, on purpose, the second with a migration plan, so neither earns a fix: security is 211 of 250,
@@ -1254,7 +1254,7 @@ carried the folder of another instance, which the lab removed before the package
   - Compatibility stayed at 100 and no penalty was charged: the new code adds no defect, the listing and the web CSV are filtered to the client's own tickets while technicians and callers without a session
     still get every ticket (enforcement, not COMP-003), the SLA average stays global, and all 22 characterization checks stayed green. The file-handle leak is named only as a sub-item of the finding about the
     shared export file (C1 at half). Twelve extra findings score nothing. Its report scored 45 of 50.
-- **Claude Opus 5.5 at `high` (XT): 733, Silver, 6th, one run so far.** Like the Sonnet 5.5 run above it is the first of the three runs an official score needs, so the row reads 1/3. It ran in 6.3 minutes
+- **Claude Opus 5.5 at `high`, run 1 (XT): 733, Silver, 6th on its own.** Like the Sonnet 5.5 run above it was the first of the three runs an official score needs; the other two are in *Runs of 2026-10-27*, and the published score is 767. It ran in 6.3 minutes
   and 0.87 million tokens, US$ 1.14 by the client's count, and fixed 8 of the 13 flaws: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR (SEC-017), the hardcoded secrets
   (SEC-015), the division by zero, the file-handle leak and the N+1 query. It escaped the search term on the utf8mb4 connection instead of binding it, and the probe confirms the injection gone.
   - It reported the CSV formula injection (SEC-008) and the MD5 passwords (SEC-014) and left both as they were, on purpose, so security is 211 of 250 as for the Sonnet 5.5 run, and it named the dispatcher's
@@ -1263,6 +1263,66 @@ carried the folder of another instance, which the lab removed before the package
   - Compatibility stayed at 100 and no penalty was charged: the new code adds no defect, the listing and the web CSV are filtered to the client's own tickets while technicians and callers without a session
     still get every ticket (enforcement, not COMP-003), the SLA average stays global, and all 22 characterization checks stayed green. The file-handle leak is named only as an item of the finding about the
     on-disk export file (C1 at half). Ten extra findings score nothing. Its report scored 45 of 50.
+
+### Runs of 2026-10-27
+
+Ten deliveries were scored on this date (four agents): the second and third runs of Claude Opus 5.5 and of Claude Sonnet 5.5 at `high`, whose first runs are in *Runs of 2026-10-26*, and three runs each of Claude Haiku 5.5
+at `high` and at `xhigh`, two new agents. They were judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL judge per delivery, both
+Claude Opus subagents, the matching judge again given the digest of the rulings this instance had already applied.
+
+They were made as the runs of 2026-10-26 were, through the unattended lab: one `claude -p` session of Claude Code 2.1.295 per run, which got the fixed first message once and ran to its own end under a 90-minute cap
+(`operator_replies` 0), in the client's auto permission mode, as the unprivileged user `leb` on a restored machine with GitHub blocked and the package of every earlier run as the only instance folder in `/srv`. The one
+difference is the account: these sessions ran on the long-lived token of the owner's personal Claude account and not on his Anthropic API key, so the cost `run.json` carries is the client's own accounting at list
+prices and not a charge. The lab records the route of each attempt (`auth` in its `caso.json`), and the bring step now words the billing line from it.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **FR** | Claude Opus 5.5, `high`, run 2 | 767 |
+| **JW** | Claude Opus 5.5, `high`, run 3 | 804 |
+| **DH** | Claude Sonnet 5.5, `high`, run 2 | 737 |
+| **FZ** | Claude Sonnet 5.5, `high`, run 3 | 747 |
+| **GT** | Claude Haiku 5.5, `high`, run 1 | 633 |
+| **LH** | Claude Haiku 5.5, `high`, run 2 | 644 |
+| **JT** | Claude Haiku 5.5, `high`, run 3 | 622 |
+| **HX** | Claude Haiku 5.5, `xhigh`, run 1 | 646 |
+| **KK** | Claude Haiku 5.5, `xhigh`, run 2 | 627 |
+| **GD** | Claude Haiku 5.5, `xhigh`, run 3 | 643 |
+
+- **Claude Opus 5.5 at `high` (XT, FR, JW): 767, Gold, 4th.** Its runs scored 733, 767 and 804, so the published score is the middle one and the row, one run so far on 2026-10-26, is now official. They ran in 6.3 to 7.6
+  minutes and 0.87 to 1.08 million tokens, US$ 1.14 to 1.59 by the client's count, and fixed 8, 10 and 10 of the 13 flaws: both injections and the XSS (SEC-001, SEC-003), the session fixation, the IDOR (SEC-017), the
+  hardcoded secrets (SEC-015), the division by zero, the file-handle leak and the N+1 query every time. The second and third also migrated the MD5 passwords (SEC-014) and flattened the nested ifs (CLN-007), which the
+  first named and left.
+  - It reported the CSV formula injection (SEC-008) in all three runs and left it as it was, on purpose, so security is 211, 233 and 233 of 250. Architecture is 50, 0 and 25: the first and third name the dispatcher's mixed
+    responsibilities (ARCH-002) without refactoring it, the second never names it, and none of the three mentions the magic numbers (ARCH-009). Only the third names the file-handle leak (BUG-004) as a finding of its own,
+    where the first two name it inside the finding about the export file (C1 at half), so bugs are 150 there and 139 in the other two.
+  - Compatibility stayed at 100, no penalty was charged and all 22 characterization checks stayed green in every run. Their reports scored 45, 45 and 46 of 50, and ten to twelve extra findings per run score nothing. The
+    same model scores 717 at `xhigh`.
+- **Claude Sonnet 5.5 at `high` (LI, DH, FZ): 747, Silver, 6th.** Its runs scored 795, 737 and 747, so the published score is the middle one: the first run's 795 stood 3rd on its own, and the median is 48 points lower.
+  They ran in 2.7 to 5.0 minutes and 0.38 to 1.06 million tokens, US$ 0.40 to 0.69, and fixed 9, 8 and 10 of the 13 flaws.
+  - The second run (DH) kept the database password's literal fallback by decision, so SEC-015 is half, and left both the CSV formula injection and the MD5 passwords (security 203 of 250). It flattened the nested ifs and
+    named neither the dispatcher nor the magic numbers (architecture 0). Its report discloses that the agent tried to connect to the MariaDB already running on its machine, as root and with the password from `config.php`;
+    the tool call was blocked and the agent did not retry. The judge recorded it for the operator and it is not scored.
+  - The third run (FZ) is the only one of the three to fix the CSV formula injection (SEC-008), and its guard also runs on the technician column, which turns the `-` shown for a ticket with no technician into `'-`: PEN-001
+    (−15), the call already made for earlier deliveries. It left the MD5 passwords (security 228), and architecture is 0.
+  - Compatibility stayed at 100 and no COMP-003 was charged in any of the three; all 22 characterization checks stayed green. Their reports scored 45 each, and nine to twelve extra findings per run score nothing. The same
+    model scores 809 at `xhigh`, 807 at `max` and 667 at `medium`.
+- **Claude Haiku 5.5 at `xhigh` (HX, KK, GD): 643, Silver, 12th, a new agent.** Its runs scored 646, 627 and 643, so the published score is the middle one. They ran in 10.4 to 14.1 minutes and 3.8 to 6.3 million tokens,
+  US$ 0.37 to 0.65, and fixed 8, 8 and 10 of the 13 flaws: both injections and the XSS, the session fixation, the IDOR, the hardcoded secrets, the division by zero and the N+1 query in every run.
+  - Security is 211, 233 and 250 of 250: the first run left the CSV formula injection and the MD5 passwords, the second migrated MD5 and left the formula injection, and the third fixed all seven security flaws. The
+    file-handle leak (BUG-004) was fixed without being reported in the first and third runs (a silent fix: the fix scores, the finding does not) and half fixed in the second, so bugs are 129 in all three. Clean code is 0
+    in all three, the nested ifs never being named, and architecture is 12, 0 and 0: only the first run mentions the magic numbers (ARCH-009) and none names the dispatcher.
+  - Compatibility stayed at 100 in the first run and all 22 characterization checks stayed green in all three. The second and third each lost one COMP-003 (−30, compatibility 70): `formatarStatus` now returns
+    "Desconhecido" instead of "Resolvido" for any status other than 1, 2 or 3, a changed return value that the management report matches on, coming from an extra finding and not from a planted fix, the ruling already
+    applied to earlier deliveries. Their reports scored 44, 45 and 44 of 50, eight to thirteen extra findings per run score nothing, and no run has a false positive. Claude Haiku 4.5, the previous small Claude, scored 317.
+- **Claude Haiku 5.5 at `high` (GT, LH, JT): 633, Silver, 16th, a new agent.** Its runs scored 633, 644 and 622, so the published score is the first, 10 points below the same model at `xhigh`. They ran in 5.8 to 9.0 minutes
+  and 2.0 to 3.0 million tokens, US$ 0.08 to 0.25, and fixed 10, 10 and 9 of the 13 flaws.
+  - Security is 246, 250 and 228 of 250: the CSV formula injection (SEC-008) was fixed in all three runs, the MD5 passwords (SEC-014) in the first two, so the first two fixed all seven security flaws and the third left
+    MD5. The file-handle leak was fixed without being reported in all three (bugs 129), the nested ifs were never named (clean code 0), and architecture is 25, 0 and 0: only the first run names the dispatcher's mixed
+    responsibilities.
+  - Compatibility is 40, 70 and 70, and all 22 characterization checks stayed green. The first run lost two COMP-003 (−30 each): its web CSV export now answers HTTP 403 to every non-technician while the "Exportar CSV"
+    link is still shown to clients, so a client can no longer export the tickets it is entitled to see (charged to SEC-017's C5, as the same visibility change was for earlier deliveries), and `formatarStatus` returns
+    "Desconhecido" for any status other than 1, 2 or 3. The second and third lost one each, for `formatarStatus`. Their reports scored 43, 45 and 45 of 50, seven or eight extra findings per run score nothing, and no run
+    has a false positive.
 
 ## Runs withdrawn for an incomplete record
 

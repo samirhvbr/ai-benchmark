@@ -1,0 +1,58 @@
+{
+  "agent": "claude-haiku-5.5-xhigh",
+  "model": {
+    "name": "Claude Haiku 5.5",
+    "id": "claude-haiku-5-5",
+    "provider": "Anthropic",
+    "reasoning_effort": "xhigh",
+    "exact_version": null,
+    "training_cutoff": "2026-06",
+    "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-10-27",
+  "evaluated_on": "2026-10-27",
+  "client": {
+    "name": "Claude Code",
+    "version": "2.1.295"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-10-27T09:19:27-03:00",
+    "ended": "2026-10-27T09:30:43-03:00",
+    "log": "archived off the VM (~/.claude/projects/-srv-leb-100-a/d65a93f6-6706-49f4-94a4-bd4b0b21a6be.jsonl), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench4 (100.64.100.116) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored from its snapshot `leb-d-300-a` minutes before the run by the unattended lab driver, with the work folder as the only instance folder in /srv (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "Claude Code 2.1.295 `-p` result of the session (total_cost_usd and modelUsage, the client's own accounting at list prices, run on the owner's personal Claude account (long-lived token), not billed per token); the elapsed time is the session's span in its own log, with no operator wait in it",
+    "elapsed_seconds": 676.0,
+    "tokens": {
+      "input": 106,
+      "output": 134985,
+      "cache": 5725449,
+      "total": 5860540
+    },
+    "usd_estimate": 0.52,
+    "note": "every answer came from Claude Haiku 5.5"
+  },
+  "logs": "archived off the VM (~/.claude/projects/-srv-leb-100-a/d65a93f6-6706-49f4-94a4-bd4b0b21a6be.jsonl), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "Run 1 of this agent, made through the unattended lab (laboratorio-100.py) and not by hand like the other runs of this instance: one `claude -p` session that got the fixed first message once and ran to its own end under a 90 minute cap, so no operator reply was possible and none was needed (operator_replies 0; the 30 turns of the mode count the operator's messages, and the agent used the first). Permissions: the client's auto permission mode (a classifier approves or refuses each action; no action was refused). The client is Claude Code 2.1.295 (the earlier runs of this instance used Claude Code 2.1.285). The work folder was /srv/leb-100-a, the only instance folder on the machine: the snapshot's folder of another instance was removed before the package went in. The session ran on the owner's personal Claude account (its long-lived token), not on an API key, so the cost is the client's own accounting at list prices, not a charge."
+}

@@ -1,0 +1,358 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Claude Haiku 5.5",
+    "version": "not recorded",
+    "provider": "Anthropic"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-10-27",
+    "runs": [
+      633
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 6,
+      "confidence": 65,
+      "reported": true
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 45,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 97,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 0
+      },
+      "points_earned": 9,
+      "points_possible": 10,
+      "confidence": 97,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 4,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 2,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": true
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 57,
+      "raw_possible": 58,
+      "score": 246,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 2,
+      "raw_possible": 16,
+      "score": 25,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 12,
+      "raw_possible": 14,
+      "score": 129,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 40,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "index.php?export=csv returns HTTP 403 'Acesso negado.' to every non-technician (delivered index.php:45-51) while the 'Exportar CSV' link is still shown to clients (:94), so a client can no longer export the tickets it is entitled to see (rule 6: hiding tickets from callers entitled to them). Filtering the export to the client's own tickets would have been enforcement. It comes from finding F5, an extra, as part of the same visibility work, and is charged to SEC-017's C5 as for BN, BY, BZ and CB (contested point; see notes)."
+        },
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "formatarStatus now returns 'Desconhecido' instead of 'Resolvido' for any status other than 1, 2 or 3 (delivered lib.php:58-61), changing legacy behaviour the management report matches on. It comes from extra finding F12, not from a planted fix, so no C5 or R4 is affected (as D, U, AS, BC, BM, CD, CE, CI)."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 43,
+      "max": 50,
+      "rubric": {
+        "clareza": 9,
+        "precisao": 9,
+        "causa_raiz": 9,
+        "priorizacao": 8,
+        "trade_offs": 8
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "F5: export visibility. index.php?export=csv served every ticket to any logged-in session, clients included (index.php:44-47; exportarCsv reads the whole table). Real. The chosen fix, a 403 for every non-technician, is the COMP-003 charged to SEC-017's C5.",
+    "F7: EXPORT_DIR '/var/www/painel/tmp' (config.php:17-18) may sit inside the document root, which would leave the full-table chamados.csv downloadable without login. Deployment-dependent, reported at confidence 60 with an operations action, not changed in code.",
+    "F8: no rate limiting or lockout on login (index.php:21-29). Not fixed (needs new storage and a business policy).",
+    "F11: non-atomic export. Concurrent exports reopen the shared chamados.csv with 'w' and truncate it while another request readfile()s it (lib.php:126 and :150). Fixed with php://temp, a uniquely named temp file and rename(). It lies at BUG-004's lines but does not describe the handle leak.",
+    "F12: formatarStatus labels any status other than 1 and 2 as 'Resolvido' (lib.php:32-33). It calls the contracted legacy fallback a bug; the change to 'Desconhecido' is charged as COMP-003 (no C5).",
+    "F15: rotuloPrioridade returns 'Aguardando 1a resposta' before looking at the priority, so priority-4 ticket 104 shows as an ordinary wait (lib.php:56-58). It calls contracted behaviour a bug; the behaviour is kept, so it is an extra (rule 14).",
+    "SEC-005: no CSRF token on the login form (list of non-changes). Not fixed; the report judges it low risk."
+  ],
+  "total": 633,
+  "grade": "Silver",
+  "calibration": {
+    "reported_count": 9,
+    "brier": 0.048,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 7,
+        "mean_confidence": 96.6,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 1,
+        "mean_confidence": 65.0,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "41-60",
+        "count": 1,
+        "mean_confidence": 45.0,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 3,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 5,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 75.0
+  }
+}

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.273`
+**Versão atual:** `0.2.274`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.274` — 2026-10-27 — results/ adds ten Claude runs to LEB-100-A: Opus 5.5 and Sonnet 5.5 at `high` reach three runs (767 Gold, 747 Silver), Haiku 5.5 at `high` and `xhigh` enter (633, 643)
+
+- Claude Opus 5.5 at `high` goes from one run to three (733, 767, 804) and is official at **767**, Gold, 4th; Claude Sonnet 5.5 at `high` (795, 737, 747) is official at **747**, Silver, 6th, where the first run's 795 had
+  stood 3rd. Claude Haiku 5.5 at `high` (633, 644, 622: official at **633**, Silver, 16th) and at `xhigh` (646, 627, 643: official at **643**, Silver, 12th) are new agents. The leaderboard now has 44 agents and 113 runs;
+  each new run folder carries its delivery, `mecanico.json`, `veredito.json`, `scorecard.json` and `.md`, and `run.json`.
+- The ten runs were made by the unattended lab on 2026-10-27 on the long-lived token of the owner's personal Claude account (Claude Code 2.1.295, auto permission mode, one non-interactive session under a 90-minute cap each)
+  and judged blind like the earlier ones: one matching judge and one blind EXPL judge per delivery, Claude Opus subagents, the matching judge given the digest of the rulings already applied.
+- Record fix before publication: the bring step had written the API-key billing sentence into every Claude run record. The lab's `caso.json` records the route of each attempt (`auth`), so the ten records now say that the
+  session ran on the personal account and was not billed per token, and `trazer-100.py` words the line from `auth`. The two runs of 2026-10-26, which did use the key, keep their wording.
+- `results/2026/LEB-100-A/README.md` gets *Runs of 2026-10-27* and closes the two single-run bullets of 2026-10-26; `comments.json` carries the four readings. `tests/test_saturacao.py` moves its pins to 44 agents and 113 runs
+  (SEC-014 fixed in 43% of the representative runs, mean 595).
 
 ### `0.2.273` — 2026-10-27 — LEB-D-300-A's aggregate adds Claude Sonnet 5.5 at `max` in ultracode mode: five attempts, one completed (815, Gold), 34 configurations
 
