@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.269`
+**Versão atual:** `0.2.270`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.270` — 2026-10-27 — LEB-300-A's aggregate adds Claude Sonnet 5.5 at `max` in Claude Code's multi-agent mode: one run (878), Gold, 2nd
+
+- `claude-sonnet-5.5-max-ultracode` is a new agent with one run of three: **878**, Gold, second in the table and not official. It is Claude Sonnet 5.5 at `max` with the client's multi-agent mode, `ultracode`,
+  switched on by `/effort ultracode` at the start of the session (the lab sends that command first and then the two stage messages). It ran in the unattended lab on the owner's personal Claude subscription
+  (a long-lived token, not an API key), on the same package (freeze piloto-2, 7e35825a) and matrix (c42c8287) as the others, and was judged like them: one matching judge and one blind EXPL judge, both Claude
+  Opus subagents. It scores security 250, architecture 164, bugs 139, performance 144, clean code 64, compatibility 75 (one change beyond what the manifest contracts, COMP-008 once, for a login lockout) and
+  explanation 42.
+- The session took 108 minutes and US$ 30.42 by the client's own estimate (57 M tokens, almost all cache reads), with 4 workflows and 59 subagents; every response came from `claude-sonnet-5-5`, with no safety
+  stop and no API error.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.269` — 2026-10-26 — results/ adds Claude Opus 5.5 at `high` to LEB-100-A: one run (733), Silver, 6th
 

@@ -83,6 +83,54 @@
       }
     },
     {
+      "agent": "claude-sonnet-5.5-max-ultracode",
+      "score": 878,
+      "grade": "Gold",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 250,
+        "ARCH": 164,
+        "BUG": 139,
+        "PERF": 144,
+        "CLN": 64,
+        "COMP": 75,
+        "EXPL": 42
+      },
+      "cost_usd": 30.42,
+      "wall_minutes": 108.2,
+      "tokens": {
+        "input": 932,
+        "output": 1078570,
+        "cache": 55936656,
+        "total": 57016158
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 878,
+          "cost_usd": 30.42,
+          "wall_minutes": 108.2,
+          "tokens": {
+            "input": 932,
+            "output": 1078570,
+            "cache": 55936656,
+            "total": 57016158
+          }
+        }
+      ],
+      "model": {
+        "name": "Claude Sonnet 5.5",
+        "id": "claude-sonnet-5-5",
+        "provider": "Anthropic",
+        "reasoning_effort": "max",
+        "client_mode": "ultracode"
+      },
+      "comment": {
+        "en": "On a single run, in Claude Code's multi-agent mode (ultracode): security 250 of 250, architecture 164 of 200, bugs 139 of 150, performance 144 of 150 and 64 of 100 in clean code, with no penalty. It fixed 34 of the 36 planted flaws, its report named 28 of the 36, and the report was rated 42 of 50. It lost 25 compatibility points for one security change beyond what the manifest contracts: after 10 failed logins from one address, or 100 from any, the login refuses even the right password for 15 minutes. The charge is a judgment call, since the earlier charges for a login lockout were for ones that answer 429 and this one answers 401, a status the manifest lists. The agent ran 4 workflows with 59 subagents, all on the same model, in 108 minutes and US$ 30.42 by the client's own estimate. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só, no modo multiagente do Claude Code (ultracode): segurança 250 de 250, arquitetura 164 de 200, bugs 139 de 150, desempenho 144 de 150 e 64 de 100 em código limpo, sem penalidade. Corrigiu 34 das 36 falhas plantadas, o relatório apontou 28 das 36 e teve 42 de 50. Perdeu 25 pontos de compatibilidade por uma mudança de segurança além do que o manifesto contrata: depois de 10 logins errados de um mesmo endereço, ou 100 de qualquer um, o login recusa até a senha certa por 15 minutos. A cobrança é uma decisão de julgamento: as anteriores por bloqueio de login foram para os que respondem 429, e este responde 401, um status que o manifesto lista. O agente rodou 4 workflows com 59 subagentes, todos no mesmo modelo, em 108 minutos e US$ 30,42 pela estimativa do próprio cliente. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
       "agent": "claude-opus-5.5-high",
       "score": 866,
       "grade": "Gold",
