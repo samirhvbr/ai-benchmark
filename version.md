@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.272`
+**Versão atual:** `0.2.273`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.273` — 2026-10-27 — LEB-D-300-A's aggregate adds Claude Sonnet 5.5 at `max` in ultracode mode: five attempts, one completed (815, Gold), 34 configurations
+
+- New configuration: Claude Sonnet 5.5 at `max` with Claude Code's multi-agent mode, `ultracode`, switched on by `/effort ultracode` at the start of the session. Five attempts, all counted: runs 1 to 4 (16, 18 and 23 October and
+  27 October) ended on the series' 90-minute budget and are scored on the folder each left (573, 544, 812 and 555; only run 3 delivered a report, three minutes before the cut), and run 5 (27 October) completed in 61 minutes
+  for US$ 31.01 and scores **815**, Gold. The published score is the quality of the one completed run, 815; the expected score per scheduled attempt is 660 (interval 554 to 765), with one attempt in five completed.
+  The note of 0.2.245, that the first two ultracode runs "are not a configuration", is superseded: the exporter publishes a configuration once it has one completed run, and every attempt counts.
+- Judged as the series is: two matching judges and two blind EXPL judges per delivery, Claude Opus subagents; the disagreements fell under the rules the owner accepted on 2026-10-16, except one item of run 4 (CLN-001's
+  R3, half or full), which the owner settled in chat on 2026-10-27 (half, 555). Runs 2 and 3 ran on an Anthropic API key, runs 1, 4 and 5 on a Claude subscription token. No cost is recorded for the four stopped runs.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.272` — 2026-10-27 — docs/model-safeguards.md records that Claude Fable 5.1's own safeguards stop the benchmark's tasks, with the count of blocked attempts per instance
 

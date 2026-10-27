@@ -20981,6 +20981,151 @@
           }
         },
         {
+          "agent": "claude-sonnet-5.5-max-ultracode",
+          "score": 815,
+          "grade": "Gold",
+          "runs_count": 5,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 158,
+            "BUG": 164,
+            "PERF": 161,
+            "CLN": 60,
+            "COMP": 100,
+            "EXPL": 17
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 31.01,
+          "wall_minutes": 84.3,
+          "tokens": {
+            "input": 1913,
+            "output": 776534,
+            "cache": 213585656,
+            "total": 214364104
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 815.0,
+              "low": 815.0,
+              "high": 815.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 659.8,
+              "low": 554.2,
+              "high": 765.4
+            },
+            "completion": {
+              "rate": 0.2,
+              "completed": 1,
+              "scheduled": 5,
+              "systems_all_completed": 0,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 4,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 573,
+            "min": 544,
+            "max": 815
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 573,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 90.0,
+              "tokens": {
+                "input": 2042,
+                "output": 847623,
+                "cache": 283591259,
+                "total": 284440924
+              }
+            },
+            {
+              "run": 2,
+              "total": 544,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 90.0,
+              "tokens": {
+                "input": 1438,
+                "output": 836263,
+                "cache": 126103544,
+                "total": 126941245
+              }
+            },
+            {
+              "run": 3,
+              "total": 812,
+              "grade": "Gold",
+              "cost_usd": null,
+              "wall_minutes": 90.0,
+              "tokens": {
+                "input": 2946,
+                "output": 733937,
+                "cache": 382676360,
+                "total": 383413243
+              }
+            },
+            {
+              "run": 4,
+              "total": 555,
+              "grade": "Bronze",
+              "cost_usd": null,
+              "wall_minutes": 90.0,
+              "tokens": {
+                "input": 1544,
+                "output": 605326,
+                "cache": 206131909,
+                "total": 206738779
+              }
+            },
+            {
+              "run": 5,
+              "total": 815,
+              "grade": "Gold",
+              "cost_usd": 31.01,
+              "wall_minutes": 61.3,
+              "tokens": {
+                "input": 1594,
+                "output": 859523,
+                "cache": 69425210,
+                "total": 70286327
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "max",
+            "client_mode": "ultracode"
+          },
+          "comment": {
+            "en": "Five runs of a case of five, between 544 and 815. The headline, 815 (Gold), is the one run that finished inside the 90-minute budget (61 minutes, US$ 31.01). The other four were stopped at the budget and are scored on the folder each left: 573, 544, 812 and 555, and only the third delivered a report, three minutes before the cut. So one attempt in five completed, and the expected score per scheduled attempt is 660, with an interval of 554 to 765. This is Claude Code's multi-agent mode (ultracode), switched on with /effort ultracode at the start of the session: the runs used 16, 26, 31, 13 and 126 subagents of the same model, in the order of the runs. No cost is recorded for the four stopped runs. Runs 2 and 3 ran on an Anthropic API key, the others on a Claude subscription token. It is one system, so the interval only reflects the variation among the runs on it. The blind judges agreed on almost every item, and a person settled the rest.",
+            "pt_BR": "Cinco execuções de um caso de cinco, entre 544 e 815. O destaque, 815 (Gold), é a única execução que terminou dentro do orçamento de 90 minutos (61 minutos, US$ 31,01). As outras quatro foram paradas no orçamento e são pontuadas pela pasta que cada uma deixou: 573, 544, 812 e 555, e só a terceira entregou relatório, três minutos antes do corte. Então uma tentativa em cinco concluiu, e a nota esperada por tentativa agendada é 660, com intervalo de 554 a 765. É o modo multiagente do Claude Code (ultracode), ligado com /effort ultracode no começo da sessão: as execuções usaram 16, 26, 31, 13 e 126 subagentes do mesmo modelo, na ordem das execuções. Não há custo registrado nas quatro paradas. As execuções 2 e 3 rodaram com uma chave de API da Anthropic, e as outras com um token de assinatura Claude. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-xhigh",
           "score": 785,
           "grade": "Gold",
