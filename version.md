@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.274`
+**Versão atual:** `0.2.275`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.275` — 2026-10-27 — docs/model-safeguards.md adds LEB-100-A at `medium`: Claude Fable 5.1's eight attempts of 2026-10-27 were all blocked
+
+- The record table gets a row for LEB-100-A at `medium`: 8 attempts, 0 completed, 8 blocked at the start, all on 2026-10-27 through a Claude subscription token with the instance's fixed first message; the queue dropped the run
+  after the eighth and made no other, so nothing was brought and the instance has no Fable 5.1 row at `medium`. The paragraph on LEB-100-A no longer says the unattended lab has no attempt of Fable 5.1 there: the published
+  rows stay the two `xhigh` runs (781 and 764) and the two void hand runs of September and October.
+- No score, result file or protocol rule changes.
 
 ### `0.2.274` — 2026-10-27 — results/ adds ten Claude runs to LEB-100-A: Opus 5.5 and Sonnet 5.5 at `high` reach three runs (767 Gold, 747 Silver), Haiku 5.5 at `high` and `xhigh` enter (633, 643)
 

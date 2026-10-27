@@ -38,6 +38,7 @@ Counts of the lab's own attempts, as of 2026-10-27 (UTC−3). The evidence of ea
 | Instance | Effort | Attempts | Completed | Blocked at the start | Other |
 | --- | --- | ---: | ---: | ---: | --- |
 | LEB-300-A | `medium` | 60 | 0 | 60 | none |
+| LEB-100-A | `medium` | 8 | 0 | 8 | none |
 | LEB-D-300-A | `high` | 11 | 1 | 8 | 2 lab failures (the API credit ran out) |
 | LEB-D-300-A | `medium` | 8 | 5 | 3 | none |
 | LEB-D-300-A | `xhigh` | 2 | 0 | 1 | 1 lab failure |
@@ -48,8 +49,9 @@ Counts of the lab's own attempts, as of 2026-10-27 (UTC−3). The evidence of ea
 - **LEB-300-A at `high`:** one completed run is published (836).
 - **LEB-D-300-A:** the safeguard stops Fable 5.1 on the Default track in a part of the attempts at every effort tried: 8 of 11 at
   `high`, 3 of 8 at `medium`, and the second attempt at `xhigh` (13 seconds after the first message, 2026-10-16).
-- **LEB-100-A:** the published Fable 5.1 rows are at `xhigh` (two completed runs, 781 and 764). The two void runs above were hand runs of 2026-09-30 and 2026-10-01; the unattended lab has
-  not recorded an attempt of Fable 5.1 there yet.
+- **LEB-100-A at `medium`: 8 of 8 attempts blocked**, all on 2026-10-27 through a Claude subscription token, with the instance's fixed first message each time; the queue dropped the run after the eighth and made no
+  other. Nothing was brought and there is no row.
+- **LEB-100-A at `xhigh`:** the published Fable 5.1 rows are at `xhigh` (two completed runs, 781 and 764). The two void runs above were hand runs of 2026-09-30 and 2026-10-01, before the lab pinned the model.
 
 ## What is not known
 
