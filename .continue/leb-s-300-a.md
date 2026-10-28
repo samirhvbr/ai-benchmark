@@ -24,18 +24,18 @@ rodado, sido julgados e publicados. Reescrever ou mover este documento não o ti
 
 ## O que falta (a lista do §9 de `systems/300-A/README.md`, na ordem do que depende do quê)
 
-1. **Catálogo do perfil** (`instances/LEB-S-300-A/private/CATALOG.md`): que classes de `SEC` entram, em que lugar da referência, em que
-   dificuldade, e quais iscas (código correto que parece arriscado). Rascunho meu, revisão do Samir **antes** de plantar.
-2. **Plantio**: módulos em `private/plant/` e a árvore plantada em `public/code/`, com a suíte pública passando; o teste que apontar uma
-   falha plantada sai da suíte pública (`removed-from-public-tests.txt`), como no LEB-D.
-3. **Verificadores de exploração** (`private/verify/`): o ataque de referência mais variações de cada falha. Uma correção só conta se
-   o ataque e as variações param, o usuário legítimo mantém a função e os contratos do manifest valem. Cada verificador é provado nos
-   dois sentidos (a árvore plantada falha; a referência passa).
-4. **Matriz** (`private/matrix_rows.py`, escrita por `tools/make_matrix.py`) e `scoring/tracks/security.json` (rascunho: SEC 850 · COMP 100 · EXPL 50).
-5. **Casos variantes** (`private/variants/`, `tools/variants.py`): correção certa aceita; correção parcial, errada ou "desligar a função" rejeitada.
-6. **Enunciado da trilha** (`protocol/tasks/TASK-S-1.0.0.md`, em inglês, sem dica do gabarito) e o contrato do runner (`private/runner.json`).
-7. **Pacote** (`./leb pacote LEB-S-300-A`), prova numa VM (`docs/candidate-vm.md` §5), revisão externa da chave antes de congelar (como a 1.1 do D) e **congelamento**.
-8. **Juízes da trilha** (`scoring/JUDGE.md`: classes, iscas, falso positivo) e o lote de runs.
+Feito em 2026-10-25 (detalhe no §9b do `CATALOG.md` e no README da instância): 1 catálogo, 2 plantio das 24 + a isca que precisa de código, 3 verificadores de exploração
+provados nos dois sentidos, 4 matriz (200 pontos-base) e pesos (rascunho), 5 os 69 casos variantes, 6 enunciado (`TASK-S-1.0.0.md`), mensagem e contrato do runner, e o pacote
+(`./leb pacote LEB-S-300-A`: 56 arquivos). **A instância não está congelada.** Falta, nesta ordem (a ordem existe porque uma revisão pode mudar a chave, e os hashes
+se registram depois da última mudança; o D congelou antes e precisou da versão 1.1):
+
+1. **A revisão do Samir sobre o catálogo** (28/10: ele pediu para rever de novo, em artefato com as perguntas; cinco pontos ainda eram proposta minha).
+2. **A revisão externa da chave** (como a do D; ele disse "vamos fazer" em 28/10). Quem revisa e como: a definir com ele.
+3. **A prova numa VM de bancada** (`docs/candidate-vm.md` §5, passo 4), em cópia descartável do pacote. Ele pediu uma VM para isso e passa os acessos.
+4. **O congelamento**: hashes registrados no README da instância e no §9, commit feito e enviado antes de qualquer run.
+5. **Juízes da trilha** (`scoring/JUDGE.md`: classes, iscas, falso positivo) e o lote de runs, pelo laboratório (`operador/laboratorio.py`).
+
+O status fica no README da instância ("Where it stands") e no §9; atualizar nos dois a cada passo.
 
 ## O primeiro caso
 

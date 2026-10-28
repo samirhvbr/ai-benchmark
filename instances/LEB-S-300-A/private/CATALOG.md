@@ -1,6 +1,6 @@
 # LEB-S-300-A catalog (the planting profile on paper)
 
-**Draft of 2026-10-25, for the owner's review. Nothing is planted, verified or frozen yet. The owner decided four points on 2026-10-25 (§10); the rest of §10 is still my proposal.**
+**Written on 2026-10-25 and planted and verified the same day (§9b); not frozen. The owner decided four points on 2026-10-25 (§10); the rest of §10 is still a proposal, and the owner's review of the whole catalog is open (the instance's README says where it stands).**
 
 24 planted vulnerabilities + 6 decoys: 30 rows, decoys 20.0 % (the top of the 10-20 % of [`matrix/MATRIX.md §3`](../../../matrix/MATRIX.md)).
 Classes of [`taxonomy/SEC.md`](../../../taxonomy/SEC.md): 19 of the 20 are planted; SEC-007 is not, and §3 says why. By severity: Crítica 9,

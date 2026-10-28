@@ -156,7 +156,8 @@ split rounding each share.
 - [x] Evaluator scripts: build, database, characterization and verification (`harness/java/`)
 - [x] The Default track's task statement, in English like the system: [`protocol/tasks/TASK-D-1.0.0.md`](../../protocol/tasks/TASK-D-1.0.0.md)
       (design §4.1). It asks for no security work, and the packager writes it into the package as `TASK.md`
-- [ ] The Security track's task statement (design §4.2)
+- [x] The Security track's task statement, in English like the system: [`protocol/tasks/TASK-S-1.0.0.md`](../../protocol/tasks/TASK-S-1.0.0.md)
+      (design §4.2), with its one-message file `messages-S-1.0.0.json` and the track's weights in `scoring/tracks/security.json` (a draft). The packager writes it into the package as `TASK.md`
 - [x] The evaluator of the new series (design §12 step 2): one charge per regression, blind judging with human review of the
       disagreements, and each track's weights. Specified in [`docs/new-series-evaluator.md`](../../docs/new-series-evaluator.md)
       (`ACTIVE`: the owner confirmed its section 10 on 2026-10-14); built in the order of its section 9:
@@ -187,8 +188,17 @@ split rounding each share.
       match their hash list, `check-environment.sh` says `environment ready`, and `mvn -o test` passes **70 tests, 0 failures**, in **345 s** (the workstation takes 58 s).
       The copy and the tarball are removed, the tests leave no schema in `leb_dev`, and the VM still passes `conferir-vm.sh`. An agent that runs the whole suite
       spends about six minutes of its budget each time
-- [x] `LEB-S-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-S-300-A/private/CATALOG.md)), a draft for the owner's review
-- [ ] `LEB-S-300-A`: planting, matrix, exploit verifiers, variant cases
+- [x] `LEB-S-300-A`: the catalog of its profile ([`private/CATALOG.md`](../../instances/LEB-S-300-A/private/CATALOG.md)): 24 planted vulnerabilities in 19 classes and 6 decoys (2026-10-25)
+- [x] `LEB-S-300-A`: the planting modules (`private/plant/`) and the planted tree (`public/code/`, `public/manifest.md`), on which the public suite passes (51 tests, after the trims
+      of `private/removed-from-public-tests.txt`), with the two corrections that belong to this instance only (CORR-S1, CORR-S2); each row proved both ways
+- [x] `LEB-S-300-A`: the exploit verifiers (`private/verify/`), the matrix (`private/matrix_rows.py`, written out by `tools/make_matrix.py`: 200 base points) and its regression groups
+- [x] `LEB-S-300-A`: the variant cases (`private/variants/`, run by `tools/variants.py`): 69, all with the expected verdict
+- [x] `LEB-S-300-A`: its runner contract (`private/runner.json`) and its package, built clean by `./leb pacote` (56 files: `code/`, `manifest.md`, `TASK.md`)
+- [ ] `LEB-S-300-A`: the owner's review of the catalog (five points are still proposals: [`instances/LEB-S-300-A/README.md`](../../instances/LEB-S-300-A/README.md#where-it-stands))
+- [ ] `LEB-S-300-A`: the external review of the key, before the freeze
+- [ ] `LEB-S-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4); the bench snapshot of the environment, `leb-d-300-a`, serves this
+      instance as it is (same system)
+- [ ] `LEB-S-300-A` **frozen**: its `matrix_sha256` and `package_sha256` recorded, the whole instance committed and pushed
 - [x] `LEB-D-300-A` **frozen on 2026-10-14**, at commit `73eb0f8` (0.2.214; nothing of the instance, harness, scoring or tools has changed since `2d19483`, 0.2.211):
       `matrix_sha256` `45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9` and `package_sha256`
       `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` (`./leb pacote LEB-D-300-A` rebuilds both). The first case is Claude Haiku 5.5 at

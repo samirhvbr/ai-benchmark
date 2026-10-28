@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.278`
+**Versão atual:** `0.2.279`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.279` — 2026-10-28 — LEB-S-300-A's README, catalog header and authoring checklist say what is built and what stands before its first run
+
+- The instance's README said "in authoring" and "no package, no key", and the system's checklist still showed the Security task statement and the planting, matrix, verifiers and control cases as open, although all of it was
+  committed on 2026-10-25. The README now states what exists (24 planted vulnerabilities, 6 decoys, the key, the verifiers, 69 control cases, the task statement, a 56-file package), what is open and in which order, and keeps a
+  "Where it stands" table that each step updates.
+- The order before the first run is written down with its reason: the owner's review of the catalog, the external review of the key, the proof on a bench VM, then the freeze, because a review can change the key and the hashes
+  are recorded after the last change (LEB-D-300-A froze first and needed its version 1.1).
+- Not frozen: the matrix and package hashes the packager gives today are shown as working values. The catalog's header no longer says nothing is planted, and the queue item lists what is done and what is left.
 
 ### `0.2.278` — 2026-10-28 — LEB-D-300-A's aggregate adds MiniMax M2.7: two runs (423, 510, Bronze), the client's compaction recorded as normal behavior, not as an operator error (40 configurations)
 
