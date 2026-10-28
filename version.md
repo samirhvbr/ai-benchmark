@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.275`
+**Versão atual:** `0.2.276`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,22 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.276` — 2026-10-28 — LEB-D-300-A's aggregate settles the held runs with the owner's readings: five new configurations, nine that grow, two corrected by the COMP-003 ruling (39 configurations, 164 runs)
+
+- On 2026-10-27 the owner answered in chat ("Sim, e a leitura mais dura onde não há recomendação"): the recommendation written in the coverage artifact for each open point is applied and, where the artifact had none, the stricter
+  reading (no credit, the charge kept); the standing rules of 2026-10-16 (R4/C5 of a row nobody fixed, a false positive written under two spellings) and of 2026-10-22 (a finding at least one judge confirms is an extra
+  finding) come first. Seventeen held deliveries were settled this way; each decision, its reason and its author are in the review block of the settled verdict, and the two judges' own verdicts are untouched.
+- New configurations: Claude Haiku 5.5 at `xhigh` (602, Silver, five runs), Claude Haiku 4.5 (209, Reprovada, five runs; it has no auto mode, so every run used the `acceptEdits` permission mode with only Bash allowed besides
+  the edits, which each run record says), Grok 4.7 at `xhigh` (576, Bronze, two runs), and Kimi K3.1 Pro at `high` (511, Bronze, three runs) and at `max` (three scheduled attempts: 467 and 445, and one that ran out of budget
+  leaving the package untouched, which scores 100 as the design asks of every scheduled attempt; seven more attempts were lost to the lab). Both Kimi K3.1 Pro lines ran through the Kimi Code membership.
+- Configurations that grow: Claude Opus 5.5 at `xhigh` from three runs to five (835, Gold; the sixth and seventh runs, beyond the five scheduled, are left out), Kimi K3 at `high` from two to five (504; runs 3 and 4 went through
+  Moonshot's platform API and runs 5, 7 and 8 through the Kimi Code membership, one configuration with the route written in each run), DeepSeek V4 Pro at `high` from two to five (343) and at `max` from one to five (473), Gemma 4
+  31B from three to five (223), MiniMax-M3 with the thinking variant from two to five (433), MiniMax M3.1 Flash from three to five (477), GLM-5.3 at `max` from one to two (598), and Kimi K2.7 Code highspeed from one to two (404).
+- The COMP-003 decision the owner took for MiniMax M3.1 on 2026-10-21 (the ARCH-004 fix that carries the day count of BUG-013 to the resident dashboard is not charged) is applied to the two published runs that still carried it:
+  DeepSeek V4 Flash 0731 at `max` run 3 (432 to 462, mean 463 to 478) and MiniMax-M3 run 3 (275 to 305). Haiku 4.5 runs 2 and 5 and MiniMax M3.1 run 7 had it charged by both judges and are scored without it.
+- Not in this release: Claude Fable 5.1 at `medium` (run 8 settled at 729, the card waits for the blocked attempts to be archived), Gemma 4 26B, MiniMax M2.7, and MiniMax M3.1 through its own API.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.275` — 2026-10-27 — docs/model-safeguards.md adds LEB-100-A at `medium`: Claude Fable 5.1's eight attempts of 2026-10-27 were all blocked
 
