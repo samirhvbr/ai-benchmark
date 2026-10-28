@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.277`
+**Versão atual:** `0.2.278`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.278` — 2026-10-28 — LEB-D-300-A's aggregate adds MiniMax M2.7: two runs (423, 510, Bronze), the client's compaction recorded as normal behavior, not as an operator error (40 configurations)
+
+- New configuration: MiniMax M2.7 (466, Bronze, two runs, 423 and 510), through MiniMax's own API and an opencode provider the lab defines, because the client's catalog no longer lists the model (context 204,800, output
+  131,072, no variants, recorded with the runs).
+- In both runs the client ran its own compaction agent, an automatic summary of the session, and the audit marked that as an operator error because it rejects any message of an agent other than the declared build. The owner
+  decided on 2026-10-27 (point 17 of the coverage artifact, recommendation applied) that it is normal client behavior: the operator revised the outcome of each run to *completed* and said why in its record (`desfecho-revisado.txt`
+  in the private evidence, the run note in the public `run.json`); the audit's own file is left as written. The COMP-003 of the ARCH-004 fix is not charged and the R4 of that row follows it (point 18(b)).
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.277` — 2026-10-28 — LEB-D-300-A's Kimi K3.1 Pro max reading no longer names the cause of its lost attempts by a class the site's leak guard knows
 
