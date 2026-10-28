@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.276`
+**Versão atual:** `0.2.277`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.277` — 2026-10-28 — LEB-D-300-A's Kimi K3.1 Pro max reading no longer names the cause of its lost attempts by a class the site's leak guard knows
+
+- The hand-written reading of Kimi K3.1 Pro max said that the seven attempts lost to the lab included "the membership's rate limit"; the site's guard against naming a planted flaw, even by class, refuses that phrase on the
+  Default page, so the sentence now says "the membership's quota among the causes" (and the same in Portuguese). Nothing else changes: no score, run or configuration.
 
 ### `0.2.276` — 2026-10-28 — LEB-D-300-A's aggregate settles the held runs with the owner's readings: five new configurations, nine that grow, two corrected by the COMP-003 ruling (39 configurations, 164 runs)
 
