@@ -197,9 +197,11 @@ split rounding each share.
 - [x] `LEB-S-300-A`: the owner's review of the catalog, on 2026-10-29: all 30 rows Ok and the five points accepted as proposed, so nothing of the key changed ([`instances/LEB-S-300-A/README.md`](../../instances/LEB-S-300-A/README.md#where-it-stands))
 - [x] `LEB-S-300-A`: the review of the key, before the freeze: two independent reviewers on 2026-10-29 (the owner: two internal reviews suffice); every finding fixed in 0.2.280 to 0.2.285 or recorded as a
       limit in [`instances/LEB-S-300-A/README.md`](../../instances/LEB-S-300-A/README.md#review-of-2026-10-29); the 89 control cases ran whole after the last change
-- [ ] `LEB-S-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4); the bench snapshot of the environment, `leb-d-300-a`, serves this
-      instance as it is (same system). Done on BENCH4 on 2026-10-29 for the 0.2.279 package by `operador/provar-pacote.sh` (57 files, 51 tests offline, nothing left behind); repeated on the frozen package
-- [ ] `LEB-S-300-A` **frozen**: its `matrix_sha256` and `package_sha256` recorded, the whole instance committed and pushed
+- [x] `LEB-S-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4); the bench snapshot of the environment, `leb-d-300-a`, serves this
+      instance as it is (same system). Done on BENCH4 on 2026-10-29 by `operador/provar-pacote.sh`, first for the 0.2.279 package and then for the frozen one (57 files, 51 tests offline, nothing left behind)
+- [x] `LEB-S-300-A` **frozen on 2026-10-29** (owner: "ok"): `matrix_sha256` `a563e8b4cdcf03c84e7f64f8e2e5d02879406383e0bc55e61f55e38ae422ed8a` and `package_sha256`
+      `566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c` (`./leb pacote LEB-S-300-A` rebuilds both); nothing of the instance, harness, scoring or tools has changed since `7e771f3` (0.2.286). The 90 control cases ran
+      whole after that change with no unexpected verdict, and a rehearsal went through the whole path, judges included, before the freeze. The first case is MiniMax M3.1 and MiniMax M3 through OpenCode, five runs each
 - [x] `LEB-D-300-A` **frozen on 2026-10-14**, at commit `73eb0f8` (0.2.214; nothing of the instance, harness, scoring or tools has changed since `2d19483`, 0.2.211):
       `matrix_sha256` `45c09ae1fce8f91cef5f7070db5a74d957d787255f02094a8adf39a89fd294b9` and `package_sha256`
       `71dfeb7c3f82c75a96f3134e4e050b4476436116e14402d483e9c5f5510955e4` (`./leb pacote LEB-D-300-A` rebuilds both). The first case is Claude Haiku 5.5 at

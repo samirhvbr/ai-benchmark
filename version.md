@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.287`
+**Versão atual:** `0.2.288`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.288` — 2026-10-29 — LEB-S-300-A is frozen: the matrix and package hashes are recorded after the whole control set, the proof on a bench VM and a rehearsal through the judges
+
+- The instance is frozen with the owner's go-ahead. `matrix_sha256` `a563e8b4cdcf03c84e7f64f8e2e5d02879406383e0bc55e61f55e38ae422ed8a`, `package_sha256` `566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c` (56 files and the hash list), the
+  same two numbers as before this version: nothing of the instance, the harness, the scoring or the tools changed after 0.2.286. From the first run on, a change is a new version of the instance.
+- The whole set of control cases ran once more after the last change: 90 cases, none with an unexpected verdict (`private/variants/results.tsv`). The package was proved on BENCH4 as it is frozen (57 files with its hash list,
+  `check-environment.sh` ready, 51 public tests offline, no schema left, `/tmp` clean).
+- A rehearsal went through the judges before the freeze: two matching judges and two blind EXPL judges on the delivery of the earlier rehearsal, then `tools/judge_review.py` and the scorer. Both matching judges mapped
+  all 24 rows and agreed, the EXPL judges agreed, and the scorer gave 991 of 1000. Nothing of it is published or enters any aggregate. The instance README records what it showed: two frictions of the operator, the two calls
+  the judges flagged for whoever settles a real disagreement, and a label to tidy in the next version.
+- The two READMEs' tables and checklist say frozen; the status header of the instance README no longer says it is not.
 
 ### `0.2.287` — 2026-10-29 — LEB-S-300-A's catalog review is answered: 30 rows Ok and the five points accepted, nothing of the key changes
 
