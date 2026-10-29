@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.282`
+**Versão atual:** `0.2.283`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.283` — 2026-10-29 — LEB-S-300-A's README and the system's checklist record the two reviews, the bench proof and what is still open
+
+- The instance README has a section for the review of 2026-10-29: what was fixed in 0.2.280 to 0.2.282 and what is still open before the freeze (the remote-fetch row, two rows that share a page, the archive row's label rule,
+  catalog descriptions that disagree with the code, what the package still shows of the planting), plus two weaknesses of the reference that are not planted, kept for the next version.
+- The "Where it stands" table says the proof on a bench VM was done on BENCH4 for the 0.2.279 package (57 files with their hash list, 51 public tests offline, nothing left behind) and has to be repeated on the frozen one,
+  and that the 69 control cases plus the 19 of the review run again as a whole before the freeze. The working hashes are the ones of 0.2.282.
+- The system's checklist follows the same two lines. Not frozen.
 
 ### `0.2.282` — 2026-10-29 — LEB-S-300-A's database-password row is judged by running the application, and three more rows stop depending on something the manifest does not contract
 
