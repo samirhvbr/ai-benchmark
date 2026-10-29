@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.280`
+**Versão atual:** `0.2.281`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,21 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.281` — 2026-10-29 — LEB-S-300-A's verifiers close the gaps two reviewers found in nine rows, each with a control case that was judged wrongly before
+
+- The two reviewers of 2026-10-29 described deliveries a verifier judged wrongly. Each finding was reproduced first as a control case (`variants/cases_g_review.py`: 13 cases) and the verifier was changed until the case
+  gives the verdict it must; the cases that were already there keep theirs.
+- **Access.** Creating an account is refused to a resident whatever role the new account has (a check on the new account's role alone passed), and registering a payment is refused to a manager of another building and kept
+  for an admin (a check on the role alone passed, and one that locked the admin out passed too).
+- **Output.** The page-script row decides only what it can read: a variable handed to a markup sink as it was read is not fixed; a script with no such sink that still shows the message as text is fixed; everything
+  else (an escape kept in a variable, a sink written in another form, a message no longer shown) is inconclusive and goes to the judges. The row used to mark a sound escape as not fixed and a bracket-form sink as fixed.
+  The control cases accept an `inconclusive` expectation now. The search-term row also probes an unclosed tag (a fix that strips whole tags passed), and the spreadsheet row reads the CSV instead of one byte form, accepts any
+  neutralization that no longer starts a formula, adds the carriage return, and reads the building archive's index as well as the delinquency report (a fix made in one report passed).
+- **Uploads.** The upload row probes `.htm` and the resident's payment proof as well as the manager's upload. The planting no longer widens the stored extension (it held anything, so a fix of the upload row also closed the
+  archive's command row through the stored name): the extension is letters and digits, so each of the two rows has its own fix.
+- **A step the system refuses ends as a refusal.** Four preparatory uploads threw an error no verdict could read, and two lookups threw on a null; they now end as "refused" or are guarded, so the judges are not left deciding alone.
+- Not frozen, and the matrix and package hashes changed (the public tree and the verifiers did).
 
 ### `0.2.280` — 2026-10-29 — LEB-S-300-A's runner contract selects its own verifiers: a real evaluation of a delivery ran none of them
 

@@ -71,7 +71,7 @@ FLAWS = [
     flaw("SEC-004", "Alta", "Moderada", "C", "/src/main/resources/static/app.js", r"box\.innerHTML = message",
          "The message a redirect passes in the address is written into the page as markup by the page script, so a crafted link runs script.",
          "Write the message as text, not as markup.",
-         "No engine here runs the script: the verifier reads it, and reports a sink fed through a cleansing call as half, for the judge.", dimensions=["saida"]),
+         "No engine here runs the script: the verifier reads it, decides only a variable handed to a markup sink as it was read (not fixed) or a script with no such sink that still shows the message as text (fixed), and leaves every other script to the judge.", dimensions=["saida"]),
     flaw("SEC-005", "Alta", "Moderada", "C", "web/Server.java", r"boolean upload = type != null",
          "An upload (a document, a payment proof, a bank statement) posted from another site with the victim's session cookie and no token is accepted.",
          "Check the form's token on every state-changing request of the browser side, multipart ones included.",

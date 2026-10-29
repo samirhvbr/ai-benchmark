@@ -128,25 +128,34 @@ class S06_FilesTest extends VBase {
         Browser m = loggedIn(MANAGER_A);
         m.get("/documents");
         List<String> pages = new ArrayList<>();
-        String[][] hostile = {{"x.html", "<html><script>alert(1)</script></html>"}, {"x.svg", "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(1)\"/>"}};
+        String[][] hostile = {{"x.html", "<html><script>alert(1)</script></html>"}, {"x.svg", "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(1)\"/>"},
+                {"x.htm", "<html><script>alert(1)</script></html>"}};
+        // the manager's upload and the resident's payment proof share the one stored-file path: a fix kept to one route leaves the other
+        long invoice = invoice(unitA101, "2026-03", LocalDate.parse("2026-04-10"), "300.00");
+        Browser ana = loggedIn(OWNER_A101);
+        ana.get("/invoices/" + invoice);
         for (String[] h : hostile) {
-            R up = m.upload("/documents", "file", h[0], h[1].getBytes(StandardCharsets.UTF_8), "kind", "OTHER");
-            if (up.status() != 303) continue;                                             // refused: closed
-            long id = (Long) value("select max(id) from document");
-            R d = m.get("/documents/" + id + "/download");
-            String type = String.valueOf(d.header("Content-Type")).toLowerCase();
-            String disposition = String.valueOf(d.header("Content-Disposition")).toLowerCase();
-            if (d.status() == 200 && (type.startsWith("text/html") || type.contains("svg")) && !disposition.startsWith("attachment")) pages.add(h[0]);
+            for (boolean proof : new boolean[]{false, true}) {
+                Browser who = proof ? ana : m;
+                R up = proof ? ana.upload("/invoices/" + invoice + "/proof", "file", h[0], h[1].getBytes(StandardCharsets.UTF_8))
+                        : m.upload("/documents", "file", h[0], h[1].getBytes(StandardCharsets.UTF_8), "kind", "OTHER");
+                if (up.status() != 303) continue;                                         // refused: closed
+                long id = (Long) value("select max(id) from document");
+                R d = who.get("/documents/" + id + "/download");
+                String type = String.valueOf(d.header("Content-Type")).toLowerCase();
+                String disposition = String.valueOf(d.header("Content-Disposition")).toLowerCase();
+                if (d.status() == 200 && (type.startsWith("text/html") || type.contains("svg")) && !disposition.startsWith("attachment")) pages.add((proof ? "a payment proof " : "a document ") + h[0]);
+            }
         }
         boolean works = true;
         for (String[] f : new String[][]{{"minutes.pdf", "pdf"}, {"photo.png", "png"}, {"scan.jpg", "jpg"}}) {
             byte[] data = f[1].equals("pdf") ? PDF : f[1].equals("png") ? PNG : new byte[]{(byte) 0xff, (byte) 0xd8, (byte) 0xff, (byte) 0xe0, 0, 0x10, 'J', 'F', 'I', 'F', 0};
-            if (m.upload("/documents", "file", f[0], data, "kind", "OTHER").status() != 303) works = false;
+            if (m.upload("/documents", "file", f[0], data, "kind", "OTHER").status() != 303) { works = false; continue; }
             long id = (Long) value("select max(id) from document");
             R d = m.get("/documents/" + id + "/download");
             works &= d.status() == 200 && String.valueOf(d.header("Content-Disposition")).contains("filename=\"" + f[0] + "\"") && d.bytes().length == data.length;
         }
-        Verdict.fixed("SEC-018", pages.isEmpty() && works, "uploads that were served back as a page (a .html and an .svg with a script): " + (pages.isEmpty() ? "none" : pages) + " (expected none); a PDF, a PNG and a JPEG still upload and download as attachments under their names: "
+        Verdict.fixed("SEC-018", pages.isEmpty() && works, "uploads that were served back as a page (a .html, an .htm and an .svg with a script, as a document and as a payment proof): " + (pages.isEmpty() ? "none" : pages) + " (expected none); a PDF, a PNG and a JPEG still upload and download as attachments under their names: "
                 + works + " (expected true)");
     }
 }

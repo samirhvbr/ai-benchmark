@@ -25,7 +25,7 @@ class S08_DecoyTest extends VBase {
     void sec007b_aDownloadKeepsItsExactNameAndNoLineBreak() throws Exception {
         Browser m = loggedIn(MANAGER_A);
         m.get("/documents");
-        if (m.upload("/documents", "file", "rules, 2026 ü.pdf", PDF, "kind", "RULES").status() != 303) throw new IllegalStateException("POST /documents answered not 303");
+        setupUpload(m, "rules, 2026 ü.pdf", PDF, "RULES");
         long id = (Long) value("select id from document");
         R d = m.get("/documents/" + id + "/download");
         String h = String.valueOf(d.header("Content-Disposition"));

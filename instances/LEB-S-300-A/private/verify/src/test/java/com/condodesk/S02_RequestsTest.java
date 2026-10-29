@@ -82,7 +82,7 @@ class S02_RequestsTest extends VBase {
     void sec020_anInternalErrorShowsNoInternals() throws Exception {
         Browser marcos = loggedIn(MANAGER_A);
         marcos.get("/documents");
-        if (marcos.upload("/documents", "file", "minutes.pdf", PDF, "kind", "MINUTES").status() != 303) throw new IllegalStateException("POST /documents answered not 303");
+        setupUpload(marcos, "minutes.pdf", PDF, "MINUTES");
         long id = (Long) value("select id from document");
         String stored = (String) value("select stored_name from document where id = ?", id);
         Files.delete(storage.resolve(String.valueOf(buildingA)).resolve(stored));   // the stored file is gone: the download fails inside

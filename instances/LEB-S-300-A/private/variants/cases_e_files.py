@@ -26,7 +26,7 @@ HARDEN = '''        f.setFeature("http://apache.org/xml/features/disallow-doctyp
         f.setExpandEntityReferences(false);
 '''
 FETCH_LINE = '''        UrlFetcher.Fetched f = fetcher.fetch(url);'''
-SNIFF = '''        if (BLOCKED.contains(ext)) throw AppException.unsupported("That kind of file is not accepted.");'''
+SNIFF = '''        if (BLOCKED.contains(ext) || !ext.matches("[a-z0-9]{0,5}")) throw AppException.unsupported("That kind of file is not accepted.");'''
 INLINE = '''        if (type.startsWith("text/") || type.contains("svg")) return new Response(200, type, d.bytes(), java.util.List.of());
 '''
 

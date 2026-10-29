@@ -12,7 +12,8 @@ FLAWS = [
          r""".followRedirects(HttpClient.Redirect.NEVER)""",
          r""".followRedirects(HttpClient.Redirect.NORMAL)"""),
     ]),
-    # An upload is refused by a blocklist of executable extensions instead of being checked by content, and a page or an image of markup is served inline.
+    # An upload is refused by a blocklist of executable extensions (and an extension of more than five letters or digits) instead of being checked by content, and a page or an image of markup is served inline.
+# The stored name keeps its extension, so the extension is held to letters and digits: the archive row's weakness is its label, not the extension of a stored file.
     ("SEC-018", [
         (SRC + "docs/DocumentService.java",
          r"""    private static final Pattern LABEL =""",
@@ -23,7 +24,7 @@ FLAWS = [
         if (type == null || !type.equals(TYPES.get(ext))) throw AppException.unsupported("Only PDF, PNG and JPEG files are accepted.");
 """,
          r"""        String sniffed = sniff(data);
-        if (BLOCKED.contains(ext)) throw AppException.unsupported("That kind of file is not accepted.");
+        if (BLOCKED.contains(ext) || !ext.matches("[a-z0-9]{0,5}")) throw AppException.unsupported("That kind of file is not accepted.");
         String type = sniffed != null ? sniffed : ext.equals("html") || ext.equals("htm") ? "text/html" : ext.equals("svg") ? "image/svg+xml" : "application/octet-stream";
 """),
         (SRC + "web/ContentPages.java",

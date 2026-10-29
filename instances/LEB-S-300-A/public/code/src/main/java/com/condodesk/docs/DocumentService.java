@@ -142,7 +142,7 @@ public final class DocumentService {
         String name = cleanName(fileName);
         String ext = name.contains(".") ? name.substring(name.lastIndexOf('.') + 1).toLowerCase(Locale.ROOT) : "";
         String sniffed = sniff(data);
-        if (BLOCKED.contains(ext)) throw AppException.unsupported("That kind of file is not accepted.");
+        if (BLOCKED.contains(ext) || !ext.matches("[a-z0-9]{0,5}")) throw AppException.unsupported("That kind of file is not accepted.");
         String type = sniffed != null ? sniffed : ext.equals("html") || ext.equals("htm") ? "text/html" : ext.equals("svg") ? "image/svg+xml" : "application/octet-stream";
         String stored = UUID.randomUUID() + "." + ext;
         Path path = pathOf(buildingId, stored);

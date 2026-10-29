@@ -42,7 +42,7 @@ import tempfile
 import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-EXPECTATIONS = {"fixed", "not_fixed", "half", "holds", "broken"}
+EXPECTATIONS = {"fixed", "not_fixed", "half", "holds", "broken", "inconclusive"}
 
 
 def load(path, name):

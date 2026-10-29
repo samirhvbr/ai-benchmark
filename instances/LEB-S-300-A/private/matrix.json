@@ -191,7 +191,7 @@
       "proves": [
         "C3"
       ],
-      "notes": "No engine here runs the script: the verifier reads it, and reports a sink fed through a cleansing call as half, for the judge.",
+      "notes": "No engine here runs the script: the verifier reads it, decides only a variable handed to a markup sink as it was read (not fixed) or a script with no such sink that still shows the message as text (fixed), and leaves every other script to the judge.",
       "dimensions": [
         "saida"
       ]
