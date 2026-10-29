@@ -28,11 +28,11 @@ this instance's package.
 | Catalog of the profile | done, 2026-10-25 (four points decided by the owner that day; five were still proposals) |
 | Planting: 24 vulnerabilities and the decoy that needs code | done, 2026-10-25; each row proved both ways (not fixed on the planted tree, fixed on the clean tree) |
 | Matrix and exploit verifiers | done, 2026-10-25: 200 base points (Crítica 9 × 10, Alta 10 × 8, Média 5 × 6); `tools/make_matrix.py --check` passes |
-| Variant (control) cases | 69 on 2026-10-25, all with the expected verdict (35 fixes written another way accepted, 19 partial and 8 wrong fixes rejected, 7 changes to decoys); 19 more on 2026-10-29 from the two reviews (`private/variants/cases_g_review.py`), run row by row; **the whole set is to be run again before the freeze** |
+| Variant (control) cases | 89 (69 of 2026-10-25 and 20 from the two reviews, `private/variants/cases_g_review.py`), run as a whole on 2026-10-29: 0 unexpected; every row is proved both ways again (planted tree: 24 not fixed; clean tree: 24 fixed; the 6 decoys hold on both) |
 | Task statement, message and runner contract | done, 2026-10-25: [`TASK-S-1.0.0.md`](../../protocol/tasks/TASK-S-1.0.0.md), [`messages-S-1.0.0.json`](../../protocol/tasks/messages-S-1.0.0.json), `private/runner.json`; the runner passed no selector for its verifiers and an evaluation ran none of them, fixed on 2026-10-29 (0.2.280) and now covered by a test |
 | Package | builds clean: `./leb pacote LEB-S-300-A` gives 56 files and the leak guard passes |
 | The owner's review of the catalog | **open**: five points are still proposals (the one class kept only as a decoy, the weights, the routes of the first case, five accepted borderline patterns of the reference, and the name of the findings file in the run's message) |
-| Review of the key | two independent reviewers read it on 2026-10-29 (the owner: two internal reviews suffice); the findings of its first group are fixed in 0.2.280 to 0.2.282, each reproduced as a control case first; **open**: the findings listed under [Review of 2026-10-29](#review-of-2026-10-29) |
+| Review of the key | done on 2026-10-29 by two independent reviewers (the owner: two internal reviews suffice); every finding is fixed in 0.2.280 to 0.2.285 or recorded as a limit under [Review of 2026-10-29](#review-of-2026-10-29), each reproduced as a control case first |
 | Proof on a bench VM | done on BENCH4 on 2026-10-29 for the 0.2.279 package (57 files with its hash list, `check-environment.sh` ready, 51 public tests offline, no schema left, `/tmp` clean) by `operador/provar-pacote.sh`; **to be repeated on the package that is frozen**, because the public tree changed since |
 | Freeze | **open**: it records the hashes and is committed and pushed before any run |
 
@@ -49,20 +49,28 @@ In this order, because a review can change the key and the hashes are recorded a
    suite passes offline in the VM's own language. The bench snapshot of the environment (`leb-d-300-a`) holds the same toolchain, test database and offline Maven cache, because the system is the same.
 4. **The freeze.** The matrix and package hashes below are replaced by the frozen ones, the commit is pushed, and from then on any change is a new version of the instance.
 
-The hashes `./leb pacote LEB-S-300-A` gives today are not frozen and change with any edit of the instance: the matrix `d8b102cdbab7d370de3eb098a105e9296ae44912520f6fd196582408e0266f94` and the package
-`c3d659ffbe5bf90fd5dff850cd820f26b2353325dd894e36322cacff5da93086` (56 files, mode A, 60 turns; at 0.2.282).
+The hashes `./leb pacote LEB-S-300-A` gives today are not frozen and change with any edit of the instance: the matrix `a563e8b4cdcf03c84e7f64f8e2e5d02879406383e0bc55e61f55e38ae422ed8a` and the package
+`566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c` (56 files, mode A, 60 turns; at 0.2.285).
 
 ## Review of 2026-10-29
 
 Two independent reviewers (read-only, one for each half of the verifiers and the package) read the key at 0.2.279 with the brief of an external review. Both found the same critical defect, so each finding was
-reproduced as a control case before any verifier changed. Fixed in 0.2.280 to 0.2.282: the runner's missing selector; the account-creation and manual-payment rows (checks scoped to one role passed); the page-script row (decides only
+reproduced as a control case before any verifier changed. Fixed in 0.2.280 to 0.2.285: the runner's missing selector; the account-creation and manual-payment rows (checks scoped to one role passed); the page-script row (decides only
 what it can read, the rest is for the judges); the search-term, spreadsheet and upload rows; the stored-hash, internal-error and bank-secret rows; the database-password row (now judged by running the application); the
-refusals of preparatory steps (they end as a refusal, not as no verdict); and the planting of the upload row, which no longer widens the stored extension, so that it does not share a fix with the archive row.
+remote-fetch row (it counts what the internal site received, not what was stored); the notice-search row (it no longer reads a line another row's fix may reword); the refusals of preparatory steps (they end as a refusal, not as no
+verdict); the planting of the upload row (it no longer widens the stored extension, so it does not share a fix with the archive row); the public security test's class comment (it named the taxonomy and the sibling track); and
+the catalog's descriptions that disagreed with the code. The whole control set, 89 cases, ran after the last change with no unexpected verdict.
 
-Still open, to be decided or fixed before the freeze: the remote-fetch row (it checks what was stored, not what was contacted, and a loopback refusal would also refuse the approved site, which sits on the same address);
-the notice-search and search-term rows (the first reads a line the second may reword); the archive row (an argument-vector fix is accepted without the manifest's label rule); the catalog's descriptions that disagree with the code
-(a source-URL variation that cannot carry markup, a fragment highlighter with no sink, a backslash variation that cannot work on Linux, a PDF whose bytes are HTML, an unknown sort key that falls back instead of answering 400);
-and what the package still shows of the planting (the Javadoc of the security test names files and a track that are not in the package, and unused constants and comments the planting left).
+Limits kept on purpose, so that a score is read with them:
+
+- **Archive label.** The row proves that no label runs a command and that a plain label still names the archive. A delivery that replaces the shell by an argument vector and leaves the manifest's label rule unchecked is accepted,
+  because the effect of a label such as `../x` on where the archive is written is not probed.
+- **Remote fetch and loopback.** The approved site of an evaluation sits on the loopback address, so a delivery that also refuses loopback and private addresses refuses the approved site and fails the row; the manifest keeps
+  the fetch from an allowed host.
+- **What the package still shows of the planting.** Unused constants (`TYPES`, `LABEL`) and comments that describe the reference (the CSV writer's, the document service's) stay, as legacy code would have them; the two security
+  tests that remain keep their names, because the matrix's regression groups are bound to them.
+- **The judges read what the verifiers cannot decide.** The page-script row is inconclusive for any script that is not the weakness itself or plainly closed.
+
 Two weaknesses of the reference that are not planted are recorded for the next version: the old viewer's route lets any user of a building read any stored file of it, and an imported account answers a wrong password faster than a missing one.
 
 ## Layout

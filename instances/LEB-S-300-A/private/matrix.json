@@ -148,7 +148,7 @@
       "template": "C",
       "location": "code/src/main/java/com/condodesk/web/ContentPages.java:78",
       "evidence": "A payment proof named with markup, sent by a resident, reaches the manager's document list as markup, so a resident can run script in a manager's session.",
-      "expected_fix": "Escape the document's name and its source address where the list is written.",
+      "expected_fix": "Escape the document's name where the list is written (and its source address, which cannot carry markup but is written the same way).",
       "verify": "verify/src/test/java/com/condodesk/S04_OutputTest.java#sec002b_aDocumentNameIsEscaped",
       "proves": [
         "C3"

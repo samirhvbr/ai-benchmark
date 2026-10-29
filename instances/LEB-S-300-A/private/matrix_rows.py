@@ -62,7 +62,7 @@ FLAWS = [
          "The same page builder escapes the page's own title and heading; only the notice block is open.", dimensions=["saida"]),
     flaw("SEC-002.b", "Alta", "Difícil", "C", "web/ContentPages.java", r"\.append\(d\.originalName\(\)\)\.append\(\"</a></td><td>\"\)",
          "A payment proof named with markup, sent by a resident, reaches the manager's document list as markup, so a resident can run script in a manager's session.",
-         "Escape the document's name and its source address where the list is written.",
+         "Escape the document's name where the list is written (and its source address, which cannot carry markup but is written the same way).",
          "The name survives the upload's own cleaning, which removes directory parts and control characters only.", dimensions=["saida"]),
     flaw("SEC-003", "Alta", "Fácil", "C", "web/ContentPages.java", r"\.append\(\" notices for “\"\)\.append\(q\)",
          "The line that repeats a notice search term writes it as markup, so a crafted link runs script in the visitor's session.",

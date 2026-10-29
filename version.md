@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.284`
+**Versão atual:** `0.2.285`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.285` — 2026-10-29 — LEB-S-300-A's control cases run whole after the review, every row is proved both ways again, and the catalog agrees with the code
+
+- The 89 control cases (the 69 of 2026-10-25 and the 20 of the review) ran as a whole after the last change of the key: no unexpected verdict, `variants/results.tsv` rewritten. Through the evaluator's own command, the planted
+  tree gives 24 rows not fixed and the clean tree 24 fixed, with the 6 decoys holding on both.
+- The catalog's descriptions that disagreed with the code are corrected (a source URL that cannot carry markup, a fragment highlighter with no sink, a backslash that is not a separator on Linux, a PDF of HTML that is already
+  an attachment, an unknown sort key that is refused or ignored, a decoy's message, the proof name that reaches the archive's index and not the delinquency report), and so is the matrix's fix text for the document-name row.
+- The instance README lists what the review fixed, the limits kept on purpose (the archive label, loopback in the fetch row, what the package still shows of the planting, what the judges read) and the new working hashes;
+  the system's checklist marks the review done. Not frozen.
 
 ### `0.2.284` — 2026-10-29 — LEB-S-300-A's remote-fetch row counts what the internal site received, the notice-search row stops reading another row's line, and the package no longer names the taxonomy
 
