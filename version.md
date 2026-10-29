@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.279`
+**Versão atual:** `0.2.280`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.280` — 2026-10-29 — LEB-S-300-A's runner contract selects its own verifiers: a real evaluation of a delivery ran none of them
+
+- Two reviewers read the key independently before the freeze and both found the same defect. `harness/java/evaluate.sh verify` runs the verifiers named `V0*Test` when it is given no selector, the Security instance's
+  verifiers are named `S0*Test`, and its runner contract passed no selector, so Surefire ran nothing (`failIfNoSpecifiedTests` is false) and the mechanical stage answered "no evidence" for every row. The control cases never
+  showed it because the tool that runs them always passes a selector.
+- Measured on the planted tree through the harness, as an evaluation does it: before the change 0 probes, 0 decoys and 24 rows unverified; after it 24 probes, 6 decoys and none unverified.
+- `private/runner.json` now passes the selector (`S0*Test`) with the two folders left empty, which the evaluator reads from the runner's environment; `evaluate.sh` is untouched, so the evaluator's frozen files for LEB-D-300-A do
+  not change. A test in `tests/test_leb_s_300_a.py` fails when the verification command has no selector or one that does not match every verifier class of the instance.
+- Not frozen, and the matrix and package hashes are unchanged: the runner contract is not part of either.
 
 ### `0.2.279` — 2026-10-28 — LEB-S-300-A's README, catalog header and authoring checklist say what is built and what stands before its first run
 
