@@ -28,7 +28,7 @@ this instance's package.
 | Catalog of the profile | done, 2026-10-25 (four points decided by the owner that day; five were still proposals) |
 | Planting: 24 vulnerabilities and the decoy that needs code | done, 2026-10-25; each row proved both ways (not fixed on the planted tree, fixed on the clean tree) |
 | Matrix and exploit verifiers | done, 2026-10-25: 200 base points (Crítica 9 × 10, Alta 10 × 8, Média 5 × 6); `tools/make_matrix.py --check` passes |
-| Variant (control) cases | 89 (69 of 2026-10-25 and 20 from the two reviews, `private/variants/cases_g_review.py`), run as a whole on 2026-10-29: 0 unexpected; every row is proved both ways again (planted tree: 24 not fixed; clean tree: 24 fixed; the 6 decoys hold on both) |
+| Variant (control) cases | 90 (69 of 2026-10-25, 20 from the two reviews and 1 from the rehearsal, `private/variants/cases_g_review.py`), run as a whole on 2026-10-29: 0 unexpected; every row is proved both ways again (planted tree: 24 not fixed; clean tree: 24 fixed; the 6 decoys hold on both) |
 | Task statement, message and runner contract | done, 2026-10-25: [`TASK-S-1.0.0.md`](../../protocol/tasks/TASK-S-1.0.0.md), [`messages-S-1.0.0.json`](../../protocol/tasks/messages-S-1.0.0.json), `private/runner.json`; the runner passed no selector for its verifiers and an evaluation ran none of them, fixed on 2026-10-29 (0.2.280) and now covered by a test |
 | Package | builds clean: `./leb pacote LEB-S-300-A` gives 56 files and the leak guard passes |
 | The owner's review of the catalog | **open**: five points are still proposals (the one class kept only as a decoy, the weights, the routes of the first case, five accepted borderline patterns of the reference, and the name of the findings file in the run's message) |
@@ -50,7 +50,7 @@ In this order, because a review can change the key and the hashes are recorded a
 4. **The freeze.** The matrix and package hashes below are replaced by the frozen ones, the commit is pushed, and from then on any change is a new version of the instance.
 
 The hashes `./leb pacote LEB-S-300-A` gives today are not frozen and change with any edit of the instance: the matrix `a563e8b4cdcf03c84e7f64f8e2e5d02879406383e0bc55e61f55e38ae422ed8a` and the package
-`566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c` (56 files, mode A, 60 turns; at 0.2.285).
+`566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c` (56 files, mode A, 60 turns; at 0.2.286).
 
 ## Review of 2026-10-29
 
@@ -70,6 +70,17 @@ Limits kept on purpose, so that a score is read with them:
 - **What the package still shows of the planting.** Unused constants (`TYPES`, `LABEL`) and comments that describe the reference (the CSV writer's, the document service's) stay, as legacy code would have them; the two security
   tests that remain keep their names, because the matrix's regression groups are bound to them.
 - **The judges read what the verifiers cannot decide.** The page-script row is inconclusive for any script that is not the weakness itself or plainly closed.
+
+## Rehearsal of 2026-10-29
+
+One delivery was produced on BENCH4 before the freeze, to run the whole path once: the lab's driver, OpenCode 1.18.33 with DeepSeek V4.1 Flash at `high` through DeepSeek's own API (US$ 0.07 recorded by the client, 26
+minutes, one message, 53 assistant messages, no operator interruption), the audit, the collection, and the mechanical stage through the instance's runner. **It is not a run of the instance: it counts for nothing, it is
+not published and it does not enter any aggregate**, because the package was not frozen. Its evidence is in the private repository's `piloto-s-1/ensaio-deepseek-flash-high/` (not committed).
+
+What it showed: the path works end to end; the delivery changes 19 files and the public suite passes (51 of 51, no regression); every row is fixed (24 of 24) and the 6 decoys hold. It also found one fault of the key: the
+database-password verifier crashed on a delivery whose default password is the empty string (no secret, the program just sends an empty one), so that row ended with no mechanical verdict. The verifier now treats an empty
+password as no secret, with a control case for it (0.2.286). The change comes from a crash, not from a score, and the rehearsal's delivery is not used again. A perfect mechanical result for a small, cheap model says the
+rows are fixable by the reference's own fixes; it does not say the verifiers are lenient, since the 89 control cases reject the partial and wrong fixes, but the first real cases will show whether the track separates models.
 
 Two weaknesses of the reference that are not planted are recorded for the next version: the old viewer's route lets any user of a building read any stored file of it, and an imported account answers a wrong password faster than a missing one.
 

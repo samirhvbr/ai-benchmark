@@ -93,4 +93,7 @@ CASES = [
          edits=[("docs/UrlFetcher.java", "            HttpResponse<InputStream> resp = client.send(req, HttpResponse.BodyHandlers.ofInputStream());\n",
                  "            HttpResponse<InputStream> resp = client.send(req, HttpResponse.BodyHandlers.ofInputStream());\n            allowedUri(resp.uri().toString());\n")],
          note="the final address is checked after the request went out: nothing is stored, but the internal site was contacted (it was full)"),
+    dict(target="SEC-015.b", name="rehearsal-sec015b-empty-default", kind="alternative", expect="fixed",
+         edits=[(APP, DBPW, 'ds.setPassword(env.getOrDefault("CONDODESK_DB_PASSWORD", ""));')],
+         note="an empty default, which a rehearsal delivery wrote: no secret in the code, and the verifier used to crash on the empty password it sends"),
 ]

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.285`
+**Versão atual:** `0.2.286`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.286` — 2026-10-29 — LEB-S-300-A's database-password verifier no longer crashes on an empty password, found by a rehearsal delivery that went through the whole path
+
+- A delivery was produced on BENCH4 before the freeze to run the path once: the lab's driver, OpenCode with DeepSeek V4.1 Flash at `high` (US$ 0.07, 26 minutes, one message, no interruption), the audit, the collection and the
+  mechanical stage through the instance's runner. It is a rehearsal: it is not a run of the instance, it is not published and it enters no aggregate, because the instance is not frozen.
+- The path works. The delivery changes 19 files, the public suite passes (51 of 51), all 24 rows are fixed and the 6 decoys hold; the evidence stays in the private repository, not committed.
+- It found one fault of the key: the database-password verifier threw on a delivery that defaults the password to the empty string (no secret, an empty one is sent), so the row ended with no mechanical verdict. An empty password
+  is now read as no secret, as an empty bank secret already is, and a control case holds it (the file has 21 now; the whole set is 90 cases).
+- The instance README has a section for the rehearsal with what it proves and what it does not: the change comes from a crash and not from a score, and a perfect mechanical result for a small model says the rows are fixable by
+  the reference's own fixes, not that the verifiers are lenient. Not frozen; the matrix and package hashes are unchanged.
 
 ### `0.2.285` — 2026-10-29 — LEB-S-300-A's control cases run whole after the review, every row is proved both ways again, and the catalog agrees with the code
 

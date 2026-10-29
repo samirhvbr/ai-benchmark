@@ -76,8 +76,10 @@ class S03_SecretsTest extends VBase {
         String absent = passwordSentWith(Map.of());
         String absentLog = lastRun;
         String given = passwordSentWith(Map.of("CONDODESK_DB_PASSWORD", "from-the-environment-7"));
-        Verdict.fixed("SEC-015.b", absent == null && "from-the-environment-7".equals(given), "[no variable: " + absentLog + "] [variable set: " + lastRun + "] started with no CONDODESK_DB_PASSWORD, the application sent the database "
-                + (absent == null ? "no password" : "a password of " + absent.length() + " characters (" + absent.charAt(0) + "…)") + " (expected none); started with it set, it sent "
+        // an empty password is no secret (as an empty bank secret is none): it is what a program with no password configured may send
+        boolean closed = absent == null || absent.isEmpty();
+        Verdict.fixed("SEC-015.b", closed && "from-the-environment-7".equals(given), "[no variable: " + absentLog + "] [variable set: " + lastRun + "] started with no CONDODESK_DB_PASSWORD, the application sent the database "
+                + (closed ? "no password" : "a password of " + absent.length() + " characters (" + absent.charAt(0) + "…)") + " (expected none); started with it set, it sent "
                 + (given == null ? "none" : "a password that " + ("from-the-environment-7".equals(given) ? "is the one given" : "is not the one given")) + " (expected the one given)");
     }
 
