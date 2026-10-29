@@ -15,6 +15,20 @@ REPORT = "reports/ReportService.java"
 PAGES = "web/ContentPages.java"
 TERM = '''.append(" notices for “").append(q)'''
 DOCS = "docs/DocumentService.java"
+PW = "auth/Passwords.java"
+HASH = '''        return IMPORTED + sha256Hex(password);
+'''
+HASH_FIXED = '''        byte[] salt = new byte[SALT_BYTES];
+        RANDOM.nextBytes(salt);
+        return format(ITERATIONS, salt, derive(password, salt, ITERATIONS));
+'''
+UPGRADE = '''        return parts.length == 4 && parts[0].equals("pbkdf2-sha256") && Integer.parseInt(parts[1]) < ITERATIONS;'''
+UPGRADE_FIXED = '''        return parts.length != 4 || !parts[0].equals("pbkdf2-sha256") || Integer.parseInt(parts[1]) < ITERATIONS;'''
+CONFIG = "Config.java"
+APP = "App.java"
+BANK = '''env.getOrDefault("CONDODESK_BANK_SECRET", "cd-bank-7f3a91c2"),'''
+DBPW = '''ds.setPassword(env.getOrDefault("CONDODESK_DB_PASSWORD", "condodesk-prod-2023"));'''
+SERVER = "web/Server.java"
 BLOCKED = '''java.util.Set.of("php", "jsp", "exe", "sh", "bat", "js")'''
 
 CASES = [
@@ -57,4 +71,22 @@ CASES = [
     dict(target="SEC-018", name="review-sec018-html-and-svg-only", kind="partial", expect="not_fixed",
          edits=[(DOCS, BLOCKED, '''java.util.Set.of("php", "jsp", "exe", "sh", "bat", "js", "html", "svg")''')],
          note="html and svg refused, htm still stored as a page (it was full)"),
+    dict(target="SEC-014", name="review-sec014-more-iterations", kind="alternative", expect="fixed",
+         edits=[(PW, HASH, HASH_FIXED), (PW, UPGRADE, UPGRADE_FIXED), (PW, "static final int ITERATIONS = 600_000;", "static final int ITERATIONS = 1_000_000;")],
+         note="the same hash with a higher iteration count, which the manifest does not forbid (it was none)"),
+    dict(target="SEC-015", name="review-sec015-empty-default", kind="alternative", expect="fixed",
+         edits=[(CONFIG, BANK, 'env.getOrDefault("CONDODESK_BANK_SECRET", ""),')],
+         note="an empty default, which the webhook already treats as not configured (the verifier used to crash on it)"),
+    dict(target="SEC-015.b", name="review-sec015b-default-moved", kind="wrong", expect="not_fixed",
+         edits=[(APP, DBPW, 'ds.setPassword(java.util.Objects.requireNonNullElse(env.get("CONDODESK_DB_PASSWORD"), "condodesk-prod-2023"));')],
+         note="the literal is still the password the application uses when the variable is unset (it was full)"),
+    dict(target="SEC-015.b", name="review-sec015b-default-in-a-ternary", kind="wrong", expect="not_fixed",
+         edits=[(APP, DBPW, 'String pw = env.get("CONDODESK_DB_PASSWORD");\n        ds.setPassword(pw != null ? pw : "condodesk-prod-2023");')],
+         note="the same default written as a conditional (it was full)"),
+    dict(target="SEC-015.b", name="review-sec015b-variable-required", kind="alternative", expect="fixed",
+         edits=[(APP, DBPW, 'ds.setPassword(java.util.Objects.requireNonNull(env.get("CONDODESK_DB_PASSWORD"), "CONDODESK_DB_PASSWORD is required"));')],
+         note="the program refuses to start without the variable"),
+    dict(target="SEC-020", name="review-sec020-generic-message", kind="alternative", expect="fixed",
+         edits=[(SERVER, 'Something went wrong (incident " + incident + "): " + e', 'Something went wrong. Please try again later."); //')],
+         note="a plain message with no incident reference, which the manifest does not require (it was none)"),
 ]

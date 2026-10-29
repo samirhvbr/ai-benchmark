@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.281`
+**Versão atual:** `0.2.282`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.282` — 2026-10-29 — LEB-S-300-A's database-password row is judged by running the application, and three more rows stop depending on something the manifest does not contract
+
+- **The database-password row is read by behavior now.** It used to look for a literal default in the source with a pattern, which a literal moved into another call, a conditional or a constant passed unnoticed. The verifier
+  starts the application's main method in a child JVM against a stand-in for the database that asks for a clear-text password, signs in once so that the application opens its connection, and records what the client sends: with no
+  password in the environment nothing may arrive, and with one set that value must. The control cases include the three deliveries the reviewers described and a program that refuses to start without the variable.
+- **The stored-hash row accepts any PBKDF2 at or above the floor** (SHA-256 at 600,000 iterations or more, SHA-512 at 210,000 or more, a salt of at least sixteen characters), not exactly the hash the reference writes; a no-op
+  check on a sign-in is removed.
+- **The internal-error row no longer depends on another row's method or on the form of the incident reference.** The manifest contracts a 500 and a reason in plain words, so the error is now made by the database (a column of
+  the document table is gone, which no fix of another row maps to a refusal) and the verdict is the status and what the body does not show.
+- **The bank-secret row** no longer crashes when the default is the empty string (the webhook already treats it as not configured); it signs with the planted literal when the configuration has none to sign with.
+- **The coverage text** each verifier carries is updated for every row changed since 0.2.280, and the matrix is regenerated (the hashes changed again). Control cases added: 6 (the file has 19 now).
+- Not frozen.
 
 ### `0.2.281` — 2026-10-29 — LEB-S-300-A's verifiers close the gaps two reviewers found in nine rows, each with a control case that was judged wrongly before
 

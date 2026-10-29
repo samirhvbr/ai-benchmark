@@ -77,21 +77,24 @@ class S02_RequestsTest extends VBase {
                 + web.get(5) + " (expected 429)");
     }
 
+    /**
+     * The error is made by the database, not by a file or a route another row fixes: the document list's query fails when a column of its table is gone, which no fix of any other row maps to a refusal.
+     * The manifest contracts a 500 and a reason in plain words, not the form of the incident reference, so the verdict is the status and what the body does not show.
+     */
     @Test
     @Verifies({"SEC-020"})
     void sec020_anInternalErrorShowsNoInternals() throws Exception {
         Browser marcos = loggedIn(MANAGER_A);
         marcos.get("/documents");
         setupUpload(marcos, "minutes.pdf", PDF, "MINUTES");
-        long id = (Long) value("select id from document");
-        String stored = (String) value("select stored_name from document where id = ?", id);
-        Files.delete(storage.resolve(String.valueOf(buildingA)).resolve(stored));   // the stored file is gone: the download fails inside
-        R r = marcos.get("/documents/" + id + "/download");
+        update("alter table document rename column stored_name to stored_name_gone");   // the list's query fails inside
+        R r = marcos.get("/documents");
         String body = r.body();
-        boolean leaks = body.contains(storage.toString()) || body.contains("Exception") || body.contains("java.") || body.contains(stored);
-        boolean incident = r.status() == 500 && body.matches("(?s).*\\(incident [0-9a-f]{8}\\).*");
-        Verdict.fixed("SEC-020", !leaks && incident, "a download whose stored file is gone answered " + r.status() + (leaks ? " and its body shows internals (a path, an exception or a file name)" : " with no internals")
-                + "; it carries an incident id: " + incident + " (expected 500, no internals, an incident id)");
+        boolean leaks = body.contains(storage.toString()) || body.contains("Exception") || body.contains("java.") || body.contains("org.postgresql") || body.contains("stored_name")
+                || body.contains("select ") || body.contains("SQL");
+        boolean plain = r.status() == 500 && body.strip().length() > 10;
+        Verdict.fixed("SEC-020", !leaks && plain, "a page whose database query fails answered " + r.status() + (leaks ? " and its body shows internals (a path, an exception, a driver, a column or a statement)" : " with no internals")
+                + "; the body states a reason: " + (body.strip().length() > 10) + " (expected 500, no internals, a reason in plain words)");
     }
 
     @Test

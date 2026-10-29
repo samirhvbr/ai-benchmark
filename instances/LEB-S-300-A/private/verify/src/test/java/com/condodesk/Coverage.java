@@ -10,7 +10,7 @@ final class Coverage {
     record Item(String proves, String[] doesNotProve) {}
 
     static final Set<String> DECOYS = Set.of("SEC-001.c", "SEC-003.b", "SEC-007.b", "SEC-015.c", "SEC-016.c", "SEC-017.c");
-    static final Set<String> STRUCTURAL = Set.of("SEC-004", "SEC-015.b");
+    static final Set<String> STRUCTURAL = Set.of("SEC-004");
 
     static boolean isDecoy(String id) {
         return DECOYS.contains(id);
@@ -41,29 +41,29 @@ final class Coverage {
                 new String[] {"the title in the page's <title> and heading (the page builder escapes them)", "other stored text (the account name in the page header)"})),
         Map.entry("SEC-002.b", new Item("a payment proof named with markup reaches the manager's document list as text, and plain names are still links",
                 new String[] {"the source URL of a fetched document", "the name in a download's headers"})),
-        Map.entry("SEC-003", new Item("two search terms that carry markup do not come back as markup, and a plain search still finds its notice and repeats its term",
+        Map.entry("SEC-003", new Item("three search terms that carry markup (one with no closing bracket) do not come back as markup, and a plain search still finds its notice and repeats its term",
                 new String[] {"the login page's error and its email field", "other pages that repeat a parameter"})),
-        Map.entry("SEC-004", new Item("no variable reaches an HTML sink of the page script (a cleansing call in front of one is reported as half, for the judge to read)",
+        Map.entry("SEC-004", new Item("a variable read from the address handed to a markup sink as it was read is not fixed, and a script with no such sink that still shows the message as text is fixed; any other script is inconclusive, for the judge to read",
                 new String[] {"that the script behaves, which no engine here runs", "other scripts than static/app.js"})),
         Map.entry("SEC-005", new Item("a document upload, a payment proof and a bank statement posted with the session cookie and no token are refused (a 4xx) and store nothing, and an upload with its token still works",
                 new String[] {"posts that are not multipart (the other forms have their own test in the public suite)", "the token's secrecy"})),
-        Map.entry("SEC-008", new Item("owner names that start with =, +, -, @ or a tab reach the delinquency CSV neutralized, commas and quotes are still quoted, and a name with an equals sign inside is untouched",
-                new String[] {"the building archive's index.csv (the same cell writer)", "a carriage return in the first position"})),
+        Map.entry("SEC-008", new Item("owner names that start with =, +, -, @, a tab or a carriage return reach the delinquency CSV, and document names that start with =, +, - or @ reach the building archive's index, with no first character that starts a formula and their text kept, commas and quotes are still quoted, and a name with an equals sign inside is untouched",
+                new String[] {"the form the neutralization takes (the manifest does not contract it)", "a name that reaches a CSV by another route"})),
         Map.entry("SEC-012", new Item("after a login, next=//evil.example/, /\\evil.example, a tab-led path and three slashes all end on a local path, and a local path with its query is still followed",
                 new String[] {"other redirects of the application (they take only constant paths)", "a scheme-relative form this list does not carry"})),
         Map.entry("SEC-013", new Item("a cookie planted before login is refused after the victim's login, the victim's cookie changes at login, and logout still ends the session",
                 new String[] {"the CSRF token's rotation", "a session kept across a password change"})),
         Map.entry("SEC-019", new Item("eight wrong passwords on the mobile login reach a 429, the right one is then refused too, another account still gets its token, and the browser's lock still holds",
                 new String[] {"the address limit (twenty failures)", "the lock's expiry after fifteen minutes"})),
-        Map.entry("SEC-020", new Item("an internal error's page shows no path, exception or file name and carries an incident id",
+        Map.entry("SEC-020", new Item("a page whose database query fails answers 500 with a reason in plain words and no path, exception, driver, column or statement",
                 new String[] {"other places that could show internals (the API's error JSON, the logs)"})),
         Map.entry("SEC-015", new Item("with the bank secret's variable unset the configuration holds no secret and the webhook answers 503, and with it set the secret is the environment's",
                 new String[] {"other secrets (the database's is SEC-015.b)", "a secret in a file the application reads"})),
-        Map.entry("SEC-015.b", new Item("no password setting has a literal default in the main code",
-                new String[] {"a password written as a constant under another name", "a secret in a resource file"})),
-        Map.entry("SEC-016", new Item("a resident and a manager who post a new ADMIN account are refused (a 4xx) and no account is created, while the admin still creates a resident",
+        Map.entry("SEC-015.b", new Item("started with no database password in its environment, the application sends the database none, and started with one it sends that one (by running its main method against a stand-in for the database)",
+                new String[] {"a secret in a resource file", "the password of a database the application is not started against"})),
+        Map.entry("SEC-016", new Item("a resident posting a new ADMIN, a new MANAGER of another building or a new RESIDENT, and a manager posting a new ADMIN, are refused (a 4xx) and no account is created, while the admin still creates a resident",
                 new String[] {"other admin-only routes (the billing run, the statement import, the user list), which have their own checks"})),
-        Map.entry("SEC-016.b", new Item("a resident registering a payment on their own invoice, and on another building's, is refused (a 4xx) and settles nothing, while the building's manager still registers one",
+        Map.entry("SEC-016.b", new Item("a resident registering a payment on their own invoice, and on another building's, and a manager of another building doing so on this building's, are refused (a 4xx) and settle nothing, while the building's manager and an admin still register one",
                 new String[] {"payments by the bank's webhook and by statement, which have their own entry points"})),
         Map.entry("SEC-017", new Item("a resident reading an invoice of another unit, of another building, and over the mobile API is refused (a 4xx), as is a manager of another building, while the owner, the building's manager and the admin read theirs",
                 new String[] {"the invoice list's scope", "the resident's dashboard"})),

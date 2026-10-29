@@ -117,7 +117,7 @@ FLAWS = [
     flaw("SEC-015.b", "Média", "Fácil", "C", "App.java", r"getOrDefault\(\"CONDODESK_DB_PASSWORD\"",
          "The database password has a value written in the code that the program uses when the variable is unset.",
          "Read the password from the environment only, with no literal default.",
-         "A property of the source, reported as a structural verdict.", dimensions=["segredos"]),
+         "By behavior: the application is started with no database password and the stand-in for the database records whether it sends one.", dimensions=["segredos"]),
     flaw("SEC-016", "Crítica", "Fácil", "C", "auth/AuthService.java", r"public long createUser",
          "A resident or a manager can create an account, an administrator's included, by posting the admin form.",
          "Require the admin role at the start of the account creation, answering 403 to anyone else.",
