@@ -54,6 +54,15 @@ REMOVED_TESTS = [
 
 # A characterization test that holds a security assertion beside its own behavior loses only that part. Each trim is an exact edit that must match once.
 TRIMS = [
+    # The class comment names the taxonomy, the system's README and the sibling track, none of which the package carries.
+    (TESTS + "SecurityBehaviorTest.java",
+     """/**
+ * The defenses of the reference, one or more checks per class of taxonomy/SEC.md that it exposes (systems/300-A/README.md §5).
+ * In the Default track they are part of the contract a change must keep.
+ */
+""",
+     """/** The defenses of the system, which a change must keep. */
+""", "none: what the package says of where the tests come from"),
     (TESTS + "BillingTest.java",
      """        Browser resident = loggedIn(OWNER_A101);
         resident.get("/invoices/" + id);

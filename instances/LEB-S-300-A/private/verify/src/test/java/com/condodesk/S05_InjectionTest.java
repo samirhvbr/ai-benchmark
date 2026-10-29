@@ -18,9 +18,12 @@ class S05_InjectionTest extends VBase {
         return ids;
     }
 
+    /** The notices a page lists, counted by what the manifest contracts (each is an article with its id), not by the results line, which another row's fix may reword. */
     private static int total(R r) {
-        Matcher m = Pattern.compile("(\\d+) notices for").matcher(r.body());
-        return m.find() ? Integer.parseInt(m.group(1)) : -1;
+        Matcher m = Pattern.compile("<article id=\"notice-\\d+\"").matcher(r.body());
+        int n = 0;
+        while (m.find()) n++;
+        return r.status() == 200 ? n : -1;
     }
 
     @Test

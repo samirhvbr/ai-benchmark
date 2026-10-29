@@ -89,4 +89,8 @@ CASES = [
     dict(target="SEC-020", name="review-sec020-generic-message", kind="alternative", expect="fixed",
          edits=[(SERVER, 'Something went wrong (incident " + incident + "): " + e', 'Something went wrong. Please try again later."); //')],
          note="a plain message with no incident reference, which the manifest does not require (it was none)"),
+    dict(target="SEC-011", name="review-sec011-checked-after-the-request", kind="partial", expect="not_fixed",
+         edits=[("docs/UrlFetcher.java", "            HttpResponse<InputStream> resp = client.send(req, HttpResponse.BodyHandlers.ofInputStream());\n",
+                 "            HttpResponse<InputStream> resp = client.send(req, HttpResponse.BodyHandlers.ofInputStream());\n            allowedUri(resp.uri().toString());\n")],
+         note="the final address is checked after the request went out: nothing is stored, but the internal site was contacted (it was full)"),
 ]

@@ -282,6 +282,12 @@ One block per method: the file, the method, the rows whose planting it sees, the
         }
     }
 
+=== src/test/java/com/condodesk/SecurityBehaviorTest.java :: trimmed :: none: what the package says of where the tests come from
+/**
+ * The defenses of the reference, one or more checks per class of taxonomy/SEC.md that it exposes (systems/300-A/README.md §5).
+ * In the Default track they are part of the contract a change must keep.
+ */
+
 === src/test/java/com/condodesk/BillingTest.java :: trimmed :: SEC-016.b
         Browser resident = loggedIn(OWNER_A101);
         resident.get("/invoices/" + id);

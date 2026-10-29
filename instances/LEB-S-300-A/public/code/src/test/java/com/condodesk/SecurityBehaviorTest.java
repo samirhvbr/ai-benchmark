@@ -17,10 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * The defenses of the reference, one or more checks per class of taxonomy/SEC.md that it exposes (systems/300-A/README.md §5).
- * In the Default track they are part of the contract a change must keep.
- */
+/** The defenses of the system, which a change must keep. */
 class SecurityBehaviorTest extends TestBase {
     private static final String SCRIPT = "<script>alert(1)</script>";
 

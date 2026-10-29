@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
 /** What the server reads, runs, parses, fetches and stores for a request: SEC-006, SEC-009, SEC-010, SEC-011 and SEC-018 of CATALOG.md section 2.2 and 2.4. */
@@ -105,21 +106,36 @@ class S06_FilesTest extends VBase {
                 + " payments that hold what they read (expected 0); a valid statement still settles its invoice: " + works + " (expected true)");
     }
 
+    /**
+     * The manifest says only hosts in the allowed list are contacted, so the verdict is what the internal site received, not what was stored: a fix that looks at the address after the request
+     * has gone out has still sent it. The internal site is given a handler that counts what reaches it.
+     */
     @Test
     @Verifies({"SEC-011"})
     void sec011_aFetchNeverFollowsAnApprovedSiteToAnInternalOne() throws Exception {
+        AtomicInteger hits = new AtomicInteger();
+        internal.removeContext("/");
+        internal.createContext("/", ex -> {
+            hits.incrementAndGet();
+            byte[] body = ("%PDF-1.4 internal secret " + ex.getRequestURI().getPath()).getBytes(StandardCharsets.US_ASCII);
+            ex.sendResponseHeaders(200, body.length);
+            ex.getResponseBody().write(body);
+            ex.close();
+        });
         Browser m = loggedIn(MANAGER_A);
         m.get("/documents");
         List<String> reached = new ArrayList<>();
         for (String url : new String[]{"http://" + docsHost + "/files/moved.pdf", "http://" + internalHost + "/secret.pdf", "http://" + docsHost + "@" + internalHost + "/secret.pdf"}) {
             long before = count("select count(*) from document");
+            int sent = hits.get();
             int s = m.post("/documents/fetch", "kind", "OTHER", "url", url).status();
-            if (s == 303 || count("select count(*) from document") > before) reached.add(url.replace(internalHost, "internal").replace(docsHost, "docs") + " -> " + s);
+            boolean stored = s == 303 || count("select count(*) from document") > before;
+            if (stored || hits.get() > sent) reached.add(url.replace(internalHost, "internal").replace(docsHost, "docs") + " -> " + s + (hits.get() > sent ? ", contacted" : "") + (stored ? ", stored" : ""));
         }
         R legit = m.post("/documents/fetch", "kind", "OTHER", "url", "http://" + docsHost + "/files/minutes-2026-02.pdf");
         boolean works = legit.status() == 303 && count("select count(*) from document where source_url like '%minutes-2026-02.pdf'") == 1;
-        Verdict.fixed("SEC-011", reached.isEmpty() && works, "fetches that reached the internal site (a redirect from the approved one, the address itself, a userinfo trick): " + (reached.isEmpty() ? "none" : reached)
-                + " (expected none); a document from the approved site is still fetched: " + works + " (expected true)");
+        Verdict.fixed("SEC-011", reached.isEmpty() && works, "fetches that reached the internal site, contacted or stored (a redirect from the approved one, the address itself, a userinfo trick): "
+                + (reached.isEmpty() ? "none" : reached) + " (expected none); a document from the approved site is still fetched: " + works + " (expected true)");
     }
 
     @Test

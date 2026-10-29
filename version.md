@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.283`
+**Versão atual:** `0.2.284`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.284` — 2026-10-29 — LEB-S-300-A's remote-fetch row counts what the internal site received, the notice-search row stops reading another row's line, and the package no longer names the taxonomy
+
+- **Remote fetch.** The manifest says only hosts in the allowed list are contacted, so the verifier now gives the internal site a handler that counts what reaches it and fails a delivery that contacted it even when it stored
+  nothing (a fix that checks the final address after the request has gone out used to pass). A delivery that also refuses loopback addresses still fails the row, because the approved site of the evaluation sits on the loopback
+  address; that is recorded as a limit, not as a defect of the delivery.
+- **Notice search.** The row counted its results by the line "N notices for" that the search-term row's fix may reword; it counts the articles the manifest contracts (`<article id="notice-N">`).
+- **The package.** The public security test's class comment named the taxonomy file, the system's README and the sibling track; the build now replaces it with one neutral line, and the build checks the result. The method names
+  of the two tests that remain are kept, because the matrix's regression groups are bound to them.
+- One control case added (the file has 20 now). Not frozen.
 
 ### `0.2.283` — 2026-10-29 — LEB-S-300-A's README and the system's checklist record the two reviews, the bench proof and what is still open
 
