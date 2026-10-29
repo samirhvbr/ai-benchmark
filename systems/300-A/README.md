@@ -194,7 +194,7 @@ split rounding each share.
 - [x] `LEB-S-300-A`: the exploit verifiers (`private/verify/`), the matrix (`private/matrix_rows.py`, written out by `tools/make_matrix.py`: 200 base points) and its regression groups
 - [x] `LEB-S-300-A`: the variant cases (`private/variants/`, run by `tools/variants.py`): 69, all with the expected verdict
 - [x] `LEB-S-300-A`: its runner contract (`private/runner.json`) and its package, built clean by `./leb pacote` (56 files: `code/`, `manifest.md`, `TASK.md`)
-- [ ] `LEB-S-300-A`: the owner's review of the catalog (five points are still proposals: [`instances/LEB-S-300-A/README.md`](../../instances/LEB-S-300-A/README.md#where-it-stands))
+- [x] `LEB-S-300-A`: the owner's review of the catalog, on 2026-10-29: all 30 rows Ok and the five points accepted as proposed, so nothing of the key changed ([`instances/LEB-S-300-A/README.md`](../../instances/LEB-S-300-A/README.md#where-it-stands))
 - [x] `LEB-S-300-A`: the review of the key, before the freeze: two independent reviewers on 2026-10-29 (the owner: two internal reviews suffice); every finding fixed in 0.2.280 to 0.2.285 or recorded as a
       limit in [`instances/LEB-S-300-A/README.md`](../../instances/LEB-S-300-A/README.md#review-of-2026-10-29); the 89 control cases ran whole after the last change
 - [ ] `LEB-S-300-A`: the proof on a bench VM, on a throwaway copy of the package (`docs/candidate-vm.md` §5, step 4); the bench snapshot of the environment, `leb-d-300-a`, serves this

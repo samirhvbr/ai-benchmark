@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.286`
+**Versão atual:** `0.2.287`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.287` — 2026-10-29 — LEB-S-300-A's catalog review is answered: 30 rows Ok and the five points accepted, nothing of the key changes
+
+- The owner answered the review page on 2026-10-29 (10:57 to 11:00, local time) and pressed "done": all 30 rows (24 planted and 6 decoys) Ok, none to adjust or remove, and the five open points accepted as proposed.
+  SEC-007 stays only a decoy, the weights stay SEC 850 · COMP 100 · EXPL 50, the two routes of the first case stay, the five borderline patterns of the reference stay accepted, and the findings file keeps its
+  name `findings.json` in the run's message, as in LEB-D-300-A.
+- The two READMEs record it (the instance's "Where it stands" table and the system's checklist). No file of the key, the verifiers or the package changes, so the matrix and package hashes stay as they were at 0.2.286.
+- What is left before the first run: the whole set of control cases once more and the proof on a bench VM, both on the package that is frozen, then the freeze.
 
 ### `0.2.286` — 2026-10-29 — LEB-S-300-A's database-password verifier no longer crashes on an empty password, found by a rehearsal delivery that went through the whole path
 

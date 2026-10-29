@@ -31,7 +31,7 @@ this instance's package.
 | Variant (control) cases | 90 (69 of 2026-10-25, 20 from the two reviews and 1 from the rehearsal, `private/variants/cases_g_review.py`), run as a whole on 2026-10-29: 0 unexpected; every row is proved both ways again (planted tree: 24 not fixed; clean tree: 24 fixed; the 6 decoys hold on both) |
 | Task statement, message and runner contract | done, 2026-10-25: [`TASK-S-1.0.0.md`](../../protocol/tasks/TASK-S-1.0.0.md), [`messages-S-1.0.0.json`](../../protocol/tasks/messages-S-1.0.0.json), `private/runner.json`; the runner passed no selector for its verifiers and an evaluation ran none of them, fixed on 2026-10-29 (0.2.280) and now covered by a test |
 | Package | builds clean: `./leb pacote LEB-S-300-A` gives 56 files and the leak guard passes |
-| The owner's review of the catalog | **open**: five points are still proposals (the one class kept only as a decoy, the weights, the routes of the first case, five accepted borderline patterns of the reference, and the name of the findings file in the run's message) |
+| The owner's review of the catalog | done, 2026-10-29 (answered in the review page at 10:57 to 11:00, local time): all 30 rows Ok, none to adjust or remove; the five points accepted as proposed (SEC-007 only a decoy, weights SEC 850 · COMP 100 · EXPL 50, the two routes of the first case, the five borderline patterns accepted, `findings.json` kept in the run's message as in LEB-D-300-A) |
 | Review of the key | done on 2026-10-29 by two independent reviewers (the owner: two internal reviews suffice); every finding is fixed in 0.2.280 to 0.2.285 or recorded as a limit under [Review of 2026-10-29](#review-of-2026-10-29), each reproduced as a control case first |
 | Proof on a bench VM | done on BENCH4 on 2026-10-29 for the 0.2.279 package (57 files with its hash list, `check-environment.sh` ready, 51 public tests offline, no schema left, `/tmp` clean) by `operador/provar-pacote.sh`; **to be repeated on the package that is frozen**, because the public tree changed since |
 | Freeze | **open**: it records the hashes and is committed and pushed before any run |
@@ -42,7 +42,7 @@ This table is updated in the commit of each step.
 
 In this order, because a review can change the key and the hashes are recorded after its last change:
 
-1. **The owner's review of the catalog.** What it can change: a row (replant, verifier, control cases and the matrix follow), the weights, the wording of the run's message.
+1. **The owner's review of the catalog** (done on 2026-10-29, nothing changed). What it could change: a row (replant, verifier, control cases and the matrix follow), the weights, the wording of the run's message.
 2. **The external review of the key.** LEB-D-300-A froze its version 1.0 first and made 1.1 after the review ([its README](../LEB-D-300-A/README.md#versions)); this instance takes
    the review first, so that its first version is the one the evaluation cites.
 3. **The proof on a bench VM**, on a throwaway copy of the package: the package's files match their hash list, `check-environment.sh` says the environment is ready, and the public
