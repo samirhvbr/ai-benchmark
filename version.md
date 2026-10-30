@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.290`
+**Versão atual:** `0.2.291`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.291` — 2026-10-30 — LEB-D-300-A's aggregate grows Gemini 4 Argon at high from two runs to five (682 to 748, mean 718, Silver)
+
+- Gemini 4 Argon at high (agent `gemini-4-argon-high`): runs 748, 733 and 692 join the published 736 and 682. Five runs, mean 718 (it was 709 with two), all Silver, all completed inside the budget with compatibility 100.
+  Run 7 lost 5 points (PEN-004) for a finding on the decoy of BUG-013.b.
+- Twenty of the 25 numbered attempts were lost before the model could deliver and are filed as lab-failure markers: fifteen died in about six seconds on the client's `ProviderModelNotFoundError` (the model catalog cached on the lab's snapshot dates from 2026-10-10 and does not
+  list the model; the lab now downloads the current catalog before each run of this configuration, and the model was never reached in those fifteen), and five ended on the model's output limit without a report (the first three and two more).
+- Runs 7, 13 and 25 were made on 2026-10-30 (the first two on 2026-10-25); each went through two matching judges and two blind judges for the report, as every run of the series. The matching judges' only differences were settled by the standing rules the owner accepted:
+  one false positive written under two spellings (run 13) and the R4 of a row nobody tried to fix (run 25).
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.290` — 2026-10-30 — LEB-D-300-A's aggregate grows Grok 4.7 at high from two runs to five (579 to 627, mean 605, Silver)
 
