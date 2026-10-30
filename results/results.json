@@ -25212,6 +25212,151 @@
           }
         },
         {
+          "agent": "gemini-3.8-flash-high",
+          "score": 521,
+          "grade": "Bronze",
+          "runs_count": 5,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 68,
+            "BUG": 154,
+            "PERF": 154,
+            "CLN": 6,
+            "COMP": 100,
+            "EXPL": 38
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 2.45,
+          "wall_minutes": 37.3,
+          "tokens": {
+            "input": 1436066,
+            "output": 29181,
+            "cache": 13094639,
+            "total": 14614514
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 521.0,
+              "low": 512.6,
+              "high": 530.2
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 521.0,
+              "low": 512.6,
+              "high": 530.2
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 515,
+            "min": 511,
+            "max": 536
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 513,
+              "grade": "Bronze",
+              "cost_usd": 4.23,
+              "wall_minutes": 60.5,
+              "tokens": {
+                "input": 3286054,
+                "output": 29075,
+                "cache": 14019350,
+                "total": 17392291
+              }
+            },
+            {
+              "run": 3,
+              "total": 536,
+              "grade": "Bronze",
+              "cost_usd": 1.84,
+              "wall_minutes": 35.4,
+              "tokens": {
+                "input": 781243,
+                "output": 27797,
+                "cache": 12542075,
+                "total": 13406687
+              }
+            },
+            {
+              "run": 4,
+              "total": 515,
+              "grade": "Bronze",
+              "cost_usd": 1.84,
+              "wall_minutes": 30.6,
+              "tokens": {
+                "input": 811472,
+                "output": 30109,
+                "cache": 12807950,
+                "total": 13692220
+              }
+            },
+            {
+              "run": 5,
+              "total": 530,
+              "grade": "Bronze",
+              "cost_usd": 2.21,
+              "wall_minutes": 32.9,
+              "tokens": {
+                "input": 1140296,
+                "output": 31712,
+                "cache": 13401309,
+                "total": 14633800
+              }
+            },
+            {
+              "run": 6,
+              "total": 511,
+              "grade": "Bronze",
+              "cost_usd": 2.14,
+              "wall_minutes": 27.2,
+              "tokens": {
+                "input": 1161267,
+                "output": 27213,
+                "cache": 12702510,
+                "total": 13947571
+              }
+            }
+          ],
+          "model": {
+            "name": "Gemini 3.8 Flash",
+            "id": "google/gemini-3.8-flash",
+            "provider": "Google",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Five runs between 511 and 536, mean 521 with a 95% interval of 513 to 530, all Bronze. All five completed inside the 90-minute budget, at about US$ 2.45 (the client's own estimate) and 37 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (154 of 213 on average), then performance (154 of 213), architecture (68 of 283) and clean code (6 of 141). The reports were rated 38 to 39 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
+            "pt_BR": "Cinco execuções entre 511 e 536, média 521 com intervalo de 95% de 513 a 530, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 2,45 (estimativa do próprio cliente) e 37 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (154 de 213 em média), depois desempenho (154 de 213), arquitetura (68 de 283) e código limpo (6 de 141). Os relatórios tiveram de 38 a 39 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+          }
+        },
+        {
           "agent": "deepseek-v4.1-flash-high",
           "score": 519,
           "grade": "Bronze",
@@ -27820,6 +27965,151 @@
           "comment": {
             "en": "Five runs between 179 and 261, mean 209 with a 95% interval of 180 to 241, all Reprovada. All five completed inside the 90-minute budget, at about US$ 0.82 and 16 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (34 of 213 on average), then performance (34 of 213), architecture (10 of 283) and clean code (0 of 141). The reports were rated 29 to 33 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. Every run ran on an Anthropic API key, billed to API credit, where the first Claude configurations ran on a subscription token; the model and the client are the same. Every run used the client's acceptEdits permission mode with only the Bash tool allowed besides the edits, because Haiku 4.5 has no auto mode: the only configuration of the series with another permission setting.",
             "pt_BR": "Cinco execuções entre 179 e 261, média 209 com intervalo de 95% de 180 a 241, todas Reprovada. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,82 e 16 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (34 de 213 em média), depois desempenho (34 de 213), arquitetura (10 de 283) e código limpo (0 de 141). Os relatórios tiveram de 29 a 33 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API, onde as primeiras configurações do Claude rodaram com um token de assinatura; o modelo e o cliente são os mesmos. Todas as runs usaram o modo de permissão acceptEdits do cliente, com só a ferramenta Bash liberada além das edições, porque o Haiku 4.5 não tem modo auto: é a única configuração da série com outra permissão."
+          }
+        },
+        {
+          "agent": "gemma-4-26b-a4b-high",
+          "score": 152,
+          "grade": "Reprovada",
+          "runs_count": 5,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 0,
+            "BUG": 27,
+            "PERF": 0,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 25
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.12,
+          "wall_minutes": 16.4,
+          "tokens": {
+            "input": 900273,
+            "output": 17100,
+            "cache": 1411296,
+            "total": 2336089
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 151.6,
+              "low": 134.2,
+              "high": 162.6
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 151.6,
+              "low": 134.2,
+              "high": 162.6
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 159,
+            "min": 118,
+            "max": 164
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 163,
+              "grade": "Reprovada",
+              "cost_usd": 0.24,
+              "wall_minutes": 43.5,
+              "tokens": {
+                "input": 2984505,
+                "output": 9619,
+                "cache": 876640,
+                "total": 3892760
+              }
+            },
+            {
+              "run": 3,
+              "total": 118,
+              "grade": "Reprovada",
+              "cost_usd": 0.06,
+              "wall_minutes": 11.7,
+              "tokens": {
+                "input": 608889,
+                "output": 1711,
+                "cache": 427008,
+                "total": 1047210
+              }
+            },
+            {
+              "run": 4,
+              "total": 154,
+              "grade": "Reprovada",
+              "cost_usd": 0.05,
+              "wall_minutes": 5.3,
+              "tokens": {
+                "input": 70873,
+                "output": 8056,
+                "cache": 1199744,
+                "total": 1278673
+              }
+            },
+            {
+              "run": 5,
+              "total": 159,
+              "grade": "Reprovada",
+              "cost_usd": 0.2,
+              "wall_minutes": 16.0,
+              "tokens": {
+                "input": 329257,
+                "output": 62942,
+                "cache": 4410688,
+                "total": 4802943
+              }
+            },
+            {
+              "run": 6,
+              "total": 164,
+              "grade": "Reprovada",
+              "cost_usd": 0.04,
+              "wall_minutes": 5.7,
+              "tokens": {
+                "input": 507841,
+                "output": 3170,
+                "cache": 142398,
+                "total": 658861
+              }
+            }
+          ],
+          "model": {
+            "name": "Gemma 4 26B A4B",
+            "id": "google/gemma-4-26b-a4b-it",
+            "provider": "Google",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Five runs between 118 and 164, mean 152 with a 95% interval of 134 to 163, all Reprovada. All five completed inside the 90-minute budget, at about US$ 0.12 (the client's own estimate) and 16 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (27 of 213 on average), then performance (0 of 213), architecture (0 of 283) and clean code (0 of 141). The reports were rated 0 to 34 of 50. Penalties: run 4 lost 5 points for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
+            "pt_BR": "Cinco execuções entre 118 e 164, média 152 com intervalo de 95% de 134 a 163, todas Reprovada. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,12 (estimativa do próprio cliente) e 16 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (27 de 213 em média), depois desempenho (0 de 213), arquitetura (0 de 283) e código limpo (0 de 141). Os relatórios tiveram de 0 a 34 de 50. Penalidades: a execução 4 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
           }
         }
       ],

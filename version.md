@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.288`
+**Versão atual:** `0.2.289`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.289` — 2026-10-30 — LEB-D-300-A's aggregate adds Gemma 4 26B A4B at high (five runs, 118 to 164, Reprovada) and Gemini 3.8 Flash at high (five runs, 511 to 536, Bronze) (42 configurations)
+
+- New configuration: Gemma 4 26B A4B at high (152, Reprovada): runs 163, 118, 154, 159 and 164 (run 1 ended on the model's output limit without a delivery and is filed as a lab-failure marker, as Gemini 4 Argon's first three were).
+  Served through OpenRouter, which routes among third-party upstream providers; the one that served each request was not recorded.
+- New configuration: Gemini 3.8 Flash at high (521, Bronze): runs 513, 536, 515, 530 and 511 (run 1 ended on the output limit without a delivery: lab-failure marker). Served through OpenRouter, whose only upstreams are Google's own.
+- Runs 3 to 6 of Gemini 3.8 Flash and run 6 of Gemma 4 26B A4B were made on 2026-10-30; each went through two matching judges and two blind judges for the report, as every run of the series. The two matching judges agreed on everything
+  that is scored in the five runs of each configuration except one false positive each that they wrote under two spellings, which counts once by the standing rule the owner accepted on 2026-10-16. No decoy was hit by either configuration.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.288` — 2026-10-29 — LEB-S-300-A is frozen: the matrix and package hashes are recorded after the whole control set, the proof on a bench VM and a rehearsal through the judges
 
