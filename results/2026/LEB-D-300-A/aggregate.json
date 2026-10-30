@@ -1710,17 +1710,17 @@
     },
     {
       "agent": "grok-4.7",
-      "score": 603,
+      "score": 605,
       "grade": "Silver",
-      "runs_count": 2,
+      "runs_count": 5,
       "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
       "categories": {
-        "ARCH": 121,
-        "BUG": 202,
-        "PERF": 140,
+        "ARCH": 101,
+        "BUG": 206,
+        "PERF": 157,
         "CLN": 0,
         "COMP": 100,
-        "EXPL": 42
+        "EXPL": 43
       },
       "category_max": {
         "ARCH": 283,
@@ -1730,39 +1730,39 @@
         "COMP": 100,
         "EXPL": 50
       },
-      "cost_usd": 7.71,
-      "wall_minutes": 38.0,
+      "cost_usd": 7.41,
+      "wall_minutes": 39.1,
       "tokens": {
-        "input": 243128,
-        "output": 34042,
-        "cache": 8518272,
-        "total": 8870752
+        "input": 245286,
+        "output": 33878,
+        "cache": 7545523,
+        "total": 7910215
       },
       "statistics": {
-        "scheduled": 2,
+        "scheduled": 5,
         "quality": {
-          "n": 2,
+          "n": 5,
           "systems": 1,
-          "mean": 603.0,
-          "low": 579.0,
-          "high": 627.0
+          "mean": 605.2,
+          "low": 588.2,
+          "high": 622.0
         },
         "expected_per_scheduled_attempt": {
-          "n": 2,
+          "n": 5,
           "systems": 1,
-          "mean": 603.0,
-          "low": 579.0,
-          "high": 627.0
+          "mean": 605.2,
+          "low": 588.2,
+          "high": 622.0
         },
         "completion": {
           "rate": 1.0,
-          "completed": 2,
-          "scheduled": 2,
+          "completed": 5,
+          "scheduled": 5,
           "systems_all_completed": 1,
           "systems": 1
         },
         "outcomes": {
-          "completed": 2,
+          "completed": 5,
           "blocked": 0,
           "blocked_at_the_start": 0,
           "blocked_during_the_work": 0,
@@ -1770,7 +1770,7 @@
           "switched": 0
         },
         "lab_failures_rerun": 0,
-        "median": 579,
+        "median": 616,
         "min": 579,
         "max": 627
       },
@@ -1800,6 +1800,45 @@
             "cache": 8661760,
             "total": 9012950
           }
+        },
+        {
+          "run": 3,
+          "total": 616,
+          "grade": "Silver",
+          "cost_usd": 7.69,
+          "wall_minutes": 35.8,
+          "tokens": {
+            "input": 241675,
+            "output": 34795,
+            "cache": 7485056,
+            "total": 7847226
+          }
+        },
+        {
+          "run": 4,
+          "total": 620,
+          "grade": "Silver",
+          "cost_usd": 6.05,
+          "wall_minutes": 38.5,
+          "tokens": {
+            "input": 239135,
+            "output": 30529,
+            "cache": 6535552,
+            "total": 6892441
+          }
+        },
+        {
+          "run": 5,
+          "total": 584,
+          "grade": "Bronze",
+          "cost_usd": 7.9,
+          "wall_minutes": 45.1,
+          "tokens": {
+            "input": 259365,
+            "output": 35981,
+            "cache": 6670464,
+            "total": 7069905
+          }
         }
       ],
       "model": {
@@ -1810,8 +1849,8 @@
         "client_mode": "permissions auto-approved"
       },
       "comment": {
-        "en": "Two runs of a case of five, between 579 and 627, mean 603 (the interval, 579 to 627, is the range of the two), one Silver and one Bronze. Both completed inside the 90-minute budget, at about US$ 7.71 (the client's own estimate) and 38 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (202 of 213 on average), then performance (140 of 213), architecture (121 of 283) and clean code (0 of 141). The reports were rated 40 to 44 of 50. Penalties: run 2 lost 5 points for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other three are still to be made, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, whose only upstream for this model is xAI's own.",
-        "pt_BR": "Duas execuções de um caso de cinco, entre 579 e 627, média 603 (o intervalo, de 579 a 627, é a amplitude das duas), uma Silver e uma Bronze. As duas terminaram dentro do orçamento de 90 minutos, por cerca de US$ 7,71 (estimativa do próprio cliente) e 38 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (202 de 213 em média), depois desempenho (140 de 213), arquitetura (121 de 283) e código limpo (0 de 141). Os relatórios tiveram de 40 a 44 de 50. Penalidades: a execução 2 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam três execuções, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, cuja única origem para este modelo é a própria xAI."
+        "en": "Five runs between 579 and 627, mean 605 with a 95% interval of 588 to 622, three Silver and two Bronze. All five completed inside the 90-minute budget, at about US$ 7.41 (the client's own estimate) and 39 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (206 of 213 on average), then performance (157 of 213), architecture (101 of 283) and clean code (0 of 141). The reports were rated 40 to 44 of 50. Penalties: runs 2 and 5 lost 5 points each for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, whose only upstream for this model is xAI's own.",
+        "pt_BR": "Cinco execuções entre 579 e 627, média 605 com intervalo de 95% de 588 a 622, três Silver e duas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 7,41 (estimativa do próprio cliente) e 39 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (206 de 213 em média), depois desempenho (157 de 213), arquitetura (101 de 283) e código limpo (0 de 141). Os relatórios tiveram de 40 a 44 de 50. Penalidades: as execuções 2 e 5 perderam 5 pontos cada por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, cuja única origem para este modelo é a própria xAI."
       }
     },
     {

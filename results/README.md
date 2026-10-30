@@ -136,7 +136,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 10 | `gpt-6.1-sol-xhigh` | **684** | 664 to 704 | Silver | 130 | 209 | 184 | 29 | 100 | 42 | 5/5 (685 · 718 · 695 · 650 · 670) |
 | 11 | `gpt-6.1-sol-high` | **661** | 631 to 689 | Silver | 128 | 203 | 181 | 16 | 100 | 43 | 5/5 (694 · 607 · 641 · 691 · 674) |
 | 12 | `gpt-6.1-sol-ultra` | **638** | 630 to 646 | Silver | 91 | 209 | 189 | 12 | 100 | 42 | 5/5 (648 · 622 · 634 · 639 · 648) |
-| 13 | `grok-4.7` | **603** | 579 to 627 | Silver | 121 | 202 | 140 | 0 | 100 | 42 | 2/2 (627 · 579) |
+| 13 | `grok-4.7` | **605** | 588 to 622 | Silver | 101 | 206 | 157 | 0 | 100 | 43 | 5/5 (627 · 579 · 616 · 620 · 584) |
 | 14 | `claude-haiku-5.5-xhigh` | **602** | 553 to 650 | Silver | 131 | 186 | 142 | 2 | 100 | 44 | 5/5 (696 · 526 · 598 · 565 · 623) |
 | 15 | `glm-5.3-max` | **598** | 541 to 654 | Bronze | 109 | 159 | 170 | 25 | 100 | 42 | 2/2 (541 · 654) |
 | 16 | `grok-4.7-xhigh` | **576** | 556 to 596 | Bronze | 105 | 200 | 145 | 0 | 100 | 41 | 2/2 (556 · 596) |
@@ -194,7 +194,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `gpt-6.1-sol-ultra`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 638.2 (629.6 to 646.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 639, lowest 622, highest 648.
 
-`grok-4.7`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 603.0 (579.0 to 627.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 579, lowest 579, highest 627.
+`grok-4.7`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 605.2 (588.2 to 622.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 616, lowest 579, highest 627.
 
 `claude-haiku-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 601.6 (553.2 to 650.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 598, lowest 526, highest 696.
 

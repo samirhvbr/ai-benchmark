@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.289`
+**Versão atual:** `0.2.290`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.290` — 2026-10-30 — LEB-D-300-A's aggregate grows Grok 4.7 at high from two runs to five (579 to 627, mean 605, Silver)
+
+- Grok 4.7 at high (agent `grok-4.7`): runs 616, 620 and 584 join the published 627 and 579. Five runs, mean 605 (it was 603 with two), three Silver and two Bronze, all completed inside the budget with compatibility 100.
+  Run 5 lost 5 points (PEN-004) for a finding on the decoy of BUG-013.b, which both matching judges agreed on; run 2 had lost 5 for the same kind of finding.
+- Runs 3 to 5 were made on 2026-10-30 (the first two on 2026-10-17); each went through two matching judges and two blind judges for the report, as every run of the series. The matching judges' differences were settled by the standing rules the owner
+  accepted: one false positive written under two spellings (one in run 4, three in run 5), and a finding that one judge called a false positive and the other listed among the extra findings (one in run 3, one in run 5), which counts as an extra finding.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.289` — 2026-10-30 — LEB-D-300-A's aggregate adds Gemma 4 26B A4B at high (five runs, 118 to 164, Reprovada) and Gemini 3.8 Flash at high (five runs, 511 to 536, Bronze) (42 configurations)
 
