@@ -1057,7 +1057,7 @@
       "agent": "moonshot-kimi-k3-high",
       "score": 712,
       "grade": "Silver",
-      "runs_count": 2,
+      "runs_count": 3,
       "categories": {
         "SEC": 229,
         "ARCH": 92,
@@ -1099,6 +1099,18 @@
             "cache": 8800256,
             "total": 9100849
           }
+        },
+        {
+          "run": 3,
+          "total": 652,
+          "cost_usd": 4.18,
+          "wall_minutes": 60.2,
+          "tokens": {
+            "input": 193532,
+            "output": 61730,
+            "cache": 7657728,
+            "total": 7937937
+          }
         }
       ],
       "model": {
@@ -1108,8 +1120,8 @@
         "reasoning_effort": "high"
       },
       "comment": {
-        "en": "Two runs, 25 points apart (737 and 712), on two different hosts: the first through Novita AI, the second through Moonshot's own API, as in LEB-100. Same shape in both: security 232 and 229 of 250, architecture 92 of 200, performance 96 of 150 and the contract untouched (compatibility 100). The difference is clean code, 43 against 18 of 100. In the first run one finding described a conflict the code cannot produce. The first session took 69 minutes without the 10 the operator took between the stages and cost US$ 4.86; the second took 71 and cost US$ 4.67. Two runs of three: not official, and the published score is the lower of the two.",
-        "pt_BR": "Duas execuções, 25 pontos uma da outra (737 e 712), em dois provedores diferentes: a primeira pela Novita AI, a segunda pela API da própria Moonshot, como no LEB-100. Mesmo perfil nas duas: segurança em 232 e 229 de 250, arquitetura em 92 de 200, desempenho em 96 de 150 e o contrato intacto (compatibilidade 100). A diferença está no código limpo, 43 contra 18 de 100. Na primeira execução um achado descreveu um conflito que o código não pode produzir. A primeira sessão levou 69 minutos, sem os 10 que o operador levou entre as etapas, e custou US$ 4,86; a segunda levou 71 e custou US$ 4,67. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+        "en": "Three runs, 737, 712 and 652, so the official score is the median, 712. The first and third went through Novita AI and the second through Moonshot's own API, as in LEB-100; the third is the first made by the unattended lab, with no operator pause between the stages. Security stayed between 218 and 232 of 250 and the contract untouched (compatibility 100); bugs ran 132, 137 and 147 of 150. The spread is architecture and performance: the third run scored 47 of 200 in architecture (92 in both earlier runs) and 77 of 150 in performance (96 before). Clean code ran 43, 18 and 21 of 100. In the first run one finding described a conflict the code cannot produce. Sessions took 69, 71 and 60 minutes (the first without the 10 the operator took between the stages) and cost US$ 4.86, 4.67 and 4.18.",
+        "pt_BR": "Três execuções, 737, 712 e 652, então a nota oficial é a mediana, 712. A primeira e a terceira passaram pela Novita AI e a segunda pela API da própria Moonshot, como no LEB-100; a terceira é a primeira feita pelo laboratório sem operador, sem pausa entre as etapas. Segurança ficou entre 218 e 232 de 250 e o contrato intacto (compatibilidade 100); bugs foram 132, 137 e 147 de 150. A dispersão está em arquitetura e desempenho: a terceira fez 47 de 200 em arquitetura (92 nas duas anteriores) e 77 de 150 em desempenho (96 antes). Código limpo: 43, 18 e 21 de 100. Na primeira execução um achado descreveu um conflito que o código não pode produzir. As sessões levaram 69, 71 e 60 minutos (a primeira sem os 10 que o operador levou entre as etapas) e custaram US$ 4,86, 4,67 e 4,18."
       }
     },
     {

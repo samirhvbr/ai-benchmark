@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.291`
+**Versão atual:** `0.2.292`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.292` — 2026-10-30 — LEB-300-A's aggregate adds the third run of Kimi K3 at high (737, 712 and 652; official 712 by the median, Silver)
+
+- Kimi K3 at high (agent `moonshot-kimi-k3-high`): the third run (652, Silver) joins the published 737 and 712. With three runs the official score is the median, 712 (Silver), which does not change. Security 218, architecture 47, bugs 147, performance 77,
+  clean code 21, compatibility 100, report 42; no false positive and no penalty.
+- The third run went through Novita AI (60 minutes, US$ 4.18 at the client's list price) and is the first made by the unattended two-stage lab, with no operator pause between the stages; as in every LEB-300-A run it went through one matching judge
+  and one blind judge for the report.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.291` — 2026-10-30 — LEB-D-300-A's aggregate grows Gemini 4 Argon at high from two runs to five (682 to 748, mean 718, Silver)
 

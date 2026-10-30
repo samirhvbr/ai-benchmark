@@ -100,7 +100,7 @@ This instance is **active**. While it is, only the totals below are published: n
 | 13 | `gpt-6-astra-ultra` | **721** | Silver | 194 | 133 | 124 | 102 | 46 | 100 | 42 | 3/3 (715 · 781 · 721) |
 | 14 | `claude-sonnet-5.5-medium` | **717** | Silver | 236 | 100 | 121 | 99 | 50 | 70 | 41 | 3/3 (659 · 717 · 734) |
 | 15 | `gpt-6-astra-xhigh` | **717** | Silver | 194 | 142 | 124 | 86 | 50 | 100 | 41 | 3/3 (717 · 729 · 680) |
-| 16 | `moonshot-kimi-k3-high` | **712** | Silver | 229 | 92 | 137 | 96 | 18 | 100 | 40 | 2/3 (737 · 712) |
+| 16 | `moonshot-kimi-k3-high` | **712** | Silver | 229 | 92 | 137 | 96 | 18 | 100 | 40 | 3/3 (737 · 712 · 652) |
 | 17 | `glm-5.3-flash-max` | **693** | Silver | 211 | 106 | 147 | 89 | 0 | 100 | 40 | 1/3 |
 | 18 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
 | 19 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
