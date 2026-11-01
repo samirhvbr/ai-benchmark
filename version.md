@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.292`
+**Versão atual:** `0.2.293`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.293` — 2026-11-01 — The exporter can publish LEB-S-300-A: its aggregate carries the Security track's own categories (SEC, COMP, EXPL), held to the track's weights
+
+- `tools/export-results.py` built the aggregate of a series instance from the scorecards' own categories already, but its README table named the Default track's six columns and the schema required them. The table now takes the columns from the aggregate (`category_max`), so the
+  Security track reads SEC, COMP and EXPL with their maxima (850, 100 and 50), and the Default track's section comes out byte for byte as before (`--check` on the 113 published runs is unchanged).
+- The schema (`scoring/publicacao-agregada.schema.json`) asks every track for COMP and EXPL only, because it has no conditionals; the rest is held in the exporter, which refuses a scorecard whose categories or maxima are not those of `scoring/tracks/<track>.json`,
+  and in a test that reads the published aggregates against the same files.
+- `tests/test_agregado.py`: the series tests take the track as a parameter and the whole set runs again on the Security track (a second instance, `LEB-TEST-S-300-A`), plus two new ones (a scorecard with another track's categories, and a category maximum that is not the track's).
+  Against the exporter of 0.2.292, ten of these tests fail (eight on the Security track and the two new guards on the Default track).
+- `instances/LEB-S-300-A/README.md` gets a Results section: what the aggregate carries and how it is written, and that no configuration is published yet.
+- No result is published by this version.
 
 ### `0.2.292` — 2026-10-30 — LEB-300-A's aggregate adds the third run of Kimi K3 at high (737, 712 and 652; official 712 by the median, Silver)
 

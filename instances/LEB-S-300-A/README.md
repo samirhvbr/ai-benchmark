@@ -1,6 +1,6 @@
 # LEB-S-300-A — CondoDesk, Security track
 
-> **Status: frozen on 2026-10-29, no run yet.** The instance is complete as authored: its planting profile (24 vulnerabilities and 6 decoys), the answer key, the exploit
+> **Status: frozen on 2026-10-29; its first runs are made and nothing is published yet ([Results](#results)).** The instance is complete as authored: its planting profile (24 vulnerabilities and 6 decoys), the answer key, the exploit
 > verifiers, the control cases, the task statement and the package. It is frozen: [Before the first run](#before-the-first-run) records the hashes and the steps that came before, in the order they were done, and from the first run on any change is a new version.
 > Every file of this instance is committed here as it is written, the answer key included
 > ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), so that its whole history is public.
@@ -92,6 +92,18 @@ rows are fixable by the reference's own fixes; it does not say the verifiers are
 - A label to tidy in the next version: the page-script row (SEC-004) is a Template C row whose verdict is written as structural evidence, so the mechanical report says it proves `R3` where the matrix says `C3`. The scorer takes the row's C3 from `result` for every Template C row and applies the structural ceiling only to Template R rows, so no score changes; the judges' prompt says what comes from the mechanical report.
 
 Two weaknesses of the reference that are not planted are recorded for the next version: the old viewer's route lets any user of a building read any stored file of it, and an imported account answers a wrong password faster than a missing one.
+
+## Results
+
+While the instance is active only its aggregate is published ([`results/2026/LEB-S-300-A/aggregate.json`](../../results/2026/LEB-S-300-A/aggregate.json) and its section of [`results/README.md`](../../results/README.md)),
+the way LEB-D-300-A's is: no per-flaw result, no verdict, no delivery, and no vulnerability named, not even by class. For each configuration it carries the mean of the completed runs with its 95% interval, the three
+categories of the track (SEC 850, COMP 100 and EXPL 50, [`scoring/tracks/security.json`](../../scoring/tracks/security.json)) as means against their maximum, the score, cost, time and tokens of each run, and the
+attempts that did not complete, counted apart (blocked, budget exhausted, lost to the lab and rerun). The Security score is never added to the Default score of the same configuration, as [the design](../../docs/new-series-design.md) says.
+
+Every delivery is judged blind: two matching judges and two judges of the report, none of them told which model or vendor made it, and a person settles each disagreement between the matching judges. The aggregate is written
+from the lab's private archive by `python3 tools/export-results.py --publish-aggregate LEB-S-300-A` and by nothing else, and the exporter refuses a scorecard whose categories are not the track's.
+
+No configuration is published yet.
 
 ## Layout
 

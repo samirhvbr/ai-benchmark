@@ -30,6 +30,10 @@ the matrix may appear in any of it:
 
     python3 tools/export-results.py --publish-aggregate LEB-300-A [--edition 2026]
 
+An instance of the new series (its scorecards carry a `track`) goes the same way and publishes, per configuration, the estimate of its runs with
+the interval and the outcomes counted apart, and the categories of its track (scoring/tracks/<track>.json) and nothing else: ARCH, BUG, PERF, CLN,
+COMP and EXPL on the Default track (LEB-D-300-A), SEC, COMP and EXPL on the Security track (LEB-S-300-A).
+
 A normal run never reads the private archive. It reads the aggregate.json files that were already published, and `--check` fails
 if the folder of an aggregate instance holds anything else.
 """
@@ -596,6 +600,7 @@ def aggregate(runs):
 # ------------------------------------------------------------------ aggregate-only publication of an active instance
 
 AGGREGATE_SCHEMA = os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json")
+TRACKS_DIR = os.path.join(ROOT, "scoring", "tracks")   # read at import, like the schema: the tests point ROOT at a scratch tree
 FLAW_ID = re.compile(r"\b(?:SEC|ARCH|PERF|BUG|CLN)-\d{3}(?:\.[a-z])?\b")
 
 
@@ -680,6 +685,14 @@ def grade_of(total):
     return next((name for name, floor in GRADE_FLOORS if total >= floor), "Reprovada")
 
 
+def track_weights(track):
+    """The categories of a track and the most each can give (scoring/tracks/<track>.json), the weights the scorer used."""
+    path = os.path.join(TRACKS_DIR, track + ".json")
+    if not os.path.exists(path):
+        sys.exit("[export] there is no track %r under %s" % (track, rel(TRACKS_DIR)))
+    return load(path)["weights"]
+
+
 def check_series_runs(where, agent_runs, base):
     """The scheduled runs of one configuration of the new series: numbered from 1 with no gap, except where a lab-failure-<n> folder holds
     the number (an attempt the lab lost, rerun under design 6.2, never scored), at most five, and no two with the same report."""
@@ -709,6 +722,7 @@ def build_aggregate_series(inst, matrix, runs, root, edition=None):
     """The aggregate of an instance of the new series: per configuration, the estimate of its runs with the interval, the completion, the
     expected score per scheduled attempt and the outcomes counted apart (design section 9). Nothing about any flaw."""
     first = runs[0]
+    weights = track_weights(first["card"]["track"])
     for r in runs:
         for what, got, want in (("matrix_sha256", r["card"].get("matrix_sha256"), first["card"].get("matrix_sha256")),
                                 ("track", r["card"].get("track"), first["card"].get("track")),
@@ -717,6 +731,11 @@ def build_aggregate_series(inst, matrix, runs, root, edition=None):
             if got != want:
                 sys.exit("[export] %s/%s/run-%d: %s is %r, the first run says %r — runs of one instance share them"
                          % (inst.name, r["agent"], r["run"], what, got, want))
+        # The schema asks every track for COMP and EXPL and leaves the rest to the track; this is where the rest is held to it.
+        got = {c: v.get("max") for c, v in r["card"]["categories"].items()}
+        if got != weights:
+            sys.exit("[export] %s/%s/run-%d: the scorecard's categories %s are not the %s track's %s"
+                     % (inst.name, r["agent"], r["run"], got, first["card"]["track"], weights))
     system = inst.name.rsplit("-", 1)[1]
     by_agent = {}
     for r in sorted(runs, key=lambda x: (x["agent"], x["run"])):
@@ -846,18 +865,18 @@ def render_series_section(agg, w):
     w("")
     w("This instance is **active**. While it is, only the figures below are published: no per-flaw result, no verdict, no delivery.")
     w("")
-    w("| # | Agent | Estimate | 95% interval | Grade | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |")
-    w("| ---: | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |")
+    maxima = next(iter(agg["agents"]))["category_max"]   # the track's own categories, in the order its scorecards give them
+    w("| # | Agent | Estimate | 95%% interval | Grade | %s | Runs |" % " | ".join(maxima))
+    w("| ---: | --- | ---: | --- | --- | %s | --- |" % " | ".join("---:" for _ in maxima))
     for i, e in enumerate(agg["agents"], 1):
         st = e["statistics"]
         w("| %d | `%s` | **%d** | %s to %s | %s | %s | %d/%d (%s) |" % (
             i, e["agent"], e["score"], format(st["quality"]["low"], ".0f"), format(st["quality"]["high"], ".0f"), e["grade"],
-            " | ".join(str(e["categories"][c]) for c in ("ARCH", "BUG", "PERF", "CLN", "COMP", "EXPL")),
+            " | ".join(str(e["categories"][c]) for c in maxima),
             st["completion"]["completed"], st["scheduled"], " · ".join(str(r["total"]) for r in e["runs"])))
     w("")
-    maxima = next(iter(agg["agents"]))["category_max"]
     w("Maximum per column: %s → %d. The estimate is the mean of the completed runs and the interval is a 95%% percentile bootstrap over systems and runs"
-      % (" · ".join("%s %d" % (c, maxima[c]) for c in ("ARCH", "BUG", "PERF", "CLN", "COMP", "EXPL")), sum(maxima.values())))
+      % (" · ".join("%s %d" % (c, maxima[c]) for c in maxima), sum(maxima.values())))
     w("(design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.")
     for e in agg["agents"]:
         st = e["statistics"]

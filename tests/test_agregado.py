@@ -317,8 +317,10 @@ class SeriesPublishing(unittest.TestCase):
     completion and the outcomes (docs/new-series-design.md section 9), and a lab failure holds its run number without being scored."""
 
     INSTANCE = "LEB-TEST-D-300-A"
+    TRACK, TRACK_NAME, TASK_VERSION = "default", "Default", "D-1.0.0"
     SCORES = (524, 533, 580, 561, 536)
-    MAXIMA = {"ARCH": 283, "BUG": 213, "PERF": 213, "CLN": 141, "COMP": 100, "EXPL": 50}
+    MAXIMA = {"ARCH": 283, "BUG": 213, "PERF": 213, "CLN": 141, "COMP": 100, "EXPL": 50}   # scoring/tracks/default.json
+    SPREAD = {"ARCH": 0.3, "BUG": 0.4, "PERF": 0.2, "CLN": 0.0, "COMP": 0.0, "EXPL": 0.1}  # the share of a run's total that each category earns
 
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -329,7 +331,7 @@ class SeriesPublishing(unittest.TestCase):
         from helpers import make_instance
         make_published_tree(self.t, open_matrix(), [("open-agent", 1, open_verdict())], name="LEB-TEST-B")
         make_instance(self.t, self.INSTANCE, matrix=synthetic_matrix([entry("BUG-041", "Alta", "Difícil")], instance=self.INSTANCE, level=300,
-                                                                      publication="aggregate", task_version="D-1.0.0", leb_spec="1.5.1", version="1.1"))
+                                                                      publication="aggregate", task_version=self.TASK_VERSION, leb_spec="1.5.1", version="1.1"))
         self.archive = os.path.join(self.priv, self.INSTANCE, "claude-test-high")
 
     def tearDown(self):
@@ -340,9 +342,8 @@ class SeriesPublishing(unittest.TestCase):
     def run_folder(self, number, total, report=None, package="b" * 64, outcome="completed", cost=1.0):
         d = os.path.join(self.archive, "run-%d" % number)
         os.makedirs(os.path.join(d, "entrega"))
-        spread = {"ARCH": 0.3, "BUG": 0.4, "PERF": 0.2, "CLN": 0.0, "COMP": 0.0, "EXPL": 0.1}
-        cats = {c: {"score": int(round(total * spread[c])) if c != "COMP" else 100, "max": m} for c, m in self.MAXIMA.items()}
-        write_json(os.path.join(d, "scorecard.json"), {"track": "default", "outcome": outcome, "total": total, "matrix_sha256": "a" * 64,
+        cats = {c: {"score": int(round(total * self.SPREAD[c])) if c != "COMP" else 100, "max": m} for c, m in self.MAXIMA.items()}
+        write_json(os.path.join(d, "scorecard.json"), {"track": self.TRACK, "outcome": outcome, "total": total, "matrix_sha256": "a" * 64,
                                                        "grade": "Bronze", "categories": cats})
         write_json(os.path.join(d, "run.json"), {
             "run": number, "mode": "A", "turn_budget": None, "budget_minutes": 90, "package_sha256": package, "evaluated_on": "2026-10-15",
@@ -387,7 +388,7 @@ class SeriesPublishing(unittest.TestCase):
     def test_the_aggregate_is_the_estimate_of_the_runs_and_validates(self):
         agg = self.publish()
         self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
-        self.assertEqual((agg["track"], agg["task_version"], agg["budget_minutes"], agg["turn_budget"]), ("default", "1.0.0", 90, None))
+        self.assertEqual((agg["track"], agg["task_version"], agg["budget_minutes"], agg["turn_budget"]), (self.TRACK, "1.0.0", 90, None))
         e = agg["agents"][0]
         self.assertEqual((e["score"], e["grade"], e["runs_count"]), (round(sum(self.SCORES) / 5), "Bronze", 5))
         st = e["statistics"]
@@ -399,14 +400,16 @@ class SeriesPublishing(unittest.TestCase):
         self.assertEqual((st["median"], st["min"], st["max"], st["lab_failures_rerun"]), (536, 524, 580, 1))
         self.assertEqual([r["run"] for r in e["runs"]], [1, 3, 4, 5, 6])
         self.assertEqual(e["category_max"], self.MAXIMA)
-        self.assertEqual(list(e["categories"]), list(self.MAXIMA))  # no SEC on the Default track
+        self.assertEqual(list(e["categories"]), list(self.MAXIMA))  # the track's own categories and no others
         self.assertEqual(e["wall_minutes"], 30.0)
         self.assertEqual(e["tokens"]["total"], 10100)
 
     def test_the_readme_and_results_json_carry_the_series_additively(self):
         agg = self.publish()
         readme = read_text(self.t, "results", "README.md")
-        self.assertIn("%s v1.1 (Default track, mode A, 90 minutes) — aggregate only" % self.INSTANCE, readme)
+        self.assertIn("%s v1.1 (%s track, mode A, 90 minutes) — aggregate only" % (self.INSTANCE, self.TRACK_NAME), readme)
+        self.assertIn("| Grade | %s | Runs |" % " | ".join(self.MAXIMA), readme)   # the columns are the track's categories, not the Default track's
+        self.assertIn("Maximum per column: %s → 1000." % " · ".join("%s %d" % kv for kv in self.MAXIMA.items()), readme)
         self.assertIn("| 1 | `claude-test-high` | **%d** |" % agg["agents"][0]["score"], readme)
         self.assertEqual(read_json(os.path.join(self.t, "results", "results.json"))["aggregate_instances"], [agg])
         self.assertEqual(self.export("--check")[0], 0)
@@ -415,7 +418,7 @@ class SeriesPublishing(unittest.TestCase):
     def test_the_figures_are_the_ones_estatisticas_gives_for_the_same_attempts(self):
         agg = self.publish()
         mod = load_exporter(self.t)
-        attempts = [{"configuration": "claude-test-high", "track": "default", "system": "A", "run": n, "outcome": "completed", "blocked_at": None, "score": s}
+        attempts = [{"configuration": "claude-test-high", "track": self.TRACK, "system": "A", "run": n, "outcome": "completed", "blocked_at": None, "score": s}
                     for n, s in zip((1, 3, 4, 5, 6), self.SCORES)]
         want = mod.estatisticas.report_for(attempts, 2000, 1, 25.0, 5)["quality_of_evaluable_deliveries"]
         self.assertEqual(agg["agents"][0]["statistics"]["quality"], want)
@@ -482,12 +485,55 @@ class SeriesPublishing(unittest.TestCase):
         self.assertEqual(st["expected_per_scheduled_attempt"]["n"], 5)
         self.assertEqual(st["completion"]["rate"], 0.8)
 
+    def test_a_scorecard_with_the_categories_of_another_track_is_refused(self):
+        """The schema asks every track for COMP and EXPL only, so this is where the rest is held to scoring/tracks/<track>.json."""
+        self.build()
+        other = {"default": {"SEC": {"score": 700, "max": 850}, "COMP": {"score": 100, "max": 100}, "EXPL": {"score": 40, "max": 50}},
+                 "security": {"ARCH": {"score": 200, "max": 283}, "BUG": {"score": 200, "max": 213}, "PERF": {"score": 100, "max": 213},
+                              "CLN": {"score": 100, "max": 141}, "COMP": {"score": 100, "max": 100}, "EXPL": {"score": 40, "max": 50}}}[self.TRACK]
+        path = os.path.join(self.archive, "run-4", "scorecard.json")
+        write_json(path, {**read_json(path), "categories": other})
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("are not the %s track's" % self.TRACK, err)
+        self.assertFalse(os.path.exists(os.path.join(self.t, "results", "2026", self.INSTANCE)))
+
+    def test_a_category_maximum_that_is_not_the_tracks_is_refused(self):
+        self.build()
+        path = os.path.join(self.archive, "run-4", "scorecard.json")
+        card = read_json(path)
+        card["categories"]["COMP"]["max"] = 99
+        write_json(path, card)
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("are not the %s track's" % self.TRACK, err)
+
     def test_a_flaw_id_in_the_notes_is_refused(self):
         self.build()
         write_json(os.path.join(self.priv, self.INSTANCE, "notes.json"), {"en": "the race of BUG-041 was not fixed", "pt_BR": "x"})
         code, err = self.export("--publish-aggregate", self.INSTANCE)
         self.assertNotEqual(code, 0)
         self.assertIn("BUG-041", err)
+
+
+class SecuritySeriesPublishing(SeriesPublishing):
+    """The Security track (LEB-S-300-A) goes through the same exporter: every test of the Default track above runs again on its categories,
+    SEC, COMP and EXPL, and what is specific to it is said here."""
+
+    INSTANCE = "LEB-TEST-S-300-A"
+    TRACK, TRACK_NAME, TASK_VERSION = "security", "Security", "S-1.0.0"
+    MAXIMA = {"SEC": 850, "COMP": 100, "EXPL": 50}                  # scoring/tracks/security.json
+    SPREAD = {"SEC": 0.9, "COMP": 0.0, "EXPL": 0.05}
+
+    def test_the_aggregate_carries_sec_comp_and_expl_and_no_default_category(self):
+        agg = self.publish()
+        for e in agg["agents"]:
+            self.assertEqual(list(e["categories"]), ["SEC", "COMP", "EXPL"])
+            self.assertEqual(e["category_max"], {"SEC": 850, "COMP": 100, "EXPL": 50})
+            self.assertEqual(validate(e, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))["properties"]["agents"]["items"]), [])
+        readme = read_text(self.t, "results", "README.md")
+        section = readme[readme.index("%s v1.1 (Security track" % self.INSTANCE):]
+        self.assertNotIn("ARCH", section.split("\n## ")[0])
 
 
 class PublishedOutputs(unittest.TestCase):
@@ -503,6 +549,17 @@ class PublishedOutputs(unittest.TestCase):
             self.assertNotIn(agg["instance"], per_flaw, "an aggregate instance has no per-flaw entry")
             text = json.dumps(agg, ensure_ascii=False)
             self.assertEqual(re.findall(r"\b(?:SEC|ARCH|PERF|BUG|CLN)-\d{3}(?:\.[a-z])?\b", text), [], agg["instance"])
+
+    def test_a_published_series_aggregate_has_the_categories_of_its_track(self):
+        """The schema asks every track for COMP and EXPL only; the rest is the track's file, held here for what is already published."""
+        data = read_json(os.path.join(ROOT, "results", "results.json"))
+        for agg in data.get("aggregate_instances", []):
+            if not agg.get("track"):
+                continue
+            weights = read_json(os.path.join(ROOT, "scoring", "tracks", agg["track"] + ".json"))["weights"]
+            for e in agg["agents"]:
+                self.assertEqual(e["category_max"], weights, (agg["instance"], e["agent"]))
+                self.assertEqual(sorted(e["categories"]), sorted(weights), (agg["instance"], e["agent"]))
 
     def test_the_folder_of_each_aggregate_holds_only_its_aggregate(self):
         results = os.path.join(ROOT, "results")

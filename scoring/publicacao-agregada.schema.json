@@ -91,11 +91,8 @@
           },
           "categories": {
             "type": "object",
+            "description": "The score of each category of the scoring in force: the full LEB's seven, or the categories of a track of the new series (ARCH, BUG, PERF, CLN, COMP and EXPL on the Default track; SEC, COMP and EXPL on the Security track). Every one of them has COMP and EXPL; for the rest the exporter holds an aggregate to scoring/tracks/<track>.json, which a schema without conditionals cannot say.",
             "required": [
-              "ARCH",
-              "BUG",
-              "PERF",
-              "CLN",
               "COMP",
               "EXPL"
             ],
