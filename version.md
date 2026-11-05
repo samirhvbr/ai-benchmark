@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.295`
+**Versão atual:** `0.2.296`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.296` — 2026-11-05 — LEB-D-300-A's aggregate adds DeepSeek V4.1 Flash 1017 at max (two runs, 566 and 530, mean 548) and Tencent Hy4 at high (one run, 434)
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md` go from 42 to 44 entries, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. DeepSeek V4.1 Flash 1017 at max has two runs of its five: 566 and 530 (mean 548,
+  interval 530 to 566, both Bronze, compatibility 100 and 75, about US$ 0.15 and 47 minutes a run). Tencent Hy4 at high has one run of its five: 434 (Bronze, about US$ 0.37 and 29 minutes). The other 42 entries are unchanged, reading included.
+- Both ran through OpenCode with its auto-approval flag. Tencent Hy4 went through OpenRouter, whose only upstream for it is Tencent's own (fp4 quantization), and the client defines no effort above high for it. DeepSeek's API reports only the alias `deepseek-flash`: the 1017 version of the Flash runs is what the lab
+  was told the alias pointed to on 2026-11-05, under the same id as in LEB-S-300-A's aggregate (0.2.295), so the sites pair them; whether the earlier runs of the alias (the rows `deepseek-v4.1-flash-high` and `deepseek-v4.1-flash-max`) were already on 1017 is not known and is not claimed.
+- Every run went through two matching judges and two blind judges for the report; the disagreements of the second Flash run (five findings that matched no row, each written under two spellings by the two judges) were settled by the owner's standing rule of 2026-10-16. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.295` — 2026-11-05 — LEB-S-300-A's aggregate grows to fourteen configurations: DeepSeek V4.1 Flash 1017 at max has its five runs (mean 986), and Kimi K3.1 Pro (954 at max, 934 at high) and Tencent Hy4 (942) join
 

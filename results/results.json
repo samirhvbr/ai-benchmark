@@ -25013,6 +25013,112 @@
           }
         },
         {
+          "agent": "deepseek-v4.1-flash-1017-max",
+          "score": 548,
+          "grade": "Bronze",
+          "runs_count": 2,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 71,
+            "BUG": 195,
+            "PERF": 154,
+            "CLN": 0,
+            "COMP": 88,
+            "EXPL": 40
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.15,
+          "wall_minutes": 47.0,
+          "tokens": {
+            "input": 151306,
+            "output": 37176,
+            "cache": 15733760,
+            "total": 16021246
+          },
+          "statistics": {
+            "scheduled": 2,
+            "quality": {
+              "n": 2,
+              "systems": 1,
+              "mean": 548.0,
+              "low": 530.0,
+              "high": 566.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 2,
+              "systems": 1,
+              "mean": 548.0,
+              "low": 530.0,
+              "high": 566.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 2,
+              "scheduled": 2,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 2,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 530,
+            "min": 530,
+            "max": 566
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 566,
+              "grade": "Bronze",
+              "cost_usd": 0.16,
+              "wall_minutes": 55.8,
+              "tokens": {
+                "input": 156207,
+                "output": 39948,
+                "cache": 19703296,
+                "total": 19994270
+              }
+            },
+            {
+              "run": 2,
+              "total": 530,
+              "grade": "Bronze",
+              "cost_usd": 0.14,
+              "wall_minutes": 38.3,
+              "tokens": {
+                "input": 146406,
+                "output": 34403,
+                "cache": 11764224,
+                "total": 12048221
+              }
+            }
+          ],
+          "model": {
+            "name": "DeepSeek V4.1 Flash 1017",
+            "id": "deepseek-v4.1-flash-1017",
+            "provider": "DeepSeek",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Two runs of a case of five, between 530 and 566, mean 548 (the interval, 530 to 566, is the range of the two), all Bronze. Both completed inside the 90-minute budget, at about US$ 0.15 (the client's own estimate) and 47 minutes each, and compatibility was between 75 and 100. Bug fixing was the strongest area (195 of 213 on average), then performance (154 of 213), architecture (71 of 283) and clean code (0 of 141). The reports were rated 40 to 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other three are still to be made, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). DeepSeek's API reports only the alias deepseek-flash: the 1017 build is what the lab was told it pointed to.",
+            "pt_BR": "Duas execuções de um caso de cinco, entre 530 e 566, média 548 (o intervalo, de 530 a 566, é a amplitude das duas), todas Bronze. As duas terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,15 (estimativa do próprio cliente) e 47 minutos cada, e a compatibilidade ficou entre 75 e 100. Corrigir bugs foi a área mais forte (195 de 213 em média), depois desempenho (154 de 213), arquitetura (71 de 283) e código limpo (0 de 141). Os relatórios tiveram de 40 a 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam três execuções, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). A API só informa o apelido deepseek-flash: a versão 1017 é a que o laboratório foi informado que ele apontava."
+          }
+        },
+        {
           "agent": "claude-haiku-5.5-high",
           "score": 547,
           "grade": "Bronze",
@@ -26869,6 +26975,99 @@
           "comment": {
             "en": "Five runs between 438 and 465, mean 451 with a 95% interval of 442 to 461, all Bronze. All five completed inside the 90-minute budget, at about US$ 1.92 (the client's own estimate) and 34 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (132 of 213 on average), then performance (122 of 213), architecture (60 of 283) and clean code (0 of 141). The reports were rated 36 to 39 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, whose only upstreams for this model are Google's own.",
             "pt_BR": "Cinco execuções entre 438 e 465, média 451 com intervalo de 95% de 442 a 461, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,92 (estimativa do próprio cliente) e 34 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (132 de 213 em média), depois desempenho (122 de 213), arquitetura (60 de 283) e código limpo (0 de 141). Os relatórios tiveram de 36 a 39 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, cujas únicas origens para este modelo são do próprio Google."
+          }
+        },
+        {
+          "agent": "tencent-hy4-high",
+          "score": 434,
+          "grade": "Bronze",
+          "runs_count": 1,
+          "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+          "categories": {
+            "ARCH": 69,
+            "BUG": 144,
+            "PERF": 77,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 44
+          },
+          "category_max": {
+            "ARCH": 283,
+            "BUG": 213,
+            "PERF": 213,
+            "CLN": 141,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.37,
+          "wall_minutes": 29.0,
+          "tokens": {
+            "input": 213154,
+            "output": 18797,
+            "cache": 8776896,
+            "total": 9069318
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 434.0,
+              "low": 434.0,
+              "high": 434.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 434.0,
+              "low": 434.0,
+              "high": 434.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 434,
+            "min": 434,
+            "max": 434
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 434,
+              "grade": "Bronze",
+              "cost_usd": 0.37,
+              "wall_minutes": 29.0,
+              "tokens": {
+                "input": 213154,
+                "output": 18797,
+                "cache": 8776896,
+                "total": 9069318
+              }
+            }
+          ],
+          "model": {
+            "name": "Tencent Hy4",
+            "id": "tencent/hy4",
+            "provider": "Tencent",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five scored 434 (Bronze). It completed inside the 90-minute budget, at about US$ 0.37 (the client's own estimate) and 29 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (144 of 213), then performance (77 of 213), architecture (69 of 283) and clean code (0 of 141). The report was rated 44 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, whose only upstream for this model is Tencent's own (fp4 quantization); the client defines the efforts none, low and high for it, so high is the most it could ask for.",
+            "pt_BR": "Uma execução de um caso de cinco fez 434 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,37 (estimativa do próprio cliente) e 29 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (144 de 213), depois desempenho (77 de 213), arquitetura (69 de 283) e código limpo (0 de 141). O relatório teve 44 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, cuja única origem para este modelo é a própria Tencent (quantização fp4); o cliente define os esforços none, low e high para ele, então high é o máximo que ele pôde pedir."
           }
         },
         {
