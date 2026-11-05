@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.293`
+**Versão atual:** `0.2.294`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.294` — 2026-11-05 — LEB-S-300-A's aggregate is published: eleven configurations, from DeepSeek V4 Pro's 875 (Gold) to DeepSeek V4.1 Flash 1017's 991 (Platinum)
+
+- First publication of the Security track: `results/2026/LEB-S-300-A/aggregate.json` and its section of `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private archive (0.2.293 made the exporter ready for it). The score of a
+  configuration is the mean of its completed runs with the 95% interval, and its categories are the track's own (Security 850, Compatibility 100, Explanation 50). Eleven configurations: DeepSeek V4.1 Flash 1017 at max 991; Claude Opus 5.5 at xhigh 989 (995, 995, 995, 981, 981),
+  at high 984 (994, 977, 963, 992, 994) and at max 978 (995, 961, 961, 995; four of five runs); GPT-6-astra at xhigh 967; MiniMax M3.1 Flash at high 965; DeepSeek V4.1 Flash at high 959; GPT-6.1-sol at xhigh 944; Claude Sonnet 5.5 at high 943 (924, 993, 927, 932, 937) and at medium
+  934 (913, 956); DeepSeek V4 Pro at max 875 (Gold). All Platinum but the last.
+- Every run went through two matching judges and two blind judges for the report, as every run of the series; the 27 runs of the eleven configurations had no disagreement left to settle. Configurations with a run that waits for a decision are not in it: Claude Sonnet 5.5 at xhigh and at
+  max (one run was blocked by the model's own safeguards and is still to be scored on the folder it left), Claude Haiku 5.5 at xhigh, GPT-5.6-sol at xhigh and DeepSeek V4.1 Flash at max.
+- Two scoring questions are open with the owner and may change published scores: how a compatibility charge on one route is applied from run to run (it was charged in two of the four runs of Claude Opus 5.5 at max, and in none of the others) and which row a finding that bundles two rows is credited to.
+  An answer is published as a new version of the aggregate, with the change recorded here.
+- DeepSeek's API names the model only by its alias `deepseek-flash` and does not report the build; the 1017 version of the new run is what the lab was told the alias pointed to on 2026-11-05, and the run of 2026-10-29 is published under the name it was made with. Whether the earlier runs of the alias
+  (LEB-D-300-A's among them) were already on 1017 is not known and is not claimed.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.293` — 2026-11-01 — The exporter can publish LEB-S-300-A: its aggregate carries the Security track's own categories (SEC, COMP, EXPL), held to the track's weights
 
