@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.299`
+**Versão atual:** `0.2.300`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.300` — 2026-11-05 — LEB-D-300-A's aggregate completes DeepSeek V4.1 Flash 1017 at max: five runs (566, 530, 519, 545, 530; mean 538, interval 526 to 553)
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. DeepSeek V4.1 Flash 1017 at max goes from three runs of its five to all five: 566, 530, 519, 545 and 530
+  (mean 538, 95% interval 526 to 553, all Bronze, compatibility 75 to 100, about US$ 0.15 and 49 minutes a run). The other 43 entries are unchanged, reading included.
+- Every run went through two matching judges and two blind judges for the report. Runs 4 and 5 left no disagreement; the one of run 3 (a ruling of the owner's of 2026-10-15 applied to three rows named only in the report's list of decisions not to change) is recorded in 0.2.298.
+- DeepSeek's API reports only the alias `deepseek-flash`; the 1017 version is what the lab was told the alias pointed to on 2026-11-05, as in LEB-S-300-A's aggregate. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.299` — 2026-11-05 — LEB-S-300-A's aggregate grows GPT-6.1-sol at xhigh to three runs (944, 954, 962; mean 953)
 

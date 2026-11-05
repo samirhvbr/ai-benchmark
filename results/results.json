@@ -25305,14 +25305,14 @@
           "agent": "deepseek-v4.1-flash-1017-max",
           "score": 538,
           "grade": "Bronze",
-          "runs_count": 3,
+          "runs_count": 5,
           "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
           "categories": {
             "ARCH": 70,
-            "BUG": 195,
-            "PERF": 140,
+            "BUG": 188,
+            "PERF": 144,
             "CLN": 0,
-            "COMP": 92,
+            "COMP": 95,
             "EXPL": 41
           },
           "category_max": {
@@ -25324,38 +25324,38 @@
             "EXPL": 50
           },
           "cost_usd": 0.15,
-          "wall_minutes": 46.8,
+          "wall_minutes": 48.8,
           "tokens": {
-            "input": 146608,
-            "output": 35632,
-            "cache": 15144619,
-            "total": 15424818
+            "input": 142035,
+            "output": 34583,
+            "cache": 14683546,
+            "total": 14962223
           },
           "statistics": {
-            "scheduled": 3,
+            "scheduled": 5,
             "quality": {
-              "n": 3,
+              "n": 5,
               "systems": 1,
-              "mean": 538.3,
-              "low": 519.0,
-              "high": 566.0
+              "mean": 538.0,
+              "low": 525.6,
+              "high": 553.4
             },
             "expected_per_scheduled_attempt": {
-              "n": 3,
+              "n": 5,
               "systems": 1,
-              "mean": 538.3,
-              "low": 519.0,
-              "high": 566.0
+              "mean": 538.0,
+              "low": 525.6,
+              "high": 553.4
             },
             "completion": {
               "rate": 1.0,
-              "completed": 3,
-              "scheduled": 3,
+              "completed": 5,
+              "scheduled": 5,
               "systems_all_completed": 1,
               "systems": 1
             },
             "outcomes": {
-              "completed": 3,
+              "completed": 5,
               "blocked": 0,
               "blocked_at_the_start": 0,
               "blocked_during_the_work": 0,
@@ -25406,6 +25406,32 @@
                 "cache": 13966336,
                 "total": 14231964
               }
+            },
+            {
+              "run": 4,
+              "total": 545,
+              "grade": "Bronze",
+              "cost_usd": 0.17,
+              "wall_minutes": 59.2,
+              "tokens": {
+                "input": 142781,
+                "output": 35216,
+                "cache": 15155968,
+                "total": 15463933
+              }
+            },
+            {
+              "run": 5,
+              "total": 530,
+              "grade": "Bronze",
+              "cost_usd": 0.13,
+              "wall_minutes": 44.6,
+              "tokens": {
+                "input": 127570,
+                "output": 30802,
+                "cache": 12827904,
+                "total": 13072729
+              }
             }
           ],
           "model": {
@@ -25416,8 +25442,8 @@
             "client_mode": "permissions auto-approved"
           },
           "comment": {
-            "en": "Three runs of a case of five, between 519 and 566, mean 538 (the interval, 519 to 566, is the range of the three), all Bronze. All three completed inside the 90-minute budget, at about US$ 0.15 (the client's own estimate) and 47 minutes each, and compatibility was between 75 and 100. Bug fixing was the strongest area (195 of 213 on average), then performance (140 of 213), architecture (70 of 283) and clean code (0 of 141). The reports were rated 40 to 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other two are still to be made, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). DeepSeek's API reports only the alias deepseek-flash: the 1017 build is what the lab was told it pointed to.",
-            "pt_BR": "Três execuções de um caso de cinco, entre 519 e 566, média 538 (o intervalo, de 519 a 566, é a amplitude das três), todas Bronze. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,15 (estimativa do próprio cliente) e 47 minutos cada, e a compatibilidade ficou entre 75 e 100. Corrigir bugs foi a área mais forte (195 de 213 em média), depois desempenho (140 de 213), arquitetura (70 de 283) e código limpo (0 de 141). Os relatórios tiveram de 40 a 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam duas execuções, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). A API só informa o apelido deepseek-flash: a versão 1017 é a que o laboratório foi informado que ele apontava."
+            "en": "Five runs between 519 and 566, mean 538 with a 95% interval of 526 to 553, all Bronze. All five completed inside the 90-minute budget, at about US$ 0.15 (the client's own estimate) and 49 minutes each, and compatibility was between 75 and 100. Bug fixing was the strongest area (188 of 213 on average), then performance (144 of 213), architecture (70 of 283) and clean code (0 of 141). The reports were rated 40 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). DeepSeek's API reports only the alias deepseek-flash: the 1017 build is what the lab was told it pointed to.",
+            "pt_BR": "Cinco execuções entre 519 e 566, média 538 com intervalo de 95% de 526 a 553, todas Bronze. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,15 (estimativa do próprio cliente) e 49 minutos cada, e a compatibilidade ficou entre 75 e 100. Corrigir bugs foi a área mais forte (188 de 213 em média), depois desempenho (144 de 213), arquitetura (70 de 283) e código limpo (0 de 141). Os relatórios tiveram de 40 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). A API só informa o apelido deepseek-flash: a versão 1017 é a que o laboratório foi informado que ele apontava."
           }
         },
         {

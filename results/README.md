@@ -144,7 +144,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 18 | `deepseek-v4.1-flash-max` | **549** | 511 to 588 | Bronze | 91 | 178 | 147 | 0 | 95 | 42 | 5/5 (487 · 512 · 555 · 597 · 596) |
 | 19 | `claude-haiku-5.5-high` | **547** | 530 to 565 | Bronze | 96 | 173 | 125 | 10 | 100 | 42 | 5/5 (524 · 533 · 580 · 561 · 536) |
 | 20 | `gpt-5.6-sol-xhigh` | **540** | 521 to 574 | Bronze | 54 | 202 | 142 | 0 | 100 | 42 | 5/5 (531 · 519 · 606 · 523 · 522) |
-| 21 | `deepseek-v4.1-flash-1017-max` | **538** | 519 to 566 | Bronze | 70 | 195 | 140 | 0 | 92 | 41 | 3/3 (566 · 530 · 519) |
+| 21 | `deepseek-v4.1-flash-1017-max` | **538** | 526 to 553 | Bronze | 70 | 188 | 144 | 0 | 95 | 41 | 5/5 (566 · 530 · 519 · 545 · 530) |
 | 22 | `gemini-3.8-flash-high` | **521** | 513 to 530 | Bronze | 68 | 154 | 154 | 6 | 100 | 38 | 5/5 (513 · 536 · 515 · 530 · 511) |
 | 23 | `deepseek-v4.1-flash-high` | **519** | 465 to 567 | Bronze | 69 | 176 | 131 | 2 | 100 | 41 | 5/5 (422 · 483 · 547 · 568 · 575) |
 | 24 | `moonshot-kimi-k3-max` | **512** | 499 to 526 | Bronze | 101 | 166 | 104 | 0 | 100 | 42 | 2/2 (526 · 499) |
@@ -212,7 +212,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `gpt-5.6-sol-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 540.2 (521.0 to 573.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 523, lowest 519, highest 606.
 
-`deepseek-v4.1-flash-1017-max`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 538.3 (519.0 to 566.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 530, lowest 519, highest 566.
+`deepseek-v4.1-flash-1017-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 538.0 (525.6 to 553.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 530, lowest 519, highest 566.
 
 `gemini-3.8-flash-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 521.0 (512.6 to 530.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 515, lowest 511, highest 536.
 
