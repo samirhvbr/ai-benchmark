@@ -28223,93 +28223,6 @@
       "track": "security",
       "agents": [
         {
-          "agent": "deepseek-v4.1-flash-1017-max",
-          "score": 991,
-          "grade": "Platinum",
-          "runs_count": 1,
-          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-          "categories": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 41
-          },
-          "category_max": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": 0.11,
-          "wall_minutes": 28.0,
-          "tokens": {
-            "input": 132317,
-            "output": 97062,
-            "cache": 9448192,
-            "total": 9677571
-          },
-          "statistics": {
-            "scheduled": 1,
-            "quality": {
-              "n": 1,
-              "systems": 1,
-              "mean": 991.0,
-              "low": 991.0,
-              "high": 991.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 1,
-              "systems": 1,
-              "mean": 991.0,
-              "low": 991.0,
-              "high": 991.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 1,
-              "scheduled": 1,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 1,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 0,
-            "median": 991,
-            "min": 991,
-            "max": 991
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 991,
-              "grade": "Platinum",
-              "cost_usd": 0.106429,
-              "wall_minutes": 28.0,
-              "tokens": {
-                "input": 132317,
-                "output": 97062,
-                "cache": 9448192,
-                "total": 9677571
-              }
-            }
-          ],
-          "model": {
-            "name": "DeepSeek V4.1 Flash 1017",
-            "id": "deepseek-v4.1-flash-1017",
-            "provider": "DeepSeek",
-            "reasoning_effort": "max",
-            "client_mode": "permissions auto-approved"
-          },
-          "comment": {
-            "en": "One run of a case of five, scored 991, Platinum. It completed inside the 90-minute budget, at about US$ 0.11 (the client's own estimate) and 28 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 850 of 850: the report covered all 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). DeepSeek's API names the model only by its alias, deepseek-flash, and does not report the build: the 1017 version is what the lab was told the alias pointed to on the day of the run.",
-            "pt_BR": "Uma execução de um caso de cinco, nota 991, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,11 (estimativa do próprio cliente) e 28 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 850 de 850: o relatório cobriu todas as 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). A API da DeepSeek nomeia o modelo só pelo apelido, deepseek-flash, e não informa a versão: a 1017 é a que o laboratório foi informado que o apelido apontava no dia da execução."
-          }
-        },
-        {
           "agent": "claude-opus-5.5-xhigh",
           "score": 989,
           "grade": "Platinum",
@@ -28445,6 +28358,145 @@
           "comment": {
             "en": "Five runs between 981 and 995, mean 989 with a 95% interval of 984 to 995, all Platinum. All five completed inside the 90-minute budget, at about US$ 6.83 and 32 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 845 of 850: the reports covered 24, 24, 24, 23 and 23 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 8, 2, 4, 0 and 2. The lists follow the order of the runs. The reports were rated 44 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
             "pt_BR": "Cinco execuções entre 981 e 995, média 989 com intervalo de 95% de 984 a 995, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 6,83 e 32 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 845 de 850: os relatórios cobriram 24, 24, 24, 23 e 23 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 8, 2, 4, 0 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 44 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
+          }
+        },
+        {
+          "agent": "deepseek-v4.1-flash-1017-max",
+          "score": 986,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 844,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.12,
+          "wall_minutes": 39.3,
+          "tokens": {
+            "input": 139413,
+            "output": 111828,
+            "cache": 12055910,
+            "total": 12307152
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 985.8,
+              "low": 973.4,
+              "high": 992.4
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 985.8,
+              "low": 973.4,
+              "high": 992.4
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 992,
+            "min": 961,
+            "max": 993
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 991,
+              "grade": "Platinum",
+              "cost_usd": 0.106429,
+              "wall_minutes": 28.0,
+              "tokens": {
+                "input": 132317,
+                "output": 97062,
+                "cache": 9448192,
+                "total": 9677571
+              }
+            },
+            {
+              "run": 2,
+              "total": 993,
+              "grade": "Platinum",
+              "cost_usd": 0.132404,
+              "wall_minutes": 48.6,
+              "tokens": {
+                "input": 151533,
+                "output": 113252,
+                "cache": 13907712,
+                "total": 14172497
+              }
+            },
+            {
+              "run": 3,
+              "total": 992,
+              "grade": "Platinum",
+              "cost_usd": 0.100716,
+              "wall_minutes": 35.9,
+              "tokens": {
+                "input": 123853,
+                "output": 96527,
+                "cache": 8073856,
+                "total": 8294236
+              }
+            },
+            {
+              "run": 4,
+              "total": 992,
+              "grade": "Platinum",
+              "cost_usd": 0.170726,
+              "wall_minutes": 45.2,
+              "tokens": {
+                "input": 162921,
+                "output": 148385,
+                "cache": 19085568,
+                "total": 19396874
+              }
+            },
+            {
+              "run": 5,
+              "total": 961,
+              "grade": "Platinum",
+              "cost_usd": 0.110608,
+              "wall_minutes": 38.9,
+              "tokens": {
+                "input": 126441,
+                "output": 103916,
+                "cache": 9764224,
+                "total": 9994581
+              }
+            }
+          ],
+          "model": {
+            "name": "DeepSeek V4.1 Flash 1017",
+            "id": "deepseek-v4.1-flash-1017",
+            "provider": "DeepSeek",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Five runs between 961 and 993, mean 986 with a 95% interval of 973 to 992, all Platinum. All five completed inside the 90-minute budget, at about US$ 0.12 (the client's own estimate) and 39 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 844 of 850: the reports covered 24, 24, 24, 24 and 22 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; no extra findings. The lists follow the order of the runs. The reports were rated 41 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). DeepSeek's API reports only the alias deepseek-flash: the 1017 build is what the lab was told it pointed to.",
+            "pt_BR": "Cinco execuções entre 961 e 993, média 986 com intervalo de 95% de 973 a 992, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,12 (estimativa do próprio cliente) e 39 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 844 de 850: os relatórios cobriram 24, 24, 24, 24 e 22 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. As listas seguem a ordem das execuções. Os relatórios tiveram de 41 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). A API só informa o apelido deepseek-flash: a versão 1017 é a que o laboratório foi informado que ele apontava."
           }
         },
         {
@@ -28972,6 +29024,93 @@
           }
         },
         {
+          "agent": "moonshot-kimi-k3-1-pro-max",
+          "score": 954,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 812,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 1.35,
+          "wall_minutes": 24.8,
+          "tokens": {
+            "input": 142613,
+            "output": 43320,
+            "cache": 3181056,
+            "total": 3366989
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 954.0,
+              "low": 954.0,
+              "high": 954.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 954.0,
+              "low": 954.0,
+              "high": 954.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 954,
+            "min": 954,
+            "max": 954
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 954,
+              "grade": "Platinum",
+              "cost_usd": 1.354637,
+              "wall_minutes": 24.8,
+              "tokens": {
+                "input": 142613,
+                "output": 43320,
+                "cache": 3181056,
+                "total": 3366989
+              }
+            }
+          ],
+          "model": {
+            "name": "Kimi K3.1 Pro",
+            "id": "k3.1-pro",
+            "provider": "Moonshot AI",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 954, Platinum. It completed inside the 90-minute budget, at about US$ 1.35 (the client's own estimate) and 25 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 812 of 850: the report covered 21 of the 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership, where the client's cost is the list price, not a charge.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 954, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 1,35 (estimativa do próprio cliente) e 25 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 812 de 850: o relatório cobriu 21 das 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code, em que o custo do cliente é o preço de lista, não uma cobrança."
+          }
+        },
+        {
           "agent": "gpt-6.1-sol-xhigh",
           "score": 944,
           "grade": "Platinum",
@@ -29197,6 +29336,93 @@
           }
         },
         {
+          "agent": "tencent-hy4-high",
+          "score": 942,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 803,
+            "COMP": 100,
+            "EXPL": 39
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.73,
+          "wall_minutes": 59.1,
+          "tokens": {
+            "input": 518219,
+            "output": 163112,
+            "cache": 14892160,
+            "total": 15573491
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 942.0,
+              "low": 942.0,
+              "high": 942.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 942.0,
+              "low": 942.0,
+              "high": 942.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 942,
+            "min": 942,
+            "max": 942
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 942,
+              "grade": "Platinum",
+              "cost_usd": 0.732804,
+              "wall_minutes": 59.1,
+              "tokens": {
+                "input": 518219,
+                "output": 163112,
+                "cache": 14892160,
+                "total": 15573491
+              }
+            }
+          ],
+          "model": {
+            "name": "Tencent Hy4",
+            "id": "tencent/hy4",
+            "provider": "Tencent",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 942, Platinum. It completed inside the 90-minute budget, at about US$ 0.73 (the client's own estimate) and 59 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 803 of 850: the report covered 23 of the 24 planted vulnerabilities and the code fixed 22 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 39 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, whose only upstream for this model is Tencent's own (fp4 quantization); the client defines the efforts none, low and high for it, so high is the most it could ask for.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 942, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,73 (estimativa do próprio cliente) e 59 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 803 de 850: o relatório cobriu 23 das 24 vulnerabilidades plantadas e o código corrigiu 22 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 39 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, cuja única origem para este modelo é a própria Tencent (quantização fp4); o cliente define os esforços none, low e high para ele, então high é o máximo que ele pôde pedir."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-medium",
           "score": 934,
           "grade": "Platinum",
@@ -29293,6 +29519,93 @@
           "comment": {
             "en": "Two runs of a case of five, between 913 and 956, mean 934 (the interval, 913 to 956, is the range of the runs), all Platinum. Both completed inside the 90-minute budget, at about US$ 1.10 and 10 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 795 of 850: the reports covered 20 and 21 of the 24 planted vulnerabilities and the code fixed 23 and 24 of them. No decoy was reported as a vulnerability; extra findings: 4 and 0. The lists follow the order of the runs. The reports were rated 39 to 40 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and not rerun yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
             "pt_BR": "Duas execuções de um caso de cinco, entre 913 e 956, média 934 (o intervalo, de 913 a 956, é a amplitude das execuções), todas Platinum. Ambas terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,10 e 10 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 795 de 850: os relatórios cobriram 20 e 21 das 24 vulnerabilidades plantadas e o código corrigiu 23 e 24 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4 e 0. As listas seguem a ordem das execuções. Os relatórios tiveram de 39 a 40 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Uma tentativa foi perdida para o laboratório ou o operador e ainda não foi refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
+          }
+        },
+        {
+          "agent": "moonshot-kimi-k3-1-pro-high",
+          "score": 934,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 790,
+            "COMP": 100,
+            "EXPL": 44
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 3.88,
+          "wall_minutes": 58.9,
+          "tokens": {
+            "input": 640211,
+            "output": 160830,
+            "cache": 4967680,
+            "total": 5768721
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 934.0,
+              "low": 934.0,
+              "high": 934.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 934.0,
+              "low": 934.0,
+              "high": 934.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 934,
+            "min": 934,
+            "max": 934
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 934,
+              "grade": "Platinum",
+              "cost_usd": 3.882258,
+              "wall_minutes": 58.9,
+              "tokens": {
+                "input": 640211,
+                "output": 160830,
+                "cache": 4967680,
+                "total": 5768721
+              }
+            }
+          ],
+          "model": {
+            "name": "Kimi K3.1 Pro",
+            "id": "k3.1-pro",
+            "provider": "Moonshot AI",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 934, Platinum. It completed inside the 90-minute budget, at about US$ 3.88 (the client's own estimate) and 59 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 790 of 850: the report covered 21 of the 24 planted vulnerabilities and the code fixed 23 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership, where the client's cost is the list price, not a charge.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 934, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 3,88 (estimativa do próprio cliente) e 59 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 790 de 850: o relatório cobriu 21 das 24 vulnerabilidades plantadas e o código corrigiu 23 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 44 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code, em que o custo do cliente é o preço de lista, não uma cobrança."
           }
         },
         {

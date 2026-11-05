@@ -1,6 +1,6 @@
 # LEB-S-300-A — CondoDesk, Security track
 
-> **Status: frozen on 2026-10-29; its first eleven configurations are published as an aggregate ([Results](#results)).** The instance is complete as authored: its planting profile (24 vulnerabilities and 6 decoys), the answer key, the exploit
+> **Status: frozen on 2026-10-29; its first fourteen configurations are published as an aggregate ([Results](#results)).** The instance is complete as authored: its planting profile (24 vulnerabilities and 6 decoys), the answer key, the exploit
 > verifiers, the control cases, the task statement and the package. It is frozen: [Before the first run](#before-the-first-run) records the hashes and the steps that came before, in the order they were done, and from the first run on any change is a new version.
 > Every file of this instance is committed here as it is written, the answer key included
 > ([`matrix/MATRIX.md §4`](../../matrix/MATRIX.md), items 1 and 2), so that its whole history is public.
@@ -103,11 +103,13 @@ attempts that did not complete, counted apart (blocked, budget exhausted, lost t
 Every delivery is judged blind: two matching judges and two judges of the report, none of them told which model or vendor made it, and a person settles each disagreement between the matching judges. The aggregate is written
 from the lab's private archive by `python3 tools/export-results.py --publish-aggregate LEB-S-300-A` and by nothing else, and the exporter refuses a scorecard whose categories are not the track's.
 
-The first eleven configurations were published on 2026-11-05, every run of them on the frozen 1.0 package, evaluated with its key, of 90 minutes at most. Claude Opus 5.5 at `xhigh` scored 995, 995, 995, 981 and 981 (mean 989, 95%
+The first eleven configurations were published on 2026-11-05 and three more joined the same day, fourteen in all, every run of them on the frozen 1.0 package, evaluated with its key, of 90 minutes at most. Claude Opus 5.5 at `xhigh` scored 995, 995, 995, 981 and 981 (mean 989, 95%
 interval 984 to 995, all Platinum, about US$ 6.83 and 32 minutes a run), at `high` 994, 977, 963, 992 and 994 (mean 984) and at `max` 995, 961, 961 and 995 (mean 978, four of its five runs); Claude Sonnet 5.5 at `high` scored
 924, 993, 927, 932 and 937 (mean 943) and at `medium` 913 and 956 (mean 934, two runs). With one run each, through Codex with approvals and sandbox bypassed (the series' exception, and the client's log keeps no cost): GPT-6-astra at `xhigh` 967 and
-GPT-6.1-sol at `xhigh` 944; and through OpenCode with its auto-approval flag: DeepSeek V4.1 Flash 1017 at `max` 991 (Platinum, about US$ 0.11 and 28 minutes), MiniMax M3.1 Flash at `high` 965, DeepSeek V4.1 Flash at `high` 959 and DeepSeek V4 Pro at `max` 875 (Gold).
-DeepSeek's API names its Flash model only by an alias and does not report the build: that the alias pointed to the 1017 version on the day of its run is what the lab was told, and the
+GPT-6.1-sol at `xhigh` 944. Through OpenCode with its auto-approval flag: DeepSeek V4.1 Flash 1017 at `max` scored 991, 993, 992, 992 and 961 (mean 986, interval 973 to 992, all Platinum, about US$ 0.12 and 39 minutes a run), and with one run each
+MiniMax M3.1 Flash at `high` 965, DeepSeek V4.1 Flash at `high` 959, Kimi K3.1 Pro at `max` 954 (25 minutes, through the owner's Kimi Code membership, where the client's cost is the list price and not a charge), Tencent Hy4 at `high` 942 (through OpenRouter, whose only
+upstream for it is Tencent's own; the client defines no effort above `high` for it), Kimi K3.1 Pro at `high` 934 (59 minutes, the same membership) and DeepSeek V4 Pro at `max` 875 (Gold).
+DeepSeek's API names its Flash model only by an alias and does not report the build: that the alias pointed to the 1017 version on the day of its runs is what the lab was told, and the
 earlier DeepSeek V4.1 Flash run (2026-10-29) is published under the name it had.
 
 Configurations with a run that waits for a decision are not in it yet and join when the run is settled. Two scoring questions are open with the owner (how a compatibility charge on one route is applied from run to run, and which row a

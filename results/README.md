@@ -264,24 +264,27 @@ This instance is **active**. While it is, only the figures below are published: 
 
 | # | Agent | Estimate | 95% interval | Grade | SEC | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | --- |
-| 1 | `deepseek-v4.1-flash-1017-max` | **991** | 991 to 991 | Platinum | 850 | 100 | 41 | 1/1 (991) |
-| 2 | `claude-opus-5.5-xhigh` | **989** | 984 to 995 | Platinum | 845 | 100 | 45 | 5/5 (995 · 995 · 995 · 981 · 981) |
+| 1 | `claude-opus-5.5-xhigh` | **989** | 984 to 995 | Platinum | 845 | 100 | 45 | 5/5 (995 · 995 · 995 · 981 · 981) |
+| 2 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
 | 3 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
 | 4 | `claude-opus-5.5-max` | **978** | 961 to 995 | Platinum | 848 | 85 | 45 | 4/4 (995 · 961 · 961 · 995) |
 | 5 | `gpt-6-astra-xhigh` | **967** | 967 to 967 | Platinum | 824 | 100 | 43 | 1/1 (967) |
 | 6 | `minimax-m3.1-flash-high` | **965** | 965 to 965 | Platinum | 824 | 100 | 41 | 1/1 (965) |
 | 7 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
-| 8 | `gpt-6.1-sol-xhigh` | **944** | 944 to 944 | Platinum | 799 | 100 | 45 | 1/1 (944) |
-| 9 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
-| 10 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
-| 11 | `deepseek-v4-pro-max` | **875** | 875 to 875 | Gold | 735 | 100 | 40 | 1/1 (875) |
+| 8 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
+| 9 | `gpt-6.1-sol-xhigh` | **944** | 944 to 944 | Platinum | 799 | 100 | 45 | 1/1 (944) |
+| 10 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
+| 11 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
+| 12 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
+| 13 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
+| 14 | `deepseek-v4-pro-max` | **875** | 875 to 875 | Gold | 735 | 100 | 40 | 1/1 (875) |
 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
 
-`deepseek-v4.1-flash-1017-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 991.0 (991.0 to 991.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 991, lowest 991, highest 991.
-
 `claude-opus-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 989.4 (983.8 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 981, highest 995.
+
+`deepseek-v4.1-flash-1017-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 985.8 (973.4 to 992.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 961, highest 993.
 
 `claude-opus-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 984.0 (972.0 to 993.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 963, highest 994.
 
@@ -293,11 +296,17 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `deepseek-v4.1-flash-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 959.0 (959.0 to 959.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 959, lowest 959, highest 959.
 
+`moonshot-kimi-k3-1-pro-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 954.0 (954.0 to 954.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 954, lowest 954, highest 954.
+
 `gpt-6.1-sol-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 944.0 (944.0 to 944.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 944, lowest 944, highest 944.
 
 `claude-sonnet-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 942.6 (927.2 to 968.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 932, lowest 924, highest 993.
 
+`tencent-hy4-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 942.0 (942.0 to 942.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 942, lowest 942, highest 942.
+
 `claude-sonnet-5.5-medium`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 934.5 (913.0 to 956.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 913, lowest 913, highest 956.
+
+`moonshot-kimi-k3-1-pro-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 934.0 (934.0 to 934.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 934, lowest 934, highest 934.
 
 `deepseek-v4-pro-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 875.0 (875.0 to 875.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 875, lowest 875, highest 875.
 

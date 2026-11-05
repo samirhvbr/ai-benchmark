@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.294`
+**Versão atual:** `0.2.295`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.295` — 2026-11-05 — LEB-S-300-A's aggregate grows to fourteen configurations: DeepSeek V4.1 Flash 1017 at max has its five runs (mean 986), and Kimi K3.1 Pro (954 at max, 934 at high) and Tencent Hy4 (942) join
+
+- `results/2026/LEB-S-300-A/aggregate.json` and its section of `results/README.md`, rewritten by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private archive. DeepSeek V4.1 Flash 1017 at max goes from one run to its five: 991, 993, 992, 992 and 961 (mean 986, 95%
+  interval 973 to 992, all Platinum, about US$ 0.12 and 39 minutes a run). Three configurations are new, one run each and all Platinum: Kimi K3.1 Pro at max 954 (25 minutes), Tencent Hy4 at high 942 and Kimi K3.1 Pro at high 934 (59 minutes). The other ten entries are unchanged, reading included.
+- Kimi K3.1 Pro ran through the owner's Kimi Code membership, where the client's cost is the list price and not a charge. Tencent Hy4 ran through OpenRouter, whose only upstream for it is Tencent's own (fp4 quantization), and the client defines no effort above high for it. Their ids and model blocks are
+  those of LEB-D-300-A's aggregate, so the sites pair them. The reading of each configuration counts the planted vulnerabilities its reports covered from the rows the judges matched, not from every finding the report made (one run of Flash 1017 had a finding that matched no row).
+- Every run went through two matching judges and two blind judges for the report, as every run of the series. The one disagreement left in the seven new runs (a finding that matched no row, written under two spellings by the two judges) was settled by the owner's standing rule of 2026-10-16.
+  Configurations with a run that waits for a decision are still not in it: Claude Sonnet 5.5 at xhigh and at max (one run was blocked by the model's own safeguards and is still to be scored on the folder it left), Claude Haiku 5.5 at xhigh, GPT-5.6-sol at xhigh and DeepSeek V4.1 Flash at max.
+- The two scoring questions of 0.2.294 are still open with the owner and may change published scores: how a compatibility charge on one route is applied from run to run, and which row a finding that bundles several rows is credited to. The second now bears on more published runs (the lowest run of Flash 1017
+  and both runs of Kimi K3.1 Pro among them). An answer is published as a new version of the aggregate, with the change recorded here.
+- DeepSeek's API names the model only by its alias `deepseek-flash` and does not report the build; the 1017 version of the runs is what the lab was told the alias pointed to on 2026-11-05. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.294` — 2026-11-05 — LEB-S-300-A's aggregate is published: eleven configurations, from DeepSeek V4 Pro's 875 (Gold) to DeepSeek V4.1 Flash 1017's 991 (Platinum)
 
