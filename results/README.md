@@ -278,7 +278,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 6 | `minimax-m3.1-flash-high` | **965** | 965 to 965 | Platinum | 824 | 100 | 41 | 1/1 (965) |
 | 7 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
 | 8 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
-| 9 | `gpt-6.1-sol-xhigh` | **944** | 944 to 944 | Platinum | 799 | 100 | 45 | 1/1 (944) |
+| 9 | `gpt-6.1-sol-xhigh` | **953** | 944 to 962 | Platinum | 810 | 100 | 43 | 3/3 (944 · 954 · 962) |
 | 10 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
 | 11 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
 | 12 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
@@ -304,7 +304,7 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `moonshot-kimi-k3-1-pro-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 954.0 (954.0 to 954.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 954, lowest 954, highest 954.
 
-`gpt-6.1-sol-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 944.0 (944.0 to 944.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 944, lowest 944, highest 944.
+`gpt-6.1-sol-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 953.3 (944.0 to 962.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 954, lowest 944, highest 962.
 
 `claude-sonnet-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 942.6 (927.2 to 968.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 932, lowest 924, highest 993.
 

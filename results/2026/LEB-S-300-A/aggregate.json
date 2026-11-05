@@ -928,14 +928,14 @@
     },
     {
       "agent": "gpt-6.1-sol-xhigh",
-      "score": 944,
+      "score": 953,
       "grade": "Platinum",
-      "runs_count": 1,
+      "runs_count": 3,
       "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
       "categories": {
-        "SEC": 799,
+        "SEC": 810,
         "COMP": 100,
-        "EXPL": 45
+        "EXPL": 43
       },
       "category_max": {
         "SEC": 850,
@@ -943,38 +943,38 @@
         "EXPL": 50
       },
       "cost_usd": null,
-      "wall_minutes": 17.1,
+      "wall_minutes": 20.1,
       "tokens": {
-        "input": 126726,
-        "output": 37067,
-        "cache": 2810368,
-        "total": 2974161
+        "input": 168968,
+        "output": 51114,
+        "cache": 5492907,
+        "total": 5712989
       },
       "statistics": {
-        "scheduled": 1,
+        "scheduled": 3,
         "quality": {
-          "n": 1,
+          "n": 3,
           "systems": 1,
-          "mean": 944.0,
+          "mean": 953.3,
           "low": 944.0,
-          "high": 944.0
+          "high": 962.0
         },
         "expected_per_scheduled_attempt": {
-          "n": 1,
+          "n": 3,
           "systems": 1,
-          "mean": 944.0,
+          "mean": 953.3,
           "low": 944.0,
-          "high": 944.0
+          "high": 962.0
         },
         "completion": {
           "rate": 1.0,
-          "completed": 1,
-          "scheduled": 1,
+          "completed": 3,
+          "scheduled": 3,
           "systems_all_completed": 1,
           "systems": 1
         },
         "outcomes": {
-          "completed": 1,
+          "completed": 3,
           "blocked": 0,
           "blocked_at_the_start": 0,
           "blocked_during_the_work": 0,
@@ -982,9 +982,9 @@
           "switched": 0
         },
         "lab_failures_rerun": 1,
-        "median": 944,
+        "median": 954,
         "min": 944,
-        "max": 944
+        "max": 962
       },
       "runs": [
         {
@@ -999,6 +999,32 @@
             "cache": 2810368,
             "total": 2974161
           }
+        },
+        {
+          "run": 3,
+          "total": 954,
+          "grade": "Platinum",
+          "cost_usd": null,
+          "wall_minutes": 20.6,
+          "tokens": {
+            "input": 179186,
+            "output": 55041,
+            "cache": 5286384,
+            "total": 5520611
+          }
+        },
+        {
+          "run": 4,
+          "total": 962,
+          "grade": "Platinum",
+          "cost_usd": null,
+          "wall_minutes": 22.6,
+          "tokens": {
+            "input": 200992,
+            "output": 61233,
+            "cache": 8381970,
+            "total": 8644195
+          }
         }
       ],
       "model": {
@@ -1009,8 +1035,8 @@
         "client_mode": "permissions bypassed"
       },
       "comment": {
-        "en": "One run of a case of five, scored 944, Platinum. It completed inside the 90-minute budget, about 3.0 million tokens and 17 minutes (the log keeps no cost), and it broke no behavior the public tests protect (compatibility 100). Security scored 799 of 850: the report covered 20 of the 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; extra findings: 2. The report was rated 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and not rerun yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
-        "pt_BR": "Uma execução de um caso de cinco, nota 944, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de 3,0 milhões de tokens e 17 minutos (o log não guarda custo), e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 799 de 850: o relatório cobriu 20 das 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2. O relatório teve 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Uma tentativa foi perdida para o laboratório ou o operador e ainda não foi refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
+        "en": "Three runs of a case of five, between 944 and 962, mean 953 (the interval, 944 to 962, is the range of the runs), all Platinum. All three completed inside the 90-minute budget, about 5.7 million tokens and 20 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 810 of 850: the reports covered 20, 21 and 22 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 2, 2 and 2. The lists follow the order of the runs. The reports were rated 42 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and not rerun yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with approvals and sandbox bypassed, the series' exception (see the notes). Some runs used an API key, some the stored login; the model and the client are the same.",
+        "pt_BR": "Três execuções de um caso de cinco, entre 944 e 962, média 953 (o intervalo, de 944 a 962, é a amplitude das execuções), todas Platinum. As três terminaram dentro do orçamento de 90 minutos, por cerca de 5,7 milhões de tokens e 20 minutos cada (o log não guarda custo), e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 810 de 850: os relatórios cobriram 20, 21 e 22 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2, 2 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 42 a 45 de 50. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Uma tentativa foi perdida (laboratório ou operador) e ainda não foi refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com aprovações e sandbox desligados, exceção da série (veja as notas). Umas execuções usaram chave de API, outras o login guardado; o modelo e o cliente são os mesmos."
       }
     },
     {
