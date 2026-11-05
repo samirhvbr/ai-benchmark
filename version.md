@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.296`
+**Versão atual:** `0.2.297`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.297` — 2026-11-05 — LEB-S-300-A's aggregate grows GPT-6-astra at xhigh to three runs (967, 972, 968; mean 969) and DeepSeek V4 Pro at max to three runs (875, 907, 831; mean 871, Gold)
+
+- `results/2026/LEB-S-300-A/aggregate.json` and its section of `results/README.md`, rewritten by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private archive. GPT-6-astra at xhigh goes from one run to three: 967, 972 and 968 (mean 969, 95% interval 967 to 972, all Platinum, about 21 minutes a run;
+  the first run went through Codex on the client's stored login, the other two on an OpenAI API key, and the reading says so). DeepSeek V4 Pro at max goes from one run to three: 875, 907 and 831 (mean 871, Gold; the middle run is Platinum), about US$ 0.41 and 36 minutes a run. The other twelve entries are unchanged, reading included.
+- Every run went through two matching judges and two blind judges for the report; none of the four new runs left a disagreement to settle. The readings of the two entries are the first to need the compact wording of two stock sentences (the approvals-and-sandbox one and the mixed-credential one) to stay under the 1200 characters.
+- The two scoring questions of 0.2.294 are still open with the owner and may change published scores: how a compatibility charge on one route is applied from run to run, and which row a finding that bundles several rows is credited to. The second bears on the new runs of GPT-6-astra
+  and DeepSeek V4 Pro as it does on the older ones. An answer is published as a new version of the aggregate, with the change recorded here. Configurations with a run in flight or waiting for a decision are not touched by this version.
+- Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.296` — 2026-11-05 — LEB-D-300-A's aggregate adds DeepSeek V4.1 Flash 1017 at max (two runs, 566 and 530, mean 548) and Tencent Hy4 at high (one run, 434)
 

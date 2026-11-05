@@ -274,7 +274,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 2 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
 | 3 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
 | 4 | `claude-opus-5.5-max` | **978** | 961 to 995 | Platinum | 848 | 85 | 45 | 4/4 (995 · 961 · 961 · 995) |
-| 5 | `gpt-6-astra-xhigh` | **967** | 967 to 967 | Platinum | 824 | 100 | 43 | 1/1 (967) |
+| 5 | `gpt-6-astra-xhigh` | **969** | 967 to 972 | Platinum | 826 | 100 | 43 | 3/3 (967 · 972 · 968) |
 | 6 | `minimax-m3.1-flash-high` | **965** | 965 to 965 | Platinum | 824 | 100 | 41 | 1/1 (965) |
 | 7 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
 | 8 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
@@ -283,7 +283,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 11 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
 | 12 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
 | 13 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
-| 14 | `deepseek-v4-pro-max` | **875** | 875 to 875 | Gold | 735 | 100 | 40 | 1/1 (875) |
+| 14 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -296,7 +296,7 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `claude-opus-5.5-max`: completion 4 of 4 scheduled attempts; expected score per scheduled attempt 978.0 (961.0 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 961, lowest 961, highest 995.
 
-`gpt-6-astra-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 967.0 (967.0 to 967.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 967, lowest 967, highest 967.
+`gpt-6-astra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 969.0 (967.0 to 972.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 968, lowest 967, highest 972.
 
 `minimax-m3.1-flash-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 965.0 (965.0 to 965.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 965, lowest 965, highest 965.
 
@@ -314,7 +314,7 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `moonshot-kimi-k3-1-pro-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 934.0 (934.0 to 934.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 934, lowest 934, highest 934.
 
-`deepseek-v4-pro-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 875.0 (875.0 to 875.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 875, lowest 875, highest 875.
+`deepseek-v4-pro-max`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 871.0 (831.0 to 907.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 875, lowest 831, highest 907.
 
 Every run is evaluated with the key of version 1.0, frozen on 2026-10-29 before any delivery went through it, and every file of the instance is public on GitHub. A delivery is judged by four judges that are not told which model or vendor made it: two read it against the planted items and two rate the report; a person settles the disagreements between the first two. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. Claude Code ran on an Anthropic API key, billed to API credit. Codex ran with approvals and sandbox bypassed and OpenCode with its auto-approval flag, the series' exception to its rule against bypassing approvals, on a disposable machine with every decision counted. Codex keeps no cost, so its cost is in tokens; OpenCode's cost is the client's own estimate.
 
