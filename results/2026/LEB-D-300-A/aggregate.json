@@ -2682,6 +2682,99 @@
       }
     },
     {
+      "agent": "xiaomi-mimo-v2.6-flash-high",
+      "score": 547,
+      "grade": "Bronze",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 81,
+        "BUG": 159,
+        "PERF": 104,
+        "CLN": 60,
+        "COMP": 100,
+        "EXPL": 43
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.08,
+      "wall_minutes": 60.2,
+      "tokens": {
+        "input": 203667,
+        "output": 39528,
+        "cache": 10185536,
+        "total": 10477591
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 547.0,
+          "low": 547.0,
+          "high": 547.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 547.0,
+          "low": 547.0,
+          "high": 547.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 547,
+        "min": 547,
+        "max": 547
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 547,
+          "grade": "Bronze",
+          "cost_usd": 0.08,
+          "wall_minutes": 60.2,
+          "tokens": {
+            "input": 203667,
+            "output": 39528,
+            "cache": 10185536,
+            "total": 10477591
+          }
+        }
+      ],
+      "model": {
+        "name": "MiMo V2.6 Flash",
+        "id": "xiaomi/mimo-v2.6-flash",
+        "provider": "Xiaomi",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 547 (Bronze). It completed inside the 90-minute budget, at about US$ 0.08 (the client's own estimate) and 60 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (159 of 213), then performance (104 of 213), clean code (60 of 141) and architecture (81 of 283). The report was rated 43 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, pinned to Xiaomi's own endpoint (fp8 quantization), because the router otherwise spreads the model over other hosts; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 547 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,08 (estimativa do próprio cliente) e 60 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (159 de 213), depois desempenho (104 de 213), código limpo (60 de 141) e arquitetura (81 de 283). O relatório teve 43 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, fixado no endpoint da própria Xiaomi (quantização fp8), porque sem a fixação o roteador espalha o modelo por outras hospedeiras; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
       "agent": "gpt-5.6-sol-xhigh",
       "score": 540,
       "grade": "Bronze",
@@ -3483,6 +3576,99 @@
       "comment": {
         "en": "Three runs of a case of five, between 442 and 562, mean 511 (the interval, 442 to 562, is the range of the three), all Bronze. All three completed inside the 90-minute budget, at about US$ 2.90 (the client's own estimate) and 52 minutes each, and compatibility was between 85 and 100. Bug fixing was the strongest area (188 of 213 on average), then performance (133 of 213), architecture (61 of 283) and clean code (0 of 141). The reports were rated 40 to 43 of 50. Penalties: run 3 lost 15 points for a new defect introduced by its own change; run 3 lost 5 points for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other two are still to be made, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership, where the client's cost is the list price, not a charge.",
         "pt_BR": "Três execuções de um caso de cinco, entre 442 e 562, média 511 (o intervalo, de 442 a 562, é a amplitude das três), todas Bronze. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 2,90 (estimativa do próprio cliente) e 52 minutos cada, e a compatibilidade ficou entre 85 e 100. Corrigir bugs foi a área mais forte (188 de 213 em média), depois desempenho (133 de 213), arquitetura (61 de 283) e código limpo (0 de 141). Os relatórios tiveram de 40 a 43 de 50. Penalidades: a execução 3 perdeu 15 pontos por um defeito novo introduzido pela própria mudança; a execução 3 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam duas execuções, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code, em que o custo do cliente é o preço de lista, não uma cobrança."
+      }
+    },
+    {
+      "agent": "xiaomi-mimo-v2.6-pro-ultraspeed-high",
+      "score": 509,
+      "grade": "Bronze",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 69,
+        "BUG": 137,
+        "PERF": 159,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 44
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 1.56,
+      "wall_minutes": 28.6,
+      "tokens": {
+        "input": 179241,
+        "output": 27639,
+        "cache": 6592960,
+        "total": 6834546
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 509.0,
+          "low": 509.0,
+          "high": 509.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 509.0,
+          "low": 509.0,
+          "high": 509.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 509,
+        "min": 509,
+        "max": 509
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 509,
+          "grade": "Bronze",
+          "cost_usd": 1.56,
+          "wall_minutes": 28.6,
+          "tokens": {
+            "input": 179241,
+            "output": 27639,
+            "cache": 6592960,
+            "total": 6834546
+          }
+        }
+      ],
+      "model": {
+        "name": "MiMo V2.6 Pro UltraSpeed",
+        "id": "xiaomi/mimo-v2.6-pro-ultraspeed",
+        "provider": "Xiaomi",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 509 (Bronze). It completed inside the 90-minute budget, at about US$ 1.56 (the client's own estimate) and 29 minutes, and it did not break a behavior the public tests protect (compatibility 100). Performance was the strongest area (159 of 213), then bug fixing (137 of 213), architecture (69 of 283) and clean code (0 of 141). The report was rated 44 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, pinned to Xiaomi's own endpoint (fp8 quantization), the only upstream of this model; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 509 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 1,56 (estimativa do próprio cliente) e 29 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Desempenho foi a área mais forte (159 de 213), depois corrigir bugs (137 de 213), arquitetura (69 de 283) e código limpo (0 de 141). O relatório teve 44 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, fixado no endpoint da própria Xiaomi (quantização fp8), a única origem deste modelo; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
       }
     },
     {
@@ -4924,6 +5110,99 @@
       }
     },
     {
+      "agent": "xiaomi-mimo-v2.6-pro-high",
+      "score": 421,
+      "grade": "Bronze",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 69,
+        "BUG": 137,
+        "PERF": 77,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 43
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.17,
+      "wall_minutes": 26.4,
+      "tokens": {
+        "input": 202439,
+        "output": 18540,
+        "cache": 6078336,
+        "total": 6349249
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 421.0,
+          "low": 421.0,
+          "high": 421.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 421.0,
+          "low": 421.0,
+          "high": 421.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 421,
+        "min": 421,
+        "max": 421
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 421,
+          "grade": "Bronze",
+          "cost_usd": 0.17,
+          "wall_minutes": 26.4,
+          "tokens": {
+            "input": 202439,
+            "output": 18540,
+            "cache": 6078336,
+            "total": 6349249
+          }
+        }
+      ],
+      "model": {
+        "name": "MiMo V2.6 Pro",
+        "id": "xiaomi/mimo-v2.6-pro",
+        "provider": "Xiaomi",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 421 (Bronze). It completed inside the 90-minute budget, at about US$ 0.17 (the client's own estimate) and 26 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (137 of 213), then performance (77 of 213), architecture (69 of 283) and clean code (0 of 141). The report was rated 43 of 50. Penalties: run 1 lost 5 points for reporting something that is not a flaw. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, pinned to Xiaomi's own endpoint (fp8 quantization), because the router otherwise spreads the model over other hosts; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 421 (Bronze). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,17 (estimativa do próprio cliente) e 26 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (137 de 213), depois desempenho (77 de 213), arquitetura (69 de 283) e código limpo (0 de 141). O relatório teve 43 de 50. Penalidades: a execução 1 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, fixado no endpoint da própria Xiaomi (quantização fp8), porque sem a fixação o roteador espalha o modelo por outras hospedeiras; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
       "agent": "kimi-k2.7-code-default",
       "score": 410,
       "grade": "Bronze",
@@ -5532,6 +5811,192 @@
       }
     },
     {
+      "agent": "recursive-flint-v1.0-free-default",
+      "score": 335,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 53,
+        "BUG": 94,
+        "PERF": 68,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 35
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 31.2,
+      "tokens": {
+        "input": 601522,
+        "output": 15024,
+        "cache": 8600704,
+        "total": 9259285
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 335.0,
+          "low": 335.0,
+          "high": 335.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 335.0,
+          "low": 335.0,
+          "high": 335.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 335,
+        "min": 335,
+        "max": 335
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 335,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 31.2,
+          "tokens": {
+            "input": 601522,
+            "output": 15024,
+            "cache": 8600704,
+            "total": 9259285
+          }
+        }
+      ],
+      "model": {
+        "name": "Recursive Flint",
+        "id": "recursive/flint-v1.0:free",
+        "provider": "Recursive",
+        "reasoning_effort": "default",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 335 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 31 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (94 of 213), then performance (68 of 213), architecture (53 of 283) and clean code (0 of 141). The report was rated 35 of 50. Penalties: run 1 lost 15 points for a new defect introduced by its own change. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was Recursive's); the client defines no effort for it, so it ran at the model's default.",
+        "pt_BR": "Uma execução de um caso de cinco fez 335 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 31 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (94 de 213), depois desempenho (68 de 213), arquitetura (53 de 283) e código limpo (0 de 141). O relatório teve 35 de 50. Penalidades: a execução 1 perdeu 15 pontos por um defeito novo introduzido pela própria mudança. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da Recursive); o cliente não define esforço para ele, então rodou no padrão do modelo."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3.5-super-vl-free-high",
+      "score": 327,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 4,
+        "BUG": 137,
+        "PERF": 45,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 41
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 13.4,
+      "tokens": {
+        "input": 258045,
+        "output": 12156,
+        "cache": 3325712,
+        "total": 3608312
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 327.0,
+          "low": 327.0,
+          "high": 327.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 327.0,
+          "low": 327.0,
+          "high": 327.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 327,
+        "min": 327,
+        "max": 327
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 327,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 13.4,
+          "tokens": {
+            "input": 258045,
+            "output": 12156,
+            "cache": 3325712,
+            "total": 3608312
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3.5 Super VL",
+        "id": "nvidia/nemotron-3.5-super-vl:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 327 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 13 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (137 of 213), then performance (45 of 213), architecture (4 of 283) and clean code (0 of 141). The report was rated 41 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 327 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 13 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (137 de 213), depois desempenho (45 de 213), arquitetura (4 de 283) e código limpo (0 de 141). O relatório teve 41 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
       "agent": "gemma-4-31b-high",
       "score": 223,
       "grade": "Reprovada",
@@ -5963,6 +6428,192 @@
       "comment": {
         "en": "Five runs between 118 and 164, mean 152 with a 95% interval of 134 to 163, all Reprovada. All five completed inside the 90-minute budget, at about US$ 0.12 (the client's own estimate) and 16 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (27 of 213 on average), then performance (0 of 213), architecture (0 of 283) and clean code (0 of 141). The reports were rated 0 to 34 of 50. Penalties: run 4 lost 5 points for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
         "pt_BR": "Cinco execuções entre 118 e 164, média 152 com intervalo de 95% de 134 a 163, todas Reprovada. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,12 (estimativa do próprio cliente) e 16 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (27 de 213 em média), depois desempenho (0 de 213), arquitetura (0 de 283) e código limpo (0 de 141). Os relatórios tiveram de 0 a 34 de 50. Penalidades: a execução 4 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3.5-lightning-free-high",
+      "score": 108,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 0,
+        "BUG": 0,
+        "PERF": 0,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 23
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 20.7,
+      "tokens": {
+        "input": 191722,
+        "output": 12225,
+        "cache": 3944672,
+        "total": 4174594
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 108.0,
+          "low": 108.0,
+          "high": 108.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 108.0,
+          "low": 108.0,
+          "high": 108.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 108,
+        "min": 108,
+        "max": 108
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 108,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 20.7,
+          "tokens": {
+            "input": 191722,
+            "output": 12225,
+            "cache": 3944672,
+            "total": 4174594
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3.5 Lightning",
+        "id": "nvidia/nemotron-3.5-lightning:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 108 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 21 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (0 of 213), then performance (0 of 213), architecture (0 of 283) and clean code (0 of 141). The report was rated 23 of 50. Penalties: run 1 lost 15 points for a new defect introduced by its own change. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 108 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 21 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (0 de 213), depois desempenho (0 de 213), arquitetura (0 de 283) e código limpo (0 de 141). O relatório teve 23 de 50. Penalidades: a execução 1 perdeu 15 pontos por um defeito novo introduzido pela própria mudança. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
+      "agent": "cohere-north-mini-code-free-high",
+      "score": 97,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 0,
+        "BUG": 0,
+        "PERF": 0,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 17
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 5.4,
+      "tokens": {
+        "input": 1965826,
+        "output": 9614,
+        "cache": 0,
+        "total": 1982484
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 97.0,
+          "low": 97.0,
+          "high": 97.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 97.0,
+          "low": 97.0,
+          "high": 97.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 97,
+        "min": 97,
+        "max": 97
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 97,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 5.4,
+          "tokens": {
+            "input": 1965826,
+            "output": 9614,
+            "cache": 0,
+            "total": 1982484
+          }
+        }
+      ],
+      "model": {
+        "name": "Cohere North Mini Code",
+        "id": "cohere/north-mini-code:free",
+        "provider": "Cohere",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 97 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 5 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (0 of 213), then performance (0 of 213), architecture (0 of 283) and clean code (0 of 141). The report was rated 17 of 50. Penalties: run 1 lost 15 points for a new defect introduced by its own change; run 1 lost 5 points for reporting something that is not a flaw. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was Cohere's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 97 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 5 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (0 de 213), depois desempenho (0 de 213), arquitetura (0 de 283) e código limpo (0 de 141). O relatório teve 17 de 50. Penalidades: a execução 1 perdeu 15 pontos por um defeito novo introduzido pela própria mudança; a execução 1 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da Cohere); o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
       }
     }
   ],

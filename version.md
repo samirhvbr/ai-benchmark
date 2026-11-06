@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.301`
+**Versão atual:** `0.2.302`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.302` — 2026-11-06 — LEB-D-300-A's aggregate adds MiMo V2.6 Flash, Pro UltraSpeed and Pro at high (547, 509, 421, Bronze) and four OpenRouter free variants (335, 327, 108, 97)
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 44 to 51
+  configurations, one run each for the seven new ones; the other 44 entries are unchanged, reading included.
+- MiMo V2.6 Flash 547 (about US$ 0.08 and 60 minutes), MiMo V2.6 Pro UltraSpeed 509 (about US$ 1.56 and 29 minutes) and MiMo V2.6 Pro 421 (about US$ 0.17 and 26 minutes), all at `high`, the highest effort the client defines for them,
+  through OpenRouter pinned to Xiaomi's own endpoint: all Bronze.
+- Four OpenRouter free variants, no provider pinned (the free pool is shared), each at the highest effort the client defines for it: Recursive Flint at its default setting 335, NVIDIA Nemotron 3.5 Super VL 327, NVIDIA Nemotron 3.5 Lightning 108
+  and Cohere North Mini Code 97, all Reprovada. They cost nothing; the route is named in each reading and in the private run record, not in the model block.
+- Every run went through two matching judges and two blind judges for the report. Where the matching judges disagreed on a false positive written under two spellings, the owner's standing ruling of 2026-10-16 (it counts once) settled it.
+  Configurations whose run waits for a decision or a rerun are not in it yet. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.301` — 2026-11-06 — LEB-S-300-A's aggregate adds MiMo V2.6 Pro and Pro UltraSpeed at high (969, 966, Platinum) and five OpenRouter free variants (516, 515, 331, 217, 191)
 
