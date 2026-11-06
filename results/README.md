@@ -275,15 +275,22 @@ This instance is **active**. While it is, only the figures below are published: 
 | 3 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
 | 4 | `claude-opus-5.5-max` | **978** | 961 to 995 | Platinum | 848 | 85 | 45 | 4/4 (995 · 961 · 961 · 995) |
 | 5 | `gpt-6-astra-xhigh` | **969** | 967 to 972 | Platinum | 826 | 100 | 43 | 3/3 (967 · 972 · 968) |
-| 6 | `minimax-m3.1-flash-high` | **965** | 965 to 965 | Platinum | 824 | 100 | 41 | 1/1 (965) |
-| 7 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
-| 8 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
-| 9 | `gpt-6.1-sol-xhigh` | **953** | 944 to 962 | Platinum | 810 | 100 | 43 | 3/3 (944 · 954 · 962) |
-| 10 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
-| 11 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
-| 12 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
-| 13 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
-| 14 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
+| 6 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
+| 7 | `xiaomi-mimo-v2.6-pro-ultraspeed-high` | **966** | 966 to 966 | Platinum | 824 | 100 | 42 | 1/1 (966) |
+| 8 | `minimax-m3.1-flash-high` | **965** | 965 to 965 | Platinum | 824 | 100 | 41 | 1/1 (965) |
+| 9 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
+| 10 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
+| 11 | `gpt-6.1-sol-xhigh` | **953** | 944 to 962 | Platinum | 810 | 100 | 43 | 3/3 (944 · 954 · 962) |
+| 12 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
+| 13 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
+| 14 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
+| 15 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
+| 16 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
+| 17 | `recursive-flint-v1.0-free-default` | **516** | 516 to 516 | Bronze | 378 | 100 | 38 | 1/1 (516) |
+| 18 | `nvidia-nemotron-3.5-super-vl-free-high` | **515** | 515 to 515 | Bronze | 374 | 100 | 41 | 1/1 (515) |
+| 19 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **331** | 331 to 331 | Reprovada | 196 | 100 | 35 | 1/1 (331) |
+| 20 | `xingchen-agi-xing4.0-29b-a4b-free-high` | **217** | 217 to 217 | Reprovada | 85 | 100 | 32 | 1/1 (217) |
+| 21 | `nvidia-nemotron-3.5-lightning-free-high` | **191** | 191 to 191 | Reprovada | 64 | 100 | 27 | 1/1 (191) |
 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -297,6 +304,10 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `claude-opus-5.5-max`: completion 4 of 4 scheduled attempts; expected score per scheduled attempt 978.0 (961.0 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 961, lowest 961, highest 995.
 
 `gpt-6-astra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 969.0 (967.0 to 972.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 968, lowest 967, highest 972.
+
+`xiaomi-mimo-v2.6-pro-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 969.0 (969.0 to 969.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 969, lowest 969, highest 969.
+
+`xiaomi-mimo-v2.6-pro-ultraspeed-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 966.0 (966.0 to 966.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 966, lowest 966, highest 966.
 
 `minimax-m3.1-flash-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 965.0 (965.0 to 965.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 965, lowest 965, highest 965.
 
@@ -315,6 +326,16 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `moonshot-kimi-k3-1-pro-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 934.0 (934.0 to 934.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 934, lowest 934, highest 934.
 
 `deepseek-v4-pro-max`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 871.0 (831.0 to 907.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 875, lowest 831, highest 907.
+
+`recursive-flint-v1.0-free-default`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 516.0 (516.0 to 516.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 516, lowest 516, highest 516.
+
+`nvidia-nemotron-3.5-super-vl-free-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 515.0 (515.0 to 515.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 515, lowest 515, highest 515.
+
+`nvidia-nemotron-3-ultra-550b-a55b-free-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 331.0 (331.0 to 331.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 331, lowest 331, highest 331.
+
+`xingchen-agi-xing4.0-29b-a4b-free-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 217.0 (217.0 to 217.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 217, lowest 217, highest 217.
+
+`nvidia-nemotron-3.5-lightning-free-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 191.0 (191.0 to 191.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 191, lowest 191, highest 191.
 
 Every run is evaluated with the key of version 1.0, frozen on 2026-10-29 before any delivery went through it, and every file of the instance is public on GitHub. A delivery is judged by four judges that are not told which model or vendor made it: two read it against the planted items and two rate the report; a person settles the disagreements between the first two. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. Claude Code ran on an Anthropic API key, billed to API credit. Codex ran with approvals and sandbox bypassed and OpenCode with its auto-approval flag, the series' exception to its rule against bypassing approvals, on a disposable machine with every decision counted. Codex keeps no cost, so its cost is in tokens; OpenCode's cost is the client's own estimate.
 

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.300`
+**Versão atual:** `0.2.301`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.301` — 2026-11-06 — LEB-S-300-A's aggregate adds MiMo V2.6 Pro and Pro UltraSpeed at high (969, 966, Platinum) and five OpenRouter free variants (516, 515, 331, 217, 191)
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json`, its section of `results/README.md` and the Results paragraph of the instance README, written by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private
+  archive. The aggregate goes from 14 to 21 configurations, one run each for the seven new ones; the other 14 entries are unchanged, reading included.
+- MiMo V2.6 Pro (969, about US$ 0.18 and 66 minutes) and MiMo V2.6 Pro UltraSpeed (966, about US$ 1.85 and 41 minutes), both at `high`, the highest effort the client defines for them, through OpenRouter pinned to Xiaomi's own endpoint: both Platinum.
+- Five OpenRouter free variants, no provider pinned (the free pool is shared), each at the highest effort the client defines for it: Recursive Flint at its default setting 516 and NVIDIA Nemotron 3.5 Super VL 515 (Bronze), NVIDIA Nemotron 3 Ultra 331,
+  XingChen Xing4.0 29B A4B 217 and NVIDIA Nemotron 3.5 Lightning 191 (Reprovada). They cost nothing; the route is named in each reading and in the private run record, not in the model block.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. Configurations whose run waits for a decision or a rerun are not in it yet. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.300` — 2026-11-05 — LEB-D-300-A's aggregate completes DeepSeek V4.1 Flash 1017 at max: five runs (566, 530, 519, 545, 530; mean 538, interval 526 to 553)
 

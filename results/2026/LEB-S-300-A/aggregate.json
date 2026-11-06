@@ -666,6 +666,180 @@
       }
     },
     {
+      "agent": "xiaomi-mimo-v2.6-pro-high",
+      "score": 969,
+      "grade": "Platinum",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 824,
+        "COMP": 100,
+        "EXPL": 45
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.18,
+      "wall_minutes": 66.4,
+      "tokens": {
+        "input": 178137,
+        "output": 84400,
+        "cache": 6836608,
+        "total": 7099145
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 969.0,
+          "low": 969.0,
+          "high": 969.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 969.0,
+          "low": 969.0,
+          "high": 969.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 969,
+        "min": 969,
+        "max": 969
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 969,
+          "grade": "Platinum",
+          "cost_usd": 0.175529,
+          "wall_minutes": 66.4,
+          "tokens": {
+            "input": 178137,
+            "output": 84400,
+            "cache": 6836608,
+            "total": 7099145
+          }
+        }
+      ],
+      "model": {
+        "name": "MiMo V2.6 Pro",
+        "id": "xiaomi/mimo-v2.6-pro",
+        "provider": "Xiaomi",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 969, Platinum. It completed inside the 90-minute budget, at about US$ 0.18 (the client's own estimate) and 66 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 824 of 850: the report covered 23 of the 24 planted vulnerabilities and the code fixed 23 of them. No decoy was reported as a vulnerability; extra findings: 2. The report was rated 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, pinned to Xiaomi's own endpoint (fp8 quantization), because the router otherwise spreads the model over other hosts; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 969, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,18 (estimativa do próprio cliente) e 66 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 824 de 850: o relatório cobriu 23 das 24 vulnerabilidades plantadas e o código corrigiu 23 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2. O relatório teve 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, fixado no endpoint da própria Xiaomi (quantização fp8), porque sem a fixação o roteador espalha o modelo por outras hospedeiras; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
+      "agent": "xiaomi-mimo-v2.6-pro-ultraspeed-high",
+      "score": 966,
+      "grade": "Platinum",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 824,
+        "COMP": 100,
+        "EXPL": 42
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 1.85,
+      "wall_minutes": 40.9,
+      "tokens": {
+        "input": 195169,
+        "output": 87381,
+        "cache": 6776832,
+        "total": 7059382
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 966.0,
+          "low": 966.0,
+          "high": 966.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 966.0,
+          "low": 966.0,
+          "high": 966.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 966,
+        "min": 966,
+        "max": 966
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 966,
+          "grade": "Platinum",
+          "cost_usd": 1.853166,
+          "wall_minutes": 40.9,
+          "tokens": {
+            "input": 195169,
+            "output": 87381,
+            "cache": 6776832,
+            "total": 7059382
+          }
+        }
+      ],
+      "model": {
+        "name": "MiMo V2.6 Pro UltraSpeed",
+        "id": "xiaomi/mimo-v2.6-pro-ultraspeed",
+        "provider": "Xiaomi",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 966, Platinum. It completed inside the 90-minute budget, at about US$ 1.85 (the client's own estimate) and 41 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 824 of 850: the report covered 23 of the 24 planted vulnerabilities and the code fixed 23 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, pinned to Xiaomi's own endpoint (fp8 quantization), the only upstream of this model; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 966, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 1,85 (estimativa do próprio cliente) e 41 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 824 de 850: o relatório cobriu 23 das 24 vulnerabilidades plantadas e o código corrigiu 23 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, fixado no endpoint da própria Xiaomi (quantização fp8), a única origem deste modelo; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
       "agent": "minimax-m3.1-flash-high",
       "score": 965,
       "grade": "Platinum",
@@ -1561,6 +1735,441 @@
       "comment": {
         "en": "Three runs of a case of five, between 831 and 907, mean 871 (the interval, 831 to 907, is the range of the runs), one Platinum and two Gold. All three completed inside the 90-minute budget, at about US$ 0.41 (the client's own estimate) and 36 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 729 of 850: the reports covered 21, 21 and 18 of the 24 planted vulnerabilities and the code fixed 20, 21 and 20 of them. No decoy was reported as a vulnerability; no extra findings. The lists follow the order of the runs. The reports were rated 40 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
         "pt_BR": "Três execuções de um caso de cinco, entre 831 e 907, média 871 (o intervalo, de 831 a 907, é a amplitude das execuções), uma Platinum e duas Gold. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,41 (estimativa do próprio cliente) e 36 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 729 de 850: os relatórios cobriram 21, 21 e 18 das 24 vulnerabilidades plantadas e o código corrigiu 20, 21 e 20 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. As listas seguem a ordem das execuções. Os relatórios tiveram de 40 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+      }
+    },
+    {
+      "agent": "recursive-flint-v1.0-free-default",
+      "score": 516,
+      "grade": "Bronze",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 378,
+        "COMP": 100,
+        "EXPL": 38
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 21.9,
+      "tokens": {
+        "input": 477442,
+        "output": 63263,
+        "cache": 6891904,
+        "total": 7432609
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 516.0,
+          "low": 516.0,
+          "high": 516.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 516.0,
+          "low": 516.0,
+          "high": 516.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 516,
+        "min": 516,
+        "max": 516
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 516,
+          "grade": "Bronze",
+          "cost_usd": 0.0,
+          "wall_minutes": 21.9,
+          "tokens": {
+            "input": 477442,
+            "output": 63263,
+            "cache": 6891904,
+            "total": 7432609
+          }
+        }
+      ],
+      "model": {
+        "name": "Recursive Flint",
+        "id": "recursive/flint-v1.0:free",
+        "provider": "Recursive",
+        "reasoning_effort": "default",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 516, Bronze. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 22 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 378 of 850: the report covered 10 of the 24 planted vulnerabilities and the code fixed 11 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 38 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was Recursive's); the client defines no effort for it, so it ran at the model's default.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 516, Bronze. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 22 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 378 de 850: o relatório cobriu 10 das 24 vulnerabilidades plantadas e o código corrigiu 11 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 38 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da Recursive); o cliente não define esforço para ele, então rodou no padrão do modelo."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3.5-super-vl-free-high",
+      "score": 515,
+      "grade": "Bronze",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 374,
+        "COMP": 100,
+        "EXPL": 41
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 29.7,
+      "tokens": {
+        "input": 658393,
+        "output": 73635,
+        "cache": 11386336,
+        "total": 12118364
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 515.0,
+          "low": 515.0,
+          "high": 515.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 515.0,
+          "low": 515.0,
+          "high": 515.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 515,
+        "min": 515,
+        "max": 515
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 515,
+          "grade": "Bronze",
+          "cost_usd": 0.0,
+          "wall_minutes": 29.7,
+          "tokens": {
+            "input": 658393,
+            "output": 73635,
+            "cache": 11386336,
+            "total": 12118364
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3.5 Super VL",
+        "id": "nvidia/nemotron-3.5-super-vl:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 515, Bronze. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 30 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 374 of 850: the report covered 11 of the 24 planted vulnerabilities and the code fixed 10 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 515, Bronze. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 30 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 374 de 850: o relatório cobriu 11 das 24 vulnerabilidades plantadas e o código corrigiu 10 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3-ultra-550b-a55b-free-high",
+      "score": 331,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 196,
+        "COMP": 100,
+        "EXPL": 35
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 50.1,
+      "tokens": {
+        "input": 1040008,
+        "output": 19686,
+        "cache": 2060480,
+        "total": 3120174
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 331.0,
+          "low": 331.0,
+          "high": 331.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 331.0,
+          "low": 331.0,
+          "high": 331.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 331,
+        "min": 331,
+        "max": 331
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 331,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 50.1,
+          "tokens": {
+            "input": 1040008,
+            "output": 19686,
+            "cache": 2060480,
+            "total": 3120174
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3 Ultra",
+        "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 331, Reprovada. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 50 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 196 of 850: the report covered 6 of the 24 planted vulnerabilities and the code fixed 5 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 35 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts none, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 331, Reprovada. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 50 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 196 de 850: o relatório cobriu 6 das 24 vulnerabilidades plantadas e o código corrigiu 5 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 35 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços none, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
+      "agent": "xingchen-agi-xing4.0-29b-a4b-free-high",
+      "score": 217,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 85,
+        "COMP": 100,
+        "EXPL": 32
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 18.8,
+      "tokens": {
+        "input": 225026,
+        "output": 25229,
+        "cache": 2155104,
+        "total": 2405359
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 217.0,
+          "low": 217.0,
+          "high": 217.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 217.0,
+          "low": 217.0,
+          "high": 217.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 217,
+        "min": 217,
+        "max": 217
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 217,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 18.8,
+          "tokens": {
+            "input": 225026,
+            "output": 25229,
+            "cache": 2155104,
+            "total": 2405359
+          }
+        }
+      ],
+      "model": {
+        "name": "XingChen Xing4.0 29B A4B",
+        "id": "xingchen-agi/xing4.0-29b-a4b:free",
+        "provider": "XingChen",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 217, Reprovada. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 19 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 85 of 850: the report covered 3 of the 24 planted vulnerabilities and the code fixed 3 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 32 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was Phala's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 217, Reprovada. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 19 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 85 de 850: o relatório cobriu 3 das 24 vulnerabilidades plantadas e o código corrigiu 3 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 32 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da Phala); o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3.5-lightning-free-high",
+      "score": 191,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 64,
+        "COMP": 100,
+        "EXPL": 27
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 12.6,
+      "tokens": {
+        "input": 159611,
+        "output": 17435,
+        "cache": 2351712,
+        "total": 2528758
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 191.0,
+          "low": 191.0,
+          "high": 191.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 191.0,
+          "low": 191.0,
+          "high": 191.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 191,
+        "min": 191,
+        "max": 191
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 191,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 12.6,
+          "tokens": {
+            "input": 159611,
+            "output": 17435,
+            "cache": 2351712,
+            "total": 2528758
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3.5 Lightning",
+        "id": "nvidia/nemotron-3.5-lightning:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five, scored 191, Reprovada. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 13 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 64 of 850: the report covered 3 of the 24 planted vulnerabilities and the code fixed 1 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 27 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco, nota 191, Reprovada. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 13 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 64 de 850: o relatório cobriu 3 das 24 vulnerabilidades plantadas e o código corrigiu 1 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 27 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
       }
     }
   ],
