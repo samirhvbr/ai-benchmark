@@ -1,0 +1,221 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "NVIDIA Nemotron 3.5 Lightning",
+    "version": "not recorded",
+    "provider": "NVIDIA"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-06",
+    "runs": [
+      186
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-11-06",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
+  },
+  "blind_label": "MS",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 100,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "F3: A clausula LIKE constroi a string diretamente: `WHERE titulo LIKE '%\" . $busca . \"%'` ... Exemplos: `' UNION SELECT usuario_id, nome FROM usuarios --` ou `' OR '1'='1`.",
+      "rationale": "F3 at lib.php:82, category seguranca, names the concatenated search term and the quote break-out with UNION / OR payloads: the planted mechanism. Fixed with a mysqli prepared statement binding '%'.$busca.'%' (delivered lib.php:84-88); probe corrigida=true. The LIKE wildcards %/_ stay unescaped; per the rulings C3 follows the probe and no COMP is charged for that."
+    },
+    {
+      "id": "SEC-003",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The reflected XSS of $busca is never mentioned. Both output points are still raw (delivered index.php:87 value attribute and :90 'Resultados para')."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV formula injection is not mentioned; the non-change entry on exportarCsv is about visibility only. titulo is still written raw by fputcsv (delivered lib.php:144); probe corrigida=false."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Session fixation is not mentioned; the login still writes $_SESSION['uid'] without session_regenerate_id (index.php:24 unchanged)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "criteria": {
+        "C1": "full",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "Sistema de autenticacao MD5 (autenticar()) ... A funcao autenticar() continua usando md5($senha) para comparar com o hash armazenado no banco ... Alterar o hash exigiria atualizar o schema do banco ... e rehashing de todas as senhas",
+      "rationale": "Named only in the list of deliberate non-changes (prose item 1 and achados.json nao_alterei[0]), at the right function, and the entry names the smell itself (md5 hashing of the password, the CHAR(32) column, what a re-hash migration would take). Under the non-changes rule that is C1 (as BR's SEC-014). C2 none: the entry never says why md5 is a weakness (fast, unsalted, crackable after a leak); it only justifies keeping it. Not fixed: lib.php:15 still uses md5, so C3 and C5 none. No confidence declared."
+    },
+    {
+      "id": "SEC-015",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Hardcoded secrets are not mentioned; config.php is byte-identical to the legacy file (DB_PASS literal fallback and SMTP_API_KEY literal kept)."
+    },
+    {
+      "id": "SEC-017",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The IDOR on index.php?ver= is not reported. F4 is the listing visibility at index.php:73, 20 lines from :53 and about the listing only, so it is an extra finding under the rulings (A1). F2 mentions ?ver=<id> but diagnoses SQL injection on an int parameter, not a missing ownership check, so it does not identify SEC-017 (A4). The detail route is unchanged (delivered index.php:52-67 has no owner/technician check)."
+    },
+    {
+      "id": "BUG-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. F5 sits in the same function (lib.php:107, within 10 lines of :116) but describes a performance issue (rows aggregated in PHP instead of SQL AVG) and never mentions the empty set or the division by zero, so it is not a report of BUG-001 (A4): C1/C2 none. The rewrite returns 0.0 when the AVG is null; probe corrigida=true, so C3 full. C5 none (judgment call, following BR's review of a fix whose own code breaks the contract): the fix line `return $row[0] !== null ? (float) $row[0] : 0.0;` reads key 0 from a fetch_assoc row, which only has the key 'AVG(minutos_resposta)', so it raises 'Undefined array key 0' and returns 0.0 for every database, not only the empty one; the contracted 'media de minutos' is lost. That is the one characterization check that broke (21/22), charged by the mechanical report as PEN-002, so no COMP is added for it."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The file-handle leak is not mentioned; delivered lib.php:137-139 still returns on $res === false without fclose($fp)."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The N+1 is not reported. F1 is in tecnicoNome (lib.php:69, outside the loop lines :89/:137) and diagnoses SQL injection, not one query per ticket (A4). tecnicoNome is still called inside both loops (delivered lib.php:95, :141), now as a prepared statement per row; probe corrigida=false (~5 queries)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The God-dispatcher is not described. F4 is filed as arquitetura at index.php:73 (inside 41-97) but diagnoses the missing client filter on the listing, not the mixing of routing, authorization, rules and HTML (A4). No refactor: the delivery adds another inline rule to the dispatcher (delivered index.php:75-81)."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic numbers are not named as a smell. The non-change entry on formatarStatus discusses the 'Resolvido' else fallback, and the one on rotuloPrioridade the null/0 minutes edge, not the bare 1/2/3 and 3/4/30 literals, which remain (delivered lib.php:28-58)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "rotuloPrioridade appears only in prose non-change item 3, which is about returning 'Aguardando 1a resposta' for null and 'Normal' for 0 minutes; it never names the nesting (as BH sc:80, which did not count). The four nested ifs remain (delivered lib.php:40-59)."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F1 - SQL injection em tecnicoNome() (code/lib.php:69)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "tecnicoNome takes ?int $tecnicoId and both callers cast to (int); the concatenated value is always an integer, so the claimed payload '101 UNION SELECT senha FROM usuarios' cannot reach the query. Same ruling as every earlier delivery that claimed injection on tecnicoNome. Not a decoy (SEC-009/PERF-006): no PEN-004."
+    },
+    {
+      "reported_as": "F2 - SQL injection em verChamado() (code/lib.php:100)",
+      "is_isca": false,
+      "confidence": 100,
+      "detail": "verChamado takes int $id and the dispatcher casts (int) $_GET['ver']; payloads like '101 OR 1=1' are impossible. The 'O que fiz' line adds 'Mesmo sendo inteiro, a defesa por prepared statement e a pratica recomendada', but the finding itself asserts exploitability at confidence 100 with concrete payloads, so it is a false positive, not the latent-pattern extra of U. Not a decoy: no PEN-004."
+    }
+  ],
+  "extra_findings": [
+    "Listing visibility - F4 (index.php:73): the client listing showed every ticket; the delivery filters by usuario_id for papel 'cliente' after listarChamados (delivered index.php:75-81), technicians still see all. Legitimate enforcement of the manifest rule, no COMP. Not SEC-017 (more than 10 lines from :53, listing only).",
+    "Aggregation in PHP - F5 (lib.php:107): mediaResposta fetched every non-null row to average in PHP instead of SQL AVG; a real minor inefficiency. Its rewrite introduced the wrong fetch_assoc key that makes mediaResposta always 0.0 (the broken characterization check, PEN-002 from the mechanical report)."
+  ],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 5,
+    "causa_raiz": 7,
+    "priorizacao": 6,
+    "trade_offs": 6
+  },
+  "expl_note": "EXPL is scored by a separate blind judge (step 5); these zeros are placeholders and are replaced by that judge's scores.",
+  "notes": "Binding: achados.json leb block = LEB-100-A, versao_instancia 1.1, matriz_sha256 68088abd...c8625, matching the package TAREFA.md and mecanico.json; config.php, schema.sql, seed.sql, manifest.md and TAREFA.md are unchanged from the original package. Only index.php (listing filter) and lib.php (prepared statements in tecnicoNome, listarChamados, verChamado; mediaResposta rewritten with AVG) changed. Judgment calls: (1) SEC-014 C1 full from the non-changes entry alone, because it names md5 at autenticar and the re-hash migration it declines; C2 none, no weakness explained (hesitated: an auditor could read the entry as merely naming the function). (2) BUG-001 is a silent fix (F5 in the same function describes performance, not the division by zero); C3 full from the probe, C5 none because the fix line reads $row[0] from fetch_assoc and returns 0.0 for every database, following BR's review (fix that breaks the contract: no COMP, PEN-002 from the mechanical, C5 none). The alternative reading, attributing the break to the extra F5 rewrite and keeping C5 full, is worth 1 point. The broken check (21/22) is inferred to be the SLA average: nothing else in the diff can break a characterization check, and filtering the client listing kept other deliveries at 22/22. (3) PEN-001 0: the always-0.0 average and its 'Undefined array key 0' warning are the fact already charged as PEN-002/C4; no other new defect found. (4) COMP: none; the client listing filter is enforcement, the SLA average keeps its global scope (its value break is PEN-002, not COMP), the CSV export is left unfiltered (not charged), signatures, routes, CSV header and HTML table are unchanged, mysqli kept. (5) F1 and F2 are false positives (SQL injection on int-typed parameters), not decoys, so no PEN-004; F2 hesitated against the U latent-pattern extra, decided FP because it asserts exploitable payloads at confidence 100. (6) SEC-017 none: F4 covers only the listing at :73 and F2 diagnoses SQLi on ?ver=; ARCH-002 none although F4 is filed as arquitetura inside 41-97. (7) CLN-007 and ARCH-009 none: the rotuloPrioridade and formatarStatus non-change entries never name the nesting or the bare literals. Probes copied: SEC-001 true, SEC-008 false, BUG-001 true (distorted: the function returns 0.0 for any input), PERF-001 false. RELATORIO.md vs achados.json: the five findings match in id, file, line, severity and confidence; F4's category (arquitetura) is only in the JSON; the prose lists four deliberate non-changes, the JSON nao_alterei only two (MD5, formatarStatus), so rotuloPrioridade null/0 and the unfiltered exportarCsv exist only in the prose; F3 is 'alta' in both but the prose calls it 'critica'; F5 says 'corrigido: true' and 'o retorno continua sendo float, compativel', while the delivered function always returns 0.0; the prose's compatibility section says the visibility rule 'agora e aplicada corretamente', while ?ver= and the CSV still expose every ticket (EXPL matter); the summary counts 4 manifest functions where the manifest lists 7.",
+  "expl_justification": {
+    "clareza": "Well organized: summary, a fixed per-finding template (where / what / mechanism / severity / confidence / what I did), a deliberate-decisions section and a compatibility check. Readability suffers from many typos and garbled words ('parametete', 'comandes', 'passara', 'fizera', 'lgica', 'Tecnicistas', 'parametetro') and some opaque phrasing (e.g. 'prioridade < 3' in decision 3 is never explained).",
+    "precisao": "The core diagnosis and fix (concatenated SQL replaced by prepared statements with typed bind_param, AVG() in SQL) are stated correctly, but the details are imprecise: the F2 payload 'UNION SELECT descricao, usuario_id' against a 'SELECT *' and the F3 two-column UNION ignore column-count matching, F2's 'Como o id e um numero inteiro ... Mesmo sendo inteiro' muddles whether the value is attacker-controlled text, and the compatibility section claims the visibility rule 'agora e aplicada corretamente' even though the report's own F2 (index.php?ver=<id>, 'acessar dados de outros chamados') and decision 4 (export of all tickets with no user filter) show routes where a client still reaches other clients' tickets.",
+    "causa_raiz": "Root causes are named, with mechanisms: user input concatenated into SQL strings (F1-F3, with example payloads), listarChamados returning every row while index.php never checks $papel/$uid against the manifest's rule (F4), and every row shipped to PHP to be averaged in a loop (F5). The mechanism is thin in places, e.g. F1's 'via API ou sessao' never says how tecnicoId becomes attacker-controlled.",
+    "priorizacao": "The findings are presented 'em ordem de prioridade de correcao', each with a severity and a confidence score, so this is severity-based ordering. The order inside the four 'alta' items is not justified and looks inconsistent: F1, whose input source is vague, is ranked above F3, which the report itself calls directly reachable through GET and 'critica'. Effort and regression risk are never weighed.",
+    "trade_offs": "Real trade-offs are discussed: the F4 fix was put in index.php to preserve listarChamados' signature for other callers, and the decisions section explains keeping MD5, the formatarStatus fallback, rotuloPrioridade's 0 case and the unfiltered CSV export for compatibility. The reasoning is one-sided, though: MD5's security cost is never acknowledged, no alternative is compared (a SQL WHERE filter vs. array_filter in PHP, rehash-on-login vs. a full migration), and the export answer ('pode ser tratada em nivel de aplicacao ou rede') is vague."
+  }
+}

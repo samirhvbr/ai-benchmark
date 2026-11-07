@@ -1,0 +1,119 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Vulnerabilidade de injeção SQL em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 98,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função verChamado constrói consultas SQL concatenando diretamente o parâmetro $id sem sanitização ou parametrização. Um invasor pode injetar SQL adicional através do parâmetro GET 'ver' do index.php, permitindo manipulação ou extração de dados do banco de dados.",
+      "impacto": "Um adversário pode extrair dados confidenciais do banco de dados, modificar ou excluir registros, potencialmente tomando controle do sistema.",
+      "correcao": "Usar prepared statements com parâmetros? incluir o ID do chamado, garantindo isolamento adequado de dados e sanidade de tipos.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Vulnerabilidade de injeção SQL em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 92,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A função listarChamados usa concatenação direta de string para o parâmetro \$busca dentro da cláusula WHERE. Um invasor pode manipular o parâmetro GET 'busca' do index.php para injetar SQL malicioso.",
+      "impacto": "Permite leitura não autorizada, modificação ou exclusão de dados em chamadas, comprometendo a privacidade e integridade do sistema.",
+      "correcao": "Usar prepared statements para todas as consultas SQL, garantindo isolamento adequado de dados.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Vulnerabilidade de injeção SQL em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 64,
+      "linha_fim": 71,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "A função tecnicoNome usa concatenação direta de string para \$tecnicoId dentro da cláusula WHERE. Prepared statements fornecem uma camada adicional de segurança contra injeção e garantem sanidade de tipos adequada.",
+      "impacto": "Permite injeção SQL que pode expor nomes de usuários e potencialmente comprometer a tabela de usuários.",
+      "correcao": "Usar prepared statement com parâmetro integer para busca de ID de técnico.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Problema de segurança de hash de senha obsoleto (MD5)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O sistema usa o hash MD5 inseguro para senhas de usuários, que pode ser facilmente quebrado usando tabelas arco-íris e é extremamente vulnerável a ataques de força bruta.",
+      "impacto": "Senhas de usuários podem ser facilmente decifradas, permitindo login não autorizado de qualquer adversário com acesso à base de dados.",
+      "correcao": "Alterar para um algoritmo de hash moderno como bcrypt, scrypt ou Argon2 com sal adequado.",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "Senha de produção e chaves embutidas",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 85,
+      "mecanismo": "Senha do banco de dados 'N3tX@2013!prod' e chave SMTP 'netx-smtp-9f83e2c1a7b64d05' estão embutidas no código-fonte em texto claro.",
+      "impacto": "Qualquer pessoa com acesso ao código pode comprometer o banco de dados e o serviço de e-mail.",
+      "correcao": "Remover senhas embutidas e implementar variáveis de ambiente adequadas para implantação em produção.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Vulnerabilidade de divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "A função mediaResposta calcula a divisão \$soma / \$qtd sem verificar se \$qtd é zero, causando erro fatal quando nenhum chamado tem minutos_resposta registrados.",
+      "impacto": "O indicador de SLA no topo do painel falha completamente, quebrando a interface do usuário em condições normais.",
+      "correcao": "Adicionar verificação \$qtd > 0 ? \$soma / \$qtd : 0.0 para garantir retorno válido.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Esgotamento de prepared statements não verificados",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 150,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 75,
+      "mecanismo": "Várias funções criam prepared statements sem verificar se foram criados com sucesso, causando falsos positivos e mascarando falhas de banco de dados.",
+      "impacto": "Erros de prepared statement podem ser silenciosamente ignorados, mascarando falhas de banco de dados.",
+      "correcao": "Adicionar verificações adequadas de prepared statement e tratamento de falhas após criação.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 para senhas (F4) — alterar o algoritmo de hash quebraria todas as senhas de usuários existentes, causando falha total de autenticação.",
+      "porque": "Limitation de design do produto que exige migração completa do esquema do banco de dados."
+    },
+    {
+      "o_que": "Senha embutida do banco de dados (F5) — a senha de fallback 'N3tX@2013!prod' é necessária para implantação do sistema legado.",
+      "porque": "Remover o fallback inviabilizaria implantações sem tecnologias de gerenciamento de segredos externas."
+    },
+    {
+      "o_que": "Chave embutida da API SMTP (F5) — a chave de fallback 'netx-smtp-9f83e2c1a7b64d05' garante entregabilidade de e-mail.",
+      "porque": "Sua remoção deixaria o sistema incapaz de enviar notificações críticas."
+    }
+  ]
+}

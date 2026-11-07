@@ -1,0 +1,218 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "NVIDIA Nemotron 3 Nano Omni",
+    "version": "not recorded",
+    "provider": "NVIDIA"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-06",
+    "runs": [
+      183
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-11-06",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
+  },
+  "blind_label": "PE",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Mecanismo: Falta de parâmetros preparados; o valor do usuário é inserido diretamente na cláusula `LIKE`.",
+      "rationale": "Finding 1 / F1 at lib.php:82-83, category seguranca, names the search term concatenated into the LIKE clause of listarChamados: right row, right line. The explanation is thin (no quote break-out or UNION shown) but it states the real mechanism at the right place, so C2 full. Fixed with a mysqli prepared statement, `titulo LIKE ?` bound to \"%$busca%\" (delivered lib.php:69-80); probe corrigida=true, so C3 full. %/_ are left as wildcards: per the rulings C3 follows the probe and leaving them unescaped is no COMP. Signature unchanged; no COMP attributable, so C5 full."
+    },
+    {
+      "id": "SEC-003",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The reflected XSS of $busca is not mentioned anywhere. index.php is byte-identical to the legacy file: the term is still echoed raw at index.php:79 (value attribute) and :82."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV formula injection is not mentioned. titulo is still written raw by fputcsv (delivered lib.php:128); probe corrigida=false ('=1+1' exported as is)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Session fixation is not mentioned; index.php is unchanged and still sets $_SESSION['uid'] without session_regenerate_id() (index.php:24)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "Não alteramos o valor padrão da senha `DB_PASS` nem a forma de geração de hash de senha, pois a compatibilidade com o contrato existente seria impactada.",
+      "rationale": "No finding. The only trace is this sentence in the prose Decisões (absent from achados.json nao_alterei): it names the aspect ('forma de geração de hash de senha') but never the smell (md5, fast, unsalted) nor a location, and it justifies keeping it as a compatibility need. Under the rulings (A5: the non-change entry must name the smell, not just the function; BH/U did not count) this does not identify SEC-014. md5($senha) is unchanged (delivered lib.php:12), so C3 none."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 85,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "A chave da API está codificada literalmente no arquivo de configuração. Mecanismo: Exposição de segredo que pode ser lida por qualquer pessoa com acesso ao código.",
+      "rationale": "Finding 4 / F4 at config.php:15 (category seguranca) is the SMTP_API_KEY half of the planted row (config.php:12 and :15), and the DB_PASS literal is also named in the nao_alterei list, so C1 full; the mechanism (a literal secret readable by anyone with access to the code) is the real one, so C2 full. C3 none: the delivered code keeps BOTH literals in the code, DB_PASS's 'N3tX@2013!prod' fallback untouched (config.php:12) and the SMTP key now `getenv('SMTP_API_KEY') ?: 'netx-smtp-9f83e2c1a7b64d05'` (config.php:15). The rulings give 'kept both literals' none (A, P, Q), half only when one literal leaves the code. achados.json marks F4 corrigido:true; the code decides. With no fix, C5 does not count."
+    },
+    {
+      "id": "SEC-017",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The IDOR on index.php?ver= is not mentioned; index.php is unchanged and still shows any ticket to any logged-in user (index.php:52-66). The new prepared statement in verChamado (finding 2) is about SQL injection, not ownership, and is a false positive (see false_positives)."
+    },
+    {
+      "id": "BUG-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The division by zero is not mentioned; mediaResposta still returns $soma / $qtd unguarded (delivered lib.php:108); probe corrigida=false (DivisionByZeroError)."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported: the report never mentions exportarCsv. The delivery silently replaced the export query with prepare/execute/get_result and dropped the `if ($res === false) return;` branch (delivered lib.php:120-122), but it closes $fp on no error path: with PHP 8's default mysqli reporting (index.php sets none) a failing prepare/execute throws with $fp open, as the legacy query() did, and with reporting off prepare() returns false and execute() on bool is a fatal Error, again with $fp open. The expected fix (close $fp on every path, the error one included) is not reached, so C3 none and no silent-fix credit."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The N+1 is not mentioned. Finding 3 (tecnicoNome, lib.php:69) describes a SQL injection, not the per-row query, so it is not a report of this row (rulings A4). tecnicoNome is still called per row in listarChamados and exportarCsv (delivered lib.php:84, :125), now as a prepare+execute per row; probe corrigida=false (~5 queries)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The God-dispatcher is not mentioned; index.php is unchanged (routing, authorization, rules and HTML still mixed, index.php:41-97)."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic numbers are not mentioned; status 1/2/3 and priority 3/4/30 are still literals (delivered lib.php:22-36)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The nesting in rotuloPrioridade is not mentioned, not even in the non-changes; the four nested ifs remain (delivered lib.php:33-49)."
+    }
+  ],
+  "false_positives": [
+    {
+      "reported_as": "F2 / finding 2 — SQL injection in verChamado (code/lib.php:100)",
+      "is_isca": false,
+      "confidence": 95,
+      "detail": "verChamado(mysqli $db, int $id) takes an int-typed id (and index.php casts it with (int)), so the concatenation cannot carry SQL; the report claims arbitrary SQL execution and never calls it latent. Per the rulings (A10), SQL injection claimed on verChamado/tecnicoNome is a false positive. It is not a decoy (SEC-009, PERF-006), so no PEN-004; it counts only in calibration."
+    },
+    {
+      "reported_as": "F3 / finding 3 — SQL injection in tecnicoNome (code/lib.php:69)",
+      "is_isca": false,
+      "confidence": 90,
+      "detail": "tecnicoNome(mysqli $db, ?int $tecnicoId) takes only an int or null (null returns '-' before the query), so no injection is possible; the report claims it is exploitable. Same ruling as F2: false positive, not a decoy, no PEN-004."
+    }
+  ],
+  "extra_findings": [],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "expl_rubric": {
+    "clareza": 7,
+    "precisao": 5,
+    "causa_raiz": 5,
+    "priorizacao": 5,
+    "trade_offs": 5
+  },
+  "notes": "EXPL: expl_rubric is all zeros on purpose; the EXPL rubric is scored by a separate blind judge (step 5) and its values replace these. Binding: achados.json leb = LEB-100-A, versao_instancia 1.1, matriz_sha256 68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625, equal to mecanico.json and the instruction; .leb-pacote.sha256, TAREFA.md, manifest.md, index.php, schema.sql and seed.sql are byte-identical to the original package, so the delivery is bound to the right package. Changes in the delivery: config.php line 15 only (SMTP_API_KEY read from getenv with the same literal as fallback) and lib.php (prepared statements in tecnicoNome, listarChamados, verChamado and exportarCsv; the `$res === false` early return in exportarCsv removed; every function docblock deleted, including the one recording the CSV header; no newline at EOF). Mechanical: characterization 22/22 green; probes SEC-001 fixed, SEC-008, BUG-001 and PERF-001 not fixed; copied as is. Matching: 4 findings; F1 -> SEC-001, F4 -> SEC-015, F2 and F3 -> false positives (int-typed parameters, rulings A10). 2 of 13 planted flaws reported. Judgment calls and hesitations: (1) SEC-001 C2 full on a thin, template-like explanation (the same mechanism sentence is reused for the two false positives), but it is correct and specific to the LIKE clause at the planted line; (2) SEC-015 C1 full from F4, which names only the SMTP key at :15, with the DB_PASS literal named in nao_alterei; C3 none because both literals stay in the code (DB_PASS fallback untouched, SMTP key given a literal fallback), which the rulings score none, while achados.json says corrigido:true; (3) SEC-014 not reported: the prose Decisões says the 'forma de geração de hash de senha' was not changed, but it names neither md5 nor the weakness nor a location, so rulings A5 does not credit it; (4) BUG-004 no silent-fix credit: the leaking early return was deleted, but the error path now throws (or fatals with reporting off) with $fp still open, so the expected fix is not reached; (5) PERF-001 not credited from F3, which sits in tecnicoNome but describes injection, not the N+1 (rulings A4). COMP: none. get_result() returns integer columns as PHP ints where query() returned strings in listarChamados and verChamado; not charged, consistent with every earlier prepared-statement fix of this instance and the green characterization. The removed `$res === false` branch was unreachable under PHP 8's default mysqli exceptions (a failing query threw before as now), so no COMP-005. PEN-001: 0; no new defect in new code was found (the per-row prepare in tecnicoNome makes the N+1 slightly heavier but is the unfixed planted flaw, not a new bug). PEN-003: 0 (task 1.0.0). PEN-004: none (no decoy reported). RELATORIO.md vs achados.json: findings, locations, confidences and corrigido flags agree; the prose impact of F2 ('execução de comandos SQL arbitrários ... alteração de registros') is stronger than the JSON's ('retornar registros inesperados ou causar erro'); the password-hash non-change is only in the prose Decisões, not in nao_alterei; the summary calls the two false SQL injections 'vulnerabilidades críticas'; the prose claims the changes 'não alteram o comportamento observável' and the code's other changes to exportarCsv and the docblocks are not reported; F1 is rated 'alta' where the matrix rates SEC-001 Crítica (not scored). The report repeats the production DB password in achados.json (not scored).",
+  "expl_justification": {
+    "clareza": "Short, well organized report: a summary, four findings in one fixed template (where, what, mechanism, impact, severity, confidence, fix, fixed) and a decisions section. It loses points for redundancy: several 'Mecanismo' lines just repeat the 'O que é' line, e.g. finding 2's 'Injeção de SQL permitida por falta de prepared statement'.",
+    "precisao": "The SQL injection findings and the prepared-statement fixes are correct as far as they go, but they stay generic. Finding 4 is imprecise on the report's own terms: it says the literal key in config.php is the problem, then moves it to getenv 'com fallback para valor padrão', and Decisões confirms the fallback was kept. If the fallback is that same literal key, the key is still in the code, yet the finding is marked 'corrigido: true'. Decisões also mentions the DB_PASS default and the password hashing as weak points that never become findings.",
+    "causa_raiz": "The real cause is named (string concatenation into the query; a hardcoded secret), and finding 1 adds that user input lands directly in the LIKE clause. Beyond that the mechanism is thin. Findings 2 and 3 are close to circular ('sem sanitização', 'falta de prepared statement'), and no finding traces where the input comes from or how a payload escapes the query. Finding 4's 'Mecanismo' line describes an impact, not a mechanism.",
+    "priorizacao": "Each finding gets a severity (alta/alta/média/alta) and a confidence score. But the list is not ordered by severity (the 'média' finding 3 comes before the 'alta' finding 4), the report never says why tecnicoNome is 'média' while the other two injections are 'alta', and it says nothing about effort or risk. That puts it between a flat list and a severity ordering.",
+    "trade_offs": "Decisões names real tensions: keeping the DB_PASS default and the hashing scheme for compatibility, and keeping a fallback so the system still runs without the environment variable. No alternative is compared to these choices (for example failing fast when the variable is missing, or a hash migration), and the security cost of the fallback goes unexamined."
+  }
+}

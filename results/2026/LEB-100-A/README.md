@@ -1324,6 +1324,56 @@ prices and not a charge. The lab records the route of each attempt (`auth` in it
     "Desconhecido" for any status other than 1, 2 or 3. The second and third lost one each, for `formatarStatus`. Their reports scored 43, 45 and 45 of 50, seven or eight extra findings per run score nothing, and no run
     has a false positive.
 
+### Runs of 2026-11-06
+
+Eleven deliveries were scored on this date (nine agents), all by free models, the first free ones of this instance: NVIDIA Nemotron 3 Ultra, Crouton Alpha, Recursive Flint, NVIDIA Nemotron 3.5 Super VL, NVIDIA Nemotron 3.5 Lightning,
+NVIDIA Nemotron 3 Nano Omni, Cohere North Mini Code and XingChen Xing4.0 29B A4B through OpenRouter's free variants, with no provider pinned, and Apodex 1.1 Mini, three runs, through Novita AI's own API, where the model is listed at no
+price. The free pool is shared with other users and rate-limited, so a free model can be refused upstream and an attempt lost; every run below cost US$ 0 by the client's own accounting. Each ran at the highest effort the client
+defines for the model, which `run.json` records with the variants the client offered: `max` for Crouton Alpha and Nano Omni, `high` for the others with an effort, the model's default setting for Flint, which has none.
+
+They were made through the unattended lab (`laboratorio-opencode-100.py`) as the runs of 2026-10-26 and 2026-10-27 were, with OpenCode 1.18.33 in place of Claude Code: one `opencode run` session per run, the fixed first message
+once and no operator reply (`operator_replies` 0), a 90-minute wall clock, OpenCode's auto permission mode (no action was refused), as the unprivileged user `leb` on a machine restored from its snapshot, with GitHub blocked and the
+package as the only instance folder in `/srv`. They were judged blind like the others: labels drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL judge per delivery, both Claude Opus
+subagents, the matching judge again given the digest of the rulings this instance had already applied. One more Apodex attempt, the lab's third, was lost to the client compacting the agent's context (an `operator error` in the lab's
+audit) and is not scored; the three Apodex runs are numbered 1 to 3 in the order they were scored, so run 3 is the lab's fourth attempt.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **RC** | NVIDIA Nemotron 3 Ultra, `high`, run 1 | 618 |
+| **SY** | Crouton Alpha, `max`, run 1 | 580 |
+| **OJ** | Recursive Flint, default, run 1 | 526 |
+| **TE** | NVIDIA Nemotron 3.5 Super VL, `high`, run 1 | 446 |
+| **EP** | Apodex 1.1 Mini, `high`, run 1 | 406 |
+| **CX** | Apodex 1.1 Mini, `high`, run 2 | 250 |
+| **PM** | Apodex 1.1 Mini, `high`, run 3 | 468 |
+| **XE** | Cohere North Mini Code, `high`, run 1 | 237 |
+| **MS** | NVIDIA Nemotron 3.5 Lightning, `high`, run 1 | 186 |
+| **PE** | NVIDIA Nemotron 3 Nano Omni, `max`, run 1 | 183 |
+| **IE** | XingChen Xing4.0 29B A4B, `high`, run 1 | 138 |
+
+- **NVIDIA Nemotron 3 Ultra at `high` (RC): 618, Silver, 25th, a new agent.** One run so far: 4.5 minutes and 0.53 million tokens. It found 8 of the 13 flaws and fixed 7: security 164 of 250, bugs 129, performance 150 and clean
+  code 38, architecture 0. Compatibility stayed at 100 and no penalty was charged; its report scored 37 of 50 and three extra findings score nothing.
+- **Crouton Alpha at `max` (SY): 580, Bronze, 34th, a new agent.** One run so far: 30.5 minutes and 30.4 million tokens. Crouton Alpha is a stealth model: OpenRouter withholds its maker, and the model can be renamed or withdrawn
+  without notice. It found 8 of the 13 flaws and fixed 9: security 220, bugs 129 and performance 150, architecture and clean code 0. It lost two COMP-003 (−30 each, compatibility 40); its report scored 41 of 50 and six extra
+  findings score nothing.
+- **Recursive Flint at its default setting (OJ): 526, Bronze, 37th, a new agent.** One run so far: 9.0 minutes and 0.94 million tokens. It found 6 of the 13 flaws and fixed 6: security 142, bugs 129 and performance 150,
+  architecture and clean code 0. It lost one COMP-003 (−30, compatibility 70): `formatarStatus` returns "Desconhecido" for any status other than 1, 2 or 3, a change that came from an extra finding and not from a planted
+  fix, the ruling already applied to earlier deliveries. Its report scored 35 of 50 and one extra finding scores nothing.
+- **NVIDIA Nemotron 3.5 Super VL at `high` (TE): 446, Bronze, 41st, a new agent.** One run so far: 4.3 minutes and 0.76 million tokens. It found 7 of the 13 flaws and fixed 6: security 181 and bugs 129, nothing in
+  architecture, performance or clean code. Compatibility stayed at 100; its report scored 36 of 50 and three extra findings score nothing.
+- **Apodex 1.1 Mini at `high` (EP, CX, PM): 406, Bronze, 43rd, a new agent.** Its runs scored 406, 250 and 468, so the published score is the middle one. They ran in 43.5, 17.0 and 4.9 minutes and 19.0, 11.2 and 1.0 million tokens,
+  and found 7 flaws each, fixing 5, 4 and 7. Security is 168, 138 and 203 and bugs 75, 75 and 129; clean code is 25 in the first run and 0 in the others, and architecture and performance are 0 in all three.
+  - The second run (CX) is the low one: it lost two COMP-003 (−30 each, compatibility 40) and two penalties, PEN-002 (−20) and PEN-001 (−15). The first and third kept compatibility at 100 and were charged nothing. Their
+    reports scored 38, 32 and 36 of 50.
+- **Cohere North Mini Code at `high` (XE): 237, Reprovada, 50th, a new agent.** One run so far: 0.9 minutes and 0.13 million tokens. It found 4 of the 13 flaws and fixed 2: security 56 and bugs 75, nothing else. Compatibility
+  stayed at 100 and it lost one PEN-002 (−20), a broken behavior no fix was blamed for; its report scored 26 of 50.
+- **NVIDIA Nemotron 3.5 Lightning at `high` (MS): 186, Reprovada, 51st, a new agent.** One run so far: 5.4 minutes and 1.26 million tokens. It found 2 of the 13 flaws and fixed 2: security 43 and bugs 32. Compatibility stayed
+  at 100 and it lost one PEN-002 (−20); its report scored 31 of 50.
+- **NVIDIA Nemotron 3 Nano Omni at `max` (PE): 183, Reprovada, 52nd, a new agent.** One run so far: 3.3 minutes and 0.33 million tokens. It found 2 of the 13 flaws and fixed 1: security 56 and nothing else but compatibility,
+  which stayed at 100. Its report scored 27 of 50. The client defines `high` and `max` for it, so `max` is the most it can ask for.
+- **XingChen Xing4.0 29B A4B at `high` (IE): 138, Reprovada, 53rd, a new agent.** One run so far: 8.8 minutes and 0.33 million tokens. It found 5 of the 13 flaws and fixed 2: security 73, bugs 43 and performance 56. It lost
+  135 points to penalties, six PEN-002 (−20 each) and one PEN-001 (−15), and one COMP-003 (−30, compatibility 70); its report scored 31 of 50.
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

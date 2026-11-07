@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.305`
+**Versão atual:** `0.2.306`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.306` — 2026-11-07 — results/ adds nine free models to LEB-100-A: NVIDIA Nemotron 3 Ultra (618, Silver), Crouton Alpha (580), Recursive Flint (526), Apodex 1.1 Mini (three runs, official 406) and five more, eleven runs, 53 agents
+
+- The leaderboard goes from 44 agents and 113 runs to 53 agents and 124 runs; the 44 earlier entries keep their numbers and only their ranks move (20 of them shift down). Each new run folder carries its delivery, `mecanico.json`,
+  `veredito.json`, `scorecard.json` and `.md`, and `run.json`.
+- Nine new agents, all free. Through OpenRouter's free variants, with no provider pinned (the free pool is shared and rate-limited), one run each: NVIDIA Nemotron 3 Ultra at `high` 618 (Silver, 25th), Crouton Alpha at `max` 580 (Bronze,
+  34th; a stealth model whose maker OpenRouter withholds), Recursive Flint at its default setting 526 (Bronze, 37th), NVIDIA Nemotron 3.5 Super VL at `high` 446 (Bronze, 41st), Cohere North Mini Code at `high` 237, NVIDIA Nemotron 3.5
+  Lightning at `high` 186, NVIDIA Nemotron 3 Nano Omni at `max` 183 and XingChen Xing4.0 29B A4B at `high` 138 (the last four Reprovada, 50th to 53rd). Through Novita AI's own API, where the model is listed at no price: Apodex 1.1 Mini at
+  `high`, three runs (406, 250, 468), official at **406** (Bronze, 43rd). Each at the highest effort the client defines for it; every run cost US$ 0 by the client's accounting.
+- Made by the unattended lab with OpenCode 1.18.33 (one session per run, 90-minute cap, auto permission mode) and judged blind like the earlier runs: one matching judge and one blind EXPL judge per delivery, Claude Opus subagents. One more
+  Apodex attempt, lost to the client compacting the agent's context, is not scored.
+- `results/2026/LEB-100-A/README.md` gets *Runs of 2026-11-06* and `comments.json` carries the nine readings. `tests/test_saturacao.py` moves its pins to 53 agents and 124 runs (total mean 556, SEC-014 fixed in 38% of the representative runs).
 
 ### `0.2.305` — 2026-11-07 — LEB-300-A's aggregate adds two free variants, one run each: Crouton Alpha at max (275) and NVIDIA Nemotron 3 Nano Omni at max (148)
 

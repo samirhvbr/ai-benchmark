@@ -1,0 +1,71 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A query é construída por concatenação de string com o parâmetro de busca, permitindo injeção de SQL.",
+      "impacto": "Um atacante pode manipular a busca para executar comandos arbitrários no banco, comprometendo a integridade dos dados.",
+      "correcao": "Substituir a concatenação por prepared statement com parâmetro LIKE.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção de SQL em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 101,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A query usa concatenação direta do id, possibilitando injeção de SQL.",
+      "impacto": "Um atacante pode alterar o filtro para retornar registros inesperados ou causar erro.",
+      "correcao": "Utilizar prepared statement para o parâmetro id.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção de SQL em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 71,
+      "categoria": "seguranca",
+      "severidade": "média",
+      "confianca": 90,
+      "mecanismo": "A query monta o filtro usando concatenação de id do técnico, sem sanitização.",
+      "impacto": "Possível execução de SQL injection que pode levar à divulgação ou corrupção de dados de usuários.",
+      "correcao": "Usar prepared statement para o id do técnico.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Chave SMTP exposta em código",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 16,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 85,
+      "mecanismo": "A chave da API está codificada literalmente no arquivo de configuração, visível a qualquer pessoa com acesso ao código.",
+      "impacto": "Um atacante pode obter a chave e usar o serviço de e‑mail para spam ou outras ações maliciosas.",
+      "correcao": "Mover a chave para variável de ambiente com fallback para valor padrão.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Valor padrão da senha DB_PASS ('N3tX@2013!prod')",
+      "porque": "Remover o fallback ou mudar o valor quebraria a compatibilidade com o ambiente de produção que depende do valor embutido."
+    }
+  ]
+}

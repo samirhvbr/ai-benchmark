@@ -1,0 +1,353 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "XingChen Xing4.0 29B A4B",
+    "version": "not recorded",
+    "provider": "XingChen"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-06",
+    "runs": [
+      138
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 4,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 8,
+      "confidence": 80,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 1,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 4,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 3,
+      "points_possible": 8,
+      "confidence": 65,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 3,
+        "C4": 0,
+        "C5": 1
+      },
+      "points_earned": 4,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 3,
+      "points_possible": 8,
+      "confidence": 75,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 17,
+      "raw_possible": 58,
+      "score": 73,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 4,
+      "raw_possible": 14,
+      "score": 43,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 3,
+      "raw_possible": 8,
+      "score": 56,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 70,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "SEC-014's fix accepts only password_hash hashes (delivered lib.php:15-30), with no legacy md5 path and no re-hash on login, so every password already stored as md5 in the system's database stops working on deployment; only the delivered seed was re-hashed, which is why the characterization does not see it. Matrix note on SEC-014: 'Invalidar todas as senhas = COMP-003'. Charged to SEC-014's C5. The rulings digest records this note with no earlier run, so it is decided here on the evidence."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 31,
+      "max": 50,
+      "rubric": {
+        "clareza": 6,
+        "precisao": 5,
+        "causa_raiz": 7,
+        "priorizacao": 6,
+        "trade_offs": 7
+      }
+    }
+  },
+  "penalties": [
+    {
+      "id": "PEN-002",
+      "count": 6,
+      "deduction": -120,
+      "detail": "6 teste(s) de caracterização quebrado(s)"
+    },
+    {
+      "id": "PEN-001",
+      "count": 1,
+      "deduction": -15
+    }
+  ],
+  "extra_findings": [
+    "Listing visibility — F4 (index.php:73, lib.php:78, filed as bug, confidence 95): a client sees every ticket in the listing. Real and outside the matrix (more than 10 lines from index.php:53). The fix adds two optional parameters to listarChamados (not COMP-001, as for P) but never writes WHERE, so the client filter builds `SELECT * FROM chamados AND usuario_id = ?` and throws; that is the same missing-WHERE defect that breaks the search, counted by the characterization, and is not charged again.",
+    "Export visibility — named only as deliberate non-change 2: exportarCsv gives every ticket to any logged-in user; the report argues this is contractual and leaves it unfiltered (not charged, as for AN and AX)."
+  ],
+  "total": 138,
+  "grade": "Reprovada",
+  "calibration": {
+    "reported_count": 6,
+    "brier": 0.19,
+    "high_conf_false_positive_rate": 0.25,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 3,
+        "mean_confidence": 95.0,
+        "hit_rate": 0.667
+      },
+      {
+        "range": "61-80",
+        "count": 3,
+        "mean_confidence": 73.3,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 0,
+        "corrected": 0
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 4,
+        "corrected": 1
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 1,
+        "corrected": 1
+      }
+    ],
+    "discovery_index": 25.0
+  }
+}

@@ -18,10 +18,10 @@
       "judge": {
         "type": "LLM",
         "id": "claude-opus-5-5",
-        "date": "2026-09-29",
-        "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on anonymized deliveries; one matching judge per delivery, one EXPL judge for all four reports, blind to the answer key and to every other score"
+        "date": "2026-11-06",
+        "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
       },
-      "evaluated_on": "2026-10-27",
+      "evaluated_on": "2026-11-06",
       "category_max": {
         "SEC": 250,
         "ARCH": 200,
@@ -12139,6 +12139,199 @@
           "rank": 24
         },
         {
+          "agent": "nvidia-nemotron-3-ultra-550b-a55b-free-high",
+          "model": {
+            "name": "NVIDIA Nemotron 3 Ultra",
+            "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "provider": "NVIDIA",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model nvidia/nemotron-3-ultra-550b-a55b:free), no provider pinned; the endpoint that answered the lab's probe was NVIDIA's; the client defines the effort variants none, medium and high for it, so high is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 618,
+          "totals": [
+            618
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 58.3,
+          "brier": 0.199,
+          "comment": {
+            "en": "One run so far: 618 (Silver) at no cost, through OpenRouter's free variant, in 4 minutes. It found 8 of the 13 planted flaws and fixed 7, with full marks in performance, 129 of 150 in bugs and 38 of 100 in clean code, and left architecture untouched; compatibility stayed whole (100).",
+            "pt_BR": "Um run até agora: 618 (Silver), sem custo, pela variante gratuita do OpenRouter, em 4 minutos. Achou 8 das 13 falhas plantadas e corrigiu 7, com nota máxima em desempenho, 129 de 150 em bugs e 38 de 100 em código limpo, e deixou a arquitetura intacta; a compatibilidade ficou inteira (100)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 618,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 164,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 38,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 37,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 8,
+                "priorizacao": 7,
+                "trade_offs": 7
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 70
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 3,
+              "brier": 0.199,
+              "discovery_index": 58.3,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 267.5,
+                "tokens": {
+                  "input": 87335,
+                  "output": 14181,
+                  "cache": 429632,
+                  "total": 533888
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 2740 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 4.5,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3-ultra-550b-a55b-free-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 25
+        },
+        {
           "agent": "deepseek-v4-flash-xhigh",
           "model": {
             "name": "DeepSeek V4 Flash",
@@ -12332,7 +12525,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 25
+          "rank": 26
         },
         {
           "agent": "gpt-6.1-sol-ultra",
@@ -12876,7 +13069,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-ultra/run-3/scorecard.md"
             }
           ],
-          "rank": 26
+          "rank": 27
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -13426,7 +13619,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 27
+          "rank": 28
         },
         {
           "agent": "deepseek-v4.1-flash-high",
@@ -13960,7 +14153,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 28
+          "rank": 29
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -14504,7 +14697,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 29
+          "rank": 30
         },
         {
           "agent": "glm-5.3-flashX-high",
@@ -14699,7 +14892,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md"
             }
           ],
-          "rank": 30
+          "rank": 31
         },
         {
           "agent": "gemini-3.8-flash-high",
@@ -15227,7 +15420,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gemini-3.8-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 31
+          "rank": 32
         },
         {
           "agent": "gemini-3.7-flash-high",
@@ -15761,7 +15954,211 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gemini-3.7-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 32
+          "rank": 33
+        },
+        {
+          "agent": "stealth-crouton-alpha-max",
+          "model": {
+            "name": "Crouton Alpha",
+            "id": "stealth/crouton-alpha",
+            "provider": "Stealth",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model stealth/crouton-alpha), no provider pinned; the endpoint that answered the lab's probe was Stealth's; the client defines the effort variants minimal, low, medium, high, xhigh and max for it, so max is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 580,
+          "totals": [
+            580
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 58.3,
+          "brier": 0.01,
+          "comment": {
+            "en": "One run so far: 580 (Bronze) at no cost, through OpenRouter's free variant of a stealth model whose maker is withheld, in 30 minutes. Security 220 of 250, bugs 129 of 150 and full marks in performance; it found 8 of the 13 planted flaws, fixed 9 and reported 6 more real findings, but two contracted behaviors changed (compatibility 40) and architecture and clean code stayed at zero.",
+            "pt_BR": "Um run até agora: 580 (Bronze), sem custo, pela variante gratuita do OpenRouter de um modelo furtivo cujo fabricante não é revelado, em 30 minutos. Segurança 220 de 250, bugs 129 de 150 e nota máxima em desempenho; achou 8 das 13 falhas plantadas, corrigiu 9 e relatou mais 6 achados reais, mas dois comportamentos do contrato mudaram (compatibilidade 40) e arquitetura e código limpo ficaram em zero."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 580,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 220,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 40,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 41,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 8,
+                "causa_raiz": 9,
+                "priorizacao": 7,
+                "trade_offs": 8
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                },
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 75
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 6,
+              "brier": 0.01,
+              "discovery_index": 58.3,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 1830.0,
+                "tokens": {
+                  "input": 30356555,
+                  "output": 16801,
+                  "cache": 0,
+                  "total": 30374669
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 1313 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 30.5,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/stealth-crouton-alpha-max/run-1/scorecard.md"
+            }
+          ],
+          "rank": 34
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -16299,7 +16696,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-4/scorecard.md"
             }
           ],
-          "rank": 33
+          "rank": 35
         },
         {
           "agent": "gemini-3.8-flash-medium",
@@ -16495,7 +16892,206 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md"
             }
           ],
-          "rank": 34
+          "rank": 36
+        },
+        {
+          "agent": "recursive-flint-v1.0-free-default",
+          "model": {
+            "name": "Recursive Flint",
+            "id": "recursive/flint-v1.0:free",
+            "provider": "Recursive",
+            "reasoning_effort": "default",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model recursive/flint-v1.0:free), no provider pinned; the endpoint that answered the lab's probe was Recursive's; the client defines no effort variant for it, so the run uses the model's default setting"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 526,
+          "totals": [
+            526
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 41.7,
+          "brier": 0.006,
+          "comment": {
+            "en": "One run so far: 526 (Bronze) at no cost, through OpenRouter's free variant at the model's default setting, in 9 minutes. It found 6 of the 13 planted flaws and fixed 6, with full marks in performance and 129 of 150 in bugs, but nothing in architecture or clean code, and one contracted behavior changed (compatibility 70).",
+            "pt_BR": "Um run até agora: 526 (Bronze), sem custo, pela variante gratuita do OpenRouter no padrão do modelo, em 9 minutos. Achou 6 das 13 falhas plantadas e corrigiu 6, com nota máxima em desempenho e 129 de 150 em bugs, mas nada em arquitetura nem em código limpo, e um comportamento do contrato mudou (compatibilidade 70)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 526,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 142,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 35,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 8,
+                "priorizacao": 7,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-003": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 90
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 1,
+              "brier": 0.006,
+              "discovery_index": 41.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 539.3,
+                "tokens": {
+                  "input": 66280,
+                  "output": 11100,
+                  "cache": 823424,
+                  "total": 938088
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 37284 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 9.0,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/recursive-flint-v1.0-free-default/run-1/scorecard.md"
+            }
+          ],
+          "rank": 37
         },
         {
           "agent": "qwen3-coder-next-default",
@@ -16700,7 +17296,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md"
             }
           ],
-          "rank": 35
+          "rank": 38
         },
         {
           "agent": "deepseek-v4-pro-high",
@@ -17234,7 +17830,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-pro-high/run-3/scorecard.md"
             }
           ],
-          "rank": 36
+          "rank": 39
         },
         {
           "agent": "minimax-m3-thinking",
@@ -17788,7 +18384,200 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3-thinking/run-3/scorecard.md"
             }
           ],
-          "rank": 37
+          "rank": 40
+        },
+        {
+          "agent": "nvidia-nemotron-3.5-super-vl-free-high",
+          "model": {
+            "name": "NVIDIA Nemotron 3.5 Super VL",
+            "id": "nvidia/nemotron-3.5-super-vl:free",
+            "provider": "NVIDIA",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model nvidia/nemotron-3.5-super-vl:free), no provider pinned; the endpoint that answered the lab's probe was NVIDIA's; the client defines the effort variants low, medium and high for it, so high is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 446,
+          "totals": [
+            446
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 50.0,
+          "brier": 0.001,
+          "comment": {
+            "en": "One run so far: 446 (Bronze) at no cost, through OpenRouter's free variant, in 4 minutes. It found 7 of the 13 planted flaws and fixed 6, with 181 of 250 in security and 129 of 150 in bugs, but nothing in architecture, performance or clean code; compatibility stayed whole (100).",
+            "pt_BR": "Um run até agora: 446 (Bronze), sem custo, pela variante gratuita do OpenRouter, em 4 minutos. Achou 7 das 13 falhas plantadas e corrigiu 6, com 181 de 250 em segurança e 129 de 150 em bugs, mas nada em arquitetura, desempenho ou código limpo; a compatibilidade ficou inteira (100)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 446,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 181,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 36,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 8,
+                "priorizacao": 7,
+                "trade_offs": 6
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 3,
+              "brier": 0.001,
+              "discovery_index": 50.0,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 257.9,
+                "tokens": {
+                  "input": 86396,
+                  "output": 10525,
+                  "cache": 654736,
+                  "total": 764893
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 13236 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 4.3,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3.5-super-vl-free-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 41
         },
         {
           "agent": "kimi-k2.7-code-default",
@@ -18318,7 +19107,554 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-default/run-3/scorecard.md"
             }
           ],
-          "rank": 38
+          "rank": 42
+        },
+        {
+          "agent": "apodex-apodex-1.1-mini-free-high",
+          "model": {
+            "name": "Apodex 1.1 Mini",
+            "id": "apodex/apodex-1.1-mini",
+            "provider": "Apodex",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "Novita AI's own API (opencode provider novita-ai, model apodex/apodex-1.1-mini); the model is listed at no price on Novita's public model list; the client defines the effort variants low, medium and high for it, so high is the most it can ask for"
+          },
+          "runs_count": 3,
+          "official": true,
+          "score": 406,
+          "totals": [
+            406,
+            250,
+            468
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 41.7,
+          "brier": 0.013,
+          "comment": {
+            "en": "Three runs, 406, 250 and 468, so the official score is the median, 406 (Bronze). Through Novita AI's own API, where the model is listed at no price; the runs took 44, 17 and 5 minutes. Security ran 138 to 203 of 250 and bugs 75 to 129 of 150, with nothing in architecture or performance in any run. The second run fell to 250: two contracted behaviors changed (compatibility 40) and it lost 35 points to penalties.",
+            "pt_BR": "Três runs, 406, 250 e 468, então a nota oficial é a mediana, 406 (Bronze). Pela API própria da Novita AI, onde o modelo consta sem preço; os runs levaram 44, 17 e 5 minutos. Segurança ficou entre 138 e 203 de 250 e bugs entre 75 e 129 de 150, com nada em arquitetura nem em desempenho em nenhum run. O segundo run caiu para 250: dois comportamentos do contrato mudaram (compatibilidade 40) e ele perdeu 35 pontos em penalidades."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 406,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 168,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 75,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 25,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 38,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 7,
+                "causa_raiz": 8,
+                "priorizacao": 7,
+                "trade_offs": 8
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 85
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-001": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 3,
+              "brier": 0.013,
+              "discovery_index": 41.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 2610.1,
+                "tokens": {
+                  "input": 264119,
+                  "output": 162368,
+                  "cache": 18594944,
+                  "total": 19021431
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 0 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 43.5,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/apodex-apodex-1.1-mini-free-high/run-1/scorecard.md"
+            },
+            {
+              "run": 2,
+              "total": 250,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 138,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 75,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 40,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 32,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 5,
+                "causa_raiz": 7,
+                "priorizacao": 6,
+                "trade_offs": 7
+              },
+              "penalties": [
+                {
+                  "id": "PEN-002",
+                  "count": 1,
+                  "deduction": -20
+                },
+                {
+                  "id": "PEN-001",
+                  "count": 1,
+                  "deduction": -15
+                }
+              ],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                },
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 7,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 5,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 90
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 90
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 90
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 7,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-001": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 4,
+              "brier": 0.184,
+              "discovery_index": 50.0,
+              "characterization": {
+                "passed": 21,
+                "failed": 1
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 1021.8,
+                "tokens": {
+                  "input": 140711,
+                  "output": 128314,
+                  "cache": 10914176,
+                  "total": 11183201
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 0 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 17.0,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/apodex-apodex-1.1-mini-free-high/run-2/scorecard.md"
+            },
+            {
+              "run": 3,
+              "total": 468,
+              "grade": "Bronze",
+              "categories": {
+                "SEC": {
+                  "score": 203,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 129,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 36,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 8,
+                "precisao": 6,
+                "causa_raiz": 8,
+                "priorizacao": 7,
+                "trade_offs": 7
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 92
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "BUG-004": {
+                  "earned": 4,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 1,
+              "decoys_reported": 0,
+              "extra_findings": 2,
+              "brier": 0.087,
+              "discovery_index": 50.0,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 296.4,
+                "tokens": {
+                  "input": 124909,
+                  "output": 60050,
+                  "cache": 772864,
+                  "total": 957823
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 0 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 5.0,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/apodex-apodex-1.1-mini-free-high/run-3/scorecard.md"
+            }
+          ],
+          "rank": 43
         },
         {
           "agent": "gpt-5.3-codex-xhigh",
@@ -18513,7 +19849,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 39
+          "rank": 44
         },
         {
           "agent": "kimi-k2.7-code-highspeed",
@@ -19053,7 +20389,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-highspeed/run-3/scorecard.md"
             }
           ],
-          "rank": 40
+          "rank": 45
         },
         {
           "agent": "z.ai-glm-5.2-high",
@@ -19250,7 +20586,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
             }
           ],
-          "rank": 41
+          "rank": 46
         },
         {
           "agent": "nex-n2.5-pro-high",
@@ -19649,7 +20985,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nex-n2.5-pro-high/run-2/scorecard.md"
             }
           ],
-          "rank": 42
+          "rank": 47
         },
         {
           "agent": "claude-haiku-4.5-default",
@@ -20194,7 +21530,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-3/scorecard.md"
             }
           ],
-          "rank": 43
+          "rank": 48
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -20573,7 +21909,808 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md"
             }
           ],
-          "rank": 44
+          "rank": 49
+        },
+        {
+          "agent": "cohere-north-mini-code-free-high",
+          "model": {
+            "name": "Cohere North Mini Code",
+            "id": "cohere/north-mini-code:free",
+            "provider": "Cohere",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model cohere/north-mini-code:free), no provider pinned; the endpoint that answered the lab's probe was Cohere's; the client defines the effort variants low, medium and high for it, so high is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 237,
+          "totals": [
+            237
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 20.8,
+          "brier": 0.255,
+          "comment": {
+            "en": "One run so far: 237, below the pass line, at no cost, through OpenRouter's free variant, in 1 minute. It found 4 of the 13 planted flaws and fixed 2, and lost 20 points for a broken behavior no fix was blamed for; compatibility itself stayed whole (100).",
+            "pt_BR": "Um run até agora: 237, abaixo da linha de aprovação, sem custo, pela variante gratuita do OpenRouter, em 1 minuto. Achou 4 das 13 falhas plantadas e corrigiu 2, e perdeu 20 pontos por um comportamento quebrado sem um conserto culpado; a compatibilidade em si ficou inteira (100)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 237,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 56,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 75,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 26,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 6,
+                "precisao": 4,
+                "causa_raiz": 6,
+                "priorizacao": 5,
+                "trade_offs": 5
+              },
+              "penalties": [
+                {
+                  "id": "PEN-002",
+                  "count": 1,
+                  "deduction": -20
+                }
+              ],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 7,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 85
+                },
+                "SEC-017": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "BUG-001": {
+                  "earned": 7,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 1,
+              "brier": 0.255,
+              "discovery_index": 20.8,
+              "characterization": {
+                "passed": 21,
+                "failed": 1
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 52.8,
+                "tokens": {
+                  "input": 120940,
+                  "output": 6047,
+                  "cache": 0,
+                  "total": 128930
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 1943 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 0.9,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/cohere-north-mini-code-free-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 50
+        },
+        {
+          "agent": "nvidia-nemotron-3.5-lightning-free-high",
+          "model": {
+            "name": "NVIDIA Nemotron 3.5 Lightning",
+            "id": "nvidia/nemotron-3.5-lightning:free",
+            "provider": "NVIDIA",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model nvidia/nemotron-3.5-lightning:free), no provider pinned; the endpoint that answered the lab's probe was NVIDIA's; the client defines the effort variants low, medium and high for it, so high is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 186,
+          "totals": [
+            186
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 8.3,
+          "brier": 0.667,
+          "comment": {
+            "en": "One run so far: 186, below the pass line, at no cost, through OpenRouter's free variant, in 5 minutes. It found 2 of the 13 planted flaws and fixed 2, and lost 20 points for a broken behavior no fix was blamed for; compatibility itself stayed whole (100).",
+            "pt_BR": "Um run até agora: 186, abaixo da linha de aprovação, sem custo, pela variante gratuita do OpenRouter, em 5 minutos. Achou 2 das 13 falhas plantadas e corrigiu 2, e perdeu 20 pontos por um comportamento quebrado sem um conserto culpado; a compatibilidade em si ficou inteira (100)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 186,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 43,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 32,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 31,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 5,
+                "causa_raiz": 7,
+                "priorizacao": 6,
+                "trade_offs": 6
+              },
+              "penalties": [
+                {
+                  "id": "PEN-002",
+                  "count": 1,
+                  "deduction": -20
+                }
+              ],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 8,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-015": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-017": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "BUG-001": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 2,
+              "brier": 0.667,
+              "discovery_index": 8.3,
+              "characterization": {
+                "passed": 21,
+                "failed": 1
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 323.6,
+                "tokens": {
+                  "input": 96557,
+                  "output": 13687,
+                  "cache": 1142320,
+                  "total": 1264244
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 11680 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 5.4,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3.5-lightning-free-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 51
+        },
+        {
+          "agent": "nvidia-nemotron-3-nano-omni-30b-a3b-free-max",
+          "model": {
+            "name": "NVIDIA Nemotron 3 Nano Omni",
+            "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+            "provider": "NVIDIA",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free), no provider pinned; the endpoint that answered the lab's probe was NVIDIA's; the client defines the effort variants high and max for it, so max is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 183,
+          "totals": [
+            183
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 8.3,
+          "brier": 0.434,
+          "comment": {
+            "en": "One run so far: 183, below the pass line, at no cost, through OpenRouter's free variant at max, the highest effort the client defines for it, in 3 minutes. It found 2 of the 13 planted flaws and fixed 1: security 56 of 250 and nothing in bugs, architecture, performance or clean code; compatibility stayed whole (100).",
+            "pt_BR": "Um run até agora: 183, abaixo da linha de aprovação, sem custo, pela variante gratuita do OpenRouter no max, o maior esforço que o cliente define para ele, em 3 minutos. Achou 2 das 13 falhas plantadas e corrigiu 1: segurança 56 de 250 e nada em bugs, arquitetura, desempenho ou código limpo; a compatibilidade ficou inteira (100)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 183,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 56,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 0,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 27,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 5,
+                "causa_raiz": 5,
+                "priorizacao": 5,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-003": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 85
+                },
+                "SEC-017": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "BUG-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 2,
+              "decoys_reported": 0,
+              "extra_findings": 0,
+              "brier": 0.434,
+              "discovery_index": 8.3,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 199.5,
+                "tokens": {
+                  "input": 34130,
+                  "output": 3778,
+                  "cache": 274736,
+                  "total": 328022
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 15378 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 3.3,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3-nano-omni-30b-a3b-free-max/run-1/scorecard.md"
+            }
+          ],
+          "rank": 52
+        },
+        {
+          "agent": "xingchen-agi-xing4.0-29b-a4b-free-high",
+          "model": {
+            "name": "XingChen Xing4.0 29B A4B",
+            "id": "xingchen-agi/xing4.0-29b-a4b:free",
+            "provider": "XingChen",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter's free variant (opencode provider openrouter, model xingchen-agi/xing4.0-29b-a4b:free), no provider pinned; the endpoint that answered the lab's probe was Phala's; the client defines the effort variants low, medium and high for it, so high is the highest it can ask for"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 138,
+          "totals": [
+            138
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 25.0,
+          "brier": 0.19,
+          "comment": {
+            "en": "One run so far: 138, below the pass line, at no cost, through OpenRouter's free variant, in 9 minutes. It found 5 of the 13 planted flaws and fixed 2, but lost 120 points for six broken behaviors no fix was blamed for and 15 for a defect its own change introduced, and one contracted behavior changed (compatibility 70).",
+            "pt_BR": "Um run até agora: 138, abaixo da linha de aprovação, sem custo, pela variante gratuita do OpenRouter, em 9 minutos. Achou 5 das 13 falhas plantadas e corrigiu 2, mas perdeu 120 pontos por seis comportamentos quebrados sem um conserto culpado e 15 por um defeito introduzido pela própria mudança, e um comportamento do contrato mudou (compatibilidade 70)."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 138,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 73,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 43,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 56,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 70,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 31,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 6,
+                "precisao": 5,
+                "causa_raiz": 7,
+                "priorizacao": 6,
+                "trade_offs": 7
+              },
+              "penalties": [
+                {
+                  "id": "PEN-002",
+                  "count": 6,
+                  "deduction": -120
+                },
+                {
+                  "id": "PEN-001",
+                  "count": 1,
+                  "deduction": -15
+                }
+              ],
+              "comp_violations": [
+                {
+                  "id": "COMP-003",
+                  "count": 1,
+                  "deduction": -30
+                }
+              ],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 4,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 80
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 4,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 90
+                },
+                "SEC-015": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 65
+                },
+                "SEC-017": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "BUG-001": {
+                  "earned": 4,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": true,
+                  "confidence": null
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 75
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 1,
+              "decoys_reported": 0,
+              "extra_findings": 2,
+              "brier": 0.19,
+              "discovery_index": 25.0,
+              "characterization": {
+                "passed": 16,
+                "failed": 6
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 529.9,
+                "tokens": {
+                  "input": 42241,
+                  "output": 9597,
+                  "cache": 263840,
+                  "total": 328709
+                },
+                "usd_estimate": 0.0,
+                "note": "the total includes 13031 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+              },
+              "wall_minutes": 8.8,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/xingchen-agi-xing4.0-29b-a4b-free-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 53
         }
       ]
     }

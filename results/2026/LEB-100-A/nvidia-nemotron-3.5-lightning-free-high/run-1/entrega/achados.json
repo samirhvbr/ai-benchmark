@@ -1,0 +1,84 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection em tecnicoNome()",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A query SQL constroi a string diretamente com concatenacao de variavel: 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId. Isso permite injecao de SQL atraves do parametete $tecnicoId.",
+      "impacto": "Um usuario podia injetar comandes SQL arbitrarios via o parametete tecnico_id, potencialmente acessando dados de outros usuarios ou modificando o banco.",
+      "correcao": "Substituida a query por prepared statement com bind_param('i', $tecnicoId), eliminando a possibilidade de injecao de SQL.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "SQL injection em verChamado()",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A query SQL constroi a string diretamente com concatenacao: 'SELECT * FROM chamados WHERE id = ' . $id. Isso permite injecao de SQL atraves do parametete $id.",
+      "impacto": "Um usuario podia injetar comandes SQL arbitrarios via o parametete id na URL (?ver=<id>), acessando ou modificando chamados que nao deveria.",
+      "correcao": "Substituida a query por prepared statement com bind_param('i', $id), eliminando a possibilidade de injecao de SQL.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL injection em listarChamados()",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A clausula LIKE constroi a string diretamente: WHERE titulo LIKE '%' . $busca . '%'. Isso permite injecao de SQL atraves do parametete $busca.",
+      "impacto": "Um usuario podia injetar padroes SQL na busca, podendo acessar informacoes além do previsto ou manipular a ordenacao/filtragem.",
+      "correcao": "Substituida a query por prepared statement com bind_param('s', $like) para o parametete LIKE, eliminando a injecao de SQL mantendo a funcionalidade de busca.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Regra de negocio violada - clientes veem todos os chamados",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "categoria": "arquitetura",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "A funcao listarChamados() retorna todos os chamados do banco sem filtrar por usuario_id. No index.php, nao ha verificacao do papel do usuario loggedIn, entao um cliente logado pode ver chamados de outros clientes atraves da listagem.",
+      "impacto": "Clientes podem ver chamados abertos por outros clientes, violando a privacidade e a regra de negocio declarada no manifest.md: 'Um cliente so pode ver os chamados que ele mesmo abriu.'",
+      "correcao": "Adicionado filtro em index.php apos a listagem: se o usuario eh cliente ($papel === 'cliente'), filtrar chamados onde usuario_id == $uid (o id do cliente logado). Usou array_filter() para nao alterar a funcao listarChamados() e preservar sua assinatura.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Desempenho subotimo em mediaResposta()",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "A funcao buscava todas as linhas com minutos_resposta IS NOT NULL em PHP e calculava a media atraves de loop, quando o MySQL poderia fazer AVG() diretamente no banco. Isso consome mais memoria e rede, especialmente com muitas linhas.",
+      "impacto": "Performance ligeiramente pior para um endpoint que roda em cada carregamento da pagina principal. O efeito e mais notable com muitos registros no banco.",
+      "correcao": "Substituido por query SQL AVG(): SELECT AVG(minutos_resposta) FROM chamados WHERE minutos_resposta IS NOT NULL. Resultado convertido para float. Isso reduz transferencia de dados e processamento em PHP.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Sistema de autenticacao MD5 (autenticar())",
+      "porque": "Preservar compatibilidade com sistema legado e credenciais existentes. O manifest.md nao exige mudanca no mecanismo de hash. Alterar exigiria atualizar o schema e todas as senhas dos usuarios, o que vai alem do escopo da correcao e poderia quebrar logins em producao."
+    },
+    {
+      "o_que": "Comportamento default de formatarStatus()",
+      "porque": "O bloco else que retorna 'Resolvido' para qualquer status diferente de 1 ou 2 coincide exatamente com o contrato do manifest.md: 1 -> 'Aberto', 2 -> 'Em atendimento', 3 -> 'Resolvido'. Alterar esta lgica poderia quebrar correspondencias no relatorio gerencial que esperam estes textos exatos."
+    }
+  ]
+}

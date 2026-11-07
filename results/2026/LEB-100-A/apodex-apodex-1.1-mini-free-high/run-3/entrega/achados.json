@@ -1,0 +1,183 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL na busca via parâmetro $_GET['busca']",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "$busca vem diretamente do usuário (index.php:72) e é interpolada crua na consulta: $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\"; sem cast, real_escape_string ou instrução preparada.",
+      "impacto": "Payload como ?busca=' OR '1'='1 retorna todos os chamados; com UNION SELECT é possível extrair colunas de usuarios, incluindo hashes MD5.",
+      "correcao": "Consulta preparada: bind_param('s', '%' . $busca . '%') e filtro de visibilidade aplicado.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Regra de visibilidade (cliente só vê seus chamados) ignorada",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 197,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 92,
+      "mecanismo": "listarChamados (lib.php:80), verChamado (lib.php:98) e exportarCsv (lib.php:123) nunca filtram por usuario_id; as variáveis $uid/$papel em index.php são mortas. Clientes logados veem, acessam e exportam todos os chamados, inclusive de outros clientes.",
+      "impacto": "Exposição indevida de dados de múltiplos clientes, violação direta do contrato do manifesto.",
+      "correcao": "Nas três funções, se $_SESSION['papel'] === 'cliente' adiciona-se o filtro usuario_id = ? (no detalhe: id = ? AND usuario_id = ?). Ausência de sessão ⇒ visibilidade total (degradação compatível com o legado).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS refletido na listagem via parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "$busca é interpolada sem htmlspecialchars em dois pontos: atributo value do <input> (linha 79) e texto \"Resultados para:\" (linha 82). Payload em link enviado por e-mail executa JavaScript no contexto do painel.",
+      "impacto": "Execução de scripts de terceiros em nome do usuário logado (roubo de sessão, ações falsas).",
+      "correcao": "htmlspecialchars($busca, ENT_QUOTES | ENT_HTML5, 'UTF-8') nos dois pontos de saída.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Hash de senha com MD5 (algoritmo criptograficamente quebrado)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "autenticar usa md5($senha) sem sal (lib.php:15), corroborado pelo seed (senhas MD5) e pelo schema (senha CHAR(32)).",
+      "impacto": "Senhas reversíveis por rainbow tables/GPUs; colisão quebra autenticação. Risco de conta comprometida.",
+      "correcao": "Não corrigido (corrigido=false): a migração para bcrypt/argon2 exigiria alterar o schema e repassar as senhas, quebrando o login dos usuários atuais. Mantida compatibilidade; recomenda-se evolução planejada (nova coluna de hash + rehash no próximo login).",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "Credencial de banco e chave SMTP hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 98,
+      "mecanismo": "DB_PASS tem fallback embutido no código ('N3tX@2013!prod') e SMTP_API_KEY está em texto plano — ambos exfiltráveis por qualquer pessoa com leitura do repositório.",
+      "impacto": "Credencial de produção e chave de serviço expostas; comprometimento do banco e dos e-mails transacionais.",
+      "correcao": "Ambos os define agora leem exclusivamente de variáveis de ambiente; se ausentes, throw de RuntimeException com mensagem explícita.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Configuração de sessão insegura (fixação de sessão + cookies sem flags)",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 52,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "session_start() com valores padrão: cookie sem httponly/samesite/secure, e sem session_regenerate_id(true) após login — ID de sessão pré-definido antes do login permanece válido depois da autenticação.",
+      "impacto": "Fixação e sequestro de sessão, especialmente em implantações HTTP ou com JS malicioso na página.",
+      "correcao": "Cookie com secure (dependente de HTTPS), httponly, samesite=Lax; regeneração do ID de sessão após login bem-sucedido.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Division by zero em mediaResposta retorna NaN",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "mediaResposta retorna $soma / $qtd sem verificar qtd; se nenhum chamado tiver minutos_resposta não nulo, qtd é 0, gerando Division by zero e retorno NaN.",
+      "impacto": "Indicador de SLA corrompido no painel ('NaN min') e erro em logs/consumidores externos do valor retornado.",
+      "correcao": "Retorno condicionado: $qtd > 0 ? $soma / $qtd : 0.0. Tipo :float preservado.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Consultas sem prepared statement em tecnicoNome e verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "tecnicoNome (lib.php:69) interpola $tecnicoId e verChamado (lib.php:98) interpola $id na query. No endpoint web estão contidas pelo cast (int) do chamador, mas são assinaturas públicas consumidas por relatórios internos do ISP, que podem chamá-las sem proteção.",
+      "impacto": "Vetor latente de injeção de SQL em chamadores externos.",
+      "correcao": "Ambas as funções passaram a usar instruções preparadas com bind_param('i', ...). Contratos de retorno inalterados.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "exportarCsv escreve o CSV em disco e usa SELECT *",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 151,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 75,
+      "mecanismo": "O arquivo era gravado em EXPORT_DIR (/var/www/painel/tmp) e só então servido por readfile(), deixando o dado exposto a outros usuários do sistema no disco, com risco de arquivo estalão em exportações simultâneas; SELECT * traz mais colunas que o necessário.",
+      "impacto": "Exposição secundária dos dados exportados e instabilidade em concorrência.",
+      "correcao": "Exportação direta para a saída (php://output), sem arquivo intermediário; consulta selecionando apenas as cinco colunas do contrato. Headers e ordem por id mantidos.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Falta de proteção CSRF no formulário de login",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 36,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 78,
+      "mecanismo": "Formulário POST de login sem token CSRF; um ator capaz de fazer o cliente logado acessar uma página maliciosa pode provocar autenticação forjada.",
+      "impacto": "Autenticação sob controle de terceiro.",
+      "correcao": "Token CSRF armazenado na sessão, verificado contra o campo oculto csrf_token no POST, e regenerado em hexa aleatório após login bem-sucedido. Campos login/senha e método POST inalterados.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Algoritmo de hash MD5 em autenticar e schema (senha CHAR(32))",
+      "porque": "Migração para bcrypt/argon2 exigiria alterar o schema e repassar as senhas, quebrando a autenticação dos usuários atuais e do seed. Mantida compatibilidade; correção reportada como recomendação de evolução."
+    },
+    {
+      "o_que": "Fallback genérico 'Resolvido' em formatarStatus",
+      "porque": "O manifesto fixa exatamente os três rótulos; o else é o fallback implícito do contrato e o relatório gerencial faz correspondência por texto."
+    },
+    {
+      "o_que": "Lógica de rotuloPrioridade",
+      "porque": "É regra de negócio; o manifesto não especifica os rótulos e alterar o comportamento quebraria o relatório gerencial."
+    },
+    {
+      "o_que": "Mensagem genérica die('Falha ao conectar ao banco.')",
+      "porque": "Já não divulga informação do sistema; mudar não traria benefício de segurança e poderia alterar comportamento esperado por monitoramento."
+    },
+    {
+      "o_que": "Ordem da listagem (ORDER BY criado_em DESC)",
+      "porque": "O manifesto exige ordem por id crescente apenas no CSV; a listagem web não tem restrição de ordem declarada."
+    },
+    {
+      "o_que": "Estrutura HTML minimalista (sem tags de fechamento adicionais)",
+      "porque": "O manifesto só exige a tabela com id=\"tabela-chamados\" e a ordem das colunas; adicionar tags é melhoria cosmética não solicitada."
+    },
+    {
+      "o_que": "Fallbacks de DB_HOST, DB_NAME e DB_USER em config.php",
+      "porque": "São identificadores de infraestrutura, não segredos; o fallback preserva a implantação sem configuração de ambiente."
+    },
+    {
+      "o_que": "Definição EXPORT_DIR em config.php",
+      "porque": "Scripts externos do ISP podem lê-la; remover mudaria uma variável pública sem benefício."
+    }
+  ]
+}

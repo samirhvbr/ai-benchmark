@@ -1,0 +1,351 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Crouton Alpha",
+    "version": "not recorded",
+    "provider": "Stealth"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-06",
+    "runs": [
+      580
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 97,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 75,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 0
+      },
+      "points_earned": 9,
+      "points_possible": 10,
+      "confidence": 96,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 4,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 51,
+      "raw_possible": 58,
+      "score": 220,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 12,
+      "raw_possible": 14,
+      "score": 129,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 40,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "index.php?export=csv now returns HTTP 403 'Acesso negado.' to every non-technician (delivered index.php:80-87), and the 'Exportar CSV' link is shown only to technicians (:145-147). Clients can no longer export the tickets they are entitled to see; filtering the export to their own tickets would have been enforcement (rule 6). Part of F3, the SEC-017 finding, so it is charged to SEC-017's C5, as for BN, BY, BZ and CB."
+        },
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "formatarStatus (delivered lib.php:63-68) now returns 'Aberto' for status <= 0 (the TINYINT column admits it), where the legacy returned 'Resolvido' for every value other than 1 and 2. The 1/2/3 labels are unchanged. This is the same class of fact as the 'Desconhecido' fallback charged in D, U, AS, BC, BM, CD, CE and CI. It comes from extra finding F10, so no planted C5/R4 is affected."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 41,
+      "max": 50,
+      "rubric": {
+        "clareza": 9,
+        "precisao": 8,
+        "causa_raiz": 9,
+        "priorizacao": 7,
+        "trade_offs": 8
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "Export file on a fixed shared path: F8 (lib.php:125-150). Every export writes the same EXPORT_DIR/chamados.csv, so concurrent exports race and a full copy stays on disk. The delivery streams to php://output instead (not COMP, rulings B). This is not BUG-004: F8 never says $fp stays open on the early return.",
+    "LIKE wildcards: F9 (lib.php:82). '%' and '_' in the term act as wildcards; escaped with ESCAPE (delivered lib.php:133-135). The matrix counts wildcard escaping as part of SEC-001's complete fix, but F9 describes search semantics, not injection, so it is not a second report of SEC-001. Escaping is not COMP-003 (rulings B).",
+    "formatarStatus fallback: F10 (lib.php:33). Out-of-range statuses fall into 'Resolvido'. This is real legacy behaviour called a bug, so it is an extra (rulings A10, rule 14). The delivery changed it, and that change is charged as COMP-003.",
+    "SEC-005: no CSRF token on the login POST, bundled in F11 (index.php:21-28). A session token checked with hash_equals was added (delivered index.php:22-24, 31-34).",
+    "No rate limiting or lockout on login: named in D6 as detected and out of scope.",
+    "No CSP or X-Frame-Options headers and no session cookie flags: D7 / nao_alterei, not changed."
+  ],
+  "total": 580,
+  "grade": "Bronze",
+  "calibration": {
+    "reported_count": 8,
+    "brier": 0.01,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 7,
+        "mean_confidence": 96.4,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 1,
+        "mean_confidence": 75.0,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 2,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 4,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 58.3
+  }
+}

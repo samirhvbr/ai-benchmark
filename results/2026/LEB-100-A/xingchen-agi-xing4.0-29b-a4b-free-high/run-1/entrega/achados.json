@@ -1,0 +1,125 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Hash de senha MD5 inseguro em autenticar",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 90,
+      "mecanismo": "autenticar calculava md5($senha) e comparava in-place com o campo senha (sem sal); a senha do banco estava armazenada como MD5 e pronta para rachaduras matemáticas / rainbow tables; um atacante com dado interno reverte o valor.",
+      "impacto": "roubo de credenciais de login, bypass do painel.",
+      "correcao": "substitui password_verify por hash bcrypt via password_hash/password_verify (core PHP); seed.sql e schema.sql atualizados para VARCHAR(255); assinatura autenticar(...) preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL no filtro de título de listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 84,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "$busca vindo de GET era concatenado diretamente na cláusula LIKE (\" WHERE titulo LIKE '%\" . $busca . \"%'\"); valor como ' OR 1=1 --% injetava condição arbitrária e retornava todos os chamados.",
+      "impacto": "vazão total dos chamados de todos os clientes.",
+      "correcao": "prepared statement titulo LIKE ? com parâmetro '%'.$busca.'%'.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL na detalhe de verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "$id vindo do GET (index.php?ver=) era interpolado direto ao SQL (\"WHERE id = ' . $id\"); qualquer caller que não Castifique o id injeta na query.",
+      "impacto": "sobregravar, ligações a registros por enumeração.",
+      "correcao": "prepare('SELECT * FROM chamados WHERE id = ?') com bind i.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Vazamento de visibilidade por papel (cliente veee vários clientes)",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "linha_fim": 73,
+      "categoria": "bug",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "listarChamados não filtra por papel nem por usuario_id e index.php chama-a sem esses dados; cliente 'ana' podia ver chamados de 'bruno'. Regra negócio prevista: cliente → só seus próprios; técnico → todos.",
+      "impacto": "vazão de dados aos clientes, violação da regra de negócio.",
+      "correcao": "listarChamados agora aceita ?int userId, ?string papel; papel==='cliente' adiciona AND usuario_id = ?; index.php passa uid, papel do sessão.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS no parâmetro de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 79,
+      "categoria": "qualidade",
+      "severidade": "media",
+      "confianca": 80,
+      "mecanismo": "$busca saía do value=\"...\" e dos resultados textuais sem htmlspecialchars; valor como <img src=x onerror=alert(1)> executava nos navegadores dos stakeholders.",
+      "impacto": "cross-site scripting via campo de busca.",
+      "correcao": "htmlspecialchars($busca, ENT_QUOTES) no value e nos resultados.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Esforço N+1 no lookup de técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 92,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 75,
+      "mecanismo": "cada chamado fez query SELECT nome FROM usuarios WHERE id = ? no loop listarChamados/exportarCsv -> N+1 queries no banco para o relatório SLA.",
+      "impacto": "lentidão lineal pesada e picos de carga no banco.",
+      "correcao": "batch lookup de todos os técnicos necessários em única query WHERE id IN (...) mapeado em $techMap; resultado formatado idéntico.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Credencial DB_PASS hardcoded no config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 65,
+      "mecanismo": "fallback de senha embutido dentro config.php (N3tX@2013!prod), fonte travada no repositório.",
+      "impacto": "credencial fria no escopo do deployment.",
+      "correcao": "não corrigido — mantive config.php como está por decisão conservadora de compatibilidade com rotinas ISP dependentes de DB_* existirem como define().",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Senha DB_PASS embutida em config.php (DB_PASS fallback legado)",
+      "porque": "config.php é incluído por todas as rotinas ISP e outras assinaturas dependem que DB_* existam como define(); forçar env assume infraestrutura que não garante no prazo; mantive conectividade intacta."
+    },
+    {
+      "o_que": "exportarCsv exporta todos os chamados independentemente do papel",
+      "porque": "o manifesto define exportarCsv(mysqli) e histórico ISP (faturamento, relatório gerencial) espera todos os chamados no CSV — isto justifica a função; filtrar quebraria contrato implicitamente."
+    },
+    {
+      "o_que": "Rótulos de status de formatarStatus mantidos exatos ('Aberto','Em atendimento','Resolvido')",
+      "porque": "relatório gerencial faz correspondência textual por esses rótulos."
+    },
+    {
+      "o_que": "Função tecnicoNome mantida e assinatura preservada",
+      "porque": "não há caller externo conhecido; removi o uso direto no loop (batch interno) mas a função permanece para evitar danificar contratos tácitos."
+    }
+  ]
+}

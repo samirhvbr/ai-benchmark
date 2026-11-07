@@ -1,0 +1,165 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injecao SQL na busca via parametro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "listarChamados concatena o valor bruto de $busca na consulta com LIKE '%' . $busca . '%', sem prepared statement nem escape, permitindo UNION/extracao de dados.",
+      "impacto": "Um atacante pode ler qualquer tabela do banco, incluindo usuarios e senhas hash, via ?busca=.",
+      "correcao": "Substituída a concatenação por prepared statement (titulo LIKE ?) com bind_param. Assinatura preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "XSS refletido no parametro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 83,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "index.php imprime $busca no atributo value do input e no texto 'Resultados para:' sem htmlspecialchars.",
+      "impacto": "Execucao de JavaScript no navegador da vítima (roubo de sessao/acoes em nome do usuario).",
+      "correcao": "Saídas envolvidas com htmlspecialchars($busca, ENT_QUOTES) e htmlspecialchars($busca).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Listagem ignora visibilidade do cliente",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 93,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados executa SELECT * FROM chamados sem filtro de usuario_id, então um cliente vê chamados de terceiros, violando a regra de negócio do manifesto.",
+      "impacto": "Divulgacao de titulos, descricoes, tecnicos e status de chamados de outros clientes.",
+      "correcao": "Adicionado filtro usuario_id = ? (prepared statement) quando o papel da sessão é cliente. Assinatura preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "IDOR no detalhe do chamado (?ver=<id>)",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 102,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "verChamado carrega qualquer chamado por id sem verificar se o cliente logado é o dono (usuario_id).",
+      "impacto": "Um cliente pode ler chamados de outros clientes adivinhando o id via index.php?ver=<id>.",
+      "correcao": "Adicionada verificação de propriedade para papel cliente; retorna null quando não é o dono. Assinatura preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Export CSV ignora visibilidade do cliente",
+      "arquivo": "code/lib.php",
+      "linha": 132,
+      "linha_fim": 146,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "exportarCsv executa SELECT * FROM chamados ORDER BY id sem filtro de usuário; qualquer usuário logado, incluindo clientes, exporta todos os chamados.",
+      "impacto": "Divulgacao em massa de chamados alheios via CSV para clientes.",
+      "correcao": "Adicionado filtro usuario_id = ? para papel cliente dentro de exportarCsv, usando a sessão já iniciada. Assinatura preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisao por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Quando nenhum chamado tem minutos_resposta preenchido, $qtd fica 0 e a funcao executa return $soma / $qtd, gerando aviso e resultado invalido.",
+      "impacto": "Erro de tempo de execucao e indicador de SLA quebrado no topo do painel (round($media)).",
+      "correcao": "Retorna 0.0 quando $qtd === 0. Tipo de retorno (float) preservado.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Ausência de regeneracao de ID de sessao apos login",
+      "arquivo": "code/index.php",
+      "linha": 25,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Após autenticação bem-sucedida, $_SESSION['uid'] e $_SESSION['papel'] são definidos mas session_regenerate_id não é chamado.",
+      "impacto": "Fixação de sessão: um atacante pode autenticar uma vítima sob um ID de sessão que ele conhece e sequestrá-la.",
+      "correcao": "Adicionada session_regenerate_id(true) após definir as variáveis de sessão.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Hash de senha MD5 sem sal em autenticar",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "autenticar compara senhas com md5($senha) contra uma coluna senha CHAR(32); algoritmo quebrado e sem sal, vulnerável a brute-force offline e tabelas arco-íris.",
+      "impacto": "Se o banco vazar, as senhas dos usuários são facilmente recuperáveis.",
+      "correcao": "Não alterado. Mudar o algoritmo quebraria o login de todos os usuários existentes (hashes MD5 armazenados) e a coluna CHAR(32) é curta para hashes modernos, exigindo mudança de schema e migração de credenciais que rompe o contrato de login. Reportado como não corrigido.",
+      "corrigido": false
+    },
+    {
+      "id": "F9",
+      "titulo": "Concatenação de tecnicoId em SQL em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "tecnicoNome monta SELECT nome FROM usuarios WHERE id = \" . $tecnicoId sem prepared statement; hoje é chamado com (int), mas é injeção SQL latente se usado com valor não inteiro.",
+      "impacto": "Injeção SQL potencial em futuras chamadas diretas da função com valor não inteiro.",
+      "correcao": "Convertida para prepared statement com bind_param('i', ...). Assinatura preservada.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Credenciais embutidas em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "DB_PASS (senha do banco) e SMTP_API_KEY estão escritas no código-fonte com fallback embutido, acessíveis a quem tem leitura do repositorio.",
+      "impacto": "Acesso ao banco de produção e ao serviço de e-mail transacional.",
+      "correcao": "Não alterado. O código já suporta sobrescrita por variáveis de ambiente via getenv; remover fallbacks poderia quebrar deploios que não definem as variáveis. Reportado como não corrigido.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 de senha em autenticar (code/lib.php:15)",
+      "porque": "Mudar quebraria o login de todos os usuários existentes (hashes MD5 armazenados) e exigiria mudança de schema (senha CHAR(32)) mais migração de credenciais, rompendo o contrato de autenticação."
+    },
+    {
+      "o_que": "Credenciais embutidas em code/config.php (DB_PASS e SMTP_API_KEY)",
+      "porque": "O código já permite sobrescrita por variáveis de ambiente via getenv; remover os fallbacks poderia quebrar deploios que não definem as variáveis."
+    },
+    {
+      "o_que": "Assinaturas das funções públicas e stack (mysqli)",
+      "porque": "O manifesto declara as assinaturas como contrato; trocá-las quebra integrações externas (rotina noturna, relatório gerencial, faturamento). Nenhuma dependência externa foi adicionada."
+    },
+    {
+      "o_que": "Nomes e locais dos arquivos de code/",
+      "porque": "A avaliação compara arquivo a arquivo; nenhum arquivo foi renomeado, movido ou reescrito."
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Recursive Flint",
+    "version": "not recorded",
+    "provider": "Recursive"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-06",
+    "runs": [
+      526
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-11-06",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
+  },
+  "blind_label": "OJ",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o termo de busca era concatenado diretamente na query. Mecanismo: `$sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\";` com `$busca` recebendo `$_GET['busca']`.",
+      "rationale": "F3 at lib.php:82, category seguranca. It names the exact concatenation and its source ($_GET['busca']) into the LIKE literal, which is the planted mechanism, stated briefly. Fixed with a mysqli prepared statement and bind_param('s', '%'.$busca.'%') (delivered lib.php:100, 110-131); probe corrigida=true, so C3 full. The %/_ wildcards are not escaped (the matrix note calls that partial), but C3 follows the probe, as in the earlier verdicts. No COMP from this fix."
+    },
+    {
+      "id": "SEC-003",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The reflected XSS of $busca in the search input value (index.php:79) and in 'Resultados para:' (index.php:82) is not mentioned anywhere, and index.php is byte-identical to the legacy file."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV formula injection is not mentioned. titulo is still written raw by fputcsv (delivered lib.php:229); probe corrigida=false ('=1+1' exported)."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "Não alterado: rate limit, logout, proteção CSRF e flags de cookie de sessão — adiados por escopo/risco de quebrar integrações.",
+      "rationale": "Session fixation (no session_regenerate_id after login, index.php:24) is not reported. The non-changes entry names session cookie flags, which is a different control from regenerating the session id, so it does not name the planted smell (rulings A5). index.php is unchanged."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "half",
+        "C5": "full"
+      },
+      "report_excerpt": "verificação de senha via `md5($senha)`. Mecanismo: MD5 é não-cryptográfico, sem salt e sem hash de senha ... dump da base → credenciais reversíveis; força bruta offline trivial.",
+      "rationale": "F1 at lib.php:15-21, category seguranca, with the unsalted fast hash and offline cracking after a dump (the 'não-criptográfico' wording is imprecise but the mechanism is right). autenticar now fetches the row by login and accepts password_verify OR md5($senha) === $hash (delivered lib.php:15-26); schema.sql widens senha to VARCHAR(255) and seed.sql stores bcrypt hashes of the same passwords. It never re-hashes on login, so existing MD5 users are never migrated and the MD5 path stays open indefinitely: 'verifies bcrypt but never re-hashes on login' is C3 half (rulings A8). Widened column and re-hashed seed are not COMP-009 (rulings B); return shape ['id','nome','papel'] is preserved, so C5 full."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "credencial de produção com fallback hardcoded e chave SMTP hardcoded. Mecanismo: `define('DB_PASS', getenv('DB_PASS') ?: 'N3tX@2013!prod');` e `define('SMTP_API_KEY', 'netx-smtp-...');`",
+      "rationale": "F6 at config.php:12-15 names both planted literals. Both now come from getenv with an empty fallback (delivered config.php:11, :14) and no literal or comment keeps the secret in the code, so C3 full under the rulings (rule 11; rotation advice, absent here, does not affect C3). The report repeats the production DB password in its own prose; that is not code and is not scored here. Constant names preserved."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "half",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`verChamado` buscava por `id` sem comparar o dono (`usuario_id`) com o usuário autenticado. Resultado: qualquer usuário autenticado listava e acessava detalhes de chamados alheios.",
+      "rationale": "F2 covers lib.php:78-102 (listarChamados and verChamado) and states the IDOR of the detail route: verChamado, the function the dispatcher calls at index.php:53, loads by id without comparing the owner with the logged-in user. Located by the same function. Filed as categoria 'bug' (a 'defeito de regra de negócio'), so C1 half (rulings A3, as for N's SEC-017). The bundled finding also covers listing and CSV visibility; it maps once, to SEC-017 (rulings A1, F sc:129). Fix: verChamado keeps its signature and, when a session is active, returns null to a cliente who is not the owner (delivered lib.php:155-163); technicians and sessionless callers still get every ticket, so this is enforcement, not COMP-003. The listing and the CSV are filtered the same way (clients get their own tickets, technicians and sessionless callers get all), which the rulings treat as enforcement. mediaResposta stays global, so there is no SLA-scope COMP-003. C5 full."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`$soma / $qtd` sem verificação; com zero registros com resposta, ocorre divisão inválida.",
+      "rationale": "F4 at lib.php:116 gives the concrete path (no ticket with minutos_resposta makes $qtd 0, then $soma / $qtd); it does not say that PHP 8 throws DivisionByZeroError, but 'divisão inválida' is not wrong. Returns 0.0 for the empty set (delivered lib.php:179-181), an accepted fix; probe corrigida=true."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. The report never mentions the file handle left open on the early return. The rewritten exportarCsv closes $fp on its new error path (if ($stmt === false) { fclose($fp); return; }, delivered lib.php:217-219), and the only other early return happens before the handle exists, so the leak is gone: C3/C5 only, no C1/C2 (MATRIX 5.4)."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 85,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "`tecnicoNome` abria query dentro do loop de listagem/export ... busca do nome do técnico executada uma vez por chamado.",
+      "rationale": "F7 at lib.php:64-93 (tecnicoNome and the loop call at :89-91), category performance; it covers both the listing and the export loops, credited once (KEY note). A LEFT JOIN usuarios brings tecnico_nome in one query in listarChamados and exportarCsv (delivered lib.php:96-97, 205-206), and '-' is kept for a null technician (lines 136, 231); probe corrigida=true."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The God-dispatcher (routing, authorization, rules and HTML in index.php:41-97) is not reported; the non-changes list names 'estrutura HTML' only as part of the contract, not the smell. index.php is unchanged."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic numbers are not reported. F5 sits in formatarStatus (lib.php:33-35, within range of lib.php:28) but diagnoses another defect, the 'Resolvido' fallback, not the bare 1/2/3 and 3/4/30 literals, so it is not a report of this flaw (rulings A4). The literals remain (delivered lib.php:34-38, 50-52)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "Não alterado: textos/semântica de `rotuloPrioridade` (comportamento de produto considerado aceito).",
+      "rationale": "rotuloPrioridade appears only in the non-changes list, as 'regras', 'textos' and 'semântica' left as they are. The entry names the function but never the nesting or a simplification left undone, so it does not identify the smell (rulings A5: BH sc:80, U sc:80). The four nested ifs remain unchanged (delivered lib.php:47-66)."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "F5 (lib.php:33-35, confidence 90): formatarStatus maps every status other than 1 and 2 to 'Resolvido'. It describes real legacy behaviour that the contract covers for 1/2/3; the delivery changed the fallback to 'Desconhecido', which is charged as COMP-003 (rulings A10, B)."
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 1,
+      "detail": "formatarStatus now returns 'Desconhecido' instead of 'Resolvido' for any status outside 1/2/3 (delivered lib.php:38-41), a change to the contracted value function consumed by the management report. It comes from extra finding F5, not from a planted-flaw fix, so no C5/R4 is affected (rulings B: D, U, AS, BC, BM, CD, CE, CI)."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "expl_rubric": {
+    "clareza": 8,
+    "precisao": 7,
+    "causa_raiz": 8,
+    "priorizacao": 7,
+    "trade_offs": 5
+  },
+  "expl_note": "EXPL (step 5) is scored by a separate blind judge; the zeros here are placeholders and must be replaced by that judge's scores.",
+  "notes": "BINDING: achados.json leb block = LEB-100-A, versao_instancia 1.1, matriz_sha256 68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625, which matches the package (TAREFA.md) and mecanico.json; .leb-pacote.sha256, TAREFA.md and manifest.md are unchanged. MECHANICAL: characterization 22/22 before and after (no regression, so C4 full for every attempted flaw and PEN-002 0); probes SEC-001, BUG-001 and PERF-001 corrigida=true, SEC-008 false. EXPL: zeros, scored by a separate blind judge. JSON vs PROSE: the seven findings (F1-F7) appear in both with the same ids, severities, confidences and lines; the three non-changes match. Two small inconsistencies: the prose of F2 says the scope filter was applied to the export as well, which the JSON correcao omits (the code does it); and the checklist claims nothing in manifest.md was broken although formatarStatus now returns 'Desconhecido' for out-of-range statuses (charged COMP-003 from extra F5). JUDGMENT CALLS AND HESITATIONS: (1) SEC-017: F2 is located at lib.php verChamado/listarChamados rather than at the dispatcher line index.php:53; credited because verChamado is the function the planted line calls and the matrix evidence names, and because the finding states the detail-route IDOR mechanism; C1 half for categoria 'bug' (rulings A3). The finding also bundles listing and CSV visibility; mapped once to SEC-017, no separate extras for those parts (rulings A1). Session-scoped filtering in verChamado, listarChamados and exportarCsv, with technicians and sessionless callers still seeing every ticket and mediaResposta left global, is enforcement, not COMP-003 (rulings B, rule 6). (2) SEC-014 C3 half: password_verify plus a permanent MD5 fallback with no re-hash on login, so the transparent migration the matrix requires never happens (rulings A8, 'never re-hashes'). (3) SEC-001 C2 full on a brief mechanism (concatenation of $_GET['busca'] into the LIKE literal, no payload described); C3 full by the probe although %/_ are not escaped (rulings A7/F2). (4) SEC-015 C2 full on a brief mechanism; C3 full because both literals left the code with an empty fallback; the report itself repeats the production DB password in prose, not in code, so not counted against C3. (5) BUG-001 C2 full although it says 'divisão inválida' instead of DivisionByZeroError. (6) BUG-004 scored as a silent fix: the rewritten error path closes $fp. (7) SEC-013: the non-change 'flags de cookie de sessão' is not session-id regeneration, so none. (8) CLN-007: the non-change names rotuloPrioridade's rules and texts but never the nesting, so R1 none (rulings A5). (9) ARCH-009: F5 at formatarStatus describes the fallback, not the magic numbers, so none (rulings A4). PEN-001 = 0: checked the LEFT JOIN placeholder ('-' kept via ?? '-'), the unqualified ORDER BY id in exportarCsv after the JOIN (resolves to the select-list c.id; the CSV is produced, per the SEC-008 probe and the green characterization), the login timing difference and the non-constant-time md5 comparison of the migration (not PEN-001 per rulings C), and the now-mandatory DB_PASS/SMTP_API_KEY environment variables (a deployment requirement, not PEN-001). Also noted, not scored: tecnicoNome and verChamado were moved to prepared statements (unreported hardening); F1 mentions the missing login rate limit inside the SEC-014 finding (bundled, not a separate finding); the seed gives ana/bruno and carla/diego identical bcrypt strings (test data, not a defect). No false positives and no decoy hits (nothing on exec/system or on indexes).",
+  "expl_justification": {
+    "clareza": "Every finding uses the same short template (Onde / O que é / Mecanismo / Impacto e severidade / Confiança / O que foi feito), and the summary, decisions and checklist are easy to scan. It is held back from 'impecável' by a few loose phrasings (for example 'MD5 é não-cryptográfico, sem salt e sem hash de senha', 'JOIN LEFT') and by thin entries such as F4 and F5, which drop the 'O que é' line.",
+    "precisao": "The diagnoses and fixes are technically sound and anchored to functions, lines and code snippets (prepared statement with 's'/'i' binds, password_verify with MD5 fallback, VARCHAR(255), LEFT JOIN for the N+1). It has imprecisions: it calls MD5 'non-cryptographic', mixes the missing rate limit into the MD5 mechanism, and calls the division by zero only 'divisão inválida' without saying what PHP 8 actually does. It also does not go deeper, for example on rehashing at login or rotating secrets already committed.",
+    "causa_raiz": "Most findings show the real cause and how it fails: the unfiltered 'SELECT * FROM chamados' and the id lookup that never compares usuario_id (F2), the quoted concatenation of $_GET['busca'] (F3), the catch-all else branch (F5), and the query inside the loop (F7). F4 and F6 only name the cause, and their consequences are barely followed through.",
+    "priorizacao": "Findings are ordered by severity, with the four 'alta' items first and the three 'baixa' ones after, and each has a confidence score. Within each tier there is no ranking, and effort and risk appear only in the deferral note in Decisões, not as part of a severity x effort x risk weighing.",
+    "trade_offs": "The Decisões section names real deferrals (rate limit, logout, CSRF, cookie flags) and gives a reason (risk of breaking integrations), and the MD5 fallback is an implicit compatibility-versus-security choice. No alternatives are compared, and the costs are not discussed, for example the empty getenv fallback or how long the legacy MD5 path should stay."
+  }
+}

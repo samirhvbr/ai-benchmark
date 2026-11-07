@@ -1,0 +1,253 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL em listarChamados via concatenação de $busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 84,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A variável $busca (vinda de $_GET['busca']) era concatenada diretamente na query: $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\"; permitindo injeção de SQL arbitrário via parâmetro busca (ex.: '% UNION SELECT senha FROM usuarios--).",
+      "impacto": "Leitura/escrita total no banco, bypass de autenticação, exfiltração de senhas (hashes MD5).",
+      "correcao": "Reescrita com prepared statements e bind_param. Busca usa LIKE ? com parâmetro %termo%. Adicionado JOIN com usuarios para trazer tecnico_nome em uma única query (resolve também o N+1). Mantida a assinatura original com parâmetros opcionais para compatibilidade.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL em verChamado via concatenação de $id",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "linha_fim": 101,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "O $id (vindo de $_GET['ver']) era concatenado: $res = $db->query('SELECT * FROM chamados WHERE id = ' . $id); Embora venha de cast (int) no index.php, o padrão de concatenação é perigoso e a função podia ser chamada internamente sem cast.",
+      "impacto": "Injeção SQL se a função for chamada sem validação prévia; vazamento de chamados alheios.",
+      "correcao": "Prepared statement com bind_param('i', $id). Adicionada verificação de visibilidade (ver F5).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL em tecnicoNome via concatenação de $tecnicoId",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "linha_fim": 71,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Concatenação direta do $tecnicoId: $res = $db->query('SELECT nome FROM usuarios WHERE id = ' . $tecnicoId); O ID vem do banco (coluna tecnico_id), mas o padrão é inseguro e a função é pública.",
+      "impacto": "Se um atacante conseguir corromper tecnico_id no banco (via outra injeção), executa SQL arbitrário.",
+      "correcao": "Prepared statement com bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Credencial de banco hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "define('DB_PASS', getenv('DB_PASS') ?: 'N3tX@2013!prod'); — senha de produção no código-fonte.",
+      "impacto": "Vazamento de credencial em repositório, backups, logs, diffs. Qualquer pessoa com acesso ao código tem a senha do banco de produção.",
+      "correcao": "Removido o fallback; agora define('DB_PASS', getenv('DB_PASS') ?: '');. A senha deve vir de variável de ambiente.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Chave de API SMTP hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "define('SMTP_API_KEY', 'netx-smtp-9f83e2c1a7b64d05'); — segredo em texto plano no código.",
+      "impacto": "Uso indevido da conta de e-mail transacional, reputação de IP, custos financeiros.",
+      "correcao": "Removido o valor hardcoded; agora define('SMTP_API_KEY', getenv('SMTP_API_KEY') ?: '');.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Hash de senha em MD5 na autenticação",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "md5($senha) usado para verificar credenciais. MD5 é colidível, rápido e sem salt — permite rainbow tables, força bruta e colisões.",
+      "impacto": "Se o banco vazar, senhas são recuperadas em segundos. Não há salt, então usuários com a mesma senha têm o mesmo hash.",
+      "correcao": "Não corrigido. A alteração quebraria a autenticação de todos os usuários existentes (seed.sql usa MD5). Requer migração planejada (rehash no login, coluna nova, etc.), fora do escopo de evoluir sem reescrever. Reportado para planejamento futuro.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Violação da regra de visibilidade: cliente vê chamados de outros",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados e verChamado não filtravam por usuario_id quando o papel era cliente. Um cliente logado via ?busca= ou ?ver= acessava chamados de qualquer usuario_id.",
+      "impacto": "Vazamento de dados sensíveis entre clientes (títulos, descrições, status). Violação de LGPD/contrato.",
+      "correcao": "Adicionados parâmetros opcionais $usuarioId e $papel em ambas as funções. Quando $papel === 'cliente', a query inclui AND c.usuario_id = ?. O index.php passa $uid e $papel da sessão. Assinaturas originais preservadas (parâmetros com default null).",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "return $soma / $qtd; sem checar $qtd > 0. Se não houver chamados com minutos_resposta, $qtd = 0 → DivisionByZeroError (PHP 8+) ou INF (PHP 7).",
+      "impacto": "Erro 500 na listagem ou valor INF exibido no painel.",
+      "correcao": "return $qtd > 0 ? $soma / $qtd : 0.0;",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "N+1 queries em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 88,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Loop executava tecnicoNome($db, ...) para cada chamado → 1 query principal + N queries de técnico.",
+      "impacto": "Latência linear no número de chamados. Com 1000 chamados = 1001 queries.",
+      "correcao": "JOIN LEFT JOIN usuarios u ON c.tecnico_id = u.id na query principal. tecnico_nome vem no result set.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "N+1 queries em exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 136,
+      "linha_fim": 137,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Mesmo padrão: loop chamando tecnicoNome por linha.",
+      "impacto": "Exportação lenta e carga desnecessária no banco.",
+      "correcao": "Mesma estratégia: JOIN na query única. tecnico_nome processado no loop sem query extra.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Race condition e exposição de arquivo temporário em exportarCsv",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Escrita em /var/www/painel/tmp/chamados.csv (caminho fixo) → readfile(). Duas requisições simultâneas corrompem o arquivo uma da outra; o arquivo fica acessível via web se o diretório for público.",
+      "impacto": "CSV corrompido, vazamento de dados entre usuários, possível exposição via URL direta.",
+      "correcao": "Streaming direto para php://output (stdout do PHP). Sem arquivo temporário, sem race, sem exposição. Headers enviados antes da escrita.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Ausência de session_regenerate_id no login",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "linha_fim": 24,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Após autenticação, a sessão mantinha o mesmo ID. Um atacante que force um SID conhecido (session fixation) assume a sessão da vítima após login.",
+      "impacto": "Tomada de conta (account takeover).",
+      "correcao": "Adicionado session_regenerate_id(true); logo após validação das credenciais.",
+      "corrigido": true
+    },
+    {
+      "id": "F13",
+      "titulo": "Cookies de sessão sem flags de segurança",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "session_start() sem configuração prévia de session.cookie_httponly, session.cookie_secure, session.use_strict_mode.",
+      "impacto": "Sessão acessível via JavaScript (XSS → roubo de sessão); transmitida em HTTP claro; aceita SIDs não gerados pelo servidor.",
+      "correcao": "Adicionado antes do session_start(): ini_set('session.cookie_httponly', '1'); ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) ? '1' : '0'); ini_set('session.use_strict_mode', '1');",
+      "corrigido": true
+    },
+    {
+      "id": "F14",
+      "titulo": "Uso de mysqli::query sem prepared statement em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 109,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "Query estática sem parâmetros, mas usa query() em vez de prepare(). Inconsistência com o resto do código corrigido.",
+      "impacto": "Baixo risco prático (sem input do usuário), mas padrão inseguro e dificulta auditoria.",
+      "correcao": "Não corrigido. A query não recebe parâmetros externos; o custo de mudar (prepared statement + loop fetch) não justifica o benefício marginal. Mantido como está para minimizar diff.",
+      "corrigido": false
+    },
+    {
+      "id": "F15",
+      "titulo": "Lógica de rotuloPrioridade aninhada e difícil de manter",
+      "arquivo": "code/lib.php",
+      "linha": 40,
+      "linha_fim": 59,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "if/else encadeados 4 níveis. Funciona, mas propenso a erros em futuras alterações de SLA.",
+      "impacto": "Dívida técnica; risco de bug em mudança de regra.",
+      "correcao": "Não corrigido. A função é pura (sem side effects), testável isoladamente, e o contrato de saída (strings exatas) é consumido pelo relatório gerencial. Refatorar traria risco de regressão sem ganho funcional imediato.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash MD5 em autenticar",
+      "porque": "Quebraria login de todos os usuários atuais. Requer migração escalonada (coluna nova, rehash no login, flag de versão), fora do escopo."
+    },
+    {
+      "o_que": "mysqli::query em mediaResposta",
+      "porque": "Query estática, sem parâmetros. Risco prático nulo. Mudança só por consistência aumentaria superfície de diff."
+    },
+    {
+      "o_que": "Lógica aninhada de rotuloPrioridade",
+      "porque": "Função pura, contrato de strings fixo (consumido por relatório externo). Refatoração traria risco de regressão sem valor imediato."
+    },
+    {
+      "o_que": "Constante EXPORT_DIR em config.php",
+      "porque": "Não é mais usada (CSV agora streamado), mas mantida para não quebrar outros scripts que possam depender da constante."
+    },
+    {
+      "o_que": "Estrutura de tabelas HTML / IDs / classes",
+      "porque": "Contrato do manifest.md exige id=\"tabela-chamados\", ordem de colunas, links index.php?ver=. Preservados integralmente."
+    },
+    {
+      "o_que": "Nomes de parâmetros GET (busca, ver, export)",
+      "porque": "Contrato externo (favoritos, links, scripts de integração). Preservados."
+    },
+    {
+      "o_que": "Formato do CSV (cabeçalho, ordem, rótulos de status)",
+      "porque": "Contrato do manifest.md. Preservado — formatarStatus e fputcsv mantêm saída idêntica."
+    },
+    {
+      "o_que": "Assinaturas públicas das funções",
+      "porque": "Todos os manifest.md mantidos: parâmetros originais com defaults, tipos de retorno, nomes. Novos parâmetros são opcionais (null default)."
+    }
+  ]
+}

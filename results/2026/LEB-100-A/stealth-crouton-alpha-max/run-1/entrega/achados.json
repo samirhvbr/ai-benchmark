@@ -1,0 +1,193 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL em listarChamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 98,
+      "mecanismo": "$busca de $_GET concatenada em 'WHERE titulo LIKE %...%' sem prepared statement; ' OR '1'='1 quebra a string e permite UNION/exfiltração",
+      "impacto": "Leitura arbitrária do banco por qualquer usuário autenticado",
+      "correcao": "prepare/bind_param + LIKE ? ESCAPE '\\' em listarChamados; prepare/bind_param em verChamado e tecnicoNome",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "XSS refletido via parâmetro busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 97,
+      "mecanismo": "$busca ecoado sem htmlspecialchars em value=\"...\" e em 'Resultados para:'; payload\"><script> executa no navegador da vítima",
+      "impacto": "Roubo de sessão e ações em nome da vítima",
+      "correcao": "htmlspecialchars(ENT_QUOTES, UTF-8) em atributo e corpo; demais saídas com ENT_QUOTES",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "IDOR/ausência de autorização em ver/listar/exportar",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 96,
+      "mecanismo": "$uid/$papel nunca usados; qualquer cliente autenticado enumera ?ver=<id> e ?export=csv e lista todos os chamados de outros clientes",
+      "impacto": "Exposição total de chamados, descrições e técnicos a qualquer cliente",
+      "correcao": "Técnico vê tudo; cliente só usuario_id==uid: ver com 403, listagem filtrada em PHP, export=csv só para técnico",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas com MD5 e coluna CHAR(32)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "md5() sem salt é quebrado por rainbow tables/GPU; CHAR(32) impede armazenar bcrypt/argon2 (~60 chars)",
+      "impacto": "Recuperação trivial de senhas a partir de vazamento do banco",
+      "correcao": "autenticar() aceita moderno via password_verify com upgrade transparente p/ password_hash; schema CHAR(32)->VARCHAR(255); seed MD5 migrado no 1o login",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Segredos hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS com fallback literal e SMTP_API_KEY hardcoded versionados permitem acesso persistente ao MySQL e ao gateway de e-mail",
+      "impacto": "Comprometimento de credenciais de produção",
+      "correcao": "Só via getenv('DB_PASS')/getenv('SMTP_API_KEY'); aviso de rotação; valor antigo não reproduzido",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "mediaResposta divide por zero",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "$soma/$qtd com $qtd=0 (nenhum chamado respondido) gera DivisionByZeroError fatal no PHP 8",
+      "impacto": "Queda da listagem quando não há respostas",
+      "correcao": "SELECT AVG(minutos_resposta) e retorno 0.0 se NULL",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "N+1 tecnicoNome() por linha",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 137,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 99,
+      "mecanismo": "listarChamados e exportarCsv chamam tecnicoNome (1 SELECT) por chamado, totalizando N+1 queries",
+      "impacto": "Degradação O(N) e timeouts sob volume",
+      "correcao": "LEFT JOIN usuarios com alias tecnico_nome; função helper mantida parametrizada mas fora do loop",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "CSV gravado em arquivo fixo em disco",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "EXPORT_DIR/chamados.csv único para todos, nunca limpo, race condition e exposição em disco",
+      "impacto": "Vazamento de CSV completo e DoS por colisão",
+      "correcao": "Streaming direto php://output mantendo cabeçalho e ORDER BY id; constante EXPORT_DIR preservada",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "LIKE não escapa % _ \\ na busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "% casa tudo e _ casa um caractere, permitindo enumeração sem conhecer o termo",
+      "impacto": "Busca incorreta e enumeração de dados",
+      "correcao": "Escape de \\ % _ com ESCAPE '\\' no LIKE",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "formatarStatus retorna Resolvido para valor inválido",
+      "arquivo": "code/lib.php",
+      "linha": 33,
+      "linha_fim": 34,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 70,
+      "mecanismo": "else retorna 'Resolvido' para 0, 99 ou corrupção, mascarando erro no relatório gerencial por match exato",
+      "impacto": "Dado incorreto silencioso ao consumidor do contrato",
+      "correcao": "match explícito 1/2/3 com rótulos do manifesto preservados",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "Sessão sem regenerate e login sem CSRF",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 28,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 75,
+      "mecanismo": "session_id fixo antes/depois do login permite session fixation; POST de login sem token permite CSRF-for-login",
+      "impacto": "Hijack de sessão autenticada",
+      "correcao": "session_regenerate_id(true) anônimo e pós-login; csrf_token com hash_equals no form de login",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas públicas e stack mysqli",
+      "porque": "Manifesto exige mysqli e as 7 funções; trocar p/ PDO/framework quebraria consumidores externos. Prepare/bind já resolve em mysqli"
+    },
+    {
+      "o_que": "Filtro de dono em PHP em vez de WHERE em listarChamados",
+      "porque": "listarChamados(mysqli, string='') não tem parâmetro de usuário; adicionar quebraria chamadores. Filtro em index.php cumpre a regra sem quebrar contrato"
+    },
+    {
+      "o_que": "Cliente bloqueado no export=csv (403) em vez de CSV parcial",
+      "porque": "exportarCsv(mysqli) não tem filtro; CSV completo p/ cliente violaria confidencialidade. Lib direta segue p/ rotina noturna"
+    },
+    {
+      "o_que": "rotuloPrioridade, HTML id=tabela-chamados e coluna/Tecnico",
+      "porque": "Sem evidência de bug; rótulos/SLA e estrutura HTML são contrato do manifesto"
+    },
+    {
+      "o_que": "seed.sql com MD5('senha123')/MD5('tecmaster')",
+      "porque": "Hashes de teste mantidos; autenticação migra p/ password_hash no 1o login, sem quebra de ana/bruno/carla/diego"
+    },
+    {
+      "o_que": "Rate-limit/lockout no login",
+      "porque": "Detectado mas fora do escopo: exigiria decisão de produto e estado compartilhado; próximo passo recomendado, com login genérico já aplicado"
+    },
+    {
+      "o_que": "CSP/X-Frame-Options e cookie flags de sessão",
+      "porque": "Cabeçalhos dependem de servidor/proxy e podem quebrar HTML declarado; não inseridos inline"
+    }
+  ]
+}

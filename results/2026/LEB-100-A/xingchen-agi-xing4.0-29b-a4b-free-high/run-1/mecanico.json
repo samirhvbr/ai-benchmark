@@ -1,0 +1,99 @@
+{
+  "leb_spec": "1.1.0",
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "submission": "results/2026/LEB-100-A/xingchen-agi-xing4.0-29b-a4b-free-high/run-1/entrega/code",
+  "generated_by": "leb_harness.py — pipeline mecânico (PROTOCOL §5 passos 1-3,6)",
+  "timing_s": {
+    "characterization_baseline": 17.7,
+    "characterization_submission": 8.4,
+    "probes": 8.1,
+    "total": 34.2
+  },
+  "characterization": {
+    "baseline": {
+      "passed": 22,
+      "failed": 0,
+      "ok": true,
+      "elapsed_s": 17.7,
+      "_stderr": ""
+    },
+    "submission": {
+      "passed": 16,
+      "failed": 6,
+      "ok": false,
+      "elapsed_s": 8.4,
+      "_stderr": ""
+    },
+    "regression": true
+  },
+  "probes": [
+    {
+      "id": "SEC-001",
+      "difficulty": "Fácil",
+      "corrigida": false,
+      "msg": "a entrega lançou mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LIKE ? ORDER BY criado_em DESC' at line 1"
+    },
+    {
+      "id": "SEC-008",
+      "difficulty": "Difícil",
+      "corrigida": false,
+      "msg": "a entrega lançou TypeError: array_keys(): Argument #1 ($array) must be of type array, null given"
+    },
+    {
+      "id": "BUG-001",
+      "difficulty": "Moderada",
+      "corrigida": true,
+      "msg": "média com conjunto vazio retornou 0 sem erro"
+    },
+    {
+      "id": "PERF-001",
+      "difficulty": "Moderada",
+      "corrigida": false,
+      "msg": "a entrega lançou ArgumentCountError: The number of elements in the type definition string must match the number of bind variables"
+    }
+  ],
+  "difficulty_corrected": {
+    "Fácil": {
+      "probed": 1,
+      "corrected": 0
+    },
+    "Difícil": {
+      "probed": 1,
+      "corrected": 0
+    },
+    "Moderada": {
+      "probed": 2,
+      "corrected": 1
+    }
+  },
+  "mechanical_criteria": [
+    {
+      "id": "SEC-001",
+      "C3_corrigiu": false,
+      "C4_sem_regressao": false
+    },
+    {
+      "id": "SEC-008",
+      "C3_corrigiu": false,
+      "C4_sem_regressao": false
+    },
+    {
+      "id": "BUG-001",
+      "C3_corrigiu": true,
+      "C4_sem_regressao": false
+    },
+    {
+      "id": "PERF-001",
+      "C3_corrigiu": false,
+      "C4_sem_regressao": false
+    }
+  ],
+  "pending_judge": [
+    "passo 4: matching relatório×matriz (C1/C2 achou/explicou, iscas→PEN-004)",
+    "passo 5: rubrica EXPL às cegas",
+    "COMP: atribuição fina de violação de superfície (hoje surge como regressão na caracterização)",
+    "calibração (Brier) — depende dos achados reportados (passo 4)",
+    "normalização final e TOTAL/1000 (SCORING §4/§7)"
+  ]
+}

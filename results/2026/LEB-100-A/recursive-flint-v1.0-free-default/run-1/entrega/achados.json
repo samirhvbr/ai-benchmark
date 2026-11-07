@@ -1,0 +1,121 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F2",
+      "titulo": "Ausência de controle de escopo nas consultas",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 102,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "listarChamados executava SELECT sem condição de dono e verChamado buscava por id sem checar propriedade; qualquer cliente autenticado podia listar e abrir chamados de terceiros.",
+      "impacto": "Exposição de dados entre clientes e violação da regra de negócio de visibilidade.",
+      "correcao": "Filtro por escopo (uid/papel) nas consultas; cliente recebe apenas chamados com usuario_id = uid; técnico sem filtro.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "SQL Injection no filtro de busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 99,
+      "mecanismo": "A entrada de busca era concatenada na query SQL ('WHERE titulo LIKE '...' . $busca . '%'), permitindo injeção.",
+      "impacto": "Entrada do usuário podia alterar a query executada.",
+      "correcao": "Prepared statement com bind para o LIKE.",
+      "corrigido": true
+    },
+    {
+      "id": "F1",
+      "titulo": "Falha na autenticação com MD5",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 21,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "A senha era processada com md5() e comparada em query preparada, sem salt nem hash moderno nem rate limit.",
+      "impacto": "Dump da base expõe credenciais; força bruta offline trivial.",
+      "correcao": "password_verify com fallback para MD5 legado; coluna de senha ampliada para VARCHAR(255); seed com hash bcrypt.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Segredos embutidos no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Senha de produção com fallback hardcoded e chave SMTP hardcoded no código.",
+      "impacto": "Credenciais e segredo no repositório.",
+      "correcao": "Leitura via getenv com fallback vazio; constantes preservadas.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero na média de resposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "mediaResposta executava $soma / $qtd sem checar contagem; com zero registros com resposta ocorria divisão inválida.",
+      "impacto": "Painel falhava ao calcular média quando não havia respondidos.",
+      "correcao": "Retorno de 0.0 quando não há registros com resposta.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Rótulo de status inválido tratado como Resolvido",
+      "arquivo": "code/lib.php",
+      "linha": 33,
+      "linha_fim": 35,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "O ramo else final aceitava qualquer status distinto de 1 e 2 como 'Resolvido'.",
+      "impacto": "Status fora do contrato era exibido como resolvido no painel e no CSV.",
+      "correcao": "Comparações explícitas com retorno 'Desconhecido' fora do contrato.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Consultas adicionais na listagem/exportação (N+1)",
+      "arquivo": "code/lib.php",
+      "linha": 64,
+      "linha_fim": 93,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "A função tecnicoNome executava query dentro do loop de listagem/export, gerando N+1 consultas.",
+      "impacto": "Listagens com muitos chamados degradavam a performance.",
+      "correcao": "JOIN LEFT para trazer tecnico_nome em uma única consulta.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Camada de acesso a dados (mysqli) e demais assinaturas públicas do manifesto",
+      "porque": "Restrição da tarefa (seção 6) e necessidade de preservar integração com scripts do ISP."
+    },
+    {
+      "o_que": "Regras e textos de rotuloPrioridade e semântica existente de status",
+      "porque": "Comportamento de produto considerado aceito e passível de mudança futura controlada."
+    },
+    {
+      "o_que": "Proteções de autenticação fora do escopo imediato (rate limit, logout, CSRF, flags de cookie de sessão)",
+      "porque": "Adiadas para evitar quebra de integração sem ampliar o escopo da entrega."
+    }
+  ]
+}
