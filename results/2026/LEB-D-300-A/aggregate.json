@@ -5997,6 +5997,99 @@
       }
     },
     {
+      "agent": "nvidia-nemotron-3-ultra-550b-a55b-free-high",
+      "score": 284,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 0,
+        "BUG": 51,
+        "PERF": 95,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 38
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 10.4,
+      "tokens": {
+        "input": 363391,
+        "output": 13612,
+        "cache": 4519904,
+        "total": 4905801
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 284.0,
+          "low": 284.0,
+          "high": 284.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 284.0,
+          "low": 284.0,
+          "high": 284.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 1,
+        "median": 284,
+        "min": 284,
+        "max": 284
+      },
+      "runs": [
+        {
+          "run": 2,
+          "total": 284,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 10.4,
+          "tokens": {
+            "input": 363391,
+            "output": 13612,
+            "cache": 4519904,
+            "total": 4905801
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3 Ultra",
+        "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 284 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 10 minutes, and it did not break a behavior the public tests protect (compatibility 100). Performance was the strongest area (95 of 213), then bug fixing (51 of 213), architecture (0 of 283) and clean code (0 of 141). The report was rated 38 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts none, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 284 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 10 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Desempenho foi a área mais forte (95 de 213), depois corrigir bugs (51 de 213), arquitetura (0 de 283) e código limpo (0 de 141). O relatório teve 38 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços none, medium e high para ele, então high é o máximo que ele pôde pedir."
+      }
+    },
+    {
       "agent": "gemma-4-31b-high",
       "score": 223,
       "grade": "Reprovada",
@@ -6139,6 +6232,138 @@
       "comment": {
         "en": "Five runs between 192 and 252, mean 223 with a 95% interval of 202 to 244, all Reprovada. All five completed inside the 90-minute budget, at about US$ 0.05 (the client's own estimate) and 14 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (53 of 213 on average), then architecture (23 of 283), performance (13 of 213) and clean code (0 of 141). The reports were rated 33 to 35 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
         "pt_BR": "Cinco execuções entre 192 e 252, média 223 com intervalo de 95% de 202 a 244, todas Reprovada. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,05 (estimativa do próprio cliente) e 14 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (53 de 213 em média), depois arquitetura (23 de 283), desempenho (13 de 213) e código limpo (0 de 141). Os relatórios tiveram de 33 a 35 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+      }
+    },
+    {
+      "agent": "apodex-apodex-1.1-mini-free-high",
+      "score": 220,
+      "grade": "Reprovada",
+      "runs_count": 4,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 11,
+        "BUG": 43,
+        "PERF": 34,
+        "CLN": 2,
+        "COMP": 100,
+        "EXPL": 29
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 55.8,
+      "tokens": {
+        "input": 224734,
+        "output": 62185,
+        "cache": 11310688,
+        "total": 11597608
+      },
+      "statistics": {
+        "scheduled": 4,
+        "quality": {
+          "n": 4,
+          "systems": 1,
+          "mean": 220.0,
+          "low": 159.5,
+          "high": 280.5
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 4,
+          "systems": 1,
+          "mean": 220.0,
+          "low": 159.5,
+          "high": 280.5
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 4,
+          "scheduled": 4,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 4,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 162,
+        "min": 157,
+        "max": 298
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 298,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 33.7,
+          "tokens": {
+            "input": 196488,
+            "output": 67921,
+            "cache": 14626176,
+            "total": 14890585
+          }
+        },
+        {
+          "run": 2,
+          "total": 162,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 60.7,
+          "tokens": {
+            "input": 162861,
+            "output": 60414,
+            "cache": 7147968,
+            "total": 7371243
+          }
+        },
+        {
+          "run": 3,
+          "total": 263,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 49.9,
+          "tokens": {
+            "input": 311860,
+            "output": 66466,
+            "cache": 11261760,
+            "total": 11640086
+          }
+        },
+        {
+          "run": 4,
+          "total": 157,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 78.7,
+          "tokens": {
+            "input": 227728,
+            "output": 53940,
+            "cache": 12206848,
+            "total": 12488516
+          }
+        }
+      ],
+      "model": {
+        "name": "Apodex 1.1 Mini",
+        "id": "apodex/apodex-1.1-mini",
+        "provider": "Apodex",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "Four runs of a case of five, between 157 and 298, mean 220 with a 95% interval of 160 to 280, all Reprovada. All four completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 56 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (43 of 213 on average), then performance (34 of 213), architecture (11 of 283) and clean code (2 of 141). The reports were rated 0 to 40 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The fifth run is judged but not settled yet, so the figures will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through Novita AI's own API, where the model is listed at no price; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+        "pt_BR": "Quatro execuções de um caso de cinco, entre 157 e 298, média 220 com intervalo de 95% de 160 a 280, todas Reprovada. As quatro terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 56 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (43 de 213 em média), depois desempenho (34 de 213), arquitetura (11 de 283) e código limpo (2 de 141). Os relatórios tiveram de 0 a 40 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. A quinta execução foi julgada mas ainda não foi decidida, então os números vão mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela API própria da Novita AI, onde o modelo consta sem preço; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
       }
     },
     {
@@ -6428,6 +6653,99 @@
       "comment": {
         "en": "Five runs between 118 and 164, mean 152 with a 95% interval of 134 to 163, all Reprovada. All five completed inside the 90-minute budget, at about US$ 0.12 (the client's own estimate) and 16 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Bug fixing was the strongest area (27 of 213 on average), then performance (0 of 213), architecture (0 of 283) and clean code (0 of 141). The reports were rated 0 to 34 of 50. Penalties: run 4 lost 5 points for reporting something that is not a flaw. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
         "pt_BR": "Cinco execuções entre 118 e 164, média 152 com intervalo de 95% de 134 a 163, todas Reprovada. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,12 (estimativa do próprio cliente) e 16 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). Corrigir bugs foi a área mais forte (27 de 213 em média), depois desempenho (0 de 213), arquitetura (0 de 283) e código limpo (0 de 141). Os relatórios tiveram de 0 a 34 de 50. Penalidades: a execução 4 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3-nano-omni-30b-a3b-free-max",
+      "score": 113,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 0,
+        "BUG": 0,
+        "PERF": 0,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 33
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 7.0,
+      "tokens": {
+        "input": 109491,
+        "output": 5998,
+        "cache": 2310448,
+        "total": 2458575
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 113.0,
+          "low": 113.0,
+          "high": 113.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 113.0,
+          "low": 113.0,
+          "high": 113.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 1,
+        "median": 113,
+        "min": 113,
+        "max": 113
+      },
+      "runs": [
+        {
+          "run": 2,
+          "total": 113,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 7.0,
+          "tokens": {
+            "input": 109491,
+            "output": 5998,
+            "cache": 2310448,
+            "total": 2458575
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3 Nano Omni",
+        "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "max",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 113 (Reprovada). It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 7 minutes, and it did not break a behavior the public tests protect (compatibility 100). No area scored: bug fixing (0 of 213), performance (0 of 213), architecture (0 of 283) and clean code (0 of 141). The report was rated 33 of 50. Penalties: run 2 lost 20 points for a broken behavior no fix was blamed for. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts high and max for it, so max is the most it could ask for.",
+        "pt_BR": "Uma execução de um caso de cinco fez 113 (Reprovada). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 7 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Nenhuma área pontuou: corrigir bugs (0 de 213), desempenho (0 de 213), arquitetura (0 de 283) e código limpo (0 de 141). O relatório teve 33 de 50. Penalidades: a execução 2 perdeu 20 pontos por um comportamento quebrado sem um conserto culpado. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (o endpoint que respondeu à sonda do laboratório era o da NVIDIA); o cliente define os esforços high e max para ele, então max é o máximo que ele pôde pedir."
       }
     },
     {

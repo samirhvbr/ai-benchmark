@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.303`
+**Versão atual:** `0.2.304`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.304` — 2026-11-07 — LEB-D-300-A's aggregate adds three configurations of the free survey: NVIDIA Nemotron 3 Ultra at high (284), Apodex 1.1 Mini at high (four runs, mean 220) and NVIDIA Nemotron 3 Nano Omni at max (113)
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 51 to 54
+  configurations; the other 51 entries are unchanged, reading included.
+- Two OpenRouter free variants, no provider pinned (the free pool is shared), each at the highest effort the client defines for it: NVIDIA Nemotron 3 Ultra at `high` 284 and NVIDIA Nemotron 3 Nano Omni at `max` 113, one run each (one earlier
+  attempt of each was lost), both Reprovada. An earlier Nano Omni run at `high` is not published, because the client offers `max`.
+- Apodex 1.1 Mini through Novita AI's own API, where the model is listed at no price: four runs at `high`, the highest effort the client defines for it (298, 162, 263 and 157; mean 220, interval 160 to 280, all Reprovada). A fifth run is judged
+  but waits for a decision and is not counted yet, so the four are numbered 1 to 4 (2 to 5 in the lab's own records) and the figure will move when the fifth joins.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. Configurations whose run waits for a decision are not in it yet. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.303` — 2026-11-07 — LEB-S-300-A's aggregate adds three configurations of the free survey: Crouton Alpha at max (945, Platinum), Apodex 1.1 Mini at high (five runs, mean 439, Bronze) and NVIDIA Nemotron 3 Nano Omni at max (122)
 
