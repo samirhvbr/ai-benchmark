@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.302`
+**Versão atual:** `0.2.303`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.303` — 2026-11-07 — LEB-S-300-A's aggregate adds three configurations of the free survey: Crouton Alpha at max (945, Platinum), Apodex 1.1 Mini at high (five runs, mean 439, Bronze) and NVIDIA Nemotron 3 Nano Omni at max (122)
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json`, its section of `results/README.md` and the Results paragraph of the instance README, written by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private
+  archive. The aggregate goes from 21 to 24 configurations; the other 21 entries are unchanged, reading included.
+- Crouton Alpha (945, Platinum, 31 minutes, one run; one earlier attempt lost) and NVIDIA Nemotron 3 Nano Omni (122, Reprovada, 2 minutes, one run) through OpenRouter's free variants, no provider pinned (the free pool is shared), each at the highest
+  effort the client defines for it (`max`). Crouton is a stealth model: OpenRouter withholds its maker and can rename or withdraw it without notice. An earlier Nano Omni run at `high` is not published, because the client offers `max`.
+- Apodex 1.1 Mini through Novita AI's own API, where the model is listed at no price: five runs at `high`, the highest effort the client defines for it (364, 468, 343, 604 and 414; mean 439, interval 370 to 528, one Silver, two Bronze and two
+  Reprovada); one attempt was lost to the lab or the operator and rerun.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. Configurations whose run waits for a decision are not in it yet. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.302` — 2026-11-06 — LEB-D-300-A's aggregate adds MiMo V2.6 Flash, Pro UltraSpeed and Pro at high (547, 509, 421, Bronze) and four OpenRouter free variants (335, 327, 108, 97)
 
