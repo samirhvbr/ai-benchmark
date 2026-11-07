@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.304`
+**Versão atual:** `0.2.305`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.305` — 2026-11-07 — LEB-300-A's aggregate adds two free variants, one run each: Crouton Alpha at max (275) and NVIDIA Nemotron 3 Nano Omni at max (148)
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 30 to 32 agents; the other 30 entries
+  are unchanged, reading included.
+- Crouton Alpha at max (`stealth-crouton-alpha-max`): one run, 275 (Reprovada): security 67, bugs 100, compatibility 70, report 38; 21 minutes and no cost (OpenRouter's free variant of a stealth model, no provider pinned). A first attempt ended on a
+  provider error (HTTP 400) after 146 minutes and is withdrawn (`withdrawn-1`, PROTOCOL §4 item 5): the number stays taken, so the run that counts is numbered 2.
+- NVIDIA Nemotron 3 Nano Omni at max (`nvidia-nemotron-3-nano-omni-30b-a3b-free-max`): one run, 148 (Reprovada): security 18, compatibility 100, report 30; 9 minutes and no cost (OpenRouter's free variant, no provider pinned).
+- Both at the highest effort the client defines for the model. One run of three each, so neither is official yet. As in every LEB-300-A run, one matching judge and one blind judge for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.304` — 2026-11-07 — LEB-D-300-A's aggregate adds three configurations of the free survey: NVIDIA Nemotron 3 Ultra at high (284), Apodex 1.1 Mini at high (four runs, mean 220) and NVIDIA Nemotron 3 Nano Omni at max (113)
 

@@ -22307,6 +22307,54 @@
           }
         },
         {
+          "agent": "stealth-crouton-alpha-max",
+          "score": 275,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 67,
+            "ARCH": 0,
+            "BUG": 100,
+            "PERF": 0,
+            "CLN": 0,
+            "COMP": 70,
+            "EXPL": 38
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 20.7,
+          "tokens": {
+            "input": 23998526,
+            "output": 14387,
+            "cache": 0,
+            "total": 24015200
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 275,
+              "cost_usd": 0.0,
+              "wall_minutes": 20.7,
+              "tokens": {
+                "input": 23998526,
+                "output": 14387,
+                "cache": 0,
+                "total": 24015200
+              }
+            }
+          ],
+          "model": {
+            "name": "Crouton Alpha",
+            "id": "stealth/crouton-alpha",
+            "provider": "Stealth",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "On a single run: security 67 of 250 and bugs 100 of 150, nothing in architecture, performance or clean code, and compatibility 70 of 100 (one rule of the contract changed without being reported). It detected 11 of the 36 planted flaws and fixed 7; no decoy was reported as a flaw, one finding of its own was real but outside the planted set, and its confidence was well calibrated. The report was rated 38 of 50, weakest on prioritisation. It ran through OpenRouter's free variant of a stealth model (its maker is withheld), at no cost and in 21 minutes; a first attempt ended on a provider error after 146 minutes and is withdrawn. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: segurança 67 de 250 e bugs 100 de 150, nada em arquitetura, desempenho e código limpo, e compatibilidade 70 de 100 (uma regra do contrato mudou sem ser relatada). Detectou 11 das 36 falhas plantadas e corrigiu 7; nenhuma isca foi relatada como falha, um achado próprio era real mas fora do conjunto plantado, e a confiança dele foi bem calibrada. O relatório teve 38 de 50, com a nota mais baixa em priorização. Rodou pela variante gratuita do OpenRouter de um modelo furtivo (o fabricante não é revelado), sem custo e em 21 minutos; uma primeira tentativa terminou com erro do provedor após 146 minutos e foi retirada. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
           "agent": "claude-haiku-4.5-default",
           "score": 242,
           "grade": "Reprovada",
@@ -22469,6 +22517,54 @@
           "comment": {
             "en": "On a single run: security 85 of 250, bugs 8 of 150, and nothing in architecture, performance or clean code, with compatibility at 75 of 100 for one violation kept as judged: the login rate limiter it added answers 401 even to the right password after five attempts in 15 minutes from the same non-local address (COMP-008). It fixed 3 of the 36 planted flaws and reported 5 (two of those left unfixed), with one false positive, a counting bug the code does not have, and one extra finding. The report was rated 34 of 50, weakest on precision, because it contradicts itself in places (a token valid \"until expiry\" and then \"indefinitely\") and overstates how long a brute-force attack would take. MiniMax-M2.7 is the standard-speed model of the series, and OpenCode offers no effort setting for it. Both stages ran in one OpenCode session of 15 minutes, without the 7 minutes the operator took between the two stages, through MiniMax's own API, for US$ 0.44. One run of three: it is not official and could move.",
             "pt_BR": "Com uma execução só: segurança 85 de 250, bugs 8 de 150, e nada em arquitetura, desempenho ou código limpo, com a compatibilidade em 75 de 100 por uma violação mantida como julgada: o limitador de tentativas de login que ela criou responde 401 até para a senha certa depois de cinco tentativas em 15 minutos pelo mesmo endereço não local (COMP-008). Corrigiu 3 das 36 falhas plantadas e reportou 5 (duas delas ficaram sem correção), com um falso positivo, um erro de contagem que o código não tem, e um achado extra. O relatório teve 34 de 50, com a nota mais baixa em precisão, porque se contradiz em alguns pontos (um token válido \"até a expiração\" e depois \"indefinidamente\") e exagera o tempo que um ataque de força bruta levaria. O MiniMax-M2.7 é o modelo de velocidade padrão da série, e o OpenCode não oferece ajuste de esforço para ele. As duas etapas rodaram em uma sessão do OpenCode de 15 minutos, sem os 7 minutos que o operador levou entre as duas etapas, pela API da própria MiniMax, por US$ 0,44. Uma execução de três: não é oficial e pode mudar."
+          }
+        },
+        {
+          "agent": "nvidia-nemotron-3-nano-omni-30b-a3b-free-max",
+          "score": 148,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 18,
+            "ARCH": 0,
+            "BUG": 0,
+            "PERF": 0,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 30
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 9.2,
+          "tokens": {
+            "input": 91719,
+            "output": 5148,
+            "cache": 1502704,
+            "total": 1620918
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 148,
+              "cost_usd": 0.0,
+              "wall_minutes": 9.2,
+              "tokens": {
+                "input": 91719,
+                "output": 5148,
+                "cache": 1502704,
+                "total": 1620918
+              }
+            }
+          ],
+          "model": {
+            "name": "NVIDIA Nemotron 3 Nano Omni",
+            "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+            "provider": "NVIDIA",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "On a single run: the contract stayed whole (compatibility 100), but almost nothing else moved: security 18 of 250 and nothing in architecture, bugs, performance or clean code. It detected 1 of the 36 planted flaws and fixed it; it reported 3 findings, each with high confidence, and two of them were not real flaws (no decoy among them), so its confidence was poorly calibrated. The report was rated 30 of 50, weakest on trade-offs. It ran through OpenRouter's free variant, at no cost and in 9 minutes, at max, the highest effort the client defines for it. One run of three: it is not official and could move.",
+            "pt_BR": "Com uma execução só: o contrato ficou inteiro (compatibilidade 100), mas quase nada mais se moveu: segurança 18 de 250 e nada em arquitetura, bugs, desempenho e código limpo. Detectou 1 das 36 falhas plantadas e a corrigiu; reportou 3 achados, todos com confiança alta, e dois deles não eram falhas reais (nenhuma isca entre eles), então a confiança ficou mal calibrada. O relatório teve 30 de 50, com a nota mais baixa em trade-offs. Rodou pela variante gratuita do OpenRouter, sem custo e em 9 minutos, no max, o maior esforço que o cliente define para ele. Uma execução de três: não é oficial e pode mudar."
           }
         }
       ]
