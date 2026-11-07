@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.306`
+**Versão atual:** `0.2.307`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.307` — 2026-11-07 — LEB-S-300-A's aggregate adds MiniMax-M3 at thinking through MiniMax's own API: four runs (991, 994, 925, 939), mean 962, Platinum
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json`, its section of `results/README.md` and the Results paragraph of the instance README, written by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private
+  archive. The aggregate goes from 24 to 25 configurations (MiniMax-M3 enters at 9th); the other 24 entries are unchanged, reading included.
+- MiniMax-M3 ran through MiniMax's own API, not through OpenRouter, at `thinking`: the client defines only the efforts `none` and `thinking` for it, so `thinking` is the most it could ask for. Four runs of the case of five, all Platinum and
+  all completed inside the 90-minute budget (991, 994, 925 and 939; mean 962, interval 932 to 992, about US$ 1.47 and 58 minutes a run, by the client's own list-price estimate). The fifth run is judged and waits for a decision on one row, so it
+  is not in the aggregate yet and joins when it is settled.
+- Every published run went through two matching judges and two blind judges for the report and was settled before it was archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.306` — 2026-11-07 — results/ adds nine free models to LEB-100-A: NVIDIA Nemotron 3 Ultra (618, Silver), Crouton Alpha (580), Recursive Flint (526), Apodex 1.1 Mini (three runs, official 406) and five more, eleven runs, 53 agents
 

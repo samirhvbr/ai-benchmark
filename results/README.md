@@ -319,22 +319,23 @@ This instance is **active**. While it is, only the figures below are published: 
 | 6 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
 | 7 | `xiaomi-mimo-v2.6-pro-ultraspeed-high` | **966** | 966 to 966 | Platinum | 824 | 100 | 42 | 1/1 (966) |
 | 8 | `minimax-m3.1-flash-high` | **965** | 965 to 965 | Platinum | 824 | 100 | 41 | 1/1 (965) |
-| 9 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
-| 10 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
-| 11 | `gpt-6.1-sol-xhigh` | **953** | 944 to 962 | Platinum | 810 | 100 | 43 | 3/3 (944 · 954 · 962) |
-| 12 | `stealth-crouton-alpha-max` | **945** | 945 to 945 | Platinum | 803 | 100 | 42 | 1/1 (945) |
-| 13 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
-| 14 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
-| 15 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
-| 16 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
-| 17 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
-| 18 | `recursive-flint-v1.0-free-default` | **516** | 516 to 516 | Bronze | 378 | 100 | 38 | 1/1 (516) |
-| 19 | `nvidia-nemotron-3.5-super-vl-free-high` | **515** | 515 to 515 | Bronze | 374 | 100 | 41 | 1/1 (515) |
-| 20 | `apodex-apodex-1.1-mini-free-high` | **439** | 370 to 528 | Bronze | 300 | 100 | 39 | 5/5 (364 · 468 · 343 · 604 · 414) |
-| 21 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **331** | 331 to 331 | Reprovada | 196 | 100 | 35 | 1/1 (331) |
-| 22 | `xingchen-agi-xing4.0-29b-a4b-free-high` | **217** | 217 to 217 | Reprovada | 85 | 100 | 32 | 1/1 (217) |
-| 23 | `nvidia-nemotron-3.5-lightning-free-high` | **191** | 191 to 191 | Reprovada | 64 | 100 | 27 | 1/1 (191) |
-| 24 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **122** | 122 to 122 | Reprovada | 17 | 100 | 30 | 1/1 (122) |
+| 9 | `minimax-m3-thinking` | **962** | 932 to 992 | Platinum | 819 | 100 | 43 | 4/4 (991 · 994 · 925 · 939) |
+| 10 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
+| 11 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
+| 12 | `gpt-6.1-sol-xhigh` | **953** | 944 to 962 | Platinum | 810 | 100 | 43 | 3/3 (944 · 954 · 962) |
+| 13 | `stealth-crouton-alpha-max` | **945** | 945 to 945 | Platinum | 803 | 100 | 42 | 1/1 (945) |
+| 14 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
+| 15 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
+| 16 | `claude-sonnet-5.5-medium` | **934** | 913 to 956 | Platinum | 795 | 100 | 40 | 2/2 (913 · 956) |
+| 17 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
+| 18 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
+| 19 | `recursive-flint-v1.0-free-default` | **516** | 516 to 516 | Bronze | 378 | 100 | 38 | 1/1 (516) |
+| 20 | `nvidia-nemotron-3.5-super-vl-free-high` | **515** | 515 to 515 | Bronze | 374 | 100 | 41 | 1/1 (515) |
+| 21 | `apodex-apodex-1.1-mini-free-high` | **439** | 370 to 528 | Bronze | 300 | 100 | 39 | 5/5 (364 · 468 · 343 · 604 · 414) |
+| 22 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **331** | 331 to 331 | Reprovada | 196 | 100 | 35 | 1/1 (331) |
+| 23 | `xingchen-agi-xing4.0-29b-a4b-free-high` | **217** | 217 to 217 | Reprovada | 85 | 100 | 32 | 1/1 (217) |
+| 24 | `nvidia-nemotron-3.5-lightning-free-high` | **191** | 191 to 191 | Reprovada | 64 | 100 | 27 | 1/1 (191) |
+| 25 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **122** | 122 to 122 | Reprovada | 17 | 100 | 30 | 1/1 (122) |
 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -354,6 +355,8 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `xiaomi-mimo-v2.6-pro-ultraspeed-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 966.0 (966.0 to 966.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 966, lowest 966, highest 966.
 
 `minimax-m3.1-flash-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 965.0 (965.0 to 965.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 965, lowest 965, highest 965.
+
+`minimax-m3-thinking`: completion 4 of 4 scheduled attempts; expected score per scheduled attempt 962.2 (932.0 to 992.5); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 939, lowest 925, highest 994.
 
 `deepseek-v4.1-flash-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 959.0 (959.0 to 959.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 959, lowest 959, highest 959.
 
