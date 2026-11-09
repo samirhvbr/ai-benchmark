@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.309`
+**Versão atual:** `0.2.310`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.310` — 2026-11-09 — LEB-D-300-A's aggregate adds GPT-6 sol at xhigh through the OpenAI API: two runs (523, 588), mean 556, Bronze
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 54 to 55
+  configurations; the other 54 entries are unchanged, reading included.
+- GPT-6 sol (`gpt-6-sol-xhigh`) at `xhigh`, the highest effort the client defines for it, through the Codex client on the lab's OpenAI API key: two runs, 523 and 588 (mean 556, interval 523 to 588, which is only the range of the two;
+  both Bronze), about 13 minutes and 8.2 million tokens each (the client's log keeps no cost). Bug fixing was the strongest area (200 of 213 on average), then performance (158 of 213), architecture (61 of 283) and clean code
+  (0 of 141); compatibility was 100 in both runs and the reports were rated 40 and 41 of 50. Each run lost 5 points for reporting something that is not a flaw. Like the other Codex configurations it ran with the client's approvals and
+  sandbox bypassed, the lane's recorded exception to the series' rule.
+- Apodex 1.1 Mini stays at four runs: its fifth run is judged but still waits for a decision, so it is not in this aggregate.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.309` — 2026-11-09 — LEB-300-A's aggregate adds four free-model configurations, one run each (NVIDIA Nemotron 3 Ultra 326, Super VL 367, Lightning 175, Cohere North Mini Code 0), and a third run of MiniMax-M3 at thinking (810, official still 398)
 
