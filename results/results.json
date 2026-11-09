@@ -34397,6 +34397,93 @@
       "track": "security",
       "agents": [
         {
+          "agent": "deepseek-v4.1-flash-max",
+          "score": 992,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.1,
+          "wall_minutes": 30.1,
+          "tokens": {
+            "input": 131097,
+            "output": 87096,
+            "cache": 9016448,
+            "total": 9234641
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 992.0,
+              "low": 992.0,
+              "high": 992.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 992.0,
+              "low": 992.0,
+              "high": 992.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 992,
+            "min": 992,
+            "max": 992
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 992,
+              "grade": "Platinum",
+              "cost_usd": 0.098971,
+              "wall_minutes": 30.1,
+              "tokens": {
+                "input": 131097,
+                "output": 87096,
+                "cache": 9016448,
+                "total": 9234641
+              }
+            }
+          ],
+          "model": {
+            "name": "DeepSeek V4.1 Flash",
+            "id": "deepseek-flash",
+            "provider": "DeepSeek",
+            "reasoning_effort": "max",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 992, Platinum. It completed inside the 90-minute budget, at about US$ 0.10 (the client's own estimate) and 30 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 850 of 850: the report covered all 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
+            "pt_BR": "Uma execução de um caso de cinco, nota 992, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,10 (estimativa do próprio cliente) e 30 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 850 de 850: o relatório cobriu todas as 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+          }
+        },
+        {
           "agent": "claude-opus-5.5-xhigh",
           "score": 989,
           "grade": "Platinum",
@@ -34532,6 +34619,144 @@
           "comment": {
             "en": "Five runs between 981 and 995, mean 989 with a 95% interval of 984 to 995, all Platinum. All five completed inside the 90-minute budget, at about US$ 6.83 and 32 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 845 of 850: the reports covered 24, 24, 24, 23 and 23 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 8, 2, 4, 0 and 2. The lists follow the order of the runs. The reports were rated 44 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
             "pt_BR": "Cinco execuções entre 981 e 995, média 989 com intervalo de 95% de 984 a 995, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 6,83 e 32 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 845 de 850: os relatórios cobriram 24, 24, 24, 23 e 23 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 8, 2, 4, 0 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 44 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
+          }
+        },
+        {
+          "agent": "claude-sonnet-5.5-xhigh",
+          "score": 988,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 844,
+            "COMP": 100,
+            "EXPL": 44
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 4.71,
+          "wall_minutes": 29.9,
+          "tokens": {
+            "input": 82,
+            "output": 73305,
+            "cache": 7529605,
+            "total": 7602992
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 988.2,
+              "low": 975.8,
+              "high": 995.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 988.2,
+              "low": 975.8,
+              "high": 995.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 995,
+            "min": 964,
+            "max": 995
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 964,
+              "grade": "Platinum",
+              "cost_usd": 5.2509701999999985,
+              "wall_minutes": 33.4,
+              "tokens": {
+                "input": 10,
+                "output": 2712,
+                "cache": 1125083,
+                "total": 1127805
+              }
+            },
+            {
+              "run": 2,
+              "total": 995,
+              "grade": "Platinum",
+              "cost_usd": 4.853875199999998,
+              "wall_minutes": 28.2,
+              "tokens": {
+                "input": 158,
+                "output": 106632,
+                "cache": 13799353,
+                "total": 13906143
+              }
+            },
+            {
+              "run": 3,
+              "total": 995,
+              "grade": "Platinum",
+              "cost_usd": 4.1262223,
+              "wall_minutes": 29.0,
+              "tokens": {
+                "input": 106,
+                "output": 139774,
+                "cache": 10367635,
+                "total": 10507515
+              }
+            },
+            {
+              "run": 4,
+              "total": 995,
+              "grade": "Platinum",
+              "cost_usd": 4.6475897,
+              "wall_minutes": 28.0,
+              "tokens": {
+                "input": 132,
+                "output": 115890,
+                "cache": 11795732,
+                "total": 11911754
+              }
+            },
+            {
+              "run": 5,
+              "total": 992,
+              "grade": "Platinum",
+              "cost_usd": 4.652946600000002,
+              "wall_minutes": 30.9,
+              "tokens": {
+                "input": 6,
+                "output": 1516,
+                "cache": 560221,
+                "total": 561743
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "Five runs between 964 and 995, mean 988 with a 95% interval of 976 to 995, all Platinum. All five completed inside the 90-minute budget, at about US$ 4.71 and 30 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 844 of 850: the reports covered 22, 24, 24, 24 and 24 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 0, 2, 2, 5 and 8. The lists follow the order of the runs. The reports were rated 42 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
+            "pt_BR": "Cinco execuções entre 964 e 995, média 988 com intervalo de 95% de 976 a 995, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 4,71 e 30 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 844 de 850: os relatórios cobriram 22, 24, 24, 24 e 24 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 2, 2, 5 e 8. As listas seguem a ordem das execuções. Os relatórios tiveram de 42 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
           }
         },
         {
@@ -34937,119 +35162,6 @@
           }
         },
         {
-          "agent": "gpt-6-astra-xhigh",
-          "score": 969,
-          "grade": "Platinum",
-          "runs_count": 3,
-          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-          "categories": {
-            "SEC": 826,
-            "COMP": 100,
-            "EXPL": 43
-          },
-          "category_max": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": null,
-          "wall_minutes": 21.2,
-          "tokens": {
-            "input": 149931,
-            "output": 43318,
-            "cache": 4114369,
-            "total": 4307618
-          },
-          "statistics": {
-            "scheduled": 3,
-            "quality": {
-              "n": 3,
-              "systems": 1,
-              "mean": 969.0,
-              "low": 967.0,
-              "high": 972.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 3,
-              "systems": 1,
-              "mean": 969.0,
-              "low": 967.0,
-              "high": 972.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 3,
-              "scheduled": 3,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 3,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 0,
-            "median": 968,
-            "min": 967,
-            "max": 972
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 967,
-              "grade": "Platinum",
-              "cost_usd": null,
-              "wall_minutes": 22.6,
-              "tokens": {
-                "input": 107333,
-                "output": 37103,
-                "cache": 2870144,
-                "total": 3014580
-              }
-            },
-            {
-              "run": 2,
-              "total": 972,
-              "grade": "Platinum",
-              "cost_usd": null,
-              "wall_minutes": 18.2,
-              "tokens": {
-                "input": 158195,
-                "output": 42316,
-                "cache": 4445287,
-                "total": 4645798
-              }
-            },
-            {
-              "run": 3,
-              "total": 968,
-              "grade": "Platinum",
-              "cost_usd": null,
-              "wall_minutes": 22.7,
-              "tokens": {
-                "input": 184264,
-                "output": 50536,
-                "cache": 5027675,
-                "total": 5262475
-              }
-            }
-          ],
-          "model": {
-            "name": "GPT-6-astra",
-            "id": "gpt-6-astra",
-            "provider": "OpenAI",
-            "reasoning_effort": "xhigh",
-            "client_mode": "permissions bypassed"
-          },
-          "comment": {
-            "en": "Three runs of a case of five, between 967 and 972, mean 969 (the interval, 967 to 972, is the range of the runs), all Platinum. All three completed inside the 90-minute budget, about 4.3 million tokens and 21 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 826 of 850: the reports covered 22 of the 24 planted vulnerabilities in every run and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 3, 0 and 1. The lists follow the order of the runs. The reports were rated 43 to 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes). Some runs ran on an API key and some on the client's stored login; the model and the client are the same.",
-            "pt_BR": "Três execuções de um caso de cinco, entre 967 e 972, média 969 (o intervalo, de 967 a 972, é a amplitude das execuções), todas Platinum. As três terminaram dentro do orçamento de 90 minutos, por cerca de 4,3 milhões de tokens e 21 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 826 de 850: os relatórios cobriram 22 das 24 vulnerabilidades plantadas em todas as execuções e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 3, 0 e 1. As listas seguem a ordem das execuções. Os relatórios tiveram de 43 a 44 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com aprovações e sandbox desligados, exceção da série (veja as notas). Umas execuções usaram chave de API, outras o login guardado; o modelo e o cliente são os mesmos."
-          }
-        },
-        {
           "agent": "xiaomi-mimo-v2.6-pro-high",
           "score": 969,
           "grade": "Platinum",
@@ -35134,6 +35246,145 @@
           "comment": {
             "en": "One run of a case of five, scored 969, Platinum. It completed inside the 90-minute budget, at about US$ 0.18 (the client's own estimate) and 66 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 824 of 850: the report covered 23 of the 24 planted vulnerabilities and the code fixed 23 of them. No decoy was reported as a vulnerability; extra findings: 2. The report was rated 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter, pinned to Xiaomi's own endpoint (fp8 quantization), because the router otherwise spreads the model over other hosts; the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
             "pt_BR": "Uma execução de um caso de cinco, nota 969, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,18 (estimativa do próprio cliente) e 66 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 824 de 850: o relatório cobriu 23 das 24 vulnerabilidades plantadas e o código corrigiu 23 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2. O relatório teve 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pelo OpenRouter, fixado no endpoint da própria Xiaomi (quantização fp8), porque sem a fixação o roteador espalha o modelo por outras hospedeiras; o cliente define os esforços low, medium e high para ele, então high é o máximo que ele pôde pedir."
+          }
+        },
+        {
+          "agent": "gpt-6-astra-xhigh",
+          "score": 968,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 824,
+            "COMP": 100,
+            "EXPL": 43
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 20.2,
+          "tokens": {
+            "input": 159545,
+            "output": 41860,
+            "cache": 4354732,
+            "total": 4556137
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 967.8,
+              "low": 961.4,
+              "high": 973.4
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 967.8,
+              "low": 961.4,
+              "high": 973.4
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 968,
+            "min": 956,
+            "max": 976
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 967,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 22.6,
+              "tokens": {
+                "input": 107333,
+                "output": 37103,
+                "cache": 2870144,
+                "total": 3014580
+              }
+            },
+            {
+              "run": 2,
+              "total": 972,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 18.2,
+              "tokens": {
+                "input": 158195,
+                "output": 42316,
+                "cache": 4445287,
+                "total": 4645798
+              }
+            },
+            {
+              "run": 3,
+              "total": 968,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 22.7,
+              "tokens": {
+                "input": 184264,
+                "output": 50536,
+                "cache": 5027675,
+                "total": 5262475
+              }
+            },
+            {
+              "run": 4,
+              "total": 976,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 17.0,
+              "tokens": {
+                "input": 173629,
+                "output": 35821,
+                "cache": 4998005,
+                "total": 5207455
+              }
+            },
+            {
+              "run": 5,
+              "total": 956,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 20.7,
+              "tokens": {
+                "input": 174304,
+                "output": 43525,
+                "cache": 4432549,
+                "total": 4650378
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-6-astra",
+            "id": "gpt-6-astra",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Five runs between 956 and 976, mean 968 with a 95% interval of 961 to 973, all Platinum. All five completed inside the 90-minute budget, about 4.6 million tokens and 20 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 824 of 850: the reports covered 22, 22, 22, 23 and 21 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 3, 0, 1, 0 and 2. The lists follow the order of the runs. The reports were rated 43 to 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes). Some runs ran on an API key and some on the client's stored login; the model and the client are the same.",
+            "pt_BR": "Cinco execuções entre 956 e 976, média 968 com intervalo de 95% de 961 a 973, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de 4,6 milhões de tokens e 20 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 824 de 850: os relatórios cobriram 22, 22, 22, 23 e 21 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 3, 0, 1, 0 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 43 a 44 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com aprovações e sandbox desligados, exceção da série (veja as notas). Umas execuções usaram chave de API, outras o login guardado; o modelo e o cliente são os mesmos."
           }
         },
         {
@@ -35224,44 +35475,44 @@
           }
         },
         {
-          "agent": "minimax-m3.1-flash-high",
-          "score": 965,
+          "agent": "gpt-6.1-terra-xhigh",
+          "score": 962,
           "grade": "Platinum",
           "runs_count": 1,
           "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
           "categories": {
-            "SEC": 824,
+            "SEC": 820,
             "COMP": 100,
-            "EXPL": 41
+            "EXPL": 42
           },
           "category_max": {
             "SEC": 850,
             "COMP": 100,
             "EXPL": 50
           },
-          "cost_usd": 0.27,
-          "wall_minutes": 61.2,
+          "cost_usd": null,
+          "wall_minutes": 21.6,
           "tokens": {
-            "input": 205673,
-            "output": 89921,
-            "cache": 12467712,
-            "total": 12763306
+            "input": 166879,
+            "output": 56203,
+            "cache": 10319292,
+            "total": 10542374
           },
           "statistics": {
             "scheduled": 1,
             "quality": {
               "n": 1,
               "systems": 1,
-              "mean": 965.0,
-              "low": 965.0,
-              "high": 965.0
+              "mean": 962.0,
+              "low": 962.0,
+              "high": 962.0
             },
             "expected_per_scheduled_attempt": {
               "n": 1,
               "systems": 1,
-              "mean": 965.0,
-              "low": 965.0,
-              "high": 965.0
+              "mean": 962.0,
+              "low": 962.0,
+              "high": 962.0
             },
             "completion": {
               "rate": 1.0,
@@ -35279,161 +35530,35 @@
               "switched": 0
             },
             "lab_failures_rerun": 0,
-            "median": 965,
-            "min": 965,
-            "max": 965
+            "median": 962,
+            "min": 962,
+            "max": 962
           },
           "runs": [
             {
               "run": 1,
-              "total": 965,
+              "total": 962,
               "grade": "Platinum",
-              "cost_usd": 0.271819,
-              "wall_minutes": 61.2,
+              "cost_usd": null,
+              "wall_minutes": 21.6,
               "tokens": {
-                "input": 205673,
-                "output": 89921,
-                "cache": 12467712,
-                "total": 12763306
+                "input": 166879,
+                "output": 56203,
+                "cache": 10319292,
+                "total": 10542374
               }
             }
           ],
           "model": {
-            "name": "MiniMax M3.1 Flash",
-            "id": "minimax-m3.1-flash",
-            "provider": "MiniMax",
-            "reasoning_effort": "high",
-            "client_mode": "permissions auto-approved"
+            "name": "GPT-6.1-terra",
+            "id": "gpt-6.1-terra",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
           },
           "comment": {
-            "en": "One run of a case of five, scored 965, Platinum. It completed inside the 90-minute budget, at about US$ 0.27 (the client's own estimate) and 61 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 824 of 850: the report covered 23 of the 24 planted vulnerabilities and the code fixed 23 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
-            "pt_BR": "Uma execução de um caso de cinco, nota 965, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,27 (estimativa do próprio cliente) e 61 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 824 de 850: o relatório cobriu 23 das 24 vulnerabilidades plantadas e o código corrigiu 23 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
-          }
-        },
-        {
-          "agent": "minimax-m3-thinking",
-          "score": 962,
-          "grade": "Platinum",
-          "runs_count": 4,
-          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-          "categories": {
-            "SEC": 819,
-            "COMP": 100,
-            "EXPL": 43
-          },
-          "category_max": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": 1.47,
-          "wall_minutes": 58.3,
-          "tokens": {
-            "input": 306695,
-            "output": 142532,
-            "cache": 16246238,
-            "total": 16695466
-          },
-          "statistics": {
-            "scheduled": 4,
-            "quality": {
-              "n": 4,
-              "systems": 1,
-              "mean": 962.2,
-              "low": 932.0,
-              "high": 992.5
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 4,
-              "systems": 1,
-              "mean": 962.2,
-              "low": 932.0,
-              "high": 992.5
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 4,
-              "scheduled": 4,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 4,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 0,
-            "median": 939,
-            "min": 925,
-            "max": 994
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 991,
-              "grade": "Platinum",
-              "cost_usd": 0.85994,
-              "wall_minutes": 59.6,
-              "tokens": {
-                "input": 199571,
-                "output": 87116,
-                "cache": 11592162,
-                "total": 11878849
-              }
-            },
-            {
-              "run": 2,
-              "total": 994,
-              "grade": "Platinum",
-              "cost_usd": 2.002424,
-              "wall_minutes": 63.2,
-              "tokens": {
-                "input": 557560,
-                "output": 250012,
-                "cache": 21697563,
-                "total": 22505135
-              }
-            },
-            {
-              "run": 3,
-              "total": 925,
-              "grade": "Platinum",
-              "cost_usd": 1.311694,
-              "wall_minutes": 55.6,
-              "tokens": {
-                "input": 217594,
-                "output": 104073,
-                "cache": 15367060,
-                "total": 15688727
-              }
-            },
-            {
-              "run": 4,
-              "total": 939,
-              "grade": "Platinum",
-              "cost_usd": 1.697948,
-              "wall_minutes": 54.8,
-              "tokens": {
-                "input": 252055,
-                "output": 128929,
-                "cache": 16328168,
-                "total": 16709152
-              }
-            }
-          ],
-          "model": {
-            "name": "MiniMax-M3",
-            "id": "minimax-m3",
-            "provider": "MiniMax",
-            "reasoning_effort": "thinking",
-            "client_mode": "permissions auto-approved"
-          },
-          "comment": {
-            "en": "Four runs of a case of five, between 925 and 994, mean 962 with a 95% interval of 932 to 992, all Platinum. All four completed inside the 90-minute budget, at about US$ 1.47 (the client's own estimate) and 58 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 819 of 850: the reports covered 24, 24, 21 and 21 of the 24 planted vulnerabilities and the code fixed 24, 24, 22 and 23 of them. No decoy was reported as a vulnerability; extra findings: 0, 8, 4 and 2. The lists follow the order of the runs. The reports were rated 41 to 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through MiniMax's own API; the client defines only the efforts none and thinking for it, so thinking is the most it could ask for.",
-            "pt_BR": "Quatro execuções de um caso de cinco, entre 925 e 994, média 962 com intervalo de 95% de 932 a 992, todas Platinum. As quatro terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,47 (estimativa do próprio cliente) e 58 minutos cada, e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 819 de 850: os relatórios cobriram 24, 24, 21 e 21 das 24 vulnerabilidades plantadas e o código corrigiu 24, 24, 22 e 23 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 8, 4 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 41 a 44 de 50. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela API da própria MiniMax; o cliente define só os esforços none e thinking para ele, então thinking é o máximo que ele pôde pedir."
+            "en": "One run of a case of five, scored 962, Platinum. It completed inside the 90-minute budget, about 10.5 million tokens and 22 minutes (the log keeps no cost), and it broke no behavior the public tests protect (compatibility 100). Security scored 820 of 850: the report covered 22 of the 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; extra findings: 4. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
+            "pt_BR": "Uma execução de um caso de cinco, nota 962, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de 10,5 milhões de tokens e 22 minutos (o log não guarda custo), e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 820 de 850: o relatório cobriu 22 das 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
           }
         },
         {
@@ -35524,6 +35649,284 @@
           }
         },
         {
+          "agent": "minimax-m3-thinking",
+          "score": 958,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 816,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 1.37,
+          "wall_minutes": 56.5,
+          "tokens": {
+            "input": 270103,
+            "output": 134789,
+            "cache": 15374373,
+            "total": 15779266
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 958.4,
+              "low": 934.2,
+              "high": 983.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 958.4,
+              "low": 934.2,
+              "high": 983.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 943,
+            "min": 925,
+            "max": 994
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 991,
+              "grade": "Platinum",
+              "cost_usd": 0.85994,
+              "wall_minutes": 59.6,
+              "tokens": {
+                "input": 199571,
+                "output": 87116,
+                "cache": 11592162,
+                "total": 11878849
+              }
+            },
+            {
+              "run": 2,
+              "total": 994,
+              "grade": "Platinum",
+              "cost_usd": 2.002424,
+              "wall_minutes": 63.2,
+              "tokens": {
+                "input": 557560,
+                "output": 250012,
+                "cache": 21697563,
+                "total": 22505135
+              }
+            },
+            {
+              "run": 3,
+              "total": 925,
+              "grade": "Platinum",
+              "cost_usd": 1.311694,
+              "wall_minutes": 55.6,
+              "tokens": {
+                "input": 217594,
+                "output": 104073,
+                "cache": 15367060,
+                "total": 15688727
+              }
+            },
+            {
+              "run": 4,
+              "total": 939,
+              "grade": "Platinum",
+              "cost_usd": 1.697948,
+              "wall_minutes": 54.8,
+              "tokens": {
+                "input": 252055,
+                "output": 128929,
+                "cache": 16328168,
+                "total": 16709152
+              }
+            },
+            {
+              "run": 5,
+              "total": 943,
+              "grade": "Platinum",
+              "cost_usd": 0.992486,
+              "wall_minutes": 49.2,
+              "tokens": {
+                "input": 123737,
+                "output": 103817,
+                "cache": 11886912,
+                "total": 12114466
+              }
+            }
+          ],
+          "model": {
+            "name": "MiniMax-M3",
+            "id": "minimax-m3",
+            "provider": "MiniMax",
+            "reasoning_effort": "thinking",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Five runs between 925 and 994, mean 958 with a 95% interval of 934 to 983, all Platinum. All five completed inside the 90-minute budget, at about US$ 1.37 (the client's own estimate) and 56 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 816 of 850: the reports covered 24, 24, 21, 21 and 23 of the 24 planted vulnerabilities and the code fixed 24, 24, 22, 23 and 22 of them. No decoy was reported as a vulnerability; extra findings: 0, 8, 4, 2 and 3. The lists follow the order of the runs. The reports were rated 40 to 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through MiniMax's own API; the client defines only the efforts none and thinking for it, so thinking is the most it could ask for.",
+            "pt_BR": "Cinco execuções entre 925 e 994, média 958 com intervalo de 95% de 934 a 983, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,37 (estimativa do próprio cliente) e 56 minutos cada, e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 816 de 850: os relatórios cobriram 24, 24, 21, 21 e 23 das 24 vulnerabilidades plantadas e o código corrigiu 24, 24, 22, 23 e 22 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 8, 4, 2 e 3. As listas seguem a ordem das execuções. Os relatórios tiveram de 40 a 44 de 50. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela API da própria MiniMax; o cliente define só os esforços none e thinking para ele, então thinking é o máximo que ele pôde pedir."
+          }
+        },
+        {
+          "agent": "gpt-6.1-sol-xhigh",
+          "score": 954,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 811,
+            "COMP": 100,
+            "EXPL": 43
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 18.9,
+          "tokens": {
+            "input": 172496,
+            "output": 50143,
+            "cache": 5364791,
+            "total": 5587430
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 4,
+              "systems": 1,
+              "mean": 954.0,
+              "low": 947.0,
+              "high": 960.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 954.4,
+              "low": 948.8,
+              "high": 959.2
+            },
+            "completion": {
+              "rate": 0.8,
+              "completed": 4,
+              "scheduled": 5,
+              "systems_all_completed": 0,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 4,
+              "blocked": 1,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 1,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 956,
+            "min": 944,
+            "max": 962
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 944,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 17.1,
+              "tokens": {
+                "input": 126726,
+                "output": 37067,
+                "cache": 2810368,
+                "total": 2974161
+              }
+            },
+            {
+              "run": 3,
+              "total": 954,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 20.6,
+              "tokens": {
+                "input": 179186,
+                "output": 55041,
+                "cache": 5286384,
+                "total": 5520611
+              }
+            },
+            {
+              "run": 4,
+              "total": 962,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 22.6,
+              "tokens": {
+                "input": 200992,
+                "output": 61233,
+                "cache": 8381970,
+                "total": 8644195
+              }
+            },
+            {
+              "run": 5,
+              "total": 956,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 16.3,
+              "tokens": {
+                "input": 168763,
+                "output": 44780,
+                "cache": 4472881,
+                "total": 4686424
+              }
+            },
+            {
+              "run": 6,
+              "total": 956,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 17.9,
+              "tokens": {
+                "input": 186814,
+                "output": 52595,
+                "cache": 5872350,
+                "total": 6111759
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-6.1-sol",
+            "id": "gpt-6.1-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Five runs between 944 and 962, mean 954 with a 95% interval of 947 to 960, all Platinum. 4 of 5 completed inside the budget, about 5.6 million tokens and 19 minutes each (the log keeps no cost), and none broke what the public tests protect (compatibility 100 in every run). Security averaged 811 of 850: the reports covered 20, 21, 22, 21 and 21 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 2, 2, 2, 0 and 1. The lists follow the order of the runs. The reports were rated 42 to 45 of 50. It is one system: the interval reflects only the variation among its runs, and how it does across systems is not measured yet. One attempt was lost (lab or operator) and rerun. One scheduled attempt was blocked by the model's own safeguards during the work; it counts in the expected score, not in the estimate. Four blind judges read each delivery (two for the planted items, two for the report); a person settles disagreements between the first two. It ran with approvals and sandbox bypassed, the series' exception (see the notes). Some runs used an API key, some the stored login (same model and client).",
+            "pt_BR": "Cinco execuções entre 944 e 962, média 954 com intervalo de 95% de 947 a 960, todas Platinum. 4 de 5 terminaram no orçamento, por cerca de 5,6 milhões de tokens e 19 minutos cada (o log não guarda custo), e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 811 de 850: os relatórios cobriram 20, 21, 22, 21 e 21 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2, 2, 2, 0 e 1. Listas na ordem das execuções. Os relatórios tiveram de 42 a 45 de 50. É um sistema só: o intervalo reflete só a variação entre as execuções; o desempenho em outros sistemas não foi medido. Uma tentativa foi perdida (laboratório ou operador) e refeita. Uma tentativa agendada foi barrada pelas salvaguardas do modelo durante o trabalho; conta na nota esperada, não na estimativa. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências. Rodou com aprovações e sandbox desligados, exceção da série (veja as notas). Umas execuções usaram chave de API, outras o login guardado (mesmo modelo e cliente)."
+          }
+        },
+        {
           "agent": "moonshot-kimi-k3-1-pro-max",
           "score": 954,
           "grade": "Platinum",
@@ -35608,119 +36011,6 @@
           "comment": {
             "en": "One run of a case of five, scored 954, Platinum. It completed inside the 90-minute budget, at about US$ 1.35 (the client's own estimate) and 25 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 812 of 850: the report covered 21 of the 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership, where the client's cost is the list price, not a charge.",
             "pt_BR": "Uma execução de um caso de cinco, nota 954, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 1,35 (estimativa do próprio cliente) e 25 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 812 de 850: o relatório cobriu 21 das 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code, em que o custo do cliente é o preço de lista, não uma cobrança."
-          }
-        },
-        {
-          "agent": "gpt-6.1-sol-xhigh",
-          "score": 953,
-          "grade": "Platinum",
-          "runs_count": 3,
-          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-          "categories": {
-            "SEC": 810,
-            "COMP": 100,
-            "EXPL": 43
-          },
-          "category_max": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": null,
-          "wall_minutes": 20.1,
-          "tokens": {
-            "input": 168968,
-            "output": 51114,
-            "cache": 5492907,
-            "total": 5712989
-          },
-          "statistics": {
-            "scheduled": 3,
-            "quality": {
-              "n": 3,
-              "systems": 1,
-              "mean": 953.3,
-              "low": 944.0,
-              "high": 962.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 3,
-              "systems": 1,
-              "mean": 953.3,
-              "low": 944.0,
-              "high": 962.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 3,
-              "scheduled": 3,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 3,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 1,
-            "median": 954,
-            "min": 944,
-            "max": 962
-          },
-          "runs": [
-            {
-              "run": 2,
-              "total": 944,
-              "grade": "Platinum",
-              "cost_usd": null,
-              "wall_minutes": 17.1,
-              "tokens": {
-                "input": 126726,
-                "output": 37067,
-                "cache": 2810368,
-                "total": 2974161
-              }
-            },
-            {
-              "run": 3,
-              "total": 954,
-              "grade": "Platinum",
-              "cost_usd": null,
-              "wall_minutes": 20.6,
-              "tokens": {
-                "input": 179186,
-                "output": 55041,
-                "cache": 5286384,
-                "total": 5520611
-              }
-            },
-            {
-              "run": 4,
-              "total": 962,
-              "grade": "Platinum",
-              "cost_usd": null,
-              "wall_minutes": 22.6,
-              "tokens": {
-                "input": 200992,
-                "output": 61233,
-                "cache": 8381970,
-                "total": 8644195
-              }
-            }
-          ],
-          "model": {
-            "name": "GPT-6.1-sol",
-            "id": "gpt-6.1-sol",
-            "provider": "OpenAI",
-            "reasoning_effort": "xhigh",
-            "client_mode": "permissions bypassed"
-          },
-          "comment": {
-            "en": "Three runs of a case of five, between 944 and 962, mean 953 (the interval, 944 to 962, is the range of the runs), all Platinum. All three completed inside the 90-minute budget, about 5.7 million tokens and 20 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 810 of 850: the reports covered 20, 21 and 22 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 2, 2 and 2. The lists follow the order of the runs. The reports were rated 42 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and not rerun yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with approvals and sandbox bypassed, the series' exception (see the notes). Some runs used an API key, some the stored login; the model and the client are the same.",
-            "pt_BR": "Três execuções de um caso de cinco, entre 944 e 962, média 953 (o intervalo, de 944 a 962, é a amplitude das execuções), todas Platinum. As três terminaram dentro do orçamento de 90 minutos, por cerca de 5,7 milhões de tokens e 20 minutos cada (o log não guarda custo), e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 810 de 850: os relatórios cobriram 20, 21 e 22 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2, 2 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 42 a 45 de 50. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Uma tentativa foi perdida (laboratório ou operador) e ainda não foi refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com aprovações e sandbox desligados, exceção da série (veja as notas). Umas execuções usaram chave de API, outras o login guardado; o modelo e o cliente são os mesmos."
           }
         },
         {
@@ -35949,6 +36239,145 @@
           }
         },
         {
+          "agent": "gpt-5.6-sol-xhigh",
+          "score": 942,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 800,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 16.9,
+          "tokens": {
+            "input": 192045,
+            "output": 39903,
+            "cache": 7902011,
+            "total": 8133959
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 941.8,
+              "low": 933.2,
+              "high": 952.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 941.8,
+              "low": 933.2,
+              "high": 952.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 937,
+            "min": 928,
+            "max": 962
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 945,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 13.4,
+              "tokens": {
+                "input": 280519,
+                "output": 37763,
+                "cache": 4062976,
+                "total": 4381258
+              }
+            },
+            {
+              "run": 2,
+              "total": 937,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 14.7,
+              "tokens": {
+                "input": 169070,
+                "output": 44150,
+                "cache": 9154722,
+                "total": 9367942
+              }
+            },
+            {
+              "run": 3,
+              "total": 928,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 19.0,
+              "tokens": {
+                "input": 153272,
+                "output": 33852,
+                "cache": 6283678,
+                "total": 6470802
+              }
+            },
+            {
+              "run": 4,
+              "total": 937,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 15.7,
+              "tokens": {
+                "input": 155135,
+                "output": 36412,
+                "cache": 6286949,
+                "total": 6478496
+              }
+            },
+            {
+              "run": 5,
+              "total": 962,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 21.9,
+              "tokens": {
+                "input": 202230,
+                "output": 47338,
+                "cache": 13721731,
+                "total": 13971299
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-sol",
+            "id": "gpt-5.6-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Five runs between 928 and 962, mean 942 with a 95% interval of 933 to 952, all Platinum. All five completed inside the 90-minute budget, about 8.1 million tokens and 17 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 800 of 850: the reports covered 22, 21, 20, 21 and 22 of the 24 planted vulnerabilities and the code fixed 23, 23, 23, 23 and 24 of them. No decoy was reported as a vulnerability; extra findings: 0, 0, 0, 0 and 1. The lists follow the order of the runs. The reports were rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes). Some runs ran on an API key and some on the client's stored login; the model and the client are the same.",
+            "pt_BR": "Cinco execuções entre 928 e 962, média 942 com intervalo de 95% de 933 a 952, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de 8,1 milhões de tokens e 17 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 800 de 850: os relatórios cobriram 22, 21, 20, 21 e 22 das 24 vulnerabilidades plantadas e o código corrigiu 23, 23, 23, 23 e 24 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 0, 0, 0 e 1. As listas seguem a ordem das execuções. Os relatórios tiveram 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas). Algumas execuções rodaram com uma chave de API e outras com o login guardado do cliente; o modelo e o cliente são os mesmos."
+          }
+        },
+        {
           "agent": "tencent-hy4-high",
           "score": 942,
           "grade": "Platinum",
@@ -36036,105 +36465,6 @@
           }
         },
         {
-          "agent": "claude-sonnet-5.5-medium",
-          "score": 934,
-          "grade": "Platinum",
-          "runs_count": 2,
-          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-          "categories": {
-            "SEC": 795,
-            "COMP": 100,
-            "EXPL": 40
-          },
-          "category_max": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": 1.1,
-          "wall_minutes": 10.3,
-          "tokens": {
-            "input": 5,
-            "output": 614,
-            "cache": 202824,
-            "total": 203442
-          },
-          "statistics": {
-            "scheduled": 2,
-            "quality": {
-              "n": 2,
-              "systems": 1,
-              "mean": 934.5,
-              "low": 913.0,
-              "high": 956.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 2,
-              "systems": 1,
-              "mean": 934.5,
-              "low": 913.0,
-              "high": 956.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 2,
-              "scheduled": 2,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 2,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 1,
-            "median": 913,
-            "min": 913,
-            "max": 956
-          },
-          "runs": [
-            {
-              "run": 2,
-              "total": 913,
-              "grade": "Platinum",
-              "cost_usd": 1.264192,
-              "wall_minutes": 14.5,
-              "tokens": {
-                "input": 4,
-                "output": 100,
-                "cache": 142056,
-                "total": 142160
-              }
-            },
-            {
-              "run": 3,
-              "total": 956,
-              "grade": "Platinum",
-              "cost_usd": 0.9389744999999999,
-              "wall_minutes": 6.2,
-              "tokens": {
-                "input": 6,
-                "output": 1127,
-                "cache": 263592,
-                "total": 264725
-              }
-            }
-          ],
-          "model": {
-            "name": "Claude Sonnet 5.5",
-            "id": "claude-sonnet-5-5",
-            "provider": "Anthropic",
-            "reasoning_effort": "medium"
-          },
-          "comment": {
-            "en": "Two runs of a case of five, between 913 and 956, mean 934 (the interval, 913 to 956, is the range of the runs), all Platinum. Both completed inside the 90-minute budget, at about US$ 1.10 and 10 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 795 of 850: the reports covered 20 and 21 of the 24 planted vulnerabilities and the code fixed 23 and 24 of them. No decoy was reported as a vulnerability; extra findings: 4 and 0. The lists follow the order of the runs. The reports were rated 39 to 40 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and not rerun yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
-            "pt_BR": "Duas execuções de um caso de cinco, entre 913 e 956, média 934 (o intervalo, de 913 a 956, é a amplitude das execuções), todas Platinum. Ambas terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,10 e 10 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 795 de 850: os relatórios cobriram 20 e 21 das 24 vulnerabilidades plantadas e o código corrigiu 23 e 24 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4 e 0. As listas seguem a ordem das execuções. Os relatórios tiveram de 39 a 40 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Uma tentativa foi perdida para o laboratório ou o operador e ainda não foi refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
-          }
-        },
-        {
           "agent": "moonshot-kimi-k3-1-pro-high",
           "score": 934,
           "grade": "Platinum",
@@ -36219,6 +36549,683 @@
           "comment": {
             "en": "One run of a case of five, scored 934, Platinum. It completed inside the 90-minute budget, at about US$ 3.88 (the client's own estimate) and 59 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 790 of 850: the report covered 21 of the 24 planted vulnerabilities and the code fixed 23 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership, where the client's cost is the list price, not a charge.",
             "pt_BR": "Uma execução de um caso de cinco, nota 934, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 3,88 (estimativa do próprio cliente) e 59 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 790 de 850: o relatório cobriu 21 das 24 vulnerabilidades plantadas e o código corrigiu 23 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 44 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code, em que o custo do cliente é o preço de lista, não uma cobrança."
+          }
+        },
+        {
+          "agent": "minimax-m3.1-flash-high",
+          "score": 931,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 792,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.29,
+          "wall_minutes": 55.9,
+          "tokens": {
+            "input": 219495,
+            "output": 89308,
+            "cache": 13308752,
+            "total": 13617555
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 930.6,
+              "low": 912.0,
+              "high": 950.6
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 930.6,
+              "low": 912.0,
+              "high": 950.6
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 3,
+            "median": 930,
+            "min": 900,
+            "max": 965
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 965,
+              "grade": "Platinum",
+              "cost_usd": 0.271819,
+              "wall_minutes": 61.2,
+              "tokens": {
+                "input": 205673,
+                "output": 89921,
+                "cache": 12467712,
+                "total": 12763306
+              }
+            },
+            {
+              "run": 5,
+              "total": 900,
+              "grade": "Platinum",
+              "cost_usd": 0.265159,
+              "wall_minutes": 34.8,
+              "tokens": {
+                "input": 192311,
+                "output": 83395,
+                "cache": 12418359,
+                "total": 12694065
+              }
+            },
+            {
+              "run": 6,
+              "total": 928,
+              "grade": "Platinum",
+              "cost_usd": 0.265952,
+              "wall_minutes": 58.2,
+              "tokens": {
+                "input": 193188,
+                "output": 78319,
+                "cache": 12665476,
+                "total": 12936983
+              }
+            },
+            {
+              "run": 7,
+              "total": 930,
+              "grade": "Platinum",
+              "cost_usd": 0.210574,
+              "wall_minutes": 47.4,
+              "tokens": {
+                "input": 177415,
+                "output": 69768,
+                "cache": 9473427,
+                "total": 9720610
+              }
+            },
+            {
+              "run": 8,
+              "total": 930,
+              "grade": "Platinum",
+              "cost_usd": 0.417197,
+              "wall_minutes": 77.8,
+              "tokens": {
+                "input": 328889,
+                "output": 125136,
+                "cache": 19518785,
+                "total": 19972810
+              }
+            }
+          ],
+          "model": {
+            "name": "MiniMax M3.1 Flash",
+            "id": "minimax-m3.1-flash",
+            "provider": "MiniMax",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "Five runs between 900 and 965, mean 931 with a 95% interval of 912 to 951, all Platinum. All five completed inside the 90-minute budget, at about US$ 0.29 (the client's own estimate) and 56 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 792 of 850: the reports covered 23, 21, 21, 22 and 21 of the 24 planted vulnerabilities and the code fixed 23, 22, 22, 22 and 22 of them. No decoy was reported as a vulnerability; extra findings: 0, 6, 0, 0 and 4. The lists follow the order of the runs. The reports were rated 40 to 44 of 50. Penalties: run 5 lost 15 points for a new defect introduced by its own change. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Three attempts were lost to the lab or the operator and rerun. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
+            "pt_BR": "Cinco execuções entre 900 e 965, média 931 com intervalo de 95% de 912 a 951, todas Platinum. As cinco terminaram no orçamento de 90 minutos, por cerca de US$ 0,29 (estimativa do próprio cliente) e 56 minutos cada, e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 792 de 850: os relatórios cobriram 23, 21, 21, 22 e 21 das 24 vulnerabilidades plantadas e o código corrigiu 23, 22, 22, 22 e 22 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 6, 0, 0 e 4. As listas seguem a ordem das execuções. Os relatórios tiveram de 40 a 44 de 50. Penalidades: a execução 5 perdeu 15 pontos por um defeito novo introduzido pela própria mudança. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Três tentativas foram perdidas (laboratório ou operador) e refeitas. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+          }
+        },
+        {
+          "agent": "claude-sonnet-5.5-medium",
+          "score": 915,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 775,
+            "COMP": 100,
+            "EXPL": 40
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 1.1,
+          "wall_minutes": 13.0,
+          "tokens": {
+            "input": 32,
+            "output": 12694,
+            "cache": 1392177,
+            "total": 1404904
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 5,
+              "systems": 1,
+              "mean": 915.0,
+              "low": 885.8,
+              "high": 945.8
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 915.0,
+              "low": 885.8,
+              "high": 945.8
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 5,
+              "scheduled": 5,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 5,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 913,
+            "min": 873,
+            "max": 956
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 913,
+              "grade": "Platinum",
+              "cost_usd": 1.264192,
+              "wall_minutes": 14.5,
+              "tokens": {
+                "input": 4,
+                "output": 100,
+                "cache": 142056,
+                "total": 142160
+              }
+            },
+            {
+              "run": 3,
+              "total": 956,
+              "grade": "Platinum",
+              "cost_usd": 0.9389744999999999,
+              "wall_minutes": 6.2,
+              "tokens": {
+                "input": 6,
+                "output": 1127,
+                "cache": 263592,
+                "total": 264725
+              }
+            },
+            {
+              "run": 4,
+              "total": 952,
+              "grade": "Platinum",
+              "cost_usd": 0.8734819999999999,
+              "wall_minutes": 11.9,
+              "tokens": {
+                "input": 40,
+                "output": 19283,
+                "cache": 1440065,
+                "total": 1459388
+              }
+            },
+            {
+              "run": 5,
+              "total": 881,
+              "grade": "Gold",
+              "cost_usd": 1.2273652,
+              "wall_minutes": 16.2,
+              "tokens": {
+                "input": 52,
+                "output": 23903,
+                "cache": 2469389,
+                "total": 2493344
+              }
+            },
+            {
+              "run": 6,
+              "total": 873,
+              "grade": "Gold",
+              "cost_usd": 1.2001296000000001,
+              "wall_minutes": 16.1,
+              "tokens": {
+                "input": 58,
+                "output": 19059,
+                "cache": 2645784,
+                "total": 2664901
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Sonnet 5.5",
+            "id": "claude-sonnet-5-5",
+            "provider": "Anthropic",
+            "reasoning_effort": "medium"
+          },
+          "comment": {
+            "en": "Five runs between 873 and 956, mean 915 with a 95% interval of 886 to 946, three Platinum and two Gold. All five completed inside the 90-minute budget, at about US$ 1.10 and 13 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 775 of 850: the reports covered 20, 21, 21, 18 and 19 of the 24 planted vulnerabilities and the code fixed 23, 24, 24, 23 and 22 of them. No decoy was reported as a vulnerability; extra findings: 4, 0, 2, 4 and 0. The lists follow the order of the runs. The reports were rated 38 to 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and rerun. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Some runs used an Anthropic API key, some the owner's Claude subscription (a long-lived token), where the client's cost is the list price; same model and client.",
+            "pt_BR": "Cinco execuções entre 873 e 956, média 915 com intervalo de 95% de 886 a 946, três Platinum e duas Gold. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,10 e 13 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 775 de 850: os relatórios cobriram 20, 21, 21, 18 e 19 das 24 vulnerabilidades plantadas e o código corrigiu 23, 24, 24, 23 e 22 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4, 0, 2, 4 e 0. As listas seguem a ordem das execuções. Os relatórios tiveram de 38 a 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Uma tentativa foi perdida para o laboratório ou o operador e refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Algumas execuções usaram chave de API da Anthropic, outras a assinatura Claude do dono (token de longa duração), em que o custo do cliente é o preço de lista; mesmo modelo e cliente."
+          }
+        },
+        {
+          "agent": "gpt-6-sol-xhigh",
+          "score": 903,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 761,
+            "COMP": 100,
+            "EXPL": 42
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 22.3,
+          "tokens": {
+            "input": 189900,
+            "output": 58685,
+            "cache": 13108902,
+            "total": 13357487
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 903.0,
+              "low": 903.0,
+              "high": 903.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 903.0,
+              "low": 903.0,
+              "high": 903.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 903,
+            "min": 903,
+            "max": 903
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 903,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 22.3,
+              "tokens": {
+                "input": 189900,
+                "output": 58685,
+                "cache": 13108902,
+                "total": 13357487
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-6-sol",
+            "id": "gpt-6-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 903, Platinum. It completed inside the 90-minute budget, about 13.4 million tokens and 22 minutes (the log keeps no cost), and it broke no behavior the public tests protect (compatibility 100). Security scored 761 of 850: the report covered 20 of the 24 planted vulnerabilities and the code fixed 22 of them. No decoy was reported as a vulnerability; extra findings: 4. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
+            "pt_BR": "Uma execução de um caso de cinco, nota 903, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de 13,4 milhões de tokens e 22 minutos (o log não guarda custo), e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 761 de 850: o relatório cobriu 20 das 24 vulnerabilidades plantadas e o código corrigiu 22 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
+          }
+        },
+        {
+          "agent": "gpt-5.6-luna-xhigh",
+          "score": 891,
+          "grade": "Gold",
+          "runs_count": 3,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 757,
+            "COMP": 100,
+            "EXPL": 40
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 16.0,
+          "tokens": {
+            "input": 172374,
+            "output": 41216,
+            "cache": 10577341,
+            "total": 10790932
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 891.3,
+              "low": 819.0,
+              "high": 934.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 891.3,
+              "low": 819.0,
+              "high": 934.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 921,
+            "min": 819,
+            "max": 934
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 921,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 18.2,
+              "tokens": {
+                "input": 182188,
+                "output": 42651,
+                "cache": 10598622,
+                "total": 10823461
+              }
+            },
+            {
+              "run": 2,
+              "total": 819,
+              "grade": "Gold",
+              "cost_usd": null,
+              "wall_minutes": 13.4,
+              "tokens": {
+                "input": 165164,
+                "output": 41362,
+                "cache": 13454803,
+                "total": 13661329
+              }
+            },
+            {
+              "run": 3,
+              "total": 934,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 16.5,
+              "tokens": {
+                "input": 169771,
+                "output": 39636,
+                "cache": 7678599,
+                "total": 7888006
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-luna",
+            "id": "gpt-5.6-luna",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 819 and 934, mean 891 (the interval, 819 to 934, is the range of the runs), two Platinum and one Gold. All three completed inside the 90-minute budget, about 10.8 million tokens and 16 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 757 of 850: the reports covered 21, 18 and 21 of the 24 planted vulnerabilities and the code fixed 22, 20 and 23 of them. No decoy was reported as a vulnerability; no extra findings. The lists follow the order of the runs. The reports were rated 39 to 41 of 50. Penalties: run 2 lost 15 points for a new defect introduced by its own change. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
+            "pt_BR": "Três execuções de um caso de cinco, entre 819 e 934, média 891 (o intervalo, de 819 a 934, é a amplitude das execuções), duas Platinum e uma Gold. As três terminaram dentro do orçamento de 90 minutos, por cerca de 10,8 milhões de tokens e 16 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 757 de 850: os relatórios cobriram 21, 18 e 21 das 24 vulnerabilidades plantadas e o código corrigiu 22, 20 e 23 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. As listas seguem a ordem das execuções. Os relatórios tiveram de 39 a 41 de 50. Penalidades: a execução 2 perdeu 15 pontos por um defeito novo introduzido pela própria mudança. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
+          }
+        },
+        {
+          "agent": "gpt-5.6-terra-xhigh",
+          "score": 888,
+          "grade": "Gold",
+          "runs_count": 3,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 746,
+            "COMP": 100,
+            "EXPL": 41
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 13.7,
+          "tokens": {
+            "input": 167859,
+            "output": 36385,
+            "cache": 6010810,
+            "total": 6215054
+          },
+          "statistics": {
+            "scheduled": 3,
+            "quality": {
+              "n": 3,
+              "systems": 1,
+              "mean": 887.7,
+              "low": 873.0,
+              "high": 897.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 3,
+              "systems": 1,
+              "mean": 887.7,
+              "low": 873.0,
+              "high": 897.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 3,
+              "scheduled": 3,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 3,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 893,
+            "min": 873,
+            "max": 897
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 897,
+              "grade": "Gold",
+              "cost_usd": null,
+              "wall_minutes": 15.2,
+              "tokens": {
+                "input": 173841,
+                "output": 35422,
+                "cache": 6351343,
+                "total": 6560606
+              }
+            },
+            {
+              "run": 2,
+              "total": 873,
+              "grade": "Gold",
+              "cost_usd": null,
+              "wall_minutes": 15.4,
+              "tokens": {
+                "input": 164596,
+                "output": 38539,
+                "cache": 5680014,
+                "total": 5883149
+              }
+            },
+            {
+              "run": 3,
+              "total": 893,
+              "grade": "Gold",
+              "cost_usd": null,
+              "wall_minutes": 10.6,
+              "tokens": {
+                "input": 165139,
+                "output": 35194,
+                "cache": 6001074,
+                "total": 6201407
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-5.6-terra",
+            "id": "gpt-5.6-terra",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "Three runs of a case of five, between 873 and 897, mean 888 (the interval, 873 to 897, is the range of the runs), all Gold. All three completed inside the 90-minute budget, about 6.2 million tokens and 14 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 746 of 850: the reports covered 18, 16 and 19 of the 24 planted vulnerabilities and the code fixed 23, 23 and 22 of them. No decoy was reported as a vulnerability; extra findings: 0, 2 and 0. The lists follow the order of the runs. The reports were rated 41 to 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
+            "pt_BR": "Três execuções de um caso de cinco, entre 873 e 897, média 888 (o intervalo, de 873 a 897, é a amplitude das execuções), todas Gold. As três terminaram dentro do orçamento de 90 minutos, por cerca de 6,2 milhões de tokens e 14 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 746 de 850: os relatórios cobriram 18, 16 e 19 das 24 vulnerabilidades plantadas e o código corrigiu 23, 23 e 22 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 2 e 0. As listas seguem a ordem das execuções. Os relatórios tiveram de 41 a 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
+          }
+        },
+        {
+          "agent": "moonshot-kimi-for-coding-default",
+          "score": 875,
+          "grade": "Gold",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 731,
+            "COMP": 100,
+            "EXPL": 44
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 42.4,
+          "tokens": {
+            "input": 142328,
+            "output": 47286,
+            "cache": 4154368,
+            "total": 4343982
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 875.0,
+              "low": 875.0,
+              "high": 875.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 875.0,
+              "low": 875.0,
+              "high": 875.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 875,
+            "min": 875,
+            "max": 875
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 875,
+              "grade": "Gold",
+              "cost_usd": 0.0,
+              "wall_minutes": 42.4,
+              "tokens": {
+                "input": 142328,
+                "output": 47286,
+                "cache": 4154368,
+                "total": 4343982
+              }
+            }
+          ],
+          "model": {
+            "name": "Kimi For Coding",
+            "id": "kimi-for-coding",
+            "provider": "Moonshot AI",
+            "reasoning_effort": "default",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 875, Gold. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 42 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 731 of 850: the report covered 19 of the 24 planted vulnerabilities and the code fixed 20 of them. No decoy was reported as a vulnerability; extra findings: 2. The report was rated 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership under the alias kimi-for-coding, which the lab was told pointed to Kimi K2.8 Preview on 2026-11-07; the client's cost is the list price, not a charge.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 875, Gold. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 42 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 731 de 850: o relatório cobriu 19 das 24 vulnerabilidades plantadas e o código corrigiu 20 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2. O relatório teve 44 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code com o apelido kimi-for-coding, que o laboratório foi informado que apontava para o Kimi K2.8 Preview em 07/11/2026; o custo do cliente é o preço de lista, não uma cobrança."
           }
         },
         {
@@ -36332,6 +37339,93 @@
           "comment": {
             "en": "Three runs of a case of five, between 831 and 907, mean 871 (the interval, 831 to 907, is the range of the runs), one Platinum and two Gold. All three completed inside the 90-minute budget, at about US$ 0.41 (the client's own estimate) and 36 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 729 of 850: the reports covered 21, 21 and 18 of the 24 planted vulnerabilities and the code fixed 20, 21 and 20 of them. No decoy was reported as a vulnerability; no extra findings. The lists follow the order of the runs. The reports were rated 40 to 43 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
             "pt_BR": "Três execuções de um caso de cinco, entre 831 e 907, média 871 (o intervalo, de 831 a 907, é a amplitude das execuções), uma Platinum e duas Gold. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 0,41 (estimativa do próprio cliente) e 36 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 729 de 850: os relatórios cobriram 21, 21 e 18 das 24 vulnerabilidades plantadas e o código corrigiu 20, 21 e 20 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. As listas seguem a ordem das execuções. Os relatórios tiveram de 40 a 43 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+          }
+        },
+        {
+          "agent": "moonshot-kimi-for-coding-highspeed-default",
+          "score": 693,
+          "grade": "Silver",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 552,
+            "COMP": 100,
+            "EXPL": 41
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 43.0,
+          "tokens": {
+            "input": 154616,
+            "output": 37144,
+            "cache": 7759872,
+            "total": 7951632
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 693.0,
+              "low": 693.0,
+              "high": 693.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 693.0,
+              "low": 693.0,
+              "high": 693.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 693,
+            "min": 693,
+            "max": 693
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 693,
+              "grade": "Silver",
+              "cost_usd": 0.0,
+              "wall_minutes": 43.0,
+              "tokens": {
+                "input": 154616,
+                "output": 37144,
+                "cache": 7759872,
+                "total": 7951632
+              }
+            }
+          ],
+          "model": {
+            "name": "Kimi For Coding (highspeed)",
+            "id": "kimi-for-coding-highspeed",
+            "provider": "Moonshot AI",
+            "reasoning_effort": "default",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 693, Silver. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 43 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 552 of 850: the report covered 15 of the 24 planted vulnerabilities and the code fixed 15 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It ran through the Kimi Code membership under the alias kimi-for-coding-highspeed, which the lab was told pointed to Kimi K2.7 Code Highspeed on 2026-11-07; the client's cost is the list price, not a charge.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 693, Silver. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 43 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 552 de 850: o relatório cobriu 15 das 24 vulnerabilidades plantadas e o código corrigiu 15 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Rodou pela assinatura Kimi Code com o apelido kimi-for-coding-highspeed, que o laboratório foi informado que apontava para o Kimi K2.7 Code Highspeed em 07/11/2026; o custo do cliente é o preço de lista, não uma cobrança."
           }
         },
         {
@@ -36994,12 +38088,99 @@
             "en": "One run of a case of five, scored 122, Reprovada. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 2 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 17 of 850: the report covered 1 of the 24 planted vulnerabilities and the code fixed 0 of them. Decoys reported as vulnerabilities, of 6: 1; no extra findings. The report was rated 30 of 50. Penalties: run 1 lost 20 points for a broken behavior no fix was blamed for; run 1 lost 5 points for reporting something that is not a flaw. It is one system: the interval reflects only the variation among its runs, and how it does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report); a person settles disagreements between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was NVIDIA's); the client defines the efforts high and max for it, so max is the most it could ask for.",
             "pt_BR": "Uma execução de um caso de cinco, nota 122, Reprovada. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 2 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 17 de 850: o relatório cobriu 1 das 24 vulnerabilidades plantadas e o código corrigiu 0 delas. Iscas relatadas como vulnerabilidade, de 6: 1; nenhum achado extra. O relatório teve 30 de 50. Penalidades: a execução 1 perdeu 20 pontos por um comportamento quebrado sem um conserto culpado; a execução 1 perdeu 5 pontos por relatar algo que não é falha. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Foi acessado pela variante gratuita do OpenRouter, sem provedor fixado (sonda do laboratório: NVIDIA); o cliente define high e max, então max é o máximo."
           }
+        },
+        {
+          "agent": "cohere-north-mini-code-free-high",
+          "score": 27,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 0,
+            "COMP": 100,
+            "EXPL": 22
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 17.5,
+          "tokens": {
+            "input": 6642836,
+            "output": 57883,
+            "cache": 0,
+            "total": 6700719
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 27.0,
+              "low": 27.0,
+              "high": 27.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 27.0,
+              "low": 27.0,
+              "high": 27.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 27,
+            "min": 27,
+            "max": 27
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 27,
+              "grade": "Reprovada",
+              "cost_usd": 0.0,
+              "wall_minutes": 17.5,
+              "tokens": {
+                "input": 6642836,
+                "output": 57883,
+                "cache": 0,
+                "total": 6700719
+              }
+            }
+          ],
+          "model": {
+            "name": "Cohere North Mini Code",
+            "id": "cohere/north-mini-code:free",
+            "provider": "Cohere",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 27, Reprovada. It completed inside the 90-minute budget, at about US$ 0.00 (the client's own estimate) and 18 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 0 of 850: the report covered 0 of the 24 planted vulnerabilities and the code fixed 0 of them. No decoy was reported as a vulnerability; no extra findings. The report was rated 22 of 50. Penalties: run 1 lost 15 points for a new defect introduced by its own change; run 1 lost 80 points for a broken behavior no fix was blamed for. It is one system: the interval reflects only the variation among its runs, and how it does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report); a person settles disagreements between the first two. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes). It was reached through OpenRouter's free variant, with no provider pinned (the endpoint that answered the lab's probe was Cohere's); the client defines the efforts low, medium and high for it, so high is the most it could ask for.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 27, Reprovada. Terminou no orçamento de 90 minutos, por cerca de US$ 0,00 (estimativa do próprio cliente) e 18 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 0 de 850: o relatório cobriu 0 das 24 vulnerabilidades plantadas e o código corrigiu 0 delas. Nenhuma isca foi relatada como vulnerabilidade; nenhum achado extra. O relatório teve 22 de 50. Penalidades: perdeu 15 pontos por um defeito novo introduzido pela própria mudança e 80 por um comportamento quebrado sem um conserto culpado. É um sistema só: o intervalo reflete só a variação entre as execuções; o desempenho em outros sistemas não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas). Pela variante gratuita do OpenRouter, sem provedor fixado (sonda do laboratório: Cohere); o cliente define low, medium e high, então high é o máximo."
+          }
         }
       ],
       "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
       "notes": {
-        "en": "Every run is evaluated with the key of version 1.0, frozen on 2026-10-29 before any delivery went through it, and every file of the instance is public on GitHub. A delivery is judged by four judges that are not told which model or vendor made it: two read it against the planted items and two rate the report; a person settles the disagreements between the first two. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. Claude Code ran on an Anthropic API key, billed to API credit. Codex ran with approvals and sandbox bypassed and OpenCode with its auto-approval flag, the series' exception to its rule against bypassing approvals, on a disposable machine with every decision counted. Codex keeps no cost, so its cost is in tokens; OpenCode's cost is the client's own estimate.",
-        "pt_BR": "Toda execução é avaliada com o gabarito da versão 1.0, congelada em 2026-10-29 antes de qualquer entrega passar por ela, e todo arquivo da instância é público no GitHub. Uma entrega é julgada por quatro juízes que não sabem qual modelo ou fornecedor a fez: dois a leem contra os itens plantados e dois avaliam o relatório; uma pessoa decide as divergências entre os dois primeiros. Uma tentativa perdida antes de o modelo poder entregar, para o laboratório ou para o operador, não é pontuada e é refeita; cada configuração mostra quantas houve. O Claude Code rodou com uma chave de API da Anthropic, paga com crédito de API. O Codex rodou com aprovações e sandbox desligados e o OpenCode com o seu sinalizador de aprovação automática, a exceção da série à sua regra contra desligar as aprovações, numa máquina descartável e com cada decisão contada. O Codex não guarda custo, então o dele é em tokens; o custo do OpenCode é a estimativa do próprio cliente."
+        "en": "Every run is evaluated with the key of version 1.0, frozen on 2026-10-29 before any delivery went through it, and every file of the instance is public on GitHub. A delivery is judged by four judges that are not told which model or vendor made it: two read it against the planted items and two rate the report; a person settles the disagreements between the first two. An attempt lost before the model could deliver, to the lab or to the operator, is not scored and is rerun; each configuration shows how many. Claude Code ran on an Anthropic API key, billed to API credit, and some runs of 2026-11-09 on the owner's Claude subscription through a long-lived token, where the client's cost is the list price, not a charge. Codex ran with approvals and sandbox bypassed and OpenCode with its auto-approval flag, the series' exception to its rule against bypassing approvals, on a disposable machine with every decision counted. Codex keeps no cost, so its cost is in tokens; OpenCode's cost is the client's own estimate.",
+        "pt_BR": "Toda execução é avaliada com o gabarito da versão 1.0, congelada em 2026-10-29 antes de qualquer entrega passar por ela, e todo arquivo da instância é público no GitHub. Uma entrega é julgada por quatro juízes que não sabem qual modelo ou fornecedor a fez: dois a leem contra os itens plantados e dois avaliam o relatório; uma pessoa decide as divergências entre os dois primeiros. Uma tentativa perdida antes de o modelo poder entregar, para o laboratório ou para o operador, não é pontuada e é refeita; cada configuração mostra quantas houve. O Claude Code rodou com uma chave de API da Anthropic, paga com crédito de API, e algumas execuções de 2026-11-09 na assinatura Claude do dono por um token de longa duração, em que o custo do cliente é o preço de lista, não uma cobrança. O Codex rodou com aprovações e sandbox desligados e o OpenCode com o seu sinalizador de aprovação automática, a exceção da série à sua regra contra desligar as aprovações, numa máquina descartável e com cada decisão contada. O Codex não guarda custo, então o dele é em tokens; o custo do OpenCode é a estimativa do próprio cliente."
       }
     }
   ]

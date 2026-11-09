@@ -112,6 +112,7 @@ Exemplo legível:
 ## 5. Correspondência (matching) relatório × matriz
 
 1. O avaliador mapeia cada achado do relatório do modelo para no máximo **uma** linha da matriz (a mais específica).
+   - *Bundled findings (owner's rule, 2026-11-09):* when one finding names several rows, the credit goes to the one row at the finding's own location in `findings.json` (its `file` and first `line`, within 10 lines, or the same function/method when the delivered line is wrong); the other rows it names are silent fixes (C3 and C5 only).
 2. Localização confere com tolerância de ±10 linhas ou mesma função/método.
 3. Achado real fora da matriz: 0 pontos, 0 penalidade, registrado para a próxima versão (`SCORING.md §3`).
 4. Correções silenciosas (código corrigido sem constar no relatório) pontuam C3/C4/C5, mas **não** C1/C2 — o LEB exige que engenheira *comunique* o que fez.

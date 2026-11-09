@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.310`
+**Versão atual:** `0.2.311`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,24 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.311` — 2026-11-09 — LEB-S-300-A's aggregate adds ten configurations (Sonnet 5.5 xhigh 988, GPT-5.6 sol 942, luna 891, terra 888, GPT-6.1 terra 962, GPT-6 sol 903, DeepSeek V4.1 Flash max 992, the two Kimi Code aliases, Cohere North Mini Code 27) and brings five more to five runs
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private archive, plus the Results section of the
+  instance README and the bundled-finding rule in `matrix/MATRIX.md` §5. The aggregate goes from 25 to 35 agents; the other 20 entries are unchanged, reading included. The instance notes now say that Claude Code ran on an API key
+  and, for some runs of 2026-11-09, on the owner's Claude subscription through a long-lived token (the client's cost is then the list price, not a charge).
+- Ten new agents: Claude Sonnet 5.5 at `xhigh` (964, 995, 995, 995, 992; mean 988), DeepSeek V4.1 Flash at `max` (992), through Codex with approvals and sandbox bypassed GPT-5.6-sol (945, 937, 928, 937, 962; mean 942), GPT-5.6-luna (921, 819,
+  934; mean 891, Gold), GPT-5.6-terra (897, 873, 893; mean 888, Gold), GPT-6.1-terra (962) and GPT-6-sol (903), the two Kimi Code aliases (`kimi-for-coding` 875, `kimi-for-coding-highspeed` 693, with the target the lab was told on
+  2026-11-07 in the model block), and Cohere North Mini Code at `high` through OpenRouter's free variant (27, Reprovada).
+- Five agents grow: GPT-6-astra from three runs to five (968; the new runs 976 and 956), GPT-6.1-sol from three to five (954; one of the five, 956, was cut short during the work by the model's own safeguards and counts as blocked),
+  Claude Sonnet 5.5 at `medium` from two to five (915; the last three on the subscription route), MiniMax-M3 at `thinking` from four to five (958; the fifth, 943) and MiniMax M3.1 Flash from one to five (931; three attempts died in seconds, before
+  reaching the model, and were rerun).
+- Owner rulings of 2026-11-09 applied to what is published here: the standing PEN-001 rule (−15 when the new defect is real and no test covers it) to GPT-5.6-luna run 2, MiniMax M3.1 Flash run 5 and Cohere run 1; SEC-008 without
+  credit on MiniMax-M3 run 5 (943); and the bundled-finding rule (the credit goes to the row at the finding's own location in `findings.json`) to the eight runs it changes among those not yet published (by 4 or 5 points in six of them).
+  The runs already published are not rescored by that rule; whether they should be is still open with the owner.
+- Not in this version: Claude Opus 5.5 at `max` stays at its published 978 until its fifth run joins, when the two runs charged for restricting `GET /documents/raw` by unit (the owner ruled that is not a compatibility violation)
+  are scored again at 995; Claude Haiku 5.5 at `xhigh` and Claude Sonnet 5.5 at `max` still have a run that waits for a decision or a score; MiMo V2.6 Flash has a run in progress.
+- As in every LEB-S-300-A run, two matching judges and two blind judges for the report, every disagreement settled by the owner, by a standing rule of his or by the protocol's mechanical rule. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.310` — 2026-11-09 — LEB-D-300-A's aggregate adds GPT-6 sol at xhigh through the OpenAI API: two runs (523, 588), mean 556, Bronze
 
