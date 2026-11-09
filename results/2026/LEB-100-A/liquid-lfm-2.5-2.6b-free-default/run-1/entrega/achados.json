@@ -1,0 +1,57 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Senha do banco de dados hardcoded e fraca",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 12,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 90,
+      "mecanismo": "A senha do banco de dados (DB_PASS) está definida diretamente no arquivo de configuração com valor fraca 'N3tX@2013!prod'",
+      "impacto": "Exposição de credenciais de banco de dados em código de produção",
+      "corrigido": true,
+      "correcao": "Migrar para variável de ambiente DB_PASS com fallback para senha forte gerada automaticamente"
+    },
+    {
+      "id": "F2",
+      "titulo": "Chave SMTP hardcoded",
+      "arquivo": "code/config.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 85,
+      "mecanismo": "A chave de API do SMTP (SMTP_API_KEY) está definida diretamente no arquivo de configuração com valor específico",
+      "impacto": "Exposição de credenciais de e-mail em código de produção",
+      "corrigido": true,
+      "correcao": "Migrar para variável de ambiente SMTP_API_KEY"
+    },
+    {
+      "id": "F3",
+      "titulo": "Hash de senha usando MD5 (inseguro)",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 95,
+      "mecanismo": "A função autenticar() utiliza md5() para hash de senhas, que é criptograficamente fraco",
+      "impacto": "Vulnerabilidade a ataques de rainbow tables e quebra de senhas",
+      "corrigido": false,
+      "correcao": "Substituir por bcrypt (manter compatibilidade com a rotina noturna de exportação)"
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "A rotina noturna de exportação que depende do MD5 para autenticação",
+      "porque": "Manter compatibilidade com a rotina noturna de exportação mencionada nos comentários do lib.php"
+    }
+  ]
+}

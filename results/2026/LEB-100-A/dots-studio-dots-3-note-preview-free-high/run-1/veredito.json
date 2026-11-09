@@ -1,0 +1,209 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "dots.3 Note Preview",
+    "version": "not recorded",
+    "provider": "dots.studio"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-08",
+    "runs": [
+      86
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-11-08",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
+  },
+  "blind_label": "JE",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. The report names no finding. listarChamados now binds the search term in mysqli prepared statements (delivered lib.php:97-112), and the probe says corrigida=true. The %/_ wildcards are not escaped, but C3 follows the probe (rulings A7, BO/BQ). No COMP comes from this change."
+    },
+    {
+      "id": "SEC-003",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. htmlspecialchars($busca) is applied at both output points, the input value (delivered index.php:79) and 'Resultados para' (index.php:82). No ENT_QUOTES is passed, but PHP 8.1+ defaults to ENT_QUOTES, and even ENT_COMPAT escapes the double quote that delimits the attribute, so the flaw is gone at both points."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not fixed. titulo still goes raw into fputcsv (delivered lib.php:179). Probe corrigida=false: the exported title cell is '=1+1'."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not fixed. The login block in index.php:20-29 is unchanged, and there is no session_regenerate_id after a successful login."
+    },
+    {
+      "id": "SEC-014",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. The only text is a code docblock (delivered lib.php:13-15), which is not the report and makes a false claim: that password_verify 'aceita ... o esquema legado md5'. autenticar now selects the stored hash and calls password_verify (lib.php:19-28). It has no md5 fallback, no re-hash and no password_hash anywhere. schema.sql (CHAR(32)) and seed.sql (MD5) are unchanged, so every stored hash is still unsalted md5. password_verify on a 32-char md5 hex string falls back to crypt() and never matches, so every valid credential is rejected. C3 none: there is no migration, the hashes at rest are untouched, and the contracted schema cannot even hold a bcrypt hash. The change only disables login. The invalidation of every password is COMP-003 (matrix note on this row; precedent BP), charged here, so C5 none. Hesitated between none and half; see notes."
+    },
+    {
+      "id": "SEC-015",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. Both literals are gone. DB_PASS is read from the environment and the script die()s when it is unset (delivered config.php:12-15). SMTP_API_KEY is read from the environment with an empty fallback (config.php:19). Rule 11 (BL/BT) gives C3 full. The mandatory DB_PASS is a deployment requirement, not COMP or PEN (BA)."
+    },
+    {
+      "id": "SEC-017",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not fixed. The ?ver= dispatcher (delivered index.php:52-66) still shows any ticket without checking ownership. verChamado only moved to a prepared statement. The new client filter on the listing (index.php:73 -> lib.php:90-122) is more than 10 lines from index.php:53 and is not SEC-017 (ruling A1, AP)."
+    },
+    {
+      "id": "BUG-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "Silent fix. mediaResposta returns 0.0 when $qtd is 0 (delivered lib.php:156), and the probe says corrigida=true. The average stays global, so there is no SLA-scope COMP."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported. The planted early return 'if ($res === false) return;' was removed when the query became prepare/execute/get_result (delivered lib.php:172-174), but $fp is still not closed on the error path. A DB failure now leaves exportarCsv through a mysqli_sql_exception (the PHP 8.1+ default) or through an Error on false->execute() (report mode off), and neither path calls fclose. The expected fix, closing $fp on every path including the error one, is not there. C3 none; see notes."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not fixed. tecnicoNome is still called once per row in listarChamados (delivered lib.php:126) and in exportarCsv (lib.php:176). It now prepares a statement on every call. Probe corrigida=false (~5 queries)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not refactored. index.php still does routing, authorization, the business rules and the HTML in one script."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not refactored. Status 1/2/3 and priority 3/4/30 are still bare literals in formatarStatus and rotuloPrioridade, which are unchanged."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Not reported and not refactored. rotuloPrioridade keeps its four nested ifs (delivered lib.php:50-69, identical to the legacy code)."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 1,
+      "detail": "autenticar (delivered lib.php:17-31) verifies passwords only with password_verify against the unchanged CHAR(32) md5 hashes of the contracted schema.sql and seed.sql, with no md5 fallback, so every valid login (ana/bruno 'senha123', carla/diego 'tecmaster') returns null. Every password is invalidated, which is COMP-003 by the matrix note on SEC-014 and by the BP precedent. Charged to SEC-014's C5. It is most likely also the source of the 4 broken characterization checks (18/22), which the mechanical report charges as PEN-002 and which the judge does not add again."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "expl_rubric": {
+    "clareza": 1,
+    "precisao": 0,
+    "causa_raiz": 0,
+    "priorizacao": 0,
+    "trade_offs": 0
+  },
+  "notes": "EXPL: expl_rubric is all zeros as a placeholder. EXPL is scored by a separate blind judge (step 5) and must be taken from that judge, not from here. DELIVERY STATE: RELATORIO.md holds only '# RELATORIO' and the line 'Resumo do sistema.': no finding, no location, no confidence, no Decisions section. achados.json holds only the 4 bytes 'test'. It is not valid JSON and has no leb block, so the binding (LEB-100-A, 1.1, matrix 68088abd...c8625) cannot be checked from it. Per JUDGE, a missing or invalid achados.json neither scores nor penalizes. diff -ru shows TAREFA.md, manifest.md, .leb-pacote.sha256, schema.sql and seed.sql byte-identical to the original package, so the code was worked against this package. There is no inconsistency between the report and the index: both are empty. Both look like placeholders, so the operator may want to confirm that the run's record is complete (void and withdrawal calls are the operator's). The delivery is judged as it stands. CONSEQUENCE: every code change is silent (MATRIX 5.4). All 13 rows are reported=false with C1/C2 (R1/R2) none, no confidence is recorded, and there are no false positives and no extra findings (code-only changes outside the matrix are not findings). Silent changes outside the matrix, which score nothing: the client-only filter on the listing (lib.php:90-122, via index.php:73), prepared statements in tecnicoNome and verChamado (int-typed, never injectable), and a Content-Length header in exportarCsv. C3 copied from the probes: SEC-001 full, BUG-001 full, SEC-008 none, PERF-001 none. C3 from the delivered code: SEC-003 full, SEC-015 full (rule 11), SEC-014 none, BUG-004 none, SEC-013, SEC-017, ARCH-002, ARCH-009 and CLN-007 untouched. C4 is not written: it comes from the mechanical report (regression=true, 18/22). HESITATIONS: (1) SEC-014 C3 none vs half. Half would follow the reading that dropping md5 from the verification code is a partial step ('verifies bcrypt but never re-hashes' got half). I chose none because that precedent kept md5 logins working, while here there is no password_hash, no migration and no re-hash, the stored hashes stay unsalted md5, CHAR(32) cannot hold a bcrypt hash, and the only effect is that nobody can log in. (2) BUG-004 C3 none. The planted 'return' line is gone, but the error path still exits without fclose, now through an exception or Error. JUDGMENT CALLS: COMP-003 x1 for invalidating every password (matrix note, BP), charged to SEC-014's C5. Not COMP: the two optional parameters added to listarChamados (rule 9, P); the client filter on the listing with technicians and sessionless callers still getting every ticket (rule 6 enforcement); mediaResposta kept global; the LIKE wildcards left unescaped (BO/BQ); the CSV export still serving every ticket (AN/AX); the Content-Length header; the mandatory DB_PASS (BA). PEN-001 is 0. The login break is already charged as PEN-002 and COMP-003 (BP; ruling C, 'a fact already charged as PEN-002'). The false docblock claim in lib.php:13-15 is a code comment, not a defect. Two speculative points are noted and not charged: in report-off mysqli mode a failed prepare in exportarCsv now raises an Error where the legacy code returned silently (under the PHP 8.1+ default both versions throw mysqli_sql_exception, so this is no COMP-005); and filesize() is subject to PHP's stat cache if exportarCsv is called twice in one process.",
+  "expl_justification": {
+    "clareza": "The report is a heading ('# RELATORIO') and a single placeholder line ('Resumo do sistema.'). It is legible, so it is not incomprehensible, but it explains nothing, which puts it just above the 0 anchor.",
+    "precisao": "The report makes no technical statement of any kind, so there is no technical content to call correct, and it falls at the 0 anchor.",
+    "causa_raiz": "The report names no problem, symptom, cause or mechanism. It does not even reach 'só sintomas'.",
+    "priorizacao": "No findings or actions are listed, so nothing is ordered by severity, effort or risk. This is the 'nenhuma' anchor.",
+    "trade_offs": "No alternatives, costs or choices are mentioned anywhere. This is the 'ausentes' anchor."
+  }
+}

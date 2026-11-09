@@ -1,0 +1,175 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Clientes podiam ler e exportar chamados de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "As rotas de listagem, detalhe e CSV autenticavam a sessão, mas nunca usavam uid/papel para limitar as consultas; ver=<id> retornava qualquer chamado.",
+      "impacto": "Um cliente autenticado podia consultar descrições de terceiros e exportar a base inteira.",
+      "correcao": "Listagem, detalhe, exportação e média filtram usuario_id para clientes; técnicos e rotinas sem sessão mantêm visão integral.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção de SQL na busca por título",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O parâmetro busca era concatenado dentro de uma expressão LIKE, permitindo fechar a literal e alterar a consulta.",
+      "impacto": "Um usuário autenticado podia executar SQL com os privilégios da conta do painel, expondo dados ou causando indisponibilidade.",
+      "correcao": "A consulta usa prepared statement e vincula o termo e o proprietário como parâmetros.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Senha do banco e chave SMTP embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 11,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tinha uma senha de produção como fallback e SMTP_API_KEY era literal, expondo credenciais em qualquer cópia do código.",
+      "impacto": "Vazamento do pacote ou repositório comprometia banco e serviço de e-mail fora da aplicação.",
+      "correcao": "Os segredos passaram a vir somente das variáveis DB_PASS e SMTP_API_KEY; os valores antigos precisam ser rotacionados.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Autenticação baseada em MD5 rápido e sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "A senha era transformada em MD5 e comparada diretamente com a coluna, permitindo quebra rápida e hashes iguais para senhas iguais após vazamento.",
+      "impacto": "Um vazamento da tabela facilitava recuperar senhas e comprometer contas, inclusive por reutilização em outros serviços.",
+      "correcao": "Uso de password_hash/password_verify, aceite temporário de MD5 e rehash no login; schema ampliado para VARCHAR(255) com verificação antes da atualização.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido pelo parâmetro de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "busca era impressa sem escape no atributo value e em um parágrafo, permitindo injetar marcação e script em uma URL.",
+      "impacto": "JavaScript podia executar no navegador autenticado e agir ou ler dados no contexto do painel.",
+      "correcao": "O termo exibido passa por htmlspecialchars com ENT_QUOTES e UTF-8 nos dois pontos de saída.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Sessão não era renovada após o login",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O login gravava identidade na sessão preexistente sem trocar o ID, preservando um identificador que pudesse ter sido fixado pelo atacante.",
+      "impacto": "Um ID de sessão fixado permitia sequestrar a conta depois que a vítima autenticasse.",
+      "correcao": "session_regenerate_id(true) é executado antes de armazenar uid e papel.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Células de CSV podiam ser interpretadas como fórmulas",
+      "arquivo": "code/lib.php",
+      "linha": 136,
+      "linha_fim": 145,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Títulos e nomes eram exportados sem neutralização; planilhas podem avaliar células iniciadas por =, +, -, @, tabulação ou retorno de carro mesmo quando o CSV as cita.",
+      "impacto": "Conteúdo controlado podia executar fórmulas/comandos ou exfiltrar dados quando um operador abrisse a exportação.",
+      "correcao": "Campos textuais variáveis perigosos recebem apóstrofo inicial; estrutura e ordenação do CSV permanecem inalteradas.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Exportações concorrentes compartilhavam um arquivo temporário",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Todas as requisições truncavam, escreviam e reliam o mesmo chamados.csv, criando uma corrida entre escritores e leitores.",
+      "impacto": "Uma exportação podia receber CSV truncado, misturado ou pertencente a outro escopo de usuário.",
+      "correcao": "A exportação escreve diretamente em php://output, eliminando o arquivo compartilhado e mantendo headers e formato.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Média dividia por zero quando não havia respostas",
+      "arquivo": "code/lib.php",
+      "linha": 109,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Com base vazia ou todos os minutos_resposta nulos, qtd permanecia zero e o retorno executava soma/qtd.",
+      "impacto": "DivisionByZeroError interrompia a listagem em instalações novas ou sem atendimentos respondidos.",
+      "correcao": "AVG com COALESCE retorna 0.0 sem amostras e preserva a média dos demais casos, respeitando o escopo do cliente.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Consultas N+1 para nomes de técnicos",
+      "arquivo": "code/lib.php",
+      "linha": 64,
+      "linha_fim": 90,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Depois da consulta de N chamados, listarChamados chamava tecnicoNome para cada linha; exportarCsv repetia o mesmo padrão.",
+      "impacto": "N+1 consultas aumentavam latência e carga do MySQL conforme cresciam a listagem e a exportação.",
+      "correcao": "Listagem e CSV usam LEFT JOIN com usuarios e COALESCE para o nome ausente; tecnicoNome permanece disponível.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas públicas e visão das rotinas internas",
+      "porque": "Não foram acrescentados parâmetros; a restrição por cliente usa a sessão e processos sem sessão continuam vendo todos os chamados."
+    },
+    {
+      "o_que": "Rotas, rótulos, HTML contratado e formato/ordenação do CSV",
+      "porque": "São dependências explícitas de consumidores externos e foram preservados."
+    },
+    {
+      "o_que": "Curingas % e _ na busca LIKE",
+      "porque": "Escapá-los mudaria a semântica atual; prepared statements já eliminam a injeção sem essa regressão."
+    },
+    {
+      "o_que": "tecnicoNome() e EXPORT_DIR",
+      "porque": "Foram mantidos para consumidores legados, embora os caminhos principais agora usem JOIN e saída direta."
+    },
+    {
+      "o_que": "Stack PHP/mysqli e organização dos arquivos",
+      "porque": "A correção não exigia dependências novas, troca da camada de dados ou reescrita."
+    },
+    {
+      "o_que": "Senhas iniciais do seed e obrigatoriedade de redefinição",
+      "porque": "A compatibilidade de login é preservada; hashes MD5 são migrados após autenticação quando a coluna ampliada comporta o novo hash."
+    }
+  ]
+}

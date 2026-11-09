@@ -1,0 +1,120 @@
+<?php
+/**
+ * index.php — Painel de Chamados (NetX ISP)
+ * Ponto de entrada web. Faz login, roteia, consulta e monta o HTML.
+ */
+require __DIR__ . '/config.php';
+require __DIR__ . '/lib.php';
+
+$db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+if ($db->connect_errno) {
+    die('Falha ao conectar ao banco.');
+}
+$db->set_charset('utf8mb4');
+
+// Cookie de sessão endurecido (httponly + samesite; secure quando há HTTPS).
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax',
+        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    ]);
+    session_start();
+}
+
+// ---------------------------------------------------------------------------
+// Login
+// ---------------------------------------------------------------------------
+if (!isset($_SESSION['uid'])) {
+    if (isset($_POST['login'])) {
+        $usuario = is_string($_POST['login']) ? trim($_POST['login']) : '';
+        $senha = is_string($_POST['senha']) ? $_POST['senha'] : '';
+        if ($usuario !== '' && $senha !== '') {
+            $u = autenticar($db, $usuario, $senha);
+            if ($u) {
+                session_regenerate_id(true); // evita fixação de sessão
+                $_SESSION['uid'] = (int) $u['id'];
+                $_SESSION['papel'] = $u['papel'];
+                header('Location: index.php');
+                exit;
+            }
+        }
+    }
+    echo '<!doctype html><meta charset="utf-8"><title>Entrar</title>';
+    echo '<h1>Painel de Chamados</h1>';
+    echo '<form method="post"><input name="login" placeholder="usuario">'
+       . '<input type="password" name="senha" placeholder="senha">'
+       . '<button>Entrar</button></form>';
+    exit;
+}
+
+$uid = (int) $_SESSION['uid'];
+$papel = (string) ($_SESSION['papel'] ?? '');
+
+// Usuário em contexto: habilita a regra de visibilidade (cliente só vê o que
+// abriu). Sem sessão — scripts internos — não há filtro de dono.
+definirVisor($uid, (string) $papel);
+
+// ---------------------------------------------------------------------------
+// Exportação CSV (tratada antes de qualquer saída HTML)
+// ---------------------------------------------------------------------------
+if (($_GET['export'] ?? '') === 'csv') {
+    exportarCsv($db);
+    exit;
+}
+
+// ---------------------------------------------------------------------------
+// Detalhe de um chamado
+// ---------------------------------------------------------------------------
+if (isset($_GET['ver'])) {
+    $id = is_string($_GET['ver']) ? (int) $_GET['ver'] : 0;
+    $c = verChamado($db, $id);
+    echo '<!doctype html><meta charset="utf-8"><title>Chamado</title>';
+    if (!$c) {
+        echo '<p>Chamado nao encontrado.</p>';
+        exit;
+    }
+    echo '<h1>Chamado #' . (int) $c['id'] . '</h1>';
+    echo '<p><b>Titulo:</b> ' . htmlspecialchars($c['titulo'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>';
+    echo '<p><b>Status:</b> ' . formatarStatus((int) $c['status']) . '</p>';
+    echo '<p><b>Prioridade:</b> '
+       . rotuloPrioridade((int) $c['prioridade'], $c['minutos_resposta'] !== null ? (int) $c['minutos_resposta'] : null) . '</p>';
+    echo '<p><b>Descricao:</b> ' . htmlspecialchars($c['descricao'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>';
+    echo '<p><a href="index.php">Voltar</a></p>';
+    exit;
+}
+
+// ---------------------------------------------------------------------------
+// Listagem + busca
+// ---------------------------------------------------------------------------
+$busca = isset($_GET['busca']) && is_string($_GET['busca']) ? $_GET['busca'] : '';
+$chamados = listarChamados($db, $busca);
+$media = mediaResposta($db);
+
+$buscaHtml = htmlspecialchars($busca, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+echo '<!doctype html><meta charset="utf-8"><title>Chamados</title>';
+echo '<h1>Chamados</h1>';
+echo '<p>Tempo medio de 1a resposta: ' . round($media) . ' min</p>';
+echo '<form method="get"><input name="busca" value="' . $buscaHtml . '" placeholder="buscar titulo">'
+   . '<button>Buscar</button></form>';
+if ($busca !== '') {
+    echo '<p>Resultados para: ' . $buscaHtml . '</p>';
+}
+echo '<p><a href="index.php?export=csv">Exportar CSV</a></p>';
+
+echo '<table id="tabela-chamados" border="1">';
+echo '<tr><th>ID</th><th>Titulo</th><th>Status</th><th>Prioridade</th><th>Tecnico</th></tr>';
+foreach ($chamados as $c) {
+    $id = (int) $c['id'];
+    echo '<tr>';
+    echo '<td><a href="index.php?ver=' . $id . '">' . $id . '</a></td>';
+    echo '<td>' . htmlspecialchars($c['titulo'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</td>';
+    echo '<td>' . formatarStatus((int) $c['status']) . '</td>';
+    echo '<td>' . rotuloPrioridade((int) $c['prioridade'], $c['minutos_resposta'] !== null ? (int) $c['minutos_resposta'] : null) . '</td>';
+    echo '<td>' . htmlspecialchars($c['tecnico_nome'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</td>';
+    echo '</tr>';
+}
+echo '</table>';

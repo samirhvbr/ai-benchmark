@@ -1,0 +1,206 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Liquid LFM 2.5 2.6B",
+    "version": "not recorded",
+    "provider": "Liquid"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-08",
+    "runs": [
+      164
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-11-08",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
+  },
+  "blind_label": "DX",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The LIKE injection is not mentioned anywhere. lib.php is byte-identical to the legacy file ($busca still concatenated at lib.php:82); probe corrigida=false (payload returned 5 rows)."
+    },
+    {
+      "id": "SEC-003",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The reflected XSS of $busca is not mentioned. index.php is byte-identical to the legacy file; $busca is still echoed raw at index.php:79 and :82."
+    },
+    {
+      "id": "SEC-008",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "CSV formula injection is not mentioned. titulo is still written raw by fputcsv (lib.php:140 unchanged); probe corrigida=false (cell '=1+1')."
+    },
+    {
+      "id": "SEC-013",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Session fixation is not mentioned. The login still writes $_SESSION['uid'] without session_regenerate_id (index.php:24 unchanged)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "A função autenticar() utiliza MD5 para hash de senhas, que é criptograficamente fraco ... Vulnerabilidade a ataques de rainbow tables e quebra de senhas ... md5($senha) em vez de algoritmos modernos como bcrypt",
+      "rationale": "F3 at lib.php:15, category seguranca: right flaw, right place, so C1 full. C2 full, with hesitation: the prose never says 'without salt' or 'fast', but it names the rainbow-table and cracking attacks, which are exactly what an unsalted md5 enables, and points to bcrypt; read as the real mechanism rather than boilerplate. Deliberately not fixed: autenticar still uses md5 (lib.php:15 unchanged, achados corrigido=false), so C3 none and C5 none (nothing fixed). The stated reason for keeping md5 (that the nightly export routine depends on it) is a misreading of the lib.php header, which says only that the function signatures are consumed elsewhere; a transparent password_hash migration keeps autenticar's signature. That false claim is bundled in a correct finding: noted here, not a separate false positive (rulings A10), and left to the EXPL judge."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "half",
+        "C5": "full"
+      },
+      "report_excerpt": "F1: A senha do banco de dados (DB_PASS) está hardcoded ... N3tX@2013!prod ... Qualquer pessoa com acesso ao código pode acessar o banco de dados. F2: A chave de API do SMTP (SMTP_API_KEY) está hardcoded com valor específico",
+      "rationale": "F1 (config.php:12, confidence 90) and F2 (config.php:15, confidence 85) both map to SEC-015, which is planted at both lines (rulings A1); the confidence recorded is F1's, the finding at the matrix location. C1 full (seguranca, right lines). C2 full: secrets embedded in the source, readable by anyone with access to the code. F1's 'sem variáveis de ambiente' is inaccurate for DB_PASS (the legacy line already read getenv('DB_PASS') with the literal as fallback) and calling the password 'fraca' is unsupported, but the exposure mechanism is right. C3 half: the production DB password literal is gone, replaced by the non-secret placeholder fallback 'GENERATE_STRONG_PASS' (a failing fallback, acceptable under rule 11), but SMTP_API_KEY now reads getenv('SMTP_API_KEY') with the same literal 'netx-smtp-9f83e2c1a7b64d05' kept as fallback (delivered config.php:19): one literal fallback kept is C3 half, as for J (rulings A8). No COMP is attributable (see comp_violations), so C5 full; characterization stayed 22/22, so the assembler sets C4 full."
+    },
+    {
+      "id": "SEC-017",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The IDOR on index.php?ver= is not mentioned. index.php:53 unchanged: verChamado's result is shown without an ownership check."
+    },
+    {
+      "id": "BUG-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The division by zero in mediaResposta is not mentioned. lib.php:116 unchanged; probe corrigida=false (DivisionByZeroError)."
+    },
+    {
+      "id": "BUG-004",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The file-handle leak on the early return is not mentioned. lib.php:133 unchanged ($fp left open when the query fails)."
+    },
+    {
+      "id": "PERF-001",
+      "reported": false,
+      "criteria": {
+        "C1": "none",
+        "C2": "none",
+        "C3": "none",
+        "C5": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The N+1 through tecnicoNome is not mentioned. lib.php:89 and :137 unchanged; probe corrigida=false (~5 queries)."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The God-dispatcher is not identified. The non-changes list says only 'A estrutura do sistema e as rotas públicas (manifesto)', which names no smell and no place, so it does not identify ARCH-002 (rulings A5). index.php unchanged."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "Magic numbers are not mentioned. Status 1/2/3 and priority 3/4/30 remain literals in lib.php (unchanged)."
+    },
+    {
+      "id": "CLN-007",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "",
+      "rationale": "The nesting in rotuloPrioridade is not mentioned, not even in the non-changes lists ('A lógica de negócio principal' names neither the function nor the nesting). lib.php:43 unchanged."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [],
+  "comp_violations": [],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "expl_rubric": {
+    "clareza": 6,
+    "precisao": 5,
+    "causa_raiz": 4,
+    "priorizacao": 5,
+    "trade_offs": 5
+  },
+  "expl_note": "All zeros on purpose: the EXPL rubric (step 5) is scored by a separate blind judge; this verdict is the matching judge's (step 4).",
+  "notes": "EXPL: the expl_rubric zeros are placeholders; EXPL is scored by a separate blind judge. BINDING: achados.json.leb = LEB-100-A, versao_instancia 1.1, matriz_sha256 68088abd...c8625, identical to mecanico.json's matrix_sha256; .leb-pacote.sha256, TAREFA.md and manifest.md are identical to the original package, so the run is comparable. DIFF: the only code change is config.php (DB_PASS fallback and SMTP_API_KEY); lib.php, index.php, schema.sql and seed.sql are byte-identical to the legacy package. Mechanical: characterization 22/22 green, all four probes corrigida=false, consistent with the untouched lib.php/index.php. MATCHING: F1 -> SEC-015, F2 -> SEC-015 (both planted lines, rulings A1), F3 -> SEC-014; nothing else is reported, and neither non-changes list names a planted smell at a place (the nao_alterei entry about md5 restates SEC-014, already credited). HESITATED: SEC-014 C2 (full: rainbow tables and cracking named, 'sem salt' never written; a stricter reading would call 'criptograficamente fraco' boilerplate and give none); SEC-015 C3 (half: DB password literal removed with a failing placeholder fallback, SMTP key literal kept as getenv fallback, rulings A8 'one literal fallback kept'); SEC-015 confidence (90 from F1, the finding at the matrix location; F2 declared 85). COMP: none. The DB_PASS fallback is now a non-working placeholder, so a deployment without DB_PASS in the environment can no longer connect; that is a deployment requirement, not COMP and not PEN-001 (rulings C, BA). SMTP_API_KEY keeps the same runtime value; no public symbol, route, format or schema changed. PEN-001: 0; no new defect in delivered code (the misleading comment at config.php:13, 'gera uma senha forte aleatória', describes a fixed literal; a false claim is EXPL precision, not PEN, rulings C). PEN-003: 0 (task 1.0.0). FALSE POSITIVES: none separate; F3's claim that the nightly export routine needs md5, and F1's 'senha fraca', are false claims bundled in correct findings (rulings A10), left to the EXPL judge. INCONSISTENCIES between RELATORIO.md, achados.json and the code: (1) achados F2 corrigido=true, but the SMTP literal is kept as the getenv fallback, which the delivered code comment itself calls 'valor de exemplo (não para produção)'; (2) the prose and achados F1 say the DB_PASS fallback is 'uma senha forte gerada automaticamente', but the code uses the fixed string 'GENERATE_STRONG_PASS'; (3) the Resumo speaks of 'três problemas críticos' while F1/F2 are Alta and only F3 is Crítica; (4) 'Próximos Passos' item 1 says the config.php changes are still to be implemented, while 'O que foi alterado' and the code show them done; (5) F3's Correção proposes bcrypt while the Decisões keep md5 (achados corrigido=false matches the code); (6) the prose says md5 is insecure 'desde 2017', unsupported. Location, category and confidence agree between the prose and the JSON for F1-F3.",
+  "expl_justification": {
+    "clareza": "The report is well laid out (Summary, Findings with fixed fields, Decisions, Justification, Next Steps) and easy to scan. It contradicts itself, though: F3's 'Correção' says to replace MD5 with bcrypt while 'Decisões' says MD5 is kept, and 'O que foi alterado' lists changes that 'Próximos Passos' then describes as still to be implemented, so the reader cannot tell what was actually done.",
+    "precisao": "The findings are stated plausibly, but the report undermines its own technical claims. F1 calls `N3tX@2013!prod` 'fraca' and never says why. Decisions item 1 adds a fallback to 'uma senha forte gerada automaticamente', yet the Justification says the env vars 'mantêm o comportamento atual quando não definidas'; both cannot be true for a DB credential. 'Inseguro desde 2017' for MD5 is asserted without support.",
+    "causa_raiz": "Every 'Mecanismo' field mostly restates the symptom ('definida diretamente no arquivo de configuração', '`md5($senha)` em vez de bcrypt'). There is no explanation of how the weakness gets exploited, e.g. why unsalted fast hashes fall to rainbow tables, or who can read config.php and how. That is a superficial cause, not a mechanism.",
+    "priorizacao": "Each finding has a severity label (Alta/Alta/Crítica) and a confidence score, but the list is not ordered by them, and effort and risk are never weighed. The only Critical finding (F3) is deferred to 'versão futura' with no reasoning that sets its severity against the cost of fixing it.",
+    "trade_offs": "The report names one real trade-off: MD5 is kept for compatibility with the nightly export routine. It compares no alternatives (e.g. dual hashing, rehash on login, adapting the export), and the env-var fallback trade-off is described inconsistently."
+  }
+}

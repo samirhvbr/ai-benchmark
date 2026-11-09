@@ -1,0 +1,171 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Cliente pode listar, abrir e exportar chamados de outros clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "linha_fim": 74,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "As rotas de exportação, detalhe e listagem executam consultas globais sem comparar chamados.usuario_id ao uid da sessão; qualquer cliente autenticado obtém chamados de terceiros.",
+      "impacto": "Exposição de títulos, descrições, responsáveis e datas de todos os chamados, violando a regra de visibilidade.",
+      "correcao": "Listagem e detalhe filtram pelo dono para clientes; a exportação web usa consulta com usuario_id opcional. Técnicos e a função pública batch exportarCsv mantêm acesso global.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Busca por título concatenada na SQL permite injeção",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 85,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "listarChamados insere busca diretamente entre aspas no LIKE e usa query; aspas e operadores no termo alteram a SQL, inclusive permitindo projeções UNION compatíveis.",
+      "impacto": "Um usuário autenticado pode alterar o filtro e ler dados não autorizados do banco.",
+      "correcao": "A busca passou a usar prepare e bind_param com o termo entre curingas, preservando LIKE e a ordenação original.",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Termo de busca é refletido no HTML sem escape",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "GET busca é concatenado sem htmlspecialchars no atributo value e no parágrafo; aspas ou marcação fornecidas na URL são interpretadas pelo navegador.",
+      "impacto": "JavaScript injetado executa no contexto autenticado e pode ler a página ou agir com a sessão da vítima.",
+      "correcao": "O termo é escapado com ENT_QUOTES, ENT_SUBSTITUTE e UTF-8 nos dois pontos de saída.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senhas armazenadas como MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 20,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar compara md5(senha) diretamente com uma coluna CHAR(32); o hash rápido e sem sal facilita quebra offline após vazamento e revela senhas repetidas.",
+      "impacto": "Recuperação offline de senhas e reutilização das credenciais em outros serviços.",
+      "correcao": "Login legado válido é migrado para password_hash; hashes modernos usam password_verify e rehash. O schema usa VARCHAR(255), exigindo ALTER equivalente em bancos existentes.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Senha do banco e chave SMTP embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 8,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tem uma senha real de produção como fallback e SMTP_API_KEY é literal; toda cópia do código carrega os segredos.",
+      "impacto": "Acesso ao banco ou serviço SMTP se as credenciais permanecerem válidas, além de propagação pelo versionamento.",
+      "correcao": "Os dois valores passam a vir somente do ambiente, sem segredo embutido; as credenciais expostas devem ser rotacionadas.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Login não renova o identificador da sessão",
+      "arquivo": "code/index.php",
+      "linha": 20,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "O login grava uid e papel na sessão anônima sem regenerar seu ID; um identificador previamente fixado continua válido após autenticação em configurações PHP suscetíveis.",
+      "impacto": "Sequestro da sessão autenticada sem conhecimento da senha.",
+      "correcao": "session_regenerate_id(true) é executado antes de gravar a identidade autenticada.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "CSV usa arquivo fixo compartilhado em diretório web",
+      "arquivo": "code/lib.php",
+      "linha": 123,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "Toda exportação trunca, escreve e relê /var/www/painel/tmp/chamados.csv; requisições concorrentes interferem entre si e o arquivo residual pode ser acessado diretamente conforme a configuração web.",
+      "impacto": "Vazamento entre usuários e downloads incompletos ou corrompidos.",
+      "correcao": "O CSV passa a ser escrito diretamente em php://output, sem arquivo intermediário, mantendo cabeçalhos e formato.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Campos de texto do CSV permitem injeção de fórmula",
+      "arquivo": "code/lib.php",
+      "linha": 136,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "Título e nome do técnico vão diretamente a fputcsv; valores iniciados por =, +, - ou @, mesmo após espaços, podem ser interpretados como fórmulas por planilhas.",
+      "impacto": "Uma exportação com texto controlado por terceiros pode executar fórmulas ao ser aberta pelo operador.",
+      "correcao": "Textos perigosos recebem apóstrofo de prefixo antes de fputcsv; demais campos e a estrutura do CSV permanecem iguais.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Listagem e exportação fazem uma consulta extra por chamado",
+      "arquivo": "code/lib.php",
+      "linha": 64,
+      "linha_fim": 92,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada chamado retornado dispara tecnicoNome, que executa outro SELECT; a listagem e a exportação original nas linhas 132–144 fazem N+1 consultas.",
+      "impacto": "Latência e carga no banco crescem linearmente com a quantidade de chamados.",
+      "correcao": "Listagem e exportação usam LEFT JOIN com COALESCE para obter tecnico_nome na consulta principal; tecnicoNome permanece disponível.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Média divide por zero quando não há respostas",
+      "arquivo": "code/lib.php",
+      "linha": 107,
+      "linha_fim": 117,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "mediaResposta retorna soma/qtd mesmo quando todas as linhas têm minutos_resposta nulo ou o banco está vazio; qtd fica zero e o PHP lança DivisionByZeroError.",
+      "impacto": "A listagem principal fica indisponível em instalações novas ou sem chamados respondidos.",
+      "correcao": "A consulta usa COALESCE(AVG(minutos_resposta), 0), e o resultado é convertido para float; conjunto vazio retorna 0.0.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Assinaturas públicas, rotas, rótulos de status, estrutura HTML e formato/ordenação do CSV",
+      "porque": "São contratos explícitos do manifesto e foram preservados."
+    },
+    {
+      "o_que": "Fallback de formatarStatus e regras de rotuloPrioridade",
+      "porque": "Não há contrato para valores fora dos três status nem especificação que justifique novos rótulos de prioridade; mudar seria suposição com risco de compatibilidade."
+    },
+    {
+      "o_que": "tecnicoNome e EXPORT_DIR",
+      "porque": "O fluxo interno não precisa mais deles, mas consumidores legados podem usá-los; a remoção não é necessária para corrigir os achados."
+    },
+    {
+      "o_que": "Escopo global de mediaResposta",
+      "porque": "A função pública não recebe usuário e representa o indicador geral; restringi-la alteraria relatórios existentes."
+    },
+    {
+      "o_que": "Stack mysqli, estrutura de arquivos e fluxo das telas",
+      "porque": "As correções não exigem reescrita, novas dependências ou mudança da camada de dados."
+    }
+  ]
+}

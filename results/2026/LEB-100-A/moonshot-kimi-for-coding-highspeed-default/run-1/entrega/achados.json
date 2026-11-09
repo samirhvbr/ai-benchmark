@@ -1,0 +1,207 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção SQL em listarChamados via parâmetro busca",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A string $busca é concatenada diretamente na cláusula LIKE '%...%', permitindo que metacaracteres SQL sejam interpretados pelo MySQL.",
+      "impacto": "Leitura, alteração ou destruição arbitrária do banco; vazamento de chamados de outros clientes.",
+      "correcao": "Substituído por prepared statement com bind_param('s', $like).",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Injeção SQL em verChamado",
+      "arquivo": "code/lib.php",
+      "linha": 100,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "$id é concatenado em 'SELECT * FROM chamados WHERE id = ' . $id. A função é pública e pode ser chamada por scripts internos sem o cast de index.php.",
+      "impacto": "Leitura arbitrária de chamados e potencial escalada para outras injeções SQL.",
+      "correcao": "Reescrito com prepared statement e bind_param('i', $id).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "Injeção SQL em tecnicoNome",
+      "arquivo": "code/lib.php",
+      "linha": 69,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$tecnicoId é concatenado diretamente em 'SELECT nome FROM usuarios WHERE id = ' . $tecnicoId.",
+      "impacto": "Via listarChamados ou exportarCsv, um tecnico_id manipulado permite injeção SQL.",
+      "correcao": "Reescrito com prepared statement e bind_param('i', $tecnicoId).",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Quebra da regra de visibilidade em listagem e detalhe",
+      "arquivo": "code/index.php",
+      "linha": 52,
+      "linha_fim": 73,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "verChamado e listarChamados não recebem contexto do usuário logado e index.php não filtra os resultados, permitindo que um cliente veja chamados de outros clientes.",
+      "impacto": "Violação de privacidade; cliente visualiza chamados alheios.",
+      "correcao": "Adicionado filtro em index.php: detalhe inacessível quando cliente tenta ver chamado de outro usuário; listagem filtrada para exibir apenas chamados do cliente logado.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Exportação CSV acessível a clientes",
+      "arquivo": "code/index.php",
+      "linha": 44,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "A rota index.php?export=csv chama exportarCsv($db), que exporta todos os chamados sem verificar o papel do usuário.",
+      "impacto": "Vazamento em massa de chamados de todos os clientes.",
+      "correcao": "Adicionada verificação em index.php: apenas técnicos podem acessar a exportação web; clientes recebem HTTP 403.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido no campo de busca",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "$_GET['busca'] é reimpresso no value do input e no parágrafo 'Resultados para:' sem escaping.",
+      "impacto": "Execução de JavaScript no contexto autenticado do painel, podendo levar a roubo de sessão ou ações em nome do usuário.",
+      "correcao": "Aplicado htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') em ambas as saídas.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Divisão por zero em mediaResposta",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Se nenhum chamado tiver minutos_resposta IS NOT NULL, $qtd é 0 e $soma / $qtd gera warning e retorna INF.",
+      "impacto": "Quebra do indicador 'Tempo médio de 1ª resposta' no topo da página.",
+      "correcao": "Retorna 0.0 quando $qtd === 0.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "CSV escrito em disco antes do download",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "exportarCsv grava o arquivo em EXPORT_DIR e depois faz readfile; falha silenciosamente se o diretório não existir e deixa arquivo temporário com dados sensíveis.",
+      "impacto": "Indisponibilidade da exportação e possível vazamento residual no filesystem.",
+      "correcao": "Stream direto para php://output, eliminando a gravação em disco.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Session fixation no login",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 27,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "Após autenticação bem-sucedida, o ID de sessão não é regenerado, mantendo válido qualquer session ID pré-login.",
+      "impacto": "Hijack de sessão se um atacante souber ou fixar o session ID antes do login.",
+      "correcao": "Adicionado session_regenerate_id(true) após popular $_SESSION.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Hash de senha MD5",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar usa md5($senha) para comparar com o banco. MD5 é rápido e vulnerável a força bruta/rainbow tables.",
+      "impacto": "Comprometimento em massa de credenciais se o banco vazar.",
+      "correcao": "Não alterado. Migração para password_hash exigiria alterar o schema CHAR(32) e redefinir senhas existentes, quebrando compatibilidade.",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Segredos hardcoded em config.php",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS e SMTP_API_KEY possuem valores padrão embutidos no código-fonte.",
+      "impacto": "Vazamento de credenciais de produção se o repositório for exposto.",
+      "correcao": "Não alterado. Remover os fallbacks pode inviabilizar a execução local sem configuração de variáveis de ambiente.",
+      "corrigido": false
+    },
+    {
+      "id": "F12",
+      "titulo": "N+1 na resolução do nome do técnico",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "listarChamados e exportarCsv chamam tecnicoNome uma vez para cada chamado, gerando uma query extra por registro.",
+      "impacto": "Latência crescente com o número de chamados e carga desnecessária no banco.",
+      "correcao": "Não alterado. Optou-se por mudança mínima; a correção ideal é carregar todos os técnicos em uma única query e mapear por id.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "formatarStatus mapeia valores inválidos para 'Resolvido'",
+      "arquivo": "code/lib.php",
+      "linha": 26,
+      "linha_fim": 35,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "O ramo else retorna 'Resolvido' para qualquer status diferente de 1 e 2, incluindo 0, 4, etc.",
+      "impacto": "Relatório gerencial pode classificar chamados com status corrupto como resolvidos.",
+      "correcao": "Não alterado. Mudar o fallback poderia quebrar consumidores que dependam de receber um dos três rótulos mesmo com dados inconsistentes.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Hash de senha MD5 (lib.php) e schema CHAR(32)",
+      "porque": "Migrar para password_hash exigiria alterar o schema e redefinir todas as senhas existentes, quebrando compatibilidade com consumidores que manipulam hashes MD5."
+    },
+    {
+      "o_que": "Segredos hardcoded em config.php (DB_PASS e SMTP_API_KEY)",
+      "porque": "Remover os fallbacks pode inviabilizar a execução em ambientes sem variáveis de ambiente configuradas. Indicado como ação de hardening separada."
+    },
+    {
+      "o_que": "N+1 na resolução do nome do técnico",
+      "porque": "Optou-se por manter a mudança mínima. A otimização não altera a superfície pública e pode ser feita futuramente carregando técnicos em uma única query."
+    },
+    {
+      "o_que": "Fallback de formatarStatus para valores inválidos",
+      "porque": "O manifesto só define os três mapeamentos válidos; mudar o fallback poderia quebrar relatórios externos caso status inválidos já existam na base."
+    },
+    {
+      "o_que": "Assinaturas de listarChamados, verChamado e exportarCsv não recebem contexto de usuário",
+      "porque": "O manifesto fixa as assinaturas públicas. A regra de visibilidade foi implementada no controlador index.php, preservando o comportamento para scripts externos."
+    }
+  ]
+}

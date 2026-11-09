@@ -1374,6 +1374,53 @@ audit) and is not scored; the three Apodex runs are numbered 1 to 3 in the order
 - **XingChen Xing4.0 29B A4B at `high` (IE): 138, Reprovada, 53rd, a new agent.** One run so far: 8.8 minutes and 0.33 million tokens. It found 5 of the 13 flaws and fixed 2: security 73, bugs 43 and performance 56. It lost
   135 points to penalties, six PEN-002 (−20 each) and one PEN-001 (−15), and one COMP-003 (−30, compatibility 70); its report scored 31 of 50.
 
+### Runs of 2026-11-07 and 2026-11-08
+
+Thirteen deliveries were scored on these dates (seven agents): Kimi K3.1 Pro at `high` and its highspeed variant, three runs each, through the owner's Kimi Code membership; MiniMax M3.1 Flash at `high`, three runs, through MiniMax's own
+API; and four agents with one run each: the two Kimi Code aliases `kimi-for-coding` and `kimi-for-coding-highspeed`, Liquid LFM 2.5 2.6B and dots.studio dots-3 (Note Preview) through OpenRouter's free variants, with no provider pinned.
+The Kimi Code membership has no per-token price, so the cost in each run record is the client's list-price estimate, not a charge; the free variants cost US$ 0. The two aliases are served under a name that the API reports without the
+build behind it: the lab was told on 2026-11-07 that `kimi-for-coding` pointed to Kimi K2.8 Preview and `kimi-for-coding-highspeed` to Kimi K2.7 Code Highspeed, which is recorded with the date in each run, so that a later change of
+the alias leaves a trail. Each ran at the highest effort the client defines for the model (`high` for the K3.1 Pro variants and M3.1 Flash, the model's default setting for the aliases and Liquid, which have none).
+
+They were made through the unattended lab (`laboratorio-opencode-100.py`) as the runs of 2026-11-06 were: one `opencode run` session per run, the fixed first message once and no operator reply, a 90-minute wall clock, OpenCode's auto
+permission mode, as the unprivileged user `leb` on a machine restored from its snapshot, with GitHub blocked and the package as the only instance folder in `/srv`. They were judged blind like the others, one matching judge and one blind
+EXPL judge per delivery, both Claude Opus subagents. Attempts that did not finish are not scored: one of the Kimi K3.1 Pro highspeed attempts (the lab's third) ended as a lab failure, one of the M3.1 Flash attempts (the lab's second)
+died within seconds because the client's model catalog was stale, and three dots-3 attempts ended `inconclusive` before the one scored; runs are numbered in the order they were scored. The dots-3 run is scored as it was delivered.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **QI** | Kimi K3.1 Pro, `high`, run 1 | 632 |
+| **JP** | Kimi K3.1 Pro, `high`, run 2 | 666 |
+| **OV** | Kimi K3.1 Pro, `high`, run 3 | 665 |
+| **GF** | Kimi K3.1 Pro highspeed, `high`, run 1 | 648 |
+| **OK** | Kimi K3.1 Pro highspeed, `high`, run 2 | 345 |
+| **FW** | Kimi K3.1 Pro highspeed, `high`, run 3 | 622 |
+| **VH** | MiniMax M3.1 Flash, `high`, run 1 | 661 |
+| **YX** | MiniMax M3.1 Flash, `high`, run 2 | 639 |
+| **RJ** | MiniMax M3.1 Flash, `high`, run 3 | 663 |
+| **QT** | Kimi For Coding (alias), default, run 1 | 555 |
+| **HW** | Kimi For Coding Highspeed (alias), default, run 1 | 472 |
+| **DX** | Liquid LFM 2.5 2.6B, default, run 1 | 164 |
+| **JE** | dots.studio dots-3 (Note Preview), `high`, run 1 | 86 |
+
+- **Kimi K3.1 Pro at `high` (QI, JP, OV): official 665, Silver, 10th, a new agent.** Three runs, 632, 666 and 665, in 7.5 to 7.8 minutes and 0.86 to 0.96 million tokens each. Every run found 10 of the 13 flaws and fixed 8:
+  security 246 to 250 of 250, bugs 139, performance 150, architecture and clean code 0. Each lost one PEN-001 (−15) for a new defect in its own fix, and the first also lost a COMP-003 (compatibility 70). Their reports scored 42,
+  42 and 41 of 50.
+- **Kimi K3.1 Pro highspeed at `high` (GF, OK, FW): official 622, Silver, 26th, a new agent.** Three runs, 648, 345 and 622, in 11.4, 5.7 and 6.5 minutes and 2.45, 0.66 and 0.65 million tokens. The second run reported 10 of the
+  13 flaws and fixed none (security 95, bugs 54, performance 56), which put it below the pass line; the others fixed 8 each, with security 246, performance 150 and compatibility 70, and the third lost one PEN-001 (−15). Their
+  reports scored 43, 40 and 42 of 50.
+- **MiniMax M3.1 Flash at `high` (VH, YX, RJ): official 661, Silver, 12th, a new agent.** Three runs, 661, 639 and 663, in 17.1, 27.4 and 25.7 minutes and 7.5, 6.9 and 5.7 million tokens. They found 10, 8 and 9 of the 13 flaws
+  and fixed 8, 8 and 7: security 246, 224 and 241, bugs 129 and performance 150 in all three; the first scored 25 in architecture and the second 25 in clean code. Compatibility was 70, 70 and 100, no penalty was charged, and
+  the reports scored 41, 41 and 43 of 50.
+- **Kimi For Coding, alias at its default (QT): 555, Bronze, 39th, a new agent.** One run so far: 15.7 minutes and 1.43 million tokens. It found 9 of the 13 flaws and fixed 7: security 207, bugs 86 and performance 150,
+  architecture and clean code 0, compatibility 70; its report scored 42 of 50. The alias pointed to Kimi K2.8 Preview on the day of the run, as the lab was told.
+- **Kimi For Coding Highspeed, alias at its default (HW): 472, Bronze, 44th, a new agent.** One run so far: 2.6 minutes and 0.45 million tokens. It found 8 of the 13 flaws and fixed 5: security 177, bugs 129 and performance 56,
+  architecture and clean code 0, compatibility 70; its report scored 40 of 50. The alias pointed to Kimi K2.7 Code Highspeed on the day of the run, as the lab was told.
+- **Liquid LFM 2.5 2.6B at its default setting (DX): 164, Reprovada, 58th, a new agent.** One run so far: 0.7 minutes and 0.18 million tokens. It found 2 of the 13 flaws and fixed none: security 39 and nothing else but
+  compatibility, which stayed at 100; its report scored 25 of 50.
+- **dots.studio dots-3 (Note Preview) at `high` (JE): 86, Reprovada, 60th, a new agent.** One run so far: 22.3 minutes and 6.18 million tokens. It reported none of the 13 flaws and its report scored 1 of 50; four of the flaws
+  are fixed in the code it handed back (security 52 and bugs 43), but the same changes broke four characterization tests (PEN-002, −80) and one contracted behavior (compatibility 70).
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

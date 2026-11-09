@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.307`
+**Versão atual:** `0.2.308`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,20 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.308` — 2026-11-09 — results/ adds seven agents to LEB-100-A: Kimi K3.1 Pro at high (official 665, Silver), its highspeed variant (622), MiniMax M3.1 Flash (661), the two Kimi Code aliases, Liquid LFM 2.5 and dots-3, thirteen runs, 60 agents
+
+- The leaderboard goes from 53 agents and 124 runs to 60 agents and 137 runs; the 53 earlier entries keep their numbers and only their ranks move (44 of them shift down). Each new run folder carries its delivery, `mecanico.json`,
+  `veredito.json`, `scorecard.json` and `.md`, and `run.json`.
+- Seven new agents. Through the owner's Kimi Code membership (no per-token price: the cost in the record is the client's list-price estimate, not a charge): Kimi K3.1 Pro at `high`, three runs (632, 666, 665), official **665** (Silver, 10th),
+  and Kimi K3.1 Pro highspeed at `high`, three runs (648, 345, 622), official **622** (Silver, 26th; its second run reported 10 flaws and fixed none). Through MiniMax's own API: MiniMax M3.1 Flash at `high`, three runs (661, 639, 663),
+  official **661** (Silver, 12th). One run each: the Kimi Code aliases `kimi-for-coding` 555 (Bronze, 39th) and `kimi-for-coding-highspeed` 472 (Bronze, 44th), which the API reports without the build behind them (the lab was told on 2026-11-07
+  that they pointed to Kimi K2.8 Preview and Kimi K2.7 Code Highspeed, and each run record says so with the date); and, through OpenRouter's free variants, Liquid LFM 2.5 2.6B 164 and dots.studio dots-3 (Note Preview) 86 (both Reprovada,
+  58th and 60th; the dots-3 run is scored as it was delivered: a nearly empty report and four broken characterization tests).
+- Made by the unattended lab with OpenCode 1.18.33 (one session per run, 90-minute cap, auto permission mode) and judged blind like the earlier runs: one matching judge and one blind EXPL judge per delivery, Claude Opus subagents. Attempts that
+  did not finish are not scored (one Kimi K3.1 Pro highspeed lab failure, one M3.1 Flash attempt that died within seconds on a stale model catalog, three dots-3 attempts that ended inconclusive).
+- `results/2026/LEB-100-A/README.md` gets *Runs of 2026-11-07 and 2026-11-08* and `comments.json` carries the seven readings. `tests/test_saturacao.py` moves its pins to 60 agents and 137 runs (total mean 545, minimum 86; SEC-014 fixed in 38% of
+  the representative runs, unchanged).
 
 ### `0.2.307` — 2026-11-07 — LEB-S-300-A's aggregate adds MiniMax-M3 at thinking through MiniMax's own API: four runs (991, 994, 925, 939), mean 962, Platinum
 

@@ -1,0 +1,57 @@
+{
+  "agent": "liquid-lfm-2.5-2.6b-free-default",
+  "model": {
+    "name": "Liquid LFM 2.5 2.6B",
+    "id": "liquid/lfm-2.5-2.6b:free",
+    "provider": "Liquid",
+    "reasoning_effort": "default",
+    "client_mode": "permissions auto-approved",
+    "served_by": "OpenRouter's free variant (opencode provider openrouter, model liquid/lfm-2.5-2.6b:free), no provider pinned; the client defines no effort variant for it, so the run uses the model's default setting"
+  },
+  "run": 1,
+  "instance": "LEB-100-A",
+  "instance_version": "1.1",
+  "leb_spec": "1.1.0",
+  "task_version": "1.0.0",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "package_sha256": "34e38bc50ede0134395ed893aecff56fe82930210578bcdac8c9f0830832a15f",
+  "mode": "A",
+  "turn_budget": 30,
+  "operator_replies": 0,
+  "temperature": null,
+  "filed_on": "2026-11-08",
+  "evaluated_on": "2026-11-08",
+  "client": {
+    "name": "opencode",
+    "version": "1.18.33"
+  },
+  "first_message": "Agora leia o TAREFA.md e execute. Devolva code/ alterado, RELATORIO.md e achados.json.",
+  "session": {
+    "started": "2026-11-08T21:45:58-03:00",
+    "ended": "2026-11-08T21:46:38-03:00",
+    "log": "archived off the VM (the lab's evidence of the attempt (exec.jsonl and auditoria.json), session ses_e423b21baffepkVhfsDlg5ZnpG), not published"
+  },
+  "execution_environment": "dedicated Linux VM bench5 (address not recorded here) with GitHub's names resolved to loopback, its BGP prefixes and its published edge addresses blackholed, and IPv6 disabled on the LAN interface; run as the unprivileged user leb, without sudo, on a machine restored from its snapshot `leb-d-300-a` minutes before the run by the unattended lab driver, with the work folder as the only instance folder in /srv (README, Execution environment)",
+  "execution_host": {
+    "vcpus": 20,
+    "ram_gib": 15.6
+  },
+  "cost_time": {
+    "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+    "elapsed_seconds": 40.0,
+    "tokens": {
+      "input": 19142,
+      "output": 2689,
+      "cache": 153148,
+      "total": 176902
+    },
+    "usd_estimate": 0.0,
+    "note": "the total includes 1923 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 0.0000"
+  },
+  "logs": "archived off the VM (the lab's evidence of the attempt (exec.jsonl and auditoria.json), session ses_e423b21baffepkVhfsDlg5ZnpG), not published",
+  "not_recorded": [
+    "exact_version",
+    "temperature"
+  ],
+  "run_note": "Run 1 of this agent, made through the unattended lab (laboratorio-opencode-100.py) and not by hand like the other runs of this instance: one `opencode run` session that got the fixed first message once and ran to its own end under a 90 minute wall clock, so no operator reply was possible and none was needed (operator_replies 0; the 30 turns of the mode count the operator's messages, and the agent used the first). Permissions: OpenCode's auto mode (`--auto`: a request is approved unless a rule denies it; no action was refused), as in the D series. The client is OpenCode 1.18.33 with sharing disabled and auto-update off, no plugin, agent, MCP server or skill of the operator's, and only the provider key of the case installed as its login. The work folder was /srv/leb-100-a, the only instance folder on the machine: the snapshot's folder of another instance was removed before the package went in. OpenRouter's free variant (opencode provider openrouter, model liquid/lfm-2.5-2.6b:free), no provider pinned; the client defines no effort variant for it, so the run uses the model's default setting."
+}

@@ -1,0 +1,233 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "SQL injection na busca de chamados",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "busca vem de $_GET['busca'] e é concatenada entre aspas na cláusula LIKE em listarChamados; uma aspa encerra o literal e permite alterar a consulta.",
+      "impacto": "Um cliente autenticado pode contornar o filtro e, conforme a estrutura e os privilégios da conta MySQL, extrair dados de outras tabelas, inclusive por UNION.",
+      "correcao": "Foi adicionada somente a anotação F1. Proposta: usar prepared statement com placeholder e tratar curingas de LIKE separadamente quando a busca for literal.",
+      "corrigido": false
+    },
+    {
+      "id": "F2",
+      "titulo": "Listagem sem restrição de propriedade",
+      "arquivo": "code/index.php",
+      "linha": 73,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "O fluxo possui uid e papel, mas chama listarChamados apenas com busca e renderiza todas as linhas; não existe condição ou pós-filtragem por usuario_id para clientes.",
+      "impacto": "Clientes veem ID, título, status, prioridade e técnico de chamados de terceiros, violando a regra de visibilidade do manifesto.",
+      "correcao": "Foi adicionada somente a anotação F2. Proposta: recortar por usuario_id no fluxo web para clientes e manter acesso total aos técnicos sem mudar a assinatura pública.",
+      "corrigido": false
+    },
+    {
+      "id": "F3",
+      "titulo": "Detalhe de chamado sem verificação de propriedade (IDOR)",
+      "arquivo": "code/index.php",
+      "linha": 53,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "ver é convertido para inteiro e buscado somente por id; após verChamado, usuario_id não é comparado com uid quando o papel é cliente.",
+      "impacto": "Um cliente troca o id na URL e lê título, descrição, status e prioridade de chamados alheios.",
+      "correcao": "Foi adicionada somente a anotação F3. Proposta: negar o detalhe a clientes que não sejam donos e preservar o acesso de técnicos.",
+      "corrigido": false
+    },
+    {
+      "id": "F4",
+      "titulo": "Exportação CSV expõe chamados de terceiros",
+      "arquivo": "code/index.php",
+      "linha": 45,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Qualquer sessão autenticada alcança export=csv e chama exportarCsv; sua consulta seleciona todos os chamados sem considerar papel ou proprietário.",
+      "impacto": "Um cliente exporta títulos, estados, técnicos e datas de todos os chamados por uma via independente da listagem e do detalhe.",
+      "correcao": "Foi adicionada somente a anotação F4. Proposta: aplicar o recorte de cliente no fluxo web antes da geração e preservar a função pública para consumidores internos.",
+      "corrigido": false
+    },
+    {
+      "id": "F5",
+      "titulo": "XSS refletido pelo parâmetro busca em dois contextos",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "Na linha 79, busca entra sem escape em value entre aspas, permitindo encerrar o atributo; na linha 82, é emitido como HTML bruto entre parágrafos, permitindo marcação ativa.",
+      "impacto": "Uma URL criada pelo atacante pode executar JavaScript no navegador de outro usuário autenticado e agir no contexto do painel.",
+      "correcao": "Foram adicionadas somente duas anotações F5, uma por saída. Proposta: htmlspecialchars com ENT_QUOTES e UTF-8 no atributo e escape HTML na saída textual.",
+      "corrigido": false
+    },
+    {
+      "id": "F6",
+      "titulo": "Credenciais de banco e SMTP embutidas no código",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "DB_PASS tem fallback real de produção e SMTP_API_KEY é fixo; obter o fonte, um backup ou pacote de implantação revela as credenciais sem explorar a aplicação.",
+      "impacto": "Acesso ao banco e à central de e-mail dentro dos privilégios das contas, persistindo até que ambas as credenciais sejam rotacionadas.",
+      "correcao": "Foi adicionada somente a anotação F6. Proposta: remover segredos do repositório, exigir gerenciador/ambiente e rotacionar as duas credenciais.",
+      "corrigido": false
+    },
+    {
+      "id": "F7",
+      "titulo": "Senhas protegidas apenas por MD5 sem salt",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar calcula md5(senha) e compara com usuarios.senha CHAR(32); o algoritmo é rápido, sem salt e sem custo ajustável.",
+      "impacto": "Após vazamento da tabela, atacantes testam dicionários em massa e aproveitam hashes precomputados para recuperar senhas, inclusive reutilizadas.",
+      "correcao": "Foi adicionada somente a anotação F7. Proposta: migrar para password_hash/password_verify com rehash no login e transição legada planejada.",
+      "corrigido": false
+    },
+    {
+      "id": "F8",
+      "titulo": "Sessão não é regenerada após o login",
+      "arquivo": "code/index.php",
+      "linha": 24,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "O sucesso do login grava uid e papel na sessão existente sem session_regenerate_id; um identificador previamente fixado passa a representar a sessão autenticada se o ambiente o aceitar.",
+      "impacto": "Sequestro da sessão da vítima quando o atacante conseguir fixar o ID e as configurações do PHP permitirem essa fixação.",
+      "correcao": "Foi adicionada somente a anotação F8. Proposta: chamar session_regenerate_id(true) após autenticar e antes do redirecionamento.",
+      "corrigido": false
+    },
+    {
+      "id": "F9",
+      "titulo": "Células de CSV permitem injeção de fórmula em planilhas",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "Título e nome do técnico vão diretamente a fputcsv; a estrutura CSV é protegida, mas textos iniciados por =, +, - ou @ ainda podem ser interpretados como fórmulas por planilhas.",
+      "impacto": "Se esses valores forem controlados por usuários, abrir a exportação pode executar fórmulas, exfiltrar dados ou induzir comandos conforme a planilha.",
+      "correcao": "Foi adicionada somente a anotação F9. Proposta: neutralizar células textuais perigosas na exportação e documentar a transformação para consumidores.",
+      "corrigido": false
+    },
+    {
+      "id": "F10",
+      "titulo": "Divisão por zero quando não há respostas",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "qtd permanece zero se nenhum chamado tiver minutos_resposta não nulo; mediaResposta então executa 0 / 0 no retorno.",
+      "impacto": "No PHP 8 ocorre DivisionByZeroError e a listagem, que sempre calcula a média, falha em base nova ou sem respostas.",
+      "correcao": "Foi adicionada somente a anotação F10. Proposta: retornar 0.0 para qtd zero ou usar COALESCE(AVG(minutos_resposta), 0).",
+      "corrigido": false
+    },
+    {
+      "id": "F11",
+      "titulo": "Exportações concorrentes usam o mesmo arquivo sem bloqueio",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Todas as requisições abrem o mesmo chamados.csv com modo w, escrevem incrementalmente e depois leem esse caminho sem lock ou nome exclusivo; outra requisição pode truncar ou escrever entre as etapas.",
+      "impacto": "Downloads vazios, truncados ou misturados e corrupção do arquivo persistido conforme o interleaving das requisições.",
+      "correcao": "Foi adicionada somente a anotação F11. Proposta: arquivo exclusivo por requisição com ciclo de vida seguro/bloqueio ou streaming para php://output.",
+      "corrigido": false
+    },
+    {
+      "id": "F12",
+      "titulo": "Consultas N+1 na listagem",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "Cada linha do SELECT principal chama tecnicoNome, que executa outro SELECT para tecnico_id não nulo; N chamados atribuídos geram N consultas extras.",
+      "impacto": "Latência e carga no MySQL crescem linearmente com o tamanho da listagem.",
+      "correcao": "Foi adicionada somente a anotação F12. Proposta: LEFT JOIN ou mapa pré-carregado de técnicos, preservando tecnico_nome no retorno.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "Consultas N+1 na exportação",
+      "arquivo": "code/lib.php",
+      "linha": 137,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 100,
+      "mecanismo": "O loop do CSV chama tecnicoNome por linha e repete uma consulta para cada chamado com técnico, independentemente do N+1 da listagem.",
+      "impacto": "Exportações grandes fazem centenas ou milhares de round trips, aumentam o tempo de resposta e prolongam a janela de concorrência do F11.",
+      "correcao": "Foi adicionada somente a anotação F13. Proposta: LEFT JOIN ou mapa pré-carregado, mantendo cabeçalho, colunas e ordenação.",
+      "corrigido": false
+    },
+    {
+      "id": "F14",
+      "titulo": "Qualquer status desconhecido é classificado como “Resolvido”",
+      "arquivo": "code/lib.php",
+      "linha": 32,
+      "linha_fim": 34,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 95,
+      "mecanismo": "O else final de formatarStatus não testa status 3 e captura qualquer outro inteiro; schema.sql usa TINYINT sem CHECK, portanto não impõe o domínio 1–3.",
+      "impacto": "Dados inválidos ou valores futuros são exibidos e exportados como resolvidos, mascarando inconsistências e distorcendo relatórios.",
+      "correcao": "Foi adicionada somente a anotação F14. Proposta: testar 3 explicitamente e definir comportamento seguro para desconhecidos sem mudar os rótulos contratados.",
+      "corrigido": false
+    },
+    {
+      "id": "F15",
+      "titulo": "Falha na consulta do CSV deixa handle e arquivo parcial",
+      "arquivo": "code/lib.php",
+      "linha": 132,
+      "linha_fim": 135,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 100,
+      "mecanismo": "O arquivo já foi aberto/truncado e recebeu o cabeçalho quando a consulta falha; o retorno ocorre antes do fclose e antes dos headers/download.",
+      "impacto": "O handle fica aberto até a limpeza da requisição, resta um CSV parcial no disco e o chamador não recebe erro explícito.",
+      "correcao": "Foi adicionada somente a anotação F15. Proposta: fechar o handle em todos os caminhos e remover ou sinalizar exportações incompletas.",
+      "corrigido": false
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "Toda a lógica executável de config.php, index.php e lib.php",
+      "porque": "A entrega é uma revisão anotada; somente comentários LEB foram inseridos, portanto nenhum achado é declarado corrigido e o comportamento permanece idêntico."
+    },
+    {
+      "o_que": "Assinaturas públicas, rotas, estrutura HTML, rótulos, formato e ordenação do CSV",
+      "porque": "São superfícies e valores contratados pelo manifest.md e precisam permanecer compatíveis com os consumidores externos."
+    },
+    {
+      "o_que": "schema.sql e seed.sql",
+      "porque": "Não houve migração de dados ou alteração de stack; a futura migração de hashes exige plano de compatibilidade próprio."
+    },
+    {
+      "o_que": "Consultas de verChamado e tecnicoNome e o prepared statement do login",
+      "porque": "Os dois primeiros recebem inteiros tipados e o login já usa placeholder; não foram classificados incorretamente como SQL injection. O defeito de verChamado no fluxo web é autorização, registrado em F3."
+    },
+    {
+      "o_que": "Dependências, nomes e caminhos de arquivos",
+      "porque": "Nenhuma dependência nova era necessária e a estrutura do pacote deve permanecer inalterada."
+    }
+  ]
+}

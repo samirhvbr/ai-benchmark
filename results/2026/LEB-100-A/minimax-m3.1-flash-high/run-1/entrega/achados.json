@@ -1,0 +1,295 @@
+{
+  "leb": {
+    "instancia": "LEB-100-A",
+    "versao_instancia": "1.1",
+    "matriz_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625"
+  },
+  "achados": [
+    {
+      "id": "F1",
+      "titulo": "Injeção de SQL no termo de busca (lib.php:82)",
+      "arquivo": "code/lib.php",
+      "linha": 82,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 99,
+      "mecanismo": "listarChamados concatenava o termo cru de $_GET['busca'] na SQL: $sql .= \" WHERE titulo LIKE '%\" . $busca . \"%'\"; sem escape, sem prepared statement e sem validação. O atacante fecha o literal e continua a consulta (ex.: x' UNION SELECT ... --), trocando o SELECT inteiro ou executando DML/DDL com o privilégio do usuário 'painel'. A rota index.php?busca=<termo> e o formulário de busca da própria listagem alimentam esse parâmetro diretamente.",
+      "impacto": "Qualquer usuário autenticado (e a rota de busca está exposta no painel) pode ler dados de qualquer tabela, inclusive usuarios com hashes de senha, alterar/apagar chamados ou executar comandos SQL arbitrários.",
+      "correcao": "Consulta convertida para prepared statement com placeholder (LIKE ?), com o termo escapado por escaparLikeBusca() ('!', '%' e '_' escapados, ESCAPE '!'), de modo que o usuário não injeta SQL nem usa curingas para varrer a tabela. Verificado: cargas com ' e UNION SELECT retornam zero linhas e nenhum erro.",
+      "corrigido": true
+    },
+    {
+      "id": "F2",
+      "titulo": "Controle de acesso ausente: cliente enxerga e exporta os chamados de todos",
+      "arquivo": "code/lib.php",
+      "linha": 78,
+      "linha_fim": 93,
+      "categoria": "seguranca",
+      "severidade": "critica",
+      "confianca": 100,
+      "mecanismo": "A regra do manifesto (cliente só vê os chamados que abriu; técnico vê todos) não era implementada em nenhum ponto: listarChamados fazia SELECT * FROM chamados sem filtro, verChamado buscava por id apenas e index.php usava a sessão só para decidir se havia login, nunca o que o usuário pode ver. A coluna chamados.usuario_id existe e é indexada, mas nunca era usada em consulta; o papel gravado na sessão (index.php:39) era aplicado em lugar nenhum.",
+      "impacto": "Com os dados de teste, a cliente 'ana' via e exportava integralmente os chamados do 'bruno' (troca de plano, fatura em duplicidade) e podia abrir qualquer um deles por index.php?ver=<id> lendo título e descrição: vazamento de dados entre clientes e IDOR na rota de detalhe.",
+      "correcao": "Regra implementada na camada de dados sem alterar assinaturas: nova classe ContextoPainel (lib.php:25-57) guarda o usuário da requisição e condicaoVisibilidadeChamado() devolve o filtro usuario_id = ?. listarChamados, verChamado, exportarCsv e mediaResposta aplicam o filtro quando há contexto; apenas o papel 'tecnico' vê tudo (papel desconhecido é restrito). index.php define o contexto com o papel relido do banco a cada requisição. Scripts internos do ISP, que não definem contexto, mantêm a visão global (verificado byte a byte contra a implementação original).",
+      "corrigido": true
+    },
+    {
+      "id": "F3",
+      "titulo": "XSS reflexivo no termo de busca (index.php:79 e 82)",
+      "arquivo": "code/index.php",
+      "linha": 79,
+      "linha_fim": 82,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 98,
+      "mecanismo": "O mesmo termo de busca era reescrito na resposta sem escape: value=\"' . $busca . '\" no input do formulário e 'Resultados para: ' . $busca no corpo. Como o valor vem da query string e é refletido na mesma página, index.php?busca=\"><script>...</script> executa script no origin do painel (e \" onfocus=... quebra o atributo sem <script>). Não há CSP no sistema, que serviria de barreira secundária.",
+      "impacto": "Roubo do cookie de sessão (o mesmo para todo o painel), requisições forjadas com a identidade da vítima e leitura/modificação de chamados pelo painel.",
+      "correcao": "O termo passa por htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') (index.php:130), reutilizado nos dois pontos de saída; os demais pontos de saída (titulo, descricao, tecnico_nome) foram homogeneizados com ENT_QUOTES. Verificado: o payload volta escapado.",
+      "corrigido": true
+    },
+    {
+      "id": "F4",
+      "titulo": "Senha de usuário armazenada em MD5 sem sal",
+      "arquivo": "code/lib.php",
+      "linha": 15,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "autenticar transformava a senha em MD5 e comparava o digest no banco (WHERE login = ? AND senha = ?), com coluna CHAR(32) no schema. MD5 é rápido e sem sal: um dump da tabela usuarios permite recuperar senhas por rainbow table em segundos, senhas iguais geram hashes iguais (reuso entre serviços) e não há custo de CPU que fretasse o ataque.",
+      "impacto": "Recuperação em massa das senhas de todos os clientes e técnicos a partir de um vazamento do banco, além de reuso de credenciais.",
+      "correcao": "autenticar passou a verificar hash moderno com password_verify e, para as linhas legadas em MD5, com hash_equals em tempo constante. Quando um usuário legado entra com sucesso, o hash é regravado no lugar com password_hash()/PASSWORD_DEFAULT (bcrypt, custo 12). A regravação só é tentada se a coluna já aceitar >=60 caracteres (consulta a information_schema), de modo que instalações antigas com CHAR(32) continuam funcionando sem erro; schema.sql passou a VARCHAR(255). Verificado: login MD5 funciona, o hash vira $2y$12$..., senha errada continua null e o schema CHAR(32) antigo não sofre regravação nem erro.",
+      "corrigido": true
+    },
+    {
+      "id": "F5",
+      "titulo": "Credenciais de produção escritas no código-fonte",
+      "arquivo": "code/config.php",
+      "linha": 12,
+      "linha_fim": 15,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 100,
+      "mecanismo": "config.php trazia a senha do banco de produção como fallback de getenv('DB_PASS') ('N3tX@2013!prod') e a chave da central de e-mail SMTP_API_KEY como literal. Qualquer leitura do repositório, de um backup do código, do CI ou do git log entrega o acesso ao banco (usuário 'painel' com privilégio total no schema) e à API transacional.",
+      "impacto": "Acesso direto ao banco de produção e à chave de e-mail, e (combinado com F1) alcançável por qualquer usuário autenticado do painel.",
+      "correcao": "config.php agora resolve os segredos por lerSegredoPainel(): primeiro a variável de ambiente (DB_PASS, SMTP_API_KEY), depois um arquivo de segredos gerenciado por operações e fora do docroot (LEB_SECRETS_FILE ou /etc/painel/secrets.env, formato KEY=VALUE) e por último vazio. Nenhum segredo fica mais no código. Sem DB_PASS provisionada, o sistema registra no log exatamente o que provisionar, em vez de tentar silenciosamente uma credencial errada. Requisito de implantação: DB_PASS precisa estar no ambiente no primeiro start após o deploy.",
+      "corrigido": true
+    },
+    {
+      "id": "F6",
+      "titulo": "Divisão por zero na média de SLA derruba a listagem inteira",
+      "arquivo": "code/lib.php",
+      "linha": 116,
+      "linha_fim": 116,
+      "categoria": "bug",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "mediaResposta somava e contava os minutos_resposta em PHP e dividia no fim (return $soma / $qtd) sem tratar o caso em que nenhum chamado tem tempo de resposta registrado: $qtd = 0. No PHP 8 isso é DivisionByZeroError, exceção não tratada, e não apenas um aviso. Como index.php:74 chama mediaResposta em toda listagem, o painel inteiro (e o relatório gerencial, que usa a mesma função) quebra, e não só o indicador de SLA.",
+      "impacto": "Erro 500 na rota mais usada do sistema, no cenário mais comum de uma instalação nova (nenhum SLA medido) e no relatório que consome a mesma função.",
+      "correcao": "A média passou a ser calculada no banco (AVG), que devolve NULL quando não há linhas, e a função devolve 0.0 nesse caso, mantendo o tipo float. Verificado contra o original: a versão antiga lança DivisionByZeroError com a tabela vazia; a nova devolve 0.0 e a listagem renderiza.",
+      "corrigido": true
+    },
+    {
+      "id": "F7",
+      "titulo": "Fixação de sessão e cookie de sessão sem HttpOnly/SameSite",
+      "arquivo": "code/index.php",
+      "linha": 15,
+      "linha_fim": 26,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 95,
+      "mecanismo": "O login não renovava o identificador de sessão (o PHPSESSID emitido antes do login continuava válido depois dele), o que permite fixar a sessão da vítima se um PHPSESSID conhecido for injetado na navegação dela. Além disso, session_start() era chamado sem session_set_cookie_params(): o cookie saía sem HttpOnly (legível por JavaScript, ampliando o impacto do XSS) e sem SameSite.",
+      "impacto": "Sequestro de sessão e exposição do cookie de sessão a scripts (em conjunto com F3).",
+      "correcao": "Sessão configurada com HttpOnly, SameSite=Lax e Secure quando HTTPS, mais session.use_strict_mode e session.use_only_cookies; session_regenerate_id(true) no login bem-sucedido; expiração por inatividade (SESSION_TIMEOUT, 7200s) e papel do usuário relido do banco a cada requisição. Verificado: o id de sessão muda entre antes e depois do login e o cookie sai com HttpOnly; SameSite=Lax.",
+      "corrigido": true
+    },
+    {
+      "id": "F8",
+      "titulo": "Export gravado dentro do docroot, com escrita que segue link simbólico",
+      "arquivo": "code/lib.php",
+      "linha": 125,
+      "linha_fim": 150,
+      "categoria": "seguranca",
+      "severidade": "alta",
+      "confianca": 85,
+      "mecanismo": "exportarCsv escrevia em nome fixo dentro de EXPORT_DIR (/var/www/painel/tmp), que está dentro do docroot, com fopen($caminho, 'w'): o 'w' trunca o alvo seguindo links simbólicos, então um link chamados.csv -> /etc/passwd no diretório faz o servidor sobrescrever um arquivo arbitrário. O arquivo com todos os chamados (inclusive de outros clientes) ficava legível por URL direta, e o readfile() posterior lia o caminho de novo, abrindo janela TOCTOU. Se a gravação falhasse, a função retornava em silêncio e o navegador recebia 200 com corpo vazio, sem CSV.",
+      "impacto": "Sobrescrita arbitrária de arquivos no servidor com o privilégio do usuário do web; vazamento de todos os chamados por acesso direto ao arquivo; download de CSV truncado sem indicação de erro.",
+      "correcao": "O CSV é gerado em memória (php://temp) e a gravação em disco ficou atômica e sem seguir symlink: tempnam() (arquivo único, modo 0600) -> escrita -> chmod 0600 -> rename() sobre o destino, que substitui o próprio link simbólico. O download responde o conteúdo em memória, sem readfile e sem TOCTOU. O caminho e o nome do artefato (EXPORT_DIR/chamados.csv) foram mantidos porque a rotina noturna do ISP consome esse arquivo; se o diretório não for gravável, o download continua funcionando e o problema vai para o log. Verificado: CSV idêntico ao original e arquivo gerado com modo -rw-------.",
+      "corrigido": true
+    },
+    {
+      "id": "F9",
+      "titulo": "Injeção de fórmula em células do CSV exportado",
+      "arquivo": "code/lib.php",
+      "linha": 138,
+      "linha_fim": 144,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "O título do chamado é digitado pelo cliente e ia cru para o fputcsv do export, que é aberto em planilha: uma célula iniciada por =, +, - ou @ é interpretada como fórmula (=HYPERLINK, DDE, IMPORTXML), o que permite phishing clicável e execução de comandos no Office legado do Windows a partir de um arquivo gerado pelo sistema.",
+      "impacto": "Ao abrir o export, a máquina do gestor ou do técnico executa conteúdo definido por um cliente (phishing interno, exfiltração por DDE, download de arquivo).",
+      "correcao": "celulaCsvSegura() prefixa com apóstrofo as células que começam com caractere de fórmula, aplicado a Titulo e Tecnico. O placeholder '-' (chamado sem técnico) foi preservado e a saída dos dados de teste continua byte a byte igual à original. Verificado: título '=CMD|calc!A1 sai como '=CMD|calc!A1.",
+      "corrigido": true
+    },
+    {
+      "id": "F10",
+      "titulo": "Falha do mysqli vira erro fatal com stack trace em vez de degradação",
+      "arquivo": "code/lib.php",
+      "linha": 85,
+      "linha_fim": 85,
+      "categoria": "bug",
+      "severidade": "media",
+      "confianca": 85,
+      "mecanismo": "Desde o PHP 8.1 o modo padrão do mysqli lança mysqli_sql_exception em vez de devolver false, então o if ($res === false) que existia em exportarCsv era código morto e qualquer consulta malsucedida vazava exceção não tratada (500 com stack trace e SQL na resposta). O mesmo valia para a conexão: o construtor mysqli lança antes de connect_errno ser avaliado, então a checagem de falha de conexão também nunca rodava.",
+      "impacto": "Página 500 com informação interna exposta em qualquer erro de SQL (inclusive erro de sintaxe introduzido na string concatenada do LIKE) em vez de degradação graciosa; a queda do banco derrubava o painel inteiro.",
+      "correcao": "executarConsulta() encapsula prepare/execute/query em try/catch (mysqli_sql_exception), registra o erro no log do servidor e devolve null; os chamadores tratam null (lista vazia, null no detalhe, 0.0 na média, CSV ainda entregue). A conexão em index.php passou a ser criada dentro de try/catch, com a mensagem 'Falha ao conectar ao banco.' inalterada e o motivo real no log. Verificado: nenhuma exceção escapou nos testes.",
+      "corrigido": true
+    },
+    {
+      "id": "F11",
+      "titulo": "N+1 de consultas na listagem e no export",
+      "arquivo": "code/lib.php",
+      "linha": 89,
+      "linha_fim": 89,
+      "categoria": "performance",
+      "severidade": "media",
+      "confianca": 95,
+      "mecanismo": "listarChamados fazia SELECT * FROM chamados e, para cada linha, uma nova consulta SELECT nome FROM usuarios WHERE id = ... (tecnicoNome dentro do laço); o export repetia o padrão na linha 137. Com N chamados são N+1 idas ao banco por renderização de página, custo que cresce linearmente com o volume e com o número de usuários simultâneos.",
+      "impacto": "Latência da listagem e do export proporcional ao volume, desgaste desnecessário do banco e do pool de conexões.",
+      "correcao": "A listagem resolve o técnico com um único LEFT JOIN (COALESCE(u.nome, ?) AS tecnico_nome) e o export usa cache por requisição em tecnicoNome(), consultando cada técnico uma única vez. O conjunto de chaves devolvido continua idêntico ao original: normalizarValoresLinha() reconverte os valores para string, porque consultas preparadas devolvem int enquanto o query() legado devolvia string (diferença invisível no uso, mas que quebraria comparações estritas como === '105'). Verificado campo a campo contra a implementação original.",
+      "corrigido": true
+    },
+    {
+      "id": "F12",
+      "titulo": "Listagem sem paginação e SELECT * carrega a descrição de todos os chamados",
+      "arquivo": "code/lib.php",
+      "linha": 80,
+      "linha_fim": 80,
+      "categoria": "performance",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "A listagem carrega a tabela inteira em memória, sem LIMIT e sem paginação, e com SELECT *, que traz também a coluna descricao (TEXT), não usada na listagem. O custo de memória e o tempo de resposta escalam com a tabela inteira, e o painel degrada conforme o histórico de chamados cresce.",
+      "impacto": "Degradação progressiva do painel e do relatório que usam a mesma função; picos de memória do processo PHP.",
+      "correcao": "Não corrigido (decisão D1): o manifesto não declara paginação e a rota index.php não tem parâmetro de página, portanto introduzi-la mudaria a forma da saída; remover descricao do SELECT * quebraria consumidores que leem essa chave do array devolvido. Alternativa futura: paginação por ?pagina= mantendo a listagem atual como página 1.",
+      "corrigido": false
+    },
+    {
+      "id": "F13",
+      "titulo": "Tentativas de login ilimitadas (sem rate limit)",
+      "arquivo": "code/lib.php",
+      "linha": 13,
+      "linha_fim": 13,
+      "categoria": "seguranca",
+      "severidade": "media",
+      "confianca": 90,
+      "mecanismo": "autenticar é chamado pelo bloco de login (index.php:21) sem rate limit, bloqueio progressivo nem registro de tentativas; o formulário aceita requisições ilimitadas. Com as senhas em MD5 (F4) o alvo era trivial de quebrar, e agora, com bcrypt, o custo de CPU por tentativa vira vetor de negação de serviço via login.",
+      "impacto": "Força bruta de credenciais (sobretudo das contas de cliente) e consumo de CPU para negação de serviço através do endpoint de login.",
+      "correcao": "Não corrigido (decisão D2): a stack não tem armazenamento compartilhado entre processos (a sessão é por cliente/processo) e um limite mal calibrado bloquearia clientes legítimos e quebraria logins automatizados. Mitigação parcial: o hash bcrypt encarece o ataque de CPU; o passo natural é contador em tabela (login_tentativas) ou rate limit no servidor web.",
+      "corrigido": false
+    },
+    {
+      "id": "F14",
+      "titulo": "rotuloPrioridade confunde prioridades e rebaixa chamado crítico",
+      "arquivo": "code/lib.php",
+      "linha": 40,
+      "linha_fim": 59,
+      "categoria": "qualidade",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "A função decide o rótulo a partir de minutos_resposta (tempo até a primeira resposta) e da prioridade, com três desvios: prioridade 1 (baixa) e 2 (normal) caem no mesmo ramo e devolvem 'Normal', então o painel nunca mostra 'baixa'; com minutos <= 30 uma prioridade 4 (crítica, cf. schema.sql:19) devolve 'Alto - dentro do SLA', rebaixando o chamado; e o SLA, medido só até a primeira resposta, continua sendo exibido em chamados já resolvidos como se fosse o estado atual.",
+      "impacto": "O painel e o relatório que reaproveita os rótulos classificam errado: chamado crítico aparece como 'Alto' e a distinção baixa/normal não existe. Não quebra o contrato do manifesto, que fixa apenas os rótulos de status.",
+      "correcao": "Não corrigido (decisão D3): os textos de prioridade não estão no manifesto, mas são reaproveitados por consumidores internos que fazem correspondência por texto, e o relatório gerencial não faz parte do pacote; corrigir o significado ('Baixa' para prioridade 1, 'CRITICO' mesmo dentro do SLA) mudaria strings fora do contrato declarado.",
+      "corrigido": false
+    },
+    {
+      "id": "F15",
+      "titulo": "Parâmetros GET/POST sem validação de tipo",
+      "arquivo": "code/index.php",
+      "linha": 22,
+      "linha_fim": 72,
+      "categoria": "bug",
+      "severidade": "baixa",
+      "confianca": 90,
+      "mecanismo": "$_GET e $_POST podem ser arrays: $_POST['login'] estourava o TypeError da assinatura string $usuario (500 em vez de 'usuário inválido'), $_GET['busca'] chegava como array em listarChamados(mysqli, string) e, em $_GET['ver'], o cast (int) de um array resultava silenciosamente em 1, de modo que ?ver[]=x abria o chamado de id 1.",
+      "impacto": "Erros 500 por requisição malformada (negação de serviço trivial) e, no caso de ?ver[]=x, desvio silencioso para o registro errado.",
+      "correcao": "Validação de escalaridade e coerção explícita em index.php:57-59 (login), 109 (ver) e 129 (busca); ?ver[]=x agora resolve para id 0 e cai em 'Chamado nao encontrado.'. Verificado: ?busca[]=x e ?ver[]=x respondem 200 sem warning nem erro fatal.",
+      "corrigido": true
+    },
+    {
+      "id": "F16",
+      "titulo": "Formulário de login sem token anti-CSRF",
+      "arquivo": "code/index.php",
+      "linha": 21,
+      "linha_fim": 34,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "O POST de login não exige token anti-CSRF: um site externo pode postar o formulário e fazer o navegador da vítima entrar no painel com as credenciais do atacante (login CSRF), deixando a sessão da vítima autenticada em conta controlada pelo atacante, que então captura as ações feitas em seguida.",
+      "impacto": "Baixo e isolado: exige vítima previamente autenticada e não executa nenhuma ação destrutiva por conta própria.",
+      "correcao": "Não corrigido (decisão D4): o manifesto fixa as rotas e os nomes de parâmetro, e há consumidores que autenticam por script (rotina noturna, integração de faturamento) que quebrariam com token obrigatório. Risco parcialmente mitigado pela renovação de sessão e pelas flags de cookie do F7.",
+      "corrigido": false
+    },
+    {
+      "id": "F17",
+      "titulo": "Cabeçalhos HTTP de segurança ausentes",
+      "arquivo": "code/index.php",
+      "linha": 30,
+      "linha_fim": 30,
+      "categoria": "seguranca",
+      "severidade": "baixa",
+      "confianca": 85,
+      "mecanismo": "A resposta começa em index.php:30 (primeiro echo) sem nenhum cabeçalho de segurança: sem X-Content-Type-Options o navegador pode interpretar a resposta como HTML onde o tipo declarado não deveria renderizar, sem X-Frame-Options o painel pode ser embutido em iframe por site externo (clickjacking sobre a tela de login) e sem Referrer-Policy a URL de busca, que pode conter dados digitados pelo cliente, vaza para sites de terceiros.",
+      "impacto": "Baixo isoladamente; aumenta o impacto de outros achados (XSS e login CSRF).",
+      "correcao": "Enviados em todas as respostas: X-Content-Type-Options: nosniff, X-Frame-Options: SAMEORIGIN e Referrer-Policy: no-referrer. A resposta do CSV mantém Content-Type e Content-Disposition e ganha nosniff.",
+      "corrigido": true
+    },
+    {
+      "id": "F18",
+      "titulo": "Papel do usuário só existia na sessão (autorização sobre dado obsoleto)",
+      "arquivo": "code/index.php",
+      "linha": 38,
+      "linha_fim": 39,
+      "categoria": "arquitetura",
+      "severidade": "baixa",
+      "confianca": 80,
+      "mecanismo": "O papel vinha da sessão, escrita no login, e era tratado como verdade: um usuário rebaixado de 'tecnico' para 'cliente' (ou removido do banco) continuava com o papel antigo até a sessão expirar. Com a regra de visibilidade implementada (F2), essa defasagem passou a ter consequência real de acesso, já que o papel decide o que a pessoa enxerga.",
+      "impacto": "Autorização baseada em dado obsoleto; conta removida mantinha acesso até o fim da sessão.",
+      "correcao": "O index.php relê o usuário do banco a cada requisição (carregarUsuarioPainel, lib.php:153-161); se a conta não existir mais, a sessão é destruída e a tela de login aparece. O papel usado no filtro de visibilidade é sempre o do banco, nunca o da sessão.",
+      "corrigido": true
+    }
+  ],
+  "nao_alterei": [
+    {
+      "o_que": "[D1] Paginação e LIMIT na listagem, e remoção da coluna descricao do SELECT * (F12)",
+      "porque": "O manifesto não declara paginação e a rota index.php não tem parâmetro de página: introduzi-la mudaria a forma da saída. Remover descricao quebraria consumidores que leem essa chave do array devolvido por listarChamados. Alternativa futura: ?pagina= mantendo a listagem atual como página 1."
+    },
+    {
+      "o_que": "[D2] Rate limit / bloqueio de tentativas no login (F13)",
+      "porque": "A stack não tem armazenamento compartilhado entre processos e um limite mal calibrado bloquearia clientes legítimos e quebraria logins automatizados. Mitigação parcial: bcrypt encarece o ataque de CPU. Próximo passo: contador em tabela ou rate limit no servidor web."
+    },
+    {
+      "o_que": "[D3] Textos de rotuloPrioridade (F14)",
+      "porque": "Os rótulos de status estão no manifesto, os de prioridade não; mas os textos são reaproveitados por consumidores internos que casam por texto e o relatório gerencial não faz parte do pacote. Corrigir o significado mudaria strings fora do contrato declarado."
+    },
+    {
+      "o_que": "[D4] Token anti-CSRF no formulário de login (F16)",
+      "porque": "Há consumidores que autenticam por script (rotina noturna de exportação, integração de faturamento) e o manifesto fixa as rotas e nomes de parâmetro; exigir token os quebraria. Mitigações aplicadas: renovação de id de sessão no login e cookie HttpOnly/SameSite."
+    },
+    {
+      "o_que": "[D5] Caminho padrão de EXPORT_DIR, que continua dentro do docroot (/var/www/painel/tmp) (F8)",
+      "porque": "Mudar o caminho padrão mudaria onde a rotina noturna do ISP busca o chamados.csv, consumidor que não está no pacote. O caminho foi preservado e agora pode ser redirecionado sem tocar em código, pela variável de ambiente EXPORT_DIR; mover o diretório para fora do docroot é decisão de infraestrutura, não de código."
+    },
+    {
+      "o_que": "[D7] Estrutura de HTML por concatenação de echo, sem templates",
+      "porque": "Reescrever a camada de apresentação seria reescrita, não evolução, e a estrutura HTML da listagem é declarada no manifesto (id='tabela-chamados' e ordem das colunas)."
+    },
+    {
+      "o_que": "[D8/D9] Camada de acesso a dados e stack; seed.sql com hash MD5 (D8, D9)",
+      "porque": "Trocar mysqli ou a stack mudaria as assinaturas públicas. Nenhuma dependência nova foi usada: só password_hash/password_verify e prepared statements nativos. O seed foi mantido em MD5 de propósito, para exercitar o caminho legado da migração de senha e preservar o ambiente de teste declarado no manifesto."
+    },
+    {
+      "o_que": "[D10] Assinaturas das funções públicas",
+      "porque": "Nenhuma foi alterada, nem com parâmetros opcionais novos. A regra de visibilidade entrou pelo contexto ContextoPainel; os scripts internos, que não definem contexto, continuam recebendo o conjunto completo, verificado byte a byte contra a implementação original."
+    }
+  ]
+}
