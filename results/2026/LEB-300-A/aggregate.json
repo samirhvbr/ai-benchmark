@@ -1573,6 +1573,77 @@
       }
     },
     {
+      "agent": "minimax-m3-thinking",
+      "score": 398,
+      "grade": "Reprovada",
+      "runs_count": 3,
+      "categories": {
+        "SEC": 169,
+        "ARCH": 25,
+        "BUG": 42,
+        "PERF": 26,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 36
+      },
+      "cost_usd": 0.81,
+      "wall_minutes": 53.1,
+      "tokens": {
+        "input": 282942,
+        "output": 41745,
+        "cache": 10646261,
+        "total": 11004186
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 388,
+          "cost_usd": 1.21,
+          "wall_minutes": 42.3,
+          "tokens": {
+            "input": 128455,
+            "output": 48678,
+            "cache": 15344274,
+            "total": 15575334
+          }
+        },
+        {
+          "run": 2,
+          "total": 398,
+          "cost_usd": 0.81,
+          "wall_minutes": 53.1,
+          "tokens": {
+            "input": 282942,
+            "output": 41745,
+            "cache": 10646261,
+            "total": 11004186
+          }
+        },
+        {
+          "run": 3,
+          "total": 810,
+          "cost_usd": 4.12,
+          "wall_minutes": 105.2,
+          "tokens": {
+            "input": 591588,
+            "output": 121599,
+            "cache": 35526597,
+            "total": 36384563
+          }
+        }
+      ],
+      "model": {
+        "name": "MiniMax-M3",
+        "id": "minimax-m3",
+        "provider": "MiniMax",
+        "reasoning_effort": "thinking"
+      },
+      "comment": {
+        "en": "Three runs, and the third is far from the other two: 388 and 398 (Reprovada) against 810 (Gold), so the official score, the median, is 398 and the configuration is not steady. Compatibility was whole in all three. In the first two, the first-stage report filed several security and architecture problems as plain bugs and never moved them (security 113 of 250, bugs 47 of 150); in the third it detected 23 of the 36 planted flaws and fixed 13, with security 225, architecture 136, bugs 145, performance 112 and clean code 50, and a report rated 42 of 50. The runs took 42, 53 and 105 minutes, at US$ 1.21, 0.81 and 4.12.",
+        "pt_BR": "Três execuções, e a terceira está longe das outras duas: 388 e 398 (Reprovada) contra 810 (Gold), então a nota oficial, a mediana, é 398 e a configuração não é estável. A compatibilidade ficou inteira nas três. Nas duas primeiras, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou (segurança 113 de 250, bugs 47 de 150); na terceira detectou 23 das 36 falhas plantadas e corrigiu 13, com segurança 225, arquitetura 136, bugs 145, desempenho 112 e código limpo 50, e um relatório com 42 de 50. As execuções levaram 42, 53 e 105 minutos, a US$ 1,21, 0,81 e 4,12."
+      }
+    },
+    {
       "agent": "z.ai-glm-5.2-high",
       "score": 390,
       "grade": "Reprovada",
@@ -1620,62 +1691,99 @@
       }
     },
     {
-      "agent": "minimax-m3-thinking",
-      "score": 388,
+      "agent": "nvidia-nemotron-3.5-super-vl-free-high",
+      "score": 367,
       "grade": "Reprovada",
-      "runs_count": 2,
+      "runs_count": 1,
       "categories": {
-        "SEC": 113,
-        "ARCH": 56,
-        "BUG": 47,
-        "PERF": 26,
-        "CLN": 7,
+        "SEC": 120,
+        "ARCH": 19,
+        "BUG": 105,
+        "PERF": 0,
+        "CLN": 0,
         "COMP": 100,
-        "EXPL": 39
+        "EXPL": 38
       },
-      "cost_usd": 1.21,
-      "wall_minutes": 42.3,
+      "cost_usd": 0.0,
+      "wall_minutes": 20.3,
       "tokens": {
-        "input": 128455,
-        "output": 48678,
-        "cache": 15344274,
-        "total": 15575334
+        "input": 581974,
+        "output": 28073,
+        "cache": 6144112,
+        "total": 6781516
       },
       "runs": [
         {
           "run": 1,
-          "total": 388,
-          "cost_usd": 1.21,
-          "wall_minutes": 42.3,
+          "total": 367,
+          "cost_usd": 0.0,
+          "wall_minutes": 20.3,
           "tokens": {
-            "input": 128455,
-            "output": 48678,
-            "cache": 15344274,
-            "total": 15575334
-          }
-        },
-        {
-          "run": 2,
-          "total": 398,
-          "cost_usd": 0.81,
-          "wall_minutes": 53.1,
-          "tokens": {
-            "input": 282942,
-            "output": 41745,
-            "cache": 10646261,
-            "total": 11004186
+            "input": 581974,
+            "output": 28073,
+            "cache": 6144112,
+            "total": 6781516
           }
         }
       ],
       "model": {
-        "name": "MiniMax-M3",
-        "id": "minimax-m3",
-        "provider": "MiniMax",
-        "reasoning_effort": "thinking"
+        "name": "NVIDIA Nemotron 3.5 Super VL",
+        "id": "nvidia/nemotron-3.5-super-vl:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
       },
       "comment": {
-        "en": "Two runs within ten points of each other (388 and 398), so the shape is steady: compatibility whole, security at 113 of 250, bugs at 47 of 150 and little in performance or clean code. In both, the first-stage report filed several security and architecture problems as plain bugs and never moved them, which cost points in the categories that mattered. Its runs took 42 and 53 minutes, at US$ 1.21 and 0.81. Two runs of three: not official, and the published score is the lower of the two.",
-        "pt_BR": "Duas execuções a dez pontos uma da outra (388 e 398), então o perfil é estável: compatibilidade inteira, segurança em 113 de 250, bugs em 47 de 150 e pouco em desempenho e código limpo. Nas duas, o relatório da primeira etapa registrou vários problemas de segurança e de arquitetura como bugs comuns e não os reclassificou, o que custou pontos nas categorias que mais pesavam. As execuções levaram 42 e 53 minutos, a US$ 1,21 e 0,81. Duas execuções de três: não é oficial, e a nota publicada é a menor das duas."
+        "en": "On a single run: compatibility whole (100), security 120 of 250, bugs 105 of 150 and architecture 19 of 200, nothing in performance or clean code, and 15 points lost for a new defect in its own fix. It detected 12 of the 36 planted flaws and fixed 6; it reported 2 more real findings outside the planted set, and its confidence was well calibrated (Brier 0.08). The report was rated 38 of 50. It ran through OpenRouter's free variant, at no cost and in 20 minutes, at high, the highest effort the client defines for it. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: compatibilidade inteira (100), segurança 120 de 250, bugs 105 de 150 e arquitetura 19 de 200, nada em desempenho nem em código limpo, e 15 pontos perdidos por um defeito novo no próprio conserto. Detectou 12 das 36 falhas plantadas e corrigiu 6; relatou mais 2 achados reais fora do conjunto plantado, e a confiança foi bem calibrada (Brier 0,08). O relatório teve 38 de 50. Rodou pela variante gratuita do OpenRouter, sem custo e em 20 minutos, em high, o maior esforço que o cliente define para ele. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
+      "agent": "nvidia-nemotron-3-ultra-550b-a55b-free-high",
+      "score": 326,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 74,
+        "ARCH": 47,
+        "BUG": 24,
+        "PERF": 70,
+        "CLN": 0,
+        "COMP": 75,
+        "EXPL": 36
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 27.7,
+      "tokens": {
+        "input": 760068,
+        "output": 52222,
+        "cache": 12511936,
+        "total": 13331009
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 326,
+          "cost_usd": 0.0,
+          "wall_minutes": 27.7,
+          "tokens": {
+            "input": 760068,
+            "output": 52222,
+            "cache": 12511936,
+            "total": 13331009
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3 Ultra",
+        "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "On a single run: compatibility 75 of 100 (one login rule of the contract changed), security 74 of 250, architecture 47 of 200, bugs 24 of 150 and performance 70 of 150, nothing in clean code. It detected 9 of the 36 planted flaws and fixed 4; it also reported 6 real findings outside the planted set, and its confidence was well calibrated (Brier 0.07). The report was rated 36 of 50. It ran through OpenRouter's free variant, at no cost and in 28 minutes, at high, the highest effort the client defines for it. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: compatibilidade 75 de 100 (uma regra de login do contrato mudou), segurança 74 de 250, arquitetura 47 de 200, bugs 24 de 150 e desempenho 70 de 150, nada em código limpo. Detectou 9 das 36 falhas plantadas e corrigiu 4; relatou ainda 6 achados reais fora do conjunto plantado, e a confiança foi bem calibrada (Brier 0,07). O relatório teve 36 de 50. Rodou pela variante gratuita do OpenRouter, sem custo e em 28 minutos, em high, o maior esforço que o cliente define para ele. Uma execução de três: não é oficial e pode mudar."
       }
     },
     {
@@ -1939,6 +2047,54 @@
       }
     },
     {
+      "agent": "nvidia-nemotron-3.5-lightning-free-high",
+      "score": 175,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 39,
+        "ARCH": 0,
+        "BUG": 5,
+        "PERF": 0,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 31
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 14.0,
+      "tokens": {
+        "input": 285470,
+        "output": 11957,
+        "cache": 4397408,
+        "total": 4715841
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 175,
+          "cost_usd": 0.0,
+          "wall_minutes": 14.0,
+          "tokens": {
+            "input": 285470,
+            "output": 11957,
+            "cache": 4397408,
+            "total": 4715841
+          }
+        }
+      ],
+      "model": {
+        "name": "NVIDIA Nemotron 3.5 Lightning",
+        "id": "nvidia/nemotron-3.5-lightning:free",
+        "provider": "NVIDIA",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "On a single run: compatibility whole (100), security 39 of 250 and bugs 5 of 150, nothing else. It detected 3 of the 36 planted flaws and fixed none; its three findings were all real and its confidence was well calibrated (Brier 0.001), but it did little of the work. The report was rated 31 of 50. It ran through OpenRouter's free variant, at no cost and in 14 minutes, at high, the highest effort the client defines for it. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só: compatibilidade inteira (100), segurança 39 de 250 e bugs 5 de 150, nada mais. Detectou 3 das 36 falhas plantadas e não corrigiu nenhuma; os três achados eram reais e a confiança foi bem calibrada (Brier 0,001), mas fez pouco do trabalho. O relatório teve 31 de 50. Rodou pela variante gratuita do OpenRouter, sem custo e em 14 minutos, em high, o maior esforço que o cliente define para ele. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
       "agent": "nvidia-nemotron-3-nano-omni-30b-a3b-free-max",
       "score": 148,
       "grade": "Reprovada",
@@ -1984,6 +2140,54 @@
       "comment": {
         "en": "On a single run: the contract stayed whole (compatibility 100), but almost nothing else moved: security 18 of 250 and nothing in architecture, bugs, performance or clean code. It detected 1 of the 36 planted flaws and fixed it; it reported 3 findings, each with high confidence, and two of them were not real flaws (no decoy among them), so its confidence was poorly calibrated. The report was rated 30 of 50, weakest on trade-offs. It ran through OpenRouter's free variant, at no cost and in 9 minutes, at max, the highest effort the client defines for it. One run of three: it is not official and could move.",
         "pt_BR": "Com uma execução só: o contrato ficou inteiro (compatibilidade 100), mas quase nada mais se moveu: segurança 18 de 250 e nada em arquitetura, bugs, desempenho e código limpo. Detectou 1 das 36 falhas plantadas e a corrigiu; reportou 3 achados, todos com confiança alta, e dois deles não eram falhas reais (nenhuma isca entre eles), então a confiança ficou mal calibrada. O relatório teve 30 de 50, com a nota mais baixa em trade-offs. Rodou pela variante gratuita do OpenRouter, sem custo e em 9 minutos, no max, o maior esforço que o cliente define para ele. Uma execução de três: não é oficial e pode mudar."
+      }
+    },
+    {
+      "agent": "cohere-north-mini-code-free-high",
+      "score": 0,
+      "grade": "Reprovada",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 25,
+        "ARCH": 0,
+        "BUG": 0,
+        "PERF": 10,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 19
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 4.1,
+      "tokens": {
+        "input": 2843166,
+        "output": 20581,
+        "cache": 0,
+        "total": 2871222
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 0,
+          "cost_usd": 0.0,
+          "wall_minutes": 4.1,
+          "tokens": {
+            "input": 2843166,
+            "output": 20581,
+            "cache": 0,
+            "total": 2871222
+          }
+        }
+      ],
+      "model": {
+        "name": "Cohere North Mini Code",
+        "id": "cohere/north-mini-code:free",
+        "provider": "Cohere",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "On a single run, the lowest possible score: 0. Its changes broke 70 of the characterization tests that guard the legacy behavior (70 × −20 = −1,400 points, which the score floors at zero), although the contract itself counted as whole (compatibility 100). It detected 3 of the 36 planted flaws and fixed none; it reported 9 findings and its confidence was poorly calibrated (Brier 0.52, three of four high-confidence findings were not real). Security 25 of 250 and performance 10 of 150, nothing else; the report was rated 19 of 50. It ran through OpenRouter's free variant, at no cost and in 4 minutes, at high, the highest effort the client defines for it. One run of three: it is not official and could move.",
+        "pt_BR": "Com uma execução só, a menor nota possível: 0. As mudanças quebraram 70 dos testes de caracterização que protegem o comportamento do legado (70 × −20 = −1.400 pontos, que a nota trava em zero), embora o contrato em si tenha contado como inteiro (compatibilidade 100). Detectou 3 das 36 falhas plantadas e não corrigiu nenhuma; reportou 9 achados e a confiança foi mal calibrada (Brier 0,52, três em cada quatro achados de confiança alta não eram reais). Segurança 25 de 250 e desempenho 10 de 150, nada mais; o relatório teve 19 de 50. Rodou pela variante gratuita do OpenRouter, sem custo e em 4 minutos, em high, o maior esforço que o cliente define para ele. Uma execução de três: não é oficial e pode mudar."
       }
     }
   ]

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.308`
+**Versão atual:** `0.2.309`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.309` — 2026-11-09 — LEB-300-A's aggregate adds four free-model configurations, one run each (NVIDIA Nemotron 3 Ultra 326, Super VL 367, Lightning 175, Cohere North Mini Code 0), and a third run of MiniMax-M3 at thinking (810, official still 398)
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 32 to 36 agents; the other 31
+  entries are unchanged, reading included.
+- Four new agents, all through OpenRouter's free variants with no provider pinned (US$ 0, at `high`, the highest effort the client defines for each), one run of three each, so none is official yet: NVIDIA Nemotron 3 Ultra 326 (Reprovada;
+  security 74, architecture 47, bugs 24, performance 70, compatibility 75; 28 minutes), NVIDIA Nemotron 3.5 Super VL 367 (Reprovada; security 120, bugs 105, one PEN-001; 20 minutes), NVIDIA Nemotron 3.5 Lightning 175 (Reprovada; 14 minutes) and
+  Cohere North Mini Code 0 (Reprovada: 70 characterization tests broken, −1,400 points that the score floors at zero; 4 minutes).
+- MiniMax-M3 at `thinking` (`minimax-m3-thinking`) goes from two runs (388, 398) to three with a third run of 810 (Gold; 23 of the 36 planted flaws detected, 13 fixed, 105 minutes, US$ 4.12): the official score is the median, **398**, unchanged,
+  and the reading now says the three runs are far apart.
+- As in every LEB-300-A run, one matching judge and one blind judge for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.308` — 2026-11-09 — results/ adds seven agents to LEB-100-A: Kimi K3.1 Pro at high (official 665, Silver), its highspeed variant (622), MiniMax M3.1 Flash (661), the two Kimi Code aliases, Liquid LFM 2.5 and dots-3, thirteen runs, 60 agents
 

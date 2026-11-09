@@ -125,14 +125,18 @@ This instance is **active**. While it is, only the totals below are published: n
 | 22 | `gpt-5.6-luna-xhigh` | **618** | Silver | 211 | 47 | 142 | 80 | 14 | 100 | 39 | 3/3 (638 · 512 · 618) |
 | 23 | `gpt-6-luna-xhigh` | **612** | Silver | 236 | 47 | 137 | 51 | 0 | 100 | 41 | 3/3 (471 · 612 · 630) |
 | 24 | `glm-5.3-flash-high` | **568** | Bronze | 204 | 47 | 126 | 51 | 0 | 100 | 40 | 1/3 |
-| 25 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
-| 26 | `minimax-m3-thinking` | **388** | Reprovada | 113 | 56 | 47 | 26 | 7 | 100 | 39 | 2/3 (388 · 398) |
-| 27 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
-| 28 | `stealth-crouton-alpha-max` | **275** | Reprovada | 67 | 0 | 100 | 0 | 0 | 70 | 38 | 1/3 |
-| 29 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
-| 30 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
-| 31 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
-| 32 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **148** | Reprovada | 18 | 0 | 0 | 0 | 0 | 100 | 30 | 1/3 |
+| 25 | `minimax-m3-thinking` | **398** | Reprovada | 169 | 25 | 42 | 26 | 0 | 100 | 36 | 3/3 (388 · 398 · 810) |
+| 26 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
+| 27 | `nvidia-nemotron-3.5-super-vl-free-high` | **367** | Reprovada | 120 | 19 | 105 | 0 | 0 | 100 | 38 | 1/3 |
+| 28 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **326** | Reprovada | 74 | 47 | 24 | 70 | 0 | 75 | 36 | 1/3 |
+| 29 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
+| 30 | `stealth-crouton-alpha-max` | **275** | Reprovada | 67 | 0 | 100 | 0 | 0 | 70 | 38 | 1/3 |
+| 31 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
+| 32 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
+| 33 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
+| 34 | `nvidia-nemotron-3.5-lightning-free-high` | **175** | Reprovada | 39 | 0 | 5 | 0 | 0 | 100 | 31 | 1/3 |
+| 35 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **148** | Reprovada | 18 | 0 | 0 | 0 | 0 | 100 | 30 | 1/3 |
+| 36 | `cohere-north-mini-code-free-high` | **0** | Reprovada | 25 | 0 | 0 | 10 | 0 | 100 | 19 | 1/3 |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
 
