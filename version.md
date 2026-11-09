@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.312`
+**Versão atual:** `0.2.313`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.313` — 2026-11-09 — LEB-S-300-A's Claude Opus 5.5 at max is republished with its fifth run (996) and its two runs charged for /documents/raw scored again: 995, 995, 995, 995 and 996, mean 995
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-S-300-A` from the lab's private archive, and the Results section of the instance
+  README. Only the entry of `claude-opus-5.5-max` changes (978 to 995, from four runs to five); the other 34 entries and the notes are unchanged.
+- The owner's ruling P1 of 2026-11-09 (restricting `GET /documents/raw` by unit is not a compatibility violation, so nobody is charged for it): the two runs that both judges had charged COMP-003 for it (961 and 961) are scored again
+  at 995, each with an explicit owner override in the run's review (both judges' equal values, the decision, the reason), their earlier scorecards kept next to the new ones in the private archive.
+- The fifth run (996) is the first of this configuration on the owner's Claude subscription through a long-lived token, where the client's cost is the list price, not a charge; its reading says so. Both matching judges credited 24
+  of 24 planted vulnerabilities and charged nothing; two extra findings, both real.
 
 ### `0.2.312` — 2026-11-09 — LEB-S-300-A's Cohere North Mini Code reading states its two penalties the same way in English and Portuguese
 

@@ -325,12 +325,12 @@ This instance is **active**. While it is, only the figures below are published: 
 
 | # | Agent | Estimate | 95% interval | Grade | SEC | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | --- |
-| 1 | `deepseek-v4.1-flash-max` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 1/1 (992) |
-| 2 | `claude-opus-5.5-xhigh` | **989** | 984 to 995 | Platinum | 845 | 100 | 45 | 5/5 (995 · 995 · 995 · 981 · 981) |
-| 3 | `claude-sonnet-5.5-xhigh` | **988** | 976 to 995 | Platinum | 844 | 100 | 44 | 5/5 (964 · 995 · 995 · 995 · 992) |
-| 4 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
-| 5 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
-| 6 | `claude-opus-5.5-max` | **978** | 961 to 995 | Platinum | 848 | 85 | 45 | 4/4 (995 · 961 · 961 · 995) |
+| 1 | `claude-opus-5.5-max` | **995** | 995 to 996 | Platinum | 850 | 100 | 45 | 5/5 (995 · 995 · 995 · 995 · 996) |
+| 2 | `deepseek-v4.1-flash-max` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 1/1 (992) |
+| 3 | `claude-opus-5.5-xhigh` | **989** | 984 to 995 | Platinum | 845 | 100 | 45 | 5/5 (995 · 995 · 995 · 981 · 981) |
+| 4 | `claude-sonnet-5.5-xhigh` | **988** | 976 to 995 | Platinum | 844 | 100 | 44 | 5/5 (964 · 995 · 995 · 995 · 992) |
+| 5 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
+| 6 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
 | 7 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
 | 8 | `gpt-6-astra-xhigh` | **968** | 961 to 973 | Platinum | 824 | 100 | 43 | 5/5 (967 · 972 · 968 · 976 · 956) |
 | 9 | `xiaomi-mimo-v2.6-pro-ultraspeed-high` | **966** | 966 to 966 | Platinum | 824 | 100 | 42 | 1/1 (966) |
@@ -364,6 +364,8 @@ This instance is **active**. While it is, only the figures below are published: 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
 
+`claude-opus-5.5-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 995.2 (995.0 to 995.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 995, lowest 995, highest 996.
+
 `deepseek-v4.1-flash-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 992.0 (992.0 to 992.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 992, highest 992.
 
 `claude-opus-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 989.4 (983.8 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 981, highest 995.
@@ -373,8 +375,6 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `deepseek-v4.1-flash-1017-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 985.8 (973.4 to 992.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 961, highest 993.
 
 `claude-opus-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 984.0 (972.0 to 993.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 963, highest 994.
-
-`claude-opus-5.5-max`: completion 4 of 4 scheduled attempts; expected score per scheduled attempt 978.0 (961.0 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 961, lowest 961, highest 995.
 
 `xiaomi-mimo-v2.6-pro-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 969.0 (969.0 to 969.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 969, lowest 969, highest 969.
 
