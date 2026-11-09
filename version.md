@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.311`
+**Versão atual:** `0.2.312`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,11 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.312` — 2026-11-09 — LEB-S-300-A's Cohere North Mini Code reading states its two penalties the same way in English and Portuguese
+
+- `results/2026/LEB-S-300-A/aggregate.json` and `results/results.json`: only the English reading of `cohere-north-mini-code-free-high` changes ("it lost 15 points ... and 80 for ..." in place of "run 1 lost 15 ... run 1 lost 80"), so
+  that both languages carry the same numbers, which the site's parity check between languages demands. No score, run or other entry changes.
 
 ### `0.2.311` — 2026-11-09 — LEB-S-300-A's aggregate adds ten configurations (Sonnet 5.5 xhigh 988, GPT-5.6 sol 942, luna 891, terra 888, GPT-6.1 terra 962, GPT-6 sol 903, DeepSeek V4.1 Flash max 992, the two Kimi Code aliases, Cohere North Mini Code 27) and brings five more to five runs
 
