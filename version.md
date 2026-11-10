@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.315`
+**Versão atual:** `0.2.316`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.316` — 2026-11-10 — LEB-D-300-A's aggregate adds Claude Fable 5.2 at xhigh: one run, 880, Gold, the highest score on the instance
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 55 to 56
+  configurations; the other 55 entries are unchanged, reading included. Apodex 1.1 Mini stays at four runs, as in 0.2.310.
+- Claude Fable 5.2 (`claude-fable-5-2`) at `xhigh`, the owner's order of 2026-11-09: one run on the long-lived token of the owner's personal Claude account, since the API credit was empty, so its cost (US$ 27.33, 70 minutes,
+  19.8 million tokens) is the client's accounting at list prices, not a charge. It scored 880 (Gold; architecture 202, bugs 209, performance 208, clean code 116, compatibility 100; report 45 of 50). The two matching judges
+  differed on one item, the fourth criterion of a row nobody attempted, which the owner's standing rule settles as none.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.315` — 2026-11-10 — LEB-300-A's aggregate adds Claude Fable 5.2 at xhigh: one run, 947, Platinum, the highest score on the instance
 

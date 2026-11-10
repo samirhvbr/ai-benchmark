@@ -13,6 +13,98 @@
   "track": "default",
   "agents": [
     {
+      "agent": "claude-fable-5.2-xhigh",
+      "score": 880,
+      "grade": "Gold",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 202,
+        "BUG": 209,
+        "PERF": 208,
+        "CLN": 116,
+        "COMP": 100,
+        "EXPL": 45
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 27.33,
+      "wall_minutes": 70.5,
+      "tokens": {
+        "input": 33794,
+        "output": 326896,
+        "cache": 19397649,
+        "total": 19758339
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 880.0,
+          "low": 880.0,
+          "high": 880.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 880.0,
+          "low": 880.0,
+          "high": 880.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 880,
+        "min": 880,
+        "max": 880
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 880,
+          "grade": "Gold",
+          "cost_usd": 27.33,
+          "wall_minutes": 70.5,
+          "tokens": {
+            "input": 33794,
+            "output": 326896,
+            "cache": 19397649,
+            "total": 19758339
+          }
+        }
+      ],
+      "model": {
+        "name": "Claude Fable 5.2",
+        "id": "claude-fable-5-2",
+        "provider": "Anthropic",
+        "reasoning_effort": "xhigh"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 880 (Gold). It completed inside the 90-minute budget, at about US$ 27.33 and 70 minutes, and it did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (209 of 213), then performance (208 of 213), clean code (116 of 141) and architecture (202 of 283). The report was rated 45 of 50. It ran on the owner's personal Claude account (a long-lived token), so its cost is the client's list price, not a charge. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The other four runs are still to be made, so the figure will move.",
+        "pt_BR": "Uma execução de um caso de cinco fez 880 (Gold). Terminou dentro do orçamento de 90 minutos, por cerca de US$ 27,33 e 70 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (209 de 213), depois desempenho (208 de 213), código limpo (116 de 141) e arquitetura (202 de 283). O relatório teve 45 de 50. Rodou na conta pessoal do dono no Claude (token de longa duração), então o custo é o preço de lista do cliente, não uma cobrança. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. Faltam quatro execuções, então o número vai mudar."
+      }
+    },
+    {
       "agent": "claude-opus-5.5-xhigh",
       "score": 835,
       "grade": "Gold",
