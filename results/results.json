@@ -35595,6 +35595,92 @@
           }
         },
         {
+          "agent": "claude-fable-5.2-xhigh",
+          "score": 968,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 824,
+            "COMP": 100,
+            "EXPL": 44
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 26.32,
+          "wall_minutes": 80.4,
+          "tokens": {
+            "input": 342,
+            "output": 267182,
+            "cache": 16036456,
+            "total": 16303980
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 968.0,
+              "low": 968.0,
+              "high": 968.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 968.0,
+              "low": 968.0,
+              "high": 968.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 968,
+            "min": 968,
+            "max": 968
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 968,
+              "grade": "Platinum",
+              "cost_usd": 26.31652275,
+              "wall_minutes": 80.4,
+              "tokens": {
+                "input": 342,
+                "output": 267182,
+                "cache": 16036456,
+                "total": 16303980
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Fable 5.2",
+            "id": "claude-fable-5-2",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 968, Platinum. It completed inside the 90-minute budget, at about US$ 26.32 and 80 minutes, and it broke no behavior the public tests protect (compatibility 100). Security scored 824 of 850: the report covered 22 of the 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; extra findings: 2. The report was rated 44 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran on the owner's Claude subscription through a long-lived token, where the client's cost is the list price, not a charge.",
+            "pt_BR": "Uma execução de um caso de cinco, nota 968, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de US$ 26,32 e 80 minutos, e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 824 de 850: o relatório cobriu 22 das 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2. O relatório teve 44 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou na assinatura Claude do dono por um token de longa duração, em que o custo do cliente é o preço de lista, não uma cobrança."
+          }
+        },
+        {
           "agent": "gpt-6-astra-xhigh",
           "score": 968,
           "grade": "Platinum",
