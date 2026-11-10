@@ -25349,6 +25349,53 @@
       "turn_budget": 60,
       "agents": [
         {
+          "agent": "claude-fable-5.2-xhigh",
+          "score": 947,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 250,
+            "ARCH": 183,
+            "BUG": 139,
+            "PERF": 144,
+            "CLN": 86,
+            "COMP": 100,
+            "EXPL": 45
+          },
+          "cost_usd": 24.81,
+          "wall_minutes": 108.8,
+          "tokens": {
+            "input": 121689,
+            "output": 570724,
+            "cache": 4396125,
+            "total": 5088538
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 947,
+              "cost_usd": 24.81,
+              "wall_minutes": 108.8,
+              "tokens": {
+                "input": 121689,
+                "output": 570724,
+                "cache": 4396125,
+                "total": 5088538
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Fable 5.2",
+            "id": "claude-fable-5-2",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "One run so far, so no official score yet: 947, Platinum. Security 250 of 250, architecture 183 of 200, bugs 139 of 150, performance 144 of 150 and clean code 86 of 100; compatibility 100, with no penalty. The report covered 33 of the 36 planted flaws and the code fixed 34, with no false positives and 16 extra findings; the report was rated 45 of 50. The session took 110 minutes for US$ 24.81 at the client's list prices: it ran on the owner's personal Claude account (a long-lived token), so that is not a charge.",
+            "pt_BR": "Uma execução até agora, então ainda sem nota oficial: 947, Platinum. Segurança 250 de 250, arquitetura 183 de 200, bugs 139 de 150, desempenho 144 de 150 e código limpo 86 de 100; compatibilidade 100, sem penalidade. O relatório cobriu 33 dos 36 defeitos plantados e o código corrigiu 34, sem falsos positivos e com 16 achados extras; o relatório teve 45 de 50. A sessão levou 110 minutos por US$ 24,81 a preço de lista do cliente: rodou na conta pessoal do dono no Claude (token de longa duração), então não é cobrança."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-max",
           "score": 886,
           "grade": "Gold",
