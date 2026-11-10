@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.313`
+**Versão atual:** `0.2.314`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.314` — 2026-11-10 — results/ adds Claude Fable 5.2 at xhigh to LEB-100-A: one run, 847, Gold, the highest score on the instance
+
+- The leaderboard goes from 60 agents and 137 runs to 61 agents and 138 runs; the 60 earlier entries keep their numbers and only their ranks move (all shift down by one). The new run folder carries its delivery, `mecanico.json`,
+  `veredito.json`, `scorecard.json` and `.md`, and `run.json`; the pins of `tests/test_saturacao.py` follow the new counts.
+- Claude Fable 5.2 (`claude-fable-5-2`, training cutoff June 2026) at `xhigh`, the owner's order of 2026-11-09: one run through the unattended lab on the long-lived token of the owner's personal Claude account, since the API credit was
+  empty, so its cost (US$ 6.50, 25.9 minutes, 1.82 million tokens) is the client's accounting at list prices, not a charge. It reported 12 of the 13 planted flaws and fixed 11 (security 250, bugs 150, performance 150, clean code 100,
+  architecture 50, compatibility 100; no penalty) and its report scored 47 of 50. It is the first agent of the instance above 810.
+- Judged blind like every run: one matching judge and one blind EXPL judge, both Claude Opus subagents. Its reading and the README section *Run of 2026-11-09* say the rest.
 
 ### `0.2.313` — 2026-11-09 — LEB-S-300-A's Claude Opus 5.5 at max is republished with its fifth run (996) and its two runs charged for /documents/raw scored again: 995, 995, 995, 995 and 996, mean 995
 

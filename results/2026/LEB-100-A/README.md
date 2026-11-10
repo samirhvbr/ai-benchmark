@@ -1421,6 +1421,21 @@ died within seconds because the client's model catalog was stale, and three dots
 - **dots.studio dots-3 (Note Preview) at `high` (JE): 86, Reprovada, 60th, a new agent.** One run so far: 22.3 minutes and 6.18 million tokens. It reported none of the 13 flaws and its report scored 1 of 50; four of the flaws
   are fixed in the code it handed back (security 52 and bugs 43), but the same changes broke four characterization tests (PEN-002, −80) and one contracted behavior (compatibility 70).
 
+### Run of 2026-11-09
+
+One delivery was scored on this date (one agent): Claude Fable 5.2 at `xhigh`, a new agent, one run. It was made through the unattended lab as the Claude runs of 2026-10-27 were: one `claude -p` session of Claude Code 2.1.295,
+which got the fixed first message once and ran to its own end under a 90-minute cap (`operator_replies` 0), in the client's auto permission mode, as the unprivileged user `leb` on a restored machine with GitHub blocked and the
+package as the only instance folder in `/srv`. The session ran on the long-lived token of the owner's personal Claude account and not on an API key (the API credit was empty), so the cost `run.json` carries is the client's own
+accounting at list prices, not a charge. It was judged blind like the others: a label drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL judge, both Claude Opus subagents.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **YO** | Claude Fable 5.2, `xhigh`, run 1 | 847 |
+
+- **Claude Fable 5.2 at `xhigh` (YO): 847, Gold, 1st, a new agent.** One run so far: 25.9 minutes and 1.82 million tokens (US$ 6.50 at list prices). It reported 12 of the 13 flaws and fixed 11: security 250, bugs 150,
+  performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not named); compatibility 100 and no penalty. Its report scored 47 of 50, with 12 extra
+  findings and no false positive.
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

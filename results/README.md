@@ -25,66 +25,67 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 
 | # | Model | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Pen. | Discovery | Brier | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
-| 1 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-2/scorecard.md) · xhigh | **809** | Gold | 250 | 25 | 139 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.033 | 3/3 (825 · 809 · 724) |
-| 2 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max/run-1/scorecard.md) · max | **807** | Gold | 250 | 12 | 150 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.035 | 3/3 (807 · 773 · 820) |
-| 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md) · max (ultracode) | **774** | Gold | 250 | 0 | 129 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.008 | 3/3 (774 · 820 · 759) |
-| 4 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-high/run-2/scorecard.md) · high | **767** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.045 | 3/3 (733 · 767 · 804) |
-| 5 | [Claude Fable 5.1](2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md) · xhigh | **764** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 42 | 0 | 87.5 | 0.021 | 2/3 (781 · 764) |
-| 6 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-high/run-3/scorecard.md) · high | **747** | Silver | 228 | 0 | 139 | 150 | 100 | 100 | 45 | -15 | 87.5 | 0.037 | 3/3 (795 · 737 · 747) |
-| 7 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-xhigh/run-2/scorecard.md) · xhigh | **717** | Silver | 233 | 50 | 139 | 150 | 0 | 100 | 45 | 0 | 87.5 | 0.024 | 3/3 (711 · 717 · 805) |
-| 8 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-medium/run-2/scorecard.md) · medium | **667** | Silver | 211 | 0 | 139 | 150 | 25 | 100 | 42 | 0 | 87.5 | 0.045 | 3/3 (718 · 667 · 645) |
-| 9 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-ultra/run-2/scorecard.md) · ultra | **666** | Silver | 224 | 25 | 129 | 150 | 25 | 70 | 43 | 0 | 79.2 | 0.000 | 3/3 (668 · 666 · 651) |
-| 10 | [Kimi K3.1 Pro](2026/LEB-100-A/moonshot-kimi-k3-1-pro-high/run-3/scorecard.md) † · high (permissions auto-approved) | **665** | Silver | 250 | 0 | 139 | 150 | 0 | 100 | 41 | -15 | 83.3 | 0.001 | 3/3 (632 · 666 · 665) |
-| 11 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-3/scorecard.md) · xhigh | **661** | Silver | 246 | 25 | 129 | 150 | 0 | 70 | 41 | 0 | 75.0 | 0.000 | 3/3 (666 · 653 · 661) |
-| 12 | [MiniMax M3.1 Flash](2026/LEB-100-A/minimax-m3.1-flash-high/run-1/scorecard.md) † · high (permissions auto-approved) | **661** | Silver | 246 | 25 | 129 | 150 | 0 | 70 | 41 | 0 | 75.0 | 0.003 | 3/3 (661 · 639 · 663) |
-| 13 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
-| 14 | [Claude Haiku 5.5](2026/LEB-100-A/claude-haiku-5.5-xhigh/run-3/scorecard.md) · xhigh | **643** | Silver | 250 | 0 | 129 | 150 | 0 | 70 | 44 | 0 | 70.8 | 0.015 | 3/3 (646 · 627 · 643) |
-| 15 | [GPT-6-luna](2026/LEB-100-A/gpt-6-luna-xhigh/run-2/scorecard.md) · xhigh | **643** | Silver | 224 | 0 | 129 | 150 | 0 | 100 | 40 | 0 | 58.3 | 0.001 | 3/3 (633 · 643 · 655) |
-| 16 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
-| 17 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-high/run-2/scorecard.md) · high | **637** | Silver | 207 | 0 | 139 | 150 | 25 | 70 | 46 | 0 | 87.5 | 0.000 | 3/3 (626 · 637 · 727) |
-| 18 | [Claude Haiku 5.5](2026/LEB-100-A/claude-haiku-5.5-high/run-1/scorecard.md) · high | **633** | Silver | 246 | 25 | 129 | 150 | 0 | 40 | 43 | 0 | 75.0 | 0.048 | 3/3 (633 · 644 · 622) |
-| 19 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 3/3 (633 · 640 · 620) |
-| 20 | [Grok 4.7](2026/LEB-100-A/grok-4.7-xhigh/run-3/scorecard.md) · xhigh | **631** | Silver | 185 | 0 | 129 | 150 | 25 | 100 | 42 | 0 | 75.0 | 0.001 | 3/3 (640 · 617 · 631) |
-| 21 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-high/run-1/scorecard.md) † · high | **629** | Silver | 198 | 0 | 150 | 150 | 25 | 70 | 36 | 0 | 75.0 | 0.008 | 3/3 (629 · 634 · 574) |
-| 22 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |
-| 23 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-2/scorecard.md) † · high | **628** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 38 | 0 | 70.8 | 0.029 | 3/3 (635 · 628 · 541) |
-| 24 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 3/3 (625 · 611 · 645) |
-| 25 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
-| 26 | [Kimi K3.1 Pro (highspeed)](2026/LEB-100-A/moonshot-kimi-k3-1-pro-highspeed-high/run-3/scorecard.md) † · high (permissions auto-approved) | **622** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 42 | -15 | 70.8 | 0.001 | 3/3 (648 · 345 · 622) |
-| 27 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 3/3 (629 · 621 · 604) |
-| 28 | [NVIDIA Nemotron 3 Ultra](2026/LEB-100-A/nvidia-nemotron-3-ultra-550b-a55b-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **618** | Silver | 164 | 0 | 129 | 150 | 38 | 100 | 37 | 0 | 58.3 | 0.199 | 1/3 |
-| 29 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-xhigh/run-1/scorecard.md) † · xhigh | **617** | Silver | 207 | 0 | 129 | 150 | 0 | 100 | 31 | 0 | 58.3 | 0.004 | 1/3 |
-| 30 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-3/scorecard.md) · ultra | **616** | Silver | 228 | 0 | 129 | 150 | 0 | 70 | 39 | 0 | 70.8 | 0.001 | 3/3 (597 · 656 · 616) |
-| 31 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 3/3 (612 · 612 · 608) |
-| 32 | [DeepSeek V4.1 Flash](2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md) † · high | **612** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 30 | 0 | 58.3 | 0.013 | 3/3 (625 · 612 · 597) |
-| 33 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-2/scorecard.md) · xhigh | **601** | Silver | 220 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.000 | 3/3 (599 · 601 · 624) |
-| 34 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
-| 35 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 3/3 (687 · 588 · 100) |
-| 36 | [Gemini 3.7 Flash](2026/LEB-100-A/gemini-3.7-flash-high/run-1/scorecard.md) † · high | **587** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 27 | 0 | 58.3 | 0.002 | 3/3 (587 · 587 · 556) |
-| 37 | [Crouton Alpha](2026/LEB-100-A/stealth-crouton-alpha-max/run-1/scorecard.md) † · max (permissions auto-approved) | **580** | Bronze | 220 | 0 | 129 | 150 | 0 | 40 | 41 | 0 | 58.3 | 0.010 | 1/3 |
-| 38 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 3/3 (558 · 568 · 536) |
-| 39 | [Kimi For Coding](2026/LEB-100-A/moonshot-kimi-for-coding-default/run-1/scorecard.md) † · default (permissions auto-approved) | **555** | Bronze | 207 | 0 | 86 | 150 | 0 | 70 | 42 | 0 | 70.8 | 0.001 | 1/3 |
-| 40 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
-| 41 | [Recursive Flint](2026/LEB-100-A/recursive-flint-v1.0-free-default/run-1/scorecard.md) † · default (permissions auto-approved) | **526** | Bronze | 142 | 0 | 129 | 150 | 0 | 70 | 35 | 0 | 41.7 | 0.006 | 1/3 |
-| 42 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
-| 43 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 3/3 (604 · 496 · 432) |
-| 44 | [Kimi For Coding (highspeed)](2026/LEB-100-A/moonshot-kimi-for-coding-highspeed-default/run-1/scorecard.md) † · default (permissions auto-approved) | **472** | Bronze | 177 | 0 | 129 | 56 | 0 | 70 | 40 | 0 | 58.3 | 0.202 | 1/3 |
-| 45 | [MiniMax-M3](2026/LEB-100-A/minimax-m3-thinking/run-1/scorecard.md) · thinking | **462** | Bronze | 220 | 0 | 150 | 0 | 25 | 40 | 27 | 0 | 62.5 | 0.021 | 3/3 (462 · 616 · 434) |
-| 46 | [NVIDIA Nemotron 3.5 Super VL](2026/LEB-100-A/nvidia-nemotron-3.5-super-vl-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **446** | Bronze | 181 | 0 | 129 | 0 | 0 | 100 | 36 | 0 | 50.0 | 0.001 | 1/3 |
-| 47 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 3/3 (415 · 415 · 512) |
-| 48 | [Apodex 1.1 Mini](2026/LEB-100-A/apodex-apodex-1.1-mini-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **406** | Bronze | 168 | 0 | 75 | 0 | 25 | 100 | 38 | 0 | 41.7 | 0.013 | 3/3 (406 · 250 · 468) |
-| 49 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
-| 50 | [Kimi K2.7 Code (highspeed)](2026/LEB-100-A/kimi-k2.7-code-highspeed/run-1/scorecard.md) † · default | **402** | Bronze | 155 | 0 | 129 | 0 | 25 | 70 | 23 | 0 | 54.2 | 0.216 | 3/3 (402 · 363 · 402) |
-| 51 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
-| 52 | [Nex N2.5 Pro](2026/LEB-100-A/nex-n2.5-pro-high/run-1/scorecard.md) † · high | **317** | Reprovada | 194 | 0 | 107 | 75 | 0 | 70 | 31 | -160 | 62.5 | 0.000 | 2/3 (317 · 428) |
-| 53 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 3/3 (317 · 369 · 232) |
-| 54 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md) † · high | **282** | Reprovada | 99 | 0 | 96 | 0 | 0 | 100 | 22 | -35 | 50.0 | 0.122 | 2/3 (612 · 282) |
-| 55 | [Cohere North Mini Code](2026/LEB-100-A/cohere-north-mini-code-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **237** | Reprovada | 56 | 0 | 75 | 0 | 0 | 100 | 26 | -20 | 20.8 | 0.255 | 1/3 |
-| 56 | [NVIDIA Nemotron 3.5 Lightning](2026/LEB-100-A/nvidia-nemotron-3.5-lightning-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **186** | Reprovada | 43 | 0 | 32 | 0 | 0 | 100 | 31 | -20 | 8.3 | 0.667 | 1/3 |
-| 57 | [NVIDIA Nemotron 3 Nano Omni](2026/LEB-100-A/nvidia-nemotron-3-nano-omni-30b-a3b-free-max/run-1/scorecard.md) † · max (permissions auto-approved) | **183** | Reprovada | 56 | 0 | 0 | 0 | 0 | 100 | 27 | 0 | 8.3 | 0.434 | 1/3 |
-| 58 | [Liquid LFM 2.5 2.6B](2026/LEB-100-A/liquid-lfm-2.5-2.6b-free-default/run-1/scorecard.md) † · default (permissions auto-approved) | **164** | Reprovada | 39 | 0 | 0 | 0 | 0 | 100 | 25 | 0 | 8.3 | 0.006 | 1/3 |
-| 59 | [XingChen Xing4.0 29B A4B](2026/LEB-100-A/xingchen-agi-xing4.0-29b-a4b-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **138** | Reprovada | 73 | 0 | 43 | 56 | 0 | 70 | 31 | -135 | 25.0 | 0.190 | 1/3 |
-| 60 | [dots.3 Note Preview](2026/LEB-100-A/dots-studio-dots-3-note-preview-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **86** | Reprovada | 52 | 0 | 43 | 0 | 0 | 70 | 1 | -80 | 0.0 | — | 1/3 |
+| 1 | [Claude Fable 5.2](2026/LEB-100-A/claude-fable-5.2-xhigh/run-1/scorecard.md) · xhigh | **847** | Gold | 250 | 50 | 150 | 150 | 100 | 100 | 47 | 0 | 91.7 | 0.025 | 1/3 |
+| 2 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-2/scorecard.md) · xhigh | **809** | Gold | 250 | 25 | 139 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.033 | 3/3 (825 · 809 · 724) |
+| 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max/run-1/scorecard.md) · max | **807** | Gold | 250 | 12 | 150 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.035 | 3/3 (807 · 773 · 820) |
+| 4 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-1/scorecard.md) · max (ultracode) | **774** | Gold | 250 | 0 | 129 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.008 | 3/3 (774 · 820 · 759) |
+| 5 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-high/run-2/scorecard.md) · high | **767** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 45 | 0 | 87.5 | 0.045 | 3/3 (733 · 767 · 804) |
+| 6 | [Claude Fable 5.1](2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md) · xhigh | **764** | Gold | 233 | 0 | 139 | 150 | 100 | 100 | 42 | 0 | 87.5 | 0.021 | 2/3 (781 · 764) |
+| 7 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-high/run-3/scorecard.md) · high | **747** | Silver | 228 | 0 | 139 | 150 | 100 | 100 | 45 | -15 | 87.5 | 0.037 | 3/3 (795 · 737 · 747) |
+| 8 | [Claude Opus 5.5](2026/LEB-100-A/claude-opus-5.5-xhigh/run-2/scorecard.md) · xhigh | **717** | Silver | 233 | 50 | 139 | 150 | 0 | 100 | 45 | 0 | 87.5 | 0.024 | 3/3 (711 · 717 · 805) |
+| 9 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-medium/run-2/scorecard.md) · medium | **667** | Silver | 211 | 0 | 139 | 150 | 25 | 100 | 42 | 0 | 87.5 | 0.045 | 3/3 (718 · 667 · 645) |
+| 10 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-ultra/run-2/scorecard.md) · ultra | **666** | Silver | 224 | 25 | 129 | 150 | 25 | 70 | 43 | 0 | 79.2 | 0.000 | 3/3 (668 · 666 · 651) |
+| 11 | [Kimi K3.1 Pro](2026/LEB-100-A/moonshot-kimi-k3-1-pro-high/run-3/scorecard.md) † · high (permissions auto-approved) | **665** | Silver | 250 | 0 | 139 | 150 | 0 | 100 | 41 | -15 | 83.3 | 0.001 | 3/3 (632 · 666 · 665) |
+| 12 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-xhigh/run-3/scorecard.md) · xhigh | **661** | Silver | 246 | 25 | 129 | 150 | 0 | 70 | 41 | 0 | 75.0 | 0.000 | 3/3 (666 · 653 · 661) |
+| 13 | [MiniMax M3.1 Flash](2026/LEB-100-A/minimax-m3.1-flash-high/run-1/scorecard.md) † · high (permissions auto-approved) | **661** | Silver | 246 | 25 | 129 | 150 | 0 | 70 | 41 | 0 | 75.0 | 0.003 | 3/3 (661 · 639 · 663) |
+| 14 | [GPT-6.1-sol pro](2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md) † · xhigh | **654** | Silver | 228 | 0 | 139 | 150 | 25 | 70 | 42 | 0 | 87.5 | 0.000 | 1/3 |
+| 15 | [Claude Haiku 5.5](2026/LEB-100-A/claude-haiku-5.5-xhigh/run-3/scorecard.md) · xhigh | **643** | Silver | 250 | 0 | 129 | 150 | 0 | 70 | 44 | 0 | 70.8 | 0.015 | 3/3 (646 · 627 · 643) |
+| 16 | [GPT-6-luna](2026/LEB-100-A/gpt-6-luna-xhigh/run-2/scorecard.md) · xhigh | **643** | Silver | 224 | 0 | 129 | 150 | 0 | 100 | 40 | 0 | 58.3 | 0.001 | 3/3 (633 · 643 · 655) |
+| 17 | [Grok 4.7](2026/LEB-100-A/grok-4.7/run-1/scorecard.md) · high | **638** | Silver | 207 | 0 | 139 | 150 | 0 | 100 | 42 | 0 | 83.3 | 0.005 | 3/3 (638 · 663 · 607) |
+| 18 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-high/run-2/scorecard.md) · high | **637** | Silver | 207 | 0 | 139 | 150 | 25 | 70 | 46 | 0 | 87.5 | 0.000 | 3/3 (626 · 637 · 727) |
+| 19 | [Claude Haiku 5.5](2026/LEB-100-A/claude-haiku-5.5-high/run-1/scorecard.md) · high | **633** | Silver | 246 | 25 | 129 | 150 | 0 | 40 | 43 | 0 | 75.0 | 0.048 | 3/3 (633 · 644 · 622) |
+| 20 | [Grok 4.6](2026/LEB-100-A/grok-4.6/run-1/scorecard.md) † · high | **633** | Silver | 194 | 0 | 129 | 150 | 25 | 100 | 35 | 0 | 62.5 | 0.007 | 3/3 (633 · 640 · 620) |
+| 21 | [Grok 4.7](2026/LEB-100-A/grok-4.7-xhigh/run-3/scorecard.md) · xhigh | **631** | Silver | 185 | 0 | 129 | 150 | 25 | 100 | 42 | 0 | 75.0 | 0.001 | 3/3 (640 · 617 · 631) |
+| 22 | [Kimi K3](2026/LEB-100-A/moonshot-kimi-k3-high/run-1/scorecard.md) † · high | **629** | Silver | 198 | 0 | 150 | 150 | 25 | 70 | 36 | 0 | 75.0 | 0.008 | 3/3 (629 · 634 · 574) |
+| 23 | [GPT-6-astra](2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md) · xhigh | **628** | Silver | 228 | 0 | 139 | 150 | 0 | 70 | 41 | 0 | 83.3 | 0.002 | 3/3 (661 · 596 · 628) |
+| 24 | [GLM-5.3 Prime](2026/LEB-100-A/glm-5.3-prime-high/run-2/scorecard.md) † · high | **628** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 38 | 0 | 70.8 | 0.029 | 3/3 (635 · 628 · 541) |
+| 25 | [GPT-5.6-terra](2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md) · xhigh | **625** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 35 | 0 | 45.8 | 0.000 | 3/3 (625 · 611 · 645) |
+| 26 | [GLM-5.3-Flash](2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md) † · high | **624** | Silver | 211 | 0 | 129 | 150 | 0 | 100 | 34 | 0 | 70.8 | 0.016 | 1/3 |
+| 27 | [Kimi K3.1 Pro (highspeed)](2026/LEB-100-A/moonshot-kimi-k3-1-pro-highspeed-high/run-3/scorecard.md) † · high (permissions auto-approved) | **622** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 42 | -15 | 70.8 | 0.001 | 3/3 (648 · 345 · 622) |
+| 28 | [GLM-5.3](2026/LEB-100-A/glm-5.3-high/run-2/scorecard.md) † · high | **621** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 39 | 0 | 70.8 | 0.014 | 3/3 (629 · 621 · 604) |
+| 29 | [NVIDIA Nemotron 3 Ultra](2026/LEB-100-A/nvidia-nemotron-3-ultra-550b-a55b-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **618** | Silver | 164 | 0 | 129 | 150 | 38 | 100 | 37 | 0 | 58.3 | 0.199 | 1/3 |
+| 30 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-xhigh/run-1/scorecard.md) † · xhigh | **617** | Silver | 207 | 0 | 129 | 150 | 0 | 100 | 31 | 0 | 58.3 | 0.004 | 1/3 |
+| 31 | [GPT-6.1-sol](2026/LEB-100-A/gpt-6.1-sol-ultra/run-3/scorecard.md) · ultra | **616** | Silver | 228 | 0 | 129 | 150 | 0 | 70 | 39 | 0 | 70.8 | 0.001 | 3/3 (597 · 656 · 616) |
+| 32 | [GPT-5.6-sol](2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md) · xhigh | **612** | Silver | 246 | 0 | 129 | 150 | 0 | 70 | 32 | -15 | 70.8 | 0.001 | 3/3 (612 · 612 · 608) |
+| 33 | [DeepSeek V4.1 Flash](2026/LEB-100-A/deepseek-v4.1-flash-high/run-2/scorecard.md) † · high | **612** | Silver | 203 | 0 | 129 | 150 | 0 | 100 | 30 | 0 | 58.3 | 0.013 | 3/3 (625 · 612 · 597) |
+| 34 | [GPT-5.6-luna](2026/LEB-100-A/gpt-5.6-luna-xhigh/run-2/scorecard.md) · xhigh | **601** | Silver | 220 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.000 | 3/3 (599 · 601 · 624) |
+| 35 | [GLM-5.3-FlashX](2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md) † · high | **597** | Bronze | 185 | 0 | 129 | 150 | 0 | 100 | 33 | 0 | 70.8 | 0.015 | 1/3 |
+| 36 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-high/run-2/scorecard.md) † · high | **588** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 28 | 0 | 58.3 | 0.003 | 3/3 (687 · 588 · 100) |
+| 37 | [Gemini 3.7 Flash](2026/LEB-100-A/gemini-3.7-flash-high/run-1/scorecard.md) † · high | **587** | Bronze | 181 | 0 | 129 | 150 | 0 | 100 | 27 | 0 | 58.3 | 0.002 | 3/3 (587 · 587 · 556) |
+| 38 | [Crouton Alpha](2026/LEB-100-A/stealth-crouton-alpha-max/run-1/scorecard.md) † · max (permissions auto-approved) | **580** | Bronze | 220 | 0 | 129 | 150 | 0 | 40 | 41 | 0 | 58.3 | 0.010 | 1/3 |
+| 39 | [GPT-5.5](2026/LEB-100-A/gpt-5.5-xhigh/run-2/scorecard.md) · xhigh | **558** | Bronze | 177 | 0 | 129 | 150 | 0 | 70 | 32 | 0 | 58.3 | 0.006 | 3/3 (558 · 568 · 536) |
+| 40 | [Kimi For Coding](2026/LEB-100-A/moonshot-kimi-for-coding-default/run-1/scorecard.md) † · default (permissions auto-approved) | **555** | Bronze | 207 | 0 | 86 | 150 | 0 | 70 | 42 | 0 | 70.8 | 0.001 | 1/3 |
+| 41 | [Gemini 3.8 Flash](2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md) † · medium | **550** | Bronze | 147 | 0 | 129 | 150 | 0 | 100 | 24 | 0 | 45.8 | 0.201 | 1/3 |
+| 42 | [Recursive Flint](2026/LEB-100-A/recursive-flint-v1.0-free-default/run-1/scorecard.md) † · default (permissions auto-approved) | **526** | Bronze | 142 | 0 | 129 | 150 | 0 | 70 | 35 | 0 | 41.7 | 0.006 | 1/3 |
+| 43 | [Qwen3 Coder Next](2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md) · default | **507** | Bronze | 125 | 0 | 129 | 150 | 0 | 100 | 18 | -15 | 54.2 | 0.301 | 1/3 |
+| 44 | [DeepSeek V4 Pro](2026/LEB-100-A/deepseek-v4-pro-high/run-2/scorecard.md) † · high | **496** | Bronze | 181 | 0 | 129 | 56 | 0 | 100 | 30 | 0 | 58.3 | 0.026 | 3/3 (604 · 496 · 432) |
+| 45 | [Kimi For Coding (highspeed)](2026/LEB-100-A/moonshot-kimi-for-coding-highspeed-default/run-1/scorecard.md) † · default (permissions auto-approved) | **472** | Bronze | 177 | 0 | 129 | 56 | 0 | 70 | 40 | 0 | 58.3 | 0.202 | 1/3 |
+| 46 | [MiniMax-M3](2026/LEB-100-A/minimax-m3-thinking/run-1/scorecard.md) · thinking | **462** | Bronze | 220 | 0 | 150 | 0 | 25 | 40 | 27 | 0 | 62.5 | 0.021 | 3/3 (462 · 616 · 434) |
+| 47 | [NVIDIA Nemotron 3.5 Super VL](2026/LEB-100-A/nvidia-nemotron-3.5-super-vl-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **446** | Bronze | 181 | 0 | 129 | 0 | 0 | 100 | 36 | 0 | 50.0 | 0.001 | 1/3 |
+| 48 | [Kimi K2.7 Code](2026/LEB-100-A/kimi-k2.7-code-default/run-1/scorecard.md) · default | **415** | Bronze | 203 | 0 | 86 | 0 | 0 | 100 | 26 | 0 | 50.0 | 0.225 | 3/3 (415 · 415 · 512) |
+| 49 | [Apodex 1.1 Mini](2026/LEB-100-A/apodex-apodex-1.1-mini-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **406** | Bronze | 168 | 0 | 75 | 0 | 25 | 100 | 38 | 0 | 41.7 | 0.013 | 3/3 (406 · 250 · 468) |
+| 50 | [GPT-5.3-Codex](2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md) · xhigh | **403** | Bronze | 147 | 0 | 129 | 0 | 0 | 100 | 27 | 0 | 37.5 | 0.015 | 1/3 |
+| 51 | [Kimi K2.7 Code (highspeed)](2026/LEB-100-A/kimi-k2.7-code-highspeed/run-1/scorecard.md) † · default | **402** | Bronze | 155 | 0 | 129 | 0 | 25 | 70 | 23 | 0 | 54.2 | 0.216 | 3/3 (402 · 363 · 402) |
+| 52 | [GLM-5.2](2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md) · high | **388** | Reprovada | 172 | 0 | 86 | 0 | 0 | 100 | 30 | 0 | 50.0 | 0.001 | 1/3 |
+| 53 | [Nex N2.5 Pro](2026/LEB-100-A/nex-n2.5-pro-high/run-1/scorecard.md) † · high | **317** | Reprovada | 194 | 0 | 107 | 75 | 0 | 70 | 31 | -160 | 62.5 | 0.000 | 2/3 (317 · 428) |
+| 54 | [Claude Haiku 4.5](2026/LEB-100-A/claude-haiku-4.5-default/run-1/scorecard.md) · default | **317** | Reprovada | 138 | 0 | 86 | 0 | 0 | 70 | 23 | 0 | 37.5 | 0.215 | 3/3 (317 · 369 · 232) |
+| 55 | [DeepSeek V4 Flash](2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md) † · high | **282** | Reprovada | 99 | 0 | 96 | 0 | 0 | 100 | 22 | -35 | 50.0 | 0.122 | 2/3 (612 · 282) |
+| 56 | [Cohere North Mini Code](2026/LEB-100-A/cohere-north-mini-code-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **237** | Reprovada | 56 | 0 | 75 | 0 | 0 | 100 | 26 | -20 | 20.8 | 0.255 | 1/3 |
+| 57 | [NVIDIA Nemotron 3.5 Lightning](2026/LEB-100-A/nvidia-nemotron-3.5-lightning-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **186** | Reprovada | 43 | 0 | 32 | 0 | 0 | 100 | 31 | -20 | 8.3 | 0.667 | 1/3 |
+| 58 | [NVIDIA Nemotron 3 Nano Omni](2026/LEB-100-A/nvidia-nemotron-3-nano-omni-30b-a3b-free-max/run-1/scorecard.md) † · max (permissions auto-approved) | **183** | Reprovada | 56 | 0 | 0 | 0 | 0 | 100 | 27 | 0 | 8.3 | 0.434 | 1/3 |
+| 59 | [Liquid LFM 2.5 2.6B](2026/LEB-100-A/liquid-lfm-2.5-2.6b-free-default/run-1/scorecard.md) † · default (permissions auto-approved) | **164** | Reprovada | 39 | 0 | 0 | 0 | 0 | 100 | 25 | 0 | 8.3 | 0.006 | 1/3 |
+| 60 | [XingChen Xing4.0 29B A4B](2026/LEB-100-A/xingchen-agi-xing4.0-29b-a4b-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **138** | Reprovada | 73 | 0 | 43 | 56 | 0 | 70 | 31 | -135 | 25.0 | 0.190 | 1/3 |
+| 61 | [dots.3 Note Preview](2026/LEB-100-A/dots-studio-dots-3-note-preview-free-high/run-1/scorecard.md) † · high (permissions auto-approved) | **86** | Reprovada | 52 | 0 | 43 | 0 | 0 | 70 | 1 | -80 | 0.0 | — | 1/3 |
 
 Maximum per column: SEC 250 · ARCH 200 · BUG 150 · PERF 150 · CLN 100 · COMP 100 · EXPL 50 → 1000.
 Total is the lower median of the agent's runs — the middle of three, the lower of two — so it is
