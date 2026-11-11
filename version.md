@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.317`
+**Versão atual:** `0.2.318`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.318` — 2026-11-11 — results/ adds Gemini 4 Carbon at high to LEB-100-A: one run, 803, Gold, 4th and the best run of a model outside the Claude family
+
+- The leaderboard goes from 61 agents and 138 runs to 62 agents and 139 runs; the 61 earlier entries keep their numbers and the ranks from the 4th down move by one. The new run folder carries its delivery, `mecanico.json`,
+  `veredito.json`, `scorecard.json` and `.md`, and `run.json`; the pins of `tests/test_saturacao.py` follow the new counts (the mean of the representative runs is now 554).
+- Gemini 4 Carbon (`google/gemini-4-carbon` through OpenRouter, whose only upstreams are Google's own) at `high`, the owner's order of 2026-11-11 (a cost probe on the cheapest instance first): the second attempt is the run scored,
+  18.5 minutes and 1.60 million tokens, US$ 1.32 by the client's own accounting, which is real spend since the route is billed per token. It reported 12 of the 13 planted flaws and fixed nine in full and one in half (security 220,
+  bugs 139, performance 150, clean code 100, architecture 50, compatibility 100; no penalty) and its report scored 44 of 50. The first attempt ended `inconclusive` when its last reply hit the client's 32,000-token output cap,
+  delivered nothing and is not scored.
+- Judged blind like every run: one matching judge and one blind EXPL judge, both Claude Opus subagents. Its reading and the README section *Run of 2026-11-11* say the rest.
 
 ### `0.2.317` — 2026-11-10 — LEB-S-300-A's aggregate adds Claude Fable 5.2 at xhigh: one run, 968, Platinum
 

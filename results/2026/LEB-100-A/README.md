@@ -1436,6 +1436,24 @@ accounting at list prices, not a charge. It was judged blind like the others: a 
   performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not named); compatibility 100 and no penalty. Its report scored 47 of 50, with 12 extra
   findings and no false positive.
 
+### Run of 2026-11-11
+
+One delivery was scored on this date (one agent): Gemini 4 Carbon at `high`, a new agent, one run, through OpenRouter with no provider pinned (every upstream the route lists for the model is Google's own). It is billed per
+token, so unlike the Claude runs of 2026-11-09 its cost is real spend: the client's own accounting, at the route's list prices, came to US$ 1.32. `high` is the highest effort the client defines for the model (low, medium and high).
+
+It was made through the unattended lab (`laboratorio-opencode-100.py`) as the runs of 2026-11-06 were: one `opencode run` session, the fixed first message once and no operator reply, a 90-minute wall clock, OpenCode's auto permission
+mode, as the unprivileged user `leb` on a machine restored from its snapshot, with GitHub blocked and the package as the only instance folder in `/srv`. It was judged blind like the others, one matching judge and one blind EXPL
+judge, both Claude Opus subagents. The agent's first attempt is not scored: it ended `inconclusive` after 20.5 minutes, when the reply to its last step was cut at the client's 32,000-token output cap with all of it spent on reasoning,
+and it had changed no file; the run scored here is the second attempt.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **RM** | Gemini 4 Carbon, `high`, run 1 | 803 |
+
+- **Gemini 4 Carbon at `high` (RM): 803, Gold, 4th, a new agent.** One run so far: 18.5 minutes and 1.60 million tokens (US$ 1.32). It reported 12 of the 13 flaws and fixed nine in full and one in half: security 220
+  (SEC-008 not fixed, SEC-014 half), bugs 139, performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not named); compatibility 100 and no penalty. Its
+  report scored 44 of 50, with 9 extra findings and no false positive. It is the best run of a model outside the Claude family on the instance: the next, GPT-6.1 sol, scored 727.
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

@@ -21,7 +21,7 @@
         "date": "2026-11-06",
         "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
       },
-      "evaluated_on": "2026-11-09",
+      "evaluated_on": "2026-11-11",
       "category_max": {
         "SEC": 250,
         "ARCH": 200,
@@ -1390,6 +1390,199 @@
           "rank": 3
         },
         {
+          "agent": "google-gemini-4-carbon-high",
+          "model": {
+            "name": "Gemini 4 Carbon",
+            "id": "gemini-4-carbon",
+            "provider": "Google",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved",
+            "served_by": "OpenRouter (opencode provider openrouter, model google/gemini-4-carbon), whose only upstreams are Google's own"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 803,
+          "totals": [
+            803
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 91.7,
+          "brier": 0.001,
+          "comment": {
+            "en": "One run so far: 803, Gold, 4th on the instance and the best run by a model outside the Claude family (the next, GPT-6.1 sol, scored 727), through OpenRouter, US$ 1.32 by the client's own accounting, in 18.5 minutes and 1.6 million tokens. It reported 12 of the 13 planted flaws and fixed 9 in full: security 220 of 250 (SEC-008 not fixed, SEC-014 only half), bugs 139, performance 150 and clean code 100, with compatibility 100 and no penalty. Architecture was 50 of 200: the dispatcher was identified but not decomposed, and the magic numbers were not named. Its report scored 44 of 50, with 9 extra findings and no false positive. Its first attempt delivered nothing, because a reply hit the client's 32,000-token output cap, and it does not count as a run.",
+            "pt_BR": "Uma execução até agora: 803, Gold, 4º lugar da instância e a melhor execução de um modelo fora da família Claude (a seguinte, GPT-6.1 sol, fez 727), pelo OpenRouter, US$ 1,32 pela contabilidade do próprio cliente, em 18,5 minutos e 1,6 milhão de tokens. Relatou 12 dos 13 defeitos plantados e corrigiu 9 por inteiro: segurança 220 de 250 (SEC-008 não corrigido, SEC-014 só pela metade), bugs 139, desempenho 150 e código limpo 100, com compatibilidade 100 e sem penalidade. Arquitetura ficou em 50 de 200: o despachante foi identificado mas não decomposto, e os números mágicos não foram citados. O relatório fez 44 de 50, com 9 achados extras e nenhum falso positivo. A primeira tentativa não entregou nada, porque uma resposta bateu no teto de 32.000 tokens de saída do cliente, e não conta como execução."
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 803,
+              "grade": "Gold",
+              "categories": {
+                "SEC": {
+                  "score": 220,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 50,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 139,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 100,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 44,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 9,
+                "priorizacao": 8,
+                "trade_offs": 9
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 1,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 96
+                },
+                "SEC-014": {
+                  "earned": 6,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-004": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "ARCH-002": {
+                  "earned": 4,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 92
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 9,
+              "brier": 0.001,
+              "discovery_index": 91.7,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 audit of the session events (auditoria.json: the client's own accounting of tokens and cost; the elapsed time is the session's span in its own events, with no operator wait in it)",
+                "elapsed_seconds": 1110.2,
+                "tokens": {
+                  "input": 158519,
+                  "output": 30856,
+                  "cache": 1357629,
+                  "total": 1603231
+                },
+                "usd_estimate": 1.32,
+                "note": "the total includes 56227 reasoning tokens; opencode keeps no model time; the cost the client recorded is US$ 1.3236"
+              },
+              "wall_minutes": 18.5,
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/google-gemini-4-carbon-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 4
+        },
+        {
           "agent": "claude-sonnet-5.5-max-ultracode",
           "model": {
             "name": "Claude Sonnet 5.5",
@@ -1915,7 +2108,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-max-ultracode/run-3/scorecard.md"
             }
           ],
-          "rank": 4
+          "rank": 5
         },
         {
           "agent": "claude-opus-5.5-high",
@@ -2441,7 +2634,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-high/run-3/scorecard.md"
             }
           ],
-          "rank": 5
+          "rank": 6
         },
         {
           "agent": "claude-fable-5.1-xhigh",
@@ -2801,7 +2994,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-2/scorecard.md"
             }
           ],
-          "rank": 6
+          "rank": 7
         },
         {
           "agent": "claude-sonnet-5.5-high",
@@ -3333,7 +3526,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-high/run-3/scorecard.md"
             }
           ],
-          "rank": 7
+          "rank": 8
         },
         {
           "agent": "claude-opus-5.5-xhigh",
@@ -3865,7 +4058,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 8
+          "rank": 9
         },
         {
           "agent": "claude-sonnet-5.5-medium",
@@ -4391,7 +4584,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-medium/run-3/scorecard.md"
             }
           ],
-          "rank": 9
+          "rank": 10
         },
         {
           "agent": "gpt-6-astra-ultra",
@@ -4935,7 +5128,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-astra-ultra/run-3/scorecard.md"
             }
           ],
-          "rank": 10
+          "rank": 11
         },
         {
           "agent": "moonshot-kimi-k3-1-pro-high",
@@ -5484,7 +5677,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-1-pro-high/run-3/scorecard.md"
             }
           ],
-          "rank": 11
+          "rank": 12
         },
         {
           "agent": "gpt-6.1-sol-xhigh",
@@ -6028,7 +6221,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 12
+          "rank": 13
         },
         {
           "agent": "minimax-m3.1-flash-high",
@@ -6565,7 +6758,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3.1-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 13
+          "rank": 14
         },
         {
           "agent": "gpt-6.1-sol-pro-xhigh",
@@ -6767,7 +6960,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-pro-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 14
+          "rank": 15
         },
         {
           "agent": "claude-haiku-5.5-xhigh",
@@ -7305,7 +7498,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-5.5-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 15
+          "rank": 16
         },
         {
           "agent": "gpt-6-luna-xhigh",
@@ -7843,7 +8036,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-luna-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 16
+          "rank": 17
         },
         {
           "agent": "grok-4.7",
@@ -8375,7 +8568,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.7/run-3/scorecard.md"
             }
           ],
-          "rank": 17
+          "rank": 18
         },
         {
           "agent": "gpt-6.1-sol-high",
@@ -8919,7 +9112,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-high/run-3/scorecard.md"
             }
           ],
-          "rank": 18
+          "rank": 19
         },
         {
           "agent": "claude-haiku-5.5-high",
@@ -9468,7 +9661,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-5.5-high/run-3/scorecard.md"
             }
           ],
-          "rank": 19
+          "rank": 20
         },
         {
           "agent": "grok-4.6",
@@ -9995,7 +10188,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.6/run-3/scorecard.md"
             }
           ],
-          "rank": 20
+          "rank": 21
         },
         {
           "agent": "grok-4.7-xhigh",
@@ -10521,7 +10714,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/grok-4.7-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 21
+          "rank": 22
         },
         {
           "agent": "moonshot-kimi-k3-high",
@@ -11067,7 +11260,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-high/run-3/scorecard.md"
             }
           ],
-          "rank": 22
+          "rank": 23
         },
         {
           "agent": "gpt-6-astra-xhigh",
@@ -11611,7 +11804,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-astra-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 23
+          "rank": 24
         },
         {
           "agent": "glm-5.3-prime-high",
@@ -12150,7 +12343,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-prime-high/run-3/scorecard.md"
             }
           ],
-          "rank": 24
+          "rank": 25
         },
         {
           "agent": "gpt-5.6-terra-xhigh",
@@ -12694,7 +12887,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 25
+          "rank": 26
         },
         {
           "agent": "glm-5.3-flash-high",
@@ -12889,7 +13082,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flash-high/run-1/scorecard.md"
             }
           ],
-          "rank": 26
+          "rank": 27
         },
         {
           "agent": "moonshot-kimi-k3-1-pro-highspeed-high",
@@ -13432,7 +13625,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-k3-1-pro-highspeed-high/run-3/scorecard.md"
             }
           ],
-          "rank": 27
+          "rank": 28
         },
         {
           "agent": "glm-5.3-high",
@@ -13959,7 +14152,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-high/run-3/scorecard.md"
             }
           ],
-          "rank": 28
+          "rank": 29
         },
         {
           "agent": "nvidia-nemotron-3-ultra-550b-a55b-free-high",
@@ -14152,7 +14345,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3-ultra-550b-a55b-free-high/run-1/scorecard.md"
             }
           ],
-          "rank": 29
+          "rank": 30
         },
         {
           "agent": "deepseek-v4-flash-xhigh",
@@ -14348,7 +14541,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 30
+          "rank": 31
         },
         {
           "agent": "gpt-6.1-sol-ultra",
@@ -14892,7 +15085,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-ultra/run-3/scorecard.md"
             }
           ],
-          "rank": 31
+          "rank": 32
         },
         {
           "agent": "gpt-5.6-sol-xhigh",
@@ -15442,7 +15635,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 32
+          "rank": 33
         },
         {
           "agent": "deepseek-v4.1-flash-high",
@@ -15976,7 +16169,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4.1-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 33
+          "rank": 34
         },
         {
           "agent": "gpt-5.6-luna-xhigh",
@@ -16520,7 +16713,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-3/scorecard.md"
             }
           ],
-          "rank": 34
+          "rank": 35
         },
         {
           "agent": "glm-5.3-flashX-high",
@@ -16715,7 +16908,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/glm-5.3-flashX-high/run-1/scorecard.md"
             }
           ],
-          "rank": 35
+          "rank": 36
         },
         {
           "agent": "gemini-3.8-flash-high",
@@ -17243,7 +17436,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gemini-3.8-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 36
+          "rank": 37
         },
         {
           "agent": "gemini-3.7-flash-high",
@@ -17777,7 +17970,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gemini-3.7-flash-high/run-3/scorecard.md"
             }
           ],
-          "rank": 37
+          "rank": 38
         },
         {
           "agent": "stealth-crouton-alpha-max",
@@ -17981,7 +18174,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/stealth-crouton-alpha-max/run-1/scorecard.md"
             }
           ],
-          "rank": 38
+          "rank": 39
         },
         {
           "agent": "gpt-5.5-xhigh",
@@ -18519,7 +18712,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-4/scorecard.md"
             }
           ],
-          "rank": 39
+          "rank": 40
         },
         {
           "agent": "moonshot-kimi-for-coding-default",
@@ -18718,7 +18911,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-for-coding-default/run-1/scorecard.md"
             }
           ],
-          "rank": 40
+          "rank": 41
         },
         {
           "agent": "gemini-3.8-flash-medium",
@@ -18914,7 +19107,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gemini-3.8-flash-medium/run-1/scorecard.md"
             }
           ],
-          "rank": 41
+          "rank": 42
         },
         {
           "agent": "recursive-flint-v1.0-free-default",
@@ -19113,7 +19306,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/recursive-flint-v1.0-free-default/run-1/scorecard.md"
             }
           ],
-          "rank": 42
+          "rank": 43
         },
         {
           "agent": "qwen3-coder-next-default",
@@ -19318,7 +19511,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/qwen3-coder-next-default/run-1/scorecard.md"
             }
           ],
-          "rank": 43
+          "rank": 44
         },
         {
           "agent": "deepseek-v4-pro-high",
@@ -19852,7 +20045,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-pro-high/run-3/scorecard.md"
             }
           ],
-          "rank": 44
+          "rank": 45
         },
         {
           "agent": "moonshot-kimi-for-coding-highspeed-default",
@@ -20051,7 +20244,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/moonshot-kimi-for-coding-highspeed-default/run-1/scorecard.md"
             }
           ],
-          "rank": 45
+          "rank": 46
         },
         {
           "agent": "minimax-m3-thinking",
@@ -20605,7 +20798,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3-thinking/run-3/scorecard.md"
             }
           ],
-          "rank": 46
+          "rank": 47
         },
         {
           "agent": "nvidia-nemotron-3.5-super-vl-free-high",
@@ -20798,7 +20991,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3.5-super-vl-free-high/run-1/scorecard.md"
             }
           ],
-          "rank": 47
+          "rank": 48
         },
         {
           "agent": "kimi-k2.7-code-default",
@@ -21328,7 +21521,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-default/run-3/scorecard.md"
             }
           ],
-          "rank": 48
+          "rank": 49
         },
         {
           "agent": "apodex-apodex-1.1-mini-free-high",
@@ -21875,7 +22068,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/apodex-apodex-1.1-mini-free-high/run-3/scorecard.md"
             }
           ],
-          "rank": 49
+          "rank": 50
         },
         {
           "agent": "gpt-5.3-codex-xhigh",
@@ -22070,7 +22263,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.3-codex-xhigh/run-1/scorecard.md"
             }
           ],
-          "rank": 50
+          "rank": 51
         },
         {
           "agent": "kimi-k2.7-code-highspeed",
@@ -22610,7 +22803,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/kimi-k2.7-code-highspeed/run-3/scorecard.md"
             }
           ],
-          "rank": 51
+          "rank": 52
         },
         {
           "agent": "z.ai-glm-5.2-high",
@@ -22807,7 +23000,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
             }
           ],
-          "rank": 52
+          "rank": 53
         },
         {
           "agent": "nex-n2.5-pro-high",
@@ -23206,7 +23399,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nex-n2.5-pro-high/run-2/scorecard.md"
             }
           ],
-          "rank": 53
+          "rank": 54
         },
         {
           "agent": "claude-haiku-4.5-default",
@@ -23751,7 +23944,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-haiku-4.5-default/run-3/scorecard.md"
             }
           ],
-          "rank": 54
+          "rank": 55
         },
         {
           "agent": "deepseek-v4-flash-high",
@@ -24130,7 +24323,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/deepseek-v4-flash-high/run-2/scorecard.md"
             }
           ],
-          "rank": 55
+          "rank": 56
         },
         {
           "agent": "cohere-north-mini-code-free-high",
@@ -24329,7 +24522,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/cohere-north-mini-code-free-high/run-1/scorecard.md"
             }
           ],
-          "rank": 56
+          "rank": 57
         },
         {
           "agent": "nvidia-nemotron-3.5-lightning-free-high",
@@ -24528,7 +24721,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3.5-lightning-free-high/run-1/scorecard.md"
             }
           ],
-          "rank": 57
+          "rank": 58
         },
         {
           "agent": "nvidia-nemotron-3-nano-omni-30b-a3b-free-max",
@@ -24721,7 +24914,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/nvidia-nemotron-3-nano-omni-30b-a3b-free-max/run-1/scorecard.md"
             }
           ],
-          "rank": 58
+          "rank": 59
         },
         {
           "agent": "liquid-lfm-2.5-2.6b-free-default",
@@ -24914,7 +25107,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/liquid-lfm-2.5-2.6b-free-default/run-1/scorecard.md"
             }
           ],
-          "rank": 59
+          "rank": 60
         },
         {
           "agent": "xingchen-agi-xing4.0-29b-a4b-free-high",
@@ -25124,7 +25317,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/xingchen-agi-xing4.0-29b-a4b-free-high/run-1/scorecard.md"
             }
           ],
-          "rank": 60
+          "rank": 61
         },
         {
           "agent": "dots-studio-dots-3-note-preview-free-high",
@@ -25329,7 +25522,7 @@
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/dots-studio-dots-3-note-preview-free-high/run-1/scorecard.md"
             }
           ],
-          "rank": 61
+          "rank": 62
         }
       ]
     }
