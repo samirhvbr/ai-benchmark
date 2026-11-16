@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.321`
+**Versão atual:** `0.2.322`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.322` — 2026-11-16 — LEB-300-A's aggregate grows Claude Fable 5.2 at xhigh from one run to three: 947, 946 and 896, so its score is the median, 946, Platinum, still the highest on the instance
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate stays at 37 agents; only the
+  Claude Fable 5.2 entry changes, and the other 36 entries and the notes are unchanged, reading included. The lab's other unpublished configurations stay out.
+- Claude Fable 5.2 (`claude-fable-5-2`) at `xhigh`, the owner's order of 2026-11-15: two more runs (two stages in one session each) on the long-lived token of the owner's personal Claude account, so their cost (US$ 28.22 and
+  US$ 30.19, 111 and 138 minutes) is the client's accounting at list prices, not a charge. They scored 946 (Platinum; report 44 of 50, 32 of the 36 planted flaws reported) and 896 (Gold; clean code 54 and 29 flaws reported), both with
+  no false positive and no penalty. With three runs the official score is the median, 946, 60 points above the next agent; the entry shows the median run's categories.
+- As in every LEB-300-A run, one matching judge and one blind judge for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.321` — 2026-11-15 — LEB-S-300-A's aggregate grows Claude Fable 5.2 at xhigh from one run to three: 968, 995 and 995, mean 986, Platinum, 5th of 36
 

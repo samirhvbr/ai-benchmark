@@ -25881,25 +25881,25 @@
       "agents": [
         {
           "agent": "claude-fable-5.2-xhigh",
-          "score": 947,
+          "score": 946,
           "grade": "Platinum",
-          "runs_count": 1,
+          "runs_count": 3,
           "categories": {
             "SEC": 250,
-            "ARCH": 183,
-            "BUG": 139,
+            "ARCH": 172,
+            "BUG": 147,
             "PERF": 144,
-            "CLN": 86,
+            "CLN": 89,
             "COMP": 100,
-            "EXPL": 45
+            "EXPL": 44
           },
-          "cost_usd": 24.81,
-          "wall_minutes": 108.8,
+          "cost_usd": 28.22,
+          "wall_minutes": 110.6,
           "tokens": {
-            "input": 121689,
-            "output": 570724,
-            "cache": 4396125,
-            "total": 5088538
+            "input": 128109,
+            "output": 618363,
+            "cache": 5231885,
+            "total": 5978357
           },
           "runs": [
             {
@@ -25913,6 +25913,30 @@
                 "cache": 4396125,
                 "total": 5088538
               }
+            },
+            {
+              "run": 2,
+              "total": 946,
+              "cost_usd": 28.22,
+              "wall_minutes": 110.6,
+              "tokens": {
+                "input": 128109,
+                "output": 618363,
+                "cache": 5231885,
+                "total": 5978357
+              }
+            },
+            {
+              "run": 3,
+              "total": 896,
+              "cost_usd": 30.19,
+              "wall_minutes": 137.9,
+              "tokens": {
+                "input": 188031,
+                "output": 689553,
+                "cache": 5410365,
+                "total": 6287949
+              }
             }
           ],
           "model": {
@@ -25922,8 +25946,8 @@
             "reasoning_effort": "xhigh"
           },
           "comment": {
-            "en": "One run so far, so no official score yet: 947, Platinum. Security 250 of 250, architecture 183 of 200, bugs 139 of 150, performance 144 of 150 and clean code 86 of 100; compatibility 100, with no penalty. The report covered 33 of the 36 planted flaws and the code fixed 34, with no false positives and 16 extra findings; the report was rated 45 of 50. The session took 110 minutes for US$ 24.81 at the client's list prices: it ran on the owner's personal Claude account (a long-lived token), so that is not a charge.",
-            "pt_BR": "Uma execução até agora, então ainda sem nota oficial: 947, Platinum. Segurança 250 de 250, arquitetura 183 de 200, bugs 139 de 150, desempenho 144 de 150 e código limpo 86 de 100; compatibilidade 100, sem penalidade. O relatório cobriu 33 dos 36 defeitos plantados e o código corrigiu 34, sem falsos positivos e com 16 achados extras; o relatório teve 45 de 50. A sessão levou 110 minutos por US$ 24,81 a preço de lista do cliente: rodou na conta pessoal do dono no Claude (token de longa duração), então não é cobrança."
+            "en": "Three runs: 947, 946 and 896 (Platinum, Platinum and Gold); the official score is the median, 946, Platinum, the highest on this instance by 60 points. Each run took 109 to 138 minutes for US$ 24.81 to 30.19 at the client's list prices: they ran on the owner's personal Claude account (a long-lived token), so that is not a charge. Security was 250 of 250 in every run and compatibility 100, with no penalty. Architecture was 183, 172 and 164 of 200, bugs 139, 147 and 139 of 150, performance 144 in all three and clean code 86, 89 and 54 of 100. The reports covered 33, 32 and 29 of the 36 planted flaws, with no false positive and 16, 31 and 28 extra findings, and were rated 45, 44 and 45 of 50. The third run scored lowest: its clean code fell to 54 and its report covered 29 flaws. It is one system, so how the configuration does across systems is not measured yet.",
+            "pt_BR": "Três execuções: 947, 946 e 896 (Platinum, Platinum e Gold); a nota oficial é a mediana, 946, Platinum, a maior desta instância por 60 pontos. Cada execução levou de 109 a 138 minutos, por US$ 24,81 a 30,19 a preço de lista do cliente: rodaram na conta pessoal do dono no Claude (token de longa duração), então isso não é cobrança. Segurança ficou em 250 de 250 em todas e compatibilidade em 100, sem penalidade. Arquitetura foi 183, 172 e 164 de 200, bugs 139, 147 e 139 de 150, desempenho 144 nas três e código limpo 86, 89 e 54 de 100. Os relatórios cobriram 33, 32 e 29 das 36 falhas plantadas, sem falso positivo e com 16, 31 e 28 achados extras, e tiveram 45, 44 e 45 de 50. A terceira execução fez a menor nota: o código limpo caiu para 54 e o relatório cobriu 29 falhas. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido."
           }
         },
         {

@@ -103,7 +103,7 @@ This instance is **active**. While it is, only the totals below are published: n
 
 | # | Agent | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
-| 1 | `claude-fable-5.2-xhigh` | **947** | Platinum | 250 | 183 | 139 | 144 | 86 | 100 | 45 | 1/3 |
+| 1 | `claude-fable-5.2-xhigh` | **946** | Platinum | 250 | 172 | 147 | 144 | 89 | 100 | 44 | 3/3 (947 · 946 · 896) |
 | 2 | `claude-sonnet-5.5-max` | **886** | Gold | 250 | 150 | 137 | 134 | 71 | 100 | 44 | 3/3 (932 · 863 · 886) |
 | 3 | `claude-opus-5.5-high` | **866** | Gold | 229 | 153 | 147 | 124 | 71 | 100 | 42 | 3/3 (848 · 866 · 866) |
 | 4 | `claude-sonnet-5.5-max-ultracode` | **866** | Gold | 250 | 156 | 139 | 134 | 71 | 75 | 41 | 3/3 (878 · 866 · 836) |
