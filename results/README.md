@@ -335,10 +335,10 @@ This instance is **active**. While it is, only the figures below are published: 
 | 2 | `deepseek-v4.1-flash-max` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 1/1 (992) |
 | 3 | `claude-opus-5.5-xhigh` | **989** | 984 to 995 | Platinum | 845 | 100 | 45 | 5/5 (995 · 995 · 995 · 981 · 981) |
 | 4 | `claude-sonnet-5.5-xhigh` | **988** | 976 to 995 | Platinum | 844 | 100 | 44 | 5/5 (964 · 995 · 995 · 995 · 992) |
-| 5 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
-| 6 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
-| 7 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
-| 8 | `claude-fable-5.2-xhigh` | **968** | 968 to 968 | Platinum | 824 | 100 | 44 | 1/1 (968) |
+| 5 | `claude-fable-5.2-xhigh` | **986** | 968 to 995 | Platinum | 841 | 100 | 45 | 3/3 (968 · 995 · 995) |
+| 6 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
+| 7 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
+| 8 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
 | 9 | `gpt-6-astra-xhigh` | **968** | 961 to 973 | Platinum | 824 | 100 | 43 | 5/5 (967 · 972 · 968 · 976 · 956) |
 | 10 | `xiaomi-mimo-v2.6-pro-ultraspeed-high` | **966** | 966 to 966 | Platinum | 824 | 100 | 42 | 1/1 (966) |
 | 11 | `gpt-6.1-terra-xhigh` | **962** | 962 to 962 | Platinum | 820 | 100 | 42 | 1/1 (962) |
@@ -379,13 +379,13 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 988.2 (975.8 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 964, highest 995.
 
+`claude-fable-5.2-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 986.0 (968.0 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 968, highest 995.
+
 `deepseek-v4.1-flash-1017-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 985.8 (973.4 to 992.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 961, highest 993.
 
 `claude-opus-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 984.0 (972.0 to 993.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 963, highest 994.
 
 `xiaomi-mimo-v2.6-pro-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 969.0 (969.0 to 969.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 969, lowest 969, highest 969.
-
-`claude-fable-5.2-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 968.0 (968.0 to 968.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 968, lowest 968, highest 968.
 
 `gpt-6-astra-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 967.8 (961.4 to 973.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 968, lowest 956, highest 976.
 
