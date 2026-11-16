@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.318`
+**Versão atual:** `0.2.319`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.319` — 2026-11-15 — LEB-D-300-A's aggregate grows Claude Fable 5.2 at xhigh from one run to four: 858, Gold, still the highest score on the instance
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. Only the Claude Fable 5.2 entry changes;
+  the other 55 entries are unchanged, reading included. Apodex 1.1 Mini stays at four runs, as in 0.2.310 and 0.2.316.
+- Claude Fable 5.2 (`claude-fable-5-2`) at `xhigh`, the owner's order of 2026-11-15: three more runs on the long-lived token of the owner's personal Claude account, so their cost (US$ 22.0 to 36.8 and 51 to 85 minutes per
+  completed run, by the client's accounting at list prices) is not a charge. Three runs completed (880, 861 and 834) and one used up the 90-minute budget before writing its report (619, with no report credit). The score of 858
+  (Gold) is the mean of the completed runs, as for every configuration; the aggregate shows completion 3 of 4 scheduled attempts and one budget exhausted. The category columns are the means of all four runs, so they add up to
+  798 and not to the score.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. The judges differed on three items of run 4, each the fourth criterion of a row nobody attempted,
+  which the owner's standing rule settles as none. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.318` — 2026-11-11 — results/ adds Gemini 4 Carbon at high to LEB-100-A: one run, 803, Gold, 4th and the best run of a model outside the Claude family
 
