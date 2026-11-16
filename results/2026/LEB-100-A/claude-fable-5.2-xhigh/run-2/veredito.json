@@ -1,0 +1,234 @@
+{
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "model": {
+    "name": "Claude Fable 5.2",
+    "version": "not recorded",
+    "provider": "Anthropic"
+  },
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-15",
+    "runs": [
+      843
+    ]
+  },
+  "judge": {
+    "type": "LLM",
+    "id": "claude-opus-5-5",
+    "date": "2026-11-15",
+    "procedure": "steps 4 and 5 by separate Claude Opus 5.5 subagents on the anonymized delivery; one matching judge for the delivery, who also read the digest of the rulings applied to the published deliveries of the instance; the EXPL score by a separate blind judge that read only the report and the rubric"
+  },
+  "blind_label": "YN",
+  "planted": [
+    {
+      "id": "SEC-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "$busca vem direto de $_GET['busca'] (index.php:72) e é concatenado dentro do literal do LIKE. Com busca=zzz%' UNION SELECT id,1,NULL,CONCAT(login,':',senha),... a coluna \"Titulo\" da listagem passa a mostrar login:hash dos 4 usuários.",
+      "rationale": "F1 at lib.php:81-83 (seguranca) states the concatenation into the LIKE literal and a reproduced UNION extraction. Fixed with a mysqli prepared statement, LIKE ? bound through bind_param (delivered lib.php:197-206, via consultaPreparada); linhaComoTexto keeps the string-typed return. Probe corrigida=true. %/_ are deliberately left as wildcards (non-changes list); per the rulings that is no COMP and C3 follows the probe."
+    },
+    {
+      "id": "SEC-003",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "$busca é ecoado cru no atributo value do input (linha 79) e no parágrafo \"Resultados para:\" (linha 82). ?busca=\"><script>alert(1)</script> fecha o atributo e injeta o script.",
+      "rationale": "F5 at index.php:79-82 names both output points and the attribute break-out. htmlspecialchars($busca, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') is computed once and used at both points (delivered index.php:103, 110, 113)."
+    },
+    {
+      "id": "SEC-008",
+      "reported": true,
+      "confidence": 70,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o título é escrito pelo cliente e vai cru para o CSV. Um título =HYPERLINK(\"http://…\",\"clique\") é interpretado como fórmula quando o técnico ou a gerência abre o arquivo no Excel ou no LibreOffice.",
+      "rationale": "F12 at lib.php:138-144 (seguranca) is the CSV formula injection with the right mechanism. neutralizarFormulaCsv() prefixes an apostrophe to cells starting with = + - @ TAB CR LF (delivered lib.php:259-265, applied at :306 and :308). The '-' placeholder of a ticket without technician is written unchanged (null -> '-' at :308), so the PEN-001 of the rulings (technician '-' turned into \"'-\") does not arise. Probe corrigida=true."
+    },
+    {
+      "id": "SEC-013",
+      "reported": true,
+      "confidence": 88,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o login grava uid e papel na sessão que já existia (linhas 24–25), sem session_regenerate_id(). O PHP aceita um id de sessão escolhido pelo cliente.",
+      "rationale": "F8 at index.php:15-25 describes session fixation at the planted line. session_regenerate_id(true) right after a successful autenticar() (delivered index.php:47), plus use_strict_mode and HttpOnly/SameSite cookie flags (index.php:30-35, bundled hardening in the same finding)."
+    },
+    {
+      "id": "SEC-014",
+      "reported": true,
+      "confidence": 97,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "autenticar() calcula md5($senha) e compara no SQL. MD5 sem sal é quebrado por tabela pré-computada, e senhas iguais dão hashes iguais: no seed, ana e bruno têm o mesmo hash.",
+      "rationale": "F7 at lib.php:15-16. autenticar() now fetches by login, accepts a 32-hex legacy md5 with hash_equals, otherwise password_verify, and re-hashes with password_hash() on the first valid login (delivered lib.php:50-110). The re-hash is skipped while the column is narrower than the new hash (never truncates, never locks a user out) and the delivered schema.sql widens senha to VARCHAR(255) with the seed untouched: transparent migration as the matrix asks. Widening the column is not COMP-009 per the rulings."
+    },
+    {
+      "id": "SEC-015",
+      "reported": true,
+      "confidence": 95,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "DB_PASS tem como fallback a senha do usuário de produção (linha 12) e SMTP_API_KEY é um literal (linha 15).",
+      "rationale": "F6 at config.php:11-15 covers both secrets and recommends rotating them. Both literals left the code: getenv() with an empty fallback (delivered config.php:12, :15). C3 full under the rulings (both literals out, empty fallback). A mandatory DB_PASS is a deployment requirement, not PEN-001."
+    },
+    {
+      "id": "SEC-017",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "index.php:38–39 lê $uid e $papel da sessão e nunca mais os usa. A rota passa o id para verChamado(), que carrega só pelo id. Ana (cliente) abre ?ver=103, que é de Bruno, e lê título e descrição.",
+      "rationale": "F2 at index.php:52-53 is the IDOR via ?ver=id. donoRestrito() (delivered lib.php:154-157) returns null for 'tecnico' and the user id otherwise; the route calls verChamadoDoDono() (lib.php:228-235, index.php:80), which loads with the untouched verChamado(mysqli,int) and answers 'Chamado nao encontrado.' for another client's ticket; technicians still see everything. The ownership comparison casts usuario_id to int (no AF-style === bug). No COMP: listing and CSV are filtered for clients only, technicians and sessionless callers of the public functions still get every ticket (enforcement per the rulings), and mediaResposta stays global."
+    },
+    {
+      "id": "BUG-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "$soma / $qtd com $qtd = 0 quando nenhum chamado tem minutos_resposta. No PHP 8 isso lança DivisionByZeroError; como index.php:74 chama a função antes de montar a página, a listagem inteira responde HTTP 500.",
+      "rationale": "F10 at lib.php:116, correct PHP 8 behaviour. Returns 0.0 when COUNT is 0 (delivered lib.php:248-251); SUM/COUNT in SQL with the division in PHP keeps the same float (not AVG). Probe corrigida=true."
+    },
+    {
+      "id": "BUG-004",
+      "reported": true,
+      "confidence": 90,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "Se a consulta falha, a função retorna sem fclose($fp) e deixa no disco um arquivo só com o cabeçalho.",
+      "rationale": "F14 at lib.php:127-135 (bug) covers the planted line 133 and states the planted mechanism: the early return on a failed query skips fclose($fp). Its headline is the silent export failure (the fopen return), which is extra content of the same finding. F9 (lib.php:125-126) is within 10 lines but describes the shared-file race, another defect, so it is not this row (rulings A4). Fix: the query runs before any handle is opened and throws on failure (delivered lib.php:292), the output handle is php://output and is closed on the only path (:301-312). Not writing EXPORT_DIR/chamados.csv any more is not COMP per the rulings; the headers_sent() guard skips headers and never throws (not the CR COMP-005 case)."
+    },
+    {
+      "id": "PERF-001",
+      "reported": true,
+      "confidence": 99,
+      "criteria": {
+        "C1": "full",
+        "C2": "full",
+        "C3": "full",
+        "C5": "full"
+      },
+      "report_excerpt": "o laço chama tecnicoNome() para cada linha, e cada chamada faz um SELECT em usuarios. ... Com 2005 chamados medi 2006 SELECTs e 0,37 s na listagem e 2005 SELECTs no CSV.",
+      "rationale": "F11 at lib.php:88-91 names both loops (:89 and :137), credited once. LEFT JOIN usuarios with COALESCE(t.nome, '-') in the listing (delivered lib.php:187-188) and a LEFT JOIN in the export with null -> '-' (:281-282, :308); the '-' placeholder survives, so no PEN-001 of the W/AN kind. Probe corrigida=true."
+    },
+    {
+      "id": "ARCH-002",
+      "reported": true,
+      "confidence": 85,
+      "criteria": {
+        "R1": "full",
+        "R2": "full",
+        "R3": "none",
+        "R4": "none"
+      },
+      "report_excerpt": "index.php conecta ao banco, abre sessão, autentica, roteia, consulta e monta HTML com echo. ... Sem um ponto único para autorização e para escape, cada rota precisa lembrar de fazer as duas coisas.",
+      "rationale": "F22 (arquitetura) points at index.php:4 'em diante (o arquivo inteiro)', a range that contains the planted dispatcher 41-97, and its mechanism is the matrix evidence (routing + authorization + rules + HTML assembly in one place, root cause of F2-F5). R1 and R2 full. Not restructured, by the report's own statement: index.php still routes, authorizes and echoes the HTML inline (delivered index.php:62-128); extracting donoRestrito/consultaPreparada and adding an exception handler does not reach the target (presentation separated, thin controller), so R3 none and R4 none (nothing attempted)."
+    },
+    {
+      "id": "ARCH-009",
+      "reported": false,
+      "criteria": {
+        "R1": "none",
+        "R2": "none",
+        "R3": "half",
+        "R4": "full"
+      },
+      "report_excerpt": "",
+      "rationale": "The only finding that names the 3/4/30 literals is F21 at lib.php:40, which maps to CLN-007 (its own location, within 10 lines of :43; ARCH-009's :28 is 12 lines away); under the bundled-findings rule and the BF precedent the literals are consumed by that mapping, so ARCH-009 is a silent refactor. F17 (lib.php:32, formatarStatus) is within range but describes the fallback label, another defect. Code: 30, 3 and 4 are named in rotuloPrioridade as local variables (delivered lib.php:134-136); the status values 1/2/3 in formatarStatus are still bare literals (lib.php:117-121). A genuine partial of the target (named values with the same meaning), so R3 half; no COMP is attributable to it, R4 full."
+    },
+    {
+      "id": "CLN-007",
+      "reported": true,
+      "confidence": 80,
+      "criteria": {
+        "R1": "full",
+        "R2": "full",
+        "R3": "full",
+        "R4": "full"
+      },
+      "report_excerpt": "a regra de SLA está em if/else aninhados em quatro níveis, com 30, 3 e 4 soltos no código. Cada regra nova duplica ramos.",
+      "rationale": "F21 at lib.php:40-59 (qualidade) names the four-level nesting in rotuloPrioridade. Rewritten with early returns (delivered lib.php:138-147); checked branch by branch, the truth table is identical (null -> 'Aguardando 1a resposta'; prioridade < 3 -> 'Normal'; minutos <= 30 -> 'Alto - dentro do SLA'; else 4 -> 'CRITICO - SLA estourado', other -> 'Alto - atrasado'). R3 full, R4 full."
+    }
+  ],
+  "false_positives": [],
+  "extra_findings": [
+    "F3 (index.php:72-73) - the listing showed every ticket to a client; fixed by listarChamadosDoDono for clients only, technicians and the public listarChamados unchanged (enforcement, no COMP)",
+    "F4 (index.php:44-47) - the CSV export gave every ticket to any session; fixed by exportarCsvDoDono, client gets own tickets with the same header and order, technicians and the public exportarCsv get all (enforcement, no COMP). Within 10 lines of SEC-017's :53 but a different route and defect, and SEC-017 is already credited to F2",
+    "F9 (lib.php:125-126) - every export truncates and re-reads one shared EXPORT_DIR/chamados.csv: concurrent exports race and the full-data file stays on disk; fixed by streaming to php://output",
+    "F13 (index.php:9-12) - since PHP 8.1 new mysqli() throws, so the connect_errno branch is dead; no exception handler, so query errors expose SQL (and, depending on zend.exception_ignore_args, arguments) in the log/browser; fixed with mysqli_report, try/catch (503) and set_exception_handler",
+    "F15 (index.php:20-29) - no throttling of login attempts; reported, not fixed",
+    "F16 (lib.php:80-85) - SELECT * without LIMIT on the listing (PERF-002 class, legitimate and unplanted); reported, not fixed. It also says LIKE '%x%' cannot use an index without proposing one, which is not the PERF-006 decoy (rulings A10)",
+    "F17 (lib.php:32-34) - formatarStatus maps any value other than 1/2 to 'Resolvido'; calling contracted behaviour a bug is an extra, but the delivery changed it, charged as COMP-003 below",
+    "F18 (index.php:22, 53, 72-73) - array-valued login/busca parameters raise TypeError (HTTP 500) and ver[]=7 casts to id 1; fixed with is_string guards",
+    "F19 (lib.php:109-115) - mediaResposta fetches every answered row to sum in PHP; moved to SUM/COUNT in SQL keeping the same float",
+    "F20 (lib.php:130, 138) - fputcsv without an explicit $escape is deprecated in PHP 8.4; fixed by passing the current defaults (same bytes)",
+    "SEC-005 class - no CSRF token on the login form, named in the non-changes list (not fixed)"
+  ],
+  "comp_violations": [
+    {
+      "id": "COMP-003",
+      "count": 1,
+      "detail": "formatarStatus now returns 'Desconhecido' for any status outside 1..3, where the contracted function returned 'Resolvido' (delivered lib.php:121-126). The manifest fixes formatarStatus's labels and the management report matches on them. Comes from the extra finding F17, not from a planted-flaw fix, so no C5/R4 is affected (D, U, AS, BC, BM, CD, CE, CI precedent)."
+    }
+  ],
+  "penalties": {
+    "PEN-001": 0,
+    "PEN-003": 0
+  },
+  "expl_rubric": {
+    "clareza": 10,
+    "precisao": 10,
+    "causa_raiz": 10,
+    "priorizacao": 8,
+    "trade_offs": 10
+  },
+  "expl_note": "EXPL is scored by a separate blind judge (step 5); the zeros here are placeholders and are not a score.",
+  "notes": "Binding: achados.json leb block = instancia LEB-100-A, versao_instancia 1.1, matriz_sha256 68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625, which matches the package's TAREFA.md and mecanico.json; manifest.md, TAREFA.md, .leb-pacote.sha256 and seed.sql are byte-identical to the original package. RELATORIO.md and achados.json agree: the same 22 findings F1-F22, the same locations, severities and confidences, and the same three unfixed items (F15, F16, F22); the prose gives ranges where the JSON gives a first line (F1, F10, F20), with no inconsistency. Mechanical: characterization 22/22 before and after, no regression; probes SEC-001, SEC-008, BUG-001 and PERF-001 all corrigida=true. PEN-001 = 0: I found no new defect in the new code (the CSV sanitizer leaves the '-' placeholder alone, the JOINs keep '-', the re-hash never writes into a column too narrow for it, the ownership check casts to int); a mandatory DB_PASS and the 503 on connection failure are deployment and error-handling changes outside the contract. PEN-003 = 0 (task 1.0.0). COMP: one COMP-003 for the formatarStatus fallback (extra finding F17, no C5/R4 affected). Not charged, following the rulings: client-only filtering of listing and CSV (enforcement; public functions still return everything), global mediaResposta kept, %/_ left as wildcards, EXPORT_DIR file no longer written, senha widened to VARCHAR(255), new helper functions added to lib.php, explicit fputcsv separator/enclosure/escape (same bytes). No decoy hit: nothing about exec/system (SEC-009); F16's remark that LIKE '%x%' cannot use an index proposes no index (not PERF-006). The report correctly declines to call the int-typed concatenations in verChamado/tecnicoNome injectable. Judgment calls and hesitations: (1) BUG-004 - F14's headline is the silent export failure, but it states that a failed query returns without fclose($fp) at the planted lines, so C1 and C2 full (BX precedent); a stricter reading could hold that it never names the descriptor leak as such and give C2 none. (2) ARCH-002 - F22's JSON line is index.php:4, 37 lines before the planted 41-97, but it explicitly spans the whole file and describes exactly the dispatcher's mixed responsibilities, so R1 full; R3 none because the report itself says it did not restructure and the HTML stays inline. (3) ARCH-009 - silent refactor (F21 maps to CLN-007 under the bundled-findings rule); R3 half because only the priority/SLA numbers got names, as local variables rather than constants, and the status numbers stay literal; a stricter judge could give R3 none (and then R4 none). (4) SEC-014 C3 full: the re-hash is conditional on the column width and runs on the delivered schema; on an unmigrated CHAR(32) database md5 stays in use until the ALTER, a deployment caveat the report states. (5) F4 kept as an extra although its JSON location (index.php:44-47) is within 10 lines of SEC-017's :53, because it describes the export route, not the ?ver IDOR, and SEC-017 is credited to F2.",
+  "expl_justification": {
+    "clareza": "Opens with a direct summary (what was broken, 22 findings, 19 fixed, 3 reported with reasons), an actionable 'Antes do deploy' checklist and a verification table, then every finding uses the same Onde/Mecanismo/Impacto/Confiança/O que fiz template; dense but never hard to follow.",
+    "precisao": "Technically correct and deep throughout: concrete UNION payload for F1, PHP 8.1 mysqli exception behavior making connect_errno dead code (F13), PHP 8.4 fputcsv deprecation (F20), prepared statements returning int vs string handled by linhaComoTexto (F1), AVG decimal vs float (F19), CHAR(32) truncation risk in non-strict mode (F7), with measured numbers (2006 SELECTs, 0.37 s vs 0.03 s) and explicit statements of what was not verified.",
+    "causa_raiz": "Each finding gives the cause and the mechanism (e.g. F2: $uid/$papel read from the session at index.php:38-39 and never used; F9: 'w' truncation of a shared path under concurrent exports), and F22 ties F2-F5 to the structural root cause of no single point for authorization and escaping.",
+    "priorizacao": "Findings are explicitly ordered by fix priority with a severity and a numeric confidence each, and deferrals (F15, F16, F22) are justified by effort/infra/risk; however effort is not weighed systematically per finding, and F22 (rated média) sits after the baixa items, which breaks the stated ordering.",
+    "trade_offs": "Real alternatives are compared and the chosen cost is named: filtered CSV vs denying the route (F4), SameSite Lax vs Strict (F8), SUM/COUNT vs AVG (F19), apostrophe-prefix cost on '-5 dBm' titles (F12), best-effort hash migration vs offline rewrap (F7), new owner-scoped functions vs changing public signatures with its consequence (Decisões), keeping LIKE wildcards and the non-RFC CSV escape for contract stability."
+  }
+}

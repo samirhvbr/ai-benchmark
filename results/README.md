@@ -25,7 +25,7 @@ Notes on this evaluation: [`2026/LEB-100-A/README.md`](2026/LEB-100-A/README.md)
 
 | # | Model | Total | Grade | SEC | ARCH | BUG | PERF | CLN | COMP | EXPL | Pen. | Discovery | Brier | Runs |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :-: |
-| 1 | [Claude Fable 5.2](2026/LEB-100-A/claude-fable-5.2-xhigh/run-1/scorecard.md) · xhigh | **847** | Gold | 250 | 50 | 150 | 150 | 100 | 100 | 47 | 0 | 91.7 | 0.025 | 1/3 |
+| 1 | [Claude Fable 5.2](2026/LEB-100-A/claude-fable-5.2-xhigh/run-2/scorecard.md) · xhigh | **843** | Gold | 250 | 75 | 150 | 150 | 100 | 70 | 48 | 0 | 91.7 | 0.015 | 3/3 (847 · 843 · 830) |
 | 2 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-2/scorecard.md) · xhigh | **809** | Gold | 250 | 25 | 139 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.033 | 3/3 (825 · 809 · 724) |
 | 3 | [Claude Sonnet 5.5](2026/LEB-100-A/claude-sonnet-5.5-max/run-1/scorecard.md) · max | **807** | Gold | 250 | 12 | 150 | 150 | 100 | 100 | 45 | 0 | 91.7 | 0.035 | 3/3 (807 · 773 · 820) |
 | 4 | [Gemini 4 Carbon](2026/LEB-100-A/google-gemini-4-carbon-high/run-1/scorecard.md) † · high (permissions auto-approved) | **803** | Gold | 220 | 50 | 139 | 150 | 100 | 100 | 44 | 0 | 91.7 | 0.001 | 1/3 |

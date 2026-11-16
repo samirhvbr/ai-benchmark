@@ -1,0 +1,350 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "Claude Fable 5.2",
+    "version": "not recorded",
+    "provider": "Anthropic"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-15",
+    "runs": [
+      843
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 6,
+      "confidence": 70,
+      "reported": true
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 88,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 97,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 95,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 6,
+      "points_possible": 6,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 99,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 2,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 4,
+      "points_possible": 10,
+      "confidence": 85,
+      "reported": true
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 1,
+        "R4": 1
+      },
+      "points_earned": 2,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 2,
+        "R2": 1,
+        "R3": 4,
+        "R4": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 80,
+      "reported": true
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 58,
+      "raw_possible": 58,
+      "score": 250,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 6,
+      "raw_possible": 16,
+      "score": 75,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 14,
+      "raw_possible": 14,
+      "score": 150,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 100,
+      "max": 100
+    },
+    "COMP": {
+      "score": 70,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "formatarStatus now returns 'Desconhecido' for any status outside 1..3, where the contracted function returned 'Resolvido' (delivered lib.php:121-126). The manifest fixes formatarStatus's labels and the management report matches on them. Comes from the extra finding F17, not from a planted-flaw fix, so no C5/R4 is affected (D, U, AS, BC, BM, CD, CE, CI precedent)."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 48,
+      "max": 50,
+      "rubric": {
+        "clareza": 10,
+        "precisao": 10,
+        "causa_raiz": 10,
+        "priorizacao": 8,
+        "trade_offs": 10
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "F3 (index.php:72-73) - the listing showed every ticket to a client; fixed by listarChamadosDoDono for clients only, technicians and the public listarChamados unchanged (enforcement, no COMP)",
+    "F4 (index.php:44-47) - the CSV export gave every ticket to any session; fixed by exportarCsvDoDono, client gets own tickets with the same header and order, technicians and the public exportarCsv get all (enforcement, no COMP). Within 10 lines of SEC-017's :53 but a different route and defect, and SEC-017 is already credited to F2",
+    "F9 (lib.php:125-126) - every export truncates and re-reads one shared EXPORT_DIR/chamados.csv: concurrent exports race and the full-data file stays on disk; fixed by streaming to php://output",
+    "F13 (index.php:9-12) - since PHP 8.1 new mysqli() throws, so the connect_errno branch is dead; no exception handler, so query errors expose SQL (and, depending on zend.exception_ignore_args, arguments) in the log/browser; fixed with mysqli_report, try/catch (503) and set_exception_handler",
+    "F15 (index.php:20-29) - no throttling of login attempts; reported, not fixed",
+    "F16 (lib.php:80-85) - SELECT * without LIMIT on the listing (PERF-002 class, legitimate and unplanted); reported, not fixed. It also says LIKE '%x%' cannot use an index without proposing one, which is not the PERF-006 decoy (rulings A10)",
+    "F17 (lib.php:32-34) - formatarStatus maps any value other than 1/2 to 'Resolvido'; calling contracted behaviour a bug is an extra, but the delivery changed it, charged as COMP-003 below",
+    "F18 (index.php:22, 53, 72-73) - array-valued login/busca parameters raise TypeError (HTTP 500) and ver[]=7 casts to id 1; fixed with is_string guards",
+    "F19 (lib.php:109-115) - mediaResposta fetches every answered row to sum in PHP; moved to SUM/COUNT in SQL keeping the same float",
+    "F20 (lib.php:130, 138) - fputcsv without an explicit $escape is deprecated in PHP 8.4; fixed by passing the current defaults (same bytes)",
+    "SEC-005 class - no CSRF token on the login form, named in the non-changes list (not fixed)"
+  ],
+  "total": 843,
+  "grade": "Gold",
+  "calibration": {
+    "reported_count": 12,
+    "brier": 0.015,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 10,
+        "mean_confidence": 95.0,
+        "hit_rate": 1.0
+      },
+      {
+        "range": "61-80",
+        "count": 2,
+        "mean_confidence": 75.0,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 4,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 6,
+        "corrected": 5
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 91.7
+  }
+}

@@ -1454,6 +1454,26 @@ and it had changed no file; the run scored here is the second attempt.
   (SEC-008 not fixed, SEC-014 half), bugs 139, performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not named); compatibility 100 and no penalty. Its
   report scored 44 of 50, with 9 extra findings and no false positive. It is the best run of a model outside the Claude family on the instance: the next, GPT-6.1 sol, scored 727.
 
+### Run of 2026-11-15
+
+Two deliveries were scored on this date (one agent): Claude Fable 5.2 at `xhigh`, runs 2 and 3 of an agent whose first run is in the section of 2026-11-09. They were made through the unattended lab as that one was: one `claude -p`
+session of Claude Code 2.1.295 each, which got the fixed first message once and ran to its own end under a 90-minute cap (`operator_replies` 0), in the client's auto permission mode, as the unprivileged user `leb` on a restored
+machine with GitHub blocked and the package as the only instance folder in `/srv`. Both ran on the long-lived token of the owner's personal Claude account and not on an API key, so the cost `run.json` carries is the client's own
+accounting at list prices, not a charge. Each was judged blind like the others: a label drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL judge, both Claude Opus subagents. With three
+runs the agent's figure on the leaderboard is the median, 843 (YN), and it stays first.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **YN** | Claude Fable 5.2, `xhigh`, run 2 | 843 |
+| **MJ** | Claude Fable 5.2, `xhigh`, run 3 | 830 |
+
+- **Claude Fable 5.2 at `xhigh` (YN): 843, Gold, run 2.** 26.3 minutes and 1.30 million tokens (US$ 6.29 at list prices). It reported 12 of the 13 flaws and fixed 11 in full and one in half: security 250, bugs 150,
+  performance 150 and clean code 100; architecture 75 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not reported but half done in the code); compatibility 70 (one COMP-003: `formatarStatus` now
+  returns "Desconhecido" for a status outside 1 to 3, where the contracted function returned "Resolvido") and no penalty. Its report scored 48 of 50, with 11 extra findings and no false positive.
+- **Claude Fable 5.2 at `xhigh` (MJ): 830, Gold, run 3.** 27.7 minutes and 1.86 million tokens (US$ 6.60). It reported 12 of the 13 flaws and fixed 10: security 233 (SEC-008 reported and deliberately not fixed), bugs 150,
+  performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not named); compatibility 100 and no penalty. Its report scored 47 of 50, with 14 extra
+  findings and no false positive.
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

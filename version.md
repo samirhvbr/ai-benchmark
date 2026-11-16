@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.319`
+**Versão atual:** `0.2.320`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.320` — 2026-11-15 — results/ grows Claude Fable 5.2 at xhigh on LEB-100-A from one run to three: 847, 843 and 830, so its score is the median, 843, Gold, still the highest on the instance
+
+- The leaderboard goes from 62 agents and 139 runs to 62 agents and 141 runs; the entries of the other 61 agents are unchanged. The two new run folders carry their delivery, `mecanico.json`, `veredito.json`, `scorecard.json` and `.md`,
+  and `run.json`; the pins of `tests/test_saturacao.py` follow the new counts (141 runs; the agent's representative run is now its median, so the highest representative total is 843 and 37 agents reach the compatibility maximum).
+- Claude Fable 5.2 (`claude-fable-5-2`) at `xhigh`, the owner's order of 2026-11-15: two more runs on the long-lived token of the owner's personal Claude account, so their cost (US$ 6.29 and US$ 6.60, the client's accounting at
+  list prices) is not a charge. Run 2 scored 843 (label YN, 26.3 minutes) and run 3 scored 830 (label MJ, 27.7 minutes); each reported 12 of the 13 planted flaws, with no false positive and no penalty. Run 2 lost 30 points of
+  compatibility for one COMP-003, and run 3 reported SEC-008 and chose not to fix it.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents, on a delivery with no name on it.
 
 ### `0.2.319` — 2026-11-15 — LEB-D-300-A's aggregate grows Claude Fable 5.2 at xhigh from one run to four: 858, Gold, still the highest score on the instance
 
