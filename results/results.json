@@ -36649,6 +36649,93 @@
           }
         },
         {
+          "agent": "gpt-6.2-sol-xhigh-plan",
+          "score": 991,
+          "grade": "Platinum",
+          "runs_count": 1,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 41
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": null,
+          "wall_minutes": 17.2,
+          "tokens": {
+            "input": 189839,
+            "output": 37528,
+            "cache": 4139776,
+            "total": 4367143
+          },
+          "statistics": {
+            "scheduled": 1,
+            "quality": {
+              "n": 1,
+              "systems": 1,
+              "mean": 991.0,
+              "low": 991.0,
+              "high": 991.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 1,
+              "systems": 1,
+              "mean": 991.0,
+              "low": 991.0,
+              "high": 991.0
+            },
+            "completion": {
+              "rate": 1.0,
+              "completed": 1,
+              "scheduled": 1,
+              "systems_all_completed": 1,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 1,
+              "blocked": 0,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 0,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 1,
+            "median": 991,
+            "min": 991,
+            "max": 991
+          },
+          "runs": [
+            {
+              "run": 2,
+              "total": 991,
+              "grade": "Platinum",
+              "cost_usd": null,
+              "wall_minutes": 17.2,
+              "tokens": {
+                "input": 189839,
+                "output": 37528,
+                "cache": 4139776,
+                "total": 4367143
+              }
+            }
+          ],
+          "model": {
+            "name": "GPT-6.2-sol (ChatGPT plan)",
+            "id": "gpt-6.2-sol",
+            "provider": "OpenAI",
+            "reasoning_effort": "xhigh",
+            "client_mode": "permissions bypassed"
+          },
+          "comment": {
+            "en": "One run of a case of five, scored 991, Platinum. It completed inside the 90-minute budget, about 4.4 million tokens and 17 minutes (the log keeps no cost), and it broke no behavior the public tests protect (compatibility 100). Security scored 850 of 850: the report covered all 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; extra findings: 4. The report was rated 41 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. An earlier attempt was stopped by the provider's cybersecurity safeguard at its last step and rerun; this is the rerun. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes). It ran through the owner's ChatGPT plan login with Codex CLI 0.170.0, which knows the model; the API-key runs of the same model are in GPT-6.2-sol (Codex 0.159.3, fallback metadata).",
+            "pt_BR": "Uma execução de um caso de cinco, nota 991, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de 4,4 milhões de tokens e 17 minutos (o log não guarda custo), e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 850 de 850: o relatório cobriu todas as 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4. O relatório teve 41 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Uma tentativa anterior foi interrompida pela salvaguarda de cibersegurança do fornecedor no último passo e refeita; esta é a refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas). Rodou pelo login do plano ChatGPT com o Codex CLI 0.170.0, que o conhece; as execuções pela chave de API estão em GPT-6.2-sol (Codex 0.159.3, metadados de reserva)."
+          }
+        },
+        {
           "agent": "claude-opus-5.5-xhigh",
           "score": 989,
           "grade": "Platinum",

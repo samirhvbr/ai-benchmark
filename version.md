@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.337`
+**Versão atual:** `0.2.338`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.338` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-sol through the ChatGPT plan at xhigh as its own entry: one run, 991, Platinum, 5th of 41
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py` (`tools/export-results.py --publish-aggregate LEB-S-300-A`) from the lab's private archive, and the Results
+  section of the instance README. The aggregate goes from 40 to 41 agents; the other 40 entries and the notes are unchanged.
+- GPT-6.2-sol (ChatGPT plan), id `gpt-6.2-sol-xhigh-plan`, at `xhigh`, the owner's order and decision of 2026-11-19: one run through his ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, with
+  approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 991 (Platinum, 5th of 41; security 850 of 850, compatibility 100, report 41 of 50): the report covered all 24 planted vulnerabilities and the
+  code fixed all 24. It took about 17 minutes and 4.4 million tokens (the log keeps no cost). An earlier attempt of the same entry was stopped by the provider's cybersecurity safeguard at its last step, with the report and
+  the findings already written, and was rerun, so the entry shows one lab failure rerun. It is its own entry, not a run of GPT-6.2-sol (992 and 924, API key, Codex CLI 0.159.3 with fallback metadata), because route and
+  client differ; the reading of each entry points at the other.
+- As in every LEB-S-300-A run, two matching judges and two blind judges for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.337` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-astra through the ChatGPT plan at xhigh as its own entry: one run, 992, Platinum, 4th of 40
 
