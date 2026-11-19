@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.340`
+**Versão atual:** `0.2.341`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.341` — 2026-11-19 — LEB-300-A's aggregate adds GPT-6.2-astra through the ChatGPT plan at xhigh as its own entry: one run, 862, Gold, 5th of 40
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 39 to 40
+  agents; the other 39 entries are unchanged, reading included.
+- GPT-6.2-astra (ChatGPT plan), id `gpt-6.2-astra-xhigh-plan`, at `xhigh`, the owner's order and decision of 2026-11-19: one run of the two-stage task through his ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which
+  knows the model, with approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 862 (Gold, 5th of 40; 40 minutes and 9.8 million tokens, the log keeps no cost): security 250 of 250, architecture 164,
+  bugs 139, performance 128 and clean code 64; the report covered 29 of the 36 planted flaws, with one false positive and 33 extra findings, and was rated 42 of 50. It lost 25 points of compatibility for one COMP-008, a
+  login throttle that answers 429 even to the right password. It is its own entry, not a run of GPT-6.2-astra (852, API key, Codex CLI 0.159.3 with fallback metadata), because route and client differ; the run record also
+  says that it ran on the snapshot ready-codex-1119-c170, a descendant of the clean `ready` the API-key run used. The reading of each entry points at the other.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.340` — 2026-11-19 — results/ adds GPT-6.2-sol through the ChatGPT plan at xhigh to LEB-100-A as its own entry: one run, 772, Gold, 8th of 66
 
