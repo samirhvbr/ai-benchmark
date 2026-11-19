@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.339`
+**Versão atual:** `0.2.340`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.340` — 2026-11-19 — results/ adds GPT-6.2-sol through the ChatGPT plan at xhigh to LEB-100-A as its own entry: one run, 772, Gold, 8th of 66
+
+- The leaderboard goes from 65 agents and 144 runs to 66 agents and 145 runs; the entries of the other 65 agents are unchanged. The new run folder carries its delivery, `mecanico.json`, `veredito.json`, `scorecard.json` and
+  `.md`, and `run.json`; the section of the ChatGPT-plan runs of 2026-11-19 in `results/2026/LEB-100-A/README.md` now covers both agents and `comments.json` has the reading; the pins of `tests/test_saturacao.py` follow the
+  new data (66 agents and 145 runs, 48 agents at the performance maximum and 11 at the clean-code maximum).
+- GPT-6.2-sol (ChatGPT plan), id `gpt-6.2-sol-xhigh-plan`, at `xhigh`, the owner's order and decision of 2026-11-19: one run through his ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, with
+  approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 772 (label WA, 8th of 66; 12.5 minutes and 1.23 million tokens, the log keeps no cost): it reported 11 of the 13 planted flaws and fixed 10,
+  scored 50 in architecture, lost 30 points of compatibility for one COMP-003 and 15 points to one PEN-001. It is its own entry, not a run of GPT-6.2-sol (590, API key, Codex CLI 0.159.3 with fallback metadata), because
+  route and client differ; the reading of each entry points at the other.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents, on a delivery with no name on it.
 
 ### `0.2.339` — 2026-11-19 — results/ adds GPT-6.2-astra through the ChatGPT plan at xhigh to LEB-100-A as its own entry: one run, 835, Gold, 3rd of 65
 
