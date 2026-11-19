@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.322`
+**Versão atual:** `0.2.323`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.323` — 2026-11-19 — LEB-D-300-A's aggregate grows GPT-6-sol at xhigh from two runs to five: 537, 523 and 575 more, mean 549, Bronze
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. Only the GPT-6-sol entry changes;
+  the other 55 entries are unchanged, reading included. Apodex 1.1 Mini stays at four runs, as in 0.2.310 and 0.2.316.
+- GPT-6-sol (`gpt-6-sol`) at `xhigh`, through Codex on the OpenAI API key with approvals and sandbox bypassed, the one recorded exception to the series' rule against it: three more runs, so the case of five is whole. They scored
+  537, 523 and 575 (Bronze), after the earlier 523 and 588. The mean of the five is 549 (95% interval 526 to 573), all five completed inside the 90-minute budget, and compatibility is 100 in every run. Its reading was
+  rewritten from the new numbers.
+- Every run went through two matching judges and two blind judges for the report and was settled before it was archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.322` — 2026-11-16 — LEB-300-A's aggregate grows Claude Fable 5.2 at xhigh from one run to three: 947, 946 and 896, so its score is the median, 946, Platinum, still the highest on the instance
 
