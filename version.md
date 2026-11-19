@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.355`
+**Versão atual:** `0.2.356`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.356` — 2026-11-19 — LEB-S-300-A's aggregate adds Claude Sonnet 5.5 at max: three completed runs, estimate 995, Platinum, 2nd of 43, and a blocked run scored 627
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py --write --only claude-sonnet-5.5-max` from the lab's private archive, plus one dated sentence in
+  the Results paragraph of `instances/LEB-S-300-A/README.md`. The aggregate goes from 42 to 43 agents; the other 42 entries are unchanged.
+- Claude Sonnet 5.5 at `max` on an Anthropic API key (id `claude-sonnet-5.5-max`), whose runs were made on 2026-10-31: the estimate is the mean of its three completed runs, 995 (Platinum, 2nd of 43: 994, 995 and 996,
+  31 to 45 minutes, US$ 7.57 to US$ 10.05 each, billed to API credit). The fourth run was stopped during the work, after 41 minutes, by the model's own safeguard (a refusal) with all 24 fixes made and no report
+  written; it was scored on the folder it left by the usual four blind judges, who agreed on every item: 627 (Silver; security 527 of 850, compatibility 100). It counts in the expected score per scheduled attempt
+  (903.0) and in the completion rate (3 of 4) and never in the estimate. A fifth attempt was lost to the lab (the API credit ran out) and was not rerun, so the entry counts one lab failure.
+- Published on the owner's word of 2026-11-19 about the S track's lost runs ("run perdida (s)"): the lab's board calls a run that ended blocked during the work "perdida". A blocked run is not a lab failure and is not
+  filed as one; the lab failure of this entry is the fifth attempt.
+- Correction to 0.2.355: its entry put Claude Fable 5.2 on LEB-S-300-A at "8th of 42". It is 7th of 42 in the aggregate 0.2.355 published (988, tied with Claude Sonnet 5.5 at `xhigh`, 988); the 8th place was counted with
+  this entry already in the table. With this entry Fable is 8th of 43. The aggregate was right, only the rank in the entry was not.
 
 ### `0.2.355` — 2026-11-19 — LEB-S-300-A's aggregate completes Claude Fable 5.2 at xhigh: its blocked run is scored 627, the estimate of the four completed runs is 988, Platinum
 
