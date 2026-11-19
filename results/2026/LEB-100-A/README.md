@@ -1496,6 +1496,23 @@ at random among the two-letter ones not used before, one matching judge and one 
   compatibility 40 (two COMP-003: the listing's SLA average now counts only the logged-in client's tickets, and `formatarStatus` returns "Desconhecido" for a status outside 1 to 3). Its report scored 43 of 50, with 13 extra
   findings and no false positive.
 
+### Runs of 2026-11-19 through the ChatGPT plan
+
+One delivery was scored for this section (one agent): GPT-6.2-astra (ChatGPT plan) at `xhigh`, an agent of its own, one run, kept apart from GPT-6.2-astra (the section of 2026-11-19 above, through the API key) because the route
+and the client differ. It ran through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model: unlike the API-key runs it logged no missing-metadata warning. It was made through the unattended lab
+(`laboratorio-codex-100.py`) as those were: one `codex exec` session that got the fixed first message once and ran to its own end under a 90-minute cap (`operator_replies` 0), with approvals and sandbox bypassed (the Codex
+lane's recorded exception), as the unprivileged user `leb` on a restored machine with GitHub blocked and the package as the only instance folder in `/srv`. It was judged blind like the others: a label drawn at random among the
+two-letter ones not used before, one matching judge and one blind EXPL judge, both Claude Opus subagents.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **US** | GPT-6.2-astra (ChatGPT plan), `xhigh`, run 1 | 835 |
+
+- **GPT-6.2-astra (ChatGPT plan) at `xhigh` (US): 835, Gold, 3rd, an agent of its own.** One run so far: 15.1 minutes and 1.31 million tokens. It reported 12 of the 13 flaws and fixed 11: security 228 (SEC-008 reported and
+  deliberately not fixed), bugs 150, performance 150 and clean code 100; architecture 125 (the dispatcher, ARCH-002, reported and refactored; the magic numbers, ARCH-009, neither named nor fixed); compatibility 40 (two
+  COMP-003: the listing's SLA average now counts only the logged-in client's tickets, and `formatarStatus` returns "Desconhecido" for an unknown status) and no penalty. Its report scored 42 of 50, with 11 extra findings and
+  no false positive. GPT-6.2-astra through the API key scored 846 on the same case.
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

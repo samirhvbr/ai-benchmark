@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.338`
+**Versão atual:** `0.2.339`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.339` — 2026-11-19 — results/ adds GPT-6.2-astra through the ChatGPT plan at xhigh to LEB-100-A as its own entry: one run, 835, Gold, 3rd of 65
+
+- The leaderboard goes from 64 agents and 143 runs to 65 agents and 144 runs; the entries of the other 64 agents are unchanged. The new run folder carries its delivery, `mecanico.json`, `veredito.json`, `scorecard.json` and
+  `.md`, and `run.json`; `results/2026/LEB-100-A/README.md` has a section for the ChatGPT-plan runs of 2026-11-19 and `comments.json` the reading; the pins of `tests/test_saturacao.py` follow the new data (65 agents and 144
+  runs, 47 agents at the performance maximum, 10 at the clean-code maximum and 5 at the bug maximum, the dispatcher, ARCH-002, fixed by 2 of 65).
+- GPT-6.2-astra (ChatGPT plan), id `gpt-6.2-astra-xhigh-plan`, at `xhigh`, the owner's order and decision of 2026-11-19: one run through his ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, with
+  approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 835 (label US, 3rd of 65; 15.1 minutes and 1.31 million tokens, the log keeps no cost): it reported 12 of the 13 planted flaws and fixed 11,
+  lost 60 points of compatibility for two COMP-003, and had no penalty. It is its own entry, not a run of GPT-6.2-astra (846, API key, Codex CLI 0.159.3 with fallback metadata), because route and client differ; the
+  reading of each entry points at the other.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents, on a delivery with no name on it.
 
 ### `0.2.338` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-sol through the ChatGPT plan at xhigh as its own entry: one run, 991, Platinum, 5th of 41
 
