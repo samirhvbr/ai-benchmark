@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.349`
+**Versão atual:** `0.2.350`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.350` — 2026-11-19 — LEB-D-300-A's aggregate adds Claude Fable 5.1 at medium: five runs, 686 to 751, mean 720, Silver, 11th of 62, three of them on a second try
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 61 to 62
+  agents; the other 61 entries are unchanged, reading included.
+- Claude Fable 5.1 at `medium` (id `claude-fable-5.1-medium`), published on the owner's word of 2026-11-19 ("publica fable 5.1"): the five scheduled runs of the case, made on 2026-10-23 on an Anthropic API key
+  (billed to API credit), Claude Code 2.1.295. They scored 686, 700, 751, 736 and 729, so the entry is the mean, 720, Silver, 11th of 62, with a 95% interval of 699 to 741. Runs 1 and 5 lost 15 points each for
+  a new defect introduced by their own change. Per run: 23 minutes of model time on average and US$ 8.57 (6.11 to 13.02).
+- Three of the five runs took a second try: the first try of each (lab runs 3, 5 and 6) was stopped at the start by the model's own safeguard, before it answered or changed anything, and the same message was tried
+  again on the same machine, never reworded. The lab numbers every try as a run folder of its own, so the five runs are lab runs 1, 2, 4, 7 and 8, numbered 1 to 5 here (the run record says so); the three stopped
+  tries are not archived as runs, because how extra attempts count in the statistics is still the open decision of `docs/model-safeguards.md`, which already lists them (8 attempts at this effort, 5 completed, 3 blocked
+  at the start). The reading says so.
+- Judged blind like every D run: two matching judges and two blind judges for the report; the disagreements were settled by the owner on 2026-10-23 and 2026-10-27. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.349` — 2026-11-19 — LEB-D-300-A's aggregate adds Claude Fable 5.1 at high: one run, 781, Gold, the only one of 11 attempts that got to deliver
 
