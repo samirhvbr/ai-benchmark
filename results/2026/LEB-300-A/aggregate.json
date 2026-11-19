@@ -439,6 +439,53 @@
       }
     },
     {
+      "agent": "gpt-6.2-astra-xhigh",
+      "score": 852,
+      "grade": "Gold",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 250,
+        "ARCH": 164,
+        "BUG": 139,
+        "PERF": 137,
+        "CLN": 46,
+        "COMP": 75,
+        "EXPL": 41
+      },
+      "cost_usd": null,
+      "wall_minutes": 31.0,
+      "tokens": {
+        "input": 638133,
+        "output": 69631,
+        "cache": 9966512,
+        "total": 10357974
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 852,
+          "cost_usd": null,
+          "wall_minutes": 31.0,
+          "tokens": {
+            "input": 638133,
+            "output": 69631,
+            "cache": 9966512,
+            "total": 10357974
+          }
+        }
+      ],
+      "model": {
+        "name": "GPT-6.2-astra",
+        "id": "gpt-6.2-astra",
+        "provider": "OpenAI",
+        "reasoning_effort": "xhigh"
+      },
+      "comment": {
+        "en": "One run so far: 852, Gold, 7th of 39, through Codex on the OpenAI API key, in 31 minutes and 10.4 million tokens (the log keeps no cost). Security was 250 of 250, architecture 164 of 200, bugs 139 of 150, performance 137 of 150 and clean code 46 of 100. The report covered 27 of the 36 planted flaws, with no false positive and 29 extra findings, and was rated 41 of 50; seven more flaws were fixed in the code without being reported, and two were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: the new login lockout answers even the right password with 429 once the limit is reached. It is one system, so how the configuration does across systems is not measured yet. The lab's Codex client, 0.159.3, did not know the model and ran it with its fallback metadata.",
+        "pt_BR": "Uma execução até agora: 852, Gold, 7º de 39, pelo Codex na chave de API da OpenAI, em 31 minutos e 10,4 milhões de tokens (o log não guarda custo). Segurança foi 250 de 250, arquitetura 164 de 200, bugs 139 de 150, desempenho 137 de 150 e código limpo 46 de 100. O relatório cobriu 27 dos 36 defeitos plantados, sem falso positivo e com 29 achados extras, e teve 41 de 50; mais sete defeitos foram corrigidos no código sem serem relatados, e dois não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: o novo bloqueio de login responde 429 até à senha certa quando o limite é atingido. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. O cliente Codex do laboratório, o 0.159.3, não conhecia o modelo e o rodou com metadados de reserva."
+      }
+    },
+    {
       "agent": "claude-opus-5.5-xhigh",
       "score": 845,
       "grade": "Gold",

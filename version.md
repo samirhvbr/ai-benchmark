@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.332`
+**Versão atual:** `0.2.333`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.333` — 2026-11-19 — LEB-300-A's aggregate adds GPT-6.2-astra at xhigh: one run, 852, Gold, 7th of 38
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 37 to 38
+  agents; the other 37 entries are unchanged, reading included.
+- GPT-6.2-astra (`gpt-6.2-astra`) at `xhigh`, the owner's order of 2026-11-19: one run of the two-stage task through Codex on the OpenAI API key, with approvals and sandbox bypassed (the Codex lane's recorded exception). It
+  scored 852 (Gold, 7th of 38; 31 minutes and 10.4 million tokens, the log keeps no cost): security 250 of 250, architecture 164, bugs 139, performance 137 and clean code 46; the report covered 27 of the 36 planted flaws,
+  with no false positive and 29 extra findings, and was rated 41 of 50. It lost 25 points of compatibility for one COMP-008, a login lockout that answers even the right password with 429.
+- The lab's Codex client, CLI 0.159.3, predates the model: it logged that it had no metadata for it and ran it with its fallback metadata. The reading says so, because a later client may behave differently.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.332` — 2026-11-19 — results/ adds GPT-6.2-sol at xhigh to LEB-100-A: one run, 590, Bronze, 38th of 64
 
