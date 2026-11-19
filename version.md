@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.347`
+**Versão atual:** `0.2.348`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,13 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.348` — 2026-11-19 — LEB-D-300-A's reading of GPT-6.2-astra (API key) states the same numbers in English and Portuguese again, as 0.2.346 should have left it
+
+- The English reading of GPT-6.2-astra (API key) on LEB-D-300-A kept the parenthesis that explains the interval ("904 to 910") while 0.2.346 had cut it from the Portuguese one to make room for the pointer to the
+  plan entry, so the two languages disagreed on two numbers. The English parenthesis is cut too; nothing else changes: no score, rank, run or grade.
+- Found by the site's harness (the check that the English and Portuguese pages state the same numbers failed on LEB Default: 5743 numbers against 5741). A check of every one of the 209 published readings found no
+  other pair that differs.
 
 ### `0.2.347` — 2026-11-19 — .continue/ records what is missing from Claude Fable 5.2: LEB-S-300-A has 3 of its 5 runs published, run 4 ended blocked and is not scored, run 5 waits
 
