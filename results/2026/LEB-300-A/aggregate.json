@@ -817,6 +817,53 @@
       }
     },
     {
+      "agent": "gpt-6.2-sol-xhigh",
+      "score": 777,
+      "grade": "Gold",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 246,
+        "ARCH": 119,
+        "BUG": 137,
+        "PERF": 115,
+        "CLN": 46,
+        "COMP": 75,
+        "EXPL": 39
+      },
+      "cost_usd": null,
+      "wall_minutes": 22.6,
+      "tokens": {
+        "input": 617722,
+        "output": 99075,
+        "cache": 7040081,
+        "total": 7425404
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 777,
+          "cost_usd": null,
+          "wall_minutes": 22.6,
+          "tokens": {
+            "input": 617722,
+            "output": 99075,
+            "cache": 7040081,
+            "total": 7425404
+          }
+        }
+      ],
+      "model": {
+        "name": "GPT-6.2-sol",
+        "id": "gpt-6.2-sol",
+        "provider": "OpenAI",
+        "reasoning_effort": "xhigh"
+      },
+      "comment": {
+        "en": "One run so far: 777, Gold, 13th of 39, through Codex on the OpenAI API key, in 22.6 minutes and 7.4 million tokens (the log keeps no cost). Security was 246 of 250, architecture 119 of 200, bugs 137 of 150, performance 115 of 150 and clean code 46 of 100. The report covered 21 of the 36 planted flaws, with one false positive (a generic remark that no planted flaw stands behind) and 17 extra findings, and was rated 39 of 50; eleven more flaws were fixed in the code without being reported, and four were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: the login lockout it added refuses even the right password once the limit is reached. It is one system, so how the configuration does across systems is not measured yet. The lab's Codex client, 0.159.3, did not know the model and ran it with its fallback metadata.",
+        "pt_BR": "Uma execução até agora: 777, Gold, 13º de 39, pelo Codex na chave de API da OpenAI, em 22,6 minutos e 7,4 milhões de tokens (o log não guarda custo). Segurança foi 246 de 250, arquitetura 119 de 200, bugs 137 de 150, desempenho 115 de 150 e código limpo 46 de 100. O relatório cobriu 21 dos 36 defeitos plantados, com um falso positivo (uma observação genérica sem defeito plantado por trás) e 17 achados extras, e teve 39 de 50; mais onze defeitos foram corrigidos no código sem serem relatados, e quatro não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: o bloqueio de login que adicionou recusa até a senha certa quando o limite é atingido. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. O cliente Codex do laboratório, o 0.159.3, não conhecia o modelo e o rodou com metadados de reserva."
+      }
+    },
+    {
       "agent": "claude-haiku-5.5-high",
       "score": 770,
       "grade": "Gold",
