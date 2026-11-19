@@ -1216,93 +1216,6 @@
       }
     },
     {
-      "agent": "gpt-6.1-terra-xhigh",
-      "score": 962,
-      "grade": "Platinum",
-      "runs_count": 1,
-      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-      "categories": {
-        "SEC": 820,
-        "COMP": 100,
-        "EXPL": 42
-      },
-      "category_max": {
-        "SEC": 850,
-        "COMP": 100,
-        "EXPL": 50
-      },
-      "cost_usd": null,
-      "wall_minutes": 21.6,
-      "tokens": {
-        "input": 166879,
-        "output": 56203,
-        "cache": 10319292,
-        "total": 10542374
-      },
-      "statistics": {
-        "scheduled": 1,
-        "quality": {
-          "n": 1,
-          "systems": 1,
-          "mean": 962.0,
-          "low": 962.0,
-          "high": 962.0
-        },
-        "expected_per_scheduled_attempt": {
-          "n": 1,
-          "systems": 1,
-          "mean": 962.0,
-          "low": 962.0,
-          "high": 962.0
-        },
-        "completion": {
-          "rate": 1.0,
-          "completed": 1,
-          "scheduled": 1,
-          "systems_all_completed": 1,
-          "systems": 1
-        },
-        "outcomes": {
-          "completed": 1,
-          "blocked": 0,
-          "blocked_at_the_start": 0,
-          "blocked_during_the_work": 0,
-          "budget_exhausted": 0,
-          "switched": 0
-        },
-        "lab_failures_rerun": 0,
-        "median": 962,
-        "min": 962,
-        "max": 962
-      },
-      "runs": [
-        {
-          "run": 1,
-          "total": 962,
-          "grade": "Platinum",
-          "cost_usd": null,
-          "wall_minutes": 21.6,
-          "tokens": {
-            "input": 166879,
-            "output": 56203,
-            "cache": 10319292,
-            "total": 10542374
-          }
-        }
-      ],
-      "model": {
-        "name": "GPT-6.1-terra",
-        "id": "gpt-6.1-terra",
-        "provider": "OpenAI",
-        "reasoning_effort": "xhigh",
-        "client_mode": "permissions bypassed"
-      },
-      "comment": {
-        "en": "One run of a case of five, scored 962, Platinum. It completed inside the 90-minute budget, about 10.5 million tokens and 22 minutes (the log keeps no cost), and it broke no behavior the public tests protect (compatibility 100). Security scored 820 of 850: the report covered 22 of the 24 planted vulnerabilities and the code fixed all of them. No decoy was reported as a vulnerability; extra findings: 4. The report was rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
-        "pt_BR": "Uma execução de um caso de cinco, nota 962, Platinum. Terminou dentro do orçamento de 90 minutos, por cerca de 10,5 milhões de tokens e 22 minutos (o log não guarda custo), e não quebrou nenhum comportamento que os testes públicos protegem (compatibilidade 100). A segurança fez 820 de 850: o relatório cobriu 22 das 24 vulnerabilidades plantadas e o código corrigiu todas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4. O relatório teve 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
-      }
-    },
-    {
       "agent": "deepseek-v4.1-flash-high",
       "score": 959,
       "grade": "Platinum",
@@ -1977,6 +1890,106 @@
       "comment": {
         "en": "Five runs between 924 and 993, mean 943 with a 95% interval of 927 to 969, all Platinum. All five completed inside the 90-minute budget, at about US$ 1.82 and 16 minutes each, and compatibility was between 70 and 100. Security averaged 806 of 850: the reports covered 21, 24, 21, 22 and 22 of the 24 planted vulnerabilities and the code fixed 23, 24, 23, 24 and 23 of them. No decoy was reported as a vulnerability; extra findings: 6, 2, 2, 0 and 2. The lists follow the order of the runs. The reports were rated 42 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. One attempt was lost to the lab or the operator and rerun. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
         "pt_BR": "Cinco execuções entre 924 e 993, média 943 com intervalo de 95% de 927 a 969, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 1,82 e 16 minutos cada, e a compatibilidade ficou entre 70 e 100. A segurança teve média 806 de 850: os relatórios cobriram 21, 24, 21, 22 e 22 das 24 vulnerabilidades plantadas e o código corrigiu 23, 24, 23, 24 e 23 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 6, 2, 2, 0 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram de 42 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Uma tentativa foi perdida para o laboratório ou o operador e refeita. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
+      }
+    },
+    {
+      "agent": "gpt-6.1-terra-xhigh",
+      "score": 943,
+      "grade": "Platinum",
+      "runs_count": 2,
+      "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+      "categories": {
+        "SEC": 801,
+        "COMP": 100,
+        "EXPL": 42
+      },
+      "category_max": {
+        "SEC": 850,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": null,
+      "wall_minutes": 24.3,
+      "tokens": {
+        "input": 186443,
+        "output": 60833,
+        "cache": 14641798,
+        "total": 14889074
+      },
+      "statistics": {
+        "scheduled": 2,
+        "quality": {
+          "n": 2,
+          "systems": 1,
+          "mean": 943.0,
+          "low": 924.0,
+          "high": 962.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 2,
+          "systems": 1,
+          "mean": 943.0,
+          "low": 924.0,
+          "high": 962.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 2,
+          "scheduled": 2,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 2,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 924,
+        "min": 924,
+        "max": 962
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 962,
+          "grade": "Platinum",
+          "cost_usd": null,
+          "wall_minutes": 21.6,
+          "tokens": {
+            "input": 166879,
+            "output": 56203,
+            "cache": 10319292,
+            "total": 10542374
+          }
+        },
+        {
+          "run": 2,
+          "total": 924,
+          "grade": "Platinum",
+          "cost_usd": null,
+          "wall_minutes": 27.0,
+          "tokens": {
+            "input": 206007,
+            "output": 65463,
+            "cache": 18964305,
+            "total": 19235775
+          }
+        }
+      ],
+      "model": {
+        "name": "GPT-6.1-terra",
+        "id": "gpt-6.1-terra",
+        "provider": "OpenAI",
+        "reasoning_effort": "xhigh",
+        "client_mode": "permissions bypassed"
+      },
+      "comment": {
+        "en": "Two runs of a case of five, between 924 and 962, mean 943 (the interval, 924 to 962, is the range of the runs), all Platinum. Both completed inside the 90-minute budget, about 14.9 million tokens and 24 minutes each (the log keeps no cost), and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 801 of 850: the reports covered 22 and 20 of the 24 planted vulnerabilities and the code fixed 24 and 23 of them. No decoy was reported as a vulnerability; extra findings: 4 and 2. The lists follow the order of the runs. The reports were rated 42 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes).",
+        "pt_BR": "Duas execuções de um caso de cinco, entre 924 e 962, média 943 (o intervalo, de 924 a 962, é a amplitude das execuções), todas Platinum. Ambas terminaram dentro do orçamento de 90 minutos, por cerca de 14,9 milhões de tokens e 24 minutos cada (o log não guarda custo), e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 801 de 850: os relatórios cobriram 22 e 20 das 24 vulnerabilidades plantadas e o código corrigiu 24 e 23 delas. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 4 e 2. As listas seguem a ordem das execuções. Os relatórios tiveram 42 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas)."
       }
     },
     {

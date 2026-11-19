@@ -347,13 +347,13 @@ This instance is **active**. While it is, only the figures below are published: 
 | 8 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
 | 9 | `gpt-6-astra-xhigh` | **968** | 961 to 973 | Platinum | 824 | 100 | 43 | 5/5 (967 · 972 · 968 · 976 · 956) |
 | 10 | `xiaomi-mimo-v2.6-pro-ultraspeed-high` | **966** | 966 to 966 | Platinum | 824 | 100 | 42 | 1/1 (966) |
-| 11 | `gpt-6.1-terra-xhigh` | **962** | 962 to 962 | Platinum | 820 | 100 | 42 | 1/1 (962) |
-| 12 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
-| 13 | `minimax-m3-thinking` | **958** | 934 to 983 | Platinum | 816 | 100 | 42 | 5/5 (991 · 994 · 925 · 939 · 943) |
-| 14 | `gpt-6.1-sol-xhigh` | **954** | 947 to 960 | Platinum | 811 | 100 | 43 | 4/5 (944 · 954 · 962 · 956 · 956) |
-| 15 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
-| 16 | `stealth-crouton-alpha-max` | **945** | 945 to 945 | Platinum | 803 | 100 | 42 | 1/1 (945) |
-| 17 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
+| 11 | `deepseek-v4.1-flash-high` | **959** | 959 to 959 | Platinum | 816 | 100 | 43 | 1/1 (959) |
+| 12 | `minimax-m3-thinking` | **958** | 934 to 983 | Platinum | 816 | 100 | 42 | 5/5 (991 · 994 · 925 · 939 · 943) |
+| 13 | `gpt-6.1-sol-xhigh` | **954** | 947 to 960 | Platinum | 811 | 100 | 43 | 4/5 (944 · 954 · 962 · 956 · 956) |
+| 14 | `moonshot-kimi-k3-1-pro-max` | **954** | 954 to 954 | Platinum | 812 | 100 | 42 | 1/1 (954) |
+| 15 | `stealth-crouton-alpha-max` | **945** | 945 to 945 | Platinum | 803 | 100 | 42 | 1/1 (945) |
+| 16 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
+| 17 | `gpt-6.1-terra-xhigh` | **943** | 924 to 962 | Platinum | 801 | 100 | 42 | 2/2 (962 · 924) |
 | 18 | `gpt-5.6-sol-xhigh` | **942** | 933 to 952 | Platinum | 800 | 100 | 42 | 5/5 (945 · 937 · 928 · 937 · 962) |
 | 19 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
 | 20 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
@@ -397,8 +397,6 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `xiaomi-mimo-v2.6-pro-ultraspeed-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 966.0 (966.0 to 966.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 966, lowest 966, highest 966.
 
-`gpt-6.1-terra-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 962.0 (962.0 to 962.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 962, lowest 962, highest 962.
-
 `deepseek-v4.1-flash-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 959.0 (959.0 to 959.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 959, lowest 959, highest 959.
 
 `minimax-m3-thinking`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 958.4 (934.2 to 983.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 943, lowest 925, highest 994.
@@ -410,6 +408,8 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `stealth-crouton-alpha-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 945.0 (945.0 to 945.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 945, lowest 945, highest 945.
 
 `claude-sonnet-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 942.6 (927.2 to 968.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 932, lowest 924, highest 993.
+
+`gpt-6.1-terra-xhigh`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 943.0 (924.0 to 962.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 924, lowest 924, highest 962.
 
 `gpt-5.6-sol-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 941.8 (933.2 to 952.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 937, lowest 928, highest 962.
 
