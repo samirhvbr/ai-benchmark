@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.335`
+**Versão atual:** `0.2.336`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.336` — 2026-11-19 — LEB-D-300-A's aggregate adds GPT-6.2-sol through the ChatGPT plan at xhigh as its own entry: one run, 716, Silver
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 59 to 60
+  agents; the other 59 entries are unchanged, reading included.
+- GPT-6.2-sol (ChatGPT plan), id `gpt-6.2-sol-xhigh-plan`, at `xhigh`: one run of the case of five through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, with approvals and sandbox
+  bypassed (the Codex lane's recorded exception). It scored 716 (Silver; about 26 minutes and 6.2 million tokens, the log keeps no cost): bug fixing 209, performance 181, architecture 133, clean code 55, compatibility 100
+  and 5 points lost for reporting something that is not a flaw. It is its own entry, not a run of GPT-6.2-sol (662, one run): that entry holds the API-key run made with Codex CLI 0.159.3, which did not know the model
+  and used fallback metadata, so route and client differ. The separation is the owner's decision of 2026-11-19; the reading of each entry points at the other.
+- Judged blind like every D run: two matching judges and two blind judges for the report, settled before the run was archived (the judges differed on the fourth criterion of five rows nobody attempted, which the owner's
+  standing rule settles as none). Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.335` — 2026-11-19 — LEB-D-300-A's aggregate adds GPT-6.2-astra through the ChatGPT plan at xhigh as its own entry: one run, 869, Gold
 
