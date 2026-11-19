@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.326`
+**Versão atual:** `0.2.327`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,14 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.327` — 2026-11-19 — LEB-S-300-A's aggregate grows GPT-6-sol at xhigh from one run to two: 903 and 950, mean 926, Platinum
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py` (`tools/export-results.py --publish-aggregate LEB-S-300-A`) from the lab's private archive, and the Results
+  section of the instance README. The aggregate stays at 36 agents; only the GPT-6-sol entry changes (it goes from 23rd to 22nd), and the other 35 entries and the notes are unchanged.
+- GPT-6-sol (`gpt-6-sol`) at `xhigh`, the owner's order of 2026-11-16: a second run through Codex on the OpenAI API key with approvals and sandbox bypassed, the one recorded exception to the series' rule against it. It
+  scored 950 (Platinum; security 808 of 850, compatibility 100, report 42 of 50) after the earlier 903, so the mean of the two is 926. The two matching judges agreed on every item.
+- As in every LEB-S-300-A run, two matching judges and two blind judges for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.326` — 2026-11-19 — LEB-S-300-A's aggregate grows GPT-6.1-terra at xhigh from one run to two: 962 and 924, mean 943, Platinum
 

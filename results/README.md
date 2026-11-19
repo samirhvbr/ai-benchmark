@@ -358,8 +358,8 @@ This instance is **active**. While it is, only the figures below are published: 
 | 19 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
 | 20 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
 | 21 | `minimax-m3.1-flash-high` | **931** | 912 to 951 | Platinum | 792 | 100 | 42 | 5/5 (965 · 900 · 928 · 930 · 930) |
-| 22 | `claude-sonnet-5.5-medium` | **915** | 886 to 946 | Platinum | 775 | 100 | 40 | 5/5 (913 · 956 · 952 · 881 · 873) |
-| 23 | `gpt-6-sol-xhigh` | **903** | 903 to 903 | Platinum | 761 | 100 | 42 | 1/1 (903) |
+| 22 | `gpt-6-sol-xhigh` | **926** | 903 to 950 | Platinum | 784 | 100 | 42 | 2/2 (903 · 950) |
+| 23 | `claude-sonnet-5.5-medium` | **915** | 886 to 946 | Platinum | 775 | 100 | 40 | 5/5 (913 · 956 · 952 · 881 · 873) |
 | 24 | `gpt-5.6-luna-xhigh` | **891** | 819 to 934 | Gold | 757 | 100 | 40 | 3/3 (921 · 819 · 934) |
 | 25 | `gpt-5.6-terra-xhigh` | **888** | 873 to 897 | Gold | 746 | 100 | 41 | 3/3 (897 · 873 · 893) |
 | 26 | `moonshot-kimi-for-coding-default` | **875** | 875 to 875 | Gold | 731 | 100 | 44 | 1/1 (875) |
@@ -419,9 +419,9 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `minimax-m3.1-flash-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 930.6 (912.0 to 950.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 3; median 930, lowest 900, highest 965.
 
-`claude-sonnet-5.5-medium`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 915.0 (885.8 to 945.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 913, lowest 873, highest 956.
+`gpt-6-sol-xhigh`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 926.5 (903.0 to 950.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 903, lowest 903, highest 950.
 
-`gpt-6-sol-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 903.0 (903.0 to 903.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 903, lowest 903, highest 903.
+`claude-sonnet-5.5-medium`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 915.0 (885.8 to 945.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 913, lowest 873, highest 956.
 
 `gpt-5.6-luna-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 891.3 (819.0 to 934.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 921, lowest 819, highest 934.
 
