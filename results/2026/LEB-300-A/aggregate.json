@@ -651,6 +651,53 @@
       }
     },
     {
+      "agent": "gpt-6.2-sol-xhigh-plan",
+      "score": 818,
+      "grade": "Gold",
+      "runs_count": 1,
+      "categories": {
+        "SEC": 250,
+        "ARCH": 133,
+        "BUG": 139,
+        "PERF": 115,
+        "CLN": 64,
+        "COMP": 75,
+        "EXPL": 42
+      },
+      "cost_usd": null,
+      "wall_minutes": 35.7,
+      "tokens": {
+        "input": 231579,
+        "output": 81974,
+        "cache": 7415936,
+        "total": 7729489
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 818,
+          "cost_usd": null,
+          "wall_minutes": 35.7,
+          "tokens": {
+            "input": 231579,
+            "output": 81974,
+            "cache": 7415936,
+            "total": 7729489
+          }
+        }
+      ],
+      "model": {
+        "name": "GPT-6.2-sol (ChatGPT plan)",
+        "id": "gpt-6.2-sol",
+        "provider": "OpenAI",
+        "reasoning_effort": "xhigh"
+      },
+      "comment": {
+        "en": "One run so far: 818, Gold, 11th of 41, through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, in 35.7 minutes and 7.7 million tokens (the log keeps no cost). Security was 250 of 250, architecture 133 of 200, bugs 139 of 150, performance 115 of 150 and clean code 64 of 100. The report covered 24 of the 36 planted flaws, with one false positive (a remark that logging the exception cause is a leak) and 25 extra findings, and was rated 42 of 50; six more flaws were fixed in the code without being reported, and six were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: a concurrency cap on the login answers 503, even to the right password, while four password checks are already running. It is an entry of its own: GPT-6.2-sol holds the API-key run of the same model (777, Codex CLI 0.159.3, fallback metadata).",
+        "pt_BR": "Uma execução até agora: 818, Gold, 11º de 41, pelo login do plano ChatGPT do dono (OAuth) com o Codex CLI 0.170.0, que conhece o modelo, em 35,7 minutos e 7,7 milhões de tokens (o log não guarda custo). Segurança foi 250 de 250, arquitetura 133 de 200, bugs 139 de 150, desempenho 115 de 150 e código limpo 64 de 100. O relatório cobriu 24 dos 36 defeitos plantados, com um falso positivo (uma observação de que registrar a causa da exceção é um vazamento) e 25 achados extras, e teve 42 de 50; mais seis defeitos foram corrigidos no código sem serem relatados, e seis não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: um limite de concorrência no login responde 503, até à senha certa, enquanto quatro verificações de senha já estão em andamento. É uma entrada própria: GPT-6.2-sol reúne a execução do mesmo modelo pela chave de API (777, Codex CLI 0.159.3, metadados de reserva)."
+      }
+    },
+    {
       "agent": "gpt-6.1-sol-xhigh",
       "score": 800,
       "grade": "Gold",

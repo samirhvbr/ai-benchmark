@@ -117,36 +117,37 @@ This instance is **active**. While it is, only the totals below are published: n
 | 8 | `gpt-6.2-astra-xhigh` | **852** | Gold | 250 | 164 | 139 | 137 | 46 | 75 | 41 | 1/3 |
 | 9 | `claude-opus-5.5-xhigh` | **845** | Gold | 232 | 153 | 139 | 131 | 71 | 75 | 44 | 3/3 (886 · 822 · 845) |
 | 10 | `claude-fable-5.1-high` | **836** | Gold | 215 | 156 | 147 | 128 | 71 | 75 | 44 | 1/3 |
-| 11 | `gpt-6.1-sol-xhigh` | **800** | Gold | 232 | 142 | 147 | 105 | 29 | 100 | 45 | 3/3 (800 · 830 · 789) |
-| 12 | `gpt-6.1-sol-ultra` | **791** | Gold | 236 | 111 | 147 | 109 | 46 | 100 | 42 | 3/3 (797 · 702 · 791) |
-| 13 | `gpt-6.1-sol-high` | **779** | Gold | 232 | 142 | 147 | 70 | 46 | 100 | 42 | 3/3 (779 · 682 · 793) |
-| 14 | `gpt-6.2-sol-xhigh` | **777** | Gold | 246 | 119 | 137 | 115 | 46 | 75 | 39 | 1/3 |
-| 15 | `claude-haiku-5.5-high` | **770** | Gold | 236 | 119 | 121 | 115 | 64 | 75 | 40 | 3/3 (777 · 770 · 713) |
-| 16 | `claude-haiku-5.5-xhigh` | **732** | Silver | 250 | 100 | 121 | 102 | 43 | 75 | 41 | 3/3 (708 · 732 · 824) |
-| 17 | `gpt-6-astra-ultra` | **721** | Silver | 194 | 133 | 124 | 102 | 46 | 100 | 42 | 3/3 (715 · 781 · 721) |
-| 18 | `claude-sonnet-5.5-medium` | **717** | Silver | 236 | 100 | 121 | 99 | 50 | 70 | 41 | 3/3 (659 · 717 · 734) |
-| 19 | `gpt-6-astra-xhigh` | **717** | Silver | 194 | 142 | 124 | 86 | 50 | 100 | 41 | 3/3 (717 · 729 · 680) |
-| 20 | `moonshot-kimi-k3-high` | **712** | Silver | 229 | 92 | 137 | 96 | 18 | 100 | 40 | 3/3 (737 · 712 · 652) |
-| 21 | `glm-5.3-flash-max` | **693** | Silver | 211 | 106 | 147 | 89 | 0 | 100 | 40 | 1/3 |
-| 22 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
-| 23 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
-| 24 | `glm-5.3-flashx-high` | **648** | Silver | 187 | 92 | 145 | 77 | 32 | 75 | 40 | 1/3 |
-| 25 | `gpt-5.6-terra-xhigh` | **625** | Silver | 225 | 47 | 134 | 96 | 0 | 100 | 38 | 3/3 (625 · 574 · 657) |
-| 26 | `gpt-5.6-luna-xhigh` | **618** | Silver | 211 | 47 | 142 | 80 | 14 | 100 | 39 | 3/3 (638 · 512 · 618) |
-| 27 | `gpt-6-luna-xhigh` | **612** | Silver | 236 | 47 | 137 | 51 | 0 | 100 | 41 | 3/3 (471 · 612 · 630) |
-| 28 | `glm-5.3-flash-high` | **568** | Bronze | 204 | 47 | 126 | 51 | 0 | 100 | 40 | 1/3 |
-| 29 | `minimax-m3-thinking` | **398** | Reprovada | 169 | 25 | 42 | 26 | 0 | 100 | 36 | 3/3 (388 · 398 · 810) |
-| 30 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
-| 31 | `nvidia-nemotron-3.5-super-vl-free-high` | **367** | Reprovada | 120 | 19 | 105 | 0 | 0 | 100 | 38 | 1/3 |
-| 32 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **326** | Reprovada | 74 | 47 | 24 | 70 | 0 | 75 | 36 | 1/3 |
-| 33 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
-| 34 | `stealth-crouton-alpha-max` | **275** | Reprovada | 67 | 0 | 100 | 0 | 0 | 70 | 38 | 1/3 |
-| 35 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
-| 36 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
-| 37 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
-| 38 | `nvidia-nemotron-3.5-lightning-free-high` | **175** | Reprovada | 39 | 0 | 5 | 0 | 0 | 100 | 31 | 1/3 |
-| 39 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **148** | Reprovada | 18 | 0 | 0 | 0 | 0 | 100 | 30 | 1/3 |
-| 40 | `cohere-north-mini-code-free-high` | **0** | Reprovada | 25 | 0 | 0 | 10 | 0 | 100 | 19 | 1/3 |
+| 11 | `gpt-6.2-sol-xhigh-plan` | **818** | Gold | 250 | 133 | 139 | 115 | 64 | 75 | 42 | 1/3 |
+| 12 | `gpt-6.1-sol-xhigh` | **800** | Gold | 232 | 142 | 147 | 105 | 29 | 100 | 45 | 3/3 (800 · 830 · 789) |
+| 13 | `gpt-6.1-sol-ultra` | **791** | Gold | 236 | 111 | 147 | 109 | 46 | 100 | 42 | 3/3 (797 · 702 · 791) |
+| 14 | `gpt-6.1-sol-high` | **779** | Gold | 232 | 142 | 147 | 70 | 46 | 100 | 42 | 3/3 (779 · 682 · 793) |
+| 15 | `gpt-6.2-sol-xhigh` | **777** | Gold | 246 | 119 | 137 | 115 | 46 | 75 | 39 | 1/3 |
+| 16 | `claude-haiku-5.5-high` | **770** | Gold | 236 | 119 | 121 | 115 | 64 | 75 | 40 | 3/3 (777 · 770 · 713) |
+| 17 | `claude-haiku-5.5-xhigh` | **732** | Silver | 250 | 100 | 121 | 102 | 43 | 75 | 41 | 3/3 (708 · 732 · 824) |
+| 18 | `gpt-6-astra-ultra` | **721** | Silver | 194 | 133 | 124 | 102 | 46 | 100 | 42 | 3/3 (715 · 781 · 721) |
+| 19 | `claude-sonnet-5.5-medium` | **717** | Silver | 236 | 100 | 121 | 99 | 50 | 70 | 41 | 3/3 (659 · 717 · 734) |
+| 20 | `gpt-6-astra-xhigh` | **717** | Silver | 194 | 142 | 124 | 86 | 50 | 100 | 41 | 3/3 (717 · 729 · 680) |
+| 21 | `moonshot-kimi-k3-high` | **712** | Silver | 229 | 92 | 137 | 96 | 18 | 100 | 40 | 3/3 (737 · 712 · 652) |
+| 22 | `glm-5.3-flash-max` | **693** | Silver | 211 | 106 | 147 | 89 | 0 | 100 | 40 | 1/3 |
+| 23 | `glm-5.3-high` | **688** | Silver | 222 | 69 | 147 | 96 | 14 | 100 | 40 | 1/3 |
+| 24 | `deepseek-v4.1-flash-high` | **649** | Silver | 229 | 47 | 137 | 96 | 0 | 100 | 40 | 1/3 |
+| 25 | `glm-5.3-flashx-high` | **648** | Silver | 187 | 92 | 145 | 77 | 32 | 75 | 40 | 1/3 |
+| 26 | `gpt-5.6-terra-xhigh` | **625** | Silver | 225 | 47 | 134 | 96 | 0 | 100 | 38 | 3/3 (625 · 574 · 657) |
+| 27 | `gpt-5.6-luna-xhigh` | **618** | Silver | 211 | 47 | 142 | 80 | 14 | 100 | 39 | 3/3 (638 · 512 · 618) |
+| 28 | `gpt-6-luna-xhigh` | **612** | Silver | 236 | 47 | 137 | 51 | 0 | 100 | 41 | 3/3 (471 · 612 · 630) |
+| 29 | `glm-5.3-flash-high` | **568** | Bronze | 204 | 47 | 126 | 51 | 0 | 100 | 40 | 1/3 |
+| 30 | `minimax-m3-thinking` | **398** | Reprovada | 169 | 25 | 42 | 26 | 0 | 100 | 36 | 3/3 (388 · 398 · 810) |
+| 31 | `z.ai-glm-5.2-high` | **390** | Reprovada | 151 | 39 | 63 | 51 | 0 | 45 | 41 | 1/3 |
+| 32 | `nvidia-nemotron-3.5-super-vl-free-high` | **367** | Reprovada | 120 | 19 | 105 | 0 | 0 | 100 | 38 | 1/3 |
+| 33 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **326** | Reprovada | 74 | 47 | 24 | 70 | 0 | 75 | 36 | 1/3 |
+| 34 | `minimax-m2.7-highspeed-default` | **291** | Reprovada | 77 | 22 | 11 | 51 | 0 | 100 | 30 | 1/3 |
+| 35 | `stealth-crouton-alpha-max` | **275** | Reprovada | 67 | 0 | 100 | 0 | 0 | 70 | 38 | 1/3 |
+| 36 | `claude-haiku-4.5-default` | **242** | Reprovada | 56 | 25 | 29 | 0 | 0 | 100 | 32 | 3/3 (242 · 218 · 272) |
+| 37 | `gemma-4-26b-a4b-high` | **232** | Reprovada | 63 | 14 | 8 | 16 | 0 | 100 | 31 | 1/3 |
+| 38 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
+| 39 | `nvidia-nemotron-3.5-lightning-free-high` | **175** | Reprovada | 39 | 0 | 5 | 0 | 0 | 100 | 31 | 1/3 |
+| 40 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **148** | Reprovada | 18 | 0 | 0 | 0 | 0 | 100 | 30 | 1/3 |
+| 41 | `cohere-north-mini-code-free-high` | **0** | Reprovada | 25 | 0 | 0 | 10 | 0 | 100 | 19 | 1/3 |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
 

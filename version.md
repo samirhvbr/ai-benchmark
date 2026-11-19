@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.342`
+**Versão atual:** `0.2.343`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.343` — 2026-11-19 — LEB-300-A's aggregate adds GPT-6.2-sol through the ChatGPT plan at xhigh as its own entry: one run, 818, Gold, 11th of 41
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 40 to 41
+  agents; the other 40 entries are unchanged, reading included.
+- GPT-6.2-sol (ChatGPT plan), id `gpt-6.2-sol-xhigh-plan`, at `xhigh`, the owner's order and decision of 2026-11-19: one run of the two-stage task through his ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which
+  knows the model, with approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 818 (Gold, 11th of 41; 35.7 minutes and 7.7 million tokens, the log keeps no cost): security 250 of 250, architecture
+  133, bugs 139, performance 115 and clean code 64; the report covered 24 of the 36 planted flaws, with one false positive and 25 extra findings, and was rated 42 of 50. It lost 25 points of compatibility for one COMP-008,
+  a concurrency cap on the login that answers 503, even to the right password, while four password checks are running. It is its own entry, not a run of GPT-6.2-sol (777, API key, Codex CLI 0.159.3 with fallback
+  metadata), because route and client differ; the plan entry's reading points at the API entry (the API entry's reading does not point back yet, see the next versions).
+- The COMP-008 charge stands as the judges applied it. The instance's practice (2026-10-12) charges a login that blocks or throttles and answers a status outside the manifest's list, also to the right password; this
+  run's 503 and an earlier run's 401 are the same case as the 429. The owner confirmed on 2026-11-19 that the practice covers any such status, not only a literal 429, so no 300-A score changes.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.342` — 2026-11-19 — LEB-D-300-A's aggregate gives GPT-6.2-sol at xhigh a second run: 662 and 703, mean 682, Silver, 15th of 60
 
