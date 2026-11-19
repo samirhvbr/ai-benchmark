@@ -1474,6 +1474,23 @@ runs the agent's figure on the leaderboard is the median, 843 (YN), and it stays
   performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, identified and declined; the magic numbers, ARCH-009, not named); compatibility 100 and no penalty. Its report scored 47 of 50, with 14 extra
   findings and no false positive.
 
+### Run of 2026-11-19
+
+One delivery was scored on this date (one agent): GPT-6.2-astra at `xhigh`, a new agent, one run, through Codex on the OpenAI API key, which bills per token (the Codex log keeps tokens and no cost, so the record states none).
+It was made through the unattended lab (`laboratorio-codex-100.py`) as the earlier Codex runs were: one `codex exec` session of Codex CLI 0.159.3, which got the fixed first message once and ran to its own end under a 90-minute
+cap (`operator_replies` 0), with approvals and sandbox bypassed (the Codex lane's recorded exception), as the unprivileged user `leb` on a restored machine with GitHub blocked and the package as the only instance folder in
+`/srv`. The client predates the model: it logged that it had no metadata for it and ran it with its fallback metadata, which `run.json` says. It was judged blind like the others: a label drawn at random among the two-letter
+ones not used before, one matching judge and one blind EXPL judge, both Claude Opus subagents.
+
+| Label | Run | Outcome |
+| --- | --- | --- |
+| **SG** | GPT-6.2-astra, `xhigh`, run 1 | 846 |
+
+- **GPT-6.2-astra at `xhigh` (SG): 846, Gold, 1st, a new agent.** One run so far: 11.7 minutes and 0.94 million tokens. It reported 11 of the 13 flaws and fixed 11 (BUG-004 was fixed without being reported): security 228
+  (SEC-008 reported and deliberately not fixed), bugs 129, performance 150 and clean code 100; architecture 125 (the dispatcher, ARCH-002, reported and refactored; the magic numbers, ARCH-009, neither named nor fixed);
+  compatibility 70 (one COMP-003: the listing's SLA average now counts only the logged-in client's tickets) and no penalty. Its report scored 44 of 50, with 12 extra findings and no false positive. It is the highest score on
+  the instance, three points above the median of Claude Fable 5.2 (843).
+
 ## Runs withdrawn for an incomplete record
 
 On 2026-10-04 the operator decided that a run counts only with its record complete: the client and

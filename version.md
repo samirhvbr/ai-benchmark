@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.330`
+**Versão atual:** `0.2.331`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.331` — 2026-11-19 — results/ adds GPT-6.2-astra at xhigh to LEB-100-A: one run, 846, Gold, 1st on the instance
+
+- The leaderboard goes from 62 agents and 141 runs to 63 agents and 142 runs; the entries of the other 62 agents are unchanged. The new run folder carries its delivery, `mecanico.json`, `veredito.json`, `scorecard.json` and
+  `.md`, and `run.json`; `results/2026/LEB-100-A/README.md` has a section for 2026-11-19 and `comments.json` the reading; the pins of `tests/test_saturacao.py` follow the new data (63 agents and 142 runs, the highest
+  representative total 846, 45 agents at the performance maximum and 9 at the clean-code maximum, and the dispatcher, ARCH-002, which no representative run had fixed, fixed by 1 of 63).
+- GPT-6.2-astra (`gpt-6.2-astra`) at `xhigh`, the owner's order of 2026-11-19: one run through Codex on the OpenAI API key, with approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 846 (label SG,
+  11.7 minutes and 0.94 million tokens; the Codex log keeps no cost): it reported 11 of the 13 planted flaws and fixed 11, lost 30 points of compatibility for one COMP-003, had no penalty, and is the only agent whose
+  representative run fixes the dispatcher (ARCH-002). It is the highest score on the instance, three points above the median of Claude Fable 5.2.
+- The lab's Codex client, CLI 0.159.3, predates the model: it logged that it had no metadata for it and ran it with its fallback metadata; `run.json` and the reading say so.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents, on a delivery with no name on it.
 
 ### `0.2.330` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-sol at xhigh: two runs, 992 and 924, mean 958, Platinum, 13th of 39
 
