@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.329`
+**Versão atual:** `0.2.330`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.330` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-sol at xhigh: two runs, 992 and 924, mean 958, Platinum, 13th of 39
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py` (`tools/export-results.py --publish-aggregate LEB-S-300-A`) from the lab's private archive, and the Results
+  section of the instance README. The aggregate goes from 38 to 39 agents; the other 38 entries and the notes are unchanged.
+- GPT-6.2-sol (`gpt-6.2-sol`) at `xhigh`, the owner's order of 2026-11-19: two runs through Codex on the OpenAI API key with approvals and sandbox bypassed, the one recorded exception to the series' rule against it. They
+  scored 992 and 924 (Platinum, mean 958, 13th of 39; security 816 of 850 on average, compatibility 100, report 42 of 50): the first report covered all 24 planted vulnerabilities and the code fixed all 24, the second covered
+  and fixed 22 of the 24, and no decoy was reported. They took about 16 minutes and 6.4 million tokens each (the log keeps no cost). The other three runs of the case are still to be made.
+- The lab's Codex client, CLI 0.159.3, predates the model: it logged that it had no metadata for it and ran it with its fallback metadata. The reading says so, because a later client may behave differently.
+- As in every LEB-S-300-A run, two matching judges and two blind judges for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.329` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-astra at xhigh: two runs, 992 and 992, Platinum, 3rd of 38
 
