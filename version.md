@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.354`
+**Versão atual:** `0.2.355`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.355` — 2026-11-19 — LEB-S-300-A's aggregate completes Claude Fable 5.2 at xhigh: its blocked run is scored 627, the estimate of the four completed runs is 988, Platinum
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py --write --only claude-fable-5.2-xhigh` from the lab's private archive, plus one dated sentence in
+  the Results paragraph of `instances/LEB-S-300-A/README.md`. The aggregate stays at 42 agents; Claude Fable 5.2 at `xhigh` goes from three runs to five, which completes its case of five, and the other 41 entries are
+  unchanged.
+- Published on the owner's word of 2026-11-19 about the S track's lost runs ("run perdida (s)"): the lab's board calls a run that ended blocked during the work "perdida". The Fable run that had waited for it, run 4,
+  was stopped after 57 minutes by the model's own safeguard (a refusal) with all 24 fixes made and no report written; it was scored on the folder it left by the usual four blind judges, who agreed on every item: 627
+  (Silver; security 527 of 850, compatibility 100, no report). As design 6.2 and 9 say, it counts in the expected score per scheduled attempt (915.8) and in the completion rate (4 of 5) and never in the estimate,
+  which is the mean of the four completed runs, 988 (Platinum, 8th of 42; 968, 995, 995 and 994, with the fifth run, 994, judged since 2026-11-19). A blocked run is not a lab failure, so it is not filed as one.
+- The item `.continue/fable-5-2-faltando.md` is removed in this commit: its condition, the five runs of Claude Fable 5.2 on LEB-S-300-A in `results/`, now holds. The other three LEBs were already complete. More runs
+  of the model, if the owner orders them, are new work and not this item.
 
 ### `0.2.354` — 2026-11-19 — LEB-300-A's aggregate adds dots.3 Note Preview at high, which did not deliver: one run of 100, Reprovada, 42nd of 43
 

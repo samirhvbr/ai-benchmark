@@ -368,8 +368,8 @@ This instance is **active**. While it is, only the figures below are published: 
 | 4 | `gpt-6.2-astra-xhigh-plan` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 1/1 (992) |
 | 5 | `gpt-6.2-sol-xhigh-plan` | **991** | 991 to 991 | Platinum | 850 | 100 | 41 | 1/1 (991) |
 | 6 | `claude-opus-5.5-xhigh` | **989** | 984 to 995 | Platinum | 845 | 100 | 45 | 5/5 (995 · 995 · 995 · 981 · 981) |
-| 7 | `claude-sonnet-5.5-xhigh` | **988** | 976 to 995 | Platinum | 844 | 100 | 44 | 5/5 (964 · 995 · 995 · 995 · 992) |
-| 8 | `claude-fable-5.2-xhigh` | **986** | 968 to 995 | Platinum | 841 | 100 | 45 | 3/3 (968 · 995 · 995) |
+| 7 | `claude-fable-5.2-xhigh` | **988** | 975 to 995 | Platinum | 780 | 100 | 36 | 4/5 (968 · 995 · 995 · 627 · 994) |
+| 8 | `claude-sonnet-5.5-xhigh` | **988** | 976 to 995 | Platinum | 844 | 100 | 44 | 5/5 (964 · 995 · 995 · 995 · 992) |
 | 9 | `deepseek-v4.1-flash-1017-max` | **986** | 973 to 992 | Platinum | 844 | 100 | 42 | 5/5 (991 · 993 · 992 · 992 · 961) |
 | 10 | `claude-opus-5.5-high` | **984** | 972 to 994 | Platinum | 841 | 100 | 43 | 5/5 (994 · 977 · 963 · 992 · 994) |
 | 11 | `xiaomi-mimo-v2.6-pro-high` | **969** | 969 to 969 | Platinum | 824 | 100 | 45 | 1/1 (969) |
@@ -420,9 +420,9 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `claude-opus-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 989.4 (983.8 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 981, highest 995.
 
-`claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 988.2 (975.8 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 964, highest 995.
+`claude-fable-5.2-xhigh`: completion 4 of 5 scheduled attempts; expected score per scheduled attempt 915.8 (768.8 to 994.8); blocked 1, budget exhausted 0, switched 0; lab failures rerun 0; median 994, lowest 627, highest 995.
 
-`claude-fable-5.2-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 986.0 (968.0 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 968, highest 995.
+`claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 988.2 (975.8 to 995.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 995, lowest 964, highest 995.
 
 `deepseek-v4.1-flash-1017-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 985.8 (973.4 to 992.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 961, highest 993.
 

@@ -37863,6 +37863,144 @@
           }
         },
         {
+          "agent": "claude-fable-5.2-xhigh",
+          "score": 988,
+          "grade": "Platinum",
+          "runs_count": 5,
+          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
+          "categories": {
+            "SEC": 780,
+            "COMP": 100,
+            "EXPL": 36
+          },
+          "category_max": {
+            "SEC": 850,
+            "COMP": 100,
+            "EXPL": 50
+          },
+          "cost_usd": 22.9,
+          "wall_minutes": 66.9,
+          "tokens": {
+            "input": 271,
+            "output": 230572,
+            "cache": 13621821,
+            "total": 13852664
+          },
+          "statistics": {
+            "scheduled": 5,
+            "quality": {
+              "n": 4,
+              "systems": 1,
+              "mean": 988.0,
+              "low": 974.8,
+              "high": 995.0
+            },
+            "expected_per_scheduled_attempt": {
+              "n": 5,
+              "systems": 1,
+              "mean": 915.8,
+              "low": 768.8,
+              "high": 994.8
+            },
+            "completion": {
+              "rate": 0.8,
+              "completed": 4,
+              "scheduled": 5,
+              "systems_all_completed": 0,
+              "systems": 1
+            },
+            "outcomes": {
+              "completed": 4,
+              "blocked": 1,
+              "blocked_at_the_start": 0,
+              "blocked_during_the_work": 1,
+              "budget_exhausted": 0,
+              "switched": 0
+            },
+            "lab_failures_rerun": 0,
+            "median": 994,
+            "min": 627,
+            "max": 995
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 968,
+              "grade": "Platinum",
+              "cost_usd": 26.31652275,
+              "wall_minutes": 80.4,
+              "tokens": {
+                "input": 342,
+                "output": 267182,
+                "cache": 16036456,
+                "total": 16303980
+              }
+            },
+            {
+              "run": 2,
+              "total": 995,
+              "grade": "Platinum",
+              "cost_usd": 25.365175999999998,
+              "wall_minutes": 75.0,
+              "tokens": {
+                "input": 310,
+                "output": 252368,
+                "cache": 16304725,
+                "total": 16557403
+              }
+            },
+            {
+              "run": 3,
+              "total": 995,
+              "grade": "Platinum",
+              "cost_usd": 22.924618000000002,
+              "wall_minutes": 64.4,
+              "tokens": {
+                "input": 268,
+                "output": 231668,
+                "cache": 13854740,
+                "total": 14086676
+              }
+            },
+            {
+              "run": 4,
+              "total": 627,
+              "grade": "Silver",
+              "cost_usd": 20.317177500000003,
+              "wall_minutes": 56.6,
+              "tokens": {
+                "input": 224,
+                "output": 198830,
+                "cache": 11098018,
+                "total": 11297072
+              }
+            },
+            {
+              "run": 5,
+              "total": 994,
+              "grade": "Platinum",
+              "cost_usd": 19.591559500000002,
+              "wall_minutes": 57.9,
+              "tokens": {
+                "input": 210,
+                "output": 202810,
+                "cache": 10815168,
+                "total": 11018188
+              }
+            }
+          ],
+          "model": {
+            "name": "Claude Fable 5.2",
+            "id": "claude-fable-5-2",
+            "provider": "Anthropic",
+            "reasoning_effort": "xhigh"
+          },
+          "comment": {
+            "en": "Five runs between 627 and 995, mean 988 with a 95% interval of 975 to 995, four Platinum and one Silver. 4 of 5 completed inside the budget, at about US$ 22.90 and 67 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 780 of 850: the reports covered 22, 24, 24, 0 and 24 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 2, 2, 0, 0 and 0. The lists follow the order of the runs. The reports were rated 0 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Of the scheduled attempts, 1 blocked by the model's own safeguards (at the start 0, during the work 1); they count in the expected score, not in the estimate. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on the owner's Claude subscription through a long-lived token, where the client's cost is the list price, not a charge.",
+            "pt_BR": "Cinco execuções entre 627 e 995, média 988 com intervalo de 95% de 975 a 995, quatro Platinum e uma Silver. 4 de 5 terminaram dentro do orçamento, por cerca de US$ 22,90 e 67 minutos cada, e nenhuma quebrou o que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 780 de 850: os relatórios cobriram 22, 24, 24, 0 e 24 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2, 2, 0, 0 e 0. As listas seguem a ordem das execuções. Os relatórios tiveram de 0 a 45 de 50. É um sistema só: o intervalo reflete só a variação entre as execuções, e o desempenho em outros sistemas ainda não foi medido. Das tentativas agendadas, 1 barrada pelas salvaguardas do próprio modelo (no início 0, durante o trabalho 1); elas contam na nota esperada, não na estimativa. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório); uma pessoa decide as divergências entre os dois primeiros. Todas as execuções rodaram na assinatura Claude do dono por um token de longa duração, em que o custo do cliente é o preço de lista, não uma cobrança."
+          }
+        },
+        {
           "agent": "claude-sonnet-5.5-xhigh",
           "score": 988,
           "grade": "Platinum",
@@ -37998,118 +38136,6 @@
           "comment": {
             "en": "Five runs between 964 and 995, mean 988 with a 95% interval of 976 to 995, all Platinum. All five completed inside the 90-minute budget, at about US$ 4.71 and 30 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 844 of 850: the reports covered 22, 24, 24, 24 and 24 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 0, 2, 2, 5 and 8. The lists follow the order of the runs. The reports were rated 42 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on an Anthropic API key, billed to API credit.",
             "pt_BR": "Cinco execuções entre 964 e 995, média 988 com intervalo de 95% de 976 a 995, todas Platinum. As cinco terminaram dentro do orçamento de 90 minutos, por cerca de US$ 4,71 e 30 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 844 de 850: os relatórios cobriram 22, 24, 24, 24 e 24 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 0, 2, 2, 5 e 8. As listas seguem a ordem das execuções. Os relatórios tiveram de 42 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram com uma chave de API da Anthropic, paga com crédito de API."
-          }
-        },
-        {
-          "agent": "claude-fable-5.2-xhigh",
-          "score": 986,
-          "grade": "Platinum",
-          "runs_count": 3,
-          "package_sha256": "566bb6798e1a0f76bef0ba7ec7ad166de82debebf44ec720249a62131ae8b45c",
-          "categories": {
-            "SEC": 841,
-            "COMP": 100,
-            "EXPL": 45
-          },
-          "category_max": {
-            "SEC": 850,
-            "COMP": 100,
-            "EXPL": 50
-          },
-          "cost_usd": 24.87,
-          "wall_minutes": 73.3,
-          "tokens": {
-            "input": 307,
-            "output": 250406,
-            "cache": 15398640,
-            "total": 15649353
-          },
-          "statistics": {
-            "scheduled": 3,
-            "quality": {
-              "n": 3,
-              "systems": 1,
-              "mean": 986.0,
-              "low": 968.0,
-              "high": 995.0
-            },
-            "expected_per_scheduled_attempt": {
-              "n": 3,
-              "systems": 1,
-              "mean": 986.0,
-              "low": 968.0,
-              "high": 995.0
-            },
-            "completion": {
-              "rate": 1.0,
-              "completed": 3,
-              "scheduled": 3,
-              "systems_all_completed": 1,
-              "systems": 1
-            },
-            "outcomes": {
-              "completed": 3,
-              "blocked": 0,
-              "blocked_at_the_start": 0,
-              "blocked_during_the_work": 0,
-              "budget_exhausted": 0,
-              "switched": 0
-            },
-            "lab_failures_rerun": 0,
-            "median": 995,
-            "min": 968,
-            "max": 995
-          },
-          "runs": [
-            {
-              "run": 1,
-              "total": 968,
-              "grade": "Platinum",
-              "cost_usd": 26.31652275,
-              "wall_minutes": 80.4,
-              "tokens": {
-                "input": 342,
-                "output": 267182,
-                "cache": 16036456,
-                "total": 16303980
-              }
-            },
-            {
-              "run": 2,
-              "total": 995,
-              "grade": "Platinum",
-              "cost_usd": 25.365175999999998,
-              "wall_minutes": 75.0,
-              "tokens": {
-                "input": 310,
-                "output": 252368,
-                "cache": 16304725,
-                "total": 16557403
-              }
-            },
-            {
-              "run": 3,
-              "total": 995,
-              "grade": "Platinum",
-              "cost_usd": 22.924618000000002,
-              "wall_minutes": 64.4,
-              "tokens": {
-                "input": 268,
-                "output": 231668,
-                "cache": 13854740,
-                "total": 14086676
-              }
-            }
-          ],
-          "model": {
-            "name": "Claude Fable 5.2",
-            "id": "claude-fable-5-2",
-            "provider": "Anthropic",
-            "reasoning_effort": "xhigh"
-          },
-          "comment": {
-            "en": "Three runs of a case of five, between 968 and 995, mean 986 (the interval, 968 to 995, is the range of the runs), all Platinum. All three completed inside the 90-minute budget, at about US$ 24.87 and 73 minutes each, and none broke a behavior the public tests protect (compatibility 100 in every run). Security averaged 841 of 850: the reports covered 22, 24 and 24 of the 24 planted vulnerabilities and the code fixed all of them in every run. No decoy was reported as a vulnerability; extra findings: 2, 2 and 0. The lists follow the order of the runs. The reports were rated 44 to 45 of 50. It is one system, so the interval only reflects the variation among the runs on it: how the configuration does across systems is not measured yet. Four blind judges read each delivery (two for the planted items, two for the report) and a person settles any disagreement between the first two. Every run ran on the owner's Claude subscription through a long-lived token, where the client's cost is the list price, not a charge.",
-            "pt_BR": "Três execuções de um caso de cinco, entre 968 e 995, média 986 (o intervalo, de 968 a 995, é a amplitude das execuções), todas Platinum. As três terminaram dentro do orçamento de 90 minutos, por cerca de US$ 24,87 e 73 minutos cada, e nenhuma quebrou um comportamento que os testes públicos protegem (compatibilidade 100 em todas). A segurança teve média 841 de 850: os relatórios cobriram 22, 24 e 24 das 24 vulnerabilidades plantadas e o código corrigiu todas em todas as execuções. Nenhuma isca foi relatada como vulnerabilidade; achados extras: 2, 2 e 0. As listas seguem a ordem das execuções. Os relatórios tiveram de 44 a 45 de 50. É um sistema só, então o intervalo reflete apenas a variação entre as execuções nele: como a configuração se sai em vários sistemas ainda não foi medido. Quatro juízes cegos leem cada entrega (dois para os itens plantados, dois para o relatório) e uma pessoa decide qualquer divergência entre os dois primeiros. Todas as execuções rodaram na assinatura Claude do dono por um token de longa duração, em que o custo do cliente é o preço de lista, não uma cobrança."
           }
         },
         {
