@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.350`
+**Versão atual:** `0.2.351`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.351` — 2026-11-19 — docs/model-safeguards.md says that Claude Fable 5.1 is published on LEB-D-300-A at high and medium and how the stopped tries are counted there
+
+- `docs/model-safeguards.md` now says that LEB-D-300-A publishes Claude Fable 5.1 at `high` (one completed run, 0.2.349) and at `medium` (five completed runs, 0.2.350), from their completed runs, and how the
+  stopped tries are counted there: they are not archived as runs, so the aggregate's own statistics read as if every scheduled run completed (1 of 1 at `high`, 5 of 5 at `medium`) while the readings and the
+  table carry the counts, and `xhigh` has no completed run and no row. The open decision on how extra attempts count in the statistics stays open and is still named there.
+- It also records the structure of the `medium` case that the table did not show: each of the three stopped tries was the first try of a run that completed on the second, on the same machine, so the five scheduled
+  runs all completed; at `high` the one completed run is the only row and 8 of its 11 attempts were stopped at the start. The counts of the table are unchanged (no new attempts since 2026-10-27).
+- Correction to 0.2.350: its entry said that the disagreements between the judges of the `medium` runs were settled by the owner on 2026-10-23 and 2026-10-27. They were settled by the owner on 2026-10-23 (run 1) and
+  2026-10-27 (run 8), and for two more items by the standing rules he had accepted on 2026-10-16 (run 1) and 2026-10-22 (run 7). No score, rank, run or aggregate changes.
 
 ### `0.2.350` — 2026-11-19 — LEB-D-300-A's aggregate adds Claude Fable 5.1 at medium: five runs, 686 to 751, mean 720, Silver, 11th of 62, three of them on a second try
 
