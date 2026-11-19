@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.336`
+**Versão atual:** `0.2.337`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.337` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6.2-astra through the ChatGPT plan at xhigh as its own entry: one run, 992, Platinum, 4th of 40
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py` (`tools/export-results.py --publish-aggregate LEB-S-300-A`) from the lab's private archive, and the Results
+  section of the instance README. The aggregate goes from 39 to 40 agents; the other 39 entries and the notes are unchanged. `archive-s-all.py` now keeps the two routes of the GPT-6.2 pair apart: the API-key rows skip lab runs 3
+  and 4, which belong to the plan entries.
+- GPT-6.2-astra (ChatGPT plan), id `gpt-6.2-astra-xhigh-plan`, at `xhigh`, the owner's order and decision of 2026-11-19: one run through his ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, with
+  approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 992 (Platinum, 4th of 40; security 850 of 850, compatibility 100, report 42 of 50): the report covered all 24 planted vulnerabilities and the
+  code fixed all 24. It took about 20 minutes and 7.9 million tokens (the log keeps no cost). It is its own entry, not a run of GPT-6.2-astra (992 and 992, API key, Codex CLI 0.159.3 with fallback metadata), because route
+  and client differ; the reading of each entry points at the other.
+- As in every LEB-S-300-A run, two matching judges and two blind judges for the report. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.336` — 2026-11-19 — LEB-D-300-A's aggregate adds GPT-6.2-sol through the ChatGPT plan at xhigh as its own entry: one run, 716, Silver
 
