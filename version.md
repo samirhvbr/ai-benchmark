@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.345`
+**Versão atual:** `0.2.346`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.346` — 2026-11-19 — readings of the API-key GPT-6.2 entries point at their ChatGPT-plan entries on all four tracks, the pointer that 0.2.335 to 0.2.343 said was there
+
+- The readings of the seven API-key entries of the GPT-6.2 pair that did not yet say so now end with a sentence that points at the entry of the same model through the owner's ChatGPT plan login (Codex CLI 0.170.0):
+  GPT-6.2-astra on LEB-D-300-A (869), LEB-S-300-A (992), LEB-100-A (835) and LEB-300-A (862); GPT-6.2-sol on LEB-S-300-A (991), LEB-100-A (772) and LEB-300-A (818). GPT-6.2-sol on LEB-D-300-A got its pointer in
+  0.2.342. Where a reading would have passed 1200 characters, only redundant fragments were cut (the parenthesis that explains the interval, the sentence on the order of the lists, "see the notes"), in the same
+  way in both languages.
+- This corrects a statement of 0.2.335 to 0.2.341 and 0.2.343, which said that the reading of each of the two entries points at the other: only the plan entries did. No score, rank, run, grade or run count changes;
+  the diff is the `comment` text of seven entries in `results/2026/LEB-D-300-A/aggregate.json`, `LEB-S-300-A/aggregate.json`, `LEB-300-A/aggregate.json`, `LEB-100-A/comments.json` and the `results/results.json` that
+  carries them.
 
 ### `0.2.345` — 2026-11-19 — LEB-300-A's aggregate adds MiniMax M3.1 Flash at high through MiniMax's own API: three runs, 723, 762 and 702, official 723, Silver, 18th of 42
 
