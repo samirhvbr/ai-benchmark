@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.323`
+**Versão atual:** `0.2.324`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.324` — 2026-11-19 — LEB-D-300-A's aggregate adds GPT-6.2-astra at xhigh: two runs, 910 and 904, mean 907, Platinum, the highest score on the instance
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 56 to 57
+  agents; the other 56 entries are unchanged, reading included.
+- GPT-6.2-astra (`gpt-6.2-astra`) at `xhigh`, the owner's order of 2026-11-19, through Codex on the OpenAI API key with approvals and sandbox bypassed, the one recorded exception to the series' rule against it: two runs of the case
+  of five, 910 and 904 (Platinum), mean 907, the highest score on the instance (the one before it is Claude Fable 5.2 at 858). Both completed inside the 90-minute budget, about 20 minutes and 7.6 million tokens each (the log keeps
+  no cost); compatibility is 100 in both, and both lost 5 points for reporting something that is not a flaw. The other three runs of the case are still to be made.
+- The lab's Codex client, CLI 0.159.3, predates the model: it logged that it had no metadata for it and ran it with its fallback metadata. The reading says so, because a later client may behave differently.
+- Both runs went through two matching judges and two blind judges for the report, which agreed on every item, and were settled before they were archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.323` — 2026-11-19 — LEB-D-300-A's aggregate grows GPT-6-sol at xhigh from two runs to five: 537, 523 and 575 more, mean 549, Bronze
 
