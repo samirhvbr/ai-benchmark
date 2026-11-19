@@ -148,7 +148,8 @@ This instance is **active**. While it is, only the totals below are published: n
 | 39 | `minimax-m2.7-default` | **202** | Reprovada | 85 | 0 | 8 | 0 | 0 | 75 | 34 | 1/3 |
 | 40 | `nvidia-nemotron-3.5-lightning-free-high` | **175** | Reprovada | 39 | 0 | 5 | 0 | 0 | 100 | 31 | 1/3 |
 | 41 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **148** | Reprovada | 18 | 0 | 0 | 0 | 0 | 100 | 30 | 1/3 |
-| 42 | `cohere-north-mini-code-free-high` | **0** | Reprovada | 25 | 0 | 0 | 10 | 0 | 100 | 19 | 1/3 |
+| 42 | `dots-studio-dots-3-note-preview-free-high` | **100** | Reprovada | 0 | 0 | 0 | 0 | 0 | 100 | 0 | 1/3 |
+| 43 | `cohere-north-mini-code-free-high` | **0** | Reprovada | 25 | 0 | 0 | 10 | 0 | 100 | 19 | 1/3 |
 
 Matrix SHA-256 `c42c82878d2cf3fe081d7f15e633d043c27701ea98c8f179f1527ac86f543181` · package SHA-256 `7e35825aa91d0eaeae01f86a12f75698ce3276fa5ea6b969ed58f282f61e5ef7`.
 

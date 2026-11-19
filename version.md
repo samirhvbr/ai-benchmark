@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.353`
+**Versão atual:** `0.2.354`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.354` — 2026-11-19 — LEB-300-A's aggregate adds dots.3 Note Preview at high, which did not deliver: one run of 100, Reprovada, 42nd of 43
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 42 to 43
+  agents; the other 42 entries are unchanged.
+- dots.3 Note Preview at `high` through OpenRouter's free variant (id `dots-studio-dots-3-note-preview-free-high`), published on the owner's word of 2026-11-19 ("dots-3 - publica relatando que não entregou"): one run,
+  100 (Reprovada, 42nd of 43). The session ended on its own with the code identical to the package, so the model delivered no change and no report; the 100 points are the contract left untouched (compatibility 100)
+  and every other category is 0. It is a result and not a fault of the lab, so nothing is voided. It took 10.5 minutes and 4.2 million tokens, at no cost.
+- The lab made 5 attempts at this configuration: the other 4 ended without a delivery (in each, at least one response reached the client's output length limit) and are not scored or archived. The lab's run 2 is the one
+  published, numbered 1 here so that the run numbers have no gap; the run record says so. The reading says all of it.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.353` — 2026-11-19 — LEB-S-300-A's aggregate adds dots.3 Note Preview at high, which did not deliver: two runs of 100, Reprovada
 

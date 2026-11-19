@@ -29148,6 +29148,54 @@
           }
         },
         {
+          "agent": "dots-studio-dots-3-note-preview-free-high",
+          "score": 100,
+          "grade": "Reprovada",
+          "runs_count": 1,
+          "categories": {
+            "SEC": 0,
+            "ARCH": 0,
+            "BUG": 0,
+            "PERF": 0,
+            "CLN": 0,
+            "COMP": 100,
+            "EXPL": 0
+          },
+          "cost_usd": 0.0,
+          "wall_minutes": 10.5,
+          "tokens": {
+            "input": 308642,
+            "output": 4655,
+            "cache": 3783168,
+            "total": 4150053
+          },
+          "runs": [
+            {
+              "run": 1,
+              "total": 100,
+              "cost_usd": 0.0,
+              "wall_minutes": 10.5,
+              "tokens": {
+                "input": 308642,
+                "output": 4655,
+                "cache": 3783168,
+                "total": 4150053
+              }
+            }
+          ],
+          "model": {
+            "name": "dots.3 Note Preview",
+            "id": "dots-studio/dots-3-note-preview:free",
+            "provider": "dots.studio",
+            "reasoning_effort": "high",
+            "client_mode": "permissions auto-approved"
+          },
+          "comment": {
+            "en": "One run so far, 100 (Reprovada), and the model did not deliver: asked for the two stages of the task, it ended the session on its own with the code identical to the package, with no change and no report, so nothing is credited beyond the 100 points of the contract left untouched (compatibility 100). This is the result, not a fault of the lab, and nothing was voided. Of the 5 attempts at this configuration, the other 4 ended without a delivery (in each, a response reached the client's output length limit) and are not scored. It ran through OpenRouter's free variant, at no cost, in 10.5 minutes and 4.2 million tokens.",
+            "pt_BR": "Uma execução até agora, 100 (Reprovada), e o modelo não entregou: pedido para fazer as duas etapas da tarefa, encerrou a sessão por conta própria com o código idêntico ao pacote, sem mudança e sem relatório, então nada é creditado além dos 100 pontos do contrato intocado (compatibilidade 100). Este é o resultado, não uma falha do laboratório, e nada foi anulado. Das 5 tentativas desta configuração, as outras 4 terminaram sem entrega (em cada uma, uma resposta bateu no limite de tamanho de saída do cliente) e não são pontuadas. Rodou pela variante gratuita da OpenRouter, sem custo, em 10,5 minutos e 4,2 milhões de tokens."
+          }
+        },
+        {
           "agent": "cohere-north-mini-code-free-high",
           "score": 0,
           "grade": "Reprovada",
