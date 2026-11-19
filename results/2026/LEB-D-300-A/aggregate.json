@@ -118,6 +118,98 @@
       }
     },
     {
+      "agent": "gpt-6.2-astra-xhigh-plan",
+      "score": 869,
+      "grade": "Gold",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 218,
+        "BUG": 199,
+        "PERF": 208,
+        "CLN": 106,
+        "COMP": 100,
+        "EXPL": 43
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": null,
+      "wall_minutes": 26.7,
+      "tokens": {
+        "input": 182521,
+        "output": 50706,
+        "cache": 8472832,
+        "total": 8706059
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 869.0,
+          "low": 869.0,
+          "high": 869.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 869.0,
+          "low": 869.0,
+          "high": 869.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 869,
+        "min": 869,
+        "max": 869
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 869,
+          "grade": "Gold",
+          "cost_usd": null,
+          "wall_minutes": 26.7,
+          "tokens": {
+            "input": 182521,
+            "output": 50706,
+            "cache": 8472832,
+            "total": 8706059
+          }
+        }
+      ],
+      "model": {
+        "name": "GPT-6.2-astra (ChatGPT plan)",
+        "id": "gpt-6.2-astra",
+        "provider": "OpenAI",
+        "reasoning_effort": "xhigh"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 869 (Gold). It completed inside the 90-minute budget, about 8.7 million tokens and 27 minutes (the log keeps no cost), and it did not break a behavior the public tests protect (compatibility 100). Performance was the strongest area (208 of 213), then bug fixing (199 of 213), architecture (218 of 283) and clean code (106 of 141). The report was rated 43 of 50. Penalties: run 1 lost 5 points for reporting something that is not a flaw. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on every item. The other four runs are still to be made, so the figure will move. It ran with the client's approvals and sandbox bypassed, an exception to the series' rule against it (see the notes). It ran through the owner's ChatGPT plan login with Codex CLI 0.170.0, which knows the model; the entry GPT-6.2-astra holds the API-key runs of the same model, made with Codex CLI 0.159.3 and fallback metadata.",
+        "pt_BR": "Uma execução de um caso de cinco fez 869 (Gold). Terminou dentro do orçamento de 90 minutos, por cerca de 8,7 milhões de tokens e 27 minutos (o log não guarda custo), e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Desempenho foi a área mais forte (208 de 213), depois corrigir bugs (199 de 213), arquitetura (218 de 283) e código limpo (106 de 141). O relatório teve 43 de 50. Penalidades: a execução 1 perdeu 5 pontos por relatar algo que não é falha. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em todos os itens. Faltam quatro execuções, então o número vai mudar. Rodou com as aprovações e o sandbox do cliente desligados, uma exceção à regra da série contra isso (veja as notas). Rodou pelo login do plano ChatGPT do dono com o Codex CLI 0.170.0, que conhece o modelo; a entrada GPT-6.2-astra reúne as execuções do mesmo modelo pela chave de API, feitas com o Codex CLI 0.159.3 e metadados de reserva."
+      }
+    },
+    {
       "agent": "claude-fable-5.2-xhigh",
       "score": 858,
       "grade": "Gold",

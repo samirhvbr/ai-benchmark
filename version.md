@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.334`
+**Versão atual:** `0.2.335`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.335` — 2026-11-19 — LEB-D-300-A's aggregate adds GPT-6.2-astra through the ChatGPT plan at xhigh as its own entry: one run, 869, Gold
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 58 to 59
+  agents; the other 58 entries are unchanged, reading included.
+- GPT-6.2-astra (ChatGPT plan), id `gpt-6.2-astra-xhigh-plan`, at `xhigh`: one run of the case of five through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, with approvals and
+  sandbox bypassed (the Codex lane's recorded exception). It scored 869 (Gold; about 27 minutes and 8.7 million tokens, the log keeps no cost): compatibility 100, one decoy-style false report (5 points), and the blind
+  judges agreed on every item. It is its own entry, not a run of GPT-6.2-astra (907, two runs): that entry holds the API-key runs made with Codex CLI 0.159.3, which did not know the model and used fallback metadata, so
+  route and client differ. The separation is the owner's decision of 2026-11-19; the reading of each entry points at the other.
+- Judged blind like every D run: two matching judges and two blind judges for the report, settled before the run was archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.334` — 2026-11-19 — LEB-300-A's aggregate adds GPT-6.2-sol at xhigh: one run, 777, Gold, 13th of 39
 
