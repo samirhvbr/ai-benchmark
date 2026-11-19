@@ -159,7 +159,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | 1 | `gpt-6.2-astra-xhigh` | **907** | 904 to 910 | Platinum | 243 | 197 | 208 | 121 | 100 | 43 | 2/2 (910 · 904) |
 | 2 | `gpt-6.2-astra-xhigh-plan` | **869** | 869 to 869 | Gold | 218 | 199 | 208 | 106 | 100 | 43 | 1/1 (869) |
-| 3 | `claude-fable-5.2-xhigh` | **858** | 834 to 880 | Gold | 190 | 190 | 190 | 94 | 100 | 34 | 3/4 (880 · 619 · 861 · 834) |
+| 3 | `claude-fable-5.2-xhigh` | **858** | 841 to 874 | Gold | 192 | 194 | 192 | 96 | 100 | 36 | 4/5 (880 · 619 · 861 · 834 · 856) |
 | 4 | `claude-opus-5.5-xhigh` | **835** | 822 to 849 | Gold | 200 | 206 | 192 | 95 | 100 | 44 | 5/5 (831 · 847 · 813 · 858 · 827) |
 | 5 | `claude-sonnet-5.5-max` | **826** | 797 to 855 | Gold | 190 | 209 | 193 | 89 | 100 | 45 | 5/5 (793 · 785 · 827 · 874 · 849) |
 | 6 | `claude-sonnet-5.5-max-ultracode` | **815** | 815 to 815 | Gold | 158 | 164 | 161 | 60 | 100 | 17 | 1/5 (573 · 544 · 812 · 555 · 815) |
@@ -225,7 +225,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `gpt-6.2-astra-xhigh-plan`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 869.0 (869.0 to 869.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 869, lowest 869, highest 869.
 
-`claude-fable-5.2-xhigh`: completion 3 of 4 scheduled attempts; expected score per scheduled attempt 798.5 (679.5 to 870.5); blocked 0, budget exhausted 1, switched 0; lab failures rerun 0; median 834, lowest 619, highest 880.
+`claude-fable-5.2-xhigh`: completion 4 of 5 scheduled attempts; expected score per scheduled attempt 810.0 (713.8 to 867.6); blocked 0, budget exhausted 1, switched 0; lab failures rerun 0; median 856, lowest 619, highest 880.
 
 `claude-opus-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 835.2 (822.2 to 849.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 831, lowest 813, highest 858.
 

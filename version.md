@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.343`
+**Versão atual:** `0.2.344`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.344` — 2026-11-19 — LEB-D-300-A's aggregate completes Claude Fable 5.2 at xhigh with its fifth run: 856, Gold, mean of the four completed runs stays 858
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate stays at
+  60 agents; Claude Fable 5.2 at `xhigh` goes from four runs to five, which completes its case of five, and the other 59 entries are unchanged.
+- Run 5 of Claude Fable 5.2 at `xhigh`, on the long-lived token of the owner's personal Claude account (a subscription, so the client's cost is an accounting at API list prices, not a charge), Claude Code 2.1.295:
+  880, 861, 856 and 834 completed plus 619 that used up the 90-minute budget before its report. Run 5 scored 856 (Gold; 61.6 minutes of model time, 69.8 on the clock, US$ 31.22 at list prices): bug fixing 209,
+  performance 199, architecture 202, clean code 101, compatibility 100 and no penalty, with the report rated 45 of 50. The entry's score is the mean of the four completed runs, 857.75, shown as 858, Gold, as before.
+- Judged blind like every D run: two matching judges and two blind judges for the report, who agreed on every item of this run (no disagreement to settle). Aggregate only: no flaw, verdict or delivery.
+- The reading now says five runs and drops the sentence that the fifth was still to be made.
 
 ### `0.2.343` — 2026-11-19 — LEB-300-A's aggregate adds GPT-6.2-sol through the ChatGPT plan at xhigh as its own entry: one run, 818, Gold, 11th of 41
 
