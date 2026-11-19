@@ -355,24 +355,25 @@ This instance is **active**. While it is, only the figures below are published: 
 | 16 | `claude-sonnet-5.5-high` | **943** | 927 to 969 | Platinum | 806 | 94 | 43 | 5/5 (924 · 993 · 927 · 932 · 937) |
 | 17 | `gpt-6.1-terra-xhigh` | **943** | 924 to 962 | Platinum | 801 | 100 | 42 | 2/2 (962 · 924) |
 | 18 | `gpt-5.6-sol-xhigh` | **942** | 933 to 952 | Platinum | 800 | 100 | 42 | 5/5 (945 · 937 · 928 · 937 · 962) |
-| 19 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
-| 20 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
-| 21 | `minimax-m3.1-flash-high` | **931** | 912 to 951 | Platinum | 792 | 100 | 42 | 5/5 (965 · 900 · 928 · 930 · 930) |
-| 22 | `gpt-6-sol-xhigh` | **926** | 903 to 950 | Platinum | 784 | 100 | 42 | 2/2 (903 · 950) |
-| 23 | `claude-sonnet-5.5-medium` | **915** | 886 to 946 | Platinum | 775 | 100 | 40 | 5/5 (913 · 956 · 952 · 881 · 873) |
-| 24 | `gpt-5.6-luna-xhigh` | **891** | 819 to 934 | Gold | 757 | 100 | 40 | 3/3 (921 · 819 · 934) |
-| 25 | `gpt-5.6-terra-xhigh` | **888** | 873 to 897 | Gold | 746 | 100 | 41 | 3/3 (897 · 873 · 893) |
-| 26 | `moonshot-kimi-for-coding-default` | **875** | 875 to 875 | Gold | 731 | 100 | 44 | 1/1 (875) |
-| 27 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
-| 28 | `moonshot-kimi-for-coding-highspeed-default` | **693** | 693 to 693 | Silver | 552 | 100 | 41 | 1/1 (693) |
-| 29 | `recursive-flint-v1.0-free-default` | **516** | 516 to 516 | Bronze | 378 | 100 | 38 | 1/1 (516) |
-| 30 | `nvidia-nemotron-3.5-super-vl-free-high` | **515** | 515 to 515 | Bronze | 374 | 100 | 41 | 1/1 (515) |
-| 31 | `apodex-apodex-1.1-mini-free-high` | **439** | 370 to 528 | Bronze | 300 | 100 | 39 | 5/5 (364 · 468 · 343 · 604 · 414) |
-| 32 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **331** | 331 to 331 | Reprovada | 196 | 100 | 35 | 1/1 (331) |
-| 33 | `xingchen-agi-xing4.0-29b-a4b-free-high` | **217** | 217 to 217 | Reprovada | 85 | 100 | 32 | 1/1 (217) |
-| 34 | `nvidia-nemotron-3.5-lightning-free-high` | **191** | 191 to 191 | Reprovada | 64 | 100 | 27 | 1/1 (191) |
-| 35 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **122** | 122 to 122 | Reprovada | 17 | 100 | 30 | 1/1 (122) |
-| 36 | `cohere-north-mini-code-free-high` | **27** | 27 to 27 | Reprovada | 0 | 100 | 22 | 1/1 (27) |
+| 19 | `gpt-6-luna-xhigh` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
+| 20 | `tencent-hy4-high` | **942** | 942 to 942 | Platinum | 803 | 100 | 39 | 1/1 (942) |
+| 21 | `moonshot-kimi-k3-1-pro-high` | **934** | 934 to 934 | Platinum | 790 | 100 | 44 | 1/1 (934) |
+| 22 | `minimax-m3.1-flash-high` | **931** | 912 to 951 | Platinum | 792 | 100 | 42 | 5/5 (965 · 900 · 928 · 930 · 930) |
+| 23 | `gpt-6-sol-xhigh` | **926** | 903 to 950 | Platinum | 784 | 100 | 42 | 2/2 (903 · 950) |
+| 24 | `claude-sonnet-5.5-medium` | **915** | 886 to 946 | Platinum | 775 | 100 | 40 | 5/5 (913 · 956 · 952 · 881 · 873) |
+| 25 | `gpt-5.6-luna-xhigh` | **891** | 819 to 934 | Gold | 757 | 100 | 40 | 3/3 (921 · 819 · 934) |
+| 26 | `gpt-5.6-terra-xhigh` | **888** | 873 to 897 | Gold | 746 | 100 | 41 | 3/3 (897 · 873 · 893) |
+| 27 | `moonshot-kimi-for-coding-default` | **875** | 875 to 875 | Gold | 731 | 100 | 44 | 1/1 (875) |
+| 28 | `deepseek-v4-pro-max` | **871** | 831 to 907 | Gold | 729 | 100 | 42 | 3/3 (875 · 907 · 831) |
+| 29 | `moonshot-kimi-for-coding-highspeed-default` | **693** | 693 to 693 | Silver | 552 | 100 | 41 | 1/1 (693) |
+| 30 | `recursive-flint-v1.0-free-default` | **516** | 516 to 516 | Bronze | 378 | 100 | 38 | 1/1 (516) |
+| 31 | `nvidia-nemotron-3.5-super-vl-free-high` | **515** | 515 to 515 | Bronze | 374 | 100 | 41 | 1/1 (515) |
+| 32 | `apodex-apodex-1.1-mini-free-high` | **439** | 370 to 528 | Bronze | 300 | 100 | 39 | 5/5 (364 · 468 · 343 · 604 · 414) |
+| 33 | `nvidia-nemotron-3-ultra-550b-a55b-free-high` | **331** | 331 to 331 | Reprovada | 196 | 100 | 35 | 1/1 (331) |
+| 34 | `xingchen-agi-xing4.0-29b-a4b-free-high` | **217** | 217 to 217 | Reprovada | 85 | 100 | 32 | 1/1 (217) |
+| 35 | `nvidia-nemotron-3.5-lightning-free-high` | **191** | 191 to 191 | Reprovada | 64 | 100 | 27 | 1/1 (191) |
+| 36 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **122** | 122 to 122 | Reprovada | 17 | 100 | 30 | 1/1 (122) |
+| 37 | `cohere-north-mini-code-free-high` | **27** | 27 to 27 | Reprovada | 0 | 100 | 22 | 1/1 (27) |
 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -412,6 +413,8 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `gpt-6.1-terra-xhigh`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 943.0 (924.0 to 962.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 924, lowest 924, highest 962.
 
 `gpt-5.6-sol-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 941.8 (933.2 to 952.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 937, lowest 928, highest 962.
+
+`gpt-6-luna-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 942.0 (942.0 to 942.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 942, lowest 942, highest 942.
 
 `tencent-hy4-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 942.0 (942.0 to 942.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 942, lowest 942, highest 942.
 

@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.327`
+**Versão atual:** `0.2.328`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.328` — 2026-11-19 — LEB-S-300-A's aggregate adds GPT-6-luna at xhigh: one run, 942, Platinum, 19th of 37
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py` (`tools/export-results.py --publish-aggregate LEB-S-300-A`) from the lab's private archive, and the Results
+  section of the instance README. The aggregate goes from 36 to 37 agents; the other 36 entries and the notes are unchanged.
+- GPT-6-luna (`gpt-6-luna`) at `xhigh`, the owner's order of 2026-11-16: one run through Codex on the OpenAI API key with approvals and sandbox bypassed, the one recorded exception to the series' rule against it. It scored 942
+  (Platinum, 19th of 37; security 803 of 850, compatibility 100, report 39 of 50): the report covered 22 of the 24 planted vulnerabilities and the code fixed 23. It took about 22 minutes and 15.7 million tokens (the log keeps
+  no cost). The other four runs of the case are still to be made.
+- As in every LEB-S-300-A run, two matching judges and two blind judges for the report, and the run was settled before it was archived. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.327` — 2026-11-19 — LEB-S-300-A's aggregate grows GPT-6-sol at xhigh from one run to two: 903 and 950, mean 926, Platinum
 
