@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.344`
+**Versão atual:** `0.2.345`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.345` — 2026-11-19 — LEB-300-A's aggregate adds MiniMax M3.1 Flash at high through MiniMax's own API: three runs, 723, 762 and 702, official 723, Silver, 18th of 42
+
+- `results/2026/LEB-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-300-A` from the lab's private archive. The aggregate goes from 41 to 42
+  agents; the other 41 entries are unchanged, reading included.
+- MiniMax M3.1 Flash at `high` through MiniMax's own API (opencode provider `minimax`, client opencode 1.18.33 with every permission auto-approved), three runs of the two-stage task made on 2026-11-07: 723 (Silver),
+  762 (Gold) and 702 (Silver), so the official score is the median, 723, 18th of 42. Per run: the report covered 25, 25 and 23 of the 36 planted flaws, with 2, 1 and 3 false positives and 15, 14 and 16 extra
+  findings, and was rated 40, 43 and 40 of 50; sessions took 78.4, 45.9 and 44.3 minutes, about 38.9 million tokens and US$ 0.74, 0.69 and 0.78 at the client's estimate.
+- All three runs carry one COMP-008 (-25), for a login lockout that answers 401, even to the right password, during the block. The instance's practice of 2026-10-12 charged lockouts that answer 429; these runs waited
+  for the owner to say whether it covers other statuses, and on 2026-11-19 he confirmed that it covers any status outside the manifest's list, so the charge stands as the judge applied it and no score changes. Run 1
+  also lost 15 to one COMP-005 and run 3 took one PEN-001, for code that writes a credential to the log.
+- Judged blind like the others: one matching judge and one blind EXPL judge per run, all Claude Opus subagents. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.344` — 2026-11-19 — LEB-D-300-A's aggregate completes Claude Fable 5.2 at xhigh with its fifth run: 856, Gold, mean of the four completed runs stays 858
 

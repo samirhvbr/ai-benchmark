@@ -1100,6 +1100,78 @@
       }
     },
     {
+      "agent": "minimax-m3.1-flash-high",
+      "score": 723,
+      "grade": "Silver",
+      "runs_count": 3,
+      "categories": {
+        "SEC": 215,
+        "ARCH": 119,
+        "BUG": 147,
+        "PERF": 121,
+        "CLN": 21,
+        "COMP": 60,
+        "EXPL": 40
+      },
+      "cost_usd": 0.74,
+      "wall_minutes": 78.4,
+      "tokens": {
+        "input": 299826,
+        "output": 97242,
+        "cache": 39106123,
+        "total": 39581603
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 723,
+          "cost_usd": 0.74,
+          "wall_minutes": 78.4,
+          "tokens": {
+            "input": 299826,
+            "output": 97242,
+            "cache": 39106123,
+            "total": 39581603
+          }
+        },
+        {
+          "run": 2,
+          "total": 762,
+          "cost_usd": 0.69,
+          "wall_minutes": 45.9,
+          "tokens": {
+            "input": 289406,
+            "output": 98085,
+            "cache": 36466966,
+            "total": 36927441
+          }
+        },
+        {
+          "run": 3,
+          "total": 702,
+          "cost_usd": 0.78,
+          "wall_minutes": 44.3,
+          "tokens": {
+            "input": 362553,
+            "output": 103850,
+            "cache": 39587584,
+            "total": 40165221
+          }
+        }
+      ],
+      "model": {
+        "name": "MiniMax M3.1 Flash",
+        "id": "minimax-m3.1-flash",
+        "provider": "MiniMax",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "Three runs, 723, 762 and 702, so the official score is the median, 723 (Silver). All three went through MiniMax's own API at high effort, with the client approving every permission. Security ran 215 to 232 of 250 and bugs 147, 147 and 124 of 150; performance 121, 128 and 89 of 150; architecture stayed low (108 to 119 of 200) and clean code lower (21, 32 and 46 of 100). The reports covered 25, 25 and 23 of the 36 planted flaws, with one to three false positives and 14 to 16 extra findings, and were rated 40, 43 and 40 of 50. Every run lost 25 points of compatibility for one COMP-008: the login lockout it added answers 401, even to the right password, during the block; the first also lost 15 to a COMP-005 and the third took the PEN-001 penalty once, for code that writes a credential to the log. Sessions took 78, 46 and 44 minutes and cost US$ 0.74, 0.69 and 0.78.",
+        "pt_BR": "Três execuções, 723, 762 e 702, então a nota oficial é a mediana, 723 (Silver). As três passaram pela API própria da MiniMax em esforço high, com o cliente aprovando todas as permissões. Segurança ficou entre 215 e 232 de 250 e bugs em 147, 147 e 124 de 150; desempenho 121, 128 e 89 de 150; arquitetura ficou baixa (108 a 119 de 200) e código limpo ainda mais (21, 32 e 46 de 100). Os relatórios cobriram 25, 25 e 23 dos 36 defeitos plantados, com um a três falsos positivos e 14 a 16 achados extras, e tiveram 40, 43 e 40 de 50. Todas perderam 25 pontos de compatibilidade por um COMP-008: o bloqueio de login que adicionou responde 401, até à senha certa, durante o bloqueio; a primeira perdeu ainda 15 por um COMP-005 e a terceira levou a penalidade PEN-001 uma vez, por código que escreve uma credencial no log. As sessões levaram 78, 46 e 44 minutos e custaram US$ 0,74, 0,69 e 0,78."
+      }
+    },
+    {
       "agent": "gpt-6-astra-ultra",
       "score": 721,
       "grade": "Silver",
