@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.351`
+**Versão atual:** `0.2.352`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.352` — 2026-11-19 — LEB-D-300-A's aggregate adds dots.3 Note Preview at high, which did not deliver: two runs of 100, Reprovada, 63rd of 63
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 62 to 63
+  agents; the other 62 entries are unchanged, reading included.
+- dots.3 Note Preview at `high` through OpenRouter's free variant (id `dots-studio-dots-3-note-preview-free-high`), published on the owner's word of 2026-11-19 ("dots-3 - publica relatando que não entregou"): two runs, both
+  100 (Reprovada, last of 63). In both the session ended on its own with the work folder identical to the package, so the model delivered no change and no report; the 100 points are the contract left untouched
+  (compatibility 100) and every other area is 0. The owner's reading is that the task was asked and the model did not deliver, which is a result and not a fault of the lab, so nothing is voided.
+- The configuration made 11 attempts: the other 9 ended when a response reached the client's output length limit (the last response of each is cut by length), with no report and no delivery. They are not scored and are
+  not archived as runs, so the aggregate's two runs are the two that ended on their own; the reading says it. Run 2 was judged on 2026-11-19 (four judges, empty report), run 1 on 2026-11-08.
+- Judged blind like every D run: two matching judges and two blind judges for the report, who agreed on every item of both runs. Aggregate only: no flaw, verdict or delivery.
 
 ### `0.2.351` — 2026-11-19 — docs/model-safeguards.md says that Claude Fable 5.1 is published on LEB-D-300-A at high and medium and how the stopped tries are counted there
 

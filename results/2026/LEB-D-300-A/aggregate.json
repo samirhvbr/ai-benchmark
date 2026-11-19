@@ -7760,6 +7760,112 @@
       }
     },
     {
+      "agent": "dots-studio-dots-3-note-preview-free-high",
+      "score": 100,
+      "grade": "Reprovada",
+      "runs_count": 2,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 0,
+        "BUG": 0,
+        "PERF": 0,
+        "CLN": 0,
+        "COMP": 100,
+        "EXPL": 0
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 0.0,
+      "wall_minutes": 3.4,
+      "tokens": {
+        "input": 191210,
+        "output": 4422,
+        "cache": 603136,
+        "total": 805434
+      },
+      "statistics": {
+        "scheduled": 2,
+        "quality": {
+          "n": 2,
+          "systems": 1,
+          "mean": 100.0,
+          "low": 100.0,
+          "high": 100.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 2,
+          "systems": 1,
+          "mean": 100.0,
+          "low": 100.0,
+          "high": 100.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 2,
+          "scheduled": 2,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 2,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 100,
+        "min": 100,
+        "max": 100
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 100,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 5.6,
+          "tokens": {
+            "input": 301161,
+            "output": 7337,
+            "cache": 1025536,
+            "total": 1346554
+          }
+        },
+        {
+          "run": 2,
+          "total": 100,
+          "grade": "Reprovada",
+          "cost_usd": 0.0,
+          "wall_minutes": 1.2,
+          "tokens": {
+            "input": 81259,
+            "output": 1507,
+            "cache": 180736,
+            "total": 264315
+          }
+        }
+      ],
+      "model": {
+        "name": "dots.3 Note Preview",
+        "id": "dots-studio/dots-3-note-preview:free",
+        "provider": "dots.studio",
+        "reasoning_effort": "high",
+        "client_mode": "permissions auto-approved"
+      },
+      "comment": {
+        "en": "Two runs of a case of five, both 100 (Reprovada), and the model did not deliver: asked to fix, refactor and report, it ended each session on its own with the work folder identical to the package, with no change and no report. The 100 points are the contract left untouched (compatibility 100); every other area scored 0. This is the result, not a fault of the lab, and nothing was voided. The configuration made 11 attempts in all: the other 9 ended when a response reached the client's output length limit, with no report and no delivery, and are not scored or archived as runs. It ran through OpenRouter's free variant, at no cost, in about 6 and 1 minutes and 1.3 and 0.3 million tokens. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on every item. It ran with the client's auto-approval flag, an exception to the series' rule against bypassing approvals (see the notes).",
+        "pt_BR": "Duas execuções de um caso de cinco, ambas 100 (Reprovada), e o modelo não entregou: pedido para corrigir, refatorar e relatar, encerrou cada sessão por conta própria com a pasta de trabalho idêntica ao pacote, sem mudança e sem relatório. Os 100 pontos são o contrato intocado (compatibilidade 100); todas as outras áreas fizeram 0. Este é o resultado, não uma falha do laboratório, e nada foi anulado. A configuração fez 11 tentativas no total: as outras 9 terminaram quando uma resposta bateu no limite de tamanho de saída do cliente, sem relatório e sem entrega, e não são pontuadas nem arquivadas como execuções. Rodou pela variante gratuita da OpenRouter, sem custo, em cerca de 6 e 1 minutos e 1,3 e 0,3 milhão de tokens. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em todos os itens. Rodou com o sinalizador de aprovação automática do cliente, uma exceção à regra da série contra desligar as aprovações (veja as notas)."
+      }
+    },
+    {
       "agent": "cohere-north-mini-code-free-high",
       "score": 97,
       "grade": "Reprovada",
