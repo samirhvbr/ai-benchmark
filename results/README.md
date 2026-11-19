@@ -170,7 +170,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 12 | `claude-sonnet-5.5-high` | **713** | 700 to 728 | Silver | 138 | 199 | 173 | 66 | 100 | 41 | 5/5 (707 · 734 · 702 · 694 · 730) |
 | 13 | `gpt-6-astra-ultra` | **698** | 662 to 734 | Silver | 142 | 209 | 194 | 20 | 100 | 42 | 5/5 (690 · 629 · 690 · 749 · 734) |
 | 14 | `gpt-6.1-sol-xhigh` | **684** | 664 to 704 | Silver | 130 | 209 | 184 | 29 | 100 | 42 | 5/5 (685 · 718 · 695 · 650 · 670) |
-| 15 | `gpt-6.2-sol-xhigh` | **662** | 662 to 662 | Silver | 158 | 195 | 172 | 0 | 100 | 42 | 1/1 (662) |
+| 15 | `gpt-6.2-sol-xhigh` | **682** | 662 to 703 | Silver | 152 | 197 | 176 | 20 | 100 | 42 | 2/2 (662 · 703) |
 | 16 | `gpt-6.1-sol-high` | **661** | 631 to 689 | Silver | 128 | 203 | 181 | 16 | 100 | 43 | 5/5 (694 · 607 · 641 · 691 · 674) |
 | 17 | `gpt-6.1-sol-ultra` | **638** | 630 to 646 | Silver | 91 | 209 | 189 | 12 | 100 | 42 | 5/5 (648 · 622 · 634 · 639 · 648) |
 | 18 | `grok-4.7` | **605** | 588 to 622 | Silver | 101 | 206 | 157 | 0 | 100 | 43 | 5/5 (627 · 579 · 616 · 620 · 584) |
@@ -248,7 +248,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `gpt-6.1-sol-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 683.6 (664.0 to 704.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 685, lowest 650, highest 718.
 
-`gpt-6.2-sol-xhigh`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 662.0 (662.0 to 662.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 662, lowest 662, highest 662.
+`gpt-6.2-sol-xhigh`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 682.5 (662.0 to 703.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 662, lowest 662, highest 703.
 
 `gpt-6.1-sol-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 661.4 (631.2 to 688.8); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 674, lowest 607, highest 694.
 

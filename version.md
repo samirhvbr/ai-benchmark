@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.341`
+**Versão atual:** `0.2.342`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.342` — 2026-11-19 — LEB-D-300-A's aggregate gives GPT-6.2-sol at xhigh a second run: 662 and 703, mean 682, Silver, 15th of 60
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate stays at
+  60 agents; GPT-6.2-sol (the OpenAI API-key entry) goes from one run to two and the other 59 entries are unchanged.
+- GPT-6.2-sol at `xhigh` through the OpenAI API key, Codex CLI 0.159.3 (which did not know the model and used fallback metadata): run 2 scored 703 (Silver; about 13 minutes and 4.5 million tokens, the log keeps no
+  cost): bug fixing 199, performance 181, architecture 146, clean code 40, compatibility 100 and 5 points lost for reporting something that is not a flaw. With run 1 (662) the entry's score is the mean, 682, Silver, 15th of 60.
+- Judged blind like every D run: two matching judges and two blind judges for the report. The matching judges differed on one planted row (whether one finding of the report counts as a report of it, which also decided
+  its location and explanation criteria); the owner settled it on 2026-11-19 in favor of the judge who did not credit it, so the finding stays an extra finding and the fix counts as silent. Aggregate only: no flaw,
+  verdict or delivery.
+- The reading now says two runs and points at GPT-6.2-sol (ChatGPT plan), the same model through the owner's ChatGPT plan login with Codex CLI 0.170.0 (716, one run). Versions 0.2.335 to 0.2.341 said that the reading
+  of each of the two entries points at the other; only the plan entries did, and the readings of the API-key entries are being corrected one track at a time (this one first).
 
 ### `0.2.341` — 2026-11-19 — LEB-300-A's aggregate adds GPT-6.2-astra through the ChatGPT plan at xhigh as its own entry: one run, 862, Gold, 5th of 40
 
