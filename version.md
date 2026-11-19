@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.331`
+**Versão atual:** `0.2.332`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.332` — 2026-11-19 — results/ adds GPT-6.2-sol at xhigh to LEB-100-A: one run, 590, Bronze, 38th of 64
+
+- The leaderboard goes from 63 agents and 142 runs to 64 agents and 143 runs; the entries of the other 63 agents are unchanged. The new run folder carries its delivery, `mecanico.json`, `veredito.json`, `scorecard.json` and
+  `.md`, and `run.json`; the section of 2026-11-19 of `results/2026/LEB-100-A/README.md` now covers both GPT-6.2 runs and `comments.json` has the reading; the pins of `tests/test_saturacao.py` follow the new data (64 agents
+  and 143 runs, 46 agents at the performance maximum, the dispatcher fixed by 1 of 64 and the label rule left alone by most).
+- GPT-6.2-sol (`gpt-6.2-sol`) at `xhigh`, the owner's order of 2026-11-19: one run through Codex on the OpenAI API key, with approvals and sandbox bypassed (the Codex lane's recorded exception). It scored 590 (label XD, 38th
+  of 64; 8.9 minutes and 0.85 million tokens; the Codex log keeps no cost): it reported 9 of the 13 planted flaws and fixed 9, scored 0 in architecture and in clean code, lost 60 points of compatibility for two COMP-003, and
+  had no penalty. GPT-6.2-astra, run on the same day, scored 846.
+- The lab's Codex client, CLI 0.159.3, predates the model: it logged that it had no metadata for it and ran it with its fallback metadata; `run.json` and the reading say so.
+- Judged blind like the others: one matching judge and one blind EXPL judge, both Claude Opus subagents, on a delivery with no name on it.
 
 ### `0.2.331` — 2026-11-19 — results/ adds GPT-6.2-astra at xhigh to LEB-100-A: one run, 846, Gold, 1st on the instance
 

@@ -1,0 +1,352 @@
+{
+  "leb_spec": "1.1.0",
+  "model": {
+    "name": "GPT-6.2-sol",
+    "version": "not recorded",
+    "provider": "OpenAI"
+  },
+  "instance": "LEB-100-A v1.1",
+  "matrix_sha256": "68088abdb7bc54fa949be972b5cf1f89c2c1c3c9f95b6e472385a6fa084c8625",
+  "protocol": {
+    "mode": "A",
+    "date": "2026-11-19",
+    "runs": [
+      590
+    ]
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 1
+      },
+      "points_earned": 10,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-003",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-008",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 0
+      },
+      "points_earned": 2,
+      "points_possible": 6,
+      "confidence": 90,
+      "reported": true
+    },
+    {
+      "id": "SEC-013",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 98,
+      "reported": true
+    },
+    {
+      "id": "SEC-014",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-015",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "SEC-017",
+      "template": "C",
+      "severity": "Crítica",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 3,
+        "C4": 2,
+        "C5": 0
+      },
+      "points_earned": 9,
+      "points_possible": 10,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "BUG-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "BUG-004",
+      "template": "C",
+      "severity": "Média",
+      "difficulty": "Difícil",
+      "criteria": {
+        "C1": 0,
+        "C2": 0,
+        "C3": 2,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 4,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "PERF-001",
+      "template": "C",
+      "severity": "Alta",
+      "difficulty": "Moderada",
+      "criteria": {
+        "C1": 2,
+        "C2": 1,
+        "C3": 3,
+        "C4": 1,
+        "C5": 1
+      },
+      "points_earned": 8,
+      "points_possible": 8,
+      "confidence": 100,
+      "reported": true
+    },
+    {
+      "id": "ARCH-002",
+      "template": "R",
+      "severity": "Alta",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 10,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "ARCH-009",
+      "template": "R",
+      "severity": "Baixa",
+      "difficulty": "Moderada",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 6,
+      "confidence": null,
+      "reported": false
+    },
+    {
+      "id": "CLN-007",
+      "template": "R",
+      "severity": "Média",
+      "difficulty": "Fácil",
+      "criteria": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 0,
+        "R4": 0
+      },
+      "points_earned": 0,
+      "points_possible": 8,
+      "confidence": null,
+      "reported": false
+    }
+  ],
+  "categories": {
+    "SEC": {
+      "raw_earned": 53,
+      "raw_possible": 58,
+      "score": 228,
+      "max": 250
+    },
+    "ARCH": {
+      "raw_earned": 0,
+      "raw_possible": 16,
+      "score": 0,
+      "max": 200
+    },
+    "BUG": {
+      "raw_earned": 12,
+      "raw_possible": 14,
+      "score": 129,
+      "max": 150
+    },
+    "PERF": {
+      "raw_earned": 8,
+      "raw_possible": 8,
+      "score": 150,
+      "max": 150
+    },
+    "CLN": {
+      "raw_earned": 0,
+      "raw_possible": 8,
+      "score": 0,
+      "max": 100
+    },
+    "COMP": {
+      "score": 40,
+      "max": 100,
+      "violations": [
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "The SLA average on the listing is computed over the logged-in client's own tickets (delivered index.php:111, mediaRespostaPorDono($db, $donoId)) instead of the contracted global figure; mediaResposta() itself stays global. Changing which tickets the average covers is COMP-003; charged to SEC-017's C5 (rule 13), as in every earlier verdict with this behaviour."
+        },
+        {
+          "id": "COMP-003",
+          "count": 1,
+          "deduction": -30,
+          "detail": "formatarStatus now returns 'Desconhecido' instead of 'Resolvido' for any status other than 1, 2 or 3 (delivered lib.php:67-77), from extra finding F21. Charged as in D, U, AS, BC, BM, CD, CE and CI; it comes from an extra finding, so no planted flaw's C5/R4 changes."
+        }
+      ]
+    },
+    "EXPL": {
+      "score": 43,
+      "max": 50,
+      "rubric": {
+        "clareza": 9,
+        "precisao": 9,
+        "causa_raiz": 9,
+        "priorizacao": 7,
+        "trade_offs": 9
+      }
+    }
+  },
+  "penalties": [],
+  "extra_findings": [
+    "F3 — listing and search not scoped to the owner (index.php:72-74): real per the manifest's visibility rule; clients now get only their own tickets, technicians all (enforcement). More than 10 lines from index.php:53, so not SEC-017 (rulings A1).",
+    "F5 — CSV route exports every client's tickets (index.php:44-47): real; the web route now filters by owner for clients while technicians and the public exportarCsv() keep the global set (ruled enforcement, not COMP). Describes the export, not the ?ver= IDOR, so not SEC-017.",
+    "F7 — fixed shared export file EXPORT_DIR/chamados.csv truncated/overwritten by concurrent requests (lib.php:125-150): real race; the CSV is now streamed to php://output.",
+    "F11 — SLA indicator aggregates other clients' tickets (index.php:72-78): calls contracted behaviour a defect; the change it made is charged as COMP-003 (SEC-017 C5).",
+    "F13 — no login rate limiting (index.php:20-28): real, not fixed (SEC-005-like hardening outside the matrix).",
+    "F16 — mediaResposta transfers every answered row to PHP (lib.php:109-116): real minor inefficiency; now SUM/COUNT in SQL with the same float quotient.",
+    "F17 — exportarCsv coupled to a writable EXPORT_DIR and returning silently when fopen fails (lib.php:123-135): real robustness/architecture issue; not BUG-004 (does not state the leaked handle).",
+    "F18 — connect_errno check is dead under mysqli strict reporting, set_charset unchecked, diagnostics could reach the visitor (index.php:9-13): real; now strict mode, display_errors off, logged generic 500.",
+    "F19 — array-shaped HTTP parameters cause TypeError on login/search and (int) of an array selects id 1 on ?ver= (index.php:20-22, 52-53, 72-73): real; now string-only input and an integer-format check.",
+    "F20 — fputcsv quotes the 'Aberto em' header so the header is not the manifest's exact literal, and relies on the backslash escape (lib.php:130-144): real; header now written literally (allowed, rule 9) and escape disabled explicitly.",
+    "F21 — formatarStatus maps any code other than 1/2 to 'Resolvido' (lib.php:26-34): calls contracted behaviour a defect; the change to 'Desconhecido' is charged as COMP-003 (rule 14, CE review).",
+    "F22 — rotuloPrioridade folds distinct priorities into the same labels (lib.php:40-58): contracted behaviour, kept unchanged, so an extra (rule 14).",
+    "F23 — unbounded listing with SELECT * and a leading-% substring search (lib.php:78-92): real (SELECT * is a known unplanted PERF-002); not fixed; proposes no index, so not the PERF-006 decoy."
+  ],
+  "total": 590,
+  "grade": "Bronze",
+  "calibration": {
+    "reported_count": 9,
+    "brier": 0.001,
+    "high_conf_false_positive_rate": 0.0,
+    "bins": [
+      {
+        "range": "81-100",
+        "count": 9,
+        "mean_confidence": 98.7,
+        "hit_rate": 1.0
+      }
+    ]
+  },
+  "difficulty_breakdown": {
+    "levels": [
+      {
+        "difficulty": "Difícil",
+        "planted": 4,
+        "detected": 3,
+        "corrected": 3
+      },
+      {
+        "difficulty": "Fácil",
+        "planted": 6,
+        "detected": 4,
+        "corrected": 4
+      },
+      {
+        "difficulty": "Moderada",
+        "planted": 3,
+        "detected": 2,
+        "corrected": 2
+      }
+    ],
+    "discovery_index": 70.8
+  }
+}
