@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.352`
+**Versão atual:** `0.2.353`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.353` — 2026-11-19 — LEB-S-300-A's aggregate adds dots.3 Note Preview at high, which did not deliver: two runs of 100, Reprovada
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py --write --only dots-studio-dots-3-note-preview-free-high` from the lab's private archive, plus
+  one dated sentence in the Results paragraph of `instances/LEB-S-300-A/README.md`. The aggregate goes from 41 to 42 agents; the other 41 entries are unchanged.
+- dots.3 Note Preview at `high` through OpenRouter's free variant (id `dots-studio-dots-3-note-preview-free-high`), published on the owner's word of 2026-11-19 ("dots-3 - publica relatando que não entregou"): two runs,
+  both 100 (Reprovada). In both the session ended on its own with the code identical to the package, so the model delivered no change and no report: security 0 of 850, and the 100 points are the contract left untouched
+  (compatibility 100). It is a result and not a fault of the lab, so nothing is voided. Run 1 took 20.6 minutes and 3.5 million tokens, run 2 4.0 minutes and 1.3 million, at no cost.
+- It made 10 attempts: the other 8 are not scored and not archived as runs (7 ended when a response reached the client's output length limit, 1 when the provider's content filter stopped it, none with a report); the
+  lab numbers them 1 to 8 and the two runs 9 and 10, which are numbered 1 and 2 here (the run record says so). The reading says it; the aggregate's own statistics read "2 of 2 completed".
+- Four blind judges read each delivery (two for the planted items, two for the report) and agreed on every item of both runs. Aggregate only: no vulnerability, verdict or delivery.
+- Correction to 0.2.352: its subject called dots.3 Note Preview "63rd of 63" on LEB-D-300-A. It is 62nd of 63; Cohere North Mini Code (97) is the last. The entry and the aggregate were right, only the subject was not.
 
 ### `0.2.352` — 2026-11-19 — LEB-D-300-A's aggregate adds dots.3 Note Preview at high, which did not deliver: two runs of 100, Reprovada, 63rd of 63
 

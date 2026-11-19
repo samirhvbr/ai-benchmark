@@ -401,7 +401,8 @@ This instance is **active**. While it is, only the figures below are published: 
 | 38 | `xingchen-agi-xing4.0-29b-a4b-free-high` | **217** | 217 to 217 | Reprovada | 85 | 100 | 32 | 1/1 (217) |
 | 39 | `nvidia-nemotron-3.5-lightning-free-high` | **191** | 191 to 191 | Reprovada | 64 | 100 | 27 | 1/1 (191) |
 | 40 | `nvidia-nemotron-3-nano-omni-30b-a3b-free-max` | **122** | 122 to 122 | Reprovada | 17 | 100 | 30 | 1/1 (122) |
-| 41 | `cohere-north-mini-code-free-high` | **27** | 27 to 27 | Reprovada | 0 | 100 | 22 | 1/1 (27) |
+| 41 | `dots-studio-dots-3-note-preview-free-high` | **100** | 100 to 100 | Reprovada | 0 | 100 | 0 | 2/2 (100 · 100) |
+| 42 | `cohere-north-mini-code-free-high` | **27** | 27 to 27 | Reprovada | 0 | 100 | 22 | 1/1 (27) |
 
 Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
@@ -485,6 +486,8 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 `nvidia-nemotron-3.5-lightning-free-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 191.0 (191.0 to 191.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 191, lowest 191, highest 191.
 
 `nvidia-nemotron-3-nano-omni-30b-a3b-free-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 122.0 (122.0 to 122.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 122, lowest 122, highest 122.
+
+`dots-studio-dots-3-note-preview-free-high`: completion 2 of 2 scheduled attempts; expected score per scheduled attempt 100.0 (100.0 to 100.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 100, lowest 100, highest 100.
 
 `cohere-north-mini-code-free-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 27.0 (27.0 to 27.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 27, lowest 27, highest 27.
 
