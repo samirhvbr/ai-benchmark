@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.348`
+**Versão atual:** `0.2.349`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.349` — 2026-11-19 — LEB-D-300-A's aggregate adds Claude Fable 5.1 at high: one run, 781, Gold, the only one of 11 attempts that got to deliver
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive. The aggregate goes from 60 to 61
+  agents; the other 60 entries are unchanged, reading included.
+- Claude Fable 5.1 at `high` (id `claude-fable-5.1-high`), published on the owner's word of 2026-11-19 ("publica fable 5.1"): one run of the case of five, made on 2026-10-16 on the long-lived token of the owner's personal
+  Claude account (a subscription, so the client's cost is an accounting at API list prices, not a charge), Claude Code 2.1.295. It scored 781 (Gold; 21 minutes of model time, US$ 11.32 at list prices): bug fixing 209,
+  performance 172, architecture 150, clean code 106, compatibility 100, with the report rated 44 of 50. The blind judges differed on one criterion of one row, which the owner settled on 2026-10-16.
+- It is the only one of 11 attempts at this effort that got to deliver: 8 were stopped at the start by the model's own safeguard and 2 were lost to the lab when the API credit ran out
+  (`docs/model-safeguards.md`). The lab never counted a stopped try as a scheduled run, and how those extra attempts count in the statistics is still the open decision of that page, so none of them is archived as a run
+  and the aggregate's own statistics read "1 of 1 completed". The reading therefore opens by saying so, and says that the figure is what the model delivered when it got through, not how often it does.
 
 ### `0.2.348` — 2026-11-19 — LEB-D-300-A's reading of GPT-6.2-astra (API key) states the same numbers in English and Portuguese again, as 0.2.346 should have left it
 

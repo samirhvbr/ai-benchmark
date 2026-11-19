@@ -931,6 +931,98 @@
       }
     },
     {
+      "agent": "claude-fable-5.1-high",
+      "score": 781,
+      "grade": "Gold",
+      "runs_count": 1,
+      "package_sha256": "3370984d863313e524b7e976eca416d043489fa8f67858e70dabd5998f4dba4e",
+      "categories": {
+        "ARCH": 150,
+        "BUG": 209,
+        "PERF": 172,
+        "CLN": 106,
+        "COMP": 100,
+        "EXPL": 44
+      },
+      "category_max": {
+        "ARCH": 283,
+        "BUG": 213,
+        "PERF": 213,
+        "CLN": 141,
+        "COMP": 100,
+        "EXPL": 50
+      },
+      "cost_usd": 11.32,
+      "wall_minutes": 20.8,
+      "tokens": {
+        "input": 1356,
+        "output": 76989,
+        "cache": 8455925,
+        "total": 8534270
+      },
+      "statistics": {
+        "scheduled": 1,
+        "quality": {
+          "n": 1,
+          "systems": 1,
+          "mean": 781.0,
+          "low": 781.0,
+          "high": 781.0
+        },
+        "expected_per_scheduled_attempt": {
+          "n": 1,
+          "systems": 1,
+          "mean": 781.0,
+          "low": 781.0,
+          "high": 781.0
+        },
+        "completion": {
+          "rate": 1.0,
+          "completed": 1,
+          "scheduled": 1,
+          "systems_all_completed": 1,
+          "systems": 1
+        },
+        "outcomes": {
+          "completed": 1,
+          "blocked": 0,
+          "blocked_at_the_start": 0,
+          "blocked_during_the_work": 0,
+          "budget_exhausted": 0,
+          "switched": 0
+        },
+        "lab_failures_rerun": 0,
+        "median": 781,
+        "min": 781,
+        "max": 781
+      },
+      "runs": [
+        {
+          "run": 1,
+          "total": 781,
+          "grade": "Gold",
+          "cost_usd": 11.32,
+          "wall_minutes": 20.8,
+          "tokens": {
+            "input": 1356,
+            "output": 76989,
+            "cache": 8455925,
+            "total": 8534270
+          }
+        }
+      ],
+      "model": {
+        "name": "Claude Fable 5.1",
+        "id": "claude-fable-5-1",
+        "provider": "Anthropic",
+        "reasoning_effort": "high"
+      },
+      "comment": {
+        "en": "One run of a case of five scored 781 (Gold), and it is the only one of 11 attempts at this effort that got to deliver: 8 were stopped at the start by the model's own safeguard, before it answered or changed anything, and 2 were lost to the lab when the API credit ran out (docs/model-safeguards.md). The run completed inside the 90-minute budget, at about US$ 11.32 at list price (it ran on the owner's personal Claude account, a subscription) and 21 minutes, and did not break a behavior the public tests protect (compatibility 100). Bug fixing was the strongest area (209 of 213), then performance (172 of 213), clean code (106 of 141) and architecture (150 of 283). The report was rated 44 of 50. It is one system, so how the configuration does across systems is not measured yet. The blind judges agreed on almost every item, and a person settled the rest. The stopped attempts are not in this figure, which says what the model delivered when it got through, not how often it does.",
+        "pt_BR": "Uma execução de um caso de cinco fez 781 (Gold), e é a única das 11 tentativas neste esforço que chegou a entregar: 8 foram paradas no início pela salvaguarda do próprio modelo, antes de ele responder ou mudar qualquer coisa, e 2 se perderam para o laboratório quando o crédito da API acabou (docs/model-safeguards.md). A execução terminou dentro do orçamento de 90 minutos, por cerca de US$ 11,32 de preço de tabela (rodou na conta pessoal do dono no Claude, uma assinatura) e 21 minutos, e não quebrou um comportamento que os testes públicos protegem (compatibilidade 100). Corrigir bugs foi a área mais forte (209 de 213), depois desempenho (172 de 213), código limpo (106 de 141) e arquitetura (150 de 283). O relatório teve 44 de 50. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. Os juízes cegos concordaram em quase todos os itens, e uma pessoa decidiu o resto. As tentativas paradas não estão neste número, que diz o que o modelo entregou quando passou, não com que frequência passa."
+      }
+    },
+    {
       "agent": "claude-opus-5.5-high",
       "score": 732,
       "grade": "Silver",
