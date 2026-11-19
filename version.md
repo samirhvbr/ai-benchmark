@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.346`
+**Versão atual:** `0.2.347`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.347` — 2026-11-19 — .continue/ records what is missing from Claude Fable 5.2: LEB-S-300-A has 3 of its 5 runs published, run 4 ended blocked and is not scored, run 5 waits
+
+- `.continue/fable-5-2-faltando.md`, a queue item (Portuguese, the language the queue is thought in) written at the owner's request of 2026-11-19 ("deixa documentado que esta faltando o fable, depois eu passo mais
+  runs, agora vamos parar as runs"). It says where Claude Fable 5.2 at `xhigh` stands on the four LEBs: LEB-D-300-A 5 of 5 (858, Gold, 3rd of 60), LEB-100-A 3 of 3, LEB-300-A 3 of 3 (946, Platinum, 1st of 42) and
+  LEB-S-300-A 3 of 5 published (968, 995 and 995, mean 986, 8th of 41).
+- What is missing is only on LEB-S-300-A: run 4 ended blocked by a provider refusal after 57 minutes and is not scored (a run without a score holds the whole configuration out of a publication), and run 5, 994, is
+  judged and closed but waits for it. More runs are the owner's to order later. No run is in progress.
+- The item leaves the queue when the five runs are in `results/` (or the owner closes the case with fewer), in the commit that carries them. No score, rank, run or aggregate changes in this version.
 
 ### `0.2.346` — 2026-11-19 — readings of the API-key GPT-6.2 entries point at their ChatGPT-plan entries on all four tracks, the pointer that 0.2.335 to 0.2.343 said was there
 
