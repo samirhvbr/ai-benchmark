@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.366`
+**Versão atual:** `0.2.367`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,17 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.367` — 2026-11-22 — LEB-D-300-A's aggregate completes Claude Fable 5.1 at high: five runs, mean 747, Silver, and documents why it had a single run
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive (`archive-config.py ...
+  --also --map 1=1,20=2,23=3,37=4,42=5`, so the five completed runs are numbered 1 to 5), plus `docs/model-safeguards.md`. The aggregate stays at 61 agents; the other 60 entries are unchanged (checked by agent against HEAD).
+- Claude Fable 5.1 at `high` goes from one run to five: 781 (2026-10-16) and four new runs of 2026-11-22, 774, 720, 763 and 699. The estimate is the mean, 747 (Silver, 95% interval 718 to 775), against the single run
+  of 781 (Gold) it replaces; each run cost about US$ 11 to 13 at list price and took 25 to 30 minutes, and none broke a behavior the public tests protect. The blind judges agreed on every item of three of the four new
+  runs and, on the other two, differed only on one finding each that the owner's standing rule of 2026-10-22 settles.
+- The reason the entry had a single run is now written down, in the reading of the entry (English and Portuguese) and in `docs/model-safeguards.md`: the model's own safeguard stops most attempts at this effort at the first
+  message. The lab made 42 attempts at `high`: 5 delivered, 35 were stopped at the start and 2 were lost when the API credit ran out. Until 2026-11-22 the count was 11 attempts, 1 delivered; on 2026-11-22 the same
+  message, never reworded, was repeated for 31 attempts, 27 stopped and 4 delivered. The stopped attempts are in none of the published figures. The table of the record and the paragraphs that said one run are updated.
 
 ### `0.2.366` — 2026-11-22 — LEB-D-300-A's aggregate completes GPT-6.2-astra at xhigh: five runs, mean 893, Gold
 

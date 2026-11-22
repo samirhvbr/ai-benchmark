@@ -27,22 +27,22 @@ two messages), and it does not treat the stop as a fault of the lab.
   not rerun it; it enters the expected score per scheduled attempt (§9), never the quality score. For Fable, on the owner's request, the
   lab has also repeated the same message after a block, never reworded, up to a fixed number of attempts per run; how those extra
   attempts count in the statistics is a decision still open. Since 2026-11-19 the track publishes Fable 5.1 at `high` (one completed
-  run) and at `medium` (five completed runs), each from its completed runs: the tries the safeguard stopped are not archived as
-  runs, so the aggregate's own statistics read as if every scheduled run completed (1 of 1 at `high`, 5 of 5 at `medium`), and the
-  readings and the table below carry the counts. At `xhigh` there is no completed run and therefore no row.
+  run until 2026-11-22, five since) and at `medium` (five completed runs), each from its completed runs: the tries the safeguard
+  stopped are not archived as runs, so the aggregate's own statistics read as if every scheduled run completed (5 of 5 at both
+  efforts), and the readings and the table below carry the counts. At `xhigh` there is no completed run and therefore no row.
 - **LEB-300-A and LEB-100-A.** The protocol has no *blocked* outcome: a configuration is on the leaderboard once it has completed
   runs. A configuration whose every attempt is blocked has no run and no row, and a missing row says that the task trips the
   safeguard for that configuration, not that the model scores low.
 
 ## The record
 
-Counts of the lab's own attempts, as of 2026-10-27 (UTC−3). The evidence of each attempt stays in the private lab records.
+Counts of the lab's own attempts, as of 2026-10-27 (UTC−3), except LEB-D-300-A at `high`, which is as of 2026-11-22. The evidence of each attempt stays in the private lab records.
 
 | Instance | Effort | Attempts | Completed | Blocked at the start | Other |
 | --- | --- | ---: | ---: | ---: | --- |
 | LEB-300-A | `medium` | 60 | 0 | 60 | none |
 | LEB-100-A | `medium` | 8 | 0 | 8 | none |
-| LEB-D-300-A | `high` | 11 | 1 | 8 | 2 lab failures (the API credit ran out) |
+| LEB-D-300-A | `high` | 42 | 5 | 35 | 2 lab failures (the API credit ran out) |
 | LEB-D-300-A | `medium` | 8 | 5 | 3 | none |
 | LEB-D-300-A | `xhigh` | 2 | 0 | 1 | 1 lab failure |
 
@@ -50,10 +50,16 @@ Counts of the lab's own attempts, as of 2026-10-27 (UTC−3). The evidence of ea
   runs) and 24 on 2026-10-27 through a Claude subscription token (8 for each of three runs). The route does not matter: the stop
   comes from the model. The message is the instance's fixed first message, the same for every agent.
 - **LEB-300-A at `high`:** one completed run is published (836).
-- **LEB-D-300-A:** the safeguard stops Fable 5.1 on the Default track in a part of the attempts at every effort tried: 8 of 11 at
+- **LEB-D-300-A:** the safeguard stops Fable 5.1 on the Default track in a part of the attempts at every effort tried: 35 of 42 at
   `high`, 3 of 8 at `medium`, and the second attempt at `xhigh` (13 seconds after the first message, 2026-10-16). At `medium` each of
   the three stopped tries was the first try of a run that completed on the second, on the same machine, so the five scheduled runs
-  all completed; at `high` the one completed run is the only row, 781, and 8 of its 11 attempts were stopped at the start.
+  all completed; at `high` the five completed runs (781, 774, 720, 763 and 699) are the five rows of the entry.
+- **Why LEB-D-300-A at `high` had a single run until 2026-11-22.** Of the 11 attempts made by then, one delivered (781, on
+  2026-10-16), eight were stopped at the start by the safeguard and two were lost to the lab when the API credit ran out, so the five
+  runs the design schedules could not be had. On 2026-11-22 the lab repeated the same message, never reworded, until four more runs
+  delivered: 31 attempts, 27 of them stopped at the start and 4 delivered (774, 720, 763 and 699). Over the 42 attempts the model got
+  through 5 times, about one in eight. The stopped attempts are in none of the published figures: the entry says what the model
+  delivered when it got through, not how often it does.
 - **LEB-100-A at `medium`: 8 of 8 attempts blocked**, all on 2026-10-27 through a Claude subscription token, with the instance's fixed first message each time; the queue dropped the run after the eighth and made no
   other. Nothing was brought and there is no row.
 - **LEB-100-A at `xhigh`:** the published Fable 5.1 rows are at `xhigh` (two completed runs, 781 and 764). The two void runs above were hand runs of 2026-09-30 and 2026-10-01, before the lab pinned the model.

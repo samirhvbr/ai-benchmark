@@ -161,7 +161,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | 4 | `claude-sonnet-5.5-max` | **826** | 797 to 855 | Gold | 190 | 209 | 193 | 89 | 100 | 45 | 5/5 (793 · 785 · 827 · 874 · 849) |
 | 5 | `claude-sonnet-5.5-max-ultracode` | **815** | 815 to 815 | Gold | 158 | 164 | 161 | 60 | 100 | 17 | 1/5 (573 · 544 · 812 · 555 · 815) |
 | 6 | `claude-sonnet-5.5-xhigh` | **785** | 764 to 812 | Gold | 176 | 202 | 176 | 88 | 100 | 45 | 5/5 (752 · 772 · 836 · 785 · 781) |
-| 7 | `claude-fable-5.1-high` | **781** | 781 to 781 | Gold | 150 | 209 | 172 | 106 | 100 | 44 | 1/1 (781) |
+| 7 | `claude-fable-5.1-high` | **747** | 718 to 775 | Silver | 150 | 177 | 180 | 97 | 100 | 44 | 5/5 (781 · 774 · 720 · 763 · 699) |
 | 8 | `claude-opus-5.5-high` | **732** | 677 to 789 | Silver | 166 | 173 | 173 | 79 | 100 | 44 | 5/5 (716 · 812 · 625 · 712 · 793) |
 | 9 | `gpt-6-astra-xhigh` | **726** | 698 to 754 | Silver | 150 | 209 | 183 | 46 | 100 | 43 | 5/5 (672 · 739 · 706 · 735 · 776) |
 | 10 | `claude-fable-5.1-medium` | **720** | 699 to 741 | Silver | 137 | 165 | 188 | 93 | 100 | 43 | 5/5 (686 · 700 · 751 · 736 · 729) |
@@ -232,7 +232,7 @@ Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EX
 
 `claude-sonnet-5.5-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 785.2 (764.0 to 812.2); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 781, lowest 752, highest 836.
 
-`claude-fable-5.1-high`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 781.0 (781.0 to 781.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 781, lowest 781, highest 781.
+`claude-fable-5.1-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 747.4 (718.2 to 774.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 763, lowest 699, highest 781.
 
 `claude-opus-5.5-high`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 731.6 (676.8 to 789.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 716, lowest 625, highest 812.
 
