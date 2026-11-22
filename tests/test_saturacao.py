@@ -27,16 +27,16 @@ class Published(unittest.TestCase):
     def test_it_reproduces_the_numbers_measured_on_the_published_leb_100_a(self):
         report = self.report()
         at_max = {c: x["at_max"] for c, x in report["categories"].items()}
-        self.assertEqual(at_max, {"SEC": 6, "ARCH": 0, "BUG": 5, "PERF": 48, "CLN": 11, "COMP": 37, "EXPL": 0})
+        self.assertEqual(at_max, {"SEC": 6, "ARCH": 0, "BUG": 5, "PERF": 46, "CLN": 9, "COMP": 37, "EXPL": 0})
         self.assertEqual({c: x["planted_flaws"] for c, x in report["categories"].items()},
                          {"SEC": 7, "ARCH": 2, "BUG": 2, "PERF": 1, "CLN": 1, "COMP": 0, "EXPL": 0})
-        self.assertEqual((report["total"]["min"], report["total"]["max"], round(report["total"]["mean"])), (86, 846, 567))
+        self.assertEqual((report["total"]["min"], report["total"]["max"], round(report["total"]["mean"])), (86, 843, 559))
         self.assertEqual({c: x["category_max"] for c, x in report["categories"].items()},
                          {"SEC": 250, "ARCH": 200, "BUG": 150, "PERF": 150, "CLN": 100, "COMP": 100, "EXPL": 50})
 
     def test_the_base_is_declared_and_it_is_one_run_per_agent(self):
         base = self.report()["base"]
-        self.assertEqual((base["runs_in_base"], base["runs_total"], base["agents"]), (66, 145, 66))
+        self.assertEqual((base["runs_in_base"], base["runs_total"], base["agents"]), (64, 145, 64))
         self.assertIn("representative run of each agent", base["scope"])
         everything = self.report("--all-runs")["base"]
         self.assertEqual((everything["runs_in_base"], everything["scope"]), (145, "all runs"))
@@ -45,14 +45,14 @@ class Published(unittest.TestCase):
         r = run_py(TOOL)
         lines = r.stdout.splitlines()
         self.assertTrue(lines[1].startswith("base: representative run of each agent"))
-        self.assertIn("66 of 145 runs, 66 agents", lines[1])
+        self.assertIn("64 of 145 runs, 64 agents", lines[1])
 
     def test_per_flaw_rates_match_the_published_flaws(self):
         by = {f["flaw"]: f for f in self.report()["flaws"]}
         self.assertEqual(len(by), 13)
-        self.assertEqual((by["BUG-001"]["found_rate"], by["BUG-001"]["fixed_rate"]), (0.9242, 0.9697))
-        self.assertEqual(by["ARCH-002"]["fixed_rate"], 0.0303)
-        self.assertEqual(round(100 * by["SEC-014"]["fixed_rate"]), 42)
+        self.assertEqual((by["BUG-001"]["found_rate"], by["BUG-001"]["fixed_rate"]), (0.9219, 0.9688))
+        self.assertEqual(by["ARCH-002"]["fixed_rate"], 0.0156)
+        self.assertEqual(round(100 * by["SEC-014"]["fixed_rate"]), 41)
 
     def test_it_writes_nothing(self):
         before = {n: digest(os.path.join(RESULTS, n)) for n in ("runs.csv", "flaws.csv", "results.json", "README.md")}

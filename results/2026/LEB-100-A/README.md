@@ -1476,7 +1476,7 @@ runs the agent's figure on the leaderboard is the median, 843 (YN), and it stays
 
 ### Run of 2026-11-19
 
-Two deliveries were scored on this date (two agents): GPT-6.2-astra and GPT-6.2-sol, both at `xhigh`, new agents, one run each, through Codex on the OpenAI API key, which bills per token (the Codex log keeps tokens and no cost, so
+Two deliveries were scored on this date (two agents): GPT-6.2-astra and GPT-6.2-sol, both at `xhigh`, new agents, one run each, through Codex (the Codex log keeps tokens and no cost, so
 the records state none). They were made through the unattended lab (`laboratorio-codex-100.py`) as the earlier Codex runs were: one `codex exec` session of Codex CLI 0.159.3 each, which got the fixed first message once and ran to
 its own end under a 90-minute cap (`operator_replies` 0), with approvals and sandbox bypassed (the Codex lane's recorded exception), as the unprivileged user `leb` on a restored machine with GitHub blocked and the package as the
 only instance folder in `/srv`. The client predates both models: it logged that it had no metadata for them and ran them with its fallback metadata, which each `run.json` says. Each was judged blind like the others: a label drawn
@@ -1487,36 +1487,35 @@ at random among the two-letter ones not used before, one matching judge and one 
 | **SG** | GPT-6.2-astra, `xhigh`, run 1 | 846 |
 | **XD** | GPT-6.2-sol, `xhigh`, run 1 | 590 |
 
-- **GPT-6.2-astra at `xhigh` (SG): 846, Gold, 1st, a new agent.** One run so far: 11.7 minutes and 0.94 million tokens. It reported 11 of the 13 flaws and fixed 11 (BUG-004 was fixed without being reported): security 228
+- **GPT-6.2-astra at `xhigh` (SG): 846, Gold, run 1, a new agent.** 11.7 minutes and 0.94 million tokens. It reported 11 of the 13 flaws and fixed 11 (BUG-004 was fixed without being reported): security 228
   (SEC-008 reported and deliberately not fixed), bugs 129, performance 150 and clean code 100; architecture 125 (the dispatcher, ARCH-002, reported and refactored; the magic numbers, ARCH-009, neither named nor fixed);
-  compatibility 70 (one COMP-003: the listing's SLA average now counts only the logged-in client's tickets) and no penalty. Its report scored 44 of 50, with 12 extra findings and no false positive. It is the highest score on
-  the instance, three points above the median of Claude Fable 5.2 (843).
-- **GPT-6.2-sol at `xhigh` (XD): 590, Bronze, 38th, a new agent.** One run so far: 8.9 minutes and 0.85 million tokens. It reported 9 of the 13 flaws and fixed 9 (BUG-004 was fixed without being reported): security 228
+  compatibility 70 (one COMP-003: the listing's SLA average now counts only the logged-in client's tickets) and no penalty. Its report scored 44 of 50, with 12 extra findings and no false positive. It was the highest single run on
+  the instance when it was scored, three points above the median of Claude Fable 5.2 (843).
+- **GPT-6.2-sol at `xhigh` (XD): 590, Bronze, run 1, a new agent.** 8.9 minutes and 0.85 million tokens. It reported 9 of the 13 flaws and fixed 9 (BUG-004 was fixed without being reported): security 228
   (SEC-008 reported and deliberately not fixed), bugs 129 and performance 150; architecture 0 and clean code 0 (the dispatcher, ARCH-002, the magic numbers, ARCH-009, and the label rule, CLN-007, were neither reported nor fixed);
   compatibility 40 (two COMP-003: the listing's SLA average now counts only the logged-in client's tickets, and `formatarStatus` returns "Desconhecido" for a status outside 1 to 3). Its report scored 43 of 50, with 13 extra
   findings and no false positive.
 
-### Runs of 2026-11-19 through the ChatGPT plan
+### Second runs of 2026-11-19
 
-Two deliveries were scored for this section (two agents): GPT-6.2-astra (ChatGPT plan) and GPT-6.2-sol (ChatGPT plan), both at `xhigh`, agents of their own, one run each, kept apart from GPT-6.2-astra and GPT-6.2-sol (the
-section of 2026-11-19 above, through the API key) because the route and the client differ. They ran through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the models: unlike the API-key runs they
-logged no missing-metadata warning. They were made through the unattended lab (`laboratorio-codex-100.py`) as those were: one `codex exec` session each that got the fixed first message once and ran to its own end under a
-90-minute cap (`operator_replies` 0), with approvals and sandbox bypassed (the Codex lane's recorded exception), as the unprivileged user `leb` on a restored machine with GitHub blocked and the package as the only instance
-folder in `/srv`. Each was judged blind like the others: a label drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL judge, both Claude Opus subagents.
+Two deliveries were scored for these two agents: run 2 of GPT-6.2-astra and run 2 of GPT-6.2-sol, both at `xhigh`. They were made through the unattended lab (`laboratorio-codex-100.py`) as the first runs were: one
+`codex exec` session each that got the fixed first message once and ran to its own end under a 90-minute cap (`operator_replies` 0), with approvals and sandbox bypassed (the Codex lane's recorded exception), as the
+unprivileged user `leb` on a restored machine with GitHub blocked and the package as the only instance folder in `/srv`. The client is Codex CLI 0.170.0, which knows the models and logged no missing-metadata warning,
+where run 1 of each used Codex CLI 0.159.3 and its fallback metadata. Each was judged blind like the others: a label drawn at random among the two-letter ones not used before, one matching judge and one blind EXPL judge,
+both Claude Opus subagents. With two runs each, the figure of an agent on the leaderboard is the lower of its two totals: 835 for GPT-6.2-astra (second) and 590 for GPT-6.2-sol (38th, as before).
 
 | Label | Run | Outcome |
 | --- | --- | --- |
-| **US** | GPT-6.2-astra (ChatGPT plan), `xhigh`, run 1 | 835 |
-| **WA** | GPT-6.2-sol (ChatGPT plan), `xhigh`, run 1 | 772 |
+| **US** | GPT-6.2-astra, `xhigh`, run 2 | 835 |
+| **WA** | GPT-6.2-sol, `xhigh`, run 2 | 772 |
 
-- **GPT-6.2-astra (ChatGPT plan) at `xhigh` (US): 835, Gold, 3rd, an agent of its own.** One run so far: 15.1 minutes and 1.31 million tokens. It reported 12 of the 13 flaws and fixed 11: security 228 (SEC-008 reported and
-  deliberately not fixed), bugs 150, performance 150 and clean code 100; architecture 125 (the dispatcher, ARCH-002, reported and refactored; the magic numbers, ARCH-009, neither named nor fixed); compatibility 40 (two
-  COMP-003: the listing's SLA average now counts only the logged-in client's tickets, and `formatarStatus` returns "Desconhecido" for an unknown status) and no penalty. Its report scored 42 of 50, with 11 extra findings and
-  no false positive. GPT-6.2-astra through the API key scored 846 on the same case.
-- **GPT-6.2-sol (ChatGPT plan) at `xhigh` (WA): 772, Gold, 8th, an agent of its own.** One run so far: 12.5 minutes and 1.23 million tokens. It reported 11 of the 13 flaws and fixed 10 (BUG-004 was fixed without being
-  reported): security 246 (SEC-008 reported and deliberately not fixed), bugs 129, performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, reported and not refactored; the magic numbers, ARCH-009, neither
-  named nor fixed); compatibility 70 (one COMP-003: the listing's SLA average now counts only the logged-in client's tickets) and one penalty of 15 points (PEN-001: the fix for spreadsheet formulas in the export also changed
-  the `-` placeholder of the technician column). Its report scored 42 of 50, with 13 extra findings and no false positive. GPT-6.2-sol through the API key scored 590 on the same case.
+- **GPT-6.2-astra at `xhigh` (US): 835, Gold, run 2.** 15.1 minutes and 1.31 million tokens. It reported 12 of the 13 flaws and fixed 11: security 228 (SEC-008 reported and deliberately not fixed), bugs 150, performance
+  150 and clean code 100; architecture 125 (the dispatcher, ARCH-002, reported and refactored; the magic numbers, ARCH-009, neither named nor fixed); compatibility 40 (two COMP-003: the listing's SLA average now counts
+  only the logged-in client's tickets, and `formatarStatus` returns "Desconhecido" for an unknown status) and no penalty. Its report scored 42 of 50, with 11 extra findings and no false positive. Run 1 scored 846.
+- **GPT-6.2-sol at `xhigh` (WA): 772, Gold, run 2.** 12.5 minutes and 1.23 million tokens. It reported 11 of the 13 flaws and fixed 10 (BUG-004 was fixed without being reported): security 246 (SEC-008 reported and
+  deliberately not fixed), bugs 129, performance 150 and clean code 100; architecture 50 (the dispatcher, ARCH-002, reported and not refactored; the magic numbers, ARCH-009, neither named nor fixed); compatibility 70
+  (one COMP-003: the listing's SLA average now counts only the logged-in client's tickets) and one penalty of 15 points (PEN-001: the fix for spreadsheet formulas in the export also changed the `-` placeholder of the
+  technician column). Its report scored 42 of 50, with 13 extra findings and no false positive. Run 1 scored 590.
 
 ## Runs withdrawn for an incomplete record
 

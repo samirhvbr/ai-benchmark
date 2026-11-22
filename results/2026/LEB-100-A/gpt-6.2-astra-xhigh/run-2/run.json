@@ -1,13 +1,12 @@
 {
-  "agent": "gpt-6.2-astra-xhigh-plan",
+  "agent": "gpt-6.2-astra-xhigh",
   "model": {
-    "name": "GPT-6.2-astra (ChatGPT plan)",
+    "name": "GPT-6.2-astra",
     "id": "gpt-6.2-astra",
     "provider": "OpenAI",
-    "reasoning_effort": "xhigh",
-    "served_by": "ChatGPT plan login (OAuth), Codex CLI 0.170.0"
+    "reasoning_effort": "xhigh"
   },
-  "run": 1,
+  "run": 2,
   "instance": "LEB-100-A",
   "instance_version": "1.1",
   "leb_spec": "1.1.0",
@@ -52,5 +51,5 @@
     "exact_version",
     "temperature"
   ],
-  "run_note": "Run 1 of this agent (GPT-6.2-astra (ChatGPT plan), kept apart from GPT-6.2-astra, whose runs went through the OpenAI API key), made through the unattended lab (laboratorio-codex-100.py) and not by hand like the other runs of this instance: one `codex exec` session that got the fixed first message once and ran to its own end under a 90 minute cap, so no operator reply was possible and none was needed (operator_replies 0; the 30 turns of the mode count the operator's messages, and the agent used the first). Permissions: Codex's approvals and sandbox off (`--dangerously-bypass-approvals-and-sandbox`, the lab's recorded exception for Codex). The client is Codex CLI 0.170.0 (the earlier runs of this instance used Codex CLI 0.159.2 and 0.159.3). The work folder was /srv/leb-100-a, the only instance folder on the machine: the snapshot's folder of another instance was removed before the package went in. The log keeps no cost. It ran through the owner's ChatGPT plan login (OAuth), not the API key, and the client knows the model: it logged no missing-metadata warning. GPT-6.2-astra, the same model through the API key with Codex CLI 0.159.3 and fallback metadata, is a separate entry (the owner's decision of 2026-11-19)."
+  "run_note": "Run 2 of this agent, made through the unattended lab (laboratorio-codex-100.py) and not by hand like the other runs of this instance: one `codex exec` session that got the fixed first message once and ran to its own end under a 90 minute cap, so no operator reply was possible and none was needed (operator_replies 0; the 30 turns of the mode count the operator's messages, and the agent used the first). Permissions: Codex's approvals and sandbox off (`--dangerously-bypass-approvals-and-sandbox`, the lab's recorded exception for Codex). The client is Codex CLI 0.170.0 (the earlier runs of this instance used Codex CLI 0.159.2 and 0.159.3). The work folder was /srv/leb-100-a, the only instance folder on the machine: the snapshot's folder of another instance was removed before the package went in. The log keeps no cost. The client knows the model: it logged no missing-metadata warning (run 1 used Codex CLI 0.159.3, which did not know it and ran it with fallback metadata)."
 }
