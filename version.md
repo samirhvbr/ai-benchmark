@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.357`
+**Versão atual:** `0.2.358`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.358` — 2026-11-22 — LEB-S-300-A's aggregate folds the two ChatGPT-plan entries into GPT-6.2-astra and GPT-6.2-sol: three runs each, estimates 992 and 969
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py --write --only gpt-6.2-astra-xhigh,gpt-6.2-sol-xhigh` from the lab's private archive, plus the
+  sentences about GPT-6.2 in the Results paragraph of `instances/LEB-S-300-A/README.md`. The aggregate goes from 43 to 41 agents; the other 39 entries are unchanged (checked by agent against HEAD).
+- On the owner's word of 2026-11-22 ("indifere se e api ou plan": the way a run reached the model is not an aspect of the entry, and the benchmark does not want to invite speculation about it for any vendor),
+  the entries `GPT-6.2-astra (ChatGPT plan)` and `GPT-6.2-sol (ChatGPT plan)` of 0.2.335 and 0.2.338 are folded into `GPT-6.2-astra` and `GPT-6.2-sol`. Each configuration now has all its runs in one entry:
+  GPT-6.2-astra at `xhigh` has three runs, 992, 992 and 992 (Platinum, mean 992); GPT-6.2-sol at `xhigh` has three runs, 992, 924 and 991 (Platinum, mean 969, up from 958), and keeps its one lab failure (the
+  attempt the provider's cybersecurity safeguard stopped at its last step, rerun).
+- The readings of both entries drop the sentence about how the runs reached the model and keep one fact about the client, which is a property of the run and not of the route: the first two runs used Codex CLI
+  0.159.3, which did not know the model and ran it with fallback metadata, and the last one used Codex CLI 0.170.0.
+- The earlier entries of this file and the commits that created the separate entries stay as they are: history is not rewritten.
 
 ### `0.2.357` — 2026-11-22 — LEB-S-300-A's aggregate adds the rerun of Claude Sonnet 5.5 at max, blocked again during the work: five runs, three completed and two blocked, estimate 995 unchanged
 
