@@ -297,53 +297,6 @@
       }
     },
     {
-      "agent": "gpt-6.2-astra-xhigh-plan",
-      "score": 862,
-      "grade": "Gold",
-      "runs_count": 1,
-      "categories": {
-        "SEC": 250,
-        "ARCH": 164,
-        "BUG": 139,
-        "PERF": 128,
-        "CLN": 64,
-        "COMP": 75,
-        "EXPL": 42
-      },
-      "cost_usd": null,
-      "wall_minutes": 40.4,
-      "tokens": {
-        "input": 312672,
-        "output": 82378,
-        "cache": 9442048,
-        "total": 9837098
-      },
-      "runs": [
-        {
-          "run": 1,
-          "total": 862,
-          "cost_usd": null,
-          "wall_minutes": 40.4,
-          "tokens": {
-            "input": 312672,
-            "output": 82378,
-            "cache": 9442048,
-            "total": 9837098
-          }
-        }
-      ],
-      "model": {
-        "name": "GPT-6.2-astra (ChatGPT plan)",
-        "id": "gpt-6.2-astra",
-        "provider": "OpenAI",
-        "reasoning_effort": "xhigh"
-      },
-      "comment": {
-        "en": "One run so far: 862, Gold, 5th of 40, through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, in 40 minutes and 9.8 million tokens (the log keeps no cost). Security was 250 of 250, architecture 164 of 200, bugs 139 of 150, performance 128 of 150 and clean code 64 of 100. The report covered 29 of the 36 planted flaws, with one false positive (a remark that logging the exception cause is a leak) and 33 extra findings, and was rated 42 of 50; four more flaws were fixed in the code without being reported, and three were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: the login throttle answers 429 even to the right password once the limit is reached. It is an entry of its own: GPT-6.2-astra holds the API-key run of the same model (852, Codex CLI 0.159.3, fallback metadata).",
-        "pt_BR": "Uma execução até agora: 862, Gold, 5º de 40, pelo login do plano ChatGPT do dono (OAuth) com o Codex CLI 0.170.0, que conhece o modelo, em 40 minutos e 9,8 milhões de tokens (o log não guarda custo). Segurança foi 250 de 250, arquitetura 164 de 200, bugs 139 de 150, desempenho 128 de 150 e código limpo 64 de 100. O relatório cobriu 29 dos 36 defeitos plantados, com um falso positivo (uma observação de que registrar a causa da exceção é um vazamento) e 33 achados extras, e teve 42 de 50; mais quatro defeitos foram corrigidos no código sem serem relatados, e três não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: o bloqueio de login responde 429 até à senha certa quando o limite é atingido. É uma entrada própria: GPT-6.2-astra reúne a execução do mesmo modelo pela chave de API (852, Codex CLI 0.159.3, metadados de reserva)."
-      }
-    },
-    {
       "agent": "claude-sonnet-5.5-xhigh",
       "score": 860,
       "grade": "Gold",
@@ -489,7 +442,7 @@
       "agent": "gpt-6.2-astra-xhigh",
       "score": 852,
       "grade": "Gold",
-      "runs_count": 1,
+      "runs_count": 2,
       "categories": {
         "SEC": 250,
         "ARCH": 164,
@@ -519,6 +472,18 @@
             "cache": 9966512,
             "total": 10357974
           }
+        },
+        {
+          "run": 2,
+          "total": 862,
+          "cost_usd": null,
+          "wall_minutes": 40.4,
+          "tokens": {
+            "input": 312672,
+            "output": 82378,
+            "cache": 9442048,
+            "total": 9837098
+          }
         }
       ],
       "model": {
@@ -528,8 +493,8 @@
         "reasoning_effort": "xhigh"
       },
       "comment": {
-        "en": "One run so far: 852, Gold, 7th of 39, through Codex on the OpenAI API key, in 31 minutes and 10.4 million tokens (the log keeps no cost). Security was 250 of 250, architecture 164 of 200, bugs 139 of 150, performance 137 of 150 and clean code 46 of 100. The report covered 27 of the 36 planted flaws, with no false positive and 29 extra findings, and was rated 41 of 50; seven more flaws were fixed in the code without being reported, and two were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: the new login lockout answers even the right password with 429 once the limit is reached. It is one system, so how the configuration does across systems is not measured yet. The lab's Codex client, 0.159.3, did not know the model and ran it with its fallback metadata. GPT-6.2-astra (ChatGPT plan) is the same model through the owner's ChatGPT plan login with Codex CLI 0.170.0 (862, one run).",
-        "pt_BR": "Uma execução até agora: 852, Gold, 7º de 39, pelo Codex na chave de API da OpenAI, em 31 minutos e 10,4 milhões de tokens (o log não guarda custo). Segurança foi 250 de 250, arquitetura 164 de 200, bugs 139 de 150, desempenho 137 de 150 e código limpo 46 de 100. O relatório cobriu 27 dos 36 defeitos plantados, sem falso positivo e com 29 achados extras, e teve 41 de 50; mais sete defeitos foram corrigidos no código sem serem relatados, e dois não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: o novo bloqueio de login responde 429 até à senha certa quando o limite é atingido. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. O cliente Codex do laboratório, o 0.159.3, não conhecia o modelo e o rodou com metadados de reserva. GPT-6.2-astra (ChatGPT plan) é o mesmo modelo pelo login do plano ChatGPT do dono, com o Codex CLI 0.170.0 (862, uma execução)."
+        "en": "Two runs so far, 852 and 862, both Gold: the published score is the lower, 852, 7th of 41, in 31 and 40 minutes and 10.4 and 9.8 million tokens (the log keeps no cost). Security was 250 of 250 and architecture 164 of 200 in both, bugs 139 of 150 in both, performance 137 and 128 of 150 and clean code 46 and 64 of 100. The reports covered 27 and 29 of the 36 planted flaws, with no false positive in run 1 and one in run 2 (a remark that logging the exception cause is a leak) and 29 and 33 extra findings, and were rated 41 and 42 of 50; seven and four more flaws were fixed in the code without being reported, and two and three were neither reported nor fixed. Each run lost 25 points of compatibility for one COMP-008: the login lockout answers 429 even to the right password once the limit is reached. It is one system, so how the configuration does across systems is not measured yet. Run 1 used the lab's Codex client 0.159.3, which did not know the model (fallback metadata); run 2 used Codex CLI 0.170.0.",
+        "pt_BR": "Duas execuções até agora, 852 e 862, ambas Gold: a nota publicada é a menor, 852, 7º de 41, em 31 e 40 minutos e 10,4 e 9,8 milhões de tokens (o log não guarda custo). Segurança foi 250 de 250 e arquitetura 164 de 200 nas duas, bugs 139 de 150 nas duas, desempenho 137 e 128 de 150 e código limpo 46 e 64 de 100. Os relatórios cobriram 27 e 29 das 36 falhas plantadas, sem falso positivo na execução 1 e com um na 2 (uma observação de que registrar a causa da exceção é um vazamento) e 29 e 33 achados extras, e tiveram 41 e 42 de 50; sete e quatro falhas a mais foram corrigidas no código sem serem relatadas, e duas e três não foram nem relatadas nem corrigidas. Cada execução perdeu 25 pontos de compatibilidade por um COMP-008: o bloqueio de login responde 429 até à senha certa quando o limite é atingido. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. A execução 1 usou o cliente Codex do laboratório 0.159.3, que não conhecia o modelo (metadados de reserva); a 2 usou o Codex CLI 0.170.0."
       }
     },
     {
@@ -648,53 +613,6 @@
       "comment": {
         "en": "On a single run: security 215 of 250, architecture 156 of 200, bugs 147 of 150, performance 128 of 150 and 71 of 100 in clean code, with no penalty. It fixed 33 of the 36 planted flaws and its report was rated 44 of 50. It lost 25 compatibility points for one security change that the manifest does not allow: after 10 failed logins for an e-mail, the login answers 429 even to the right password, a status the manifest does not list, and anyone who knows an e-mail can lock that user out. The run cost US$ 15.81 and took 52 minutes of the agent's own time, without the 18 minutes the operator took between the two stages. One run of three: it is not official and could move.",
         "pt_BR": "Com uma execução só: segurança 215 de 250, arquitetura 156 de 200, bugs 147 de 150, desempenho 128 de 150 e 71 de 100 em código limpo, sem penalidade. Corrigiu 33 das 36 falhas plantadas e o relatório teve 44 de 50. Perdeu 25 pontos de compatibilidade por uma mudança de segurança que o manifesto não permite: depois de 10 logins errados para um e-mail, o login responde 429 até para a senha certa, um status que o manifesto não lista, e quem souber um e-mail pode trancar aquele usuário para fora. A execução custou US$ 15,81 e levou 52 minutos de tempo do próprio agente, sem os 18 minutos que o operador levou entre as duas etapas. Uma execução de três: não é oficial e pode mudar."
-      }
-    },
-    {
-      "agent": "gpt-6.2-sol-xhigh-plan",
-      "score": 818,
-      "grade": "Gold",
-      "runs_count": 1,
-      "categories": {
-        "SEC": 250,
-        "ARCH": 133,
-        "BUG": 139,
-        "PERF": 115,
-        "CLN": 64,
-        "COMP": 75,
-        "EXPL": 42
-      },
-      "cost_usd": null,
-      "wall_minutes": 35.7,
-      "tokens": {
-        "input": 231579,
-        "output": 81974,
-        "cache": 7415936,
-        "total": 7729489
-      },
-      "runs": [
-        {
-          "run": 1,
-          "total": 818,
-          "cost_usd": null,
-          "wall_minutes": 35.7,
-          "tokens": {
-            "input": 231579,
-            "output": 81974,
-            "cache": 7415936,
-            "total": 7729489
-          }
-        }
-      ],
-      "model": {
-        "name": "GPT-6.2-sol (ChatGPT plan)",
-        "id": "gpt-6.2-sol",
-        "provider": "OpenAI",
-        "reasoning_effort": "xhigh"
-      },
-      "comment": {
-        "en": "One run so far: 818, Gold, 11th of 41, through the owner's ChatGPT plan login (OAuth) with Codex CLI 0.170.0, which knows the model, in 35.7 minutes and 7.7 million tokens (the log keeps no cost). Security was 250 of 250, architecture 133 of 200, bugs 139 of 150, performance 115 of 150 and clean code 64 of 100. The report covered 24 of the 36 planted flaws, with one false positive (a remark that logging the exception cause is a leak) and 25 extra findings, and was rated 42 of 50; six more flaws were fixed in the code without being reported, and six were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: a concurrency cap on the login answers 503, even to the right password, while four password checks are already running. It is an entry of its own: GPT-6.2-sol holds the API-key run of the same model (777, Codex CLI 0.159.3, fallback metadata).",
-        "pt_BR": "Uma execução até agora: 818, Gold, 11º de 41, pelo login do plano ChatGPT do dono (OAuth) com o Codex CLI 0.170.0, que conhece o modelo, em 35,7 minutos e 7,7 milhões de tokens (o log não guarda custo). Segurança foi 250 de 250, arquitetura 133 de 200, bugs 139 de 150, desempenho 115 de 150 e código limpo 64 de 100. O relatório cobriu 24 dos 36 defeitos plantados, com um falso positivo (uma observação de que registrar a causa da exceção é um vazamento) e 25 achados extras, e teve 42 de 50; mais seis defeitos foram corrigidos no código sem serem relatados, e seis não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: um limite de concorrência no login responde 503, até à senha certa, enquanto quatro verificações de senha já estão em andamento. É uma entrada própria: GPT-6.2-sol reúne a execução do mesmo modelo pela chave de API (777, Codex CLI 0.159.3, metadados de reserva)."
       }
     },
     {
@@ -914,7 +832,7 @@
       "agent": "gpt-6.2-sol-xhigh",
       "score": 777,
       "grade": "Gold",
-      "runs_count": 1,
+      "runs_count": 2,
       "categories": {
         "SEC": 246,
         "ARCH": 119,
@@ -944,6 +862,18 @@
             "cache": 7040081,
             "total": 7425404
           }
+        },
+        {
+          "run": 2,
+          "total": 818,
+          "cost_usd": null,
+          "wall_minutes": 35.7,
+          "tokens": {
+            "input": 231579,
+            "output": 81974,
+            "cache": 7415936,
+            "total": 7729489
+          }
         }
       ],
       "model": {
@@ -953,8 +883,8 @@
         "reasoning_effort": "xhigh"
       },
       "comment": {
-        "en": "One run so far: 777, Gold, 13th of 39, through Codex on the OpenAI API key, in 22.6 minutes and 7.4 million tokens (the log keeps no cost). Security was 246 of 250, architecture 119 of 200, bugs 137 of 150, performance 115 of 150 and clean code 46 of 100. The report covered 21 of the 36 planted flaws, with one false positive (a generic remark that no planted flaw stands behind) and 17 extra findings, and was rated 39 of 50; eleven more flaws were fixed in the code without being reported, and four were neither reported nor fixed. It lost 25 points of compatibility for one COMP-008: the login lockout it added refuses even the right password once the limit is reached. It is one system, so how the configuration does across systems is not measured yet. The lab's Codex client, 0.159.3, did not know the model and ran it with its fallback metadata. GPT-6.2-sol (ChatGPT plan) is the same model through the owner's ChatGPT plan login with Codex CLI 0.170.0 (818, one run).",
-        "pt_BR": "Uma execução até agora: 777, Gold, 13º de 39, pelo Codex na chave de API da OpenAI, em 22,6 minutos e 7,4 milhões de tokens (o log não guarda custo). Segurança foi 246 de 250, arquitetura 119 de 200, bugs 137 de 150, desempenho 115 de 150 e código limpo 46 de 100. O relatório cobriu 21 dos 36 defeitos plantados, com um falso positivo (uma observação genérica sem defeito plantado por trás) e 17 achados extras, e teve 39 de 50; mais onze defeitos foram corrigidos no código sem serem relatados, e quatro não foram relatados nem corrigidos. Perdeu 25 pontos de compatibilidade por um COMP-008: o bloqueio de login que adicionou recusa até a senha certa quando o limite é atingido. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. O cliente Codex do laboratório, o 0.159.3, não conhecia o modelo e o rodou com metadados de reserva. GPT-6.2-sol (ChatGPT plan) é o mesmo modelo pelo login do plano ChatGPT do dono, com o Codex CLI 0.170.0 (818, uma execução)."
+        "en": "Two runs so far, 777 and 818, both Gold: the published score is the lower, 777, 13th of 41, in 22.6 and 35.7 minutes and 7.4 and 7.7 million tokens (the log keeps no cost). Security was 246 and 250 of 250, architecture 119 and 133 of 200, bugs 137 and 139 of 150, performance 115 of 150 in both and clean code 46 and 64 of 100. The reports covered 21 and 24 of the 36 planted flaws, with one false positive in each and 17 and 25 extra findings, and were rated 39 and 42 of 50; eleven and six more flaws were fixed in the code without being reported, and four and six were neither reported nor fixed. Each run lost 25 points of compatibility for one COMP-008: the login lockout of run 1 refuses even the right password once the limit is reached, and the concurrency cap of run 2 answers 503, even to the right password, while four password checks are already running. It is one system, so how the configuration does across systems is not measured yet. Run 1 used Codex 0.159.3, which did not know the model (fallback metadata); run 2 used Codex CLI 0.170.0.",
+        "pt_BR": "Duas execuções até agora, 777 e 818, ambas Gold: a nota publicada é a menor, 777, 13º de 41, em 22,6 e 35,7 minutos e 7,4 e 7,7 milhões de tokens (o log não guarda custo). Segurança foi 246 e 250 de 250, arquitetura 119 e 133 de 200, bugs 137 e 139 de 150, desempenho 115 de 150 nas duas e código limpo 46 e 64 de 100. Os relatórios cobriram 21 e 24 das 36 falhas plantadas, com um falso positivo em cada e 17 e 25 achados extras, e tiveram 39 e 42 de 50; onze e seis falhas a mais foram corrigidas no código sem serem relatadas, e quatro e seis não foram nem relatadas nem corrigidas. Cada execução perdeu 25 pontos de compatibilidade por um COMP-008: o bloqueio de login da execução 1 recusa até a senha certa quando o limite é atingido, e o limite de concorrência da 2 responde 503, até à senha certa, enquanto quatro verificações de senha já estão em andamento. É um sistema só, então como a configuração se sai em vários sistemas ainda não foi medido. A execução 1 usou o Codex 0.159.3, que não conhecia o modelo (metadados de reserva); a 2 usou o Codex CLI 0.170.0."
       }
     },
     {
