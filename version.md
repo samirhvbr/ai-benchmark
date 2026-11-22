@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.356`
+**Versão atual:** `0.2.357`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,19 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.357` — 2026-11-22 — LEB-S-300-A's aggregate adds the rerun of Claude Sonnet 5.5 at max, blocked again during the work: five runs, three completed and two blocked, estimate 995 unchanged
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `publish-s.py --write --only claude-sonnet-5.5-max` from the lab's private archive, plus the dated sentence
+  about this configuration in the Results paragraph of `instances/LEB-S-300-A/README.md`. The aggregate stays at 43 agents; the other 42 entries are unchanged (checked by agent against HEAD).
+- Claude Sonnet 5.5 at `max` on an Anthropic API key (id `claude-sonnet-5.5-max`) goes from four runs to five. The attempt that had been lost to the lab on 2026-10-31 (the API credit ran out) was rerun on
+  2026-11-21 on an Anthropic API key, and the rerun was stopped during the work by the model's own safeguard (a refusal), after 27 minutes and 144 turns (US$ 6.75 by the client's own estimate), with all 24 fixes made
+  and no report written. The usual four blind judges scored it on the folder it left and agreed on every item: 627 (Silver; security 527 of 850, compatibility 100, no regression), the same figures as the earlier
+  blocked run.
+- The configuration now has three completed runs (994, 995 and 996) and two blocked ones (627 and 627). The estimate stays 995 (Platinum, mean of the completed runs, the same as Claude Opus 5.5 at `max`); the
+  expected score per scheduled attempt falls from 903.0 to 847.8 (95% interval 700 to 995) and the completion rate from 3 of 4 to 3 of 5. The lab failure of 2026-10-31 stays counted as one lab failure rerun.
+- The reading of the entry, in English and in Portuguese, is the generated one again: the hand-written version of 0.2.356, which dropped one sentence to fit 1200 characters, is no longer needed because the
+  five-run text fits (1140 and 1184 characters).
 
 ### `0.2.356` — 2026-11-19 — LEB-S-300-A's aggregate adds Claude Sonnet 5.5 at max: three completed runs, estimate 995, Platinum, 2nd of 43, and a blocked run scored 627
 

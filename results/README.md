@@ -363,7 +363,7 @@ This instance is **active**. While it is, only the figures below are published: 
 | # | Agent | Estimate | 95% interval | Grade | SEC | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | --- |
 | 1 | `claude-opus-5.5-max` | **995** | 995 to 996 | Platinum | 850 | 100 | 45 | 5/5 (995 · 995 · 995 · 995 · 996) |
-| 2 | `claude-sonnet-5.5-max` | **995** | 994 to 996 | Platinum | 769 | 100 | 34 | 3/4 (994 · 995 · 996 · 627) |
+| 2 | `claude-sonnet-5.5-max` | **995** | 994 to 996 | Platinum | 721 | 100 | 27 | 3/5 (994 · 995 · 996 · 627 · 627) |
 | 3 | `deepseek-v4.1-flash-max` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 1/1 (992) |
 | 4 | `gpt-6.2-astra-xhigh` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 2/2 (992 · 992) |
 | 5 | `gpt-6.2-astra-xhigh-plan` | **992** | 992 to 992 | Platinum | 850 | 100 | 42 | 1/1 (992) |
@@ -411,7 +411,7 @@ Maximum per column: SEC 850 · COMP 100 · EXPL 50 → 1000. The estimate is the
 
 `claude-opus-5.5-max`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 995.2 (995.0 to 995.6); blocked 0, budget exhausted 0, switched 0; lab failures rerun 1; median 995, lowest 995, highest 996.
 
-`claude-sonnet-5.5-max`: completion 3 of 4 scheduled attempts; expected score per scheduled attempt 903.0 (719.0 to 995.5); blocked 1, budget exhausted 0, switched 0; lab failures rerun 1; median 994, lowest 627, highest 996.
+`claude-sonnet-5.5-max`: completion 3 of 5 scheduled attempts; expected score per scheduled attempt 847.8 (700.4 to 995.2); blocked 2, budget exhausted 0, switched 0; lab failures rerun 1; median 994, lowest 627, highest 996.
 
 `deepseek-v4.1-flash-max`: completion 1 of 1 scheduled attempt; expected score per scheduled attempt 992.0 (992.0 to 992.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 992, lowest 992, highest 992.
 
