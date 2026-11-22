@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.367`
+**Versão atual:** `0.2.368`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.368` — 2026-11-22 — LEB-D-300-A's aggregate completes NVIDIA Nemotron 3 Nano Omni at max (free variant): five runs, mean 102, Reprovada
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive, re-archived with
+  `archive-config.py ... --also --lost 1 --lost 3` (the two lab attempts that ended inconclusive keep their numbers). The aggregate stays at 61 agents; the other 60 entries are unchanged (checked by agent against HEAD).
+- NVIDIA Nemotron 3 Nano Omni (OpenRouter's free variant) at `max` goes from one run to five: 113 (2026-11-06), 81 (2026-11-10), 104 (2026-11-14) and 115 and 95 (2026-11-22), all Reprovada, mean 102 (95% interval 90 to 112).
+  Runs 4 and 5 had been prepared on 2026-11-10 and 2026-11-14 but not judged while the free survey was paused; they are judged now, by the usual four blind judges, with the differences in how the two judges named the same
+  false positives settled by the owner's standing rule of 2026-10-16. Every run broke a behavior that a characterization test protects or left the build broken (20 points each, 40 for run 4), and only bug fixing scored.
+- The reading of the entry (English and Portuguese) is regenerated for five runs.
 
 ### `0.2.367` — 2026-11-22 — LEB-D-300-A's aggregate completes Claude Fable 5.1 at high: five runs, mean 747, Silver, and documents why it had a single run
 
