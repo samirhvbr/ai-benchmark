@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.365`
+**Versão atual:** `0.2.366`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,16 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.366` — 2026-11-22 — LEB-D-300-A's aggregate completes GPT-6.2-astra at xhigh: five runs, mean 893, Gold
+
+- `results/2026/LEB-D-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by `tools/export-results.py --publish-aggregate LEB-D-300-A` from the lab's private archive, re-archived with
+  `archive-config.py ... --also` so that the configuration carries all five judge parents. The aggregate stays at 61 agents; the other 60 entries are unchanged (checked by agent against HEAD).
+- GPT-6.2-astra at `xhigh` goes from three runs to five: the two new runs, 883 and 899 (both Gold, 2026-11-22), were made through the Codex lane with Codex CLI 0.170.0, which knows the model, and the blind judges
+  agreed on every item of the fifth and, on the fourth, differed only on how to name one finding that the owner's standing rule of 2026-10-22 settles. Both lose 5 points for the same decoy (the rounding of the
+  budget split). The five runs are 910, 904, 869, 883 and 899: mean 893 (Gold, 95% interval 880 to 905), against 894 with three runs.
+- The reading of the entry is regenerated for five runs and keeps one fact about the client: the first two runs used Codex CLI 0.159.3, which did not know the model and ran it with fallback metadata, and the last
+  three used 0.170.0.
 
 ### `0.2.365` — 2026-11-22 — LEB-300-A's aggregate folds the two ChatGPT-plan entries into GPT-6.2-astra and GPT-6.2-sol: two runs each, scores 852 and 777
 

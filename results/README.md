@@ -155,7 +155,7 @@ This instance is **active**. While it is, only the figures below are published: 
 
 | # | Agent | Estimate | 95% interval | Grade | ARCH | BUG | PERF | CLN | COMP | EXPL | Runs |
 | ---: | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 1 | `gpt-6.2-astra-xhigh` | **894** | 869 to 910 | Gold | 235 | 198 | 208 | 116 | 100 | 43 | 3/3 (910 · 904 · 869) |
+| 1 | `gpt-6.2-astra-xhigh` | **893** | 880 to 905 | Gold | 234 | 200 | 208 | 113 | 100 | 43 | 5/5 (910 · 904 · 869 · 883 · 899) |
 | 2 | `claude-fable-5.2-xhigh` | **858** | 841 to 874 | Gold | 192 | 194 | 192 | 96 | 100 | 36 | 4/5 (880 · 619 · 861 · 834 · 856) |
 | 3 | `claude-opus-5.5-xhigh` | **835** | 822 to 849 | Gold | 200 | 206 | 192 | 95 | 100 | 44 | 5/5 (831 · 847 · 813 · 858 · 827) |
 | 4 | `claude-sonnet-5.5-max` | **826** | 797 to 855 | Gold | 190 | 209 | 193 | 89 | 100 | 45 | 5/5 (793 · 785 · 827 · 874 · 849) |
@@ -220,7 +220,7 @@ This instance is **active**. While it is, only the figures below are published: 
 Maximum per column: ARCH 283 · BUG 213 · PERF 213 · CLN 141 · COMP 100 · EXPL 50 → 1000. The estimate is the mean of the completed runs and the interval is a 95% percentile bootstrap over systems and runs
 (design section 9); with one system it reflects the variation among that system's runs only. The category columns are the runs' means, rounded.
 
-`gpt-6.2-astra-xhigh`: completion 3 of 3 scheduled attempts; expected score per scheduled attempt 894.3 (869.0 to 910.0); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 904, lowest 869, highest 910.
+`gpt-6.2-astra-xhigh`: completion 5 of 5 scheduled attempts; expected score per scheduled attempt 893.0 (880.0 to 905.4); blocked 0, budget exhausted 0, switched 0; lab failures rerun 0; median 899, lowest 869, highest 910.
 
 `claude-fable-5.2-xhigh`: completion 4 of 5 scheduled attempts; expected score per scheduled attempt 810.0 (713.8 to 867.6); blocked 0, budget exhausted 1, switched 0; lab failures rerun 0; median 856, lowest 619, highest 880.
 
