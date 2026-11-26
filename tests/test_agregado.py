@@ -438,6 +438,26 @@ class SeriesPublishing(unittest.TestCase):
         self.assertNotEqual(code, 0)
         self.assertIn("5 scheduled runs", err)
 
+    def test_a_sixth_run_needs_the_owners_decision_with_who_and_why(self):
+        self.build(failed=())
+        self.run_folder(2, 500)
+        decision = os.path.join(self.archive, "runs-decided.json")
+        write_json(decision, {"runs": 6, "decided_by": "the owner, in chat", "reason": ""})
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("decided_by and reason", err)
+        write_json(decision, {"runs": 6, "decided_by": "the owner, in chat", "reason": "two entries of one model merged"})
+        self.run_folder(7, 500)
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertNotEqual(code, 0)
+        self.assertIn("the owner decided 6", err)
+        shutil.rmtree(os.path.join(self.archive, "run-7"))
+        code, err = self.export("--publish-aggregate", self.INSTANCE)
+        self.assertEqual(code, 0, err)
+        agg = read_json(os.path.join(self.t, "results", "2026", self.INSTANCE, "aggregate.json"))
+        self.assertEqual(validate(agg, read_json(os.path.join(ROOT, "scoring", "publicacao-agregada.schema.json"))), [])
+        self.assertEqual((agg["agents"][0]["runs_count"], agg["agents"][0]["statistics"]["scheduled"]), (6, 6))
+
     def test_the_same_report_filed_twice_is_one_delivery(self):
         self.build()
         shutil.copyfile(os.path.join(self.archive, "run-1", "entrega", "REPORT.md"), os.path.join(self.archive, "run-3", "entrega", "REPORT.md"))

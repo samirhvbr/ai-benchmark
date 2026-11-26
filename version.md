@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.368`
+**Versão atual:** `0.2.369`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,15 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.369` — 2026-11-26 — the exporter accepts more than five runs for a new-series configuration only when the archive holds the owner's decision, with who and why
+
+- `tools/export-results.py`: `check_series_runs` still refuses a configuration with more than the five scheduled runs of design 6.3, unless its private archive folder holds a `runs-decided.json` with a count above five,
+  `decided_by` and `reason`; then it refuses more runs than that count. Without both fields the file itself is refused. Nothing changes for any configuration that has no such file.
+- `scoring/publicacao-agregada.schema.json`: `runs_count` and `runs` go from at most 5 to at most 6, and `runs_count` says why.
+- `docs/new-series-design.md` 6.3 names the exception: two published entries that turn out to be one model, merged with every run counted on the owner's word. The first case is DeepSeek V4.1 Flash at max on
+  LEB-S-300-A, which the owner had merged into its 1017 entry on 2026-11-26 (published in the next revision).
+- `tests/test_agregado.py`: a sixth run passes only with the owner's decision, and the file is refused without a reason or with fewer runs than the archive has (on the Default and the Security tracks).
 
 ### `0.2.368` — 2026-11-22 — LEB-D-300-A's aggregate completes NVIDIA Nemotron 3 Nano Omni at max (free variant): five runs, mean 102, Reprovada
 

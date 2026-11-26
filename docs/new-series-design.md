@@ -300,6 +300,11 @@ within the subagent).
 Five scheduled runs per case, all counted, with no early stop and no replacement outside the rule above. A configuration then has
 (systems × 5) attempts per track: 30 with 6 systems.
 
+The one exception is a merge. When two published entries turn out to be one model, the owner may have every run of both counted in
+one entry rather than drop any. The private archive then holds his decision (`runs-decided.json`: the count, who decided and why),
+the exporter refuses more runs than it names, and the entry's reading says so. DeepSeek V4.1 Flash 1017 at max on LEB-S-300-A has
+six runs this way (2026-11-26).
+
 ## 7. Traceability
 
 Each attempt records the requested model; every model observed in every transcript, main conversation and subagents; the

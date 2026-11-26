@@ -86,8 +86,9 @@
           },
           "runs_count": {
             "type": "integer",
+            "description": "Three runs on the legacy instances, five on the new series (design 6.3); six only where the owner merged two entries of one model and had every run counted (the private archive holds his decision, runs-decided.json).",
             "minimum": 1,
-            "maximum": 5
+            "maximum": 6
           },
           "categories": {
             "type": "object",
@@ -149,7 +150,7 @@
             "type": "array",
             "description": "One line per run of the agent, by run number: its total, its cost, its session time and its tokens. The same numbers the score is the lower median of.",
             "minItems": 1,
-            "maxItems": 5,
+            "maxItems": 6,
             "items": {
               "type": "object",
               "required": [

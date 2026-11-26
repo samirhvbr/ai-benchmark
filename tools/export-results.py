@@ -693,17 +693,33 @@ def track_weights(track):
     return load(path)["weights"]
 
 
+def series_runs_allowed(base, where):
+    """Five, or the count the owner decided for one configuration: a runs-decided.json in its archive folder, with runs above five,
+    decided_by and reason (design 6.3: two entries of one model merged, every run counted rather than one dropped)."""
+    path = os.path.join(base, where, "runs-decided.json")
+    if not os.path.exists(path):
+        return SERIES_RUNS
+    decided = load(path)
+    runs = decided.get("runs")
+    if not (isinstance(runs, int) and runs > SERIES_RUNS and str(decided.get("decided_by") or "").strip() and str(decided.get("reason") or "").strip()):
+        sys.exit("[export] %s: runs-decided.json needs runs above %d, decided_by and reason" % (where, SERIES_RUNS))
+    return runs
+
+
 def check_series_runs(where, agent_runs, base):
     """The scheduled runs of one configuration of the new series: numbered from 1 with no gap, except where a lab-failure-<n> folder holds
-    the number (an attempt the lab lost, rerun under design 6.2, never scored), at most five, and no two with the same report."""
+    the number (an attempt the lab lost, rerun under design 6.2, never scored), at most five unless the owner decided more for it
+    (series_runs_allowed), and no two with the same report."""
     numbers = [x["run"] for x in agent_runs]
     failed = {int(m.group(1)) for m in (re.fullmatch(r"lab-failure-(\d+)", d) for d in os.listdir(os.path.join(base, where))) if m}
     expected = [n for n in range(1, len(numbers) + len(failed) + 1) if n not in failed]
     if numbers != expected:
         sys.exit("[export] %s has %s: runs are numbered run-1 to run-N with no gap, except where a lab-failure-<n> folder holds the number"
                  % (where, ", ".join("run-%d" % n for n in numbers)))
-    if len(numbers) > SERIES_RUNS:
-        sys.exit("[export] %s has %d runs; a case of the new series is %d scheduled runs (design 6.3)" % (where, len(numbers), SERIES_RUNS))
+    allowed = series_runs_allowed(base, where)
+    if len(numbers) > allowed:
+        sys.exit("[export] %s has %d runs; a case of the new series is %d scheduled runs (design 6.3)%s"
+                 % (where, len(numbers), SERIES_RUNS, "" if allowed == SERIES_RUNS else ", and the owner decided %d for it" % allowed))
     reports = {}
     for x in agent_runs:
         if x["meta"].get("run") != x["run"]:
