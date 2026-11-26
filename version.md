@@ -1,6 +1,6 @@
 # Versão — AI-BENCHMARK
 
-**Versão atual:** `0.2.369`
+**Versão atual:** `0.2.370`
 
 Padrão de avaliação de engenharia de software para LLMs (spec RFC, instâncias LEB, harness e scorecard).
 
@@ -61,6 +61,18 @@ X.Y.Z - Short description in English (US)
 ## 3. Changelog
 
 > Ordem decrescente (mais recente no topo).
+
+### `0.2.370` — 2026-11-26 — LEB-S-300-A's aggregate brings both DeepSeek V4.1 Flash entries under the 1017 name: max merges into six runs, mean 987, 7th of 40, and high keeps its 959
+
+- `results/2026/LEB-S-300-A/aggregate.json`, `results/results.json` and `results/README.md`, written by the lab's `publish-s.py --write --only deepseek-v4.1-flash-1017-max,deepseek-v4.1-flash-1017-high` from its
+  private archive, plus the Results section of `instances/LEB-S-300-A/README.md`. The aggregate goes from 41 to 40 configurations; the other 38 entries are unchanged (checked by agent against HEAD).
+- On the owner's word of 2026-11-26 ("SIM", to merging the max entry with all six runs counted and to naming the high entry 1017). Every Security run of the alias `deepseek-flash` on DeepSeek's API came after
+  2026-10-17, the release the 1017 name refers to, so the two older entries were the same model under another name.
+- `deepseek-v4.1-flash-max` (one run, 992, 2026-10-30) is gone: that run is now run 6 of `deepseek-v4.1-flash-1017-max`, whose five runs (991, 993, 992, 992 and 961) are unchanged. Six runs in a case of five is the
+  exception that 0.2.369 added to design 6.3; the lab's archive holds the decision (`runs-decided.json`). The entry goes from 986 (interval 973 to 992) to 987 (976 to 992), Platinum, 7th of 40.
+- `deepseek-v4.1-flash-high` (one run, 959, 2026-10-29) is published as `deepseek-v4.1-flash-1017-high`, named DeepSeek V4.1 Flash 1017 with the model id `deepseek-v4.1-flash-1017`, like the max entry; its figures
+  are unchanged, 13th of 40. LEB-D-300-A, LEB-300-A and LEB-100-A keep their DeepSeek V4.1 Flash entries as they are; on LEB-D-300-A they mix runs from before and after 2026-10-17, which is a separate decision.
+- Both readings (English and Portuguese) are hand-edited: the max one says where run 6 came from and why all six count; the high one says when it ran and when it took the name.
 
 ### `0.2.369` — 2026-11-26 — the exporter accepts more than five runs for a new-series configuration only when the archive holds the owner's decision, with who and why
 
